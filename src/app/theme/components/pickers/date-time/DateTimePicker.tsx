@@ -34,6 +34,12 @@ const DateTimePicker: Components<Omit<Theme, 'components'>>['MuiDateTimePicker']
         variant: 'elevation',
         elevation: 3,
       },
+      textField: {
+        variant: 'outlined',
+      },
+      popper: {
+        placement: 'bottom-start',
+      },
     },
     slots: {
       openPickerButton: (params) => (

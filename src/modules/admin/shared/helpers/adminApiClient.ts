@@ -1,11 +1,11 @@
-import { axiosMutator } from 'shared/api/http/axiosMutator';
+﻿import { axiosMutator } from 'shared/api/http/axiosMutator.ts';
 import {
   AdminBatchPayload,
   AdminBatchResponse,
   AdminListParams,
   AdminListParamValue,
   AdminPaginatedResponse,
-} from '../domain/types';
+} from './types';
 
 const toApiParamValue = (value: AdminListParamValue) => {
   if (value === null || value === undefined || value === '') {

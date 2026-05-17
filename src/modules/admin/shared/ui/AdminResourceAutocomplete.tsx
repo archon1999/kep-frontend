@@ -1,7 +1,10 @@
-import { useEffect, useState } from 'react';
-import useSWR from 'swr';
-import { Autocomplete, Avatar, Stack, TextField, TextFieldProps, Typography } from '@mui/material';
-import { adminApiClient } from '../data-access/adminApiClient';
+﻿import { UIEvent, useEffect, useMemo, useState } from 'react';
+import useSWRInfinite from 'swr/infinite';
+import { Autocomplete, Avatar, Stack, Typography } from '@mui/material';
+import type { TextFieldProps } from '@mui/material/TextField';
+import { adminApiClient } from '../helpers/adminApiClient.ts';
+import { AdminPaginatedResponse } from '../helpers/types.ts';
+import AdminTextField from './AdminTextField';
 
 export interface AdminAutocompleteOption {
   id: number;
@@ -25,6 +28,9 @@ interface AdminResourceAutocompleteProps<TOption extends AdminAutocompleteOption
   getOptionSecondaryLabel?: (option: TOption) => string | undefined;
   showAvatar?: boolean;
 }
+
+const AUTOCOMPLETE_PAGE_SIZE = 20;
+const AUTOCOMPLETE_SCROLL_THRESHOLD = 48;
 
 const defaultGetOptionLabel = (option: AdminAutocompleteOption) =>
   option.username ?? option.title ?? option.name ?? option.code ?? `#${option.id}`;
@@ -60,6 +66,7 @@ const AdminResourceAutocomplete = <TOption extends AdminAutocompleteOption = Adm
   getOptionSecondaryLabel = defaultGetOptionSecondaryLabel as (option: TOption) => string | undefined,
   showAvatar = false,
 }: AdminResourceAutocompleteProps<TOption>) => {
+  const [open, setOpen] = useState(false);
   const [inputValue, setInputValue] = useState(value ? getOptionLabel(value) : '');
   const [debouncedInputValue, setDebouncedInputValue] = useState(value ? getOptionLabel(value) : '');
 
@@ -74,23 +81,78 @@ const AdminResourceAutocomplete = <TOption extends AdminAutocompleteOption = Adm
     return () => window.clearTimeout(timeoutId);
   }, [inputValue]);
 
-  const { data, isLoading } = useSWR(
-    ['admin-autocomplete', resource, debouncedInputValue],
-    () =>
-      adminApiClient.list<TOption>(resource, {
-        page: 1,
-        pageSize: 10,
-        search: debouncedInputValue,
+  const getAutocompleteKey = (
+    pageIndex: number,
+    previousPageData: AdminPaginatedResponse<TOption> | null,
+  ) => {
+    if (!open) {
+      return null;
+    }
+
+    if (previousPageData && previousPageData.page >= previousPageData.pagesCount) {
+      return null;
+    }
+
+    return ['admin-autocomplete', resource, debouncedInputValue, pageIndex + 1] as const;
+  };
+
+  const { data, isLoading, isValidating, setSize } = useSWRInfinite(
+    getAutocompleteKey,
+    ([, currentResource, searchTerm, page]) =>
+      adminApiClient.list<TOption>(currentResource, {
+        page,
+        pageSize: AUTOCOMPLETE_PAGE_SIZE,
+        term: searchTerm,
       }),
-    { keepPreviousData: true, revalidateOnFocus: false },
+    {
+      keepPreviousData: true,
+      revalidateAll: false,
+      revalidateFirstPage: false,
+      revalidateOnFocus: false,
+    },
   );
+
+  const loadedOptions = useMemo(() => {
+    const uniqueOptions = new Map<number, TOption>();
+
+    if (value) {
+      uniqueOptions.set(value.id, value);
+    }
+
+    (data ?? []).forEach((page) => {
+      page.data.forEach((option) => uniqueOptions.set(option.id, option));
+    });
+
+    return Array.from(uniqueOptions.values());
+  }, [data, value]);
+
+  const lastPage = data?.[data.length - 1];
+  const hasMore = Boolean(lastPage && lastPage.page < lastPage.pagesCount);
+  const loading = isLoading || isValidating;
+
+  const handleListboxScroll = (event: UIEvent<HTMLUListElement>) => {
+    if (!hasMore || loading) {
+      return;
+    }
+
+    const listboxNode = event.currentTarget;
+    const distanceToBottom =
+      listboxNode.scrollHeight - listboxNode.scrollTop - listboxNode.clientHeight;
+
+    if (distanceToBottom <= AUTOCOMPLETE_SCROLL_THRESHOLD) {
+      setSize((size) => size + 1);
+    }
+  };
 
   return (
     <Autocomplete<TOption>
-      options={data?.data ?? []}
+      open={open}
+      onOpen={() => setOpen(true)}
+      onClose={() => setOpen(false)}
+      options={loadedOptions}
       value={value}
       inputValue={inputValue}
-      loading={isLoading}
+      loading={loading}
       getOptionLabel={getOptionLabel}
       isOptionEqualToValue={(option, selectedValue) => option.id === selectedValue.id}
       filterOptions={(options) => options}
@@ -130,8 +192,13 @@ const AdminResourceAutocomplete = <TOption extends AdminAutocompleteOption = Adm
           </li>
         );
       }}
+      slotProps={{
+        listbox: {
+          onScroll: handleListboxScroll,
+        },
+      }}
       renderInput={(params) => (
-        <TextField
+        <AdminTextField
           {...params}
           {...textFieldProps}
           fullWidth

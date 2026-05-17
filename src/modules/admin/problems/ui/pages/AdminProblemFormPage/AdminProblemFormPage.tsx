@@ -1,29 +1,39 @@
-import { ChangeEvent, useEffect, useMemo, useState } from 'react';
+﻿import { ChangeEvent, useEffect, useMemo, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import {
   Alert,
   Autocomplete,
-  Box,
   Button,
   CircularProgress,
+  IconButton,
   FormControlLabel,
   MenuItem,
+  Table,
+  TableBody,
+  Box,
+  Typography,
+  TableCell,
+  TableContainer,
+  TableHead,
+  TableRow,
   Stack,
   Switch,
-  TextField,
-  Typography,
 } from '@mui/material';
 import { useNavigate, useParams } from 'react-router';
 import { resources } from 'app/routes/resources';
 import AdminFormPageLayout from 'modules/admin/shared/ui/AdminFormPageLayout';
 import AdminFormSection from 'modules/admin/shared/ui/AdminFormSection';
 import AdminLanguageTabs, { AdminLanguageCode } from 'modules/admin/shared/ui/AdminLanguageTabs';
+import TextField from 'modules/admin/shared/ui/AdminTextField';
+import AdminDynamicList from 'modules/admin/shared/ui/AdminDynamicList';
+import { formatAdminEditTitle } from 'modules/admin/shared/utils/editTitle';
 import { AdminAutocompleteOption, UsersAutocomplete } from 'modules/admin/shared/ui/AdminResourceAutocomplete';
-import { toNumberOrNull } from 'modules/admin/shared/ui/formUtils';
-import RichTextEditor from 'shared/components/form/RichTextEditor';
+import { toNumberOrNull } from 'modules/admin/shared/utils/formUtils';
+import AdminRichTextEditor from 'modules/admin/shared/ui/AdminRichTextEditor';
+import IconifyIcon from 'shared/components/base/IconifyIcon';
 import { useAdminProblem, useAdminProblemMeta } from 'modules/admin/problems/application/queries';
 import { problemsAdminClient } from 'modules/admin/problems/data-access/problemsAdminClient';
-import { AdminProblemAvailableLanguage, AdminProblemPayload, AdminProblemSampleTest } from 'modules/admin/problems/domain/types';
+import { AdminProblem, AdminProblemAvailableLanguage, AdminProblemPayload, AdminProblemSampleTest } from 'modules/admin/problems/domain/types';
 
 const emptyProblem: AdminProblemPayload = {
   title: '',
@@ -69,6 +79,13 @@ const languageFieldSuffix: Record<AdminLanguageCode, 'Uz' | 'En' | 'Ru'> = {
   ru: 'Ru',
 };
 
+const sampleTestTextareaStyles = {
+  height: 80,
+  maxHeight: 80,
+  minHeight: 80,
+  overflowY: 'auto',
+};
+
 const buildUserOption = (id?: number, username?: string): AdminAutocompleteOption | null =>
   id
     ? {
@@ -91,7 +108,49 @@ const AdminProblemFormPage = () => {
 
   useEffect(() => {
     if (problem) {
-      setForm(problem);
+      const problemAny = problem as AdminProblem & {
+        title_uz?: string;
+        title_en?: string;
+        title_ru?: string;
+        body_uz?: string;
+        body_en?: string;
+        body_ru?: string;
+        input_data_uz?: string;
+        input_data_en?: string;
+        input_data_ru?: string;
+        output_data_uz?: string;
+        output_data_en?: string;
+        output_data_ru?: string;
+        comment_uz?: string;
+        comment_en?: string;
+        comment_ru?: string;
+      };
+
+      const fallbackTitle = problemAny.title ?? '';
+      const fallbackBody = problemAny.body ?? '';
+      const fallbackInputData = problemAny.input_data ?? '';
+      const fallbackOutputData = problemAny.output_data ?? '';
+      const fallbackComment = problemAny.comment ?? '';
+
+      setForm({
+        ...emptyProblem,
+        ...problem,
+        titleUz: problemAny.titleUz ?? problemAny.title_uz ?? fallbackTitle,
+        titleEn: problemAny.titleEn ?? problemAny.title_en ?? fallbackTitle,
+        titleRu: problemAny.titleRu ?? problemAny.title_ru ?? fallbackTitle,
+        bodyUz: problemAny.bodyUz ?? problemAny.body_uz ?? fallbackBody,
+        bodyEn: problemAny.bodyEn ?? problemAny.body_en ?? fallbackBody,
+        bodyRu: problemAny.bodyRu ?? problemAny.body_ru ?? fallbackBody,
+        inputDataUz: problemAny.inputDataUz ?? problemAny.input_data_uz ?? fallbackInputData,
+        inputDataEn: problemAny.inputDataEn ?? problemAny.input_data_en ?? fallbackInputData,
+        inputDataRu: problemAny.inputDataRu ?? problemAny.input_data_ru ?? fallbackInputData,
+        outputDataUz: problemAny.outputDataUz ?? problemAny.output_data_uz ?? fallbackOutputData,
+        outputDataEn: problemAny.outputDataEn ?? problemAny.output_data_en ?? fallbackOutputData,
+        outputDataRu: problemAny.outputDataRu ?? problemAny.output_data_ru ?? fallbackOutputData,
+        commentUz: problemAny.commentUz ?? problemAny.comment_uz ?? fallbackComment,
+        commentEn: problemAny.commentEn ?? problemAny.comment_en ?? fallbackComment,
+        commentRu: problemAny.commentRu ?? problemAny.comment_ru ?? fallbackComment,
+      } satisfies AdminProblemPayload);
       setSelectedAuthor(buildUserOption(problem.author, problem.authorUsername));
     }
   }, [problem]);
@@ -109,11 +168,6 @@ const AdminProblemFormPage = () => {
   const setField = <K extends keyof AdminProblemPayload>(field: K, value: AdminProblemPayload[K]) => {
     setForm((prev) => ({ ...prev, [field]: value }));
   };
-
-  const handleStringField =
-    (field: keyof AdminProblemPayload) => (event: ChangeEvent<HTMLInputElement>) => {
-      setForm((prev) => ({ ...prev, [field]: event.target.value }));
-    };
 
   const handleNumberField =
     (field: keyof AdminProblemPayload) => (event: ChangeEvent<HTMLInputElement>) => {
@@ -268,18 +322,14 @@ const AdminProblemFormPage = () => {
               <Typography variant="subtitle2" sx={{ mb: 1 }}>
                 {t(`admin.form.richText.${group.labelKey}`)}
               </Typography>
-              <RichTextEditor
+              <AdminRichTextEditor
+                key={`${field}-${(form[field] as string | undefined) ?? ''}`}
                 value={(form[field] as string | undefined) ?? ''}
                 onChange={(value) => setField(field, value as never)}
-                placeholder={t('admin.form.placeholders.localizedRichText', {
-                  field: t(`admin.form.richText.${group.labelKey}`).toLowerCase(),
-                  language: t(`admin.form.languages.${language}`),
-                })}
                 minHeight={180}
                 compact
                 enableMathJax
                 mathJaxPromptText={t('admin.form.prompts.mathJax')}
-                mathJaxPreviewLabel={t('admin.form.fields.mathJaxPreview')}
               />
             </Box>
           );
@@ -296,9 +346,13 @@ const AdminProblemFormPage = () => {
     );
   }
 
+  const pageTitle = isEdit
+    ? formatAdminEditTitle(id, problem?.title || form.title || form.titleUz || form.titleEn || form.titleRu)
+    : t('admin.problems.createTitle');
+
   return (
     <AdminFormPageLayout
-      title={isEdit ? t('admin.problems.editTitle', { id }) : t('admin.problems.createTitle')}
+      title={pageTitle}
       listPath={resources.AdminProblems}
       isEdit={isEdit}
       isSaving={isSaving}
@@ -307,12 +361,6 @@ const AdminProblemFormPage = () => {
       sidebarTitle={t('admin.form.sections.problemSettings')}
       sidebar={
         <Stack spacing={2.5}>
-          <TextField
-            label={t('admin.form.fields.fallbackTitle')}
-            value={form.title ?? ''}
-            onChange={handleStringField('title')}
-            fullWidth
-          />
           <UsersAutocomplete
             value={selectedAuthor}
             onChange={handleAuthorChange}
@@ -391,8 +439,6 @@ const AdminProblemFormPage = () => {
       {error ? <Alert severity="error">{error}</Alert> : null}
 
       <AdminFormSection
-        title={t('admin.form.sections.translations')}
-        subheader={t('admin.form.subheaders.problemTranslations')}
       >
         <AdminLanguageTabs>{renderTranslationFields}</AdminLanguageTabs>
       </AdminFormSection>
@@ -417,115 +463,182 @@ const AdminProblemFormPage = () => {
       </AdminFormSection>
 
       <AdminFormSection title={t('admin.form.sections.sampleTests')}>
-        {form.sampleTests.map((sampleTest, index) => (
-          <Box
-            key={index}
-            sx={{
-              p: 2,
-              border: 1,
-              borderColor: 'divider',
-              borderRadius: 1,
-            }}
-          >
-            <Stack spacing={2}>
-              <Stack direction="row" alignItems="center" justifyContent="space-between" spacing={2}>
-                <Typography variant="subtitle2">
-                  {t('admin.form.fields.sampleTestNumber', { count: index + 1 })}
-                </Typography>
-                <Button color="error" variant="soft" onClick={() => removeSampleTest(index)}>
+        <TableContainer sx={{ overflowX: 'auto', width: '100%' }}>
+          <Table size="small" stickyHeader>
+            <TableHead>
+              <TableRow>
+                <TableCell>{t('admin.form.fields.input')}</TableCell>
+                <TableCell>{t('admin.form.fields.output')}</TableCell>
+                <TableCell align="right" sx={{ width: 56 }}>
                   {t('admin.actions.remove')}
-                </Button>
-              </Stack>
-              <Stack direction={{ xs: 'column', md: 'row' }} spacing={2}>
-                <TextField
-                  label={t('admin.form.fields.input')}
-                  value={sampleTest.input}
-                  onChange={(event) => updateSampleTest(index, 'input', event.target.value)}
-                  multiline
-                  minRows={4}
-                  fullWidth
-                />
-                <TextField
-                  label={t('admin.form.fields.output')}
-                  value={sampleTest.output}
-                  onChange={(event) => updateSampleTest(index, 'output', event.target.value)}
-                  multiline
-                  minRows={4}
-                  fullWidth
-                />
-              </Stack>
-            </Stack>
-          </Box>
-        ))}
+                </TableCell>
+              </TableRow>
+            </TableHead>
+            <TableBody>
+              <AdminDynamicList
+                items={form.sampleTests}
+                onRemove={removeSampleTest}
+                renderItem={(sampleTest, index, remove) => (
+                  <TableRow key={index}>
+                    <TableCell sx={{ verticalAlign: 'top' }}>
+                      <TextField
+                        size="small"
+                        label={t('admin.form.fields.input')}
+                        value={sampleTest.input}
+                        rows={4}
+                        onChange={(event) => updateSampleTest(index, 'input', event.target.value)}
+                        multiline
+                        slotProps={{
+                          htmlInput: {
+                            style: {
+                              ...sampleTestTextareaStyles,
+                              resize: 'none',
+                            },
+                          },
+                        }}
+                        fullWidth
+                      />
+                    </TableCell>
+                    <TableCell sx={{ verticalAlign: 'top' }}>
+                      <TextField
+                        size="small"
+                        label={t('admin.form.fields.output')}
+                        value={sampleTest.output}
+                        rows={4}
+                        onChange={(event) => updateSampleTest(index, 'output', event.target.value)}
+                        multiline
+                        slotProps={{
+                          htmlInput: {
+                            style: {
+                              ...sampleTestTextareaStyles,
+                              resize: 'none',
+                            },
+                          },
+                        }}
+                        fullWidth
+                      />
+                    </TableCell>
+                    <TableCell align="center">
+                      <IconButton
+                        color="error"
+                        size="small"
+                        onClick={() => remove(index)}
+                        aria-label={t('admin.actions.remove')}
+                      >
+                        <IconifyIcon icon="material-symbols:delete-outline" width={18} height={18} />
+                      </IconButton>
+                    </TableCell>
+                  </TableRow>
+                )}
+              />
+            </TableBody>
+          </Table>
+        </TableContainer>
         <Button variant="soft" onClick={addSampleTest}>
           {t('admin.actions.addSampleTest')}
         </Button>
       </AdminFormSection>
 
       <AdminFormSection title={t('admin.form.sections.availableLanguages')}>
-        {form.availableLanguages.map((availableLanguage, index) => (
-          <Box
-            key={index}
-            sx={{
-              p: 2,
-              border: 1,
-              borderColor: 'divider',
-              borderRadius: 1,
-            }}
-          >
-            <Stack spacing={2}>
-              <Stack direction="row" alignItems="center" justifyContent="space-between" spacing={2}>
-                <Typography variant="subtitle2">
-                  {t('admin.form.fields.languageNumber', { count: index + 1 })}
-                </Typography>
-                <Button color="error" variant="soft" onClick={() => removeAvailableLanguage(index)}>
+        <TableContainer sx={{ overflowX: 'auto', width: '100%' }}>
+          <Table size="small" stickyHeader>
+            <TableHead>
+              <TableRow>
+                <TableCell>{t('admin.form.fields.language')}</TableCell>
+                <TableCell>{t('admin.form.fields.timeLimit')}</TableCell>
+                <TableCell>{t('admin.form.fields.memoryLimit')}</TableCell>
+                <TableCell>{t('admin.form.fields.codeGolf')}</TableCell>
+                <TableCell>{t('admin.form.fields.codeTemplate')}</TableCell>
+                <TableCell align="right" sx={{ width: 56 }}>
                   {t('admin.actions.remove')}
-                </Button>
-              </Stack>
-              <Stack direction={{ xs: 'column', lg: 'row' }} spacing={2}>
-                <TextField
-                  select
-                  label={t('admin.form.fields.language')}
-                  value={availableLanguage.lang}
-                  onChange={(event) => updateAvailableLanguage(index, 'lang', event.target.value)}
-                  sx={{ minWidth: 180 }}
-                >
-                  {(meta?.languages ?? []).map((language) => (
-                    <MenuItem key={language.value} value={language.value}>
-                      {language.label}
-                    </MenuItem>
-                  ))}
-                </TextField>
-                <TextField
-                  label={t('admin.form.fields.timeLimit')}
-                  type="number"
-                  value={availableLanguage.timeLimit ?? ''}
-                  onChange={(event) => updateAvailableLanguage(index, 'timeLimit', toNumberOrNull(event.target.value))}
-                />
-                <TextField
-                  label={t('admin.form.fields.memoryLimit')}
-                  type="number"
-                  value={availableLanguage.memoryLimit ?? ''}
-                  onChange={(event) => updateAvailableLanguage(index, 'memoryLimit', toNumberOrNull(event.target.value))}
-                />
-                <TextField
-                  label={t('admin.form.fields.codeGolf')}
-                  type="number"
-                  value={availableLanguage.codeGolf ?? ''}
-                  onChange={(event) => updateAvailableLanguage(index, 'codeGolf', toNumberOrNull(event.target.value))}
-                />
-              </Stack>
-              <TextField
-                label={t('admin.form.fields.codeTemplate')}
-                value={availableLanguage.codeTemplate ?? ''}
-                onChange={(event) => updateAvailableLanguage(index, 'codeTemplate', event.target.value)}
-                multiline
-                minRows={3}
-                fullWidth
+                </TableCell>
+              </TableRow>
+            </TableHead>
+            <TableBody>
+              <AdminDynamicList
+                items={form.availableLanguages}
+                onRemove={removeAvailableLanguage}
+                renderItem={(availableLanguage, index, remove) => (
+                  <TableRow key={index}>
+                    <TableCell sx={{ minWidth: 220 }}>
+                      <TextField
+                        select
+                        size="small"
+                        label={t('admin.form.fields.language')}
+                        value={availableLanguage.lang}
+                        onChange={(event) => updateAvailableLanguage(index, 'lang', event.target.value)}
+                        fullWidth
+                      >
+                        {(meta?.languages ?? []).map((language) => (
+                          <MenuItem key={language.value} value={language.value}>
+                            {language.label}
+                          </MenuItem>
+                        ))}
+                      </TextField>
+                    </TableCell>
+                    <TableCell sx={{ width: 130 }}>
+                      <TextField
+                        size="small"
+                        type="number"
+                        label={t('admin.form.fields.timeLimit')}
+                        value={availableLanguage.timeLimit ?? ''}
+                        onChange={(event) =>
+                          updateAvailableLanguage(index, 'timeLimit', toNumberOrNull(event.target.value))
+                        }
+                        fullWidth
+                      />
+                    </TableCell>
+                    <TableCell sx={{ width: 150 }}>
+                      <TextField
+                        size="small"
+                        type="number"
+                        label={t('admin.form.fields.memoryLimit')}
+                        value={availableLanguage.memoryLimit ?? ''}
+                        onChange={(event) =>
+                          updateAvailableLanguage(index, 'memoryLimit', toNumberOrNull(event.target.value))
+                        }
+                        fullWidth
+                      />
+                    </TableCell>
+                    <TableCell sx={{ width: 130 }}>
+                      <TextField
+                        size="small"
+                        type="number"
+                        label={t('admin.form.fields.codeGolf')}
+                        value={availableLanguage.codeGolf ?? ''}
+                        onChange={(event) =>
+                          updateAvailableLanguage(index, 'codeGolf', toNumberOrNull(event.target.value))
+                        }
+                        fullWidth
+                      />
+                    </TableCell>
+                    <TableCell>
+                      <TextField
+                        size="small"
+                        label={t('admin.form.fields.codeTemplate')}
+                        value={availableLanguage.codeTemplate ?? ''}
+                        onChange={(event) => updateAvailableLanguage(index, 'codeTemplate', event.target.value)}
+                        multiline
+                        minRows={2}
+                        fullWidth
+                      />
+                    </TableCell>
+                    <TableCell align="center">
+                      <IconButton
+                        color="error"
+                        size="small"
+                        onClick={() => remove(index)}
+                        aria-label={t('admin.actions.remove')}
+                      >
+                        <IconifyIcon icon="material-symbols:delete-outline" width={18} height={18} />
+                      </IconButton>
+                    </TableCell>
+                  </TableRow>
+                )}
               />
-            </Stack>
-          </Box>
-        ))}
+            </TableBody>
+          </Table>
+        </TableContainer>
         <Button variant="soft" onClick={addAvailableLanguage}>
           {t('admin.actions.addLanguage')}
         </Button>

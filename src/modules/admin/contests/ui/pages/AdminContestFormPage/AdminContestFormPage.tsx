@@ -1,22 +1,32 @@
-import { ChangeEvent, useEffect, useState } from 'react';
+﻿import { ChangeEvent, useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import {
   Alert,
-  Box,
   Button,
+  Box,
   CircularProgress,
   FormControlLabel,
+  IconButton,
   MenuItem,
   Stack,
   Switch,
-  TextField,
-  Typography,
+  Table,
+  TableBody,
+  TableCell,
+  TableContainer,
+  TableHead,
+  TableRow,
 } from '@mui/material';
+import { DateTimePicker } from '@mui/x-date-pickers/DateTimePicker';
 import { useNavigate, useParams } from 'react-router';
 import { resources } from 'app/routes/resources';
 import AdminFormPageLayout from 'modules/admin/shared/ui/AdminFormPageLayout';
 import AdminFormSection from 'modules/admin/shared/ui/AdminFormSection';
 import AdminLanguageTabs, { AdminLanguageCode } from 'modules/admin/shared/ui/AdminLanguageTabs';
+import TextField from 'modules/admin/shared/ui/AdminTextField';
+import { formatAdminEditTitle } from 'modules/admin/shared/utils/editTitle';
+import IconifyIcon from 'shared/components/base/IconifyIcon';
+import AdminDynamicList from 'modules/admin/shared/ui/AdminDynamicList';
 import {
   AdminAutocompleteOption,
   ProblemsAutocomplete,
@@ -25,12 +35,12 @@ import {
 import {
   fromDateTimeLocal,
   toDateTimeLocal,
-  toNumberOrNull,
-} from 'modules/admin/shared/ui/formUtils';
-import RichTextEditor from 'shared/components/form/RichTextEditor';
+} from 'modules/admin/shared/utils/formUtils';
+import AdminRichTextEditor from 'modules/admin/shared/ui/AdminRichTextEditor';
 import { useAdminContest, useAdminContestMeta } from 'modules/admin/contests/application/queries';
 import { contestsAdminClient } from 'modules/admin/contests/data-access/contestsAdminClient';
 import { AdminContestPayload, AdminContestProblem } from 'modules/admin/contests/domain/types';
+import dayjs from 'dayjs';
 
 const emptyContest: AdminContestPayload = {
   title: '',
@@ -84,12 +94,68 @@ const AdminContestFormPage = () => {
 
   useEffect(() => {
     if (contest) {
-      setForm({
-        ...contest,
-        startTime: toDateTimeLocal(contest.startTime),
-        finishTime: toDateTimeLocal(contest.finishTime),
+      const fallbackDescription =
+        contest.description ??
+        (contest as any).description_uz ??
+        (contest as any).description_en ??
+        (contest as any).description_ru ??
+        (contest as any).descriptionUz ??
+        (contest as any).descriptionEn ??
+        (contest as any).descriptionRu ??
+        '';
+      const contestAny = contest as AdminContestPayload & {
+        start_time?: string;
+        finish_time?: string;
+        participation_type?: number;
+        creator_username?: string;
+        private_link?: string | null;
+        logo_url?: string | null;
+        og_image_url?: string | null;
+        description_uz?: string;
+        description_en?: string;
+        description_ru?: string;
+      };
+
+      const normalizedDescriptionUz =
+        contestAny.descriptionUz ||
+        contestAny.description_uz ||
+        fallbackDescription;
+      const normalizedDescriptionEn =
+        contestAny.descriptionEn ||
+        contestAny.description_en ||
+        fallbackDescription;
+      const normalizedDescriptionRu =
+        contestAny.descriptionRu ||
+        contestAny.description_ru ||
+        fallbackDescription;
+      const normalizedProblems = contest.problems.map((contestProblem) => {
+        const contestProblemAny = contestProblem as AdminContestProblem & {
+          problem_id?: number;
+          problem_title?: string;
+        };
+
+        return {
+          ...contestProblemAny,
+          problemId: Number(contestProblemAny.problemId ?? contestProblemAny.problem_id ?? 0),
+          problemTitle: contestProblemAny.problemTitle ?? contestProblemAny.problem_title,
+          symbol: contestProblemAny.symbol,
+          ball: contestProblemAny.ball,
+        };
       });
-      setSelectedCreator(buildUserOption(contest.creator, contest.creatorUsername));
+
+      setForm({
+        ...emptyContest,
+        ...contest,
+        problems: normalizedProblems,
+        startTime: toDateTimeLocal(contestAny.startTime ?? contestAny.start_time),
+        finishTime: toDateTimeLocal(contestAny.finishTime ?? contestAny.finish_time),
+        participationType: contestAny.participationType ?? contestAny.participation_type,
+        privateLink: contestAny.privateLink ?? contestAny.private_link ?? null,
+        descriptionUz: normalizedDescriptionUz,
+        descriptionEn: normalizedDescriptionEn,
+        descriptionRu: normalizedDescriptionRu,
+      });
+      setSelectedCreator(buildUserOption(contest.creator, contestAny.creatorUsername ?? contestAny.creator_username));
     }
   }, [contest]);
 
@@ -118,6 +184,23 @@ const AdminContestFormPage = () => {
       setForm((prev) => ({ ...prev, [field]: Number(event.target.value) }));
     };
 
+  const parseDateTimeValue = (value?: string) => {
+    if (!value) {
+      return null;
+    }
+
+    const parsed = dayjs(value);
+
+    return parsed.isValid() ? parsed : null;
+  };
+
+  const handleDateTimeField = (field: keyof AdminContestPayload) => (value: dayjs.Dayjs | null) => {
+    setForm((prev) => ({
+      ...prev,
+      [field]: value ? value.format('YYYY-MM-DDTHH:mm') : '',
+    }));
+  };
+
   const handleCreatorChange = (creator: AdminAutocompleteOption | null) => {
     setSelectedCreator(creator);
     setField('creator', creator?.id);
@@ -139,7 +222,7 @@ const AdminContestFormPage = () => {
   const addContestProblem = () => {
     setForm((prev) => ({
       ...prev,
-      problems: [...prev.problems, { problemId: 0, symbol: '', ball: 1, delta: null }],
+      problems: [...prev.problems, { problemId: 0, symbol: '', ball: 1 }],
     }));
   };
 
@@ -158,10 +241,9 @@ const AdminContestFormPage = () => {
       finishTime: fromDateTimeLocal(form.finishTime),
       privateLink: form.privateLink || null,
       problems: form.problems.map((contestProblem) => ({
-        ...contestProblem,
         problemId: Number(contestProblem.problemId),
+        symbol: contestProblem.symbol,
         ball: Number(contestProblem.ball),
-        delta: toNumberOrNull(contestProblem.delta),
       })),
     }) satisfies AdminContestPayload;
 
@@ -206,24 +288,18 @@ const AdminContestFormPage = () => {
 
   const renderDescriptionField = (language: AdminLanguageCode) => {
     const field = `description${languageFieldSuffix[language]}` as keyof AdminContestPayload;
+    const fieldValue = (form[field] as string | undefined) ?? '';
 
     return (
       <Box>
-        <Typography variant="subtitle2" sx={{ mb: 1 }}>
-          {t('admin.form.fields.description')}
-        </Typography>
-        <RichTextEditor
-          value={(form[field] as string | undefined) ?? ''}
+        <AdminRichTextEditor
+          key={`${field}-${fieldValue ? 'filled' : 'empty'}`}
+          value={fieldValue}
           onChange={(value) => setField(field, value as never)}
-          placeholder={t('admin.form.placeholders.localizedRichText', {
-            field: t('admin.form.fields.description').toLowerCase(),
-            language: t(`admin.form.languages.${language}`),
-          })}
           minHeight={260}
           compact
           enableMathJax
           mathJaxPromptText={t('admin.form.prompts.mathJax')}
-          mathJaxPreviewLabel={t('admin.form.fields.mathJaxPreview')}
         />
       </Box>
     );
@@ -237,9 +313,13 @@ const AdminContestFormPage = () => {
     );
   }
 
+  const pageTitle = isEdit
+    ? formatAdminEditTitle(id, contest?.title || form.title)
+    : t('admin.contests.createTitle');
+
   return (
     <AdminFormPageLayout
-      title={isEdit ? t('admin.contests.editTitle', { id }) : t('admin.contests.createTitle')}
+      title={pageTitle}
       listPath={resources.AdminContests}
       isEdit={isEdit}
       isSaving={isSaving}
@@ -255,21 +335,31 @@ const AdminContestFormPage = () => {
             label={t('admin.form.fields.creator')}
             placeholder={t('admin.form.placeholders.username')}
           />
-          <TextField
+          <DateTimePicker
             label={t('admin.form.fields.startTime')}
-            type="datetime-local"
-            value={form.startTime}
-            onChange={handleStringField('startTime')}
-            slotProps={{ inputLabel: { shrink: true } }}
-            fullWidth
+            value={parseDateTimeValue(form.startTime)}
+            onChange={handleDateTimeField('startTime')}
+            slotProps={{
+              textField: {
+                fullWidth: true,
+                variant: 'outlined',
+                InputLabelProps: { shrink: Boolean(form.startTime) },
+              },
+              popper: { placement: 'bottom-start' },
+            }}
           />
-          <TextField
+          <DateTimePicker
             label={t('admin.form.fields.finishTime')}
-            type="datetime-local"
-            value={form.finishTime}
-            onChange={handleStringField('finishTime')}
-            slotProps={{ inputLabel: { shrink: true } }}
-            fullWidth
+            value={parseDateTimeValue(form.finishTime)}
+            onChange={handleDateTimeField('finishTime')}
+            slotProps={{
+              textField: {
+                fullWidth: true,
+                variant: 'outlined',
+                InputLabelProps: { shrink: Boolean(form.finishTime) },
+              },
+              popper: { placement: 'bottom-start' },
+            }}
           />
           <TextField select label={t('admin.form.fields.type')} value={form.type} onChange={handleStringField('type')} fullWidth>
             {(meta?.types ?? []).map((type) => (
@@ -321,69 +411,72 @@ const AdminContestFormPage = () => {
     >
       {error ? <Alert severity="error">{error}</Alert> : null}
 
-      <AdminFormSection
-        title={t('admin.form.sections.descriptions')}
-        subheader={t('admin.form.subheaders.contestDescriptions')}
-      >
+      <AdminFormSection>
         <AdminLanguageTabs>{renderDescriptionField}</AdminLanguageTabs>
       </AdminFormSection>
 
       <AdminFormSection title={t('admin.form.sections.contestProblems')}>
-        {form.problems.map((contestProblem, index) => (
-          <Box
-            key={index}
-            sx={{
-              p: 2,
-              border: 1,
-              borderColor: 'divider',
-              borderRadius: 1,
-            }}
-          >
-            <Stack spacing={2}>
-              <Stack direction="row" alignItems="center" justifyContent="space-between" spacing={2}>
-                <Typography variant="subtitle2">
-                  {t('admin.form.fields.contestProblemNumber', { count: index + 1 })}
-                </Typography>
-                <Button color="error" variant="soft" onClick={() => removeContestProblem(index)}>
+        <TableContainer sx={{ overflowX: 'auto', width: '100%' }}>
+          <Table size="small" stickyHeader>
+            <TableHead>
+              <TableRow>
+                <TableCell sx={{ minWidth: 320 }}>{t('admin.form.fields.problem')}</TableCell>
+                <TableCell sx={{ minWidth: 130 }}>{t('admin.form.fields.symbol')}</TableCell>
+                <TableCell sx={{ minWidth: 90 }}>{t('admin.form.fields.ball')}</TableCell>
+                <TableCell sx={{ width: 56 }} align="right">
                   {t('admin.actions.remove')}
-                </Button>
-              </Stack>
-              <Stack direction={{ xs: 'column', lg: 'row' }} spacing={2}>
-                <ProblemsAutocomplete
-                  value={buildProblemOption(contestProblem.problemId, contestProblem.problemTitle)}
-                  onChange={(problem) => {
-                    updateContestProblem(index, 'problemId', problem?.id ?? 0);
-                    updateContestProblem(index, 'problemTitle', problem?.title ?? null);
-                  }}
-                  label={t('admin.form.fields.problem')}
-                />
-                <TextField
-                  label={t('admin.form.fields.symbol')}
-                  value={contestProblem.symbol}
-                  onChange={(event) => updateContestProblem(index, 'symbol', event.target.value)}
-                />
-                <TextField
-                  label={t('admin.form.fields.ball')}
-                  type="number"
-                  value={contestProblem.ball}
-                  onChange={(event) => updateContestProblem(index, 'ball', Number(event.target.value))}
-                />
-                <TextField
-                  label={t('admin.form.fields.delta')}
-                  type="number"
-                  value={contestProblem.delta ?? ''}
-                  onChange={(event) => updateContestProblem(index, 'delta', toNumberOrNull(event.target.value))}
-                />
-              </Stack>
-              <TextField
-                label={t('admin.form.fields.currentTitle')}
-                value={contestProblem.problemTitle ?? ''}
-                disabled
-                fullWidth
+                </TableCell>
+              </TableRow>
+            </TableHead>
+            <TableBody>
+              <AdminDynamicList
+                items={form.problems}
+                onRemove={removeContestProblem}
+                renderItem={(contestProblem, index, remove) => (
+                  <TableRow key={index}>
+                    <TableCell>
+                      <ProblemsAutocomplete
+                        value={buildProblemOption(contestProblem.problemId, contestProblem.problemTitle)}
+                        onChange={(problem) => {
+                          updateContestProblem(index, 'problemId', problem?.id ?? 0);
+                        }}
+                        label={t('admin.form.fields.problem')}
+                        textFieldProps={{ size: 'small' }}
+                      />
+                    </TableCell>
+                    <TableCell>
+                      <TextField
+                        size="small"
+                        label={t('admin.form.fields.symbol')}
+                        value={contestProblem.symbol}
+                        onChange={(event) => updateContestProblem(index, 'symbol', event.target.value)}
+                      />
+                    </TableCell>
+                    <TableCell>
+                      <TextField
+                        size="small"
+                        type="number"
+                        label={t('admin.form.fields.ball')}
+                        value={contestProblem.ball}
+                        onChange={(event) => updateContestProblem(index, 'ball', Number(event.target.value))}
+                      />
+                    </TableCell>
+                    <TableCell align="center">
+                      <IconButton
+                        color="error"
+                        size="small"
+                        onClick={() => remove(index)}
+                        aria-label={t('admin.actions.remove')}
+                      >
+                        <IconifyIcon icon="material-symbols:delete-outline" width={18} height={18} />
+                      </IconButton>
+                    </TableCell>
+                  </TableRow>
+                )}
               />
-            </Stack>
-          </Box>
-        ))}
+            </TableBody>
+          </Table>
+        </TableContainer>
         <Button variant="soft" onClick={addContestProblem}>
           {t('admin.actions.addContestProblem')}
         </Button>

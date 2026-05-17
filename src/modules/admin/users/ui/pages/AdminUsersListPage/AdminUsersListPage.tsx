@@ -1,4 +1,4 @@
-import { ChangeEvent, useEffect, useMemo, useState } from 'react';
+﻿import { ChangeEvent, useEffect, useMemo, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import {
   Button,
@@ -10,11 +10,11 @@ import {
   DialogTitle,
   Link,
   Stack,
-  TextField,
   Typography,
 } from '@mui/material';
 import { DataGrid, GridColDef, GridRowSelectionModel, GridSortModel } from '@mui/x-data-grid';
 import { Link as RouterLink } from 'react-router';
+import AdminDataGridSkeletonLoadingOverlay from 'modules/admin/shared/ui/AdminDataGridSkeletonLoadingOverlay';
 import { getResourceById, resources } from 'app/routes/resources';
 import UserPopover from 'modules/users/ui/shared/components/UserPopover';
 import AdminBatchActionsToolbar from 'modules/admin/shared/ui/AdminBatchActionsToolbar';
@@ -22,7 +22,12 @@ import { AdminChoiceSelect } from 'modules/admin/shared/ui/AdminChoiceSelects';
 import AdminFiltersToolbar, { AdminActiveFilter } from 'modules/admin/shared/ui/AdminFiltersToolbar';
 import AdminListPageLayout from 'modules/admin/shared/ui/AdminListPageLayout';
 import AdminRowActions from 'modules/admin/shared/ui/AdminRowActions';
-import { getOrderingFromSortModel } from 'modules/admin/shared/ui/gridSorting';
+import TextField from 'modules/admin/shared/ui/AdminTextField';
+import { getOrderingFromSortModel } from 'modules/admin/shared/utils/gridSorting';
+import FilterDrawer, {
+  DEFAULT_FILTER_DRAWER_WIDTH,
+  useFilterDrawer,
+} from 'shared/components/common/FilterDrawer';
 import useGridPagination from 'shared/hooks/useGridPagination';
 import { useAdminUsers } from 'modules/admin/users/application/queries';
 import { usersAdminClient } from 'modules/admin/users/data-access/usersAdminClient';
@@ -36,6 +41,7 @@ const AdminUsersListPage = () => {
   const [staffFilter, setStaffFilter] = useState('');
   const [superuserFilter, setSuperuserFilter] = useState('');
   const [canCreateProblemsFilter, setCanCreateProblemsFilter] = useState('');
+  const filterDrawer = useFilterDrawer();
   const [rowSelectionModel, setRowSelectionModel] = useState<GridRowSelectionModel>({
     type: 'include',
     ids: new Set(),
@@ -337,13 +343,82 @@ const AdminUsersListPage = () => {
     },
   ];
 
+  const filterControls = (
+    <Stack direction="column" spacing={2.5}>
+      <AdminChoiceSelect
+        label={t('admin.form.fields.active')}
+        value={activeFilter}
+        onChange={(value) => setActiveFilter(String(value))}
+        options={[
+          { value: 'true', label: t('admin.status.yes') },
+          { value: 'false', label: t('admin.status.no') },
+        ]}
+        nullable
+        emptyLabel={t('admin.filters.all')}
+        fullWidth
+      />
+      <AdminChoiceSelect
+        label={t('admin.form.fields.staff')}
+        value={staffFilter}
+        onChange={(value) => setStaffFilter(String(value))}
+        options={[
+          { value: 'true', label: t('admin.status.yes') },
+          { value: 'false', label: t('admin.status.no') },
+        ]}
+        nullable
+        emptyLabel={t('admin.filters.all')}
+        fullWidth
+      />
+      <AdminChoiceSelect
+        label={t('admin.form.fields.superuser')}
+        value={superuserFilter}
+        onChange={(value) => setSuperuserFilter(String(value))}
+        options={[
+          { value: 'true', label: t('admin.status.yes') },
+          { value: 'false', label: t('admin.status.no') },
+        ]}
+        nullable
+        emptyLabel={t('admin.filters.all')}
+        fullWidth
+      />
+      <AdminChoiceSelect
+        label={t('admin.form.fields.canCreateProblems')}
+        value={canCreateProblemsFilter}
+        onChange={(value) => setCanCreateProblemsFilter(String(value))}
+        options={[
+          { value: 'true', label: t('admin.status.yes') },
+          { value: 'false', label: t('admin.status.no') },
+        ]}
+        nullable
+        emptyLabel={t('admin.filters.all')}
+        fullWidth
+      />
+    </Stack>
+  );
+
   return (
     <AdminListPageLayout
       title={t('admin.users.title')}
       createPath={resources.AdminUserCreate}
+      createLabel={t('admin.users.createButton')}
       search={search}
       onSearchChange={handleSearchChange}
       searchPlaceholder={t('admin.users.searchPlaceholder')}
+      filterDrawerOpen={filterDrawer.open}
+      filterDrawerWidth={DEFAULT_FILTER_DRAWER_WIDTH}
+      filterDrawer={
+        <FilterDrawer
+          id="admin-users-filters-drawer"
+          open={filterDrawer.open}
+          onClose={filterDrawer.close}
+          drawerWidth={DEFAULT_FILTER_DRAWER_WIDTH}
+          hasActiveFilters={activeFilters.length > 0}
+          clearLabel={t('problems.clear')}
+          onClear={handleClearFilters}
+        >
+          {filterControls}
+        </FilterDrawer>
+      }
       toolbar={
         <AdminFiltersToolbar
           id="admin-users"
@@ -352,66 +427,9 @@ const AdminUsersListPage = () => {
           searchPlaceholder={t('admin.users.searchPlaceholder')}
           activeFilters={activeFilters}
           onClearFilters={handleClearFilters}
-          filters={
-            <Stack direction="column" spacing={2.5}>
-              <AdminChoiceSelect
-                size="small"
-                variant="filled"
-                label={t('admin.form.fields.active')}
-                value={activeFilter}
-                onChange={(value) => setActiveFilter(String(value))}
-                options={[
-                  { value: 'true', label: t('admin.status.yes') },
-                  { value: 'false', label: t('admin.status.no') },
-                ]}
-                nullable
-                emptyLabel={t('admin.filters.all')}
-                fullWidth
-              />
-              <AdminChoiceSelect
-                size="small"
-                variant="filled"
-                label={t('admin.form.fields.staff')}
-                value={staffFilter}
-                onChange={(value) => setStaffFilter(String(value))}
-                options={[
-                  { value: 'true', label: t('admin.status.yes') },
-                  { value: 'false', label: t('admin.status.no') },
-                ]}
-                nullable
-                emptyLabel={t('admin.filters.all')}
-                fullWidth
-              />
-              <AdminChoiceSelect
-                size="small"
-                variant="filled"
-                label={t('admin.form.fields.superuser')}
-                value={superuserFilter}
-                onChange={(value) => setSuperuserFilter(String(value))}
-                options={[
-                  { value: 'true', label: t('admin.status.yes') },
-                  { value: 'false', label: t('admin.status.no') },
-                ]}
-                nullable
-                emptyLabel={t('admin.filters.all')}
-                fullWidth
-              />
-              <AdminChoiceSelect
-                size="small"
-                variant="filled"
-                label={t('admin.form.fields.canCreateProblems')}
-                value={canCreateProblemsFilter}
-                onChange={(value) => setCanCreateProblemsFilter(String(value))}
-                options={[
-                  { value: 'true', label: t('admin.status.yes') },
-                  { value: 'false', label: t('admin.status.no') },
-                ]}
-                nullable
-                emptyLabel={t('admin.filters.all')}
-                fullWidth
-              />
-            </Stack>
-          }
+          filters={filterControls}
+          filtersOpen={filterDrawer.open}
+          onToggleFilters={filterDrawer.toggle}
         />
       }
     >
@@ -445,6 +463,7 @@ const AdminUsersListPage = () => {
         rows={data?.data ?? []}
         rowCount={data?.total ?? 0}
         loading={isLoading || isValidating}
+        slots={{ loadingOverlay: AdminDataGridSkeletonLoadingOverlay }}
         columns={columns}
         paginationModel={paginationModel}
         onPaginationModelChange={onPaginationModelChange}

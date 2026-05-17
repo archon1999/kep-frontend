@@ -34,6 +34,12 @@ const DesktopDateTimePicker: Components<Omit<Theme, 'components'>>['MuiDesktopDa
         variant: 'elevation',
         elevation: 3,
       },
+      textField: {
+        variant: 'outlined',
+      },
+      popper: {
+        placement: 'bottom-start',
+      },
     },
     slots: {
       openPickerButton: (params) => (

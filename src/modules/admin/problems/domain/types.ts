@@ -1,4 +1,4 @@
-import { AdminChoiceOption, AdminIdNameOption } from 'modules/admin/shared/domain/types';
+﻿import { AdminChoiceOption, AdminIdNameOption } from 'modules/admin/shared/helpers/types.ts';
 
 export interface AdminProblemSampleTest {
   id?: number;
@@ -41,6 +41,8 @@ export interface AdminProblem {
   commentRu?: string;
   difficulty: number;
   problemRating?: number | null;
+  solvedCount?: number;
+  unsolvedCount?: number;
   timeLimit?: number | null;
   memoryLimit?: number | null;
   hidden: boolean;

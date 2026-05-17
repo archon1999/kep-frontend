@@ -1,5 +1,5 @@
 import useSWR from 'swr';
-import { AdminListParams } from 'modules/admin/shared/domain/types';
+import { AdminListParams } from 'modules/admin/shared/helpers/types';
 import { usersAdminClient } from '../data-access/usersAdminClient';
 import { AdminUser } from '../domain/types';
 

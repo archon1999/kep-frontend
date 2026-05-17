@@ -5,10 +5,9 @@ const FormControlLabel: Components<Omit<Theme, 'components'>>['MuiFormControlLab
   styleOverrides: {
     root: {
       marginLeft: -9,
-      [`& .${checkboxClasses.root}, & .${radioClasses.root}, & .${formControlLabelClasses.label}`]:
-        {
-          alignSelf: 'flex-start',
-        },
+      [`& .${radioClasses.root}, & .${formControlLabelClasses.label}`]: {
+        alignSelf: 'center',
+      },
     },
     label: {
       fontSize: 14,

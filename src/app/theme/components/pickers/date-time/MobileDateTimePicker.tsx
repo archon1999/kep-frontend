@@ -34,6 +34,9 @@ const MobileDateTimePicker: Components<Omit<Theme, 'components'>>['MuiMobileDate
           margin: 0,
         },
       },
+      textField: {
+        variant: 'outlined',
+      },
     },
     slots: {
       toolbar: DateTimePickersToolbar,

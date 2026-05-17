@@ -1,44 +1,47 @@
-import { ChangeEvent, MouseEvent, SyntheticEvent, useEffect, useMemo, useState } from 'react';
+﻿import { ChangeEvent, useEffect, useMemo, useState } from 'react';
 import { useTranslation } from 'react-i18next';
-import { TabContext, TabList } from '@mui/lab';
 import {
   Autocomplete,
-  Button,
   Checkbox,
   Chip,
   FormControlLabel,
   Link,
-  Menu,
   Stack,
-  Tab,
-  TextField,
   Typography,
 } from '@mui/material';
-import { DataGrid, GridColDef, GridRowSelectionModel } from '@mui/x-data-grid';
+import { DataGrid, GridColDef, GridRowSelectionModel, GridSortModel } from '@mui/x-data-grid';
 import { Link as RouterLink } from 'react-router';
-import SearchTextField from 'app/layouts/main-layout/common/search-box/SearchTextField';
+import AdminDataGridSkeletonLoadingOverlay from 'modules/admin/shared/ui/AdminDataGridSkeletonLoadingOverlay';
 import { getResourceById, resources } from 'app/routes/resources';
 import { AdminAutocompleteOption, UsersAutocomplete } from 'modules/admin/shared/ui/AdminResourceAutocomplete';
 import { getDifficultyColor, getDifficultyLabelKey } from 'modules/problems/config/difficulty';
 import UserPopover from 'modules/users/ui/shared/components/UserPopover';
-import IconifyIcon from 'shared/components/base/IconifyIcon';
-import FilterButton from 'shared/components/common/FilterButton';
 import AdminBatchActionsToolbar from 'modules/admin/shared/ui/AdminBatchActionsToolbar';
+import AdminFiltersToolbar from 'modules/admin/shared/ui/AdminFiltersToolbar';
 import AdminListPageLayout from 'modules/admin/shared/ui/AdminListPageLayout';
 import AdminRowActions from 'modules/admin/shared/ui/AdminRowActions';
+import TextField from 'modules/admin/shared/ui/AdminTextField';
+import { getOrderingFromSortModel } from 'modules/admin/shared/utils/gridSorting';
+import FilterDrawer, {
+  DEFAULT_FILTER_DRAWER_WIDTH,
+  FilterRangeField,
+  useFilterDrawer,
+} from 'shared/components/common/FilterDrawer';
 import useGridPagination from 'shared/hooks/useGridPagination';
 import { useAdminProblemMeta, useAdminProblems } from 'modules/admin/problems/application/queries';
 import { problemsAdminClient } from 'modules/admin/problems/data-access/problemsAdminClient';
 import { AdminProblem } from 'modules/admin/problems/domain/types';
 
-const orderingOptions = [
-  { label: 'problems.orderOldest', value: 'id' },
-  { label: 'problems.orderNewest', value: '-id' },
-  { label: 'problems.orderEasiest', value: 'problemRating,-solved' },
-  { label: 'problems.orderHardest', value: '-problemRating,solved' },
-  { label: 'problems.orderMostSolved', value: '-solved' },
-  { label: 'problems.orderLeastSolved', value: 'solved' },
-];
+const problemRatingRange = {
+  min: 100,
+  max: 3000,
+  step: 100,
+};
+
+const problemOrderingFieldMap = {
+  problemRating: 'problem_rating',
+  solvedCount: 'solved_count',
+};
 
 const formatProblemRatingBand = (min?: string, max?: string) => {
   if (min && max) {
@@ -62,8 +65,8 @@ const AdminProblemsListPage = () => {
   const [problemRatingMax, setProblemRatingMax] = useState('');
   const [hiddenFilter, setHiddenFilter] = useState<boolean | null>(null);
   const [authorFilter, setAuthorFilter] = useState<AdminAutocompleteOption | null>(null);
-  const [ordering, setOrdering] = useState('-id');
-  const [filtersAnchorEl, setFiltersAnchorEl] = useState<HTMLElement | null>(null);
+  const [sortModel, setSortModel] = useState<GridSortModel>([{ field: 'id', sort: 'desc' }]);
+  const filterDrawer = useFilterDrawer();
   const [rowSelectionModel, setRowSelectionModel] = useState<GridRowSelectionModel>({
     type: 'include',
     ids: new Set(),
@@ -92,7 +95,7 @@ const AdminProblemsListPage = () => {
     problemRatingMax,
     hiddenFilter,
     authorFilter?.id,
-    ordering,
+    sortModel,
     setPaginationModel,
   ]);
 
@@ -100,7 +103,7 @@ const AdminProblemsListPage = () => {
     () => ({
       page: pageParams.page,
       pageSize: pageParams.pageSize,
-      ordering,
+      ordering: getOrderingFromSortModel(sortModel, problemOrderingFieldMap),
       search: debouncedSearch,
       difficulty: selectedDifficulties,
       problemRatingMin: problemRatingMin ? Number(problemRatingMin) : undefined,
@@ -111,7 +114,7 @@ const AdminProblemsListPage = () => {
     [
       pageParams.page,
       pageParams.pageSize,
-      ordering,
+      sortModel,
       debouncedSearch,
       selectedDifficulties,
       problemRatingMin,
@@ -150,17 +153,22 @@ const AdminProblemsListPage = () => {
     [difficultyFilterOptions, selectedDifficulties],
   );
 
+  const problemRatingRangeValue = useMemo<[number, number]>(() => {
+    const min = Number(problemRatingMin);
+    const max = Number(problemRatingMax);
+    const normalizedMin = Number.isFinite(min) && min > 0 ? min : problemRatingRange.min;
+    const normalizedMax = Number.isFinite(max) && max > 0 ? max : problemRatingRange.max;
+
+    return [
+      Math.max(problemRatingRange.min, Math.min(normalizedMin, normalizedMax)),
+      Math.min(problemRatingRange.max, Math.max(normalizedMin, normalizedMax)),
+    ];
+  }, [problemRatingMax, problemRatingMin]);
+
   const tagById = useMemo(
     () => new Map((meta?.tags ?? []).map((tag) => [tag.id, tag.name])),
     [meta?.tags],
   );
-
-  const filtersOpen = Boolean(filtersAnchorEl);
-  const handleOrderingChange = (_: SyntheticEvent, value: string) => setOrdering(value);
-  const handleFiltersToggle = (event: MouseEvent<HTMLElement>) => {
-    setFiltersAnchorEl((current) => (current ? null : event.currentTarget));
-  };
-  const handleFiltersClose = () => setFiltersAnchorEl(null);
 
   const handleClearFilters = () => {
     setSelectedDifficulties([]);
@@ -168,6 +176,14 @@ const AdminProblemsListPage = () => {
     setProblemRatingMax('');
     setHiddenFilter(null);
     setAuthorFilter(null);
+  };
+
+  const handleProblemRatingRangeChange = (_event: Event, value: number | number[]) => {
+    if (!Array.isArray(value)) return;
+
+    const [min, max] = value;
+    setProblemRatingMin(min > problemRatingRange.min ? String(min) : '');
+    setProblemRatingMax(max < problemRatingRange.max ? String(max) : '');
   };
 
   const activeFilters = useMemo(() => {
@@ -312,6 +328,22 @@ const AdminProblemsListPage = () => {
       ),
     },
     {
+      field: 'authorUsername',
+      headerName: t('admin.columns.author'),
+      width: 180,
+      sortable: false,
+      renderCell: ({ row }) =>
+        row.authorUsername ? (
+          <UserPopover username={row.authorUsername}>
+            <Typography color="primary" fontWeight={600} variant="body2" noWrap>
+              {row.authorUsername}
+            </Typography>
+          </UserPopover>
+        ) : (
+          <Typography color="text.secondary">{t('admin.emptyValue')}</Typography>
+        ),
+    },
+    {
       field: 'difficulty',
       headerName: t('admin.columns.difficulty'),
       width: 130,
@@ -364,20 +396,22 @@ const AdminProblemsListPage = () => {
       ),
     },
     {
-      field: 'authorUsername',
-      headerName: t('admin.columns.author'),
-      width: 180,
-      sortable: false,
-      renderCell: ({ row }) =>
-        row.authorUsername ? (
-          <UserPopover username={row.authorUsername}>
-            <Typography color="primary" fontWeight={600} variant="body2" noWrap>
-              {row.authorUsername}
-            </Typography>
-          </UserPopover>
-        ) : (
-          <Typography color="text.secondary">{t('admin.emptyValue')}</Typography>
-        ),
+      field: 'solvedCount',
+      headerName: t('admin.columns.worked'),
+      width: 140,
+      renderCell: ({ row }) => (
+        <Stack direction="row" alignItems="center" spacing={0.5}>
+          <Typography color="success.main" fontWeight={700} variant="body2">
+            {row.solvedCount ?? 0}
+          </Typography>
+          <Typography color="text.secondary" variant="body2">
+            /
+          </Typography>
+          <Typography color="error.main" fontWeight={700} variant="body2">
+            {row.unsolvedCount ?? 0}
+          </Typography>
+        </Stack>
+      ),
     },
     {
       field: 'actions',
@@ -418,189 +452,106 @@ const AdminProblemsListPage = () => {
     },
   ];
 
+  const filterControls = (
+    <Stack direction="column" spacing={2.5}>
+      <Autocomplete
+        multiple
+        disableCloseOnSelect
+        options={difficultyFilterOptions}
+        value={selectedDifficultyOptions}
+        getOptionLabel={(option) => option.label}
+        onChange={(_, value) => setSelectedDifficulties(value.map((difficulty) => difficulty.value))}
+        renderInput={(params) => (
+          <TextField {...params} fullWidth label={t('admin.filters.difficulty')} />
+        )}
+      />
+
+      <FilterRangeField
+        label={t('problems.problemRating')}
+        range={[problemRatingRange.min, problemRatingRange.max]}
+        step={problemRatingRange.step}
+        value={problemRatingRangeValue}
+        onChange={handleProblemRatingRangeChange}
+        valueText={(value) => String(value)}
+      />
+
+      <UsersAutocomplete
+        value={authorFilter}
+        onChange={setAuthorFilter}
+        label={t('admin.filters.author')}
+        placeholder={t('admin.form.placeholders.username')}
+      />
+
+      <Stack
+        direction="row"
+        alignItems="center"
+        justifyContent="space-between"
+        sx={{
+          px: 1.5,
+          py: 1,
+          borderRadius: 2,
+          border: '1px solid',
+          borderColor: 'divider',
+        }}
+      >
+        <Typography variant="body2" fontWeight={600}>
+          {hiddenFilterLabel}
+        </Typography>
+        <FormControlLabel
+          control={
+            <Checkbox
+              checked={hiddenFilter === true}
+              indeterminate={hiddenFilter === null}
+              onChange={cycleHiddenFilter}
+              size="small"
+              slotProps={{ input: { 'aria-label': hiddenFilterLabel } }}
+            />
+          }
+          label={null}
+          sx={{ m: 0 }}
+        />
+      </Stack>
+    </Stack>
+  );
+
   return (
     <AdminListPageLayout
       title={t('admin.problems.title')}
       createPath={resources.AdminProblemCreate}
+      createLabel={t('admin.problems.createButton')}
       search={search}
       onSearchChange={handleSearchChange}
       searchPlaceholder={t('admin.problems.searchPlaceholder')}
+      filterDrawerOpen={filterDrawer.open}
+      filterDrawerWidth={DEFAULT_FILTER_DRAWER_WIDTH}
+      filterDrawer={
+        <FilterDrawer
+          id="admin-problems-filters-drawer"
+          open={filterDrawer.open}
+          onClose={filterDrawer.close}
+          drawerWidth={DEFAULT_FILTER_DRAWER_WIDTH}
+          hasActiveFilters={activeFilters.length > 0}
+          clearLabel={t('problems.clear')}
+          onClear={handleClearFilters}
+        >
+          {filterControls}
+        </FilterDrawer>
+      }
       toolbar={
         <>
           <Stack direction="column" spacing={2}>
-            <TabContext value={ordering}>
-              <Stack
-                direction={{ xs: 'column', lg: 'row' }}
-                alignItems={{ lg: 'center' }}
-                justifyContent="space-between"
-                spacing={2}
-              >
-                <Stack spacing={0.75} sx={{ minWidth: 0 }}>
-                  <TabList
-                    onChange={handleOrderingChange}
-                    aria-label={t('admin.problems.orderingTabs')}
-                    allowScrollButtonsMobile
-                  >
-                    {orderingOptions.map((option) => (
-                      <Tab key={option.value} label={t(option.label)} value={option.value} />
-                    ))}
-                  </TabList>
-                </Stack>
-
-                <Stack
-                  direction={{ xs: 'column', sm: 'row' }}
-                  spacing={1.25}
-                  alignItems={{ sm: 'center' }}
-                >
-                  <FilterButton
-                    id="admin-problems-filters-button"
-                    onClick={handleFiltersToggle}
-                    label={t('problems.filters')}
-                    badgeContent={activeFilters.length}
-                    aria-haspopup="true"
-                    aria-expanded={filtersOpen ? 'true' : undefined}
-                    aria-controls={filtersOpen ? 'admin-problems-filters-menu' : undefined}
-                  />
-                  <SearchTextField
-                    sx={{ minWidth: 100 }}
-                    value={search}
-                    placeholder={t('admin.problems.searchPlaceholder')}
-                    onChange={handleSearchChange}
-                  />
-                </Stack>
-              </Stack>
-            </TabContext>
-
-            {activeFilters.length > 0 && (
-              <Stack direction="row" spacing={1} flexWrap="wrap" useFlexGap alignItems="center">
-                <Typography variant="body2" color="text.secondary">
-                  {t('problems.appliedFilters', { count: activeFilters.length })}
-                </Typography>
-                {activeFilters.map((item) => (
-                  <Chip
-                    key={item.key}
-                    size="small"
-                    label={item.label}
-                    onDelete={item.onRemove}
-                    color="primary"
-                    variant="outlined"
-                  />
-                ))}
-                <Button variant="text" size="small" color="secondary" onClick={handleClearFilters}>
-                  {t('problems.clearFilters')}
-                </Button>
-              </Stack>
-            )}
+            <AdminFiltersToolbar
+              id="admin-problems"
+              search={search}
+              onSearchChange={handleSearchChange}
+              searchPlaceholder={t('admin.problems.searchPlaceholder')}
+              activeFilters={activeFilters}
+              onClearFilters={handleClearFilters}
+              filters={filterControls}
+              filtersOpen={filterDrawer.open}
+              onToggleFilters={filterDrawer.toggle}
+            />
           </Stack>
-
-          <Menu
-            id="admin-problems-filters-menu"
-            anchorEl={filtersAnchorEl}
-            open={filtersOpen}
-            onClose={handleFiltersClose}
-            anchorOrigin={{ vertical: 'bottom', horizontal: 'right' }}
-            transformOrigin={{ vertical: 'top', horizontal: 'right' }}
-            MenuListProps={{ disablePadding: true }}
-            PaperProps={{
-              sx: {
-                p: 2.5,
-                width: { xs: 320, sm: 420 },
-              },
-            }}
-          >
-            <Stack direction="column" spacing={2.5}>
-              <Stack direction="row" alignItems="center" justifyContent="space-between">
-                <Stack direction="row" spacing={1} alignItems="center">
-                  <IconifyIcon icon="mdi:tune-variant" width={20} height={20} />
-                  <Typography variant="subtitle2" fontWeight={700}>
-                    {t('problems.filters')}
-                  </Typography>
-                </Stack>
-                <Button size="small" variant="text" color="secondary" onClick={handleClearFilters}>
-                  {t('problems.clearFilters')}
-                </Button>
-              </Stack>
-
-              <Autocomplete
-                multiple
-                disableCloseOnSelect
-                options={difficultyFilterOptions}
-                value={selectedDifficultyOptions}
-                getOptionLabel={(option) => option.label}
-                onChange={(_, value) =>
-                  setSelectedDifficulties(value.map((difficulty) => difficulty.value))
-                }
-                renderInput={(params) => (
-                  <TextField
-                    {...params}
-                    fullWidth
-                    size="small"
-                    variant="filled"
-                    label={t('admin.filters.difficulty')}
-                  />
-                )}
-              />
-
-              <Stack direction={{ xs: 'column', sm: 'row' }} spacing={1.25}>
-                <TextField
-                  fullWidth
-                  type="number"
-                  size="small"
-                  variant="filled"
-                  label={t('admin.filters.ratingMin')}
-                  value={problemRatingMin}
-                  onChange={(event) => setProblemRatingMin(event.target.value)}
-                />
-                <TextField
-                  fullWidth
-                  type="number"
-                  size="small"
-                  variant="filled"
-                  label={t('admin.filters.ratingMax')}
-                  value={problemRatingMax}
-                  onChange={(event) => setProblemRatingMax(event.target.value)}
-                />
-              </Stack>
-
-              <UsersAutocomplete
-                value={authorFilter}
-                onChange={setAuthorFilter}
-                label={t('admin.filters.author')}
-                placeholder={t('admin.form.placeholders.username')}
-                textFieldProps={{ size: 'small', variant: 'filled' }}
-              />
-
-              <Stack
-                direction="row"
-                alignItems="center"
-                justifyContent="space-between"
-                sx={{
-                  px: 1.5,
-                  py: 1,
-                  borderRadius: 2,
-                  border: '1px solid',
-                  borderColor: 'divider',
-                }}
-              >
-                <Typography variant="body2" fontWeight={600}>
-                  {hiddenFilterLabel}
-                </Typography>
-                <FormControlLabel
-                  control={
-                    <Checkbox
-                      checked={hiddenFilter === true}
-                      indeterminate={hiddenFilter === null}
-                      onChange={cycleHiddenFilter}
-                      size="small"
-                      slotProps={{ input: { 'aria-label': hiddenFilterLabel } }}
-                    />
-                  }
-                  label={null}
-                  sx={{ m: 0 }}
-                />
-              </Stack>
-            </Stack>
-          </Menu>
         </>
       }
     >
@@ -634,12 +585,15 @@ const AdminProblemsListPage = () => {
         rows={data?.data ?? []}
         rowCount={data?.total ?? 0}
         loading={isLoading || isValidating}
+        slots={{ loadingOverlay: AdminDataGridSkeletonLoadingOverlay }}
         columns={columns}
         paginationModel={paginationModel}
         onPaginationModelChange={onPaginationModelChange}
         pageSizeOptions={[10, 20, 50]}
         paginationMode="server"
-        disableColumnSorting
+        sortModel={sortModel}
+        onSortModelChange={setSortModel}
+        sortingMode="server"
         checkboxSelection
         rowSelectionModel={rowSelectionModel}
         onRowSelectionModelChange={setRowSelectionModel}

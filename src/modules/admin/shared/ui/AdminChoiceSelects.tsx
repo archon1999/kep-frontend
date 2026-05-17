@@ -1,6 +1,8 @@
-import { ChangeEvent } from 'react';
-import { MenuItem, TextField, TextFieldProps } from '@mui/material';
-import { AdminChoiceOption } from '../domain/types';
+﻿import { ChangeEvent } from 'react';
+import { MenuItem } from '@mui/material';
+import type { TextFieldProps } from '@mui/material/TextField';
+import { AdminChoiceOption } from '../helpers/types.ts';
+import AdminTextField from './AdminTextField';
 
 type AdminChoiceSelectValue = string | number | '';
 
@@ -36,14 +38,14 @@ export const AdminChoiceSelect = ({
   };
 
   return (
-    <TextField select value={value} onChange={handleChange} {...textFieldProps}>
+    <AdminTextField select value={value} onChange={handleChange} {...textFieldProps}>
       {nullable ? <MenuItem value="">{emptyLabel ?? '-'}</MenuItem> : null}
       {options.map((option) => (
         <MenuItem key={String(option.value)} value={option.value}>
           {option.label}
         </MenuItem>
       ))}
-    </TextField>
+    </AdminTextField>
   );
 };
 

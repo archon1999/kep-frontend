@@ -47,6 +47,7 @@ const DataGrid: Components<Omit<Theme, 'components'>>['MuiDataGrid'] = {
     root: ({ theme }) => ({
       border: 'none',
       overflow: 'unset',
+      '--DataGrid-overlayHeight': 'calc(var(--height, 52px) * 10)',
       ['& .MuiDataGrid-filler']: {
         '--DataGrid-rowBorderColor': 'transparent',
       },

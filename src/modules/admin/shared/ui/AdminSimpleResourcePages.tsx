@@ -11,24 +11,32 @@ import {
   Link,
   Stack,
   Switch,
-  TextField,
   Typography,
 } from '@mui/material';
 import { DataGrid, GridColDef, GridRowSelectionModel, GridSortModel } from '@mui/x-data-grid';
 import { Link as RouterLink, useNavigate, useParams } from 'react-router';
 import { getResourceById } from 'app/routes/resources';
 import UserPopover from 'modules/users/ui/shared/components/UserPopover';
-import RichTextEditor from 'shared/components/form/RichTextEditor';
+import FilterDrawer, {
+  DEFAULT_FILTER_DRAWER_WIDTH,
+  useFilterDrawer,
+} from 'shared/components/common/FilterDrawer';
+import AdminRichTextEditor from './AdminRichTextEditor';
+import AttemptLanguage from 'shared/components/problems/AttemptLanguage';
+import AttemptVerdict from 'shared/components/problems/AttemptVerdict';
+import { VerdictKey } from 'shared/components/problems/attemptVerdict.utils';
 import useGridPagination from 'shared/hooks/useGridPagination';
-import { adminApiClient } from '../data-access/adminApiClient';
-import { AdminChoiceOption, AdminListParams } from '../domain/types';
+import { adminApiClient } from '../helpers/adminApiClient.ts';
+import { AdminChoiceOption, AdminListParams } from '../helpers/types.ts';
 import AdminBatchActionsToolbar from './AdminBatchActionsToolbar';
 import { AdminChoiceSelect, LanguageSelect, VerdictSelect } from './AdminChoiceSelects';
+import AdminDateTimeDisplay from './AdminDateTimeDisplay';
 import AdminFiltersToolbar, { AdminActiveFilter } from './AdminFiltersToolbar';
 import AdminFormPageLayout from './AdminFormPageLayout';
 import AdminFormSection from './AdminFormSection';
 import AdminLanguageTabs, { AdminLanguageCode } from './AdminLanguageTabs';
 import AdminListPageLayout from './AdminListPageLayout';
+import AdminDataGridSkeletonLoadingOverlay from './AdminDataGridSkeletonLoadingOverlay';
 import {
   AdminAutocompleteOption,
   ContestsAutocomplete,
@@ -37,8 +45,12 @@ import {
   UsersAutocomplete,
 } from './AdminResourceAutocomplete';
 import AdminRowActions, { AdminRowActionItem } from './AdminRowActions';
-import { fromDateTimeLocal, toDateTimeLocal, toNumberOrNull } from './formUtils';
-import { getOrderingFromSortModel } from './gridSorting';
+import TextField from './AdminTextField';
+import { formatAdminEditTitle, getAdminResourceTitle } from '../utils/editTitle';
+import { fromDateTimeLocal, toDateTimeLocal, toNumberOrNull } from '../utils/formUtils';
+import { DateTimePicker } from '@mui/x-date-pickers/DateTimePicker';
+import dayjs from 'dayjs';
+import { getOrderingFromSortModel } from '../utils/gridSorting';
 
 type AdminSimpleRow = {
   id: number | string;
@@ -64,7 +76,18 @@ interface AdminListColumnConfig {
   minWidth?: number;
   flex?: number;
   sortable?: boolean;
-  type?: 'text' | 'number' | 'boolean' | 'dateTime' | 'chip' | 'editLink' | 'user';
+  type?:
+    | 'text'
+    | 'number'
+    | 'boolean'
+    | 'dateTime'
+    | 'chip'
+    | 'editLink'
+    | 'user'
+    | 'attemptVerdict'
+    | 'attemptLanguage'
+    | 'attemptTime'
+    | 'attemptMemory';
   clientPath?: (row: AdminSimpleRow) => string | undefined;
   render?: (row: AdminSimpleRow, helpers: AdminSimpleRenderHelpers) => ReactNode;
 }
@@ -122,6 +145,7 @@ interface AdminSimpleResourceConfig {
   createPath: string;
   editPath: string;
   titleKey: string;
+  createButtonKey?: string;
   createTitleKey: string;
   editTitleKey: string;
   searchPlaceholderKey: string;
@@ -223,8 +247,6 @@ const getChoiceOptions = (
   choicesKey?: string,
 ) => (choicesKey ? meta?.[choicesKey] ?? [] : []);
 
-const formatDateTime = (value?: string | null) => (value ? new Date(value).toLocaleString() : '');
-
 const getRowLabelParams = (row: AdminSimpleRow) => ({
   id: row.id,
   name: row.name ?? row.title ?? row.username ?? row.code ?? row.id,
@@ -270,6 +292,7 @@ const AdminSimpleResourceListPage = ({ config }: AdminSimpleResourcePageProps) =
   const [sortModel, setSortModel] = useState<GridSortModel>(
     config.defaultSortModel ?? [{ field: 'id', sort: 'desc' }],
   );
+  const filterDrawer = useFilterDrawer();
   const { paginationModel, onPaginationModelChange, pageParams, setPaginationModel } =
     useGridPagination({
       initialPageSize: 20,
@@ -419,11 +442,40 @@ const AdminSimpleResourceListPage = ({ config }: AdminSimpleResourcePageProps) =
     }
 
     if (column.type === 'dateTime') {
-      return formatDateTime(value);
+      return <AdminDateTimeDisplay value={value} emptyValue={emptyValue} />;
     }
 
     if (column.type === 'chip') {
       return value ? <Chip size="small" label={value} variant="soft" /> : emptyValue;
+    }
+
+    if (column.type === 'attemptVerdict') {
+      return (
+        <AttemptVerdict
+          verdict={row.verdict as VerdictKey | undefined}
+          title={row.verdictTitle ?? row.verdictLabel ?? emptyValue}
+          testCaseNumber={row.testCaseNumber}
+          balls={row.balls}
+        />
+      );
+    }
+
+    if (column.type === 'attemptLanguage') {
+      return row.lang ? (
+        <AttemptLanguage lang={row.lang} langFull={row.langFull ?? row.langLabel} />
+      ) : (
+        <Typography color="text.secondary">{emptyValue}</Typography>
+      );
+    }
+
+    if (column.type === 'attemptTime' || column.type === 'attemptMemory') {
+      const unitKey = column.type === 'attemptTime' ? 'problems.attempts.ms' : 'problems.attempts.kb';
+
+      return (
+        <Typography variant="body2" fontWeight={600}>
+          {value ?? emptyValue} {t(unitKey)}
+        </Typography>
+      );
     }
 
     if (column.type === 'user') {
@@ -491,7 +543,6 @@ const AdminSimpleResourceListPage = ({ config }: AdminSimpleResourcePageProps) =
         setFilters((prev) => ({ ...prev, [filter.name]: value })),
       label: t(filter.labelKey),
       placeholder: t('admin.searchPlaceholder'),
-      textFieldProps: { size: 'small' as const, variant: 'filled' as const },
     };
 
     if (filter.kind === 'problem') {
@@ -523,8 +574,6 @@ const AdminSimpleResourceListPage = ({ config }: AdminSimpleResourcePageProps) =
       return (
         <AdminChoiceSelect
           key={filter.name}
-          size="small"
-          variant="filled"
           label={t(filter.labelKey)}
           value={filters[filter.name] ?? ''}
           onChange={(value) => setFilters((prev) => ({ ...prev, [filter.name]: value }))}
@@ -541,8 +590,6 @@ const AdminSimpleResourceListPage = ({ config }: AdminSimpleResourcePageProps) =
       return (
         <AdminChoiceSelect
           key={filter.name}
-          size="small"
-          variant="filled"
           label={t(filter.labelKey)}
           value={filters[filter.name] ?? ''}
           onChange={(value) => setFilters((prev) => ({ ...prev, [filter.name]: value }))}
@@ -560,8 +607,6 @@ const AdminSimpleResourceListPage = ({ config }: AdminSimpleResourcePageProps) =
     return (
       <TextField
         key={filter.name}
-        size="small"
-        variant="filled"
         type={filter.kind === 'number' ? 'number' : 'text'}
         label={t(filter.labelKey)}
         value={filters[filter.name] ?? ''}
@@ -615,24 +660,48 @@ const AdminSimpleResourceListPage = ({ config }: AdminSimpleResourcePageProps) =
 
   const handleClearFilters = () => setFilters({});
   const batchActions = config.batchActions ?? defaultBatchActions;
+  const filterControls = config.filters?.length ? (
+    <Stack direction="column" spacing={2.5}>{config.filters.map(renderFilter)}</Stack>
+  ) : null;
+  const filtersId = `admin-${config.resource.replace(/[^a-z0-9]+/gi, '-')}`;
 
   return (
     <AdminListPageLayout
       title={t(config.titleKey)}
       createPath={config.createPath}
+      createLabel={config.createButtonKey ? t(config.createButtonKey) : undefined}
       search={search}
       onSearchChange={(event: ChangeEvent<HTMLInputElement>) => setSearch(event.target.value)}
       searchPlaceholder={t(config.searchPlaceholderKey)}
+      filterDrawerOpen={filterDrawer.open}
+      filterDrawerWidth={DEFAULT_FILTER_DRAWER_WIDTH}
+      filterDrawer={
+        filterControls ? (
+          <FilterDrawer
+            id={`${filtersId}-filters-drawer`}
+            open={filterDrawer.open}
+            onClose={filterDrawer.close}
+            drawerWidth={DEFAULT_FILTER_DRAWER_WIDTH}
+            hasActiveFilters={activeFilters.length > 0}
+            clearLabel={t('problems.clear')}
+            onClear={handleClearFilters}
+          >
+            {filterControls}
+          </FilterDrawer>
+        ) : undefined
+      }
       toolbar={
-        config.filters?.length ? (
+        filterControls ? (
           <AdminFiltersToolbar
-            id={`admin-${config.resource.replace(/[^a-z0-9]+/gi, '-')}`}
+            id={filtersId}
             search={search}
             onSearchChange={(event) => setSearch(event.target.value)}
             searchPlaceholder={t(config.searchPlaceholderKey)}
-            filters={<Stack direction="column" spacing={2.5}>{config.filters.map(renderFilter)}</Stack>}
+            filters={filterControls}
             activeFilters={activeFilters}
             onClearFilters={handleClearFilters}
+            filtersOpen={filterDrawer.open}
+            onToggleFilters={filterDrawer.toggle}
           />
         ) : undefined
       }
@@ -654,6 +723,7 @@ const AdminSimpleResourceListPage = ({ config }: AdminSimpleResourcePageProps) =
         rows={data?.data ?? []}
         rowCount={data?.total ?? 0}
         loading={isLoading || isValidating}
+        slots={{ loadingOverlay: AdminDataGridSkeletonLoadingOverlay }}
         columns={columns}
         paginationModel={paginationModel}
         onPaginationModelChange={onPaginationModelChange}
@@ -862,16 +932,39 @@ const AdminSimpleResourceFormPage = ({ config }: AdminSimpleResourcePageProps) =
       return (
         <Stack key={field.name} spacing={1}>
           <Typography variant="subtitle2">{t(field.labelKey)}</Typography>
-          <RichTextEditor
+          <AdminRichTextEditor
             value={form[field.name] ?? ''}
             onChange={(value) => setField(field.name, value)}
             minHeight={field.minHeight ?? 180}
             compact
             enableMathJax
             mathJaxPromptText={t('admin.form.prompts.mathJax')}
-            mathJaxPreviewLabel={t('admin.form.fields.mathJaxPreview')}
           />
         </Stack>
+      );
+    }
+
+    if (field.kind === 'dateTime') {
+      const fieldValue = getFieldValue(form, field);
+      const fieldValueAsDate = typeof fieldValue === 'string' ? dayjs(fieldValue) : null;
+
+      return (
+        <DateTimePicker
+          key={field.name}
+          label={t(field.labelKey)}
+          value={fieldValueAsDate?.isValid() ? fieldValueAsDate : null}
+          onChange={(value) =>
+            setField(field.name, value ? value.format('YYYY-MM-DDTHH:mm') : '')
+          }
+          slotProps={{
+            textField: {
+              fullWidth: true,
+              variant: 'outlined',
+              InputLabelProps: { shrink: Boolean(fieldValue) },
+            },
+            popper: { placement: 'bottom-start' },
+          }}
+        />
       );
     }
 
@@ -880,7 +973,7 @@ const AdminSimpleResourceFormPage = ({ config }: AdminSimpleResourcePageProps) =
         key={field.name}
         label={t(field.labelKey)}
         value={getFieldValue(form, field)}
-        type={field.kind === 'number' ? 'number' : field.kind === 'dateTime' ? 'datetime-local' : 'text'}
+        type={field.kind === 'number' ? 'number' : 'text'}
         onChange={(event) =>
           setField(
             field.name,
@@ -909,14 +1002,13 @@ const AdminSimpleResourceFormPage = ({ config }: AdminSimpleResourcePageProps) =
           return (
             <Stack key={fieldName} spacing={1}>
               <Typography variant="subtitle2">{t(field.labelKey)}</Typography>
-              <RichTextEditor
+              <AdminRichTextEditor
                 value={form[fieldName] ?? ''}
                 onChange={(value) => setField(fieldName, value)}
                 minHeight={field.minHeight ?? 220}
                 compact
                 enableMathJax
                 mathJaxPromptText={t('admin.form.prompts.mathJax')}
-                mathJaxPreviewLabel={t('admin.form.fields.mathJaxPreview')}
               />
             </Stack>
           );
@@ -937,6 +1029,9 @@ const AdminSimpleResourceFormPage = ({ config }: AdminSimpleResourcePageProps) =
 
   const sidebarFields = config.fields.filter((field) => (field.section ?? 'main') === 'sidebar');
   const mainFields = config.fields.filter((field) => (field.section ?? 'main') === 'main');
+  const pageTitle = isEdit
+    ? formatAdminEditTitle(id, getAdminResourceTitle(form) || getAdminResourceTitle(data))
+    : t(config.createTitleKey);
 
   if (isEdit && isLoading && !data) {
     return (
@@ -948,7 +1043,7 @@ const AdminSimpleResourceFormPage = ({ config }: AdminSimpleResourcePageProps) =
 
   return (
     <AdminFormPageLayout
-      title={isEdit ? t(config.editTitleKey, { id }) : t(config.createTitleKey)}
+      title={pageTitle}
       listPath={config.listPath}
       isEdit={isEdit}
       isSaving={isSaving}

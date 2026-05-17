@@ -28,7 +28,12 @@ const AdminLanguageTabs = ({ children }: AdminLanguageTabsProps) => {
         sx={{ borderBottom: 1, borderColor: 'divider' }}
       >
         {languageCodes.map((language) => (
-          <Tab key={language} value={language} label={t(`admin.form.languages.${language}`)} />
+          <Tab
+            key={language}
+            id={`admin-language-tab-${language}`}
+            value={language}
+            label={t(`admin.form.languages.${language}`)}
+          />
         ))}
       </Tabs>
       <Box sx={{ pt: 3 }}>{children(activeLanguage)}</Box>

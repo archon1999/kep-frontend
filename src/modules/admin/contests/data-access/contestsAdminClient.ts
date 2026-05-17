@@ -1,5 +1,5 @@
-import { adminApiClient } from 'modules/admin/shared/data-access/adminApiClient';
-import { AdminListParams } from 'modules/admin/shared/domain/types';
+import { adminApiClient } from 'modules/admin/shared/helpers/adminApiClient';
+import { AdminListParams } from 'modules/admin/shared/helpers/types';
 import { AdminContest, AdminContestMeta, AdminContestPayload } from '../domain/types';
 
 const RESOURCE = 'contests';

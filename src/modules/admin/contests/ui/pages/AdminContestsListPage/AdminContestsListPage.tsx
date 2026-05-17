@@ -1,8 +1,9 @@
-import { ChangeEvent, useEffect, useMemo, useState } from 'react';
+﻿import { ChangeEvent, useEffect, useMemo, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { Checkbox, Chip, Link, Stack, Typography } from '@mui/material';
 import { DataGrid, GridColDef, GridRowSelectionModel, GridSortModel } from '@mui/x-data-grid';
 import { Link as RouterLink } from 'react-router';
+import AdminDataGridSkeletonLoadingOverlay from 'modules/admin/shared/ui/AdminDataGridSkeletonLoadingOverlay';
 import { getResourceById, resources } from 'app/routes/resources';
 import UserPopover from 'modules/users/ui/shared/components/UserPopover';
 import AdminBatchActionsToolbar from 'modules/admin/shared/ui/AdminBatchActionsToolbar';
@@ -10,14 +11,17 @@ import { AdminChoiceSelect } from 'modules/admin/shared/ui/AdminChoiceSelects';
 import AdminFiltersToolbar, { AdminActiveFilter } from 'modules/admin/shared/ui/AdminFiltersToolbar';
 import AdminListPageLayout from 'modules/admin/shared/ui/AdminListPageLayout';
 import { AdminAutocompleteOption, UsersAutocomplete } from 'modules/admin/shared/ui/AdminResourceAutocomplete';
+import AdminDateTimeDisplay from 'modules/admin/shared/ui/AdminDateTimeDisplay';
 import AdminRowActions from 'modules/admin/shared/ui/AdminRowActions';
-import { getOrderingFromSortModel } from 'modules/admin/shared/ui/gridSorting';
+import { getOrderingFromSortModel } from 'modules/admin/shared/utils/gridSorting';
+import FilterDrawer, {
+  DEFAULT_FILTER_DRAWER_WIDTH,
+  useFilterDrawer,
+} from 'shared/components/common/FilterDrawer';
 import useGridPagination from 'shared/hooks/useGridPagination';
 import { useAdminContestMeta, useAdminContests } from 'modules/admin/contests/application/queries';
 import { contestsAdminClient } from 'modules/admin/contests/data-access/contestsAdminClient';
 import { AdminContest } from 'modules/admin/contests/domain/types';
-
-const formatDateTime = (value?: string) => (value ? new Date(value).toLocaleString() : '');
 
 const AdminContestsListPage = () => {
   const { t } = useTranslation();
@@ -29,6 +33,7 @@ const AdminContestsListPage = () => {
   const [ratedFilter, setRatedFilter] = useState('');
   const [privateFilter, setPrivateFilter] = useState('');
   const [creatorFilter, setCreatorFilter] = useState<AdminAutocompleteOption | null>(null);
+  const filterDrawer = useFilterDrawer();
   const [rowSelectionModel, setRowSelectionModel] = useState<GridRowSelectionModel>({
     type: 'include',
     ids: new Set(),
@@ -279,13 +284,17 @@ const AdminContestsListPage = () => {
       field: 'startTime',
       headerName: t('admin.columns.start'),
       width: 190,
-      renderCell: ({ row }) => formatDateTime(row.startTime),
+      renderCell: ({ row }) => (
+        <AdminDateTimeDisplay value={row.startTime} emptyValue={t('admin.emptyValue')} />
+      ),
     },
     {
       field: 'finishTime',
       headerName: t('admin.columns.finish'),
       width: 190,
-      renderCell: ({ row }) => formatDateTime(row.finishTime),
+      renderCell: ({ row }) => (
+        <AdminDateTimeDisplay value={row.finishTime} emptyValue={t('admin.emptyValue')} />
+      ),
     },
     {
       field: 'private',
@@ -358,13 +367,93 @@ const AdminContestsListPage = () => {
     },
   ];
 
+  const filterControls = (
+    <Stack direction="column" spacing={2.5}>
+      <AdminChoiceSelect
+        label={t('admin.form.fields.type')}
+        value={typeFilter}
+        onChange={(value) => setTypeFilter(String(value))}
+        options={meta?.types ?? []}
+        nullable
+        emptyLabel={t('admin.filters.all')}
+        fullWidth
+      />
+      <AdminChoiceSelect
+        label={t('admin.form.fields.category')}
+        value={categoryFilter}
+        onChange={(value) => setCategoryFilter(value === '' ? '' : Number(value))}
+        options={meta?.categories ?? []}
+        nullable
+        emptyLabel={t('admin.filters.all')}
+        valueType="number"
+        fullWidth
+      />
+      <AdminChoiceSelect
+        label={t('admin.form.fields.participation')}
+        value={participationTypeFilter}
+        onChange={(value) => setParticipationTypeFilter(value === '' ? '' : Number(value))}
+        options={meta?.participationTypes ?? []}
+        nullable
+        emptyLabel={t('admin.filters.all')}
+        valueType="number"
+        fullWidth
+      />
+      <AdminChoiceSelect
+        label={t('admin.form.fields.rated')}
+        value={ratedFilter}
+        onChange={(value) => setRatedFilter(String(value))}
+        options={[
+          { value: 'true', label: t('admin.status.yes') },
+          { value: 'false', label: t('admin.status.no') },
+        ]}
+        nullable
+        emptyLabel={t('admin.filters.all')}
+        fullWidth
+      />
+      <AdminChoiceSelect
+        label={t('admin.form.fields.private')}
+        value={privateFilter}
+        onChange={(value) => setPrivateFilter(String(value))}
+        options={[
+          { value: 'true', label: t('admin.status.yes') },
+          { value: 'false', label: t('admin.status.no') },
+        ]}
+        nullable
+        emptyLabel={t('admin.filters.all')}
+        fullWidth
+      />
+      <UsersAutocomplete
+        value={creatorFilter}
+        onChange={setCreatorFilter}
+        label={t('admin.form.fields.creator')}
+        placeholder={t('admin.form.placeholders.username')}
+      />
+    </Stack>
+  );
+
   return (
     <AdminListPageLayout
       title={t('admin.contests.title')}
       createPath={resources.AdminContestCreate}
+      createLabel={t('admin.contests.createButton')}
       search={search}
       onSearchChange={handleSearchChange}
       searchPlaceholder={t('admin.contests.searchPlaceholder')}
+      filterDrawerOpen={filterDrawer.open}
+      filterDrawerWidth={DEFAULT_FILTER_DRAWER_WIDTH}
+      filterDrawer={
+        <FilterDrawer
+          id="admin-contests-filters-drawer"
+          open={filterDrawer.open}
+          onClose={filterDrawer.close}
+          drawerWidth={DEFAULT_FILTER_DRAWER_WIDTH}
+          hasActiveFilters={activeFilters.length > 0}
+          clearLabel={t('problems.clear')}
+          onClear={handleClearFilters}
+        >
+          {filterControls}
+        </FilterDrawer>
+      }
       toolbar={
         <AdminFiltersToolbar
           id="admin-contests"
@@ -373,80 +462,9 @@ const AdminContestsListPage = () => {
           searchPlaceholder={t('admin.contests.searchPlaceholder')}
           activeFilters={activeFilters}
           onClearFilters={handleClearFilters}
-          filters={
-            <Stack direction="column" spacing={2.5}>
-              <AdminChoiceSelect
-                size="small"
-                variant="filled"
-                label={t('admin.form.fields.type')}
-                value={typeFilter}
-                onChange={(value) => setTypeFilter(String(value))}
-                options={meta?.types ?? []}
-                nullable
-                emptyLabel={t('admin.filters.all')}
-                fullWidth
-              />
-              <AdminChoiceSelect
-                size="small"
-                variant="filled"
-                label={t('admin.form.fields.category')}
-                value={categoryFilter}
-                onChange={(value) => setCategoryFilter(value === '' ? '' : Number(value))}
-                options={meta?.categories ?? []}
-                nullable
-                emptyLabel={t('admin.filters.all')}
-                valueType="number"
-                fullWidth
-              />
-              <AdminChoiceSelect
-                size="small"
-                variant="filled"
-                label={t('admin.form.fields.participation')}
-                value={participationTypeFilter}
-                onChange={(value) => setParticipationTypeFilter(value === '' ? '' : Number(value))}
-                options={meta?.participationTypes ?? []}
-                nullable
-                emptyLabel={t('admin.filters.all')}
-                valueType="number"
-                fullWidth
-              />
-              <AdminChoiceSelect
-                size="small"
-                variant="filled"
-                label={t('admin.form.fields.rated')}
-                value={ratedFilter}
-                onChange={(value) => setRatedFilter(String(value))}
-                options={[
-                  { value: 'true', label: t('admin.status.yes') },
-                  { value: 'false', label: t('admin.status.no') },
-                ]}
-                nullable
-                emptyLabel={t('admin.filters.all')}
-                fullWidth
-              />
-              <AdminChoiceSelect
-                size="small"
-                variant="filled"
-                label={t('admin.form.fields.private')}
-                value={privateFilter}
-                onChange={(value) => setPrivateFilter(String(value))}
-                options={[
-                  { value: 'true', label: t('admin.status.yes') },
-                  { value: 'false', label: t('admin.status.no') },
-                ]}
-                nullable
-                emptyLabel={t('admin.filters.all')}
-                fullWidth
-              />
-              <UsersAutocomplete
-                value={creatorFilter}
-                onChange={setCreatorFilter}
-                label={t('admin.form.fields.creator')}
-                placeholder={t('admin.form.placeholders.username')}
-                textFieldProps={{ size: 'small', variant: 'filled' }}
-              />
-            </Stack>
-          }
+          filters={filterControls}
+          filtersOpen={filterDrawer.open}
+          onToggleFilters={filterDrawer.toggle}
         />
       }
     >
@@ -484,6 +502,7 @@ const AdminContestsListPage = () => {
         rows={data?.data ?? []}
         rowCount={data?.total ?? 0}
         loading={isLoading || isValidating}
+        slots={{ loadingOverlay: AdminDataGridSkeletonLoadingOverlay }}
         columns={columns}
         paginationModel={paginationModel}
         onPaginationModelChange={onPaginationModelChange}

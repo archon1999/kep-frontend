@@ -1,4 +1,4 @@
-{
+﻿{
   "admin": {
     "title": "Admin",
     "emptyValue": "-",
@@ -15,6 +15,7 @@
     "actions": {
       "create": "Create",
       "edit": "Edit",
+      "backToList": "Back to list",
       "cancel": "Cancel",
       "delete": "Delete",
       "save": "Save",
@@ -63,6 +64,7 @@
       "updated": "Updated",
       "superuser": "Superuser",
       "active": "Active",
+      "worked": "Solved",
       "actions": "Actions"
     },
     "status": {
@@ -90,7 +92,7 @@
         "contestSettings": "Contest settings",
         "userSettings": "User settings",
         "translations": "Translations",
-        "descriptions": "Descriptions",
+        "descriptions": "Description",
         "tagsTopics": "Tags and topics",
         "sampleTests": "Sample tests",
         "availableLanguages": "Available languages",
@@ -101,13 +103,12 @@
         "details": "Details"
       },
       "subheaders": {
-        "problemTranslations": "Edit statement text per language in one place.",
-        "contestDescriptions": "Edit contest description per language."
+        "problemTranslations": "Edit statement text per language in one place."
       },
       "fields": {
         "fallbackTitle": "Fallback title",
-        "localizedTitle": "{{ language }} title",
-        "localizedName": "{{ language }} name",
+        "localizedTitle": "Title",
+        "localizedName": "Name",
         "title": "Title",
         "name": "Name",
         "author": "Author",
@@ -213,6 +214,7 @@
     "problems": {
       "title": "Problems",
       "createTitle": "Create problem",
+      "createButton": "Add Problem",
       "editTitle": "Edit problem #{{ id }}",
       "searchPlaceholder": "Search problems",
       "orderingTabs": "Admin problems ordering",
@@ -222,6 +224,7 @@
     "contests": {
       "title": "Contests",
       "createTitle": "Create contest",
+      "createButton": "Add Contest",
       "editTitle": "Edit contest #{{ id }}",
       "searchPlaceholder": "Search contests",
       "confirmDelete": "Delete contest #{{ id }}?",
@@ -232,6 +235,7 @@
     "users": {
       "title": "Users",
       "createTitle": "Create user",
+      "createButton": "Add User",
       "editTitle": "Edit user #{{ id }}",
       "searchPlaceholder": "Search users",
       "confirmDelete": "Delete user {{ username }}?",
@@ -245,6 +249,7 @@
       "problemAttempts": {
         "title": "Attempts",
         "createTitle": "Create attempt",
+        "createButton": "Add Attempt",
         "editTitle": "Edit attempt #{{ id }}",
         "searchPlaceholder": "Search attempts",
         "selected": "Selected attempts",
@@ -255,6 +260,7 @@
       "problemChapters": {
         "title": "Chapters",
         "createTitle": "Create chapter",
+        "createButton": "Add Chapter",
         "editTitle": "Edit chapter #{{ id }}",
         "searchPlaceholder": "Search chapters",
         "selected": "Selected chapters",
@@ -265,6 +271,7 @@
       "problemTags": {
         "title": "Tags",
         "createTitle": "Create tag",
+        "createButton": "Add Tag",
         "editTitle": "Edit tag #{{ id }}",
         "searchPlaceholder": "Search tags",
         "selected": "Selected tags",
@@ -275,6 +282,7 @@
       "contestQuestions": {
         "title": "Contest questions",
         "createTitle": "Create contest question",
+        "createButton": "Add Question",
         "editTitle": "Edit contest question #{{ id }}",
         "searchPlaceholder": "Search contest questions",
         "selected": "Selected contest questions",
@@ -285,6 +293,7 @@
       "contestTypes": {
         "title": "Contest types",
         "createTitle": "Create contest type",
+        "createButton": "Add Contest Type",
         "editTitle": "Edit contest type #{{ id }}",
         "searchPlaceholder": "Search contest types",
         "selected": "Selected contest types",
@@ -295,6 +304,7 @@
       "contestFilters": {
         "title": "Filters",
         "createTitle": "Create filter",
+        "createButton": "Add Filter",
         "editTitle": "Edit filter #{{ id }}",
         "searchPlaceholder": "Search filters",
         "selected": "Selected filters",
@@ -305,6 +315,7 @@
       "teams": {
         "title": "Teams",
         "createTitle": "Create team",
+        "createButton": "Add Team",
         "editTitle": "Edit team #{{ id }}",
         "searchPlaceholder": "Search teams",
         "selected": "Selected teams",

@@ -16,7 +16,7 @@ import { useBreakpoints } from 'app/providers/BreakpointsProvider';
 import { Link } from 'react-router';
 import IconifyIcon from 'shared/components/base/IconifyIcon';
 import SimpleBar from 'shared/components/base/SimpleBar';
-import PageBreadcrumb from 'shared/components/sections/common/PageBreadcrumb';
+import BackToListButton, { BackToListButtonProvider } from './BackToListButton';
 
 interface AdminFormPageLayoutProps {
   title: string;
@@ -167,7 +167,7 @@ const AdminFormPageLayout = ({
   };
 
   return (
-    <>
+    <BackToListButtonProvider listPath={listPath}>
       <Stack
         component="form"
         id={formId}
@@ -179,21 +179,39 @@ const AdminFormPageLayout = ({
           '& .MuiInputBase-root:not(.MuiInputBase-multiline)': {
             minHeight: 48,
           },
+          '& .MuiFormControlLabel-root': {
+            mx: 0,
+            gap: 1,
+            minHeight: 40,
+            alignItems: 'center',
+          },
+          '& .MuiFormControlLabel-root .MuiSwitch-root, & .MuiFormControlLabel-root .MuiRadio-root, & .MuiFormControlLabel-root .MuiCheckbox-root': {
+            ml: 0,
+          },
         }}
       >
         <Paper sx={{ p: { xs: 3, md: 5 }, flex: 1, minWidth: 0 }}>
           <Box sx={{ mb: 3 }}>
-            <PageBreadcrumb
-              items={[
-                { label: t('admin.title'), url: '/admin' },
-                { label: title, active: true },
-              ]}
-              sx={{ mb: 2 }}
-            />
-            <Typography variant="h4">{title}</Typography>
+            <Stack
+              direction={{ xs: 'column', sm: 'row' }}
+              alignItems={{ sm: 'center' }}
+              justifyContent="space-between"
+              gap={2}
+            >
+              <Typography
+                variant="h5"
+                sx={{
+                  fontWeight: 700,
+                  overflowWrap: 'anywhere',
+                }}
+              >
+                {title}
+              </Typography>
+              <BackToListButton />
+            </Stack>
           </Box>
 
-          <Container maxWidth={false} sx={{ maxWidth: 520, px: { xs: 0 } }}>
+          <Container maxWidth={false} sx={{ px: { xs: 0 } }}>
             <Stack direction="column" sx={{ rowGap: 4, mb: 4 }}>
               {children}
             </Stack>
@@ -270,7 +288,7 @@ const AdminFormPageLayout = ({
           </Paper>
         </Box>
       )}
-    </>
+    </BackToListButtonProvider>
   );
 };
 

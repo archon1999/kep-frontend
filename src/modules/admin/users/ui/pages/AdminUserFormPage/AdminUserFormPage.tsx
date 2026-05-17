@@ -1,14 +1,18 @@
-import { ChangeEvent, useEffect, useState } from 'react';
+﻿import { ChangeEvent, useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
-import { Alert, CircularProgress, FormControlLabel, Stack, Switch, TextField } from '@mui/material';
+import { Alert, CircularProgress, FormControlLabel, Stack, Switch } from '@mui/material';
 import { useNavigate, useParams } from 'react-router';
 import { resources } from 'app/routes/resources';
 import AdminFormPageLayout from 'modules/admin/shared/ui/AdminFormPageLayout';
 import AdminFormSection from 'modules/admin/shared/ui/AdminFormSection';
-import { fromDateTimeLocal, toDateTimeLocal, toNumberOrNull } from 'modules/admin/shared/ui/formUtils';
+import TextField from 'modules/admin/shared/ui/AdminTextField';
+import { DateTimePicker } from '@mui/x-date-pickers/DateTimePicker';
+import { formatAdminEditTitle } from 'modules/admin/shared/utils/editTitle';
+import { fromDateTimeLocal, toDateTimeLocal, toNumberOrNull } from 'modules/admin/shared/utils/formUtils';
 import { useAdminUser } from 'modules/admin/users/application/queries';
 import { usersAdminClient } from 'modules/admin/users/data-access/usersAdminClient';
 import { AdminUserPayload } from 'modules/admin/users/domain/types';
+import dayjs from 'dayjs';
 
 const emptyUser: AdminUserPayload = {
   username: '',
@@ -64,6 +68,23 @@ const AdminUserFormPage = () => {
     (field: keyof AdminUserPayload) => (event: ChangeEvent<HTMLInputElement>) => {
       setForm((prev) => ({ ...prev, [field]: toNumberOrNull(event.target.value) ?? 0 }));
     };
+
+  const parseDateTimeValue = (value?: string) => {
+    if (!value) {
+      return null;
+    }
+
+    const parsed = dayjs(value);
+
+    return parsed.isValid() ? parsed : null;
+  };
+
+  const handleDateTimeField = (field: keyof AdminUserPayload) => (value: dayjs.Dayjs | null) => {
+    setForm((prev) => ({
+      ...prev,
+      [field]: value ? value.format('YYYY-MM-DDTHH:mm') : '',
+    }));
+  };
 
   const buildPayload = () => {
     const payload: AdminUserPayload = {
@@ -129,9 +150,16 @@ const AdminUserFormPage = () => {
     );
   }
 
+  const fullName = [user?.firstName || form.firstName, user?.lastName || form.lastName]
+    .filter(Boolean)
+    .join(' ');
+  const pageTitle = isEdit
+    ? formatAdminEditTitle(id, user?.username || form.username || fullName)
+    : t('admin.users.createTitle');
+
   return (
     <AdminFormPageLayout
-      title={isEdit ? t('admin.users.editTitle', { id }) : t('admin.users.createTitle')}
+      title={pageTitle}
       listPath={resources.AdminUsers}
       isEdit={isEdit}
       isSaving={isSaving}
@@ -198,12 +226,18 @@ const AdminUserFormPage = () => {
             fullWidth
           />
         </Stack>
-        <TextField
+        <DateTimePicker
           label={t('admin.form.fields.lastSeen')}
-          type="datetime-local"
-          value={form.lastSeen ?? ''}
-          onChange={handleStringField('lastSeen')}
-          slotProps={{ inputLabel: { shrink: true } }}
+          value={parseDateTimeValue(form.lastSeen ?? '')}
+          onChange={handleDateTimeField('lastSeen')}
+          slotProps={{
+            textField: {
+              fullWidth: true,
+              variant: 'outlined',
+              InputLabelProps: { shrink: Boolean(form.lastSeen) },
+            },
+            popper: { placement: 'bottom-start' },
+          }}
         />
       </AdminFormSection>
 

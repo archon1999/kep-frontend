@@ -1,9 +1,9 @@
-import { ChangeEvent, MouseEvent, ReactNode, useState } from 'react';
-import { Button, Chip, Menu, Stack, Typography } from '@mui/material';
+import { ChangeEvent, ReactNode, useState } from 'react';
+import { Button, Chip, Stack, Typography } from '@mui/material';
 import { useTranslation } from 'react-i18next';
 import SearchTextField from 'app/layouts/main-layout/common/search-box/SearchTextField';
-import IconifyIcon from 'shared/components/base/IconifyIcon';
 import FilterButton from 'shared/components/common/FilterButton';
+import FilterDrawer, { DEFAULT_FILTER_DRAWER_WIDTH } from 'shared/components/common/FilterDrawer';
 
 export interface AdminActiveFilter {
   key: string;
@@ -20,6 +20,8 @@ interface AdminFiltersToolbarProps {
   activeFilters?: AdminActiveFilter[];
   onClearFilters?: () => void;
   filterLabel?: string;
+  filtersOpen?: boolean;
+  onToggleFilters?: () => void;
 }
 
 const AdminFiltersToolbar = ({
@@ -31,17 +33,15 @@ const AdminFiltersToolbar = ({
   activeFilters = [],
   onClearFilters,
   filterLabel,
+  filtersOpen = false,
+  onToggleFilters,
 }: AdminFiltersToolbarProps) => {
   const { t } = useTranslation();
-  const [filtersAnchorEl, setFiltersAnchorEl] = useState<HTMLElement | null>(null);
-  const filtersOpen = Boolean(filtersAnchorEl);
+  const [localFiltersOpen, setLocalFiltersOpen] = useState(false);
   const resolvedFilterLabel = filterLabel ?? t('problems.filters');
-
-  const handleFiltersToggle = (event: MouseEvent<HTMLElement>) => {
-    setFiltersAnchorEl((current) => (current ? null : event.currentTarget));
-  };
-
-  const handleFiltersClose = () => setFiltersAnchorEl(null);
+  const resolvedFiltersOpen = onToggleFilters ? filtersOpen : localFiltersOpen;
+  const handleFiltersToggle = onToggleFilters ?? (() => setLocalFiltersOpen((current) => !current));
+  const handleFiltersClose = () => setLocalFiltersOpen(false);
 
   return (
     <Stack direction="column" spacing={2}>
@@ -57,15 +57,16 @@ const AdminFiltersToolbar = ({
             onClick={handleFiltersToggle}
             label={resolvedFilterLabel}
             badgeContent={activeFilters.length}
-            aria-haspopup="true"
-            aria-expanded={filtersOpen ? 'true' : undefined}
-            aria-controls={filtersOpen ? `${id}-filters-menu` : undefined}
+            aria-haspopup="dialog"
+            aria-expanded={resolvedFiltersOpen ? 'true' : undefined}
+            aria-controls={resolvedFiltersOpen ? `${id}-filters-drawer` : undefined}
           />
         ) : null}
         <SearchTextField
           sx={{ minWidth: { xs: 1, sm: 280 } }}
           value={search}
           placeholder={searchPlaceholder}
+          variant="filled"
           onChange={onSearchChange}
         />
       </Stack>
@@ -93,39 +94,19 @@ const AdminFiltersToolbar = ({
         </Stack>
       ) : null}
 
-      {filters ? (
-        <Menu
-          id={`${id}-filters-menu`}
-          anchorEl={filtersAnchorEl}
-          open={filtersOpen}
+      {filters && !onToggleFilters ? (
+        <FilterDrawer
+          id={`${id}-filters-drawer`}
+          open={resolvedFiltersOpen}
           onClose={handleFiltersClose}
-          anchorOrigin={{ vertical: 'bottom', horizontal: 'right' }}
-          transformOrigin={{ vertical: 'top', horizontal: 'right' }}
-          MenuListProps={{ disablePadding: true }}
-          PaperProps={{
-            sx: {
-              p: 2.5,
-              width: { xs: 320, sm: 420 },
-            },
-          }}
+          drawerWidth={DEFAULT_FILTER_DRAWER_WIDTH}
+          temporary
+          hasActiveFilters={activeFilters.length > 0}
+          clearLabel={t('problems.clear')}
+          onClear={onClearFilters}
         >
-          <Stack direction="column" spacing={2.5}>
-            <Stack direction="row" alignItems="center" justifyContent="space-between">
-              <Stack direction="row" spacing={1} alignItems="center">
-                <IconifyIcon icon="mdi:tune-variant" width={20} height={20} />
-                <Typography variant="subtitle2" fontWeight={700}>
-                  {resolvedFilterLabel}
-                </Typography>
-              </Stack>
-              {onClearFilters ? (
-                <Button size="small" variant="text" color="secondary" onClick={onClearFilters}>
-                  {t('problems.clearFilters')}
-                </Button>
-              ) : null}
-            </Stack>
-            {filters}
-          </Stack>
-        </Menu>
+          {filters}
+        </FilterDrawer>
       ) : null}
     </Stack>
   );

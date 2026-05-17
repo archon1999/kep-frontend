@@ -1,4 +1,4 @@
-{
+﻿{
   "admin": {
     "title": "Admin",
     "emptyValue": "-",
@@ -15,6 +15,7 @@
     "actions": {
       "create": "Yaratish",
       "edit": "Tahrirlash",
+      "backToList": "Ro'yxatga qaytish",
       "cancel": "Bekor qilish",
       "delete": "O'chirish",
       "save": "Saqlash",
@@ -44,7 +45,7 @@
       "user": "Foydalanuvchi",
       "username": "Username",
       "email": "Email",
-      "difficulty": "Qiyinlik",
+      "difficulty": "Qiyinchiligi",
       "tags": "Teglar",
       "rating": "Reyting",
       "skillsRating": "Skills",
@@ -63,6 +64,7 @@
       "updated": "Yangilangan",
       "superuser": "Superuser",
       "active": "Aktiv",
+      "worked": "Ishlaganlar",
       "actions": "Amallar"
     },
     "status": {
@@ -90,7 +92,7 @@
         "contestSettings": "Kontest sozlamalari",
         "userSettings": "Foydalanuvchi sozlamalari",
         "translations": "Tarjimalar",
-        "descriptions": "Tavsiflar",
+        "descriptions": "Tavsif",
         "tagsTopics": "Teglar va mavzular",
         "sampleTests": "Sample testlar",
         "availableLanguages": "Mavjud tillar",
@@ -101,13 +103,12 @@
         "details": "Detallar"
       },
       "subheaders": {
-        "problemTranslations": "Masala matnini har bir til uchun bitta joyda tahrirlang.",
-        "contestDescriptions": "Kontest tavsifini har bir til uchun tahrirlang."
+        "problemTranslations": "Masala matnini har bir til uchun bitta joyda tahrirlang."
       },
       "fields": {
         "fallbackTitle": "Fallback sarlavha",
-        "localizedTitle": "{{ language }} sarlavha",
-        "localizedName": "{{ language }} nomi",
+        "localizedTitle": "Sarlavha",
+        "localizedName": "Nomi",
         "title": "Sarlavha",
         "name": "Nomi",
         "author": "Muallif",
@@ -118,14 +119,14 @@
         "contest": "Kontest",
         "contestId": "Kontest ID",
         "contestProblemId": "Kontest masalasi ID",
-        "difficulty": "Qiyinlik",
+        "difficulty": "Qiyinchiligi",
         "verdict": "Verdict",
         "status": "Status",
         "question": "Savol",
         "answer": "Javob",
         "problemRating": "Masala reytingi",
-        "timeLimit": "Vaqt limiti",
-        "memoryLimit": "Xotira limiti",
+        "timeLimit": "Vaqt chegarasi",
+        "memoryLimit": "Xotira chegarasi",
         "time": "Vaqt",
         "memory": "Xotira",
         "contestTime": "Kontest vaqti",
@@ -213,6 +214,7 @@
     "problems": {
       "title": "Masalalar",
       "createTitle": "Masala yaratish",
+      "createButton": "Add Problem",
       "editTitle": "Masala #{{ id }} tahrirlash",
       "searchPlaceholder": "Masalalarni qidirish",
       "orderingTabs": "Admin masalalar tartiblash tablari",
@@ -222,6 +224,7 @@
     "contests": {
       "title": "Kontestlar",
       "createTitle": "Kontest yaratish",
+      "createButton": "Add Contest",
       "editTitle": "Kontest #{{ id }} tahrirlash",
       "searchPlaceholder": "Kontestlarni qidirish",
       "confirmDelete": "Kontest #{{ id }} o'chirilsinmi?",
@@ -232,6 +235,7 @@
     "users": {
       "title": "Foydalanuvchilar",
       "createTitle": "Foydalanuvchi yaratish",
+      "createButton": "Add User",
       "editTitle": "Foydalanuvchi #{{ id }} tahrirlash",
       "searchPlaceholder": "Foydalanuvchilarni qidirish",
       "confirmDelete": "{{ username }} foydalanuvchisi o'chirilsinmi?",
@@ -245,6 +249,7 @@
       "problemAttempts": {
         "title": "Urinishlar",
         "createTitle": "Urinish yaratish",
+        "createButton": "Add Attempt",
         "editTitle": "Urinish #{{ id }} tahrirlash",
         "searchPlaceholder": "Urinishlarni qidirish",
         "selected": "Tanlangan urinishlar",
@@ -255,6 +260,7 @@
       "problemChapters": {
         "title": "Chapters",
         "createTitle": "Chapter yaratish",
+        "createButton": "Add Chapter",
         "editTitle": "Chapter #{{ id }} tahrirlash",
         "searchPlaceholder": "Chapterlarni qidirish",
         "selected": "Tanlangan chapterlar",
@@ -265,6 +271,7 @@
       "problemTags": {
         "title": "Teglar",
         "createTitle": "Teg yaratish",
+        "createButton": "Add Tag",
         "editTitle": "Teg #{{ id }} tahrirlash",
         "searchPlaceholder": "Teglarni qidirish",
         "selected": "Tanlangan teglar",
@@ -275,6 +282,7 @@
       "contestQuestions": {
         "title": "Kontest savollari",
         "createTitle": "Kontest savoli yaratish",
+        "createButton": "Add Question",
         "editTitle": "Kontest savoli #{{ id }} tahrirlash",
         "searchPlaceholder": "Kontest savollarini qidirish",
         "selected": "Tanlangan kontest savollari",
@@ -285,6 +293,7 @@
       "contestTypes": {
         "title": "Kontest turlari",
         "createTitle": "Kontest turi yaratish",
+        "createButton": "Add Contest Type",
         "editTitle": "Kontest turi #{{ id }} tahrirlash",
         "searchPlaceholder": "Kontest turlarini qidirish",
         "selected": "Tanlangan kontest turlari",
@@ -295,6 +304,7 @@
       "contestFilters": {
         "title": "Filterlar",
         "createTitle": "Filter yaratish",
+        "createButton": "Add Filter",
         "editTitle": "Filter #{{ id }} tahrirlash",
         "searchPlaceholder": "Filterlarni qidirish",
         "selected": "Tanlangan filterlar",
@@ -305,6 +315,7 @@
       "teams": {
         "title": "Teamlar",
         "createTitle": "Team yaratish",
+        "createButton": "Add Team",
         "editTitle": "Team #{{ id }} tahrirlash",
         "searchPlaceholder": "Teamlarni qidirish",
         "selected": "Tanlangan teamlar",
