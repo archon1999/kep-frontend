@@ -43,6 +43,7 @@ const listKey = (params?: ApiContestsListParams) => [
   params?.title,
   params?.category,
   params?.type,
+  params?.status,
   params?.is_participated,
   params?.is_registered,
   params?.is_rated,

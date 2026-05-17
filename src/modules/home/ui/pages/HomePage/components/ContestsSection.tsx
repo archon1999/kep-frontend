@@ -95,7 +95,7 @@ const HomeContestCard = ({ contest }: HomeContestCardProps) => {
               <Chip
                 label={t(contest.isRated ? 'contests.rated' : 'contests.unrated')}
                 size="small"
-                color={contest.isRated ? 'secondary' : 'neutral'}
+                color={contest.isRated ? 'success' : 'neutral'}
                 variant={contest.isRated ? 'filled' : 'soft'}
                 sx={{ fontWeight: 700 }}
               />
@@ -144,7 +144,14 @@ const HomeContestCard = ({ contest }: HomeContestCardProps) => {
 
 const ContestsSection = () => {
   const { t } = useTranslation();
-  const params = useMemo(() => ({ page: 1, page_size: 1 }), []);
+  const params = useMemo(
+    () => ({
+      page: 1,
+      pageSize: 1,
+      status: '1',
+    }),
+    [],
+  );
   const { data, isLoading } = useContestsList(params);
 
   const latestContest = data?.data?.[0];

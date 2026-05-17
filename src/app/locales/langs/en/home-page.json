@@ -46,7 +46,7 @@
       }
     },
     "contests": {
-      "title": "Featured contest",
+      "title": "Latest contest",
       "viewAll": "View all contests",
       "empty": "No contests to display yet."
     },
