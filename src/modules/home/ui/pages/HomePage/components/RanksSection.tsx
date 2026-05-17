@@ -11,6 +11,8 @@ import {
 } from '@mui/material';
 import IconifyIcon from 'shared/components/base/IconifyIcon';
 import KepIcon from 'shared/components/base/KepIcon';
+import ChallengesRatingChip from 'shared/components/rating/ChallengesRatingChip';
+import ContestsRatingChip from 'shared/components/rating/ContestsRatingChip';
 import type { HomeUserRatings } from 'modules/home/domain/entities/home.entity';
 
 interface RanksSectionProps {
@@ -31,6 +33,7 @@ interface RatingEntry {
   value?: number;
   rank?: number;
   percentile?: number;
+  title?: string | null;
 }
 
 const rankCards: RankCardMeta[] = [
@@ -82,7 +85,7 @@ const RanksSection = ({ ratings, isLoading }: RanksSectionProps) => {
       </Typography>
 
       <Stack spacing={2} direction="column">
-        {cards.map(({ label, infoKey, icon, value, rank, percentile }) => {
+        {cards.map(({ key, label, infoKey, icon, value, rank, percentile, title }) => {
           if (isLoading) {
             return <Skeleton key={label} variant="rounded" height={144} />;
           }
@@ -116,16 +119,24 @@ const RanksSection = ({ ratings, isLoading }: RanksSectionProps) => {
                 </Tooltip>
               </Stack>
 
-              <Stack direction="row" alignItems="baseline" spacing={1}>
-                <Typography variant="h4" fontWeight={700}>
-                  {value ?? '—'}
-                </Typography>
-
-                <Tooltip title={t('homePage.ranks.percentile', { percentile: percentile })}>
-                  <Typography variant="subtitle2" fontWeight={500} color="text.secondary">
-                    #{rank}
+              <Stack direction="row" alignItems="center" spacing={1.25} flexWrap="wrap">
+                <Stack direction="row" alignItems="baseline" spacing={1}>
+                  <Typography variant="h4" fontWeight={700}>
+                    {value ?? '—'}
                   </Typography>
-                </Tooltip>
+
+                  <Tooltip title={t('homePage.ranks.percentile', { percentile: percentile })}>
+                    <Typography variant="subtitle2" fontWeight={500} color="text.secondary">
+                      #{rank}
+                    </Typography>
+                  </Tooltip>
+                </Stack>
+
+                {key === 'contestsRating' ? (
+                  <ContestsRatingChip title={title} imgSize={24} />
+                ) : key === 'challengesRating' ? (
+                  <ChallengesRatingChip title={title} />
+                ) : null}
               </Stack>
 
               <Tooltip title={percentile}>
