@@ -1,4 +1,6 @@
 import { useEffect, useMemo, useRef, useState } from 'react';
+import { useTranslation } from 'react-i18next';
+import { Link as RouterLink } from 'react-router-dom';
 import {
   Box,
   Button,
@@ -12,8 +14,6 @@ import {
   Typography,
 } from '@mui/material';
 import { alpha } from '@mui/material/styles';
-import { Link as RouterLink } from 'react-router-dom';
-import { useTranslation } from 'react-i18next';
 import { getResourceByParams, resources } from 'app/routes/resources';
 import { ContestDetail } from 'modules/contests/domain/entities/contest-detail.entity';
 import { ContestStatus } from 'modules/contests/domain/entities/contest-status';
@@ -26,11 +26,12 @@ interface ContestStandingsCountdownProps {
 const DigitBox = ({ digit }: { digit: string }) => (
   <Box
     sx={(theme) => ({
-      width: 90,
-      height: 110,
+      width: { xs: '100%', md: 90 },
+      minWidth: { xs: 24, sm: 34, md: 90 },
+      height: { xs: 42, sm: 54, md: 110 },
       display: 'grid',
       placeItems: 'center',
-      borderRadius: 2,
+      borderRadius: { xs: 1, md: 2 },
       backgroundColor:
         theme.palette.mode === 'dark'
           ? alpha(theme.palette.common.white, 0.08)
@@ -40,9 +41,13 @@ const DigitBox = ({ digit }: { digit: string }) => (
         theme.palette.mode === 'dark'
           ? alpha(theme.palette.primary.light, 0.3)
           : alpha(theme.palette.primary.main, 0.14),
-      boxShadow: `0 14px 46px ${theme.palette.common.black}18`,
+      boxShadow: {
+        xs: 'none',
+        md: `0 14px 46px ${theme.palette.common.black}18`,
+      },
       fontWeight: 800,
-      fontSize: 40,
+      fontSize: { xs: 22, sm: 28, md: 40 },
+      lineHeight: 1,
     })}
   >
     {digit}
@@ -53,18 +58,51 @@ const TimeUnit = ({ label, value }: { label: string; value: number }) => {
   const digits = String(value).padStart(2, '0').split('');
 
   return (
-    <Stack spacing={1} alignItems="center">
-      <Stack direction="row" spacing={1}>
+    <Stack
+      spacing={{ xs: 0.4, md: 1 }}
+      alignItems="center"
+      sx={{ flex: { xs: 1, md: '0 0 auto' }, minWidth: { xs: 0, md: 'auto' } }}
+    >
+      <Stack
+        direction="row"
+        spacing={{ xs: 0.5, sm: 0.75, md: 1 }}
+        sx={{ width: { xs: '100%', md: 'auto' } }}
+      >
         {digits.map((digit, idx) => (
           <DigitBox key={`${label}-${idx}`} digit={digit} />
         ))}
       </Stack>
-      <Typography variant="caption" sx={{ textTransform: 'uppercase', letterSpacing: 0.4 }}>
+      <Typography
+        variant="caption"
+        sx={{
+          letterSpacing: { xs: 0, md: 0.4 },
+          fontSize: { xs: '0.58rem', sm: '0.65rem', md: undefined },
+          lineHeight: { xs: 1, md: undefined },
+          fontWeight: { xs: 700, md: undefined },
+          textTransform: 'uppercase',
+        }}
+      >
         {label}
       </Typography>
     </Stack>
   );
 };
+
+const MobileSeparator = () => (
+  <Typography
+    aria-hidden="true"
+    sx={{
+      display: { xs: 'block', md: 'none' },
+      mt: { xs: 1.05, sm: 1.4 },
+      fontSize: { xs: 20, sm: 26 },
+      fontWeight: 800,
+      lineHeight: 1,
+      color: 'text.secondary',
+    }}
+  >
+    :
+  </Typography>
+);
 
 const ContestStandingsCountdown = ({ contest }: ContestStandingsCountdownProps) => {
   const { t } = useTranslation();
@@ -146,7 +184,7 @@ const ContestStandingsCountdown = ({ contest }: ContestStandingsCountdownProps) 
         <Card
           variant="outlined"
           sx={(theme) => ({
-            borderRadius: 3,
+            borderRadius: { xs: 2, md: 3 },
             overflow: 'hidden',
             background:
               theme.palette.mode === 'dark'
@@ -155,20 +193,33 @@ const ContestStandingsCountdown = ({ contest }: ContestStandingsCountdownProps) 
             borderColor: alpha(theme.palette.primary.main, 0.2),
           })}
         >
-          <CardContent sx={{ px: 3, py: 3.5 }}>
-            <Stack spacing={2} alignItems="center">
-              <Typography variant="overline" color="text.secondary" sx={{ letterSpacing: 0.6 }}>
+          <CardContent sx={{ px: { xs: 1.25, sm: 2, md: 3 }, py: { xs: 1.25, md: 3.5 } }}>
+            <Stack spacing={{ xs: 1, md: 2 }} alignItems="center">
+              <Typography
+                variant="overline"
+                sx={{
+                  color: { xs: 'text.primary', md: 'text.secondary' },
+                  letterSpacing: { xs: 0.2, md: 0.6 },
+                  fontSize: { xs: '0.68rem', md: undefined },
+                  lineHeight: { xs: 1, md: undefined },
+                  fontWeight: { xs: 800, md: undefined },
+                  textTransform: 'uppercase',
+                }}
+              >
                 {t('contests.countdownCard.ends')}
               </Typography>
 
               <Stack
-                direction={{ xs: 'column', sm: 'row' }}
-                spacing={{ xs: 2, sm: 3 }}
-                alignItems="center"
-                justifyContent="center"
+                direction="row"
+                spacing={{ xs: 0.75, sm: 1.25, md: 3 }}
+                alignItems="flex-start"
+                justifyContent={{ xs: 'space-between', md: 'center' }}
+                sx={{ width: { xs: '100%', md: 'auto' }, minWidth: 0 }}
               >
                 <TimeUnit label={t('contests.timeLabels.hour')} value={hours} />
+                <MobileSeparator />
                 <TimeUnit label={t('contests.timeLabels.minute')} value={minutes} />
+                <MobileSeparator />
                 <TimeUnit label={t('contests.timeLabels.second')} value={seconds} />
               </Stack>
             </Stack>
