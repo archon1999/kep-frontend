@@ -75,14 +75,9 @@ export const mapCategory = (payload: ContestsCategory): ContestCategoryEntity =>
 
 export const mapContestRating = (
   payload: any,
-  index: number,
-  page: number,
-  pageSize: number,
 ): ContestRatingRow => {
-  const baseIndex = Math.max(0, (page - 1) * pageSize);
-
   return {
-    rowIndex: payload?.rowIndex ?? payload?.row_index ?? baseIndex + index + 1,
+    rowIndex: payload?.rowIndex ?? payload?.row_index,
     username: payload?.username ?? '',
     ratingTitle: payload?.ratingTitle ?? payload?.rating_title ?? '',
     rating: payload?.rating ?? payload?.rating_value ?? undefined,
@@ -94,7 +89,7 @@ export const mapContestRating = (
 
 export const mapPageResult = <T>(
   payload: any,
-  mapItem: (item: any, index: number, page: number, pageSize: number) => T,
+  mapItem: (item: any) => T,
 ): PageResult<T> => {
   const page = payload?.page ?? (payload as any)?.current_page ?? 1;
   const pageSize = payload?.pageSize ?? payload?.page_size ?? payload?.per_page ?? 0;
@@ -109,6 +104,6 @@ export const mapPageResult = <T>(
     count,
     total,
     pagesCount,
-    data: data.map((item: any, index: number) => mapItem(item, index, page, pageSize)),
+    data: data.map((item: any) => mapItem(item)),
   };
 };

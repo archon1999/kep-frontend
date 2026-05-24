@@ -1,6 +1,6 @@
 import { useEffect, useMemo, useState } from 'react';
 import { useTranslation } from 'react-i18next';
-import { Avatar, Box, Button, Chip, Paper, Skeleton, Stack, Tab, Tabs, Typography } from '@mui/material';
+import { Avatar, Box, Button, Chip, Paper, Skeleton, Stack, Typography } from '@mui/material';
 import { Link as RouterLink } from 'react-router-dom';
 import { resources } from 'app/routes/resources';
 import { useUsersList } from 'modules/users/application/queries';
@@ -11,6 +11,7 @@ import KepcoinValue from 'shared/components/common/KepcoinValue';
 import ChallengesRatingChip from 'shared/components/rating/ChallengesRatingChip';
 import ContestsRatingChip from 'shared/components/rating/ContestsRatingChip';
 import Streak from 'shared/components/rating/Streak';
+import ResponsiveTabs from 'shared/components/common/ResponsiveTabs';
 import { responsivePagePaddingSx } from 'shared/lib/styles';
 
 const TAB_SWITCH_INTERVAL = 5000;
@@ -155,6 +156,10 @@ const TopUsersSection = () => {
   const users = useMemo(() => usersData?.data ?? [], [usersData?.data]);
   const showSkeleton = isLoading && !usersData?.data;
   const emptyLabel = t('users.emptyValue');
+  const tabs = useMemo(
+    () => tabConfigs.map((tab) => ({ value: tab.value, label: t(tab.labelKey) })),
+    [t],
+  );
 
   const stripeByRank: Record<number, string> = {
     0: '#FACC15',
@@ -262,17 +267,16 @@ const TopUsersSection = () => {
           </Box>
         </Stack>
 
-        <Tabs
+        <ResponsiveTabs
           value={activeTab}
-          onChange={(_, value: TabValue) => setActiveTab(value)}
-          variant="scrollable"
-          allowScrollButtonsMobile
-          aria-label="top-users-tabs"
-        >
-          {tabConfigs.map((tab) => (
-            <Tab key={tab.value} label={t(tab.labelKey)} value={tab.value} />
-          ))}
-        </Tabs>
+          onChange={(value) => setActiveTab(value)}
+          items={tabs}
+          ariaLabel="top-users-tabs"
+          tabsProps={{
+            variant: 'scrollable',
+            allowScrollButtonsMobile: true,
+          }}
+        />
 
         {showSkeleton && (
           <Box

@@ -203,6 +203,7 @@ const ContestRegistrantsPage = () => {
             disableRowSelectionOnClick
             rows={registrants}
             columns={columns}
+            localeText={{ noRowsLabel: t('common.dataGrid.noRows.contestRegistrants') }}
             loading={isLoading}
             rowCount={total}
             paginationMode="server"

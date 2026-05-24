@@ -1,17 +1,17 @@
 import { useMemo } from 'react';
 import { useTranslation } from 'react-i18next';
 import { Stack, StackProps, Tooltip, Typography } from '@mui/material';
-import UserPopover from 'modules/users/ui/shared/components/UserPopover';
-import KepIcon from 'shared/components/base/KepIcon';
-import CountryFlagIcon from 'shared/components/common/CountryFlagIcon';
-import ContestsRatingChip from 'shared/components/rating/ContestsRatingChip';
+import { ContestRatingRow } from 'modules/contests/domain/entities/contest-rating.entity';
+import { ContestStatisticsContestant } from 'modules/contests/domain/entities/contest-statistics.entity';
 import {
   ContestantEntity,
   ContestantTeam,
   ContestantTeamMember,
 } from 'modules/contests/domain/entities/contestant.entity';
-import { ContestRatingRow } from 'modules/contests/domain/entities/contest-rating.entity';
-import { ContestStatisticsContestant } from 'modules/contests/domain/entities/contest-statistics.entity';
+import UserPopover from 'modules/users/ui/shared/components/UserPopover';
+import KepIcon from 'shared/components/base/KepIcon';
+import CountryFlagIcon from 'shared/components/common/CountryFlagIcon';
+import ContestsRatingChip from 'shared/components/rating/ContestsRatingChip';
 
 type ContestantLike = Partial<ContestantEntity> &
   Omit<Partial<ContestStatisticsContestant>, 'avatar'> &
@@ -28,6 +28,8 @@ interface ContestantViewProps extends Omit<StackProps, 'children'> {
   isUnrated?: boolean;
   isVirtual?: boolean;
   showCountry?: boolean;
+  showFullName?: boolean;
+  disablePopover?: boolean;
 }
 
 const normalizeTeam = (
@@ -52,6 +54,8 @@ const ContestantView = ({
   isUnrated,
   isVirtual,
   showCountry = false,
+  showFullName = true,
+  disablePopover = false,
   sx,
   ...stackProps
 }: ContestantViewProps) => {
@@ -137,14 +141,13 @@ const ContestantView = ({
       {resolvedTeam?.members?.length ? (
         <Stack direction="row" spacing={0.25} flexWrap="wrap" useFlexGap>
           {resolvedTeam.members.map((member, index) => (
-            <Stack key={`${member.username}-${index}`} direction="row" spacing={0.25} alignItems="center">
-              {member.username ? (
-                <UserPopover username={member.username}>
-                  <Typography variant="body2" color="text.secondary" sx={nameColorSx} noWrap>
-                    {member.username}
-                  </Typography>
-                </UserPopover>
-              ) : null}
+            <Stack
+              key={`${member.username}-${index}`}
+              direction="row"
+              spacing={0.25}
+              alignItems="center"
+            >
+              {member.username ? renderMemberName(member.username) : null}
               {index < resolvedTeam.members.length - 1 ? (
                 <Typography variant="body2" color="text.secondary" sx={{ opacity: 0.75 }}>
                   ,
@@ -156,6 +159,18 @@ const ContestantView = ({
       ) : null}
     </Stack>
   );
+
+  const renderMemberName = (memberUsername: string) => {
+    const memberName = (
+      <Typography variant="body2" color="text.secondary" sx={nameColorSx} noWrap>
+        {memberUsername}
+      </Typography>
+    );
+
+    if (disablePopover) return memberName;
+
+    return <UserPopover username={memberUsername}>{memberName}</UserPopover>;
+  };
 
   const nameContent = (
     <Stack spacing={0.25} minWidth={0}>
@@ -192,7 +207,7 @@ const ContestantView = ({
           '—'
         )}
       </Typography>
-      {fullName ? (
+      {showFullName && fullName ? (
         <Typography variant="caption" color="text.secondary" noWrap>
           {fullName}
         </Typography>
@@ -201,13 +216,14 @@ const ContestantView = ({
   );
 
   const renderUser = () => {
-    const popoverContent = username ? (
-      <UserPopover username={username} fullName={fullName} countryCode={countryCode}>
-        {nameContent}
-      </UserPopover>
-    ) : (
-      nameContent
-    );
+    const popoverContent =
+      username && !disablePopover ? (
+        <UserPopover username={username} fullName={fullName} countryCode={countryCode}>
+          {nameContent}
+        </UserPopover>
+      ) : (
+        nameContent
+      );
 
     return (
       <Stack direction="row" spacing={0.75} alignItems="center" minWidth={0}>

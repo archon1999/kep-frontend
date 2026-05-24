@@ -1,8 +1,9 @@
 import { useMemo } from 'react';
-import { Box, Tab, Tabs } from '@mui/material';
+import { Box } from '@mui/material';
 import { useTranslation } from 'react-i18next';
-import { Link as RouterLink, useLocation } from 'react-router-dom';
+import { Link as RouterLink, useLocation, useNavigate } from 'react-router-dom';
 import IconifyIcon from 'shared/components/base/IconifyIcon';
+import ResponsiveTabs from 'shared/components/common/ResponsiveTabs';
 import { resources, getResourceById } from 'app/routes/resources';
 import { type Hackathon } from 'modules/hackathons/domain';
 
@@ -13,6 +14,7 @@ interface HackathonTabsProps {
 const HackathonTabs = ({ hackathon }: HackathonTabsProps) => {
   const { t } = useTranslation();
   const location = useLocation();
+  const navigate = useNavigate();
 
   const tabs = useMemo(() => {
     if (!hackathon) return [];
@@ -64,20 +66,28 @@ const HackathonTabs = ({ hackathon }: HackathonTabsProps) => {
         border: (theme) => `1px solid ${theme.palette.divider}`,
       }}
     >
-      <Tabs value={activeValue} variant="scrollable" scrollButtons allowScrollButtonsMobile sx={{ minHeight: 52 }}>
-        {tabs.map((tab) => (
-          <Tab
-            key={tab.to}
-            value={tab.to}
-            label={tab.label}
-            iconPosition="start"
-            icon={<IconifyIcon icon={tab.icon} />}
-            component={RouterLink}
-            to={tab.to}
-            sx={{ fontWeight: 700, minHeight: 52, borderRadius: 2 }}
-          />
-        ))}
-      </Tabs>
+      <ResponsiveTabs
+        value={activeValue}
+        onChange={(value) => navigate(value)}
+        items={tabs.map((tab) => ({
+          value: tab.to,
+          label: tab.label,
+          icon: <IconifyIcon icon={tab.icon} />,
+          tabProps: {
+            iconPosition: 'start',
+            component: RouterLink,
+            to: tab.to,
+            sx: { fontWeight: 700, minHeight: 52, borderRadius: 2 },
+          },
+        }))}
+        ariaLabel="hackathon tabs"
+        tabsProps={{
+          variant: 'scrollable',
+          scrollButtons: true,
+          allowScrollButtonsMobile: true,
+          sx: { minHeight: 52 },
+        }}
+      />
     </Box>
   );
 };

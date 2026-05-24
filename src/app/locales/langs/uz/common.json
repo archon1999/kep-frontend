@@ -10,6 +10,25 @@
     "close": "Yopish",
     "minutesShort": "daq",
     "searchPlaceholder": "Qidirish",
+    "dataGrid": {
+      "noRows": {
+        "default": "Ma'lumot topilmadi.",
+        "users": "Foydalanuvchilar topilmadi.",
+        "duelsRating": "Duel reytingidagi foydalanuvchilar topilmadi.",
+        "challengesRating": "Bellashuv reytingidagi foydalanuvchilar topilmadi.",
+        "problemsRating": "Masalalar reytingidagi foydalanuvchilar topilmadi.",
+        "problemAttempts": "Urinishlar topilmadi.",
+        "problemSolvers": "Bu masalani yechgan foydalanuvchilar topilmadi.",
+        "contestStandings": "Natijalar jadvalida ishtirokchilar topilmadi.",
+        "contestsRating": "Kontest reytingidagi ishtirokchilar topilmadi.",
+        "contestRegistrants": "Ro'yxatdan o'tganlar topilmadi.",
+        "contestRatingChanges": "Reyting o'zgarishlari topilmadi.",
+        "adminUsers": "Admin foydalanuvchilar ro'yxati bo'sh.",
+        "adminProblems": "Admin masalalar ro'yxati bo'sh.",
+        "adminContests": "Admin kontestlar ro'yxati bo'sh.",
+        "adminResources": "{{resource}} topilmadi."
+      }
+    },
     "pagination": {
       "previous": "Oldingi",
       "next": "Keyingi",

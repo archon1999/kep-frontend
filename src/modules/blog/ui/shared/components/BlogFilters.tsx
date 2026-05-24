@@ -1,6 +1,5 @@
-import { ChangeEvent, MouseEvent, SyntheticEvent, useMemo, useState } from 'react';
+import { ChangeEvent, MouseEvent, useMemo, useState } from 'react';
 import { Link as RouterLink } from 'react-router';
-import { TabContext, TabList } from '@mui/lab';
 import {
   Box,
   Button,
@@ -8,13 +7,13 @@ import {
   Menu,
   MenuItem,
   Stack,
-  Tab,
   TextField,
   Typography,
 } from '@mui/material';
 import { useTranslation } from 'react-i18next';
 import FilterButton from 'shared/components/common/FilterButton';
 import KepIcon from 'shared/components/base/KepIcon';
+import ResponsiveTabs from 'shared/components/common/ResponsiveTabs';
 import StyledTextField from 'shared/components/styled/StyledTextField';
 import { cssVarRgba } from 'shared/lib/utils';
 import { BlogTopic } from 'modules/blog/domain/entities/blog.entity';
@@ -61,8 +60,7 @@ const BlogFilters = ({
   const handleSearchChange = (event: ChangeEvent<HTMLInputElement>) =>
     onChange({ ...filters, title: event.target.value });
 
-  const handleTopicChange = (_: SyntheticEvent, topic: string) =>
-    onChange({ ...filters, topic });
+  const handleTopicChange = (topic: string) => onChange({ ...filters, topic });
 
   const handleFiltersToggle = (event: MouseEvent<HTMLButtonElement>) => {
     if (filtersOpen) {
@@ -79,8 +77,7 @@ const BlogFilters = ({
       onChange({ ...filters, [field]: event.target.value ?? '' });
 
   return (
-    <TabContext value={filters.topic}>
-      <Stack spacing={1.5}>
+    <Stack spacing={1.5}>
         <Stack
           sx={{
             gap: 2,
@@ -90,51 +87,51 @@ const BlogFilters = ({
           }}
         >
           <Box sx={{ minWidth: 0, width: { xs: 1, lg: 'auto' } }}>
-            <TabList
+            <ResponsiveTabs
+              value={filters.topic}
               onChange={handleTopicChange}
-              aria-label="blog topics"
-              variant="scrollable"
-              scrollButtons
-              allowScrollButtonsMobile
-              sx={{
-                minHeight: 0,
-                '& .MuiTabs-indicator': { display: 'none' },
-                '& .MuiTab-root': {
-                  minHeight: 0,
-                  minWidth: 'fit-content',
-                  mr: 1,
-                  px: 2,
-                  py: 1.25,
-                  borderRadius: 999,
-                  textTransform: 'none',
-                  border: (theme) => `1px solid ${theme.vars.palette.divider}`,
-                  backgroundColor: 'background.paper',
-                  fontWeight: 700,
-                  color: 'text.primary',
+              ariaLabel="blog topics"
+              items={[
+                {
+                  value: '',
+                  label: t('blog.topics.all', { defaultValue: 'All' }),
+                  tabProps: { sx: { whiteSpace: 'nowrap' } },
                 },
-                '& .Mui-selected': {
-                  color: 'primary.main !important',
-                  borderColor: 'primary.main',
-                  backgroundColor: (theme) =>
-                    cssVarRgba(theme.vars.palette.primary.mainChannel, 0.08),
+                ...topics.map((topic) => ({
+                  value: String(topic.id),
+                  label: topic.title,
+                  tabProps: { sx: { whiteSpace: 'nowrap' } },
+                })),
+              ]}
+              tabsProps={{
+                variant: 'scrollable',
+                scrollButtons: true,
+                allowScrollButtonsMobile: true,
+                sx: {
+                  minHeight: 0,
+                  '& .MuiTabs-indicator': { display: 'none' },
+                  '& .MuiTab-root': {
+                    minHeight: 0,
+                    minWidth: 'fit-content',
+                    mr: 1,
+                    px: 2,
+                    py: 1.25,
+                    borderRadius: 999,
+                    textTransform: 'none',
+                    border: (theme) => `1px solid ${theme.vars.palette.divider}`,
+                    backgroundColor: 'background.paper',
+                    fontWeight: 700,
+                    color: 'text.primary',
+                  },
+                  '& .Mui-selected': {
+                    color: 'primary.main !important',
+                    borderColor: 'primary.main',
+                    backgroundColor: (theme) =>
+                      cssVarRgba(theme.vars.palette.primary.mainChannel, 0.08),
+                  },
                 },
               }}
-            >
-              <Tab
-                key="all"
-                value=""
-                label={t('blog.topics.all', { defaultValue: 'All' })}
-                sx={{ whiteSpace: 'nowrap' }}
-              />
-              {topics.map((topic) => (
-                <Tab
-                  key={topic.id}
-                  value={String(topic.id)}
-                  label={topic.title}
-                  sx={{ whiteSpace: 'nowrap' }}
-                />
-              ))}
-            </TabList>
+            />
           </Box>
 
           <Stack
@@ -262,7 +259,6 @@ const BlogFilters = ({
           </Stack>
         </Menu>
       </Stack>
-    </TabContext>
   );
 };
 

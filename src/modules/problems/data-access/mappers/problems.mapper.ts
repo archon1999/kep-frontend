@@ -189,7 +189,7 @@ export const mapProblem = (problem: ProblemList): ProblemListItem => ({
 
 const mapPageResult = <T>(
   payload: any,
-  mapItem: (item: any, index: number, page: number, pageSize: number) => T,
+  mapItem: (item: any) => T,
 ): PageResult<T> => {
   const page = payload?.page ?? (payload as any)?.current_page ?? 1;
   const data = Array.isArray(payload?.data) ? payload.data : Array.isArray(payload) ? payload : [];
@@ -207,7 +207,7 @@ const mapPageResult = <T>(
     pageSize,
     total,
     pagesCount,
-    data: data.map((item: any, index: number) => mapItem(item, index, page, pageSize)),
+    data: data.map((item: any) => mapItem(item)),
   };
 };
 
@@ -470,13 +470,9 @@ export const mapRecommendationResolveResponse = (payload: any): RecommendationRe
 
 export const mapProblemsRatingRow = (
   payload: any,
-  index: number,
-  page: number,
-  pageSize: number,
 ): ProblemsRatingRow => {
-  const baseIndex = Math.max(0, (page - 1) * pageSize);
   return {
-    rowIndex: toNumber(payload?.rowIndex ?? payload?.row_index ?? baseIndex + index + 1),
+    rowIndex: toNumber(payload?.rowIndex ?? payload?.row_index),
     rating: payload?.rating !== undefined ? toNumber(payload.rating) : undefined,
     solved: payload?.solved !== undefined ? toNumber(payload.solved) : undefined,
     beginner: toNumber(payload?.beginner),

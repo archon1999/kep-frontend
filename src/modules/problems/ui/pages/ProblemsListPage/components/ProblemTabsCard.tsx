@@ -17,6 +17,7 @@ import {
   ProblemListItem,
 } from 'modules/problems/domain/entities/problem.entity.ts';
 import IconifyIcon from 'shared/components/base/IconifyIcon';
+import ResponsiveTabs from 'shared/components/common/ResponsiveTabs';
 import { cssVarRgba } from 'shared/lib/utils';
 
 type ProblemTabValue = 'lastContest' | 'attempts' | 'mostViewed';
@@ -118,33 +119,6 @@ const RowsList = ({ rows }: { rows: ProblemRow[] }) => (
   </Stack>
 );
 
-const TabButton = ({
-  active,
-  config,
-  onClick,
-}: {
-  active: boolean;
-  config: TabConfig;
-  onClick: () => void;
-}) => (
-  <Button
-    fullWidth
-    onClick={onClick}
-    startIcon={<IconifyIcon icon={config.icon} />}
-    variant={active ? 'contained' : 'text'}
-    color={active ? 'primary' : 'inherit'}
-    sx={{
-      justifyContent: 'flex-start',
-      minHeight: 42,
-      borderRadius: 1.5,
-      fontWeight: 800,
-      textTransform: 'none',
-    }}
-  >
-    {config.label}
-  </Button>
-);
-
 const TabsNav = ({
   activeTab,
   onTabChange,
@@ -154,16 +128,44 @@ const TabsNav = ({
   onTabChange: (value: string) => void;
   tabs: TabConfig[];
 }) => (
-  <Stack spacing={1} sx={{ flex: 1, minWidth: 0 }}>
-    {tabs.map((tab) => (
-      <TabButton
-        key={tab.value}
-        active={activeTab === tab.value}
-        config={tab}
-        onClick={() => onTabChange(tab.value)}
-      />
-    ))}
-  </Stack>
+  <ResponsiveTabs
+    value={activeTab}
+    onChange={onTabChange}
+    items={tabs.map((tab) => ({
+      value: tab.value,
+      label: tab.label,
+      icon: <IconifyIcon icon={tab.icon} />,
+      tabProps: {
+        iconPosition: 'start',
+      },
+    }))}
+    ariaLabel="problem summary tabs"
+    containerSx={{ flex: 1, minWidth: 0 }}
+    tabsProps={{
+      orientation: 'vertical',
+      variant: 'scrollable',
+      scrollButtons: false,
+      sx: {
+        '& .MuiTabs-list': {
+          gap: 1,
+        },
+        '& .MuiTabs-indicator': {
+          display: 'none',
+        },
+        '& .MuiTab-root': {
+          justifyContent: 'flex-start',
+          minHeight: 42,
+          borderRadius: 1.5,
+          fontWeight: 800,
+          textTransform: 'none',
+        },
+        '& .Mui-selected': {
+          bgcolor: 'primary.main',
+          color: 'primary.contrastText !important',
+        },
+      },
+    }}
+  />
 );
 
 const ProblemTabsCard = ({

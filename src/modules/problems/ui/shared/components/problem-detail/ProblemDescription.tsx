@@ -19,8 +19,6 @@ import {
   MenuItem,
   Select,
   Stack,
-  Tab,
-  Tabs,
   Tooltip,
   Typography,
 } from '@mui/material';
@@ -31,6 +29,7 @@ import { useAttemptVerdicts, useProblemSolution } from 'modules/problems/applica
 import { DifficultyColor, getDifficultyColor } from 'modules/problems/config/difficulty';
 import IconifyIcon from 'shared/components/base/IconifyIcon';
 import OnlyMeSwitch from 'shared/components/common/OnlyMeSwitch';
+import ResponsiveTabs from 'shared/components/common/ResponsiveTabs';
 import { useThemeMode } from 'shared/hooks/useThemeMode.tsx';
 import {
   AttemptLangs,
@@ -181,43 +180,43 @@ export const ProblemDescription = ({
       <CardHeader
         sx={{ py: 0 }}
         title={
-          <Tabs
+          <ResponsiveTabs
             value={activeTab}
-            onChange={(_, value) => onTabChange(value)}
-            variant="scrollable"
-            scrollButtons="auto"
-            textColor="primary"
-            indicatorColor="primary"
-          >
-            <Tab
-              sx={{ fontWeight: 500 }}
-              value="description"
-              label={t('problems.detail.problemTab')}
-              icon={<IconifyIcon icon="mdi:book-open-page-variant" />}
-              iconPosition="start"
-            />
-            <Tab
-              sx={{ fontWeight: 500 }}
-              value="attempts"
-              label={t('problems.detail.attemptsTab')}
-              icon={<IconifyIcon icon="mdi:history" />}
-              iconPosition="start"
-            />
-            <Tab
-              sx={{ fontWeight: 500 }}
-              value="stats"
-              label={t('problems.detail.stats')}
-              icon={<IconifyIcon icon="mdi:chart-bar" />}
-              iconPosition="start"
-            />
-            <Tab
-              sx={{ fontWeight: 500 }}
-              value="solvers"
-              label={t('problems.detail.solversTab')}
-              icon={<IconifyIcon icon="mdi:account-group" />}
-              iconPosition="start"
-            />
-          </Tabs>
+            onChange={onTabChange}
+            ariaLabel="problem detail tabs"
+            items={[
+              {
+                value: 'description',
+                label: t('problems.detail.problemTab'),
+                icon: <IconifyIcon icon="mdi:book-open-page-variant" />,
+                tabProps: { iconPosition: 'start', sx: { fontWeight: 500 } },
+              },
+              {
+                value: 'attempts',
+                label: t('problems.detail.attemptsTab'),
+                icon: <IconifyIcon icon="mdi:history" />,
+                tabProps: { iconPosition: 'start', sx: { fontWeight: 500 } },
+              },
+              {
+                value: 'stats',
+                label: t('problems.detail.stats'),
+                icon: <IconifyIcon icon="mdi:chart-bar" />,
+                tabProps: { iconPosition: 'start', sx: { fontWeight: 500 } },
+              },
+              {
+                value: 'solvers',
+                label: t('problems.detail.solversTab'),
+                icon: <IconifyIcon icon="mdi:account-group" />,
+                tabProps: { iconPosition: 'start', sx: { fontWeight: 500 } },
+              },
+            ]}
+            tabsProps={{
+              variant: 'scrollable',
+              scrollButtons: 'auto',
+              textColor: 'primary',
+              indicatorColor: 'primary',
+            }}
+          />
         }
       />
 
@@ -393,37 +392,19 @@ export const ProblemDescription = ({
 
                       {orderedSolutionCodes.length ? (
                         <Stack spacing={1.5}>
-                          <FormControl size="small" sx={{ display: { xs: 'flex', sm: 'none' } }}>
-                            <InputLabel>{t('problems.attempts.language')}</InputLabel>
-                            <Select
-                              label={t('problems.attempts.language')}
-                              value={activeSolutionCode?.lang ?? ''}
-                              onChange={(event) => setSelectedSolutionLang(event.target.value)}
-                            >
-                              {orderedSolutionCodes.map((code) => (
-                                <MenuItem key={code.lang} value={code.lang}>
-                                  {solutionLanguageLabels.get(code.lang) || code.lang}
-                                </MenuItem>
-                              ))}
-                            </Select>
-                          </FormControl>
-
-                          <Box sx={{ display: { xs: 'none', sm: 'block' } }}>
-                            <Tabs
-                              value={activeSolutionCode?.lang ?? false}
-                              onChange={(_, value) => setSelectedSolutionLang(value)}
-                              variant="scrollable"
-                              scrollButtons="auto"
-                            >
-                              {orderedSolutionCodes.map((code) => (
-                                <Tab
-                                  key={code.lang}
-                                  value={code.lang}
-                                  label={solutionLanguageLabels.get(code.lang) || code.lang}
-                                />
-                              ))}
-                            </Tabs>
-                          </Box>
+                          <ResponsiveTabs
+                            value={activeSolutionCode?.lang ?? false}
+                            onChange={(value) => setSelectedSolutionLang(value)}
+                            ariaLabel={t('problems.attempts.language')}
+                            items={orderedSolutionCodes.map((code) => ({
+                              value: code.lang,
+                              label: solutionLanguageLabels.get(code.lang) || code.lang,
+                            }))}
+                            tabsProps={{
+                              variant: 'scrollable',
+                              scrollButtons: 'auto',
+                            }}
+                          />
 
                           {activeSolutionCode ? (
                             <Card variant="outlined">

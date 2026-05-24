@@ -1,8 +1,9 @@
 import { useMemo } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useParams } from 'react-router';
-import { Box, Card, CardContent, CardHeader, CircularProgress, Grid, Tab, Tabs } from '@mui/material';
+import { Box, Card, CardContent, CardHeader, CircularProgress, Grid } from '@mui/material';
 import { useDocumentTitle } from 'app/providers/DocumentTitleProvider';
+import ResponsiveTabs from 'shared/components/common/ResponsiveTabs';
 import useRouteQueryState from 'shared/hooks/useRouteQueryState';
 import { numberParam } from 'shared/lib/queryParams';
 import { responsivePagePaddingSx } from 'shared/lib/styles';
@@ -77,17 +78,17 @@ const ProjectDetailPage = () => {
             <CardHeader
               sx={{ mb: 0 }}
               title={
-                <Tabs
+                <ResponsiveTabs
                   value={state.activeTab}
-                  onChange={(_, value) => setField('activeTab', value)}
-                  variant="scrollable"
-                  allowScrollButtonsMobile
-                  sx={{ borderBottom: (theme) => `1px solid ${theme.palette.divider}` }}
-                >
-                  {tabs.map((tab) => (
-                    <Tab key={tab.value} label={tab.label} value={tab.value} />
-                  ))}
-                </Tabs>
+                  onChange={(value) => setField('activeTab', value)}
+                  items={tabs}
+                  ariaLabel="project detail tabs"
+                  tabsProps={{
+                    variant: 'scrollable',
+                    allowScrollButtonsMobile: true,
+                    sx: { borderBottom: (theme) => `1px solid ${theme.palette.divider}` },
+                  }}
+                />
               }
             />
             <CardContent>

@@ -6,7 +6,7 @@ import duration from 'dayjs/plugin/duration';
 import relativeTime from 'dayjs/plugin/relativeTime';
 import 'dayjs/locale/en';
 import 'dayjs/locale/ru';
-import 'dayjs/locale/uz';
+import 'dayjs/locale/uz-latn';
 
 dayjs.extend(duration);
 dayjs.extend(relativeTime);
@@ -24,7 +24,13 @@ const INVALID_EMPTY_VALUE = '';
 const DAYJS_LOCALE_BY_LOCALE: Record<SupportedDateLocale, string> = {
   'en-US': 'en',
   'ru-RU': 'ru',
-  'uz-UZ': 'uz',
+  'uz-UZ': 'uz-latn',
+};
+
+const INTL_LOCALE_BY_LOCALE: Record<SupportedDateLocale, string> = {
+  'en-US': 'en-US',
+  'ru-RU': 'ru-RU',
+  'uz-UZ': 'uz-Latn-UZ',
 };
 
 const USER_FACING_FORMATS = {
@@ -156,7 +162,7 @@ export const formatCalendarDateTime = (
   const date = parsed.toDate();
 
   try {
-    return new Intl.DateTimeFormat(getCurrentDateLocale(), {
+    return new Intl.DateTimeFormat(INTL_LOCALE_BY_LOCALE[getCurrentDateLocale()], {
       dateStyle: 'medium',
       timeStyle: 'short',
     }).format(date);
@@ -176,7 +182,7 @@ export const formatAdminDateTimeValue = (
   if (!parsed) return fallback;
 
   const date = parsed.toDate();
-  const locale = getCurrentDateLocale();
+  const locale = INTL_LOCALE_BY_LOCALE[getCurrentDateLocale()];
   const month = new Intl.DateTimeFormat(locale, { month: 'long' }).format(date);
   const time = new Intl.DateTimeFormat(locale, {
     hour: '2-digit',

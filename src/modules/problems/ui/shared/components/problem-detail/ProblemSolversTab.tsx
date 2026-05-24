@@ -336,35 +336,28 @@ export const ProblemSolversTab = ({ problemId }: ProblemSolversTabProps) => {
 
             {isLoading ? <LinearProgress /> : null}
 
-            {!isLoading && !data?.data?.length ? (
-              <Card variant="outlined">
-                <CardContent>
-                  <Typography color="text.secondary">{t('problems.detail.noSolvers')}</Typography>
-                </CardContent>
-              </Card>
-            ) : (
-              <DataGrid
-                autoHeight
-                rows={data?.data ?? []}
-                columns={columns}
-                loading={isLoading}
-                rowCount={data?.total ?? 0}
-                paginationModel={paginationModel}
-                onPaginationModelChange={onPaginationModelChange}
-                pageSizeOptions={[10, 20, 50]}
-                paginationMode="server"
-                disableRowSelectionOnClick
-                disableColumnFilter
-                disableColumnMenu
-                disableColumnSelector
-                getRowHeight={() => 72}
-                getRowId={(row) => row.userId || row.username}
-                sx={{
-                  '& .MuiDataGrid-columnHeaderTitle': { fontWeight: 700 },
-                  '& .MuiDataGrid-cell': { outline: 'none' },
-                }}
-              />
-            )}
+            <DataGrid
+              autoHeight
+              rows={data?.data ?? []}
+              columns={columns}
+              localeText={{ noRowsLabel: t('common.dataGrid.noRows.problemSolvers') }}
+              loading={isLoading}
+              rowCount={data?.total ?? 0}
+              paginationModel={paginationModel}
+              onPaginationModelChange={onPaginationModelChange}
+              pageSizeOptions={[10, 20, 50]}
+              paginationMode="server"
+              disableRowSelectionOnClick
+              disableColumnFilter
+              disableColumnMenu
+              disableColumnSelector
+              getRowHeight={() => 72}
+              getRowId={(row) => row.userId || row.username}
+              sx={{
+                '& .MuiDataGrid-columnHeaderTitle': { fontWeight: 700 },
+                '& .MuiDataGrid-cell': { outline: 'none' },
+              }}
+            />
           </Stack>
         </CardContent>
       </Card>

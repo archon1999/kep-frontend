@@ -405,6 +405,7 @@ const ProblemsAttemptsTable = ({
         disableRowSelectionOnClick
         rows={rows}
         columns={columns}
+        localeText={{ noRowsLabel: t('common.dataGrid.noRows.problemAttempts') }}
         loading={isLoading}
         rowCount={total}
         pageSizeOptions={[10, 20, 50]}

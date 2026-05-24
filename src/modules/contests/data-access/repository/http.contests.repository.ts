@@ -144,9 +144,7 @@ export class HttpContestsRepository implements ContestsRepository {
       pageSize: params?.pageSize,
       ordering: params?.ordering,
     });
-    return mapPageResult(result, (item, index, page, pageSize) =>
-      mapContestRegistrant(item, index, page, pageSize),
-    );
+    return mapPageResult(result, mapContestRegistrant);
   }
 
   async questions(contestId: number | string): Promise<ContestQuestion[]> {

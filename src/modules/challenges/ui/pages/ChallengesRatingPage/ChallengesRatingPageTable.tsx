@@ -127,6 +127,7 @@ const ChallengesRatingPageTable = ({
       disableRowSelectionOnClick
       columns={columns}
       rows={rows}
+      localeText={{ noRowsLabel: t('common.dataGrid.noRows.challengesRating') }}
       rowCount={rowCount}
       paginationMode="server"
       sortingMode="server"

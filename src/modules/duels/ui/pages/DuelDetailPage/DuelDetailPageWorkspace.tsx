@@ -1,5 +1,5 @@
 import { useEffect, useMemo, useRef, useState } from 'react';
-import { Box, Card, CardContent, Chip, Divider, LinearProgress, Stack, Tab, Tabs, Typography } from '@mui/material';
+import { Box, Card, CardContent, Chip, Divider, LinearProgress, Stack, Typography } from '@mui/material';
 import { alpha } from '@mui/material/styles';
 import { GridPaginationModel } from '@mui/x-data-grid';
 import { Panel, PanelGroup } from 'react-resizable-panels';
@@ -28,6 +28,7 @@ import { ProblemEditorPanel } from 'modules/problems/ui/shared/components/proble
 import ProblemEditorSkeleton from 'modules/problems/ui/shared/components/problem-detail/ProblemEditorSkeleton';
 import { VerdictKey } from 'shared/components/problems/attemptVerdict.utils';
 import IconifyIcon from 'shared/components/base/IconifyIcon';
+import ResponsiveTabs from 'shared/components/common/ResponsiveTabs';
 import useGridPagination from 'shared/hooks/useGridPagination';
 import useRouteQueryState from 'shared/hooks/useRouteQueryState';
 import { useThemeMode } from 'shared/hooks/useThemeMode.tsx';
@@ -841,30 +842,34 @@ const DuelDetailPageWorkspace = ({
               }}
             >
               <CardContent sx={{ flex: 1, minHeight: 0, overflowY: 'auto', p: 0 }}>
-                <Tabs
+                <ResponsiveTabs
                   value={activeTab}
-                  onChange={(_, value) => onChangeTab(value)}
-                  variant="scrollable"
-                  scrollButtons="auto"
-                  textColor="primary"
-                  indicatorColor="primary"
-                  sx={{ px: 2, pt: 1 }}
-                >
-                  <Tab
-                    sx={{ fontWeight: 600 }}
-                    value="description"
-                    label={t('contests.problem.description')}
-                    icon={<IconifyIcon icon="mdi:book-open-page-variant" width={18} height={18} />}
-                    iconPosition="start"
-                  />
-                  <Tab
-                    sx={{ fontWeight: 600 }}
-                    value="attempts"
-                    label={t('duels.myAttempts')}
-                    icon={<IconifyIcon icon="mdi:history" width={18} height={18} />}
-                    iconPosition="start"
-                  />
-                </Tabs>
+                  onChange={onChangeTab}
+                  ariaLabel="duel problem tabs"
+                  items={[
+                    {
+                      value: 'description',
+                      label: t('contests.problem.description'),
+                      icon: (
+                        <IconifyIcon icon="mdi:book-open-page-variant" width={18} height={18} />
+                      ),
+                      tabProps: { iconPosition: 'start', sx: { fontWeight: 600 } },
+                    },
+                    {
+                      value: 'attempts',
+                      label: t('duels.myAttempts'),
+                      icon: <IconifyIcon icon="mdi:history" width={18} height={18} />,
+                      tabProps: { iconPosition: 'start', sx: { fontWeight: 600 } },
+                    },
+                  ]}
+                  tabsProps={{
+                    variant: 'scrollable',
+                    scrollButtons: 'auto',
+                    textColor: 'primary',
+                    indicatorColor: 'primary',
+                    sx: { px: 2, pt: 1 },
+                  }}
+                />
                 <Divider />
 
                 <Box sx={{ p: 3 }}>

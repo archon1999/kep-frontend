@@ -21,6 +21,7 @@ import FilterDrawer, {
   DEFAULT_FILTER_DRAWER_WIDTH,
   useFilterDrawer,
 } from 'shared/components/common/FilterDrawer';
+import DataGridNoRowsOverlay from 'shared/components/common/DataGridNoRowsOverlay';
 import AdminRichTextEditor from './AdminRichTextEditor';
 import AttemptLanguage from 'shared/components/problems/AttemptLanguage';
 import AttemptVerdict from 'shared/components/problems/AttemptVerdict';
@@ -731,7 +732,15 @@ const AdminSimpleResourceListPage = ({ config }: AdminSimpleResourcePageProps) =
         rows={data?.data ?? []}
         rowCount={data?.total ?? 0}
         loading={isGridLoading}
-        slots={{ loadingOverlay: AdminDataGridSkeletonLoadingOverlay }}
+        slots={{
+          loadingOverlay: AdminDataGridSkeletonLoadingOverlay,
+          noRowsOverlay: DataGridNoRowsOverlay,
+        }}
+        localeText={{
+          noRowsLabel: t('common.dataGrid.noRows.adminResources', {
+            resource: t(config.titleKey).toLowerCase(),
+          }),
+        }}
         columns={columns}
         paginationModel={paginationModel}
         onPaginationModelChange={onPaginationModelChange}

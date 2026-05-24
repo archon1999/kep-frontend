@@ -14,6 +14,7 @@ import {
   TextField,
   Tooltip,
   Typography,
+  useMediaQuery,
 } from '@mui/material';
 import { DataGrid, GridColDef, useGridApiRef } from '@mui/x-data-grid';
 import { useAuth } from 'app/providers/AuthProvider';
@@ -53,6 +54,9 @@ const getStandingsRowId = (row: ContestantEntity) =>
 const getPerformanceLabel = (row: ContestantEntity) =>
   row.rank === 1 ? '∞' : (row.performance ?? '—');
 
+const getContestantProblemInfo = (row: ContestantEntity, problemSymbol: string) =>
+  row.problemsInfo?.find((item) => item.problemSymbol === problemSymbol) ?? null;
+
 const decodeRouteParam = (value?: string) => {
   if (!value) {
     return undefined;
@@ -77,9 +81,7 @@ const contestantMatchesUsername = (row: ContestantEntity, normalizedUsername: st
   }
 
   return Boolean(
-    row.team?.members?.some(
-      (member) => normalizeUsername(member.username) === normalizedUsername,
-    ),
+    row.team?.members?.some((member) => normalizeUsername(member.username) === normalizedUsername),
   );
 };
 
@@ -93,6 +95,7 @@ const ContestStandingsPage = () => {
   const [filtersAnchor, setFiltersAnchor] = useState<HTMLElement | null>(null);
   const dataGridApiRef = useGridApiRef();
   const focusedParticipantRef = useRef<string | null>(null);
+  const isCompactLayout = useMediaQuery('(max-width:600px)');
   const participantUsername = useMemo(() => decodeRouteParam(participantParam), [participantParam]);
   const normalizedParticipantUsername = normalizeUsername(participantUsername);
 
@@ -159,9 +162,7 @@ const ContestStandingsPage = () => {
     [followingOnly, officialOnly, selectedFilter],
   );
   const shouldAutoLocateParticipant =
-    Boolean(participantUsername) &&
-    !searchParams.has('page') &&
-    !searchParams.has('pageSize');
+    Boolean(participantUsername) && !searchParams.has('page') && !searchParams.has('pageSize');
 
   const { data: standings, isLoading } = useContestStandings(
     contestId,
@@ -441,8 +442,9 @@ const ContestStandingsPage = () => {
       {
         field: 'rank',
         headerName: t('contests.standings.place'),
-        minWidth: 70,
-        flex: 0.3,
+        minWidth: isCompactLayout ? 40 : 70,
+        width: isCompactLayout ? 42 : undefined,
+        flex: isCompactLayout ? undefined : 0.3,
         sortable: false,
         renderHeader: (params) => (
           <Stack direction="row" alignItems="center" spacing={1} sx={{ pl: 1 }}>
@@ -461,18 +463,20 @@ const ContestStandingsPage = () => {
       {
         field: 'username',
         headerName: t('contests.standings.contestant'),
-        minWidth: 200,
-        flex: 1.2,
+        minWidth: isCompactLayout ? 128 : 200,
+        flex: isCompactLayout ? 1 : 1.2,
         sortable: false,
         renderCell: ({ row }) => (
           <Stack direction="row" spacing={1} alignItems="center" minWidth={0}>
             <ContestantView
               contestant={row}
-              imgSize={28}
+              imgSize={isCompactLayout ? 22 : 28}
               isVirtual={row.isVirtual}
               isUnrated={row.isUnrated}
               isOfficial={row.isOfficial}
               showCountry
+              showFullName={!isCompactLayout}
+              disablePopover
             />
           </Stack>
         ),
@@ -480,8 +484,9 @@ const ContestStandingsPage = () => {
       {
         field: 'points',
         headerName: t('contests.standings.points'),
-        minWidth: 60,
-        flex: 0.8,
+        minWidth: isCompactLayout ? 58 : 60,
+        width: isCompactLayout ? 64 : undefined,
+        flex: isCompactLayout ? undefined : 0.8,
         sortable: false,
         renderCell: ({ row }) => (
           <Stack direction="row" spacing={0.5} alignItems="center">
@@ -504,8 +509,8 @@ const ContestStandingsPage = () => {
       base.push({
         field: 'delta',
         headerName: t('contests.standings.delta'),
-        minWidth: 110,
-        flex: 0.6,
+        minWidth: isCompactLayout ? 86 : 110,
+        flex: isCompactLayout ? undefined : 0.6,
         align: 'center',
         headerAlign: 'center',
         sortable: false,
@@ -556,8 +561,8 @@ const ContestStandingsPage = () => {
       base.push({
         field: 'performance',
         headerName: t('contests.standings.performance'),
-        minWidth: 100,
-        flex: 0.7,
+        minWidth: isCompactLayout ? 86 : 100,
+        flex: isCompactLayout ? undefined : 0.7,
         align: 'center',
         headerAlign: 'center',
         sortable: false,
@@ -583,9 +588,10 @@ const ContestStandingsPage = () => {
       (problem: ContestProblemEntity) => ({
         field: `problem-${problem.symbol}`,
         headerName: problem.symbol,
-        minWidth: 100,
+        minWidth: isCompactLayout ? 54 : 100,
+        width: isCompactLayout ? 56 : undefined,
         headerAlign: 'center',
-        flex: 0.8,
+        flex: isCompactLayout ? undefined : 0.8,
         sortable: false,
         renderHeader: (params) => {
           const symbol = params.colDef.field.replace('problem-', '');
@@ -601,8 +607,8 @@ const ContestStandingsPage = () => {
                 flexDirection: 'column',
                 alignItems: 'center',
                 justifyContent: 'center',
-                px: 1.5,
-                py: 1,
+                px: isCompactLayout ? 0.25 : 1.5,
+                py: isCompactLayout ? 0.25 : 1,
                 borderRight: 1,
                 borderColor: 'divider',
                 '&:last-of-type': { borderRight: 'none' },
@@ -614,40 +620,45 @@ const ContestStandingsPage = () => {
                   to={problemLink}
                   underline="hover"
                   color="text.primary"
-                  sx={{ fontWeight: 700 }}
+                  sx={{
+                    fontWeight: 700,
+                    fontSize: isCompactLayout ? '0.75rem' : undefined,
+                    lineHeight: isCompactLayout ? 1.1 : undefined,
+                  }}
                 >
                   {problem?.symbol ?? symbol}
                 </Link>
               </Tooltip>
-              <Stack direction="row" spacing={0.4} alignItems="center">
-                <Typography variant="caption" color="text.secondary">
-                  (
-                </Typography>
-                <Typography variant="caption" color="success.main">
-                  {problem?.solved ?? 0}
-                </Typography>
-                <Typography variant="caption" color="text.secondary">
-                  /
-                </Typography>
-                <Typography variant="caption" color="error.main">
-                  {problem?.unsolved ?? 0}
-                </Typography>
-                <Typography variant="caption" color="text.secondary">
-                  /
-                </Typography>
-                <Typography variant="caption" color="text.secondary">
-                  {problem?.attemptsCount ?? 0}
-                </Typography>
-                <Typography variant="caption" color="text.secondary">
-                  )
-                </Typography>
-              </Stack>
+              {!isCompactLayout ? (
+                <Stack direction="row" spacing={0.4} alignItems="center">
+                  <Typography variant="caption" color="text.secondary">
+                    (
+                  </Typography>
+                  <Typography variant="caption" color="success.main">
+                    {problem?.solved ?? 0}
+                  </Typography>
+                  <Typography variant="caption" color="text.secondary">
+                    /
+                  </Typography>
+                  <Typography variant="caption" color="error.main">
+                    {problem?.unsolved ?? 0}
+                  </Typography>
+                  <Typography variant="caption" color="text.secondary">
+                    /
+                  </Typography>
+                  <Typography variant="caption" color="text.secondary">
+                    {problem?.attemptsCount ?? 0}
+                  </Typography>
+                  <Typography variant="caption" color="text.secondary">
+                    )
+                  </Typography>
+                </Stack>
+              ) : null}
             </Box>
           );
         },
         renderCell: ({ row }) => {
-          const info =
-            row.problemsInfo?.find((item) => item.problemSymbol === problem.symbol) ?? null;
+          const info = getContestantProblemInfo(row, problem.symbol);
           return (
             <ContestantProblemResultCell
               contestType={contest?.type}
@@ -669,6 +680,7 @@ const ContestStandingsPage = () => {
     contest?.typeInfo,
     contestId,
     contestProblems,
+    isCompactLayout,
     problemMap,
     t,
   ]);
@@ -690,12 +702,22 @@ const ContestStandingsPage = () => {
       <DataGrid
         apiRef={dataGridApiRef}
         autoHeight
-        rowHeight={72}
+        rowHeight={isCompactLayout ? 42 : 72}
+        columnHeaderHeight={isCompactLayout ? 38 : undefined}
         disableColumnMenu
         disableColumnFilter
         disableRowSelectionOnClick
         rows={contestants}
         columns={columns}
+        columnVisibilityModel={
+          isCompactLayout
+            ? {
+                delta: false,
+                performance: false,
+              }
+            : undefined
+        }
+        localeText={{ noRowsLabel: t('common.dataGrid.noRows.contestStandings') }}
         loading={isLoading}
         rowCount={total}
         paginationMode="server"
@@ -723,6 +745,47 @@ const ContestStandingsPage = () => {
             .join(' ')
         }
         sx={(theme) => ({
+          minWidth: 0,
+          '& .MuiDataGrid-cell': {
+            px: isCompactLayout ? 0.5 : undefined,
+            fontSize: isCompactLayout ? '0.75rem' : undefined,
+            lineHeight: isCompactLayout ? 1.2 : undefined,
+          },
+          '& .MuiDataGrid-columnHeader': {
+            px: isCompactLayout ? 0.5 : undefined,
+          },
+          '& .MuiDataGrid-columnHeaderTitle': {
+            fontSize: isCompactLayout ? '0.75rem' : undefined,
+          },
+          '& .MuiDataGrid-columnHeader .MuiTypography-subtitle2': {
+            fontSize: isCompactLayout ? '0.75rem' : undefined,
+            lineHeight: isCompactLayout ? 1.1 : undefined,
+          },
+          '& .MuiDataGrid-columnHeader .MuiTypography-caption': {
+            fontSize: isCompactLayout ? '0.62rem' : undefined,
+            lineHeight: isCompactLayout ? 1 : undefined,
+          },
+          '& .MuiDataGrid-cell .MuiTypography-body2, & .MuiDataGrid-cell .MuiTypography-subtitle2':
+            {
+              fontSize: isCompactLayout ? '0.7rem' : undefined,
+              lineHeight: isCompactLayout ? 1.1 : undefined,
+            },
+          '& .MuiDataGrid-cell .MuiTypography-caption': {
+            fontSize: isCompactLayout ? '0.65rem' : undefined,
+          },
+          '& .MuiDataGrid-cell .MuiTypography-overline': {
+            fontSize: isCompactLayout ? '0.66rem' : undefined,
+            lineHeight: isCompactLayout ? 1.05 : undefined,
+            letterSpacing: 0,
+          },
+          '& .MuiDataGrid-cell .contest-problem-result': {
+            gap: isCompactLayout ? 0 : undefined,
+          },
+          '& .MuiDataGrid-cell .contest-problem-result-best': {
+            borderRadius: isCompactLayout ? 1 : undefined,
+            px: isCompactLayout ? 0.5 : undefined,
+            py: isCompactLayout ? 0.25 : undefined,
+          },
           '& .MuiDataGrid-row--scoreGroupMuted': {
             bgcolor: '#f7f7f7',
             ...theme.applyStyles('dark', {

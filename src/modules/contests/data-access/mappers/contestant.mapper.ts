@@ -31,15 +31,7 @@ const mapTeam = (payload: any): ContestantTeam => ({
 
 export const mapContestant = (
   payload: any,
-  index?: number,
-  page?: number,
-  pageSize?: number,
 ): ContestantEntity => {
-  const baseIndex =
-    index !== undefined && page !== undefined && pageSize !== undefined
-      ? Math.max(0, (page - 1) * pageSize)
-      : 0;
-
   return {
     id: payload?.id !== undefined ? toNumber(payload.id) : undefined,
     rowType: payload?.rowType ?? payload?.row_type ?? 'official',
@@ -89,22 +81,15 @@ export const mapContestant = (
         : (payload?.official ?? undefined),
     virtualTime: payload?.virtualTime ?? payload?.virtual_time ?? null,
     country: payload?.country ?? payload?.user?.country ?? undefined,
-    rowIndex:
-      payload?.rowIndex ??
-      payload?.row_index ??
-      (index !== undefined && page !== undefined && pageSize !== undefined
-        ? baseIndex + index + 1
-        : undefined),
+    rowIndex: payload?.rowIndex ?? payload?.row_index,
   };
 };
 
 export const mapContestantsPage = (payload: any) =>
-  mapPageResult(payload, (item: any, index: number, page: number, pageSize: number) =>
-    mapContestant(item, index, page, pageSize),
-  );
+  mapPageResult(payload, (item: any) => mapContestant(item));
 
 export const mapContestantList = (payload: any[]): ContestantEntity[] =>
-  (payload ?? []).map((item: any, index: number) => mapContestant(item, index));
+  (payload ?? []).map((item: any) => mapContestant(item));
 
 export const mapContestFilter = (payload: any): ContestFilter => ({
   id: payload?.id ?? payload?.value ?? payload,
@@ -134,25 +119,12 @@ export const mapContestantTimeline = (payload: any): ContestantTimeline => ({
 
 export const mapContestRegistrant = (
   payload: any,
-  index?: number,
-  page?: number,
-  pageSize?: number,
 ): ContestRegistrant => {
-  const baseIndex =
-    index !== undefined && page !== undefined && pageSize !== undefined
-      ? Math.max(0, (page - 1) * pageSize)
-      : 0;
-
   return {
     username: payload?.username ?? '',
     rating: payload?.rating !== undefined ? toNumber(payload.rating) : undefined,
     ratingTitle: payload?.ratingTitle ?? payload?.rating_title ?? undefined,
     team: payload?.team ? mapTeam(payload.team) : null,
-    rowIndex:
-      payload?.rowIndex ??
-      payload?.row_index ??
-      (index !== undefined && page !== undefined && pageSize !== undefined
-        ? baseIndex + index + 1
-        : undefined),
+    rowIndex: payload?.rowIndex ?? payload?.row_index,
   };
 };

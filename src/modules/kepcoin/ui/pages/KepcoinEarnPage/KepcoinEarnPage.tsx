@@ -1,6 +1,6 @@
 import { useEffect, useMemo, useState } from 'react';
 import { Link as RouterLink } from 'react-router-dom';
-import { Box, Button, Card, CardContent, Stack, Tab, Tabs, Typography } from '@mui/material';
+import { Box, Button, Card, CardContent, Stack, Typography } from '@mui/material';
 import { useTranslation } from 'react-i18next';
 import { useAuth } from 'app/providers/AuthProvider';
 import IconifyIcon from 'shared/components/base/IconifyIcon';
@@ -13,6 +13,7 @@ import { responsivePagePaddingSx } from 'shared/lib/styles';
 import { cssVarRgba } from 'shared/lib/utils';
 import { resources } from 'app/routes/resources';
 import { consumePendingTaskSlug } from 'modules/kepcoin/lib/pending-task-storage';
+import ResponsiveTabs from 'shared/components/common/ResponsiveTabs';
 
 type TaskFilter = 'all' | 'completed' | 'uncompleted';
 
@@ -44,6 +45,14 @@ const KepcoinEarnPage = () => {
   const selectedTask = useMemo(
     () => allTasks.find((task) => task.slug === selectedTaskSlug) ?? null,
     [allTasks, selectedTaskSlug],
+  );
+  const filterTabs = useMemo(
+    () => [
+      { value: 'all' as const, label: t('kepcoinPage.earnPage.filters.all') },
+      { value: 'completed' as const, label: t('kepcoinPage.earnPage.filters.completed') },
+      { value: 'uncompleted' as const, label: t('kepcoinPage.earnPage.filters.uncompleted') },
+    ],
+    [t],
   );
 
   useEffect(() => {
@@ -147,16 +156,16 @@ const KepcoinEarnPage = () => {
             </Box>
           </Card>
 
-          <Tabs
+          <ResponsiveTabs
             value={taskFilter}
-            onChange={(_, value: TaskFilter) => setTaskFilter(value)}
-            variant="scrollable"
-            scrollButtons={false}
-          >
-            <Tab value="all" label={t('kepcoinPage.earnPage.filters.all')} />
-            <Tab value="completed" label={t('kepcoinPage.earnPage.filters.completed')} />
-            <Tab value="uncompleted" label={t('kepcoinPage.earnPage.filters.uncompleted')} />
-          </Tabs>
+            onChange={(value) => setTaskFilter(value)}
+            items={filterTabs}
+            ariaLabel="kepcoin task filters"
+            tabsProps={{
+              variant: 'scrollable',
+              scrollButtons: false,
+            }}
+          />
 
           <TaskCategoriesWidget
             categories={filteredCategories}

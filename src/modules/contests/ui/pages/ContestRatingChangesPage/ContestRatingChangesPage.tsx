@@ -186,6 +186,7 @@ const ContestRatingChangesPage = () => {
         disableRowSelectionOnClick
         rows={paginatedRows}
         columns={columns}
+        localeText={{ noRowsLabel: t('common.dataGrid.noRows.contestRatingChanges') }}
         loading={isLoading}
         sortingMode="server"
         sortModel={sortModel}

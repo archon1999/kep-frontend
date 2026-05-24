@@ -6,6 +6,7 @@ import {
   GridSortModel,
   GridValidRowModel,
 } from '@mui/x-data-grid';
+import { useTranslation } from 'react-i18next';
 import { UsersListItem } from 'modules/users/domain/entities/user.entity';
 import CountryFlagIcon from 'shared/components/common/CountryFlagIcon';
 import KepcoinValue from 'shared/components/common/KepcoinValue';
@@ -48,6 +49,7 @@ const UsersDataGrid = ({
   onSortModelChange,
   columnLabels,
 }: UsersDataGridProps) => {
+  const { t } = useTranslation();
   const columns: GridColDef<GridValidRowModel>[] = [
     {
       field: 'username',
@@ -67,6 +69,16 @@ const UsersDataGrid = ({
 
         return (
           <Stack direction="row" spacing={2} alignItems="center" sx={{ minWidth: 0 }}>
+            {user.rowIndex !== undefined && (
+              <Typography
+                color="primary"
+                fontWeight={800}
+                sx={{ width: 34, flexShrink: 0, fontSize: 18, textAlign: 'right' }}
+                noWrap
+              >
+                {user.rowIndex}.
+              </Typography>
+            )}
             <Avatar src={user.avatar} alt={user.username} sx={{ width: 42, height: 42 }} />
             <Stack direction="column" spacing={0.25} minWidth={0}>
               <UserPopover
@@ -250,6 +262,7 @@ const UsersDataGrid = ({
       onSortModelChange={onSortModelChange}
       sortingMode="server"
       columns={columns}
+      localeText={{ noRowsLabel: t('common.dataGrid.noRows.users') }}
       disableRowSelectionOnClick
       getRowId={(row) => (row as UsersListItem).id ?? (row as UsersListItem).username}
       sx={{

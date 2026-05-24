@@ -29,6 +29,7 @@ const normalizeRating = (rating?: unknown): RatingValue | undefined => {
 
 export const mapApiUserToDomain = (user: any): UsersListItem => ({
   id: user.id,
+  rowIndex: user.rowIndex ?? user.row_index,
   username: user.username,
   firstName: user.firstName ?? user.first_name,
   lastName: user.lastName ?? user.last_name,

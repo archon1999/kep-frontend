@@ -37,8 +37,8 @@ const DuelsRatingPageTable = () => {
   const ordering = state.ordering || '-wins';
   const { data: ratingPage, isLoading } = useDuelsRating({ page, pageSize, ordering });
   const rows = useMemo(
-    () => mapDuelsRatingPageTableRows(ratingPage?.data ?? [], { page, pageSize }),
-    [page, pageSize, ratingPage?.data],
+    () => mapDuelsRatingPageTableRows(ratingPage?.data ?? []),
+    [ratingPage?.data],
   );
 
   const columns: GridColDef<DuelsRatingPageTableRow>[] = useMemo(
@@ -128,6 +128,7 @@ const DuelsRatingPageTable = () => {
       loading={isLoading}
       rows={rows}
       columns={columns}
+      localeText={{ noRowsLabel: t('common.dataGrid.noRows.duelsRating') }}
       rowCount={ratingPage?.total ?? rows.length}
       paginationModel={paginationModel}
       onPaginationModelChange={onPaginationModelChange}

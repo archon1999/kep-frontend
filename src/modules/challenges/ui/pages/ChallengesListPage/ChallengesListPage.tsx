@@ -1,6 +1,6 @@
 import { useTranslation } from 'react-i18next';
 import { useNavigate } from 'react-router';
-import { Box, Card, CardContent, Divider, Stack, Tab, Tabs } from '@mui/material';
+import { Box, Card, CardContent, Divider, Stack } from '@mui/material';
 import { useAuth } from 'app/providers/AuthProvider.tsx';
 import { useDocumentTitle } from 'app/providers/DocumentTitleProvider';
 import { getResourceById, resources } from 'app/routes/resources';
@@ -21,6 +21,7 @@ import { useArenasList } from 'modules/arena/application/queries.ts';
 import { ArenaStatus } from 'modules/arena/domain/entities/arena.entity.ts';
 import { responsivePagePaddingSx } from 'shared/lib/styles';
 import { toast } from 'sonner';
+import ResponsiveTabs from 'shared/components/common/ResponsiveTabs';
 import useRouteQueryState from 'shared/hooks/useRouteQueryState';
 import { useLoginRedirect } from 'shared/lib/authRedirect';
 import { booleanFlagParam, enumParam, numberParam } from 'shared/lib/queryParams';
@@ -152,6 +153,11 @@ const ChallengesListPage = () => {
   };
 
   const handlePageChange = (value: number) => setField('page', value);
+  const tabs = [
+    { value: 'quickstart' as const, label: t('challenges.quickStartTitle') },
+    { value: 'queue' as const, label: t('challenges.waitingRoom') },
+    { value: 'history' as const, label: t('challenges.recent') },
+  ];
 
   return (
     <Box sx={responsivePagePaddingSx}>
@@ -163,16 +169,16 @@ const ChallengesListPage = () => {
 
         <Card variant="outlined" sx={{ borderRadius: 3 }}>
           <CardContent sx={{ pb: 0 }}>
-            <Tabs
+            <ResponsiveTabs
               value={state.activeTab}
-              onChange={(_, value) => setField('activeTab', value)}
-              variant="scrollable"
-              scrollButtons="auto"
-            >
-              <Tab value="quickstart" label={t('challenges.quickStartTitle')} />
-              <Tab value="queue" label={t('challenges.waitingRoom')} />
-              <Tab value="history" label={t('challenges.recent')} />
-            </Tabs>
+              onChange={(value) => setField('activeTab', value)}
+              items={tabs}
+              ariaLabel="challenges tabs"
+              tabsProps={{
+                variant: 'scrollable',
+                scrollButtons: 'auto',
+              }}
+            />
           </CardContent>
           <Divider />
           <Box sx={{ p: { xs: 2, md: 3 } }}>

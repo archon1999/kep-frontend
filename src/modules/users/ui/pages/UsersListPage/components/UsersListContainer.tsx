@@ -1,24 +1,22 @@
 import {
   ChangeEvent,
-  SyntheticEvent,
   useEffect,
   useMemo,
   useRef,
   useState,
 } from 'react';
 import { useTranslation } from 'react-i18next';
-import { TabContext, TabList } from '@mui/lab';
 import {
   Box,
   InputAdornment,
   Stack,
-  Tab,
 } from '@mui/material';
 import { GridSortModel } from '@mui/x-data-grid';
 import { useUsersCountries, useUsersList } from 'modules/users/application/queries';
 import IconifyIcon from 'shared/components/base/IconifyIcon';
 import AppliedFilters from 'shared/components/common/AppliedFilters';
 import FilterButton from 'shared/components/common/FilterButton';
+import ResponsiveTabs from 'shared/components/common/ResponsiveTabs';
 import {
   DEFAULT_FILTER_DRAWER_WIDTH,
   FilterDrawerLayout,
@@ -338,11 +336,21 @@ const UsersListContainer = () => {
   const rows = useMemo(() => data?.data ?? [], [data?.data]);
   const rowCount = data?.total ?? 0;
 
-  const handleTabChange = (_: SyntheticEvent, value: TabValue) => {
+  const handleTabChange = (value: TabValue) => {
     setField('tabValue', value);
     setField('ordering', '');
     setPaginationModel((prev) => ({ ...prev, page: 0 }));
   };
+  const tabs = useMemo(
+    () => [
+      { label: t('users.tabs.all'), value: 'all' as const },
+      { label: t('users.tabs.skills'), value: 'skills' as const },
+      { label: t('users.tabs.activity'), value: 'activity' as const },
+      { label: t('users.tabs.contests'), value: 'contests' as const },
+      { label: t('users.tabs.challenges'), value: 'challenges' as const },
+    ],
+    [t],
+  );
 
   const handleFilterChange =
     (field: keyof FiltersState) => (event: ChangeEvent<HTMLInputElement>) => {
@@ -436,7 +444,7 @@ const UsersListContainer = () => {
           actionComponent={<UsersHeaderStatistics />}
         />
         <Box sx={{ flex: 1, px: { xs: 3, md: 5 } }}>
-          <TabContext value={state.tabValue}>
+          <>
             <Stack
               sx={{
                 gap: 2,
@@ -447,13 +455,12 @@ const UsersListContainer = () => {
               }}
             >
               <Box sx={{ order: { xs: 1, sm: 0 } }}>
-                <TabList onChange={handleTabChange} aria-label="users list tab">
-                  <Tab label={t('users.tabs.all')} value="all" />
-                  <Tab label={t('users.tabs.skills')} value="skills" />
-                  <Tab label={t('users.tabs.activity')} value="activity" />
-                  <Tab label={t('users.tabs.contests')} value="contests" />
-                  <Tab label={t('users.tabs.challenges')} value="challenges" />
-                </TabList>
+                <ResponsiveTabs
+                  value={state.tabValue}
+                  onChange={handleTabChange}
+                  items={tabs}
+                  ariaLabel="users list tab"
+                />
               </Box>
               <Stack sx={{ gap: 1 }} direction={{ xs: 'column', sm: 'row' }}>
                 <FilterButton
@@ -509,7 +516,7 @@ const UsersListContainer = () => {
               onSortModelChange={handleSortModelChange}
               columnLabels={columnLabels}
             />
-          </TabContext>
+          </>
         </Box>
       </Stack>
     </FilterDrawerLayout>

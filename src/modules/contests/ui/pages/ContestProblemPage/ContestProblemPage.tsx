@@ -13,8 +13,6 @@ import {
   IconButton,
   LinearProgress,
   Stack,
-  Tab,
-  Tabs,
   Tooltip,
   Typography,
 } from '@mui/material';
@@ -36,6 +34,7 @@ import { ProblemEditorPanel } from 'modules/problems/ui/shared/components/proble
 import ProblemEditorSkeleton from 'modules/problems/ui/shared/components/problem-detail/ProblemEditorSkeleton';
 import IconifyIcon from 'shared/components/base/IconifyIcon';
 import Logo from 'shared/components/common/Logo.tsx';
+import ResponsiveTabs from 'shared/components/common/ResponsiveTabs';
 import { VerdictKey } from 'shared/components/problems/attemptVerdict.utils';
 import { diffDateTime, formatCountdownClock } from 'shared/lib/dateTime';
 import useGridPagination from 'shared/hooks/useGridPagination';
@@ -658,32 +657,34 @@ const ContestProblemPage = () => {
                 }}
               >
                 <CardContent sx={{ flex: 1, minHeight: 0, overflowY: 'auto', p: 0 }}>
-                  <Tabs
+                  <ResponsiveTabs
                     value={state.activeTab}
-                    onChange={(_, value) => setField('activeTab', value as ContestProblemTab)}
-                    variant="scrollable"
-                    scrollButtons="auto"
-                    textColor="primary"
-                    indicatorColor="primary"
-                    sx={{ px: 2, pt: 1 }}
-                  >
-                    <Tab
-                      sx={{ fontWeight: 600 }}
-                      value="description"
-                      label={t('contests.problem.description')}
-                      icon={
-                        <IconifyIcon icon="mdi:book-open-page-variant" width={18} height={18} />
-                      }
-                      iconPosition="start"
-                    />
-                    <Tab
-                      sx={{ fontWeight: 600 }}
-                      value="attempts"
-                      label={t('contests.problem.myAttempts')}
-                      icon={<IconifyIcon icon="mdi:history" width={18} height={18} />}
-                      iconPosition="start"
-                    />
-                  </Tabs>
+                    onChange={(value) => setField('activeTab', value)}
+                    ariaLabel="contest problem tabs"
+                    items={[
+                      {
+                        value: 'description',
+                        label: t('contests.problem.description'),
+                        icon: (
+                          <IconifyIcon icon="mdi:book-open-page-variant" width={18} height={18} />
+                        ),
+                        tabProps: { iconPosition: 'start', sx: { fontWeight: 600 } },
+                      },
+                      {
+                        value: 'attempts',
+                        label: t('contests.problem.myAttempts'),
+                        icon: <IconifyIcon icon="mdi:history" width={18} height={18} />,
+                        tabProps: { iconPosition: 'start', sx: { fontWeight: 600 } },
+                      },
+                    ]}
+                    tabsProps={{
+                      variant: 'scrollable',
+                      scrollButtons: 'auto',
+                      textColor: 'primary',
+                      indicatorColor: 'primary',
+                      sx: { px: 2, pt: 1 },
+                    }}
+                  />
                   <Divider />
 
                   <Box sx={{ p: 3 }}>

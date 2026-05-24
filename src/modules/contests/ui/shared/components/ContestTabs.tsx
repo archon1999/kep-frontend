@@ -1,10 +1,11 @@
 import { useMemo } from 'react';
 import { useTranslation } from 'react-i18next';
 import { Link as RouterLink, matchPath, useLocation, useNavigate } from 'react-router-dom';
-import { Box, Tab, Tabs } from '@mui/material';
+import { Box } from '@mui/material';
 import { getResourceById, resources } from 'app/routes/resources';
-import KepIcon from 'shared/components/base/KepIcon';
 import { ContestStatus } from 'modules/contests/domain/entities/contest-status';
+import KepIcon from 'shared/components/base/KepIcon';
+import ResponsiveTabs from 'shared/components/common/ResponsiveTabs';
 
 interface ContestTabsProps {
   contestId: number | string;
@@ -120,35 +121,45 @@ const ContestTabs = ({ contestId, status, isRated }: ContestTabsProps) => {
         flex: 1,
       }}
     >
-      <Tabs
+      <ResponsiveTabs
         value={activeTab}
-        onChange={(_, value) => {
+        onChange={(value) => {
           const nextTab = visibleTabs.find((tab) => tab.key === value);
           if (nextTab) {
             navigate(nextTab.to);
           }
         }}
-        variant="scrollable"
-        scrollButtons="auto"
-        allowScrollButtonsMobile
-        sx={{
-          width: '100%',
-          minWidth: 0,
+        items={visibleTabs.map((tab) => ({
+          value: tab.key,
+          label: tab.label,
+          icon: <KepIcon name={tab.icon as any} fontSize={18} />,
+          tabProps: {
+            iconPosition: 'start',
+            component: RouterLink,
+            to: tab.to,
+            sx: { textTransform: 'none', fontWeight: 500 },
+          },
+        }))}
+        ariaLabel="contest tabs"
+        tabsProps={{
+          variant: 'scrollable',
+          scrollButtons: 'auto',
+          allowScrollButtonsMobile: true,
+          sx: {
+            width: '100%',
+            minWidth: 0,
+          },
         }}
-      >
-        {visibleTabs.map((tab) => (
-          <Tab
-            key={tab.key}
-            value={tab.key}
-            icon={<KepIcon name={tab.icon as any} fontSize={18} />}
-            iconPosition="start"
-            label={tab.label}
-            component={RouterLink}
-            to={tab.to}
-            sx={{ textTransform: 'none', fontWeight: 500 }}
-          />
-        ))}
-      </Tabs>
+        selectProps={{
+          sx: {
+            minHeight: { xs: 38, sm: undefined },
+            '& .MuiSelect-select': {
+              py: { xs: 0.8, sm: undefined },
+              fontSize: { xs: '0.85rem', sm: undefined },
+            },
+          },
+        }}
+      />
     </Box>
   );
 };

@@ -1,6 +1,7 @@
 import { Theme, inputBaseClasses, tablePaginationClasses } from '@mui/material';
 import { Components } from '@mui/material/styles';
 import IconifyIcon from 'shared/components/base/IconifyIcon';
+import DataGridNoRowsOverlay from 'shared/components/common/DataGridNoRowsOverlay';
 import DataGridPagination from 'shared/components/pagination/DataGridPagination';
 import { cssVarRgba } from 'shared/lib/utils';
 
@@ -21,6 +22,7 @@ const DataGrid: Components<Omit<Theme, 'components'>>['MuiDataGrid'] = {
         />
       ),
       basePagination: DataGridPagination,
+      noRowsOverlay: DataGridNoRowsOverlay,
     },
     slotProps: {
       filterPanel: {

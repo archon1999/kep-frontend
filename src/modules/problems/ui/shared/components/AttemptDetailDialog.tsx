@@ -13,8 +13,6 @@ import {
   IconButton,
   LinearProgress,
   Stack,
-  Tab,
-  Tabs,
   TextField,
   Typography,
 } from '@mui/material';
@@ -32,6 +30,7 @@ import UserPopover from 'modules/users/ui/shared/components/UserPopover';
 import IconifyIcon from 'shared/components/base/IconifyIcon';
 import KepcoinSpendConfirm from 'shared/components/common/KepcoinSpendConfirm';
 import KepcoinValue from 'shared/components/common/KepcoinValue';
+import ResponsiveTabs from 'shared/components/common/ResponsiveTabs';
 import AttemptLanguage from 'shared/components/problems/AttemptLanguage';
 import AttemptVerdict from 'shared/components/problems/AttemptVerdict';
 import { VerdictKey } from 'shared/components/problems/attemptVerdict.utils';
@@ -508,14 +507,23 @@ const AttemptDetailDialog = ({
                 justifyContent="space-between"
                 sx={{ px: 2, pt: 1 }}
               >
-                <Tabs
+                <ResponsiveTabs
                   value="code"
-                  textColor="primary"
-                  indicatorColor="primary"
-                  sx={{ minHeight: 36 }}
-                >
-                  <Tab value="code" label={t('problems.detail.codeTab')} sx={{ minHeight: 36 }} />
-                </Tabs>
+                  onChange={() => undefined}
+                  items={[
+                    {
+                      value: 'code',
+                      label: t('problems.detail.codeTab'),
+                      tabProps: { sx: { minHeight: 36 } },
+                    },
+                  ]}
+                  ariaLabel="attempt detail tabs"
+                  tabsProps={{
+                    textColor: 'primary',
+                    indicatorColor: 'primary',
+                    sx: { minHeight: 36 },
+                  }}
+                />
                 {canViewAttempt && detail?.sourceCode ? (
                   <IconButton size="small" onClick={handleCopyCode}>
                     <IconifyIcon icon="mdi:content-copy" width={18} height={18} />

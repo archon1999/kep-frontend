@@ -1,7 +1,6 @@
 import {
   ReactElement,
   ReactNode,
-  SyntheticEvent,
   useEffect,
   useMemo,
   useRef,
@@ -9,7 +8,6 @@ import {
 } from 'react';
 import { useTranslation } from 'react-i18next';
 import { Link as RouterLink, useLocation, useNavigate, useParams } from 'react-router';
-import { TabContext, TabList } from '@mui/lab';
 import {
   Avatar,
   Box,
@@ -25,7 +23,6 @@ import {
   PaperProps,
   Stack,
   SxProps,
-  Tab,
   Theme,
   Tooltip,
   Typography,
@@ -34,7 +31,6 @@ import {
 } from '@mui/material';
 import { useNavContext } from 'app/layouts/main-layout/NavProvider';
 import { useAuth } from 'app/providers/AuthProvider';
-import { useBreakpoints } from 'app/providers/BreakpointsProvider';
 import { useDocumentTitle } from 'app/providers/DocumentTitleProvider';
 import { getResourceByUsername, resources } from 'app/routes/resources';
 import { HashLinkBehavior } from 'app/theme/components/Link';
@@ -57,6 +53,7 @@ import IconifyIcon from 'shared/components/base/IconifyIcon';
 import KepIcon from 'shared/components/base/KepIcon';
 import StatusAvatar from 'shared/components/base/StatusAvatar';
 import CountryFlagIcon from 'shared/components/common/CountryFlagIcon';
+import ResponsiveTabs from 'shared/components/common/ResponsiveTabs';
 import ChallengesRatingChip from 'shared/components/rating/ChallengesRatingChip';
 import ContestsRatingChip from 'shared/components/rating/ContestsRatingChip';
 import Streak from 'shared/components/rating/Streak';
@@ -658,8 +655,6 @@ const ProfileTabsInner = ({
   username: string;
 }) => {
   const { t } = useTranslation();
-  const { down } = useBreakpoints();
-  const isDownSm = down('sm');
   const tabsRef = useRef<HTMLDivElement>(null);
   const { topbarHeight } = useNavContext();
   const { activeElemId } = useScrollSpyContext();
@@ -710,8 +705,15 @@ const ProfileTabsInner = ({
     () => hashToTabValue(location.hash, tabData) || 'about',
   );
 
-  const handleTabChange = (_event: SyntheticEvent, newValue: TabValue) => {
+  const handleTabChange = (newValue: TabValue) => {
     setActiveTab(newValue);
+    const nextHash = `#${newValue}`;
+    if (window.location.hash !== nextHash) {
+      window.history.replaceState(null, '', `${location.pathname}${location.search}${nextHash}`);
+    }
+    window.requestAnimationFrame(() => {
+      document.getElementById(newValue)?.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    });
   };
 
   useEffect(() => {
@@ -747,44 +749,43 @@ const ProfileTabsInner = ({
 
   return (
     <Paper sx={{ outline: 0, bgcolor: 'transparent', boxShadow: 'none' }}>
-      <TabContext value={activeTab}>
-        <Box
-          ref={tabsRef}
-          sx={{
-            position: 'sticky',
-            zIndex: 10,
-            mb: 3,
-            top: topbarHeight,
-            bgcolor: 'background.paper',
-          }}
-        >
-          <ScrollSpyNavItem>
-            <TabList
-              variant={isDownSm ? 'scrollable' : 'standard'}
-              scrollButtons
-              allowScrollButtonsMobile
-              onChange={handleTabChange}
-              aria-label="profile tabs"
-              centered={isDownSm ? false : true}
-              sx={{
+      <Box
+        ref={tabsRef}
+        sx={{
+          position: 'sticky',
+          zIndex: 10,
+          mb: 3,
+          top: topbarHeight,
+          bgcolor: 'background.paper',
+        }}
+      >
+        <ScrollSpyNavItem>
+          <ResponsiveTabs
+            value={activeTab}
+            onChange={handleTabChange}
+            ariaLabel="profile tabs"
+            items={tabData.map(({ value, label }) => ({
+              value,
+              label,
+              tabProps: {
+                LinkComponent: HashLinkBehavior,
+                href: `#${value}`,
+              },
+            }))}
+            tabsProps={{
+              variant: 'standard',
+              scrollButtons: true,
+              allowScrollButtonsMobile: true,
+              centered: true,
+              sx: {
                 py: 1,
                 [`& .${tabsClasses.list}`]: { gap: 0, justifyContent: 'flex-start' },
                 [`& .${tabScrollButtonClasses.disabled}`]: { opacity: '0.3 !important' },
-              }}
-            >
-              {tabData.map(({ value, label }) => (
-                <Tab
-                  LinkComponent={HashLinkBehavior}
-                  href={`#${value}`}
-                  key={value}
-                  value={value}
-                  label={label}
-                />
-              ))}
-            </TabList>
-          </ScrollSpyNavItem>
-        </Box>
-      </TabContext>
+              },
+            }}
+          />
+        </ScrollSpyNavItem>
+      </Box>
 
       <Stack direction="column" spacing={5} sx={{ mb: 7 }}>
         {tabData.map(({ value, label, panel, editTo }) => (

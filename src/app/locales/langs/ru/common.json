@@ -10,6 +10,25 @@
     "close": "Закрыть",
     "minutesShort": "мин",
     "searchPlaceholder": "Поиск",
+    "dataGrid": {
+      "noRows": {
+        "default": "Данные не найдены.",
+        "users": "Пользователи не найдены.",
+        "duelsRating": "Пользователи рейтинга дуэлей не найдены.",
+        "challengesRating": "Пользователи рейтинга вызовов не найдены.",
+        "problemsRating": "Пользователи рейтинга задач не найдены.",
+        "problemAttempts": "Попытки не найдены.",
+        "problemSolvers": "Решившие эту задачу не найдены.",
+        "contestStandings": "Участники в таблице результатов не найдены.",
+        "contestsRating": "Участники рейтинга контестов не найдены.",
+        "contestRegistrants": "Зарегистрированные участники не найдены.",
+        "contestRatingChanges": "Изменения рейтинга не найдены.",
+        "adminUsers": "Пользователи в админке не найдены.",
+        "adminProblems": "Задачи в админке не найдены.",
+        "adminContests": "Контесты в админке не найдены.",
+        "adminResources": "{{resource}} не найдены."
+      }
+    },
     "pagination": {
       "previous": "Назад",
       "next": "Далее",

@@ -11,8 +11,6 @@ import {
   LinearProgress,
   MenuItem,
   Stack,
-  Tab,
-  Tabs,
   TextField,
   Typography,
 } from '@mui/material';
@@ -21,6 +19,7 @@ import { useAuth } from 'app/providers/AuthProvider';
 import { resources } from 'app/routes/resources';
 import { useLoginHref } from 'shared/lib/authRedirect';
 import KepIcon from 'shared/components/base/KepIcon';
+import ResponsiveTabs from 'shared/components/common/ResponsiveTabs';
 import AttemptVerdict from 'shared/components/problems/AttemptVerdict';
 import { VerdictKey } from 'shared/components/problems/attemptVerdict.utils';
 import { toast } from 'sonner';
@@ -452,32 +451,40 @@ export const ProblemEditorPanel = (props: ProblemEditorPanelProps) => {
                 boxShadow: (theme) => theme.shadows[1],
               }}
             >
-              <Tabs
+              <ResponsiveTabs
                 value={editorTab}
-                onChange={(_, value) => {
+                onChange={(value) => {
                   if (isDisabled) return;
                   onEditorTabChange(value);
                 }}
-                variant="fullWidth"
-                textColor="primary"
-                indicatorColor="primary"
-                sx={{
-                  px: 1,
-                  borderBottom: '1px solid',
-                  borderColor: 'divider',
-                  '& .MuiTab-root': {
-                    minHeight: 0,
-                    fontWeight: 600,
+                items={[
+                  {
+                    value: 'console',
+                    label: t('problems.detail.console'),
+                    disabled: isDisabled,
+                  },
+                  {
+                    value: 'samples',
+                    label: t('problems.detail.samplesResult'),
+                    disabled: isDisabled,
+                  },
+                ]}
+                ariaLabel="editor output tabs"
+                tabsProps={{
+                  variant: 'fullWidth',
+                  textColor: 'primary',
+                  indicatorColor: 'primary',
+                  sx: {
+                    px: 1,
+                    borderBottom: '1px solid',
+                    borderColor: 'divider',
+                    '& .MuiTab-root': {
+                      minHeight: 0,
+                      fontWeight: 600,
+                    },
                   },
                 }}
-              >
-                <Tab value="console" label={t('problems.detail.console')} disabled={isDisabled} />
-                <Tab
-                  value="samples"
-                  label={t('problems.detail.samplesResult')}
-                  disabled={isDisabled}
-                />
-              </Tabs>
+              />
 
               <Box
                 sx={{

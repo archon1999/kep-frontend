@@ -51,10 +51,9 @@ const ChallengesRatingPage = () => {
   const { data: ratingPage, isLoading } = useChallengesRating({ page, pageSize, ordering });
 
   const rows: ChallengesRatingPageRow[] = (ratingPage?.data ?? []).map(
-    (row: ChallengeRatingRow, index) => ({
+    (row: ChallengeRatingRow) => ({
       id: row.username,
       ...row,
-      rowIndex: (page - 1) * pageSize + index + 1,
       record: t('challenges.record', {
         wins: row.wins ?? 0,
         draws: row.draws ?? 0,

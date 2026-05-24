@@ -6,8 +6,7 @@ import {
   ProblemLanguageOption,
 } from 'modules/problems/domain/entities/problem.entity.ts';
 import FilterDrawer from 'shared/components/common/FilterDrawer.tsx';
-import AttemptVerdict from 'shared/components/problems/AttemptVerdict.tsx';
-import type { VerdictKey } from 'shared/components/problems/attemptVerdict.utils.ts';
+import VerdictSelect from 'shared/components/problems/VerdictSelect.tsx';
 import StyledTextField from 'shared/components/styled/StyledTextField.tsx';
 import type { AttemptsFilterState, ProblemOption, UserOption } from '../ProblemsAttemptsPage.tsx';
 
@@ -59,7 +58,6 @@ const ProblemsAttemptsFilterDrawer = ({
   setUserInput,
 }: ProblemsAttemptsFilterDrawerProps) => {
   const { t } = useTranslation();
-  const selectedVerdict = verdictOptions.find((option) => String(option.value) === filter.verdict);
 
   return (
     <FilterDrawer
@@ -162,42 +160,13 @@ const ProblemsAttemptsFilterDrawer = ({
           ))}
         </StyledTextField>
 
-        <StyledTextField
-          select
+        <VerdictSelect
           label={t('problems.attempts.verdict')}
           value={filter.verdict}
-          fullWidth
-          onChange={(event) => onChange('verdict', event.target.value)}
-          SelectProps={{
-            renderValue: () =>
-              selectedVerdict ? (
-                <Stack direction="row" spacing={1} alignItems="center">
-                  <AttemptVerdict
-                    verdict={selectedVerdict.value as VerdictKey}
-                    title={selectedVerdict.label}
-                    size="small"
-                  />
-                  <Typography variant="body2">{selectedVerdict.label}</Typography>
-                </Stack>
-              ) : (
-                t('problems.attempts.anyVerdict')
-              ),
-          }}
-        >
-          <MenuItem value="">{t('problems.attempts.anyVerdict')}</MenuItem>
-          {verdictOptions.map((option) => (
-            <MenuItem key={option.value} value={String(option.value)}>
-              <Stack direction="row" spacing={1} alignItems="center">
-                <AttemptVerdict
-                  verdict={option.value as VerdictKey}
-                  title={option.label}
-                  size="small"
-                />
-                <Typography variant="body2">{option.label}</Typography>
-              </Stack>
-            </MenuItem>
-          ))}
-        </StyledTextField>
+          options={verdictOptions}
+          anyLabel={t('problems.attempts.anyVerdict')}
+          onChange={(value) => onChange('verdict', value)}
+        />
 
         <Stack direction="row" spacing={1} alignItems="flex-end">
           <StyledTextField

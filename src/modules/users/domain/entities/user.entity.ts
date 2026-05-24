@@ -5,6 +5,7 @@ export interface RatingValue {
 
 export interface UsersListItem {
   id?: number;
+  rowIndex?: number;
   username: string;
   firstName?: string;
   lastName?: string;

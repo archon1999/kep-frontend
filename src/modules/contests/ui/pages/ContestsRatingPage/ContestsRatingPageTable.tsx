@@ -141,6 +141,7 @@ const ContestsRatingPageTable = ({
       loading={loading}
       rows={rows}
       columns={columns}
+      localeText={{ noRowsLabel: t('common.dataGrid.noRows.contestsRating') }}
       getRowId={(row) => row.username}
       rowCount={rowCount}
       paginationMode="server"

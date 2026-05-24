@@ -10,6 +10,25 @@
     "close": "Close",
     "minutesShort": "min",
     "searchPlaceholder": "Search",
+    "dataGrid": {
+      "noRows": {
+        "default": "No data found.",
+        "users": "No users found.",
+        "duelsRating": "No duel rating users found.",
+        "challengesRating": "No challenge rating users found.",
+        "problemsRating": "No problem rating users found.",
+        "problemAttempts": "No attempts found.",
+        "problemSolvers": "No solvers found for this problem.",
+        "contestStandings": "No contestants found in these standings.",
+        "contestsRating": "No contest rating participants found.",
+        "contestRegistrants": "No registrants found.",
+        "contestRatingChanges": "No rating changes found.",
+        "adminUsers": "No admin users found.",
+        "adminProblems": "No admin problems found.",
+        "adminContests": "No admin contests found.",
+        "adminResources": "No {{resource}} found."
+      }
+    },
     "pagination": {
       "previous": "Previous",
       "next": "Next",

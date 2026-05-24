@@ -1,6 +1,7 @@
-import { Box, Card, CardContent, Divider, Stack, Tab, Tabs } from '@mui/material';
+import { Box, Card, CardContent, Divider, Stack } from '@mui/material';
 import { useTranslation } from 'react-i18next';
 import { useDocumentTitle } from 'app/providers/DocumentTitleProvider';
+import ResponsiveTabs from 'shared/components/common/ResponsiveTabs';
 import useRouteQueryState from 'shared/hooks/useRouteQueryState';
 import { enumParam } from 'shared/lib/queryParams';
 import { responsivePagePaddingSx } from 'shared/lib/styles';
@@ -58,6 +59,11 @@ const DuelsListPage = () => {
     (myDuels?.total ?? 0) > 0
       ? 'my_duels'
       : 'waiting_room');
+  const tabs = [
+    { value: 'my_duels' as const, label: t('duels.tab.myDuels') },
+    { value: 'waiting_room' as const, label: t('duels.tab.waitingRoom') },
+    { value: 'history' as const, label: t('duels.tab.history') },
+  ];
 
   return (
     <Box sx={responsivePagePaddingSx}>
@@ -66,16 +72,16 @@ const DuelsListPage = () => {
 
         <Card variant="outlined" sx={{ borderRadius: 3 }}>
           <CardContent sx={{ pb: 0 }}>
-            <Tabs
+            <ResponsiveTabs
               value={resolvedActiveTab}
-              onChange={(_, value) => setField('activeTab', value)}
-              variant="scrollable"
-              scrollButtons="auto"
-            >
-              <Tab value="my_duels" label={t('duels.tab.myDuels')} />
-              <Tab value="waiting_room" label={t('duels.tab.waitingRoom')} />
-              <Tab value="history" label={t('duels.tab.history')} />
-            </Tabs>
+              onChange={(value) => setField('activeTab', value)}
+              items={tabs}
+              ariaLabel="duels tabs"
+              tabsProps={{
+                variant: 'scrollable',
+                scrollButtons: 'auto',
+              }}
+            />
           </CardContent>
           <Divider />
           <Box sx={{ p: { xs: 2, md: 3 } }}>

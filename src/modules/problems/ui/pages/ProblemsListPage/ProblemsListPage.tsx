@@ -1,8 +1,7 @@
-import { SyntheticEvent, useMemo, useState } from 'react';
+import { useMemo, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { Link as RouterLink } from 'react-router-dom';
-import { TabContext, TabList } from '@mui/lab';
-import { Box, Button, Grid, Stack, Tab } from '@mui/material';
+import { Box, Button, Grid, Stack } from '@mui/material';
 import SearchTextField from 'app/layouts/main-layout/common/search-box/SearchTextField.tsx';
 import { useAuth } from 'app/providers/AuthProvider.tsx';
 import { resources } from 'app/routes/resources.ts';
@@ -25,6 +24,7 @@ import { ProblemsListParams } from 'modules/problems/domain/ports/problems.repos
 import IconifyIcon from 'shared/components/base/IconifyIcon.tsx';
 import AppliedFilters from 'shared/components/common/AppliedFilters.tsx';
 import FilterButton from 'shared/components/common/FilterButton.tsx';
+import ResponsiveTabs from 'shared/components/common/ResponsiveTabs';
 import {
   DEFAULT_FILTER_DRAWER_WIDTH,
   FilterDrawerLayout,
@@ -562,8 +562,8 @@ const FilterCard = ({
 
   const orderingValue = filter.ordering ?? 'id';
 
-  const handleOrderingChange = (_: SyntheticEvent, value: string) => {
-    onChange('ordering', value as string);
+  const handleOrderingChange = (value: string) => {
+    onChange('ordering', value);
   };
 
   const activeFilters = useMemo(() => {
@@ -704,22 +704,25 @@ const FilterCard = ({
   return (
     <>
       <Stack direction="column" spacing={2}>
-        <TabContext value={orderingValue}>
+        <>
           <Stack
             direction={{ xs: 'column', lg: 'row' }}
             alignItems={{ lg: 'center' }}
             justifyContent="space-between"
           >
             <Stack spacing={0.75} sx={{ minWidth: 0 }}>
-              <TabList
+              <ResponsiveTabs
+                value={orderingValue}
                 onChange={handleOrderingChange}
-                aria-label="problems ordering"
-                allowScrollButtonsMobile
-              >
-                {orderingOptions.map((option) => (
-                  <Tab key={option.value} label={t(option.label)} value={option.value} />
-                ))}
-              </TabList>
+                ariaLabel="problems ordering"
+                items={orderingOptions.map((option) => ({
+                  value: option.value,
+                  label: t(option.label),
+                }))}
+                tabsProps={{
+                  allowScrollButtonsMobile: true,
+                }}
+              />
             </Stack>
 
             <Stack
@@ -753,7 +756,7 @@ const FilterCard = ({
               />
             </Stack>
           </Stack>
-        </TabContext>
+        </>
 
         <AppliedFilters
           filters={activeFilters}

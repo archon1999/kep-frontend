@@ -27,6 +27,7 @@ import FilterDrawer, {
   FilterRangeField,
   useFilterDrawer,
 } from 'shared/components/common/FilterDrawer';
+import DataGridNoRowsOverlay from 'shared/components/common/DataGridNoRowsOverlay';
 import useGridPagination from 'shared/hooks/useGridPagination';
 import { useAdminProblemMeta, useAdminProblems } from 'modules/admin/problems/application/queries';
 import { problemsAdminClient } from 'modules/admin/problems/data-access/problemsAdminClient';
@@ -586,7 +587,11 @@ const AdminProblemsListPage = () => {
         rows={data?.data ?? []}
         rowCount={data?.total ?? 0}
         loading={isGridLoading}
-        slots={{ loadingOverlay: AdminDataGridSkeletonLoadingOverlay }}
+        slots={{
+          loadingOverlay: AdminDataGridSkeletonLoadingOverlay,
+          noRowsOverlay: DataGridNoRowsOverlay,
+        }}
+        localeText={{ noRowsLabel: t('common.dataGrid.noRows.adminProblems') }}
         columns={columns}
         paginationModel={paginationModel}
         onPaginationModelChange={onPaginationModelChange}

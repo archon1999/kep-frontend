@@ -6,6 +6,7 @@ import {
   GridSortModel,
   GridValidRowModel,
 } from '@mui/x-data-grid';
+import { useTranslation } from 'react-i18next';
 import ContestsRatingChip from 'shared/components/rating/ContestsRatingChip';
 import { difficultyColorByKey, difficultyOptions } from 'modules/problems/config/difficulty';
 import { ProblemsRatingRow } from 'modules/problems/domain/entities/problem.entity';
@@ -42,6 +43,7 @@ const ProblemsRatingDataGrid = ({
   labels,
 }: ProblemsRatingDataGridProps) => {
   const theme = useTheme();
+  const { t } = useTranslation();
 
   const renderDifficultyCell = (key: (typeof difficultyOptions)[number]['key']) => {
     const colorKey = difficultyColorByKey[key];
@@ -155,6 +157,7 @@ const ProblemsRatingDataGrid = ({
       onSortModelChange={onSortModelChange}
       sortingMode="server"
       columns={columns}
+      localeText={{ noRowsLabel: t('common.dataGrid.noRows.problemsRating') }}
       disableRowSelectionOnClick
       getRowId={(row) => `${(row as ProblemsRatingRow).user.username}-${(row as ProblemsRatingRow).rowIndex}`}
       disableColumnMenu

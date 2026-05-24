@@ -5,6 +5,7 @@ import { Box, Button, Card, CardContent, Grid, MenuItem, Select, Stack, Typograp
 import { useDocumentTitle } from 'app/providers/DocumentTitleProvider';
 import { useAuth } from 'app/providers/AuthProvider';
 import OnlyMeSwitch from 'shared/components/common/OnlyMeSwitch';
+import VerdictSelect from 'shared/components/problems/VerdictSelect.tsx';
 import { getResourceByParams, resources } from 'app/routes/resources';
 import useGridPagination from 'shared/hooks/useGridPagination';
 import useRouteQueryState from 'shared/hooks/useRouteQueryState';
@@ -174,21 +175,14 @@ const ContestAttemptsPage = () => {
                     ))}
                   </Select>
 
-                  <Select
+                  <VerdictSelect
                     variant="standard"
                     value={filter.verdict}
-                    onChange={(event) => handleFilterChange('verdict', event.target.value)}
+                    options={verdictOptions}
+                    anyLabel={t('contests.filter.anyVerdict')}
+                    onChange={(value) => handleFilterChange('verdict', value)}
                     size="small"
-                    displayEmpty
-                    fullWidth
-                  >
-                    <MenuItem value="">{t('contests.filter.anyVerdict')}</MenuItem>
-                    {verdictOptions.map((option) => (
-                      <MenuItem key={option.value} value={option.value}>
-                        {option.label}
-                      </MenuItem>
-                    ))}
-                  </Select>
+                  />
 
                   {currentUser ? (
                     <OnlyMeSwitch
