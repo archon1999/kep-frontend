@@ -25,6 +25,11 @@ export const problemsApiClient = {
   getProblemPrev: (id: number | string) => apiClient.apiProblemsPrev(String(id)),
   listLanguages: () => apiClient.apiProblemsLangs(),
   listCategories: () => apiClient.apiCategoriesList() as Promise<ProblemsCategory[]>,
+  listGroups: () =>
+    axiosMutator<any>({
+      url: '/api/problem-groups/',
+      method: 'GET',
+    }),
   listStudyPlans: () => apiClient.apiStudyPlansList(),
   getStudyPlan: (id: number | string) => apiClient.apiStudyPlansRead(String(id)),
   purchaseStudyPlan: (id: number | string) =>

@@ -53,6 +53,7 @@ export interface AdminProblem {
   availableLanguages: AdminProblemAvailableLanguage[];
   tags: number[];
   topics: number[];
+  groups: number[];
   imageUrl?: string | null;
   ogImageUrl?: string | null;
   created?: string;
@@ -69,4 +70,5 @@ export interface AdminProblemMeta {
   languages: AdminChoiceOption<string>[];
   tags: AdminIdNameOption[];
   topics: AdminIdNameOption[];
+  groups: Array<AdminIdNameOption & { parent?: number | null }>;
 }

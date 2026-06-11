@@ -34,7 +34,7 @@ const ContestRatingChangesPage = () => {
   const { data: contestants = [], isLoading } = useContestContestants(contestId, { ordering });
   useDocumentTitle(contest?.title, { contestTitle: contest?.title });
 
-  const { paginationModel, onPaginationModelChange, pageParams } = useGridPagination({
+  const { paginationModel, onPaginationModelChange } = useGridPagination({
     initialPageSize: 20,
     querySync: {
       pageKey: 'page',
@@ -165,11 +165,6 @@ const ContestRatingChangesPage = () => {
     [t],
   );
 
-  const paginatedRows = useMemo(
-    () => contestants.slice(pageParams.offset, pageParams.offset + pageParams.pageSize),
-    [contestants, pageParams.offset, pageParams.pageSize],
-  );
-
   return (
     <Stack spacing={3} sx={responsivePagePaddingSx}>
       <ContestPageHeader
@@ -184,7 +179,7 @@ const ContestRatingChangesPage = () => {
         disableColumnMenu
         disableColumnFilter
         disableRowSelectionOnClick
-        rows={paginatedRows}
+        rows={contestants}
         columns={columns}
         localeText={{ noRowsLabel: t('common.dataGrid.noRows.contestRatingChanges') }}
         loading={isLoading}
@@ -192,7 +187,6 @@ const ContestRatingChangesPage = () => {
         sortModel={sortModel}
         onSortModelChange={setSortModel}
         sortingOrder={['asc', 'desc']}
-        rowCount={contestants.length}
         paginationMode="client"
         paginationModel={paginationModel}
         onPaginationModelChange={onPaginationModelChange}

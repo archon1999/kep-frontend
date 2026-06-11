@@ -19,6 +19,7 @@ import {
   ProblemAvailableLanguage,
   ProblemCategory,
   ProblemDetail,
+  ProblemGroup,
   ProblemLanguageOption,
   ProblemLanguageStatistic,
   ProblemListItem,
@@ -235,6 +236,21 @@ export const mapCategories = (categories: ProblemsCategory[]): ProblemCategory[]
     problemsCount: toNumber(category.problemsCount),
     tags: (category.tags ?? []).map((tag) => mapProblemTag({ ...tag, category: category.title })),
   }));
+
+export const mapProblemGroup = (group: any): ProblemGroup => ({
+  id: toNumber(group?.id),
+  name: group?.name ?? '',
+  slug: group?.slug ?? '',
+  parent: group?.parent ?? null,
+  order: toNullableNumber(group?.order),
+  problemsCount: toNullableNumber(group?.problemsCount ?? group?.problems_count),
+  children: Array.isArray(group?.children) ? group.children.map((child: any) => mapProblemGroup(child)) : [],
+});
+
+export const mapProblemGroups = (payload: any): ProblemGroup[] => {
+  const data = Array.isArray(payload?.data) ? payload.data : Array.isArray(payload) ? payload : [];
+  return data.map((group: any) => mapProblemGroup(group));
+};
 
 export const mapAttempts = (response: any): ProblemAttemptSummary[] => {
   const data = Array.isArray(response?.data)

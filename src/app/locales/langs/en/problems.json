@@ -23,6 +23,8 @@
     "category": "Category",
     "allCategories": "All categories",
     "tags": "Tags",
+    "groups": "Catalog",
+    "allGroups": "All",
     "difficultyLabel": "Difficulty",
     "allDifficulties": "All difficulties",
     "problemRating": "Problem rating",

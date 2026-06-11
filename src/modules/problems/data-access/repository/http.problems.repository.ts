@@ -9,6 +9,7 @@ import {
   AttemptListItem,
   PeriodRatingEntry,
   ProblemDetail,
+  ProblemGroup,
   ProblemListItem,
   ProblemSolution,
   ProblemSolver,
@@ -48,6 +49,7 @@ import {
   mapLanguages,
   mapPeriodRating,
   mapProblemDetail,
+  mapProblemGroups,
   mapProblemSolution,
   mapProblemSolversPage,
   mapProblemStatistics,
@@ -67,7 +69,7 @@ import {
 } from '../mappers/problems.mapper.ts';
 
 const mapFilterToApiParams = (params: ProblemsListParams): ApiProblemsListParams => {
-  const { tags, status, favorites, search, ...rest } = params;
+  const { groups, tags, status, favorites, search, ...rest } = params;
   const apiParams = {
     ...(rest as Record<string, unknown>),
   };
@@ -84,6 +86,10 @@ const mapFilterToApiParams = (params: ProblemsListParams): ApiProblemsListParams
 
   if (tags?.length) {
     apiParams.tags = tags.join(',');
+  }
+
+  if (groups?.length) {
+    apiParams.groups = groups.join(',');
   }
 
   if (favorites) {
@@ -253,6 +259,11 @@ export class HttpProblemsRepository implements ProblemsRepository {
   async listCategories() {
     const categories = await problemsApiClient.listCategories();
     return mapCategories(categories);
+  }
+
+  async listGroups(): Promise<ProblemGroup[]> {
+    const response = await problemsApiClient.listGroups();
+    return mapProblemGroups(response);
   }
 
   async listMostViewed() {

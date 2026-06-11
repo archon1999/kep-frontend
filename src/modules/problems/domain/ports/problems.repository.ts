@@ -9,6 +9,7 @@ import {
   ProblemCategory,
   ProblemContestPreview,
   ProblemDetail,
+  ProblemGroup,
   ProblemLanguageOption,
   ProblemListItem,
   ProblemSolution,
@@ -40,6 +41,7 @@ export interface PageResult<T> {
 export type ProblemsListParams = Omit<ApiProblemsListParams, 'tags' | 'favorites'> & {
   status?: number;
   tags?: number[];
+  groups?: number[];
   search?: string;
   favorites?: boolean;
   exclusive_lang?: string;
@@ -142,6 +144,7 @@ export interface ProblemsRepository {
   list(params: ProblemsListParams): Promise<PageResult<ProblemListItem>>;
   listLanguages(): Promise<ProblemLanguageOption[]>;
   listCategories(): Promise<ProblemCategory[]>;
+  listGroups(): Promise<ProblemGroup[]>;
   listMostViewed(): Promise<ProblemListItem[]>;
   getLastContest(): Promise<ProblemContestPreview | null>;
   listUserAttempts(username: string, pageSize?: number): Promise<ProblemAttemptSummary[]>;

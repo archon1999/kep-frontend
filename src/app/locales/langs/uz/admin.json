@@ -140,6 +140,7 @@
         "partialSolvable": "Qisman yechiladigan",
         "hasChecker": "Checker bor",
         "hasCheckInput": "Input checker bor",
+        "groups": "Katalog",
         "tags": "Teglar",
         "topics": "Mavzular",
         "sampleTestNumber": "Sample test #{{ count }}",

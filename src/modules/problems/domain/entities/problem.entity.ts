@@ -178,6 +178,16 @@ export interface ProblemCategory {
   tags: ProblemTag[];
 }
 
+export interface ProblemGroup {
+  id: number;
+  name: string;
+  slug: string;
+  parent?: number | null;
+  order?: number;
+  problemsCount?: number;
+  children: ProblemGroup[];
+}
+
 export interface ProblemAttemptSummary {
   id: number;
   problemId: number;

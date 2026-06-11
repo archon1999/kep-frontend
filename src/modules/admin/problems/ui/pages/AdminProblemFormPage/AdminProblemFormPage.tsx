@@ -64,6 +64,7 @@ const emptyProblem: AdminProblemPayload = {
   availableLanguages: [],
   tags: [],
   topics: [],
+  groups: [],
 };
 
 const translatedRichTextGroups = [
@@ -163,6 +164,11 @@ const AdminProblemFormPage = () => {
   const selectedTopics = useMemo(
     () => (meta?.topics ?? []).filter((topic) => form.topics.includes(topic.id)),
     [form.topics, meta?.topics],
+  );
+
+  const selectedGroups = useMemo(
+    () => (meta?.groups ?? []).filter((group) => form.groups.includes(group.id)),
+    [form.groups, meta?.groups],
   );
 
   const setField = <K extends keyof AdminProblemPayload>(field: K, value: AdminProblemPayload[K]) => {
@@ -444,6 +450,14 @@ const AdminProblemFormPage = () => {
       </AdminFormSection>
 
       <AdminFormSection title={t('admin.form.sections.tagsTopics')}>
+        <Autocomplete
+          multiple
+          options={meta?.groups ?? []}
+          value={selectedGroups}
+          getOptionLabel={(option) => option.name}
+          onChange={(_, value) => setField('groups', value.map((group) => group.id))}
+          renderInput={(params) => <TextField {...params} label={t('admin.form.fields.groups')} />}
+        />
         <Autocomplete
           multiple
           options={meta?.tags ?? []}

@@ -141,6 +141,7 @@
         "partialSolvable": "Частично решаемая",
         "hasChecker": "Есть checker",
         "hasCheckInput": "Есть input checker",
+        "groups": "Каталог",
         "tags": "Теги",
         "topics": "Темы",
         "sampleTestNumber": "Пример #{{ count }}",

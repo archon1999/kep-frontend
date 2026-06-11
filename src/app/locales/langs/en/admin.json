@@ -140,6 +140,7 @@
         "partialSolvable": "Partial solvable",
         "hasChecker": "Has checker",
         "hasCheckInput": "Has check input",
+        "groups": "Catalog",
         "tags": "Tags",
         "topics": "Topics",
         "sampleTestNumber": "Sample test #{{ count }}",

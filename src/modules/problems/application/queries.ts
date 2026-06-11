@@ -21,6 +21,9 @@ export const useProblemLanguages = () =>
 export const useProblemCategories = () =>
   useSWR(['problems-categories'], () => problemsRepository.listCategories());
 
+export const useProblemGroups = () =>
+  useSWR(['problems-groups'], () => problemsRepository.listGroups());
+
 export const useStudyPlans = () =>
   useSWR(['study-plans'], () => problemsRepository.listStudyPlans(), {
     revalidateOnFocus: false,

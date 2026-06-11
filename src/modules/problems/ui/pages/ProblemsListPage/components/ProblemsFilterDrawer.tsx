@@ -6,7 +6,9 @@ import {
   AccordionSummary,
   Box,
   Button,
+  Checkbox,
   Chip,
+  Collapse,
   Divider,
   InputAdornment,
   Menu,
@@ -20,6 +22,7 @@ import {
 import { difficultyOptions } from 'modules/problems/config/difficulty';
 import {
   ProblemCategory,
+  ProblemGroup,
   ProblemLanguageOption,
 } from 'modules/problems/domain/entities/problem.entity.ts';
 import { ProblemsListParams } from 'modules/problems/domain/ports/problems.repository.ts';
@@ -48,6 +51,7 @@ export interface ProblemsFilterDrawerProps {
   drawerWidth: number;
   languages: ProblemLanguageOption[];
   categories: ProblemCategory[];
+  groups: ProblemGroup[];
   filter: ProblemsListParams;
   onChange: <K extends keyof ProblemsListParams>(key: K, value: ProblemsListParams[K]) => void;
   onPatch: (patch: Partial<ProblemsListParams>) => void;
@@ -59,6 +63,7 @@ const ProblemsFilterDrawer = ({
   drawerWidth,
   languages,
   categories,
+  groups,
   filter,
   onChange,
   onPatch,
@@ -70,6 +75,7 @@ const ProblemsFilterDrawer = ({
       drawerWidth={drawerWidth}
       languages={languages}
       categories={categories}
+      groups={groups}
       filter={filter}
       onChange={onChange}
       onPatch={onPatch}
@@ -85,12 +91,15 @@ const ProblemsFilterDrawerContent = ({
   drawerWidth,
   languages,
   categories,
+  groups,
   filter,
   onChange,
   onPatch,
 }: ProblemFilterDrawerContentProps) => {
   const { t } = useTranslation();
   const theme = useTheme();
+  const [groupsAnchor, setGroupsAnchor] = useState<HTMLElement | null>(null);
+  const [expandedGroups, setExpandedGroups] = useState<number[]>([]);
   const [tagsAnchor, setTagsAnchor] = useState<HTMLElement | null>(null);
   const [expandedTagCategories, setExpandedTagCategories] = useState<string[]>([]);
 
@@ -124,6 +133,18 @@ const ProblemsFilterDrawerContent = ({
   }, [categories, filter.category]);
 
   const tagsOpen = Boolean(tagsAnchor);
+  const groupsOpen = Boolean(groupsAnchor);
+  const groupsById = useMemo(() => {
+    const map = new Map<number, ProblemGroup>();
+    const visit = (items: ProblemGroup[]) => {
+      items.forEach((item) => {
+        map.set(item.id, item);
+        visit(item.children ?? []);
+      });
+    };
+    visit(groups);
+    return map;
+  }, [groups]);
   const ratingRangeValue = useMemo<[number, number]>(() => {
     const min = Number(filter.problem_rating_min);
     const max = Number(filter.problem_rating_max);
@@ -158,10 +179,33 @@ const ProblemsFilterDrawerContent = ({
     return `${activeTagNames.slice(0, 2).join(', ')} +${activeTagNames.length - 2}`;
   }, [filter.tags, groupedTags.length, t, tags]);
 
+  const groupSummary = useMemo(() => {
+    const activeGroupIds = filter.groups ?? [];
+
+    if (activeGroupIds.length === 0) {
+      return t('problems.allGroups');
+    }
+
+    const activeGroupNames = activeGroupIds
+      .map((groupId) => groupsById.get(groupId)?.name)
+      .filter((name): name is string => Boolean(name));
+
+    if (activeGroupNames.length === 0) {
+      return t('problems.appliedFilters', { count: activeGroupIds.length });
+    }
+
+    if (activeGroupNames.length <= 2) {
+      return activeGroupNames.join(', ');
+    }
+
+    return `${activeGroupNames.slice(0, 2).join(', ')} +${activeGroupNames.length - 2}`;
+  }, [filter.groups, groupsById, t]);
+
   const hasActiveFilters = Boolean(
     filter.lang ||
     filter.exclusive_lang ||
     filter.favorites ||
+    (filter.groups?.length ?? 0) > 0 ||
     filter.category ||
     (filter.tags?.length ?? 0) > 0 ||
     filter.difficulty ||
@@ -180,6 +224,7 @@ const ProblemsFilterDrawerContent = ({
       lang: undefined,
       exclusive_lang: undefined,
       favorites: undefined,
+      groups: [],
       category: undefined,
       tags: [],
       difficulty: undefined,
@@ -190,6 +235,34 @@ const ProblemsFilterDrawerContent = ({
       has_checker: undefined,
       partial_solvable: undefined,
     });
+  };
+
+  const handleGroupsToggle = (event: MouseEvent<HTMLElement>) => {
+    setGroupsAnchor((current) => (current ? null : event.currentTarget));
+  };
+
+  const handleGroupsKeyDown = (event: KeyboardEvent<HTMLElement>) => {
+    if (event.key === 'Enter' || event.key === ' ') {
+      event.preventDefault();
+      setGroupsAnchor((current) => (current ? null : event.currentTarget));
+    }
+  };
+
+  const handleGroupsClose = () => setGroupsAnchor(null);
+
+  const handleGroupToggle = (groupId: number) => {
+    const activeGroups = filter.groups ?? [];
+    const nextGroups = activeGroups.includes(groupId)
+      ? activeGroups.filter((id) => id !== groupId)
+      : [...activeGroups, groupId];
+
+    onChange('groups', nextGroups);
+  };
+
+  const handleGroupExpandToggle = (groupId: number) => {
+    setExpandedGroups((prev) =>
+      prev.includes(groupId) ? prev.filter((id) => id !== groupId) : [...prev, groupId],
+    );
   };
 
   const handleTagsToggle = (event: MouseEvent<HTMLElement>) => {
@@ -242,6 +315,36 @@ const ProblemsFilterDrawerContent = ({
       onClear={handleClearFilters}
     >
       <Stack direction="column" gap={1}>
+        <StyledTextField
+          label={t('problems.groups')}
+          value={groupSummary}
+          fullWidth
+          onClick={handleGroupsToggle}
+          onKeyDown={handleGroupsKeyDown}
+          slotProps={{
+            inputLabel: { shrink: true },
+            input: {
+              readOnly: true,
+              endAdornment: (
+                <InputAdornment position="end">
+                  <IconifyIcon
+                    icon={groupsOpen ? 'mdi:chevron-up' : 'mdi:chevron-down'}
+                    color={theme.palette.text.secondary}
+                  />
+                </InputAdornment>
+              ),
+            },
+          }}
+          sx={{
+            [`& .${formLabelClasses.root}`]: { color: 'text.primary' },
+            '& .MuiInputBase-root': { cursor: 'pointer' },
+            '& .MuiInputBase-input': {
+              cursor: 'pointer',
+              textOverflow: 'ellipsis',
+            },
+          }}
+        />
+
         <StyledTextField
           select
           label={t('problems.language')}
@@ -400,6 +503,73 @@ const ProblemsFilterDrawerContent = ({
       </Stack>
 
       <Menu
+        id="problems-groups-menu"
+        anchorEl={groupsAnchor}
+        open={groupsOpen}
+        onClose={handleGroupsClose}
+        anchorOrigin={{ vertical: 'bottom', horizontal: 'left' }}
+        transformOrigin={{ vertical: 'top', horizontal: 'left' }}
+        MenuListProps={{ disablePadding: true }}
+        PaperProps={{
+          sx: {
+            mt: 1,
+            width: { xs: 280, sm: 420 },
+            maxHeight: 520,
+            p: 1,
+            overflow: 'hidden',
+          },
+        }}
+      >
+        <Stack spacing={1}>
+          <Stack
+            direction="row"
+            alignItems="center"
+            justifyContent="space-between"
+            sx={{ px: 1, pt: 0.5 }}
+          >
+            <Stack spacing={0.25}>
+              <Typography variant="subtitle2" fontWeight={700}>
+                {t('problems.groups')}
+              </Typography>
+              <Typography variant="caption" color="text.secondary">
+                {filter.groups && filter.groups.length > 0
+                  ? t('problems.appliedFilters', { count: filter.groups.length })
+                  : groupSummary}
+              </Typography>
+            </Stack>
+
+            <Stack direction="row" spacing={1} alignItems="center">
+              {(filter.groups?.length ?? 0) > 0 ? (
+                <Button
+                  size="small"
+                  variant="text"
+                  color="secondary"
+                  onClick={() => onChange('groups', [])}
+                >
+                  {t('problems.clearFilters')}
+                </Button>
+              ) : null}
+              <Button size="small" variant="text" color="secondary" onClick={handleGroupsClose}>
+                OK
+              </Button>
+            </Stack>
+          </Stack>
+
+          <Divider />
+
+          <Box sx={{ maxHeight: 430, overflowY: 'auto', pr: 0.25 }}>
+            <ProblemGroupTree
+              groups={groups}
+              selectedIds={filter.groups ?? []}
+              expandedIds={expandedGroups}
+              onToggle={handleGroupToggle}
+              onExpandToggle={handleGroupExpandToggle}
+            />
+          </Box>
+        </Stack>
+      </Menu>
+
+      <Menu
         id="problems-tags-menu"
         anchorEl={tagsAnchor}
         open={tagsOpen}
@@ -546,6 +716,133 @@ const ProblemsFilterDrawerContent = ({
         </Stack>
       </Menu>
     </FilterDrawer>
+  );
+};
+
+interface ProblemGroupTreeProps {
+  groups: ProblemGroup[];
+  selectedIds: number[];
+  expandedIds: number[];
+  depth?: number;
+  onToggle: (groupId: number) => void;
+  onExpandToggle: (groupId: number) => void;
+}
+
+const ProblemGroupTree = ({
+  groups,
+  selectedIds,
+  expandedIds,
+  depth = 0,
+  onToggle,
+  onExpandToggle,
+}: ProblemGroupTreeProps) => {
+  const theme = useTheme();
+
+  if (groups.length === 0 && depth === 0) {
+    return (
+      <Typography variant="body2" color="text.secondary" sx={{ px: 1, py: 1.5 }}>
+        No groups
+      </Typography>
+    );
+  }
+
+  return (
+    <Stack spacing={0.25}>
+      {groups.map((group) => {
+        const hasChildren = (group.children ?? []).length > 0;
+        const isExpanded = expandedIds.includes(group.id);
+        const isSelected = selectedIds.includes(group.id);
+
+        return (
+          <Box key={group.id}>
+            <Stack
+              direction="row"
+              alignItems="center"
+              spacing={0.5}
+              sx={{
+                minHeight: 40,
+                pl: 0.5 + depth * 2,
+                pr: 0.75,
+                borderRadius: 1,
+                bgcolor: isSelected ? alpha(theme.palette.primary.main, 0.08) : 'transparent',
+                '&:hover': {
+                  bgcolor: isSelected
+                    ? alpha(theme.palette.primary.main, 0.12)
+                    : alpha(theme.palette.text.primary, 0.04),
+                },
+              }}
+            >
+              <Button
+                variant="text"
+                color="secondary"
+                size="small"
+                disabled={!hasChildren}
+                onClick={() => onExpandToggle(group.id)}
+                sx={{
+                  minWidth: 28,
+                  width: 28,
+                  height: 28,
+                  p: 0,
+                  visibility: hasChildren ? 'visible' : 'hidden',
+                }}
+              >
+                <IconifyIcon
+                  icon={isExpanded ? 'mdi:chevron-down' : 'mdi:chevron-right'}
+                  width={18}
+                  height={18}
+                />
+              </Button>
+
+              <Checkbox
+                size="small"
+                checked={isSelected}
+                onChange={() => onToggle(group.id)}
+                sx={{ p: 0.5 }}
+              />
+
+              <Stack
+                direction="row"
+                alignItems="center"
+                spacing={1}
+                sx={{ minWidth: 0, flex: 1 }}
+                onClick={() => onToggle(group.id)}
+              >
+                <IconifyIcon
+                  icon={hasChildren ? 'mdi:folder-outline' : 'mdi:file-tree-outline'}
+                  width={18}
+                  height={18}
+                  color={isSelected ? theme.palette.primary.main : theme.palette.text.secondary}
+                />
+                <Typography
+                  variant="body2"
+                  fontWeight={isSelected ? 700 : 500}
+                  sx={{ minWidth: 0, flex: 1 }}
+                  noWrap
+                >
+                  {group.name}
+                </Typography>
+                {group.problemsCount != null ? (
+                  <Chip size="small" variant="outlined" label={group.problemsCount} />
+                ) : null}
+              </Stack>
+            </Stack>
+
+            {hasChildren ? (
+              <Collapse in={isExpanded} timeout="auto" unmountOnExit>
+                <ProblemGroupTree
+                  groups={group.children}
+                  selectedIds={selectedIds}
+                  expandedIds={expandedIds}
+                  depth={depth + 1}
+                  onToggle={onToggle}
+                  onExpandToggle={onExpandToggle}
+                />
+              </Collapse>
+            ) : null}
+          </Box>
+        );
+      })}
+    </Stack>
   );
 };
 

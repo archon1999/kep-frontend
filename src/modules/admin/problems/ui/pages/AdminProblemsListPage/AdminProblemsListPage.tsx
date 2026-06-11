@@ -62,6 +62,7 @@ const AdminProblemsListPage = () => {
   const [search, setSearch] = useState('');
   const [debouncedSearch, setDebouncedSearch] = useState('');
   const [selectedDifficulties, setSelectedDifficulties] = useState<number[]>([]);
+  const [selectedGroups, setSelectedGroups] = useState<number[]>([]);
   const [problemRatingMin, setProblemRatingMin] = useState('');
   const [problemRatingMax, setProblemRatingMax] = useState('');
   const [hiddenFilter, setHiddenFilter] = useState<boolean | null>(null);
@@ -92,6 +93,7 @@ const AdminProblemsListPage = () => {
   }, [
     debouncedSearch,
     selectedDifficulties,
+    selectedGroups,
     problemRatingMin,
     problemRatingMax,
     hiddenFilter,
@@ -107,6 +109,7 @@ const AdminProblemsListPage = () => {
       ordering: getOrderingFromSortModel(sortModel, problemOrderingFieldMap),
       search: debouncedSearch,
       difficulty: selectedDifficulties,
+      groups: selectedGroups,
       problemRatingMin: problemRatingMin ? Number(problemRatingMin) : undefined,
       problemRatingMax: problemRatingMax ? Number(problemRatingMax) : undefined,
       hidden: hiddenFilter,
@@ -118,6 +121,7 @@ const AdminProblemsListPage = () => {
       sortModel,
       debouncedSearch,
       selectedDifficulties,
+      selectedGroups,
       problemRatingMin,
       problemRatingMax,
       hiddenFilter,
@@ -172,8 +176,19 @@ const AdminProblemsListPage = () => {
     [meta?.tags],
   );
 
+  const groupById = useMemo(
+    () => new Map((meta?.groups ?? []).map((group) => [group.id, group.name])),
+    [meta?.groups],
+  );
+
+  const selectedGroupOptions = useMemo(
+    () => (meta?.groups ?? []).filter((group) => selectedGroups.includes(group.id)),
+    [meta?.groups, selectedGroups],
+  );
+
   const handleClearFilters = () => {
     setSelectedDifficulties([]);
+    setSelectedGroups([]);
     setProblemRatingMin('');
     setProblemRatingMax('');
     setHiddenFilter(null);
@@ -215,6 +230,16 @@ const AdminProblemsListPage = () => {
       });
     }
 
+    if (selectedGroupOptions.length > 0) {
+      items.push({
+        key: 'groups',
+        label: `${t('problems.groups')}: ${selectedGroupOptions
+          .map((group) => group.name)
+          .join(', ')}`,
+        onRemove: () => setSelectedGroups([]),
+      });
+    }
+
     if (hiddenFilter !== null) {
       items.push({
         key: 'hidden',
@@ -232,7 +257,15 @@ const AdminProblemsListPage = () => {
     }
 
     return items;
-  }, [authorFilter, hiddenFilter, problemRatingMax, problemRatingMin, selectedDifficultyOptions, t]);
+  }, [
+    authorFilter,
+    hiddenFilter,
+    problemRatingMax,
+    problemRatingMin,
+    selectedDifficultyOptions,
+    selectedGroupOptions,
+    t,
+  ]);
 
   const resetRowSelection = () => setRowSelectionModel({ type: 'include', ids: new Set() });
 
@@ -398,6 +431,29 @@ const AdminProblemsListPage = () => {
       ),
     },
     {
+      field: 'groups',
+      headerName: t('problems.groups'),
+      minWidth: 220,
+      flex: 0.5,
+      sortable: false,
+      renderCell: ({ row }) => {
+        const groups = (row.groups ?? []).map((groupId) => groupById.get(groupId) ?? String(groupId));
+
+        if (groups.length === 0) {
+          return <Typography color="text.secondary">{t('admin.emptyValue')}</Typography>;
+        }
+
+        return (
+          <Stack direction="row" spacing={0.5} flexWrap="wrap" useFlexGap>
+            {groups.slice(0, 2).map((group) => (
+              <Chip key={group} size="small" label={group} variant="outlined" />
+            ))}
+            {groups.length > 2 ? <Chip size="small" label={`+${groups.length - 2}`} /> : null}
+          </Stack>
+        );
+      },
+    },
+    {
       field: 'solvedCount',
       headerName: t('admin.columns.worked'),
       width: 140,
@@ -456,6 +512,18 @@ const AdminProblemsListPage = () => {
 
   const filterControls = (
     <Stack direction="column" spacing={2.5}>
+      <Autocomplete
+        multiple
+        disableCloseOnSelect
+        options={meta?.groups ?? []}
+        value={selectedGroupOptions}
+        getOptionLabel={(option) => option.name}
+        onChange={(_, value) => setSelectedGroups(value.map((group) => group.id))}
+        renderInput={(params) => (
+          <TextField {...params} fullWidth label={t('problems.groups')} placeholder="" />
+        )}
+      />
+
       <Autocomplete
         multiple
         disableCloseOnSelect

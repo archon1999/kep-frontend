@@ -9,6 +9,7 @@ import {
   useLastContestProblems,
   useMostViewedProblems,
   useProblemCategories,
+  useProblemGroups,
   useProblemLanguages,
   useProblemsList,
   useStudyPlans,
@@ -18,6 +19,7 @@ import {
 import { difficultyOptions } from 'modules/problems/config/difficulty';
 import {
   ProblemCategory,
+  ProblemGroup,
   ProblemLanguageOption,
 } from 'modules/problems/domain/entities/problem.entity.ts';
 import { ProblemsListParams } from 'modules/problems/domain/ports/problems.repository.ts';
@@ -62,6 +64,7 @@ const initialFilter: ProblemsListParams = {
   page: 1,
   pageSize: 20,
   tags: [],
+  groups: [],
 };
 
 type ProblemsListQueryState = {
@@ -71,6 +74,7 @@ type ProblemsListQueryState = {
   page: number;
   pageSize: number;
   tags: number[];
+  groups: number[];
   favorites: boolean;
   category: string;
   lang: string;
@@ -92,6 +96,7 @@ const problemsListQueryDefaults: ProblemsListQueryState = {
   page: initialFilter.page ?? 1,
   pageSize: initialFilter.pageSize ?? 20,
   tags: [],
+  groups: [],
   favorites: false,
   category: '',
   lang: '',
@@ -111,6 +116,7 @@ const buildProblemsListFilter = (state: ProblemsListQueryState): ProblemsListPar
   page: state.page,
   pageSize: state.pageSize,
   tags: state.tags,
+  groups: state.groups,
   search: state.search || undefined,
   favorites: state.favorites || undefined,
   category: state.category || undefined,
@@ -131,6 +137,10 @@ const normalizeProblemsListValue = <K extends keyof ProblemsListParams>(
   value: ProblemsListParams[K],
 ): ProblemsListQueryState[keyof ProblemsListQueryState] => {
   if (key === 'tags') {
+    return Array.isArray(value) ? [...value] : [];
+  }
+
+  if (key === 'groups') {
     return Array.isArray(value) ? [...value] : [];
   }
 
@@ -178,6 +188,7 @@ const formatProblemRatingBand = (min?: string, max?: string) => {
 const advisorManagedFilterKeys = [
   'category',
   'tags',
+  'groups',
   'lang',
   'exclusive_lang',
   'competitive_langs_only',
@@ -224,6 +235,10 @@ const ProblemsListPage = () => {
       tags: {
         ...numberArrayParam({ min: 1 }),
         param: 'tags',
+      },
+      groups: {
+        ...numberArrayParam({ min: 1 }),
+        param: 'groups',
       },
       favorites: {
         ...booleanFlagParam(),
@@ -283,6 +298,7 @@ const ProblemsListPage = () => {
       'search',
       'ordering',
       'tags',
+      'groups',
       'favorites',
       'category',
       'lang',
@@ -304,6 +320,7 @@ const ProblemsListPage = () => {
   const { data: problemsPage, isLoading: isProblemsLoading } = useProblemsList(filter);
   const { data: languages } = useProblemLanguages();
   const { data: categories } = useProblemCategories();
+  const { data: groups } = useProblemGroups();
   const { data: studyPlans } = useStudyPlans();
   const { data: mostViewed, isLoading: isMostViewedLoading } = useMostViewedProblems();
   const { data: lastContest, isLoading: isLastContestLoading } = useLastContestProblems();
@@ -394,6 +411,7 @@ const ProblemsListPage = () => {
         });
 
         nextPatch.tags = patch.tags ?? [];
+        nextPatch.groups = patch.groups ?? [];
 
         return nextPatch;
       },
@@ -412,6 +430,7 @@ const ProblemsListPage = () => {
           drawerWidth={filterDrawerWidth}
           languages={languages ?? []}
           categories={categories ?? []}
+          groups={groups ?? []}
           filter={filter}
           onChange={handleFilterChange}
           onPatch={handleFilterPatch}
@@ -462,6 +481,7 @@ const ProblemsListPage = () => {
               <FilterCard
                 languages={languages ?? []}
                 categories={categories ?? []}
+                groups={groups ?? []}
                 filter={filter}
                 filtersOpen={filterDrawer.open}
                 onToggleFilters={filterDrawer.toggle}
@@ -532,6 +552,7 @@ const ProblemsListPage = () => {
 interface FilterCardProps {
   languages: ProblemLanguageOption[];
   categories: ProblemCategory[];
+  groups: ProblemGroup[];
   filter: ProblemsListParams;
   filtersOpen: boolean;
   onToggleFilters: () => void;
@@ -543,6 +564,7 @@ interface FilterCardProps {
 const FilterCard = ({
   languages,
   categories,
+  groups,
   filter,
   filtersOpen,
   onToggleFilters,
@@ -559,6 +581,18 @@ const FilterCard = ({
       ),
     [categories],
   );
+
+  const groupsById = useMemo(() => {
+    const map = new Map<number, ProblemGroup>();
+    const visit = (items: ProblemGroup[]) => {
+      items.forEach((item) => {
+        map.set(item.id, item);
+        visit(item.children ?? []);
+      });
+    };
+    visit(groups);
+    return map;
+  }, [groups]);
 
   const orderingValue = filter.ordering ?? 'id';
 
@@ -595,6 +629,21 @@ const FilterCard = ({
         key: 'favorites',
         label: t('problems.favoritesOnly'),
         onRemove: () => onChange('favorites', undefined),
+      });
+    }
+
+    if (filter.groups && filter.groups.length) {
+      filter.groups.forEach((groupId) => {
+        const groupName = groupsById.get(groupId)?.name ?? groupId;
+        items.push({
+          key: `group-${groupId}`,
+          label: `${t('problems.groups')}: ${groupName}`,
+          onRemove: () =>
+            onChange(
+              'groups',
+              (filter.groups ?? []).filter((id) => id !== groupId),
+            ),
+        });
       });
     }
 
@@ -682,13 +731,14 @@ const FilterCard = ({
     }
 
     return items;
-  }, [categories, filter, languages, onChange, onPatch, t, tags]);
+  }, [categories, filter, groupsById, languages, onChange, onPatch, t, tags]);
 
   const handleClearFilters = () => {
     onPatch({
       lang: undefined,
       exclusive_lang: undefined,
       favorites: undefined,
+      groups: [],
       category: undefined,
       tags: [],
       difficulty: undefined,
