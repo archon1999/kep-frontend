@@ -1,4 +1,4 @@
-import { useCallback, useMemo } from 'react';
+import { useCallback, useEffect, useMemo } from 'react';
 import { useLocation, useNavigate, useSearchParams } from 'react-router';
 import { toast } from 'sonner';
 import { defaultAuthCredentials } from 'app/config.ts';
@@ -54,6 +54,33 @@ const LoginPage = () => {
 
     return normalizeReturnUrl(searchParamUrl ?? stateUrl);
   }, [location.state, normalizeReturnUrl, searchParams]);
+
+  useEffect(() => {
+    const socialAuthError = searchParams.get('socialAuthError');
+
+    if (!socialAuthError) {
+      return;
+    }
+
+    const messageKey = `auth.socialErrors.${socialAuthError}`;
+    const fallbackMessage = t('auth.socialErrors.unknown');
+    const message = t(messageKey, { defaultValue: fallbackMessage });
+
+    toast.error(message);
+
+    const nextParams = new URLSearchParams(searchParams);
+    nextParams.delete('socialAuthError');
+    nextParams.delete('backend');
+    nextParams.delete('message');
+
+    navigate(
+      {
+        pathname: location.pathname,
+        search: nextParams.toString() ? `?${nextParams.toString()}` : '',
+      },
+      { replace: true },
+    );
+  }, [location.pathname, navigate, searchParams, t]);
 
   const handleLogin = async (data: LoginFormValues) => {
     try {
