@@ -222,6 +222,7 @@
       "inputData": "Входные данные",
       "outputData": "Выходные данные",
       "comment": "Комментарии",
+      "attachments": "Файлы",
       "checkInput": "Проверочный ввод",
       "save": "Сохранить",
       "refresh": "Обновить",

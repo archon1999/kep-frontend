@@ -15,6 +15,7 @@ import {
   PeriodRatingEntry,
   ProblemAttemptStatistic,
   ProblemAttemptSummary,
+  ProblemAttachment,
   ProblemAttemptsForSolveStatistic,
   ProblemAvailableLanguage,
   ProblemCategory,
@@ -68,6 +69,15 @@ const tryParseJson = (value: any) => {
     return value;
   }
 };
+
+const mapProblemAttachment = (attachment: any): ProblemAttachment => ({
+  id: toNumber(attachment?.id),
+  name: attachment?.name ?? '',
+  url: attachment?.url ?? attachment?.file ?? '',
+  size: toNullableNumber(attachment?.size),
+  contentType: attachment?.contentType ?? attachment?.content_type ?? '',
+  created: attachment?.created ?? '',
+});
 
 const mapJudgeSummaryCases = (cases: any): AttemptJudgeSummaryCase[] =>
   Array.isArray(cases)
@@ -639,6 +649,9 @@ export const mapProblemDetail = (payload: any): ProblemDetail => {
     inputData: payload?.inputData ?? payload?.input_data ?? '',
     outputData: payload?.outputData ?? payload?.output_data ?? '',
     comment: payload?.comment ?? '',
+    attachments: (payload?.attachments ?? []).map((attachment: any) =>
+      mapProblemAttachment(attachment),
+    ),
     sampleTests: (payload?.sampleTests ?? payload?.sample_tests ?? []).map((item: any) =>
       mapSampleTest(item),
     ),

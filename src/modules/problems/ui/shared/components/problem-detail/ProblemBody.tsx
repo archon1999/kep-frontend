@@ -1,7 +1,8 @@
 import { useEffect, useMemo, useRef } from 'react';
 import { useTranslation } from 'react-i18next';
-import { Box, Card, CardContent, Divider, Stack, Typography } from '@mui/material';
+import { Box, Button, Card, CardContent, Divider, Stack, Typography } from '@mui/material';
 import MathJaxView from 'shared/components/base/MathJaxView.tsx';
+import IconifyIcon from 'shared/components/base/IconifyIcon';
 import ClipboardButton from 'shared/components/common/ClipboardButton';
 import type { ProblemDetail } from 'modules/problems/domain/entities/problem.entity';
 import { CustomProblemBody } from './ProblemCustomBodies';
@@ -9,6 +10,21 @@ import { CustomProblemBody } from './ProblemCustomBodies';
 interface ProblemBodyProps {
   problem: ProblemDetail;
 }
+
+const formatAttachmentSize = (size?: number) => {
+  if (!size) return '';
+
+  const units = ['B', 'KB', 'MB', 'GB'];
+  let value = size;
+  let unitIndex = 0;
+
+  while (value >= 1024 && unitIndex < units.length - 1) {
+    value /= 1024;
+    unitIndex += 1;
+  }
+
+  return `${value >= 10 || unitIndex === 0 ? value.toFixed(0) : value.toFixed(1)} ${units[unitIndex]}`;
+};
 
 export const ProblemBody = ({ problem }: ProblemBodyProps) => {
   const { t } = useTranslation();
@@ -34,9 +50,10 @@ export const ProblemBody = ({ problem }: ProblemBodyProps) => {
         problem.inputData ||
           problem.outputData ||
           (problem.sampleTests && problem.sampleTests.length > 0) ||
-          problem.comment,
+          problem.comment ||
+          (problem.attachments && problem.attachments.length > 0),
       ),
-    [problem.comment, problem.inputData, problem.outputData, problem.sampleTests],
+    [problem.attachments, problem.comment, problem.inputData, problem.outputData, problem.sampleTests],
   );
 
   return (
@@ -151,6 +168,38 @@ export const ProblemBody = ({ problem }: ProblemBodyProps) => {
               {t('problems.detail.comment')}
             </Typography>
             <MathJaxView rawHtml={problem.comment}/>
+          </Box>
+        ) : null}
+
+        {problem.attachments?.length ? (
+          <Box mt={3}>
+            <Typography variant="h6" mb={1}>
+              {t('problems.detail.attachments')}
+            </Typography>
+            <Stack direction="row" spacing={1} flexWrap="wrap" useFlexGap>
+              {problem.attachments.map((attachment) => {
+                const size = formatAttachmentSize(attachment.size);
+                return (
+                  <Button
+                    key={attachment.id}
+                    component="a"
+                    href={attachment.url}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    download
+                    variant="outlined"
+                    color="neutral"
+                    startIcon={<IconifyIcon icon="mdi:paperclip" />}
+                    sx={{ textTransform: 'none', maxWidth: '100%', justifyContent: 'flex-start' }}
+                  >
+                    <Box component="span" sx={{ overflow: 'hidden', textOverflow: 'ellipsis' }}>
+                      {attachment.name}
+                      {size ? ` (${size})` : ''}
+                    </Box>
+                  </Button>
+                );
+              })}
+            </Stack>
           </Box>
         ) : null}
       </Box>

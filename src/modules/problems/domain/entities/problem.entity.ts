@@ -123,6 +123,16 @@ export interface ProblemDetail extends ProblemListItem {
   similarProblems: SimilarProblem[];
   image?: string | null;
   partialSolvable?: boolean;
+  attachments?: ProblemAttachment[];
+}
+
+export interface ProblemAttachment {
+  id: number;
+  name: string;
+  url: string;
+  size?: number;
+  contentType?: string;
+  created?: string;
 }
 
 export interface ProblemUserSummary {
