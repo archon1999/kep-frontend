@@ -109,7 +109,17 @@ export const problemsApiClient = {
     apiClient.apiProblemsSaveCheckInput(String(problemId), payload),
   submit: (problemId: number | string, payload: any) =>
     apiClient.apiProblemsSubmit(String(problemId), payload),
-  customTest: (payload: any) => apiClient.apiProblemsCustomTest(payload),
+  customTest: (payload: any) => {
+    const problemId = payload?.problemId ?? payload?.problem_id;
+    if (problemId) {
+      return axiosMutator<any>({
+        url: `/api/problems/${problemId}/custom-test/`,
+        method: 'POST',
+        data: payload,
+      });
+    }
+    return apiClient.apiProblemsCustomTest(payload);
+  },
   answerForInput: (problemId: number | string, payload: any) =>
     apiClient.apiProblemsAnswerForInput(String(problemId), payload),
   checkSampleTests: (problemId: number | string, payload: any) =>

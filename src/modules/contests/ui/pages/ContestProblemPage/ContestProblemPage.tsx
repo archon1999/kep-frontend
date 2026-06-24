@@ -365,6 +365,7 @@ const ContestProblemPage = () => {
     setIsRunning(true);
     setOutput('');
     const response = await problemsQueries.problemsRepository.runCustomTest({
+      problemId: problem.id,
       sourceCode: codeRef.current,
       lang: selectedLang,
       inputData: input,

@@ -228,7 +228,12 @@ export class HttpProblemsRepository implements ProblemsRepository {
     await problemsApiClient.submit(problemId, payload);
   }
 
-  async runCustomTest(payload: { sourceCode: string; lang: string; inputData: string }) {
+  async runCustomTest(payload: {
+    problemId?: number | string;
+    sourceCode: string;
+    lang: string;
+    inputData: string;
+  }) {
     const response = await problemsApiClient.customTest(payload);
     return { id: (response as any)?.id };
   }

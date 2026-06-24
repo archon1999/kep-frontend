@@ -129,6 +129,7 @@ export interface ProblemsRepository {
     payload: { sourceCode: string; lang: string; [key: string]: unknown },
   ): Promise<void>;
   runCustomTest(payload: {
+    problemId?: number | string;
     sourceCode: string;
     lang: string;
     inputData: string;

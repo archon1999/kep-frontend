@@ -469,6 +469,7 @@ export const useDuelDetailPageWorkspaceState = ({
     setOutput('');
     try {
       const response = await problemsQueries.problemsRepository.runCustomTest({
+        problemId: activeProblem.problem.id,
         sourceCode: codeRef.current,
         lang: selectedLang,
         inputData: input,
