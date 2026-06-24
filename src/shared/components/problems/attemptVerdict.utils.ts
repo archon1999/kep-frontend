@@ -99,3 +99,10 @@ export const formatGroupLabel = (id?: string) => {
   if (match) return `Guruh ${match[1]}`;
   return raw ? `Guruh ${raw}` : 'Guruh';
 };
+
+export const formatSubtaskLabel = (id?: string) => {
+  const raw = String(id ?? '').trim();
+  const match = raw.match(/^[sS](\d+)$/);
+  if (match) return `Subtask ${match[1]}`;
+  return raw ? `Subtask ${raw}` : 'Subtask';
+};
