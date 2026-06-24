@@ -14,6 +14,7 @@ interface AttemptVerdictProps extends Omit<ChipProps, 'label' | 'color'> {
   title: string;
   testCaseNumber?: number | null;
   balls?: number | null;
+  showBalls?: boolean;
 }
 
 const AttemptVerdict = ({
@@ -21,6 +22,7 @@ const AttemptVerdict = ({
   title,
   testCaseNumber,
   balls,
+  showBalls = false,
   ...rest
 }: AttemptVerdictProps) => {
   const color =
@@ -28,9 +30,17 @@ const AttemptVerdict = ({
   const shortTitleRaw = verdict !== undefined ? verdictShortTitle[verdict as VerdictKey] : '';
   const ballLabel = useMemo(() => formatBallsLabel(balls), [balls]);
   const fallbackTitle = title.trim() ? title.trim().slice(0, 3).toUpperCase() : '?';
+  const scoreTitle =
+    ballLabel &&
+    (showBalls || verdict === Verdicts.PartialSolution) &&
+    verdict !== Verdicts.InQueue &&
+    verdict !== Verdicts.Running
+      ? ballLabel
+      : undefined;
   const shortTitle =
-    verdict === Verdicts.PartialSolution ? (ballLabel ?? shortTitleRaw) : shortTitleRaw;
+    verdict === Verdicts.PartialSolution || scoreTitle ? (scoreTitle ?? shortTitleRaw) : shortTitleRaw;
   const showTestCase =
+    !scoreTitle &&
     typeof testCaseNumber === 'number' &&
     testCaseNumber > 0 &&
     !(hideTestCaseFor as number[]).includes((verdict ?? 0) as number);

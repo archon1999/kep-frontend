@@ -267,9 +267,12 @@ const AttemptDetailDialog = ({
   const isOwner =
     Boolean(currentUser?.username) && baseAttempt?.user?.username === currentUser?.username;
   const isContestAttempt = Boolean(baseAttempt?.contestId);
+  const isGraderAttempt = ['grader', 'ioi'].includes(baseAttempt?.judgeSummary?.mode ?? '');
 
   const shouldShowTestSection =
-    (baseAttempt?.verdict ?? 0) !== Verdicts.Accepted && (baseAttempt?.testCaseNumber ?? 0) > 1;
+    !isGraderAttempt &&
+    (baseAttempt?.verdict ?? 0) !== Verdicts.Accepted &&
+    (baseAttempt?.testCaseNumber ?? 0) > 1;
 
   const { up } = useBreakpoints();
   const upMd = up('md');
@@ -425,6 +428,7 @@ const AttemptDetailDialog = ({
                 title={baseAttempt?.verdictTitle ?? ''}
                 testCaseNumber={baseAttempt?.testCaseNumber}
                 balls={baseAttempt?.balls}
+                showBalls={isGraderAttempt}
               />
             </Stack>
           </Stack>

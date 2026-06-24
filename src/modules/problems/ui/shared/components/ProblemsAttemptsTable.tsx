@@ -319,6 +319,7 @@ const ProblemsAttemptsTable = ({
               title={row.verdictTitle || t('problems.attempts.unknownVerdict')}
               testCaseNumber={row.testCaseNumber}
               balls={row.balls}
+              showBalls={['grader', 'ioi'].includes(row.judgeSummary?.mode ?? '')}
             />
           </Button>
         ),
@@ -439,6 +440,7 @@ const ProblemsAttemptsTable = ({
             title={lastUpdatedAttempt.verdictTitle || t('problems.attempts.unknownVerdict')}
             testCaseNumber={lastUpdatedAttempt.testCaseNumber}
             balls={lastUpdatedAttempt.balls}
+            showBalls={['grader', 'ioi'].includes(lastUpdatedAttempt.judgeSummary?.mode ?? '')}
             sx={{ fontWeight: 800 }}
           />
         </Paper>
