@@ -15,6 +15,7 @@ export interface PageResult<T> {
   total: number;
   pagesCount: number;
   data: T[];
+  pinnedRows?: T[];
 }
 
 export interface DuelsListParams {
@@ -30,6 +31,13 @@ export interface DuelCallsParams {
   page?: number;
   pageSize?: number;
   scope?: DuelCallScope;
+}
+
+export interface DuelsRatingParams {
+  page?: number;
+  pageSize?: number;
+  ordering?: string;
+  pinCurrentUser?: boolean;
 }
 
 export interface DuelCreatePayload {
@@ -66,5 +74,5 @@ export interface DuelsRepository {
   cancelDuelCall: (id: number) => Promise<DuelInvitation>;
   counterDuelCall: (id: number, payload: DuelCounterPayload) => Promise<DuelInvitation>;
 
-  getDuelsRating: (params?: { page?: number; pageSize?: number; ordering?: string }) => Promise<PageResult<DuelsRatingRow>>;
+  getDuelsRating: (params?: DuelsRatingParams) => Promise<PageResult<DuelsRatingRow>>;
 }

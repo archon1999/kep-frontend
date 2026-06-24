@@ -15,6 +15,14 @@ export interface PageResult<T> {
   total: number;
   pagesCount: number;
   data: T[];
+  pinnedRows?: T[];
+}
+
+export interface ChallengeRatingParams {
+  page?: number;
+  pageSize?: number;
+  ordering?: string;
+  pinCurrentUser?: boolean;
 }
 
 export type ChessChallengeResult = 'solved' | 'failed';
@@ -82,7 +90,7 @@ export interface ChallengesRepository {
   submitAnswer: (challengeId: number, payload: ChallengeAnswerPayload) => Promise<ChallengeCheckResponse>;
   submitChessMove: (challengeId: number, payload: ChessMovePayload) => Promise<ChessMoveResponse>;
   applyAntiCheatPenalty: (challengeId: number, payload: ChallengeAntiCheatPenaltyPayload) => Promise<ChallengeAntiCheatPenaltyResponse>;
-  listRating: (params?: { page?: number; pageSize?: number; ordering?: string }) => Promise<PageResult<ChallengeRatingRow>>;
+  listRating: (params?: ChallengeRatingParams) => Promise<PageResult<ChallengeRatingRow>>;
   listRatingChanges: (username: string) => Promise<ChallengeRatingChange[]>;
   getUserStatistics: (username: string) => Promise<ChallengeUserStatistics | null>;
   getUserRating: (username: string) => Promise<ChallengeRatingRow | null>;

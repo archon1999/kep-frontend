@@ -44,6 +44,7 @@ import { getDataGridNoRowsOverlaySlotProps } from 'shared/components/common/Data
 import FilterButton from 'shared/components/common/FilterButton';
 import ContestsRatingChip from 'shared/components/rating/ContestsRatingChip.tsx';
 import useGridPagination from 'shared/hooks/useGridPagination';
+import { mergePinnedRows } from 'shared/lib/pinnedRows';
 import useRouteQueryState from 'shared/hooks/useRouteQueryState';
 import { booleanFlagParam, stringParam } from 'shared/lib/queryParams';
 import { responsivePagePaddingSx } from 'shared/lib/styles';
@@ -174,11 +175,20 @@ const ContestStandingsPage = () => {
       following: followingOnly,
       official: officialOnly,
       participant: participantUsername,
+      pinCurrentUser: Boolean(currentUser?.username),
     },
     refreshInterval,
   );
 
-  const contestants = standings?.data ?? [];
+  const contestants = useMemo(
+    () =>
+      mergePinnedRows(
+        standings?.data ?? [],
+        standings?.pinnedRows,
+        (row) => getStandingsRowId(row),
+      ),
+    [standings?.data, standings?.pinnedRows],
+  );
   const participantTarget = useMemo(() => {
     if (!normalizedParticipantUsername) {
       return null;
@@ -739,6 +749,9 @@ const ContestStandingsPage = () => {
         getRowClassName={({ row }) =>
           [
             row.username === currentUser?.username ? 'MuiDataGrid-row--current' : '',
+            contestantMatchesUsername(row, normalizeUsername(currentUser?.username))
+              ? 'MuiDataGrid-row--currentUser'
+              : '',
             participantTarget?.rowId === getStandingsRowId(row)
               ? 'MuiDataGrid-row--participantTarget'
               : '',

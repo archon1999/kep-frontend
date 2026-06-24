@@ -6,6 +6,7 @@ import {
   DuelCounterPayload,
   PageResult,
   DuelsListParams,
+  DuelsRatingParams,
   DuelsRepository,
 } from '../../domain/ports/duels.repository.ts';
 import {
@@ -118,8 +119,11 @@ export class HttpDuelsRepository implements DuelsRepository {
     return mapDuelInvitation(response);
   }
 
-  async getDuelsRating(params?: { page?: number; pageSize?: number; ordering?: string }): Promise<PageResult<DuelsRatingRow>> {
-    const response = await duelsApiClient.listRating(params);
+  async getDuelsRating(params?: DuelsRatingParams): Promise<PageResult<DuelsRatingRow>> {
+    const response = await duelsApiClient.listRating({
+      ...params,
+      pin_current_user: params?.pinCurrentUser ? 'true' : undefined,
+    } as any);
     return mapPageResult(response, mapDuelsRatingRow);
   }
 }

@@ -1,6 +1,6 @@
 import useSWR from 'swr';
 import { HttpDuelsRepository } from '../data-access/repository/http.duels.repository.ts';
-import { DuelCallsParams, DuelsListParams } from '../domain/ports/duels.repository.ts';
+import { DuelCallsParams, DuelsListParams, DuelsRatingParams } from '../domain/ports/duels.repository.ts';
 import {
   Duel,
   DuelInvitation,
@@ -21,9 +21,9 @@ export const useDuelsList = (
     () => (params?.my ? duelsRepository.getMyDuels(params) : duelsRepository.getDuels(params)),
   );
 
-export const useDuelsRating = (params?: { page?: number; pageSize?: number; ordering?: string }) =>
+export const useDuelsRating = (params?: DuelsRatingParams) =>
   useSWR<PageResult<DuelsRatingRow>>(
-    ['duels-rating', params?.page, params?.pageSize, params?.ordering],
+    ['duels-rating', params?.page, params?.pageSize, params?.ordering, params?.pinCurrentUser],
     () => duelsRepository.getDuelsRating(params),
   );
 

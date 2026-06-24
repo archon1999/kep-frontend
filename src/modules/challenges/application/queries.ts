@@ -7,7 +7,7 @@ import {
   ChallengeRatingRow,
   ChallengeUserStatistics,
 } from '../domain';
-import { PageResult } from '../domain/ports/challenges.repository.ts';
+import { ChallengeRatingParams, PageResult } from '../domain/ports/challenges.repository.ts';
 
 const challengesRepository = new HttpChallengesRepository();
 
@@ -39,9 +39,9 @@ export const useChallengeDetail = (challengeId?: string) =>
     },
   );
 
-export const useChallengesRating = (params?: { page?: number; pageSize?: number; ordering?: string }) =>
+export const useChallengesRating = (params?: ChallengeRatingParams) =>
   useSWR<PageResult<ChallengeRatingRow>>(
-    ['challenges-rating', params?.page, params?.pageSize, params?.ordering],
+    ['challenges-rating', params?.page, params?.pageSize, params?.ordering, params?.pinCurrentUser],
     () => challengesRepository.listRating(params),
   );
 

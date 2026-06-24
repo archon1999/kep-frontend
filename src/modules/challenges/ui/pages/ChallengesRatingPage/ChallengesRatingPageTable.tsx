@@ -9,6 +9,7 @@ import {
 } from '@mui/x-data-grid';
 import UserPopover from 'modules/users/ui/shared/components/UserPopover.tsx';
 import ChallengesRatingChip from 'shared/components/rating/ChallengesRatingChip.tsx';
+import { rowMatchesUsername } from 'shared/lib/pinnedRows';
 
 export type ChallengesRatingPageRow = GridValidRowModel & {
   username: string;
@@ -31,6 +32,7 @@ type ChallengesRatingPageTableProps = {
   loading: boolean;
   onPaginationModelChange: (model: GridPaginationModel) => void;
   onSortModelChange: (model: GridSortModel) => void;
+  currentUsername?: string;
 };
 
 const ChallengesRatingPageTable = ({
@@ -41,6 +43,7 @@ const ChallengesRatingPageTable = ({
   loading,
   onPaginationModelChange,
   onSortModelChange,
+  currentUsername,
 }: ChallengesRatingPageTableProps) => {
   const { t } = useTranslation();
 
@@ -127,6 +130,9 @@ const ChallengesRatingPageTable = ({
       disableRowSelectionOnClick
       columns={columns}
       rows={rows}
+      getRowClassName={({ row }) =>
+        rowMatchesUsername(row, currentUsername) ? 'MuiDataGrid-row--currentUser' : ''
+      }
       localeText={{ noRowsLabel: t('common.dataGrid.noRows.challengesRating') }}
       rowCount={rowCount}
       paginationMode="server"

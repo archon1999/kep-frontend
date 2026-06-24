@@ -76,8 +76,9 @@ const ArenaDetailPage = () => {
     () => ({
       ...(playersPage ? { page: playersPage } : {}),
       pageSize: PLAYERS_PAGE_SIZE,
+      pinCurrentUser: Boolean(currentUser?.username),
     }),
-    [playersPage],
+    [playersPage, currentUser?.username],
   );
   const challengesFilters = useMemo(
     () => ({ page: state.challengesPage, pageSize: CHALLENGES_PAGE_SIZE }),

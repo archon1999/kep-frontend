@@ -113,6 +113,9 @@ export const mapPageResult = <T>(payload: any, mapItem: (item: any) => T): PageR
   total: payload?.total ?? payload?.count ?? 0,
   pagesCount: payload?.pagesCount ?? payload?.total_pages ?? payload?.pages_count ?? 0,
   data: extractList(payload).map(mapItem),
+  pinnedRows: ((payload as any)?.pinnedRows ?? (payload as any)?.pinned_rows ?? []).map(
+    (item: any) => mapItem(item),
+  ),
 });
 
 export const challengesMappers = {

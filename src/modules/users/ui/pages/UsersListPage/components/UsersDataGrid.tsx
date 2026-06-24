@@ -12,6 +12,7 @@ import UserPopover from 'modules/users/ui/shared/components/UserPopover';
 import CountryFlagIcon from 'shared/components/common/CountryFlagIcon';
 import { getDataGridNoRowsOverlaySlotProps } from 'shared/components/common/DataGridNoRowsOverlay';
 import KepcoinValue from 'shared/components/common/KepcoinValue';
+import { rowMatchesUsername } from 'shared/lib/pinnedRows';
 import ChallengesRatingChip from 'shared/components/rating/ChallengesRatingChip';
 import ContestsRatingChip from 'shared/components/rating/ContestsRatingChip';
 import Streak from 'shared/components/rating/Streak';
@@ -39,6 +40,7 @@ interface UsersDataGridProps {
   columnLabels: UsersDataGridLabels;
   countryLabels?: Record<string, string>;
   isFiltered?: boolean;
+  currentUsername?: string;
 }
 
 const UsersDataGrid = ({
@@ -51,6 +53,7 @@ const UsersDataGrid = ({
   onSortModelChange,
   columnLabels,
   isFiltered,
+  currentUsername,
 }: UsersDataGridProps) => {
   const { t } = useTranslation();
   const columns: GridColDef<GridValidRowModel>[] = [
@@ -254,6 +257,9 @@ const UsersDataGrid = ({
       slotProps={getDataGridNoRowsOverlaySlotProps({ filtered: isFiltered })}
       disableRowSelectionOnClick
       getRowId={(row) => (row as UsersListItem).id ?? (row as UsersListItem).username}
+      getRowClassName={({ row }) =>
+        rowMatchesUsername(row, currentUsername) ? 'MuiDataGrid-row--currentUser' : ''
+      }
       sx={{
         mb: 2,
       }}

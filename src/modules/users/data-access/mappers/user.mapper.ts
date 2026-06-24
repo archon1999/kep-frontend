@@ -52,6 +52,9 @@ export const mapApiUsersListToDomain = (response: ApiUsersListResult): UsersList
   total: response.total,
   count: response.count,
   data: (response.data ?? []).map(mapApiUserToDomain),
+  pinnedRows: ((response as any).pinnedRows ?? (response as any).pinned_rows ?? []).map(
+    mapApiUserToDomain,
+  ),
 });
 
 export const mapCountriesToCodes = (response: ApiUsersCountriesResult): string[] => {

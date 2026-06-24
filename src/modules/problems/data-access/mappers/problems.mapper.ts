@@ -219,6 +219,9 @@ const mapPageResult = <T>(
     total,
     pagesCount,
     data: data.map((item: any) => mapItem(item)),
+    pinnedRows: ((payload as any)?.pinnedRows ?? (payload as any)?.pinned_rows ?? []).map(
+      (item: any) => mapItem(item),
+    ),
   };
 };
 

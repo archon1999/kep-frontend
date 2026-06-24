@@ -378,7 +378,8 @@ const mapRatingFilter = (params: ProblemsRatingParams): ApiProblemsRatingListPar
   ordering: params.ordering,
   page: params.page,
   pageSize: params.pageSize,
-});
+  pin_current_user: params.pinCurrentUser ? 'true' : undefined,
+} as any);
 
 const mapRatingHistoryFilter = (
   params: ProblemsRatingHistoryParams,

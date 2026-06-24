@@ -29,6 +29,8 @@ export class HttpUsersRepository implements UsersRepository {
       has_country: params.hasCountry ? 'true' : undefined,
       has_codeforces: params.hasCodeforces ? 'true' : undefined,
       has_telegram: params.hasTelegram ? 'true' : undefined,
+      // @ts-ignore generated params update after backend swagger regeneration
+      pin_current_user: params.pinCurrentUser ? 'true' : undefined,
     });
 
     return mapApiUsersListToDomain(response);

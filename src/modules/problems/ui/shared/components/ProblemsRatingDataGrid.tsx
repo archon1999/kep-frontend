@@ -11,6 +11,7 @@ import ContestsRatingChip from 'shared/components/rating/ContestsRatingChip';
 import { difficultyColorByKey, difficultyOptions } from 'modules/problems/config/difficulty';
 import { ProblemsRatingRow } from 'modules/problems/domain/entities/problem.entity';
 import UserPopover from 'modules/users/ui/shared/components/UserPopover.tsx';
+import { rowMatchesUsername } from 'shared/lib/pinnedRows';
 
 export type ProblemsRatingDataGridLabels = {
   rank: string;
@@ -30,6 +31,7 @@ interface ProblemsRatingDataGridProps {
   sortModel: GridSortModel;
   onSortModelChange: (model: GridSortModel) => void;
   labels: ProblemsRatingDataGridLabels;
+  currentUsername?: string;
 }
 
 const ProblemsRatingDataGrid = ({
@@ -41,6 +43,7 @@ const ProblemsRatingDataGrid = ({
   sortModel,
   onSortModelChange,
   labels,
+  currentUsername,
 }: ProblemsRatingDataGridProps) => {
   const theme = useTheme();
   const { t } = useTranslation();
@@ -160,6 +163,9 @@ const ProblemsRatingDataGrid = ({
       localeText={{ noRowsLabel: t('common.dataGrid.noRows.problemsRating') }}
       disableRowSelectionOnClick
       getRowId={(row) => `${(row as ProblemsRatingRow).user.username}-${(row as ProblemsRatingRow).rowIndex}`}
+      getRowClassName={({ row }) =>
+        rowMatchesUsername(row, currentUsername) ? 'MuiDataGrid-row--currentUser' : ''
+      }
       disableColumnMenu
       sx={{
         '& .MuiDataGrid-columnHeaderTitle': {

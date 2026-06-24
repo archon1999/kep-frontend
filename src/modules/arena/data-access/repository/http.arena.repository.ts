@@ -130,7 +130,10 @@ export class HttpArenaRepository implements ArenaRepository {
   }
 
   async listPlayers(arenaId: number | string, filters?: ArenaPlayersFilters): Promise<PageResult<ArenaPlayer>> {
-    const data = await arenaApiClient.listPlayers(arenaId, filters);
+    const data = await arenaApiClient.listPlayers(arenaId, {
+      ...filters,
+      pin_current_user: filters?.pinCurrentUser ? 'true' : undefined,
+    } as any);
     return mapPageResult(data, mapArenaPlayer);
   }
 

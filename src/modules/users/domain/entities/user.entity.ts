@@ -58,6 +58,7 @@ export interface UsersListResponse {
   total: number;
   count: number;
   data: UsersListItem[];
+  pinnedRows?: UsersListItem[];
 }
 
 export interface UsersListRequest {
@@ -71,6 +72,7 @@ export interface UsersListRequest {
   hasCountry?: boolean;
   hasCodeforces?: boolean;
   hasTelegram?: boolean;
+  pinCurrentUser?: boolean;
 }
 
 export interface UsersChartStatistics {

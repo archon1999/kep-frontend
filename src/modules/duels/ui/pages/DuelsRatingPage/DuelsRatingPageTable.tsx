@@ -2,17 +2,20 @@ import { useMemo } from 'react';
 import { Avatar, Stack, Typography } from '@mui/material';
 import { DataGrid, GridColDef } from '@mui/x-data-grid';
 import { useTranslation } from 'react-i18next';
+import { useAuth } from 'app/providers/AuthProvider';
 import { useDuelsRating } from 'modules/duels/application/queries.ts';
 import { DuelsRatingPageTableRow } from 'modules/duels/domain/index.ts';
 import UserPopover from 'modules/users/ui/shared/components/UserPopover.tsx';
 import ContestsRatingChip from 'shared/components/rating/ContestsRatingChip.tsx';
 import useGridPagination from 'shared/hooks/useGridPagination';
 import useRouteQueryState from 'shared/hooks/useRouteQueryState';
+import { mergePinnedRows, rowMatchesUsername } from 'shared/lib/pinnedRows';
 import { stringParam } from 'shared/lib/queryParams';
 import { mapDuelsRatingPageTableRows } from 'modules/duels/data-access/mappers/duels-rating-page.mapper.ts';
 
 const DuelsRatingPageTable = () => {
   const { t } = useTranslation();
+  const { currentUser } = useAuth();
   const {
     paginationModel,
     onPaginationModelChange,
@@ -35,10 +38,22 @@ const DuelsRatingPageTable = () => {
     },
   });
   const ordering = state.ordering || '-wins';
-  const { data: ratingPage, isLoading } = useDuelsRating({ page, pageSize, ordering });
+  const { data: ratingPage, isLoading } = useDuelsRating({
+    page,
+    pageSize,
+    ordering,
+    pinCurrentUser: Boolean(currentUser?.username),
+  });
   const rows = useMemo(
-    () => mapDuelsRatingPageTableRows(ratingPage?.data ?? []),
-    [ratingPage?.data],
+    () =>
+      mapDuelsRatingPageTableRows(
+        mergePinnedRows(
+          ratingPage?.data ?? [],
+          ratingPage?.pinnedRows,
+          (row) => row.user.username,
+        ),
+      ),
+    [ratingPage?.data, ratingPage?.pinnedRows],
   );
 
   const columns: GridColDef<DuelsRatingPageTableRow>[] = useMemo(
@@ -128,6 +143,9 @@ const DuelsRatingPageTable = () => {
       loading={isLoading}
       rows={rows}
       columns={columns}
+      getRowClassName={({ row }) =>
+        rowMatchesUsername(row, currentUser?.username) ? 'MuiDataGrid-row--currentUser' : ''
+      }
       localeText={{ noRowsLabel: t('common.dataGrid.noRows.duelsRating') }}
       rowCount={ratingPage?.total ?? rows.length}
       paginationModel={paginationModel}

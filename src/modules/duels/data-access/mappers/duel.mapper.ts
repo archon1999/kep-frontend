@@ -25,6 +25,9 @@ export const mapPageResult = <T>(payload: any, mapItem: (item: any) => T): PageR
   total: payload?.total ?? payload?.count ?? payload?.results?.length ?? payload?.data?.length ?? 0,
   pagesCount: payload?.pagesCount ?? payload?.total_pages ?? payload?.pages_count ?? 0,
   data: (payload?.data ?? payload?.results ?? []).map(mapItem),
+  pinnedRows: ((payload as any)?.pinnedRows ?? (payload as any)?.pinned_rows ?? []).map(
+    (item: any) => mapItem(item),
+  ),
 });
 
 const mapPresetProblem = (payload: any): DuelPresetProblem => ({

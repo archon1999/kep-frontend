@@ -12,6 +12,7 @@ export interface PageResult<T> {
   total: number;
   pagesCount: number;
   data: T[];
+  pinnedRows?: T[];
 }
 
 export interface ArenaListFilters {
@@ -24,6 +25,7 @@ export interface ArenaListFilters {
 export interface ArenaPlayersFilters {
   page?: number;
   pageSize?: number;
+  pinCurrentUser?: boolean;
 }
 
 export interface ArenaChallengesFilters {

@@ -24,7 +24,12 @@ export interface PageResult<T> {
   total: number;
   pagesCount: number;
   data: T[];
+  pinnedRows?: T[];
 }
+
+export type ContestsRatingParams = ApiContestsRatingListParams & {
+  pinCurrentUser?: boolean;
+};
 
 export interface ContestsRepository {
   list: (params?: ApiContestsListParams) => Promise<PageResult<ContestListItem>>;
@@ -33,7 +38,7 @@ export interface ContestsRepository {
   getContestant: (contestId: number | string) => Promise<ContestantEntity | null>;
   getProblems: (contestId: number | string) => Promise<ContestProblemEntity[]>;
   getProblem: (contestId: number | string, symbol: string) => Promise<ContestProblemEntity>;
-  rating: (params?: ApiContestsRatingListParams) => Promise<PageResult<ContestRatingRow>>;
+  rating: (params?: ContestsRatingParams) => Promise<PageResult<ContestRatingRow>>;
   userStatistics: (username: string) => Promise<ContestUserStatistics | null>;
   ratingChanges: (username: string) => Promise<ContestRatingChange[]>;
   top3Contestants: (contestId: number | string) => Promise<ContestTopContestant[]>;
@@ -78,6 +83,7 @@ export interface ContestStandingsParams {
   following?: boolean;
   official?: boolean;
   participant?: string;
+  pinCurrentUser?: boolean;
 }
 
 export interface ContestContestantsParams {

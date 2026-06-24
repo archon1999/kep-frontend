@@ -12,6 +12,7 @@ import ContestsRatingChip from 'shared/components/rating/ContestsRatingChip';
 import { useTranslation } from 'react-i18next';
 import { ContestRatingRow } from 'modules/contests/domain/entities/contest-rating.entity';
 import ContestantView from 'modules/contests/ui/shared/components/ContestantView';
+import { rowMatchesUsername } from 'shared/lib/pinnedRows';
 
 export type ContestsRatingPageRow = GridValidRowModel & ContestRatingRow;
 
@@ -23,6 +24,7 @@ type ContestsRatingPageTableProps = {
   onPaginationModelChange: (model: GridPaginationModel) => void;
   sortModel: GridSortModel;
   onSortModelChange: (model: GridSortModel) => void;
+  currentUsername?: string;
 };
 
 const ContestsRatingPageTable = ({
@@ -33,6 +35,7 @@ const ContestsRatingPageTable = ({
   onPaginationModelChange,
   sortModel,
   onSortModelChange,
+  currentUsername,
 }: ContestsRatingPageTableProps) => {
   const { t } = useTranslation();
 
@@ -143,6 +146,9 @@ const ContestsRatingPageTable = ({
       columns={columns}
       localeText={{ noRowsLabel: t('common.dataGrid.noRows.contestsRating') }}
       getRowId={(row) => row.username}
+      getRowClassName={({ row }) =>
+        rowMatchesUsername(row, currentUsername) ? 'MuiDataGrid-row--currentUser' : ''
+      }
       rowCount={rowCount}
       paginationMode="server"
       sortingMode="server"

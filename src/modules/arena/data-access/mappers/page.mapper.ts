@@ -13,4 +13,7 @@ export const mapPageResult = <T>(data: any, mapItem: (item: any) => T): PageResu
       : Array.isArray(data?.results)
         ? data.results.map(mapItem)
         : [],
+  pinnedRows: ((data as any)?.pinnedRows ?? (data as any)?.pinned_rows ?? []).map(
+    (item: any) => mapItem(item),
+  ),
 });

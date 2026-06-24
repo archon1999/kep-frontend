@@ -7,10 +7,12 @@ import {
   Stack,
 } from '@mui/material';
 import { GridSortModel } from '@mui/x-data-grid';
+import { useAuth } from 'app/providers/AuthProvider';
 import { resources } from 'app/routes/resources';
 import KepIcon from 'shared/components/base/KepIcon';
 import PageHeader from 'shared/components/sections/common/PageHeader';
 import useGridPagination from 'shared/hooks/useGridPagination';
+import { mergePinnedRows } from 'shared/lib/pinnedRows';
 import useRouteQueryState from 'shared/hooks/useRouteQueryState';
 import { stringParam } from 'shared/lib/queryParams';
 import { responsivePagePaddingSx } from 'shared/lib/styles';
@@ -37,6 +39,7 @@ const orderingFieldMap = Object.fromEntries(
 
 const ProblemsRatingPage = () => {
   const { t } = useTranslation();
+  const { currentUser } = useAuth();
 
   const {
     paginationModel,
@@ -79,9 +82,18 @@ const ProblemsRatingPage = () => {
     ordering,
     page,
     pageSize,
+    pinCurrentUser: Boolean(currentUser?.username),
   });
 
-  const rows = ratingPage?.data ?? [];
+  const rows = useMemo(
+    () =>
+      mergePinnedRows(
+        ratingPage?.data ?? [],
+        ratingPage?.pinnedRows,
+        (row) => row.user.username,
+      ),
+    [ratingPage?.data, ratingPage?.pinnedRows],
+  );
   const rowCount = ratingPage?.total ?? 0;
 
   const handleSortModelChange = (model: GridSortModel) => {
@@ -143,6 +155,7 @@ const ProblemsRatingPage = () => {
           sortModel={sortModel}
           onSortModelChange={handleSortModelChange}
           labels={labels}
+          currentUsername={currentUser?.username}
         />
 
         <ProblemsRatingPagePeriodRatings />

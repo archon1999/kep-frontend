@@ -18,6 +18,7 @@ import {
 import { useArenaPlayerStatistics } from 'modules/arena/application/queries.ts';
 import UserPopover from 'modules/users/ui/shared/components/UserPopover';
 import ChallengesRatingChip from 'shared/components/rating/ChallengesRatingChip.tsx';
+import { mergePinnedRows } from 'shared/lib/pinnedRows';
 import { ArenaPlayer } from 'modules/arena/domain/entities/arena-player.entity.ts';
 import { ArenaStatus } from 'modules/arena/domain/entities/arena.entity.ts';
 import { PageResult } from 'modules/arena/domain/ports/arena.repository.ts';
@@ -90,6 +91,11 @@ const ArenaPlayersTable = ({
     arenaId,
     selectedUsername,
   );
+  const rows = mergePinnedRows(
+    data?.data ?? [],
+    data?.pinnedRows,
+    (player) => player.username,
+  );
 
   const handleSelect = (player: ArenaPlayer) => {
     if (isUpcoming) return;
@@ -146,7 +152,7 @@ const ArenaPlayersTable = ({
                     </TableCell>
                   </TableRow>
                 ))
-              : data?.data?.map((player) => {
+              : rows.map((player) => {
                   const isCurrentUser = player.username === currentUsername;
                   const isSelected = player.username === selectedUsername;
                   const highlight = !isUpcoming ? topPlayerHighlight(player.rank) : undefined;
@@ -159,14 +165,21 @@ const ArenaPlayersTable = ({
                       sx={{
                         cursor: !isUpcoming ? 'pointer' : 'default',
                         backgroundColor:
-                          highlight?.backgroundColor ??
-                          (isCurrentUser ? 'warning.lighter' : undefined),
-                        '&:hover': highlight
+                          isCurrentUser ? 'primary.lighter' : highlight?.backgroundColor,
+                        '&:hover': isCurrentUser
+                          ? {
+                              backgroundColor: 'primary.light',
+                            }
+                          : highlight
                           ? {
                               backgroundColor: highlight.hoverBackgroundColor,
                             }
                           : undefined,
-                        '&.MuiTableRow-hover:hover': highlight
+                        '&.MuiTableRow-hover:hover': isCurrentUser
+                          ? {
+                              backgroundColor: 'primary.light',
+                            }
+                          : highlight
                           ? {
                               backgroundColor: highlight.hoverBackgroundColor,
                             }

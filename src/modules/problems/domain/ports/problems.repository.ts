@@ -36,6 +36,7 @@ export interface PageResult<T> {
   total: number;
   pagesCount: number;
   data: T[];
+  pinnedRows?: T[];
 }
 
 export type ProblemsListParams = Omit<ApiProblemsListParams, 'tags' | 'favorites'> & {
@@ -54,6 +55,7 @@ export type ProblemsRatingParams = {
   ordering?: string;
   page?: number;
   pageSize?: number;
+  pinCurrentUser?: boolean;
 };
 
 export type ProblemsRatingHistoryParams = {

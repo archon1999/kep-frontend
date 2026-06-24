@@ -2,6 +2,7 @@ import { ChangeEvent, useEffect, useMemo, useRef, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { Box, InputAdornment, Stack } from '@mui/material';
 import { GridSortModel } from '@mui/x-data-grid';
+import { useAuth } from 'app/providers/AuthProvider';
 import { useUsersCountries, useUsersList } from 'modules/users/application/queries';
 import IconifyIcon from 'shared/components/base/IconifyIcon';
 import AppliedFilters from 'shared/components/common/AppliedFilters';
@@ -17,6 +18,7 @@ import StyledTextField from 'shared/components/styled/StyledTextField';
 import useGridPagination from 'shared/hooks/useGridPagination';
 import useRouteQueryState from 'shared/hooks/useRouteQueryState';
 import { booleanFlagParam, enumParam, stringParam } from 'shared/lib/queryParams';
+import { mergePinnedRows } from 'shared/lib/pinnedRows';
 import { getCountryAlpha2, getCountryLabel } from 'shared/utils/country';
 import UsersDataGrid from './UsersDataGrid';
 import UsersHeaderStatistics from './UsersHeaderStatistics';
@@ -67,6 +69,7 @@ type UsersListQueryState = FiltersState & {
 
 const UsersListContainer = () => {
   const { t, i18n } = useTranslation();
+  const { currentUser } = useAuth();
   const { state, setField, resetState } = useRouteQueryState<UsersListQueryState>({
     defaults: {
       tabValue: 'skills',
@@ -233,8 +236,9 @@ const UsersListContainer = () => {
       hasCountry: debouncedFilters.hasCountry || undefined,
       hasCodeforces: debouncedFilters.hasCodeforces || undefined,
       hasTelegram: debouncedFilters.hasTelegram || undefined,
+      pinCurrentUser: Boolean(currentUser?.username),
     }),
-    [pageParams.page, pageParams.pageSize, ordering, debouncedFilters],
+    [pageParams.page, pageParams.pageSize, ordering, debouncedFilters, currentUser?.username],
   );
 
   const { data, isLoading, isValidating } = useUsersList(queryParams);
@@ -323,7 +327,11 @@ const UsersListContainer = () => {
     t,
   ]);
 
-  const rows = useMemo(() => data?.data ?? [], [data?.data]);
+  const rows = useMemo(
+    () =>
+      mergePinnedRows(data?.data ?? [], data?.pinnedRows, (row) => row.id ?? row.username),
+    [data?.data, data?.pinnedRows],
+  );
   const rowCount = data?.total ?? 0;
 
   const handleTabChange = (value: TabValue) => {
@@ -512,6 +520,7 @@ const UsersListContainer = () => {
               onSortModelChange={handleSortModelChange}
               columnLabels={columnLabels}
               isFiltered={Boolean(filters.search || hasActiveFilters)}
+              currentUsername={currentUser?.username}
             />
           </>
         </Box>

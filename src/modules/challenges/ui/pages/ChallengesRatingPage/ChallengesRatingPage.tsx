@@ -2,11 +2,13 @@ import { useMemo } from 'react';
 import { useTranslation } from 'react-i18next';
 import { Box, Stack } from '@mui/material';
 import { GridSortModel } from '@mui/x-data-grid';
+import { useAuth } from 'app/providers/AuthProvider';
 import { resources } from 'app/routes/resources';
 import { useChallengesRating } from 'modules/challenges/application/queries.ts';
 import { ChallengeRatingRow } from 'modules/challenges/domain';
 import PageHeader from 'shared/components/sections/common/PageHeader';
 import useGridPagination from 'shared/hooks/useGridPagination';
+import { mergePinnedRows } from 'shared/lib/pinnedRows';
 import useRouteQueryState from 'shared/hooks/useRouteQueryState';
 import { stringParam } from 'shared/lib/queryParams';
 import { responsivePagePaddingSx } from 'shared/lib/styles';
@@ -16,6 +18,7 @@ import ChallengesRatingPageTable, {
 
 const ChallengesRatingPage = () => {
   const { t } = useTranslation();
+  const { currentUser } = useAuth();
   const {
     paginationModel,
     onPaginationModelChange,
@@ -48,18 +51,27 @@ const ChallengesRatingPage = () => {
   }, [state.ordering]);
 
   const ordering = state.ordering || '-rating';
-  const { data: ratingPage, isLoading } = useChallengesRating({ page, pageSize, ordering });
+  const { data: ratingPage, isLoading } = useChallengesRating({
+    page,
+    pageSize,
+    ordering,
+    pinCurrentUser: Boolean(currentUser?.username),
+  });
 
-  const rows: ChallengesRatingPageRow[] = (ratingPage?.data ?? []).map(
-    (row: ChallengeRatingRow) => ({
-      id: row.username,
-      ...row,
-      record: t('challenges.record', {
-        wins: row.wins ?? 0,
-        draws: row.draws ?? 0,
-        losses: row.losses ?? 0,
-      }),
-    }),
+  const rows: ChallengesRatingPageRow[] = useMemo(
+    () =>
+      mergePinnedRows(ratingPage?.data ?? [], ratingPage?.pinnedRows, (row) => row.username).map(
+        (row: ChallengeRatingRow) => ({
+          id: row.username,
+          ...row,
+          record: t('challenges.record', {
+            wins: row.wins ?? 0,
+            draws: row.draws ?? 0,
+            losses: row.losses ?? 0,
+          }),
+        }),
+      ),
+    [ratingPage?.data, ratingPage?.pinnedRows, t],
   );
 
   return (
@@ -80,6 +92,7 @@ const ChallengesRatingPage = () => {
           sortModel={sortModel}
           loading={isLoading}
           onPaginationModelChange={onPaginationModelChange}
+          currentUsername={currentUser?.username}
           onSortModelChange={(model) => {
             const currentSort = model[0];
 

@@ -2,11 +2,13 @@ import { useMemo } from 'react';
 import { useTranslation } from 'react-i18next';
 import { LinearProgress, Stack } from '@mui/material';
 import { GridSortModel } from '@mui/x-data-grid';
+import { useAuth } from 'app/providers/AuthProvider';
 import { resources } from 'app/routes/resources';
 import PageHeader from 'shared/components/sections/common/PageHeader';
 import useGridPagination from 'shared/hooks/useGridPagination';
 import useRouteQueryState from 'shared/hooks/useRouteQueryState';
 import { stringParam } from 'shared/lib/queryParams';
+import { mergePinnedRows } from 'shared/lib/pinnedRows';
 import { responsivePagePaddingSx } from 'shared/lib/styles';
 import { useContestsRating } from 'modules/contests/application/queries';
 import ContestsRatingPageTable from './ContestsRatingPageTable.tsx';
@@ -23,6 +25,7 @@ const sortFieldByOrdering = Object.fromEntries(
 
 const ContestsRatingPage = () => {
   const { t } = useTranslation();
+  const { currentUser } = useAuth();
   const {
     paginationModel,
     onPaginationModelChange,
@@ -60,7 +63,12 @@ const ContestsRatingPage = () => {
     page,
     pageSize,
     ordering,
+    pinCurrentUser: Boolean(currentUser?.username),
   });
+  const rows = useMemo(
+    () => mergePinnedRows(ratingPage?.data ?? [], ratingPage?.pinnedRows, (row) => row.username),
+    [ratingPage?.data, ratingPage?.pinnedRows],
+  );
 
   const handleSortModelChange = (model: GridSortModel) => {
     const currentSort = model[0];
@@ -89,13 +97,14 @@ const ContestsRatingPage = () => {
         {isLoading ? <LinearProgress /> : null}
 
         <ContestsRatingPageTable
-          rows={ratingPage?.data ?? []}
+          rows={rows}
           rowCount={ratingPage?.total ?? 0}
           loading={isLoading}
           paginationModel={paginationModel}
           onPaginationModelChange={onPaginationModelChange}
           sortModel={sortModel}
           onSortModelChange={handleSortModelChange}
+          currentUsername={currentUser?.username}
         />
       </Stack>
     </Stack>

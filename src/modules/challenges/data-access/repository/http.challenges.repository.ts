@@ -27,6 +27,7 @@ import {
   ChallengeAntiCheatPenaltyResponse,
   ChallengeAnswerPayload,
   ChallengeCheckResponse,
+  ChallengeRatingParams,
   ChallengeStartResponse,
   ChallengesRepository,
   PageResult,
@@ -123,8 +124,11 @@ export class HttpChallengesRepository implements ChallengesRepository {
     };
   }
 
-  async listRating(params?: ChallengeListParams): Promise<PageResult<ChallengeRatingRow>> {
-    const response = await challengesApiClient.listRating(params);
+  async listRating(params?: ChallengeRatingParams): Promise<PageResult<ChallengeRatingRow>> {
+    const response = await challengesApiClient.listRating({
+      ...params,
+      pin_current_user: params?.pinCurrentUser ? 'true' : undefined,
+    } as any);
     return mapPageResult<ChallengeRatingRow>(response, mapChallengeRating);
   }
 

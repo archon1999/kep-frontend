@@ -1,7 +1,6 @@
 import { sortContestProblems } from 'modules/contests/ui/shared/utils/sortContestProblems';
 import {
   ApiContestsListParams,
-  ApiContestsRatingListParams,
 } from 'shared/api/orval/generated/endpoints/index.schemas';
 import { ContestDetail } from '../../domain/entities/contest-detail.entity';
 import { ContestProblemEntity } from '../../domain/entities/contest-problem.entity';
@@ -14,6 +13,7 @@ import { ContestFilter, ContestantEntity } from '../../domain/entities/contestan
 import {
   ContestContestantsParams,
   ContestRegistrantsParams,
+  ContestsRatingParams,
   ContestStandingsParams,
   ContestsRepository,
   PageResult,
@@ -77,8 +77,11 @@ export class HttpContestsRepository implements ContestsRepository {
     return mapContestProblem(result);
   }
 
-  async rating(params?: ApiContestsRatingListParams): Promise<PageResult<ContestRatingRow>> {
-    const result = await contestsApiClient.rating(params);
+  async rating(params?: ContestsRatingParams): Promise<PageResult<ContestRatingRow>> {
+    const result = await contestsApiClient.rating({
+      ...params,
+      pin_current_user: params?.pinCurrentUser ? 'true' : undefined,
+    } as any);
     return mapPageResult(result, mapContestRating);
   }
 
@@ -110,6 +113,7 @@ export class HttpContestsRepository implements ContestsRepository {
       following: params?.following ? 'true' : undefined,
       official: params?.official ? 'true' : undefined,
       participant: params?.participant,
+      pin_current_user: params?.pinCurrentUser ? 'true' : undefined,
     } as any);
     return mapContestantsPage(result);
   }

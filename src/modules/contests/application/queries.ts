@@ -1,7 +1,4 @@
-import {
-  ApiContestsListParams,
-  ApiContestsRatingListParams,
-} from 'shared/api/orval/generated/endpoints/index.schemas';
+import { ApiContestsListParams } from 'shared/api/orval/generated/endpoints/index.schemas';
 import useSWR, { SWRConfiguration } from 'swr';
 import { HttpContestsRepository } from '../data-access/repository/http.contests.repository';
 import { ContestDetail } from '../domain/entities/contest-detail.entity';
@@ -30,6 +27,7 @@ import {
 import {
   ContestContestantsParams,
   ContestRegistrantsParams,
+  ContestsRatingParams,
   ContestStandingsParams,
   PageResult,
 } from '../domain/ports/contests.repository';
@@ -55,9 +53,9 @@ export const useContestsList = (params?: ApiContestsListParams) =>
 export const useContestCategories = () =>
   useSWR<ContestCategoryEntity[]>('contests-categories', () => contestsRepository.categories());
 
-export const useContestsRating = (params?: ApiContestsRatingListParams) =>
+export const useContestsRating = (params?: ContestsRatingParams) =>
   useSWR<PageResult<ContestRatingRow>>(
-    ['contests-rating', params?.page, params?.pageSize, params?.ordering],
+    ['contests-rating', params?.page, params?.pageSize, params?.ordering, params?.pinCurrentUser],
     () => contestsRepository.rating(params),
   );
 
@@ -129,6 +127,7 @@ export const useContestStandings = (
           params?.following,
           params?.official,
           params?.participant,
+          params?.pinCurrentUser,
         ]
       : null,
     () => contestsRepository.standings(contestId!, params),

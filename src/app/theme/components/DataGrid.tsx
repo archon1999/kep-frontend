@@ -114,6 +114,9 @@ const DataGrid: Components<Omit<Theme, 'components'>>['MuiDataGrid'] = {
       '&.Mui-selected': {
         backgroundColor: cssVarRgba(theme.vars.palette.primary.lightChannel, 0.08),
       },
+      '&.MuiDataGrid-row--currentUser': {
+        backgroundColor: theme.vars.palette.primary.lighter,
+      },
       '& .MuiDataGrid-cell': {
         [`&:nth-of-type(2)`]: {
           '&:not(.MuiDataGrid-cellCheckbox)': {
