@@ -29,11 +29,34 @@ jobs:
       - name: Build
         run: npm run build
 
+      - name: Upload frontend build
+        uses: actions/upload-artifact@v4
+        with:
+          name: frontend-dist
+          path: dist
+
   deploy-production:
     if: github.ref_name == 'production'
     needs: build
     runs-on: ubuntu-latest
     steps:
+      - name: Download frontend build
+        uses: actions/download-artifact@v4
+        with:
+          name: frontend-dist
+          path: frontend-dist
+
+      - name: Copy frontend build to production
+        uses: appleboy/scp-action@v0.1.7
+        with:
+          host: ${{ secrets.HOST }}
+          username: ${{ secrets.USERNAME }}
+          password: ${{ secrets.PASSWORD }}
+          port: ${{ secrets.PORT }}
+          source: frontend-dist
+          target: /tmp/kep-frontend-deploy
+          rm: true
+
       - name: Deploy frontend to production
         uses: appleboy/ssh-action@v1.0.3
         with:
@@ -47,13 +70,9 @@ jobs:
             git -C frontend fetch origin production
             git -C frontend checkout production
             git -C frontend pull --ff-only origin production
+            rm -rf /home/KEP.uz/frontend/dist
+            cp -a /tmp/kep-frontend-deploy/frontend-dist /home/KEP.uz/frontend/dist
             cd /home/KEP.uz/frontend
-            npm config set fetch-retries 5
-            npm config set fetch-retry-mintimeout 20000
-            npm config set fetch-retry-maxtimeout 120000
-            npm config set fetch-timeout 600000
-            npm ci --legacy-peer-deps --no-audit --no-fund
-            npm run build
             cd /home/KEP.uz/backend
             docker compose up -d --build frontend
             docker image prune -f
