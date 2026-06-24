@@ -32,7 +32,7 @@ const ContestsListPageHeroCard = ({
         background: `linear-gradient(135deg, ${cssVarRgba(theme.vars.palette.primary.lightChannel, 0.08)}, ${cssVarRgba(theme.vars.palette.primary.mainChannel, 0.06)})`,
       })}
     >
-      <CardContent sx={{ p: { xs: 3, md: 4 } }}>
+      <CardContent sx={{ p: { xs: 2, sm: 3, md: 4 } }}>
         <Stack direction="column" spacing={2}>
           <Stack
             direction={{ xs: 'column', sm: 'row' }}
@@ -85,7 +85,8 @@ const ContestsListPageHeroCard = ({
                 aria-controls={filtersOpen ? 'contests-filters-drawer' : undefined}
                 label={t('problems.filters')}
                 badgeContent={activeFiltersCount}
-                sx={{ alignSelf: { xs: 'stretch', sm: 'flex-start' } }}
+                containerSx={{ width: { xs: 1, sm: 'auto' } }}
+                sx={{ width: { xs: 1, sm: 'auto' } }}
               />
             </Stack>
           </Stack>
@@ -95,13 +96,14 @@ const ContestsListPageHeroCard = ({
       <Box
         sx={{
           position: 'absolute',
-          right: { xs: -24, md: 24 },
-          bottom: { xs: -24, md: 8 },
+          display: { xs: 'none', sm: 'block' },
+          right: { sm: -48, md: 24 },
+          bottom: { sm: -48, md: 8 },
           opacity: 0.08,
           pointerEvents: 'none',
         }}
       >
-        <Logo sx={{ width: { xs: 200, md: 280 }, height: { xs: 200, md: 280 } }} />
+        <Logo sx={{ width: { sm: 220, md: 280 }, height: { sm: 220, md: 280 } }} />
       </Box>
     </Card>
   );

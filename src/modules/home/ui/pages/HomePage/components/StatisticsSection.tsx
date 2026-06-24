@@ -6,9 +6,9 @@ import Grid from '@mui/material/Grid';
 import Skeleton from '@mui/material/Skeleton';
 import Stack from '@mui/material/Stack';
 import Typography from '@mui/material/Typography';
-import IconifyIcon from 'shared/components/base/IconifyIcon';
 import { useLandingPageStatistics } from 'modules/home/application/queries.ts';
 import type { HomeStatisticKey } from 'modules/home/domain/entities/home.entity.ts';
+import IconifyIcon from 'shared/components/base/IconifyIcon';
 import { createNumberFormatter } from 'shared/lib/numberFormat';
 import { responsivePagePaddingSx } from 'shared/lib/styles.ts';
 
@@ -90,7 +90,7 @@ const StatisticsSection = () => {
 
         return (
           <Grid key={key} size={{ xs: 12, sm: 6 }}>
-            <Paper sx={{ p: 4 }}>
+            <Paper sx={{ p: { xs: 2, sm: 3, md: 4 } }}>
               <Stack spacing={2} direction="column">
                 <Stack direction="column" spacing={0.5}>
                   <Stack
@@ -103,12 +103,16 @@ const StatisticsSection = () => {
                         md: 'flex-start',
                         xl: 'baseline',
                       },
+                      minWidth: 0,
                     }}
                   >
                     <Typography variant="h4" sx={{ fontWeight: 600 }}>
                       {showSkeleton ? <Skeleton width={96} /> : valueFormatter.format(value)}
                     </Typography>
-                    <Typography variant="subtitle2" sx={{ fontWeight: 600 }}>
+                    <Typography
+                      variant="subtitle2"
+                      sx={{ fontWeight: 600, overflowWrap: 'anywhere' }}
+                    >
                       {t(`homePage.statistics.cards.${key}`)}
                     </Typography>
                   </Stack>
@@ -120,6 +124,7 @@ const StatisticsSection = () => {
                     mt: 'auto',
                     gap: 1,
                     alignItems: { xs: 'flex-start' },
+                    minWidth: 0,
                   }}
                 >
                   {showSkeleton ? (
@@ -132,7 +137,10 @@ const StatisticsSection = () => {
                       sx={{ flexDirection: 'row-reverse' }}
                     />
                   )}
-                  <Typography variant="subtitle2" sx={{ color: 'text.secondary' }}>
+                  <Typography
+                    variant="subtitle2"
+                    sx={{ color: 'text.secondary', overflowWrap: 'anywhere' }}
+                  >
                     {t('homePage.statistics.changeLabel')}
                   </Typography>
                 </Stack>

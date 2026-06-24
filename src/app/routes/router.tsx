@@ -83,13 +83,10 @@ import { ProjectDetailPage, ProjectsListPage } from 'modules/projects/ui/pages';
 import { ShopPage } from 'modules/shop/ui/pages';
 import { TestDetailPage, TestPassPage, TestsListPage } from 'modules/testing/ui/pages';
 import { TournamentPage, TournamentsListPage } from 'modules/tournaments/ui/pages';
-import {
-  UserProfilePage,
-  UsersListPage,
-} from 'modules/users/ui/pages';
+import { UserProfilePage, UsersListPage } from 'modules/users/ui/pages';
 import AuthGuard from 'shared/components/guard/AuthGuard';
 import SuperuserGuard from 'shared/components/guard/SuperuserGuard';
-import PageLoader from 'shared/components/loading/PageLoader';
+import { DelayedPageLoader } from 'shared/components/loading/PageLoader';
 import { legacyRedirectRoutes } from './legacy-routes';
 import { resources } from './resources';
 import { authPaths, rootPaths } from './route-config';
@@ -99,14 +96,14 @@ const IS_PROD = import.meta.env.PROD;
 
 const withAuthGuard = (element: ReactNode) => <AuthGuard>{element}</AuthGuard>;
 const withSuspense = (element: ReactNode) => (
-  <Suspense fallback={<PageLoader />}>{element}</Suspense>
+  <Suspense fallback={<DelayedPageLoader />}>{element}</Suspense>
 );
 
 export const SuspenseOutlet = () => {
   const location = useLocation();
 
   return (
-    <Suspense key={location.pathname} fallback={<PageLoader />}>
+    <Suspense key={location.pathname} fallback={<DelayedPageLoader />}>
       <Outlet />
     </Suspense>
   );

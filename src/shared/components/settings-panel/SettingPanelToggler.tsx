@@ -1,6 +1,6 @@
+import { useTranslation } from 'react-i18next';
 import { Button, buttonClasses, useTheme } from '@mui/material';
 import { useSettingsPanelContext } from 'app/providers/SettingsPanelProvider';
-import { useTranslation } from 'react-i18next';
 import SettingsIcon from 'shared/components/icons/SettingsIcon';
 
 const SettingPanelToggler = () => {
@@ -15,9 +15,10 @@ const SettingPanelToggler = () => {
       sx={[
         {
           position: 'fixed',
+          display: { xs: 'none', sm: 'inline-flex' },
           zIndex: theme.zIndex.drawer + 1,
           top: '50%',
-          right: -47,
+          right: -43,
           border: 1,
           fontSize: 13,
           borderColor: 'divider',
@@ -45,6 +46,8 @@ const SettingPanelToggler = () => {
           openSettingPanel: true,
         })
       }
+      aria-label={t('settings.customizer.toggle')}
+      title={t('settings.customizer.toggle')}
     >
       {t('settings.customizer.toggle')}
     </Button>

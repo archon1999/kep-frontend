@@ -1,3 +1,4 @@
+import { useTranslation } from 'react-i18next';
 import { Avatar, Box, Chip, Stack, Typography } from '@mui/material';
 import {
   DataGrid,
@@ -6,14 +7,14 @@ import {
   GridSortModel,
   GridValidRowModel,
 } from '@mui/x-data-grid';
-import { useTranslation } from 'react-i18next';
 import { UsersListItem } from 'modules/users/domain/entities/user.entity';
+import UserPopover from 'modules/users/ui/shared/components/UserPopover';
 import CountryFlagIcon from 'shared/components/common/CountryFlagIcon';
+import { getDataGridNoRowsOverlaySlotProps } from 'shared/components/common/DataGridNoRowsOverlay';
 import KepcoinValue from 'shared/components/common/KepcoinValue';
 import ChallengesRatingChip from 'shared/components/rating/ChallengesRatingChip';
 import ContestsRatingChip from 'shared/components/rating/ContestsRatingChip';
 import Streak from 'shared/components/rating/Streak';
-import UserPopover from 'modules/users/ui/shared/components/UserPopover';
 
 export interface UsersDataGridLabels {
   user: string;
@@ -37,6 +38,7 @@ interface UsersDataGridProps {
   onSortModelChange: (model: GridSortModel) => void;
   columnLabels: UsersDataGridLabels;
   countryLabels?: Record<string, string>;
+  isFiltered?: boolean;
 }
 
 const UsersDataGrid = ({
@@ -48,6 +50,7 @@ const UsersDataGrid = ({
   sortModel,
   onSortModelChange,
   columnLabels,
+  isFiltered,
 }: UsersDataGridProps) => {
   const { t } = useTranslation();
   const columns: GridColDef<GridValidRowModel>[] = [
@@ -55,7 +58,7 @@ const UsersDataGrid = ({
       field: 'username',
       headerName: columnLabels.user,
       flex: 1.4,
-      minWidth: 260,
+      minWidth: 220,
       sortable: true,
       renderHeader: (params) => (
         <Box sx={{ ml: 2, display: 'flex', fontWeight: 500, alignItems: 'center' }}>
@@ -157,12 +160,7 @@ const UsersDataGrid = ({
         const user = row as UsersListItem;
 
         return (
-          <Stack
-            direction="row"
-            alignItems="center"
-            spacing={1}
-            width="100%"
-          >
+          <Stack direction="row" alignItems="center" spacing={1} width="100%">
             <ContestsRatingChip title={user.contestsRating?.title} imgSize={28} />
             <Typography variant="body2" fontWeight={600} noWrap>
               {user.contestsRating?.value ?? columnLabels.emptyValue}
@@ -174,18 +172,13 @@ const UsersDataGrid = ({
     {
       field: 'challengesRating',
       headerName: columnLabels.challenges,
-      minWidth: 150,
+      minWidth: 130,
       sortable: true,
       renderCell: ({ row }) => {
         const user = row as UsersListItem;
 
         return (
-          <Stack
-            direction="row"
-            spacing={1}
-            alignItems="center"
-            width="100%"
-          >
+          <Stack direction="row" spacing={1} alignItems="center" width="100%">
             <ChallengesRatingChip title={user.challengesRating?.title} />
             <Typography variant="body2" fontWeight={600} noWrap>
               {user.challengesRating?.value ?? columnLabels.emptyValue}
@@ -197,7 +190,7 @@ const UsersDataGrid = ({
     {
       field: 'streak',
       headerName: columnLabels.streak,
-      minWidth: 130,
+      minWidth: 110,
       sortable: true,
       renderCell: ({ row }) => {
         const user = row as UsersListItem;
@@ -219,29 +212,24 @@ const UsersDataGrid = ({
     {
       field: 'kepcoin',
       headerName: columnLabels.kepcoin,
-      minWidth: 120,
+      minWidth: 108,
       sortable: true,
       renderCell: ({ row }) => {
         const user = row as UsersListItem;
 
         return (
-          <KepcoinValue
-            value={user.kepcoin ?? 0}
-            iconSize={20}
-            width="100%"
-            fontWeight={600}
-          />
+          <KepcoinValue value={user.kepcoin ?? 0} iconSize={20} width="100%" fontWeight={600} />
         );
       },
     },
     {
       field: 'lastSeen',
       headerName: columnLabels.lastSeen,
-      minWidth: 160,
+      minWidth: 132,
       sortable: true,
       renderCell: ({ row }) => {
         const user = row as UsersListItem;
-        return <Chip color="neutral" label={user.lastSeen}></Chip>;
+        return <Chip color="neutral" label={user.lastSeen} sx={{ maxWidth: 1 }} />;
       },
     },
   ];
@@ -263,6 +251,7 @@ const UsersDataGrid = ({
       sortingMode="server"
       columns={columns}
       localeText={{ noRowsLabel: t('common.dataGrid.noRows.users') }}
+      slotProps={getDataGridNoRowsOverlaySlotProps({ filtered: isFiltered })}
       disableRowSelectionOnClick
       getRowId={(row) => (row as UsersListItem).id ?? (row as UsersListItem).username}
       sx={{

@@ -17,7 +17,6 @@ import {
   formLabelClasses,
   useTheme,
 } from '@mui/material';
-import CatalogFilter from 'modules/problems/ui/pages/ProblemsListPage/components/CatalogFilter.tsx';
 import { difficultyOptions } from 'modules/problems/config/difficulty';
 import {
   ProblemCategory,
@@ -25,6 +24,7 @@ import {
   ProblemLanguageOption,
 } from 'modules/problems/domain/entities/problem.entity.ts';
 import { ProblemsListParams } from 'modules/problems/domain/ports/problems.repository.ts';
+import CatalogFilter from 'modules/problems/ui/pages/ProblemsListPage/components/CatalogFilter.tsx';
 import IconifyIcon from 'shared/components/base/IconifyIcon.tsx';
 import FilterDrawer, {
   FilterFieldset,

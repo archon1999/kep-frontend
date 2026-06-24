@@ -16,6 +16,7 @@ import { useAuth } from 'app/providers/AuthProvider';
 import { getResourceById, resources } from 'app/routes/resources';
 import UserPopover from 'modules/users/ui/shared/components/UserPopover.tsx';
 import IconifyIcon from 'shared/components/base/IconifyIcon';
+import { getDataGridNoRowsOverlaySlotProps } from 'shared/components/common/DataGridNoRowsOverlay';
 import AttemptLanguage from 'shared/components/problems/AttemptLanguage';
 import AttemptVerdict from 'shared/components/problems/AttemptVerdict';
 import { VerdictKey } from 'shared/components/problems/attemptVerdict.utils';
@@ -38,6 +39,7 @@ interface ProblemsAttemptsTableProps {
   showContestTimeSubmitted?: boolean;
   disableLockedAttemptDetails?: boolean;
   getProblemLink?: (attempt: AttemptListItem) => string;
+  isFiltered?: boolean;
 }
 
 interface AttemptUpdatePayload {
@@ -61,6 +63,7 @@ const ProblemsAttemptsTable = ({
   showContestTimeSubmitted = false,
   disableLockedAttemptDetails = false,
   getProblemLink,
+  isFiltered,
 }: ProblemsAttemptsTableProps) => {
   const { t, i18n } = useTranslation();
   const theme = useTheme();
@@ -407,6 +410,7 @@ const ProblemsAttemptsTable = ({
         rows={rows}
         columns={columns}
         localeText={{ noRowsLabel: t('common.dataGrid.noRows.problemAttempts') }}
+        slotProps={getDataGridNoRowsOverlaySlotProps({ filtered: isFiltered })}
         loading={isLoading}
         rowCount={total}
         pageSizeOptions={[10, 20, 50]}

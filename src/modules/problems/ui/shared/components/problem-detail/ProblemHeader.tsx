@@ -4,11 +4,11 @@ import { Box, Button, Divider, IconButton, Stack, Tooltip } from '@mui/material'
 import AppbarActionItems from 'app/layouts/main-layout/common/AppbarActionItems';
 import { useAuth } from 'app/providers/AuthProvider';
 import { getResourceById, resources } from 'app/routes/resources';
+import { ProblemDetail } from 'modules/problems/domain/entities/problem.entity';
+import IconifyIcon from 'shared/components/base/IconifyIcon';
 import KepcoinSpendConfirm from 'shared/components/common/KepcoinSpendConfirm';
 import Logo from 'shared/components/common/Logo';
-import IconifyIcon from 'shared/components/base/IconifyIcon';
 import { useLoginRedirect } from 'shared/lib/authRedirect';
-import { ProblemDetail } from 'modules/problems/domain/entities/problem.entity';
 
 interface ProblemHeaderProps {
   navColor?: string;
@@ -75,9 +75,14 @@ export const ProblemHeader = ({
         borderColor: 'divider',
         px: { xs: 2, md: 3 },
         py: 1.5,
-        display: 'flex',
+        display: 'grid',
+        gridTemplateColumns: { xs: '1fr auto', md: '1fr auto 1fr' },
+        gridTemplateAreas: {
+          xs: '"nav user" "actions actions"',
+          md: '"nav actions user"',
+        },
         alignItems: 'center',
-        gap: 2,
+        gap: { xs: 1, md: 2 },
         backgroundImage:
           navColor === 'vibrant'
             ? 'linear-gradient(90deg, rgba(124,77,255,0.85), rgba(3,169,244,0.85))'
@@ -85,10 +90,15 @@ export const ProblemHeader = ({
         color: navColor === 'vibrant' ? 'common.white' : undefined,
       }}
     >
-      <Stack direction="row" spacing={1.5} alignItems="center" sx={{ minWidth: 0, flex: 1 }}>
+      <Stack
+        direction="row"
+        spacing={1.5}
+        alignItems="center"
+        sx={{ gridArea: 'nav', minWidth: 0, overflowX: 'auto' }}
+      >
         <Logo showName={false} />
         <Divider orientation="vertical" flexItem />
-        <Stack direction="row">
+        <Stack direction="row" alignItems="center" sx={{ flexShrink: 0 }}>
           {studyPlanId ? (
             <Button
               component={RouterLink}
@@ -96,9 +106,18 @@ export const ProblemHeader = ({
               variant="text"
               color="secondary"
               startIcon={<IconifyIcon icon="mdi:map-outline" />}
-              sx={{ textTransform: 'none' }}
+              sx={{
+                textTransform: 'none',
+                minWidth: { xs: 40, sm: 64 },
+                px: { xs: 1, sm: 1.5 },
+                '& .MuiButton-startIcon': {
+                  mr: { xs: 0, sm: 1 },
+                },
+              }}
             >
-              {t('problems.studyPlans.pageTitle')}
+              <Box component="span" sx={{ display: { xs: 'none', sm: 'inline' } }}>
+                {t('problems.studyPlans.pageTitle')}
+              </Box>
             </Button>
           ) : null}
           <Button
@@ -107,20 +126,29 @@ export const ProblemHeader = ({
             variant="text"
             color="primary"
             startIcon={<IconifyIcon icon="mdi:format-list-bulleted" />}
-            sx={{ textTransform: 'none' }}
+            sx={{
+              textTransform: 'none',
+              minWidth: { xs: 40, sm: 64 },
+              px: { xs: 1, sm: 1.5 },
+              '& .MuiButton-startIcon': {
+                mr: { xs: 0, sm: 1 },
+              },
+            }}
           >
-            {t('problems.title')}
+            <Box component="span" sx={{ display: { xs: 'none', sm: 'inline' } }}>
+              {t('problems.title')}
+            </Box>
           </Button>
           <Tooltip title={t('problems.detail.previousProblem')}>
             <span>
-              <IconButton onClick={onPrev} color="primary" disabled={!canNavigate}>
+              <IconButton onClick={onPrev} color="primary" disabled={!canNavigate} size="small">
                 <IconifyIcon icon="mdi:chevron-left" />
               </IconButton>
             </span>
           </Tooltip>
           <Tooltip title={t('problems.detail.nextProblem')}>
             <span>
-              <IconButton onClick={onNext} color="primary" disabled={!canNavigate}>
+              <IconButton onClick={onNext} color="primary" disabled={!canNavigate} size="small">
                 <IconifyIcon icon="mdi:chevron-right" />
               </IconButton>
             </span>
@@ -133,7 +161,7 @@ export const ProblemHeader = ({
         spacing={1}
         alignItems="center"
         justifyContent="center"
-        sx={{ flex: 1, minWidth: 0 }}
+        sx={{ gridArea: 'actions', minWidth: 0 }}
       >
         <Tooltip title={isRunning ? t('problems.detail.running') : t('problems.detail.runHotkey')}>
           <span>
@@ -213,7 +241,7 @@ export const ProblemHeader = ({
         </Tooltip>
       </Stack>
 
-      <Box sx={{ flex: 1, display: 'flex', justifyContent: 'flex-end' }}>
+      <Box sx={{ gridArea: 'user', display: 'flex', justifyContent: 'flex-end' }}>
         <AppbarActionItems type="slim" />
       </Box>
     </Box>

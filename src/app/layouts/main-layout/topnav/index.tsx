@@ -21,6 +21,7 @@ const Topnav = () => {
 
   const { up, down } = useBreakpoints();
   const upSm = up('sm');
+  const upMd = up('md');
   const upLg = up('lg');
   const downSm = down('sm');
 
@@ -38,7 +39,7 @@ const Topnav = () => {
       ]}
     >
       {navColor === 'vibrant' && <VibrantBackground position="top" />}
-      <Toolbar variant="appbar" sx={{ px: { xs: 3, md: 5, position: 'relative' } }}>
+      <Toolbar variant="appbar" sx={{ px: { xs: 2, sm: 3, md: 5 }, position: 'relative' }}>
         <Box
           sx={{
             display: { xs: 'flex' },
@@ -62,7 +63,7 @@ const Topnav = () => {
           {upSm && (
             <Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
               <Logo />
-              <NavLogoLabel />
+              {upMd && <NavLogoLabel />}
             </Box>
           )}
         </Box>
@@ -71,11 +72,12 @@ const Topnav = () => {
           sx={{
             alignItems: 'center',
             flex: 1,
+            minWidth: 0,
           }}
         >
           {upLg && <TopnavItems />}
           <AppbarActionItems
-            showThemeToggler={!downSm}
+            showThemeToggler={!downSm && upLg}
             searchComponent={
               upSm ? (
                 <Box sx={{ pr: 1.5 }}>

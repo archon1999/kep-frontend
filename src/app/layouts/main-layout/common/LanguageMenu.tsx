@@ -39,6 +39,8 @@ const LanguageMenu = ({ type = 'default' }: LanguageMenuProps) => {
   return (
     <>
       <Button
+        aria-label="Change language"
+        title="Change language"
         color="neutral"
         size={type === 'slim' ? 'small' : 'medium'}
         variant="text"

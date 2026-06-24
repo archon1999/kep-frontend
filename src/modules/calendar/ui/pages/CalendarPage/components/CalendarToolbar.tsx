@@ -40,10 +40,24 @@ const CalendarToolbar = ({
             {t('calendar.today')}
           </Button>
           <Stack direction="row" spacing={0.5} alignItems="center">
-            <Button shape="square" color="neutral" onClick={onPrev} size="small">
+            <Button
+              shape="square"
+              color="neutral"
+              onClick={onPrev}
+              size="small"
+              aria-label={t('common.pagination.previous')}
+              title={t('common.pagination.previous')}
+            >
               <IconifyIcon icon="material-symbols:chevron-left-rounded" />
             </Button>
-            <Button shape="square" color="neutral" onClick={onNext} size="small">
+            <Button
+              shape="square"
+              color="neutral"
+              onClick={onNext}
+              size="small"
+              aria-label={t('common.pagination.next')}
+              title={t('common.pagination.next')}
+            >
               <IconifyIcon icon="material-symbols:chevron-right-rounded" />
             </Button>
           </Stack>

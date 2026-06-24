@@ -25,6 +25,8 @@ const ThemeToggler = ({ type = 'default' }: ThemeTogglerProps) => {
 
   return (
     <Button
+      aria-label={isDark ? 'Switch to light mode' : 'Switch to dark mode'}
+      title={isDark ? 'Switch to light mode' : 'Switch to dark mode'}
       color="neutral"
       variant={type === 'default' ? 'soft' : 'text'}
       shape="circle"

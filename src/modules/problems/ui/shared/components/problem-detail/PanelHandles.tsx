@@ -1,26 +1,35 @@
-import { Box } from '@mui/material';
 import { PanelResizeHandle } from 'react-resizable-panels';
+import { Box } from '@mui/material';
 
-export const PanelHandle = () => (
-  <PanelResizeHandle
-    style={{
-      width: 10,
-      cursor: 'col-resize',
-      display: 'flex',
-      alignItems: 'center',
-      justifyContent: 'center',
-    }}
-  >
-    <Box
-      sx={{
-        height: 48,
-        width: 2,
-        borderRadius: 1,
-        bgcolor: 'divider',
+interface PanelHandleProps {
+  orientation?: 'horizontal' | 'vertical';
+}
+
+export const PanelHandle = ({ orientation = 'horizontal' }: PanelHandleProps) => {
+  const isVertical = orientation === 'vertical';
+
+  return (
+    <PanelResizeHandle
+      style={{
+        width: isVertical ? '100%' : 10,
+        height: isVertical ? 10 : '100%',
+        cursor: isVertical ? 'row-resize' : 'col-resize',
+        display: 'flex',
+        alignItems: 'center',
+        justifyContent: 'center',
       }}
-    />
-  </PanelResizeHandle>
-);
+    >
+      <Box
+        sx={{
+          width: isVertical ? 48 : 2,
+          height: isVertical ? 2 : 48,
+          borderRadius: 1,
+          bgcolor: 'divider',
+        }}
+      />
+    </PanelResizeHandle>
+  );
+};
 
 export const VerticalHandle = () => (
   <PanelResizeHandle

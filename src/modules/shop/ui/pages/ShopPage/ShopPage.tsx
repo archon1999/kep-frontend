@@ -1,11 +1,11 @@
 import { useTranslation } from 'react-i18next';
-import { Box, Stack, Typography } from '@mui/material';
 import { useNavigate } from 'react-router';
-import { useSWRConfig } from 'swr';
+import { Box, Stack, Typography } from '@mui/material';
 import { useAuth } from 'app/providers/AuthProvider';
 import { getResourceByUsername, resources } from 'app/routes/resources';
 import { useShopProducts } from 'modules/shop/application/queries';
 import { responsivePagePaddingSx } from 'shared/lib/styles';
+import { useSWRConfig } from 'swr';
 import ShopProductCard, { ShopProductCardSkeleton } from './components/ShopProductCard';
 
 const ShopPage = () => {
@@ -18,10 +18,7 @@ const ShopPage = () => {
   const showEmptyState = !isLoading && !products?.length && !error;
 
   const handlePurchaseSuccess = async () => {
-    await Promise.all([
-      mutateProducts?.(),
-      mutate(['shop-orders']),
-    ]);
+    await Promise.all([mutateProducts?.(), mutate(['shop-orders'])]);
 
     if (currentUser?.username) {
       navigate(getResourceByUsername(resources.UserProfilePurchases, currentUser.username));
@@ -61,7 +58,8 @@ const ShopPage = () => {
               gridTemplateColumns: {
                 xs: 'repeat(1, 1fr)',
                 sm: 'repeat(2, 1fr)',
-                md: 'repeat(4, 1fr)',
+                md: 'repeat(3, 1fr)',
+                xl: 'repeat(4, 1fr)',
               },
             }}
           >

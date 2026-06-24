@@ -1,14 +1,17 @@
 import { MouseEvent, useEffect, useMemo, useState } from 'react';
 import { Button, Link, Popover, Skeleton, Stack, Typography, paperClasses } from '@mui/material';
-import { resources } from 'app/routes/resources';
 import { useAuth } from 'app/providers/AuthProvider';
-import { TodayKepCoin, type KepCoinBalance } from 'shared/api/orval/generated/endpoints/index.schemas';
-import useSWR from 'swr';
-import useSWRMutation from 'swr/mutation';
-import axiosFetcher from 'shared/services/axios/axiosFetcher';
+import { resources } from 'app/routes/resources';
+import {
+  type KepCoinBalance,
+  TodayKepCoin,
+} from 'shared/api/orval/generated/endpoints/index.schemas';
 import KepcoinValue from 'shared/components/common/KepcoinValue';
 import { formatInteger } from 'shared/lib/numberFormat';
+import axiosFetcher from 'shared/services/axios/axiosFetcher';
 import { wsService } from 'shared/services/websocket';
+import useSWR from 'swr';
+import useSWRMutation from 'swr/mutation';
 
 interface KepcoinMenuProps {
   type?: 'default' | 'slim';
@@ -36,10 +39,10 @@ const KepcoinMenu = ({ type = 'default' }: KepcoinMenuProps) => {
     },
   );
 
-  const balance = useMemo(() => currentUser?.kepcoin ?? fetchedBalance?.kepcoin ?? null, [
-    currentUser?.kepcoin,
-    fetchedBalance?.kepcoin,
-  ]);
+  const balance = useMemo(
+    () => currentUser?.kepcoin ?? fetchedBalance?.kepcoin ?? null,
+    [currentUser?.kepcoin, fetchedBalance?.kepcoin],
+  );
 
   const handleClose = () => {
     setAnchorEl(null);
@@ -71,7 +74,10 @@ const KepcoinMenu = ({ type = 'default' }: KepcoinMenuProps) => {
     const unsubscribe = wsService.on<number>(`kepcoin-${username}`, (kepcoin) => {
       setCurrentUser((prevUser) => (prevUser ? { ...prevUser, kepcoin } : prevUser));
 
-      mutateBalance((prevBalance) => (prevBalance ? { ...prevBalance, kepcoin } : prevBalance), false);
+      mutateBalance(
+        (prevBalance) => (prevBalance ? { ...prevBalance, kepcoin } : prevBalance),
+        false,
+      );
     });
 
     return () => {
@@ -83,6 +89,8 @@ const KepcoinMenu = ({ type = 'default' }: KepcoinMenuProps) => {
   return (
     <>
       <Button
+        aria-label="Kepcoin balance"
+        title="Kepcoin balance"
         onClick={handleOpen}
         color="neutral"
         variant={type === 'default' ? 'soft' : 'text'}
@@ -136,14 +144,22 @@ const KepcoinMenu = ({ type = 'default' }: KepcoinMenuProps) => {
               <Skeleton variant="text" width={104} height={20} />
               <Stack direction="row" spacing={1} alignItems="center">
                 <Skeleton variant="text" width={32} height={20} />
-                <Skeleton variant="circular" width={type === 'slim' ? 18 : 22} height={type === 'slim' ? 18 : 22} />
+                <Skeleton
+                  variant="circular"
+                  width={type === 'slim' ? 18 : 22}
+                  height={type === 'slim' ? 18 : 22}
+                />
               </Stack>
             </Stack>
             <Stack direction="row" justifyContent="space-between" alignItems="center">
               <Skeleton variant="text" width={110} height={20} />
               <Stack direction="row" spacing={1} alignItems="center">
                 <Skeleton variant="text" width={32} height={20} />
-                <Skeleton variant="circular" width={type === 'slim' ? 18 : 22} height={type === 'slim' ? 18 : 22} />
+                <Skeleton
+                  variant="circular"
+                  width={type === 'slim' ? 18 : 22}
+                  height={type === 'slim' ? 18 : 22}
+                />
               </Stack>
             </Stack>
           </Stack>

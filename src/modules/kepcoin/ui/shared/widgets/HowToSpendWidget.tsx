@@ -4,7 +4,6 @@ import { Button, Card, CardContent, Divider, Stack, Typography } from '@mui/mate
 import { alpha } from '@mui/material/styles';
 import { getResourceById, resources } from 'app/routes/resources';
 import KepcoinValue from 'shared/components/common/KepcoinValue';
-import { responsivePagePaddingSx } from 'shared/lib/styles';
 
 interface HowToSpendWidgetProps {
   balance?: number;
@@ -68,14 +67,14 @@ const HowToSpendWidget = ({ balance: _balance = 0 }: HowToSpendWidgetProps) => {
   return (
     <Card
       sx={{
-        borderRadius: 5,
+        borderRadius: 2,
         border: (theme) => `1px solid ${alpha(theme.palette.primary.main, 0.08)}`,
-        boxShadow: '0 24px 50px rgba(18, 28, 45, 0.08)',
+        boxShadow: 'none',
       }}
     >
-      <CardContent sx={responsivePagePaddingSx}>
+      <CardContent sx={{ p: { xs: 2, md: 3 } }}>
         <Stack direction="column" spacing={2}>
-          <Typography variant="h5" fontWeight={700}>
+          <Typography variant="h6" fontWeight={700}>
             {t('kepcoinPage.howToSpend.title')}
           </Typography>
           <Stack

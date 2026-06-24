@@ -27,7 +27,9 @@ import FilterDrawer, {
   FilterRangeField,
   useFilterDrawer,
 } from 'shared/components/common/FilterDrawer';
-import DataGridNoRowsOverlay from 'shared/components/common/DataGridNoRowsOverlay';
+import DataGridNoRowsOverlay, {
+  getDataGridNoRowsOverlaySlotProps,
+} from 'shared/components/common/DataGridNoRowsOverlay';
 import useGridPagination from 'shared/hooks/useGridPagination';
 import { useAdminProblemMeta, useAdminProblems } from 'modules/admin/problems/application/queries';
 import { problemsAdminClient } from 'modules/admin/problems/data-access/problemsAdminClient';
@@ -660,6 +662,9 @@ const AdminProblemsListPage = () => {
           noRowsOverlay: DataGridNoRowsOverlay,
         }}
         localeText={{ noRowsLabel: t('common.dataGrid.noRows.adminProblems') }}
+        slotProps={getDataGridNoRowsOverlaySlotProps({
+          filtered: Boolean(debouncedSearch || activeFilters.length),
+        })}
         columns={columns}
         paginationModel={paginationModel}
         onPaginationModelChange={onPaginationModelChange}

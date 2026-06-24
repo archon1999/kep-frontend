@@ -208,6 +208,8 @@ const DailyTasksMenu = ({ type = 'default', label }: DailyTasksMenuProps) => {
   return (
     <>
       <Button
+        aria-label={t('common.dailyTasks.title')}
+        title={t('common.dailyTasks.title')}
         color={type === 'action' ? 'primary' : 'neutral'}
         variant={type === 'default' ? 'soft' : type === 'action' ? 'outlined' : 'text'}
         size={type === 'slim' ? 'small' : 'medium'}

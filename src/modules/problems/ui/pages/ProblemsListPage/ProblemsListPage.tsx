@@ -4,6 +4,7 @@ import { Link as RouterLink } from 'react-router-dom';
 import { Box, Button, Grid, Stack } from '@mui/material';
 import SearchTextField from 'app/layouts/main-layout/common/search-box/SearchTextField.tsx';
 import { useAuth } from 'app/providers/AuthProvider.tsx';
+import { useBreakpoints } from 'app/providers/BreakpointsProvider.tsx';
 import { resources } from 'app/routes/resources.ts';
 import {
   useLastContestProblems,
@@ -26,12 +27,12 @@ import { ProblemsListParams } from 'modules/problems/domain/ports/problems.repos
 import IconifyIcon from 'shared/components/base/IconifyIcon.tsx';
 import AppliedFilters from 'shared/components/common/AppliedFilters.tsx';
 import FilterButton from 'shared/components/common/FilterButton.tsx';
-import ResponsiveTabs from 'shared/components/common/ResponsiveTabs';
 import {
   DEFAULT_FILTER_DRAWER_WIDTH,
   FilterDrawerLayout,
   useFilterDrawer,
 } from 'shared/components/common/FilterDrawer.tsx';
+import ResponsiveTabs from 'shared/components/common/ResponsiveTabs';
 import PageHeader from 'shared/components/sections/common/PageHeader.tsx';
 import useRouteQueryState from 'shared/hooks/useRouteQueryState';
 import {
@@ -205,6 +206,9 @@ const advisorManagedFilterKeys = [
 const ProblemsListPage = () => {
   const { t } = useTranslation();
   const { currentUser } = useAuth();
+  const { down } = useBreakpoints();
+  const isCompactHeaderActions = down('md');
+  const headerActionButtonVariant = isCompactHeaderActions ? 'soft' : 'text';
   const {
     state: routeState,
     setField: setRouteField,
@@ -437,26 +441,50 @@ const ProblemsListPage = () => {
         />
       }
     >
-      <Stack direction="column" spacing={4} height={1}>
+      <Stack direction="column" spacing={{ xs: 2.5, md: 3 }} height={1}>
         <PageHeader
           title={t('problems.title2')}
           actionComponent={
-            <Stack direction="row" flexWrap="wrap" justifyContent="flex-end">
+            <Box
+              sx={{
+                display: 'grid',
+                gridTemplateColumns: {
+                  xs: currentUser ? 'repeat(2, minmax(0, 1fr))' : 'repeat(2, minmax(0, 1fr))',
+                  sm: 'repeat(3, auto)',
+                },
+                gap: 1,
+                width: { xs: 1, sm: 'auto' },
+              }}
+            >
               <Button
                 component={RouterLink}
                 to={resources.ProblemsRating}
-                variant="text"
+                variant={headerActionButtonVariant}
                 color="primary"
                 startIcon={<IconifyIcon icon="mdi:chart-line" />}
+                sx={{
+                  minWidth: 0,
+                  px: { xs: 1, sm: 1.5 },
+                  justifyContent: 'center',
+                  whiteSpace: 'normal',
+                  lineHeight: 1.25,
+                }}
               >
                 {t('problems.ratingButton')}
               </Button>
               <Button
                 component={RouterLink}
                 to={resources.Attempts}
-                variant="text"
+                variant={headerActionButtonVariant}
                 color="primary"
                 startIcon={<IconifyIcon icon="mdi:target" />}
+                sx={{
+                  minWidth: 0,
+                  px: { xs: 1, sm: 1.5 },
+                  justifyContent: 'center',
+                  whiteSpace: 'normal',
+                  lineHeight: 1.25,
+                }}
               >
                 {t('problems.attemptsButton')}
               </Button>
@@ -464,18 +492,26 @@ const ProblemsListPage = () => {
                 <Button
                   component={RouterLink}
                   to={resources.ProblemsUserStatistics}
-                  variant="text"
+                  variant={headerActionButtonVariant}
                   color="primary"
                   startIcon={<IconifyIcon icon="mdi:chart-bar" />}
+                  sx={{
+                    gridColumn: { xs: '1 / -1', sm: 'auto' },
+                    minWidth: 0,
+                    px: { xs: 1, sm: 1.5 },
+                    justifyContent: 'center',
+                    whiteSpace: 'normal',
+                    lineHeight: 1.25,
+                  }}
                 >
                   {t('problems.statisticsPage.title')}
                 </Button>
               ) : null}
-            </Stack>
+            </Box>
           }
         />
 
-        <Box sx={{ flex: 1, px: { xs: 3, md: 5 }, pb: { xs: 5, md: 6 } }}>
+        <Box sx={{ flex: 1, px: { xs: 2, sm: 3, md: 5 }, pb: { xs: 8, md: 6 } }}>
           <Grid container spacing={3}>
             <Grid size={12}>
               <FilterCard
@@ -759,8 +795,9 @@ const FilterCard = ({
             direction={{ xs: 'column', lg: 'row' }}
             alignItems={{ lg: 'center' }}
             justifyContent="space-between"
+            spacing={{ xs: 1, lg: 2 }}
           >
-            <Stack spacing={0.75} sx={{ minWidth: 0 }}>
+            <Stack spacing={0.75} sx={{ minWidth: 0, width: { xs: 1, lg: 'auto' } }}>
               <ResponsiveTabs
                 value={orderingValue}
                 onChange={handleOrderingChange}
@@ -772,20 +809,22 @@ const FilterCard = ({
                 tabsProps={{
                   allowScrollButtonsMobile: true,
                 }}
+                containerSx={{ width: { xs: 1, lg: 'auto' } }}
               />
             </Stack>
 
             <Stack
               direction={{ xs: 'column', sm: 'row' }}
-              spacing={1.25}
+              spacing={{ xs: 1, sm: 1.25 }}
               alignItems={{ sm: 'center' }}
+              sx={{ width: { xs: 1, lg: 'auto' } }}
             >
               <Button
                 variant="contained"
                 color="primary"
                 startIcon={<IconifyIcon icon="mdi:star-four-points-circle-outline" />}
                 onClick={onOpenAdvisor}
-                sx={{ whiteSpace: 'nowrap' }}
+                sx={{ width: { xs: 1, sm: 'auto' }, whiteSpace: 'nowrap' }}
               >
                 {t('problems.recommendation.cta')}
               </Button>
@@ -797,9 +836,11 @@ const FilterCard = ({
                 aria-haspopup="true"
                 aria-expanded={filtersOpen ? 'true' : undefined}
                 aria-controls={filtersOpen ? 'problems-filters-drawer' : undefined}
+                containerSx={{ width: { xs: 1, sm: 'auto' } }}
+                sx={{ width: { xs: 1, sm: 'auto' } }}
               />
               <SearchTextField
-                sx={{ minWidth: 100 }}
+                sx={{ minWidth: 100, width: { xs: 1, sm: 260, md: 300 } }}
                 value={filter.search ?? ''}
                 placeholder={t('problems.searchPlaceholder')}
                 onChange={(event) => onChange('search', event.target.value)}

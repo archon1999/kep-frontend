@@ -41,6 +41,7 @@ interface RichTextEditorProps {
   onChange: (value: string) => void;
   loadErrorText?: string;
   hintText?: string;
+  placeholder?: string;
   minHeight?: number;
   compact?: boolean;
   enableMathJax?: boolean;
@@ -159,6 +160,7 @@ const RichTextEditor = ({
   onChange,
   loadErrorText = 'Editor failed to load.',
   hintText,
+  placeholder,
   minHeight = 360,
   compact = false,
   enableMathJax = false,
@@ -218,6 +220,7 @@ const RichTextEditor = ({
             toolbar,
           },
           formats: QUILL_FORMATS,
+          placeholder,
         });
         quillHolder.current = quill;
 

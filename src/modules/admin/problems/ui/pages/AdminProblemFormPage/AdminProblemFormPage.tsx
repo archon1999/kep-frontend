@@ -116,9 +116,11 @@ const AdminProblemFormPage = () => {
         body_uz?: string;
         body_en?: string;
         body_ru?: string;
+        input_data?: string;
         input_data_uz?: string;
         input_data_en?: string;
         input_data_ru?: string;
+        output_data?: string;
         output_data_uz?: string;
         output_data_en?: string;
         output_data_ru?: string;

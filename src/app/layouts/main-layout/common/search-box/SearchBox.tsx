@@ -67,6 +67,8 @@ export const SearchBoxButton = ({ type = 'default', sx, ...rest }: SearchBoxButt
       {type === 'slim' && upSm ? (
         <Button
           className="search-box-button"
+          aria-label="Search"
+          title="Search"
           color="neutral"
           size="small"
           variant="soft"
@@ -82,6 +84,8 @@ export const SearchBoxButton = ({ type = 'default', sx, ...rest }: SearchBoxButt
       ) : (
         <Button
           className="search-box-button"
+          aria-label="Search"
+          title="Search"
           color="neutral"
           shape="circle"
           variant="soft"

@@ -12,10 +12,9 @@ import {
   useTheme,
 } from '@mui/material';
 import { getResourceById, resources } from 'app/routes/resources.ts';
-import IconifyIcon from 'shared/components/base/IconifyIcon.tsx';
 import { getDifficultyColor, getDifficultyLabelKey } from 'modules/problems/config/difficulty';
 import { ProblemListItem } from 'modules/problems/domain/entities/problem.entity.ts';
-
+import IconifyIcon from 'shared/components/base/IconifyIcon.tsx';
 
 interface ProblemListCardProps {
   problem: ProblemListItem;
@@ -76,9 +75,7 @@ const ProblemListCard = ({ problem }: ProblemListCardProps) => {
       );
     }
 
-    return (
-      <Box width={20}></Box>
-    );
+    return <Box width={20}></Box>;
   };
 
   const renderDifficultyBadge = () => {
@@ -100,8 +97,8 @@ const ProblemListCard = ({ problem }: ProblemListCardProps) => {
     const notSolved = problem.notSolved ?? Math.max((problem.attemptsCount ?? 0) - solved, 0);
 
     return (
-      <Stack direction="row" spacing={1} alignItems="center" flexWrap="wrap" useFlexGap>
-        <Stack direction="row" spacing={0.75} alignItems="center">
+      <Stack direction="row" spacing={{ xs: 0.75, sm: 1 }} alignItems="center" flexWrap="nowrap">
+        <Stack direction="row" spacing={{ xs: 0.5, sm: 0.75 }} alignItems="center">
           <IconifyIcon
             icon="mdi:user-check"
             width={18}
@@ -116,10 +113,13 @@ const ProblemListCard = ({ problem }: ProblemListCardProps) => {
         <Divider
           orientation="vertical"
           flexItem
-          sx={{ borderColor: alpha(theme.palette.text.primary, 0.08), minHeight: 24 }}
+          sx={{
+            borderColor: alpha(theme.palette.text.primary, 0.08),
+            minHeight: { xs: 18, sm: 24 },
+          }}
         />
 
-        <Stack direction="row" spacing={0.75} alignItems="center">
+        <Stack direction="row" spacing={{ xs: 0.5, sm: 0.75 }} alignItems="center">
           <IconifyIcon
             icon="mdi:user-minus"
             width={18}
@@ -138,6 +138,19 @@ const ProblemListCard = ({ problem }: ProblemListCardProps) => {
     );
   };
 
+  const renderProblemRatingBadge = () => (
+    <>
+      {problem.problemRating != null ? (
+        <Chip
+          size="small"
+          icon={<IconifyIcon icon="mdi:chart-line" width={16} height={16} />}
+          label={problem.problemRating}
+          variant="soft"
+        />
+      ) : null}
+    </>
+  );
+
   const statusColor = getStatusColor();
 
   return (
@@ -148,7 +161,7 @@ const ProblemListCard = ({ problem }: ProblemListCardProps) => {
         display: 'block',
         textDecoration: 'none',
         color: 'inherit',
-        p: 2,
+        p: { xs: 1.25, sm: 2 },
         borderRadius: 2,
         border: 0,
         borderLeft: '6px solid',
@@ -162,32 +175,94 @@ const ProblemListCard = ({ problem }: ProblemListCardProps) => {
         },
       }}
     >
-      <Stack direction="row" alignItems="center" justifyContent="space-between" spacing={1.5}>
-        <Stack direction="row" spacing={1.5} alignItems="flex-start" justifyContent="space-between">
-          <Stack direction="row" spacing={1.25} alignItems="center" flex={1}>
+      <Box
+        sx={{
+          display: { xs: 'grid', sm: 'flex' },
+          position: 'relative',
+          gridTemplateColumns: { xs: 'minmax(0, 1fr) auto' },
+          gridTemplateRows: { xs: 'auto auto' },
+          columnGap: { xs: 1, sm: 1.5 },
+          rowGap: { xs: 0.5, sm: 1.5 },
+          alignItems: { xs: 'center', sm: 'center' },
+          justifyContent: 'space-between',
+        }}
+      >
+        <Stack
+          direction="row"
+          spacing={1.25}
+          alignItems={{ xs: 'center', sm: 'flex-start' }}
+          minWidth={0}
+          sx={{ gridColumn: { xs: 1, sm: 'auto' }, gridRow: { xs: 1, sm: 'auto' }, flex: 1 }}
+        >
+          <Box
+            sx={{
+              position: { xs: 'absolute', sm: 'static' },
+              left: { xs: 0, sm: 'auto' },
+              top: { xs: '50%', sm: 'auto' },
+              transform: { xs: 'translateY(-50%)', sm: 'none' },
+              flexShrink: 0,
+              display: 'inline-flex',
+              alignItems: 'center',
+              justifyContent: 'center',
+            }}
+          >
             {renderStatusIcon()}
+          </Box>
 
-            <Stack direction="column" spacing={0.25} minWidth={0}>
-              <Typography variant="subtitle1" fontWeight={600} color="text.primary">
-                {problem.id}. {problem.title}
-              </Typography>
-              {renderSolvedBadges()}
-            </Stack>
+          <Stack
+            direction="column"
+            spacing={0.5}
+            minWidth={0}
+            flex={1}
+            sx={{ pl: { xs: 4, sm: 0 } }}
+          >
+            <Typography
+              variant="subtitle1"
+              fontWeight={600}
+              color="text.primary"
+              sx={{ lineHeight: 1.25, overflowWrap: 'anywhere' }}
+            >
+              {problem.id}. {problem.title}
+            </Typography>
+            <Box sx={{ display: { xs: 'none', sm: 'block' } }}>{renderSolvedBadges()}</Box>
           </Stack>
         </Stack>
 
-        <Stack direction="row" spacing={1} alignItems="center" flexWrap="wrap" useFlexGap>
+        <Box
+          sx={{
+            gridColumn: { xs: 2, sm: 'auto' },
+            gridRow: { xs: 1, sm: 'auto' },
+            justifySelf: 'end',
+            alignSelf: 'start',
+          }}
+        >
           {renderDifficultyBadge()}
-          {problem.problemRating != null ? (
-            <Chip
-              size="small"
-              icon={<IconifyIcon icon="mdi:chart-line" width={16} height={16} />}
-              label={problem.problemRating}
-              variant="soft"
-            />
-          ) : null}
-        </Stack>
-      </Stack>
+        </Box>
+
+        <Box
+          sx={{
+            display: { xs: 'block', sm: 'none' },
+            gridColumn: 1,
+            gridRow: 2,
+            pl: 4,
+            minWidth: 0,
+            mt: -0.25,
+          }}
+        >
+          {renderSolvedBadges()}
+        </Box>
+
+        <Box
+          sx={{
+            gridColumn: { xs: 2, sm: 'auto' },
+            gridRow: { xs: 2, sm: 'auto' },
+            justifySelf: 'end',
+            alignSelf: 'end',
+          }}
+        >
+          {renderProblemRatingBadge()}
+        </Box>
+      </Box>
     </Card>
   );
 };

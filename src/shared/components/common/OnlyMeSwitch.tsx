@@ -1,4 +1,12 @@
-import { Card, CardProps, FormControlLabel, Stack, Switch, SwitchProps, Typography } from '@mui/material';
+import {
+  Card,
+  CardProps,
+  FormControlLabel,
+  Stack,
+  Switch,
+  SwitchProps,
+  Typography,
+} from '@mui/material';
 
 type OnlyMeSwitchProps = {
   label: string;
@@ -19,22 +27,20 @@ const OnlyMeSwitch = ({
   sx,
   ...cardProps
 }: OnlyMeSwitchProps) => (
-  <Card
-    background={2}
-    {...cardProps}
-  >
-    <Stack direction="row" spacing={2} justifyContent="center" alignItems="center" sx={{ px: 1.5, pr: 0, py: 1 }}>
+  <Card background={2} sx={sx} {...cardProps}>
+    <Stack
+      direction="row"
+      spacing={2}
+      justifyContent="center"
+      alignItems="center"
+      sx={{ px: 1.5, pr: 0, py: 1, minWidth: 0 }}
+    >
       <Typography variant="body2" fontWeight={600}>
         {label}
       </Typography>
       <FormControlLabel
         control={
-          <Switch
-            size={switchSize}
-            checked={checked}
-            onChange={onChange}
-            color={switchColor}
-          />
+          <Switch size={switchSize} checked={checked} onChange={onChange} color={switchColor} />
         }
         label=""
         disabled={disabled}

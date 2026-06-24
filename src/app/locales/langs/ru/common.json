@@ -11,6 +11,10 @@
     "minutesShort": "мин",
     "searchPlaceholder": "Поиск",
     "dataGrid": {
+      "emptyState": {
+        "description": "Данные появятся здесь, когда станут доступны.",
+        "filteredDescription": "Под текущие фильтры ничего не найдено. Попробуйте изменить или сбросить их."
+      },
       "noRows": {
         "default": "Данные не найдены.",
         "users": "Пользователи не найдены.",

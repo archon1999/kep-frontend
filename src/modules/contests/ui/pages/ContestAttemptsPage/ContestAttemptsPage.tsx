@@ -140,6 +140,7 @@ const ContestAttemptsPage = () => {
             showProblemColumn
             showContestTimeSubmitted
             disableLockedAttemptDetails
+            isFiltered={Boolean(filter.contestProblem || filter.verdict || filter.userOnly)}
             getProblemLink={(attempt) =>
               getResourceByParams(resources.ContestProblem, {
                 id: contest?.id ?? contestId ?? '',

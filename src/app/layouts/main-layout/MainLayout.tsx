@@ -5,9 +5,9 @@ import Toolbar, { ToolbarOwnProps } from '@mui/material/Toolbar';
 import AppBar from 'app/layouts/main-layout/app-bar';
 import Sidenav from 'app/layouts/main-layout/sidenav';
 import { useSettingsContext } from 'app/providers/SettingsProvider';
+import { MenuItem, clientMenu } from 'app/routes/sitemap';
 import { getCanvasFrameStyles } from 'app/theme/styles/surfaceTreatments';
 import { sidenavVibrantStyle } from 'app/theme/styles/vibrantNav';
-import { clientMenu, MenuItem } from 'app/routes/sitemap';
 import clsx from 'clsx';
 import VibrantBackground from 'shared/components/common/VibrantBackground';
 import { mainDrawerWidth } from 'shared/lib/constants';
@@ -24,7 +24,11 @@ interface MainLayoutProps {
   navLabel?: string;
 }
 
-const MainLayout = ({ children, menuItems = clientMenu, navLabel }: PropsWithChildren<MainLayoutProps>) => {
+const MainLayout = ({
+  children,
+  menuItems = clientMenu,
+  navLabel,
+}: PropsWithChildren<MainLayoutProps>) => {
   const {
     config: {
       drawerWidth,
@@ -94,7 +98,7 @@ const MainLayout = ({ children, menuItems = clientMenu, navLabel }: PropsWithChi
                 [`& .${drawerClasses.paper}`]: {
                   pt: 3,
                   boxSizing: 'border-box',
-                  width: mainDrawerWidth.full,
+                  width: { xs: 'min(300px, calc(100vw - 24px))', sm: mainDrawerWidth.full },
                 },
               },
               navigationMenuType === 'topnav' && {
@@ -110,33 +114,38 @@ const MainLayout = ({ children, menuItems = clientMenu, navLabel }: PropsWithChi
           <Box
             component="main"
             sx={(theme) => ({
-                flexGrow: 1,
-                p: 0,
-                height: '100vh',
-                overflow: 'auto',
-                width: { xs: '100%', md: `calc(100% - ${drawerWidth}px)` },
-                display: 'flex',
-                flexDirection: 'column',
-                ...getCanvasFrameStyles(theme, backgroundPattern),
-                ...(sidenavType === 'default' ? { ml: { md: `${mainDrawerWidth.collapsed}px`, lg: 0 } } : {}),
-                ...(sidenavType === 'slim' ? { ml: { xs: 0 } } : {}),
-                ...(navigationMenuType === 'topnav' ? { ml: { xs: 0 } } : {}),
-              })}
+              flexGrow: 1,
+              minWidth: 0,
+              p: 0,
+              minHeight: '100vh',
+              overflow: 'visible',
+              width: { xs: '100%', md: `calc(100% - ${drawerWidth}px)` },
+              display: 'flex',
+              flexDirection: 'column',
+              ...getCanvasFrameStyles(theme, backgroundPattern),
+              ...(sidenavType === 'default'
+                ? { ml: { md: `${mainDrawerWidth.collapsed}px`, lg: 0 } }
+                : {}),
+              ...(sidenavType === 'slim' ? { ml: { xs: 0 } } : {}),
+              ...(navigationMenuType === 'topnav' ? { ml: { xs: 0 } } : {}),
+            })}
           >
             <Toolbar variant={toolbarVarint} />
 
             <Box
               sx={(theme) => ({
+                minWidth: 0,
+                display: 'flex',
+                flex: '1 0 auto',
+                flexDirection: 'column',
                 minHeight: theme.mixins.contentHeight(
                   navigationMenuType === 'topnav'
                     ? theme.mixins.topbar[topnavType]
                     : theme.mixins.topbar.default,
                 ),
-                display: 'flex',
-                flexDirection: 'column',
               })}
             >
-              <Box sx={{ flex: '1 0 auto' }}>{children}</Box>
+              <Box sx={{ flex: '1 0 auto', minWidth: 0 }}>{children}</Box>
               <Footer />
             </Box>
           </Box>

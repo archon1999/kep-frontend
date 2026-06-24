@@ -18,7 +18,9 @@ import FilterDrawer, {
   DEFAULT_FILTER_DRAWER_WIDTH,
   useFilterDrawer,
 } from 'shared/components/common/FilterDrawer';
-import DataGridNoRowsOverlay from 'shared/components/common/DataGridNoRowsOverlay';
+import DataGridNoRowsOverlay, {
+  getDataGridNoRowsOverlaySlotProps,
+} from 'shared/components/common/DataGridNoRowsOverlay';
 import useGridPagination from 'shared/hooks/useGridPagination';
 import { useAdminContestMeta, useAdminContests } from 'modules/admin/contests/application/queries';
 import { contestsAdminClient } from 'modules/admin/contests/data-access/contestsAdminClient';
@@ -509,6 +511,9 @@ const AdminContestsListPage = () => {
           noRowsOverlay: DataGridNoRowsOverlay,
         }}
         localeText={{ noRowsLabel: t('common.dataGrid.noRows.adminContests') }}
+        slotProps={getDataGridNoRowsOverlaySlotProps({
+          filtered: Boolean(debouncedSearch || activeFilters.length),
+        })}
         columns={columns}
         paginationModel={paginationModel}
         onPaginationModelChange={onPaginationModelChange}

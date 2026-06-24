@@ -1,6 +1,6 @@
 import { ChangeEvent, ReactNode, useState } from 'react';
-import { Button, Chip, Stack, Typography } from '@mui/material';
 import { useTranslation } from 'react-i18next';
+import { Button, Chip, Stack, Typography } from '@mui/material';
 import SearchTextField from 'app/layouts/main-layout/common/search-box/SearchTextField';
 import FilterButton from 'shared/components/common/FilterButton';
 import FilterDrawer, { DEFAULT_FILTER_DRAWER_WIDTH } from 'shared/components/common/FilterDrawer';
@@ -60,6 +60,8 @@ const AdminFiltersToolbar = ({
             aria-haspopup="dialog"
             aria-expanded={resolvedFiltersOpen ? 'true' : undefined}
             aria-controls={resolvedFiltersOpen ? `${id}-filters-drawer` : undefined}
+            containerSx={{ width: { xs: 1, sm: 'auto' } }}
+            sx={{ width: { xs: 1, sm: 'auto' } }}
           />
         ) : null}
         <SearchTextField

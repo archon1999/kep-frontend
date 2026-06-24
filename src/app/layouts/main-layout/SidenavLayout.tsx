@@ -1,11 +1,11 @@
-import { PropsWithChildren, useMemo, useRef, type TouchEventHandler } from 'react';
+import { PropsWithChildren, type TouchEventHandler, useMemo, useRef } from 'react';
 import { Drawer, drawerClasses } from '@mui/material';
 import Box from '@mui/material/Box';
 import Toolbar from '@mui/material/Toolbar';
 import AppBar from 'app/layouts/main-layout/app-bar';
 import Sidenav from 'app/layouts/main-layout/sidenav';
-import { useSettingsContext } from 'app/providers/SettingsProvider';
 import { useBreakpoints } from 'app/providers/BreakpointsProvider';
+import { useSettingsContext } from 'app/providers/SettingsProvider';
 import { getCanvasFrameStyles } from 'app/theme/styles/surfaceTreatments';
 import { sidenavVibrantStyle } from 'app/theme/styles/vibrantNav';
 import clsx from 'clsx';
@@ -29,7 +29,10 @@ const SidenavLayout = ({ children }: PropsWithChildren) => {
   const touchStartXRef = useRef<number | null>(null);
   const touchStartYRef = useRef<number | null>(null);
 
-  const shouldHandleSwipe = useMemo(() => isMobile && !openNavbarDrawer, [isMobile, openNavbarDrawer]);
+  const shouldHandleSwipe = useMemo(
+    () => isMobile && !openNavbarDrawer,
+    [isMobile, openNavbarDrawer],
+  );
 
   const toggleNavbarDrawer = () => {
     setConfig({
@@ -46,7 +49,8 @@ const SidenavLayout = ({ children }: PropsWithChildren) => {
   };
 
   const handleTouchEnd: TouchEventHandler<HTMLDivElement> = (event) => {
-    if (!shouldHandleSwipe || touchStartXRef.current === null || touchStartYRef.current === null) return;
+    if (!shouldHandleSwipe || touchStartXRef.current === null || touchStartYRef.current === null)
+      return;
 
     const touch = event.changedTouches[0];
     const deltaX = touch.clientX - touchStartXRef.current;
@@ -96,7 +100,7 @@ const SidenavLayout = ({ children }: PropsWithChildren) => {
                 [`& .${drawerClasses.paper}`]: {
                   pt: 3,
                   boxSizing: 'border-box',
-                  width: mainDrawerWidth.full,
+                  width: { xs: 'min(300px, calc(100vw - 24px))', sm: mainDrawerWidth.full },
                 },
               },
               navColor === 'vibrant' && sidenavVibrantStyle,
@@ -111,28 +115,33 @@ const SidenavLayout = ({ children }: PropsWithChildren) => {
             onTouchStart={handleTouchStart}
             onTouchEnd={handleTouchEnd}
             sx={(theme) => ({
-                flexGrow: 1,
-                p: 0,
-                height: '100vh',
-                overflow: 'auto',
-                width: { xs: '100%', md: `calc(100% - ${drawerWidth}px)` },
-                display: 'flex',
-                flexDirection: 'column',
-                ...getCanvasFrameStyles(theme, backgroundPattern),
-                ...(sidenavType === 'default' ? { ml: { md: `${mainDrawerWidth.collapsed}px`, lg: 0 } } : {}),
-                ...(sidenavType === 'slim' ? { ml: { xs: 0 } } : {}),
-              })}
+              flexGrow: 1,
+              minWidth: 0,
+              p: 0,
+              height: '100vh',
+              overflow: 'auto',
+              width: { xs: '100%', md: `calc(100% - ${drawerWidth}px)` },
+              display: 'flex',
+              flexDirection: 'column',
+              ...getCanvasFrameStyles(theme, backgroundPattern),
+              ...(sidenavType === 'default'
+                ? { ml: { md: `${mainDrawerWidth.collapsed}px`, lg: 0 } }
+                : {}),
+              ...(sidenavType === 'slim' ? { ml: { xs: 0 } } : {}),
+            })}
           >
             <Toolbar variant="appbar" />
 
             <Box
               sx={(theme) => ({
-                minHeight: theme.mixins.contentHeight(theme.mixins.topbar.default),
+                minWidth: 0,
                 display: 'flex',
+                flex: '1 0 auto',
                 flexDirection: 'column',
+                minHeight: theme.mixins.contentHeight(theme.mixins.topbar.default),
               })}
             >
-              <Box sx={{ flex: '1 0 auto' }}>{children}</Box>
+              <Box sx={{ flex: '1 0 auto', minWidth: 0 }}>{children}</Box>
               <Footer />
             </Box>
           </Box>

@@ -40,6 +40,7 @@ import {
   isAcmStyle,
 } from 'modules/contests/ui/shared/utils/contestType';
 import IconifyIcon from 'shared/components/base/IconifyIcon';
+import { getDataGridNoRowsOverlaySlotProps } from 'shared/components/common/DataGridNoRowsOverlay';
 import FilterButton from 'shared/components/common/FilterButton';
 import ContestsRatingChip from 'shared/components/rating/ContestsRatingChip.tsx';
 import useGridPagination from 'shared/hooks/useGridPagination';
@@ -718,6 +719,9 @@ const ContestStandingsPage = () => {
             : undefined
         }
         localeText={{ noRowsLabel: t('common.dataGrid.noRows.contestStandings') }}
+        slotProps={getDataGridNoRowsOverlaySlotProps({
+          filtered: Boolean(activeFiltersCount || participantUsername),
+        })}
         loading={isLoading}
         rowCount={total}
         paginationMode="server"

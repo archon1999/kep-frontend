@@ -21,7 +21,10 @@ import FilterDrawer, {
   DEFAULT_FILTER_DRAWER_WIDTH,
   useFilterDrawer,
 } from 'shared/components/common/FilterDrawer';
-import DataGridNoRowsOverlay from 'shared/components/common/DataGridNoRowsOverlay';
+import DataGridNoRowsOverlay, {
+  getDataGridNoRowsOverlaySlotProps,
+  hasDataGridActiveFilters,
+} from 'shared/components/common/DataGridNoRowsOverlay';
 import AdminRichTextEditor from './AdminRichTextEditor';
 import AttemptLanguage from 'shared/components/problems/AttemptLanguage';
 import AttemptVerdict from 'shared/components/problems/AttemptVerdict';
@@ -741,6 +744,9 @@ const AdminSimpleResourceListPage = ({ config }: AdminSimpleResourcePageProps) =
             resource: t(config.titleKey).toLowerCase(),
           }),
         }}
+        slotProps={getDataGridNoRowsOverlaySlotProps({
+          filtered: hasDataGridActiveFilters({ search: debouncedSearch, ...filters }),
+        })}
         columns={columns}
         paginationModel={paginationModel}
         onPaginationModelChange={onPaginationModelChange}
@@ -1005,7 +1011,6 @@ const AdminSimpleResourceFormPage = ({ config }: AdminSimpleResourcePageProps) =
         multiline={field.kind === 'textarea'}
         minRows={field.kind === 'textarea' ? field.minRows ?? 4 : undefined}
         disabled={field.readOnly}
-        slotProps={field.kind === 'dateTime' ? { inputLabel: { shrink: true } } : undefined}
         fullWidth
       />
     );

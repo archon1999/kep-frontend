@@ -18,8 +18,8 @@ import {
 import Menu from '@mui/material/Menu';
 import { demoUser, useAuth } from 'app/providers/AuthProvider';
 import { useBreakpoints } from 'app/providers/BreakpointsProvider';
-import { authPaths } from 'app/routes/route-config';
 import { getResourceByUsername, resources } from 'app/routes/resources';
+import { authPaths } from 'app/routes/route-config';
 import IconifyIcon from 'shared/components/base/IconifyIcon';
 import StatusAvatar from 'shared/components/base/StatusAvatar';
 import { useLoginHref } from 'shared/lib/authRedirect';
@@ -38,7 +38,7 @@ const ProfileMenu = ({ type = 'default' }: ProfileMenuProps) => {
   const navigate = useNavigate();
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
   const { up } = useBreakpoints();
-  const upSm = up('sm');
+  const upXl = up('xl');
   const { currentUser, signout } = useAuth();
   const loginHref = useLoginHref();
 
@@ -50,10 +50,7 @@ const ProfileMenu = ({ type = 'default' }: ProfileMenuProps) => {
     [user],
   );
   const profileHref = useMemo(
-    () =>
-      currentUser
-        ? getResourceByUsername(resources.UserProfile, user.username)
-        : loginHref,
+    () => (currentUser ? getResourceByUsername(resources.UserProfile, user.username) : loginHref),
     [currentUser, loginHref, user.username],
   );
 
@@ -73,13 +70,15 @@ const ProfileMenu = ({ type = 'default' }: ProfileMenuProps) => {
 
   const menuButton = (
     <Button
+      aria-label={`Open profile menu for ${username}`}
+      title={username}
       color="neutral"
       variant="text"
       onClick={handleClick}
       sx={[
         {
-          height: 44,
-          px: 1,
+          height: { xs: 40, sm: 44 },
+          px: { xs: 0.25, sm: 1 },
           minWidth: 0,
         },
         type === 'slim' && {
@@ -96,8 +95,8 @@ const ProfileMenu = ({ type = 'default' }: ProfileMenuProps) => {
           src={user.avatar ?? undefined}
           sx={[
             {
-              width: 40,
-              height: 40,
+              width: { xs: 34, sm: 40 },
+              height: { xs: 34, sm: 40 },
               border: 2,
               borderColor: 'background.paper',
             },
@@ -109,7 +108,7 @@ const ProfileMenu = ({ type = 'default' }: ProfileMenuProps) => {
             },
           ]}
         />
-        {(type !== 'slim' && upSm) && (
+        {type !== 'slim' && upXl && (
           <Typography variant="body2" sx={{ fontWeight: 600, color: 'text.primary' }}>
             {username}
           </Typography>
@@ -175,7 +174,11 @@ const ProfileMenu = ({ type = 'default' }: ProfileMenuProps) => {
           <ProfileMenuItem href={profileHref} icon="solar:user-circle-bold" onClick={handleClose}>
             Profile
           </ProfileMenuItem>
-          <ProfileMenuItem href={resources.Settings} icon="solar:settings-linear" onClick={handleClose}>
+          <ProfileMenuItem
+            href={resources.Settings}
+            icon="solar:settings-linear"
+            onClick={handleClose}
+          >
             Settings
           </ProfileMenuItem>
         </Box>

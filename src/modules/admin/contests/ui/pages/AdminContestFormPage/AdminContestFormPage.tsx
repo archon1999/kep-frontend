@@ -113,6 +113,7 @@ const AdminContestFormPage = () => {
         private_link?: string | null;
         logo_url?: string | null;
         og_image_url?: string | null;
+        creatorUsername?: string;
         description_uz?: string;
         description_en?: string;
         description_ru?: string;

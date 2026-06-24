@@ -1,27 +1,17 @@
-import {
-  ChangeEvent,
-  useEffect,
-  useMemo,
-  useRef,
-  useState,
-} from 'react';
+import { ChangeEvent, useEffect, useMemo, useRef, useState } from 'react';
 import { useTranslation } from 'react-i18next';
-import {
-  Box,
-  InputAdornment,
-  Stack,
-} from '@mui/material';
+import { Box, InputAdornment, Stack } from '@mui/material';
 import { GridSortModel } from '@mui/x-data-grid';
 import { useUsersCountries, useUsersList } from 'modules/users/application/queries';
 import IconifyIcon from 'shared/components/base/IconifyIcon';
 import AppliedFilters from 'shared/components/common/AppliedFilters';
 import FilterButton from 'shared/components/common/FilterButton';
-import ResponsiveTabs from 'shared/components/common/ResponsiveTabs';
 import {
   DEFAULT_FILTER_DRAWER_WIDTH,
   FilterDrawerLayout,
   useFilterDrawer,
 } from 'shared/components/common/FilterDrawer';
+import ResponsiveTabs from 'shared/components/common/ResponsiveTabs';
 import PageHeader from 'shared/components/sections/common/PageHeader';
 import StyledTextField from 'shared/components/styled/StyledTextField';
 import useGridPagination from 'shared/hooks/useGridPagination';
@@ -253,11 +243,11 @@ const UsersListContainer = () => {
     () =>
       Boolean(
         filters.country ||
-          filters.ageFrom ||
-          filters.ageTo ||
-          filters.hasCountry ||
-          filters.hasCodeforces ||
-          filters.hasTelegram,
+        filters.ageFrom ||
+        filters.ageTo ||
+        filters.hasCountry ||
+        filters.hasCodeforces ||
+        filters.hasTelegram,
       ),
     [
       filters.ageFrom,
@@ -437,9 +427,10 @@ const UsersListContainer = () => {
         />
       }
     >
-      <Stack direction="column" height={1} spacing={4}>
+      <Stack direction="column" height={1} spacing={{ xs: 2.5, md: 3 }}>
         <PageHeader
           title={t('users.title')}
+          paperSx={{ py: { xs: 2, md: 1.75 } }}
           sx={{ alignItems: { sm: 'center' } }}
           actionComponent={<UsersHeaderStatistics />}
         />
@@ -462,7 +453,10 @@ const UsersListContainer = () => {
                   ariaLabel="users list tab"
                 />
               </Box>
-              <Stack sx={{ gap: 1 }} direction={{ xs: 'column', sm: 'row' }}>
+              <Stack
+                sx={{ gap: 1, width: { xs: 1, sm: 'auto' } }}
+                direction={{ xs: 'column', sm: 'row' }}
+              >
                 <FilterButton
                   id="users-filters-button"
                   onClick={filterDrawer.toggle}
@@ -471,6 +465,8 @@ const UsersListContainer = () => {
                   aria-controls={filterDrawer.open ? 'users-filters-drawer' : undefined}
                   label={t('problems.filters')}
                   badgeContent={activeFilters.length}
+                  containerSx={{ width: { xs: 1, sm: 'auto' } }}
+                  sx={{ width: { xs: 1, sm: 'auto' } }}
                 />
                 <StyledTextField
                   id="search-box"
@@ -515,6 +511,7 @@ const UsersListContainer = () => {
               sortModel={sortModel}
               onSortModelChange={handleSortModelChange}
               columnLabels={columnLabels}
+              isFiltered={Boolean(filters.search || hasActiveFilters)}
             />
           </>
         </Box>

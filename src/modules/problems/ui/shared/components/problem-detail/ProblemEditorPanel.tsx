@@ -14,21 +14,22 @@ import {
   TextField,
   Typography,
 } from '@mui/material';
-import { alpha } from '@mui/material/styles';
+import { alpha, useTheme } from '@mui/material/styles';
+import useMediaQuery from '@mui/material/useMediaQuery';
 import { useAuth } from 'app/providers/AuthProvider';
 import { resources } from 'app/routes/resources';
-import { useLoginHref } from 'shared/lib/authRedirect';
-import KepIcon from 'shared/components/base/KepIcon';
-import ResponsiveTabs from 'shared/components/common/ResponsiveTabs';
-import AttemptVerdict from 'shared/components/problems/AttemptVerdict';
-import { VerdictKey } from 'shared/components/problems/attemptVerdict.utils';
-import { toast } from 'sonner';
 import {
   AttemptLangs,
   ProblemDetail,
   ProblemSampleTest,
 } from 'modules/problems/domain/entities/problem.entity';
 import { detectPastedLanguage } from 'modules/problems/lib/detectPastedLanguage';
+import KepIcon from 'shared/components/base/KepIcon';
+import ResponsiveTabs from 'shared/components/common/ResponsiveTabs';
+import AttemptVerdict from 'shared/components/problems/AttemptVerdict';
+import { VerdictKey } from 'shared/components/problems/attemptVerdict.utils';
+import { useLoginHref } from 'shared/lib/authRedirect';
+import { toast } from 'sonner';
 import { VerticalHandle } from './PanelHandles';
 
 const getEditorLanguage = (lang: string) =>
@@ -106,6 +107,8 @@ export const ProblemEditorPanel = (props: ProblemEditorPanelProps) => {
   } = props;
   const { currentUser } = useAuth();
   const { t } = useTranslation();
+  const theme = useTheme();
+  const isCompact = useMediaQuery(theme.breakpoints.down('sm'));
   const loginHref = useLoginHref();
   const selectedLanguageInfo = problem?.availableLanguages?.find(
     (lang) => lang.lang === selectedLang,
@@ -295,8 +298,8 @@ export const ProblemEditorPanel = (props: ProblemEditorPanelProps) => {
         component="header"
         sx={{
           flexShrink: 0,
-          px: 2,
-          py: 1.5,
+          px: { xs: 1.5, sm: 2 },
+          py: { xs: 1, sm: 1.5 },
           bgcolor: 'background.paper',
         }}
       >
@@ -310,7 +313,8 @@ export const ProblemEditorPanel = (props: ProblemEditorPanelProps) => {
             onChange={(event) => onLangChange(event.target.value)}
             disabled={isDisabled}
             sx={{
-              minWidth: 180,
+              flex: { xs: '1 1 calc(50% - 6px)', sm: '0 0 auto' },
+              minWidth: { xs: 0, sm: 180 },
               '& .MuiOutlinedInput-root': { borderRadius: 2 },
             }}
           >
@@ -331,7 +335,8 @@ export const ProblemEditorPanel = (props: ProblemEditorPanelProps) => {
               onChange={(event) => onSampleChange(Number(event.target.value))}
               disabled={isDisabled}
               sx={{
-                minWidth: 140,
+                flex: { xs: '1 1 calc(50% - 6px)', sm: '0 0 auto' },
+                minWidth: { xs: 0, sm: 140 },
                 '& .MuiOutlinedInput-root': { borderRadius: 2 },
               }}
             >
@@ -349,7 +354,11 @@ export const ProblemEditorPanel = (props: ProblemEditorPanelProps) => {
             size="small"
             startIcon={<KepIcon name="upload" width={18} height={18} />}
             disabled={isDisabled}
-            sx={{ borderRadius: 2 }}
+            sx={{
+              flex: { xs: '1 1 100%', sm: '0 0 auto' },
+              minHeight: { xs: 32, sm: 'auto' },
+              borderRadius: 2,
+            }}
           >
             {t('problems.detail.uploadFile')}
             <input
@@ -364,9 +373,9 @@ export const ProblemEditorPanel = (props: ProblemEditorPanelProps) => {
         </Stack>
       </Box>
 
-      <Box sx={{ flex: 1, minHeight: 0, overflow: 'hidden', px: 2 }}>
+      <Box sx={{ flex: 1, minHeight: 0, overflow: 'hidden', px: { xs: 1, sm: 2 } }}>
         <PanelGroup direction="vertical" style={{ height: '100%' }}>
-          <Panel defaultSize={45} minSize={25}>
+          <Panel defaultSize={isCompact ? 68 : 45} minSize={isCompact ? 45 : 25}>
             <Box
               sx={{
                 height: '100%',
@@ -410,18 +419,20 @@ export const ProblemEditorPanel = (props: ProblemEditorPanelProps) => {
                 }}
                 options={{
                   minimap: { enabled: false },
-                  fontSize: 14,
+                  fontSize: isCompact ? 13 : 14,
                   fontLigatures: true,
                   smoothScrolling: true,
                   roundedSelection: true,
+                  wordWrap: isCompact ? 'on' : 'off',
                   scrollBeyondLastLine: false,
-                  lineHeight: 22,
-                  padding: { top: 0, bottom: 0 },
+                  lineHeight: isCompact ? 20 : 22,
+                  lineNumbersMinChars: isCompact ? 3 : 5,
+                  padding: { top: isCompact ? 8 : 0, bottom: isCompact ? 8 : 0 },
                   automaticLayout: true,
                   renderLineHighlight: 'all',
                   scrollbar: {
-                    verticalScrollbarSize: 12,
-                    horizontalScrollbarSize: 12,
+                    verticalScrollbarSize: isCompact ? 10 : 12,
+                    horizontalScrollbarSize: isCompact ? 10 : 12,
                   },
                   guides: {
                     indentation: true,
@@ -438,7 +449,7 @@ export const ProblemEditorPanel = (props: ProblemEditorPanelProps) => {
 
           <VerticalHandle />
 
-          <Panel defaultSize={55} minSize={25}>
+          <Panel defaultSize={isCompact ? 32 : 55} minSize={isCompact ? 20 : 25}>
             <Box
               sx={{
                 height: '100%',
@@ -488,7 +499,7 @@ export const ProblemEditorPanel = (props: ProblemEditorPanelProps) => {
 
               <Box
                 sx={{
-                  p: 1.25,
+                  p: { xs: 1, sm: 1.25 },
                   flex: 1,
                   overflow: 'auto',
                 }}
@@ -621,20 +632,25 @@ export const ProblemEditorPanel = (props: ProblemEditorPanelProps) => {
         component="footer"
         sx={{
           flexShrink: 0,
-          px: 3,
-          py: 1.25,
+          px: { xs: 1.5, sm: 3 },
+          py: { xs: 1, sm: 1.25 },
           borderTop: '1px solid',
           borderColor: 'divider',
           bgcolor: 'background.paper',
         }}
       >
-        <Stack direction={{ xs: 'column', md: 'row' }} spacing={1} justifyContent="space-between">
+        <Stack
+          direction={{ xs: 'column', md: 'row' }}
+          spacing={1}
+          justifyContent="space-between"
+          sx={{ minWidth: 0 }}
+        >
           <Typography variant="caption" color="text.secondary">
             {t('problems.detail.language')}:{' '}
             {selectedLanguageInfo?.langFull || selectedLanguageInfo?.lang || '--'}
           </Typography>
           {selectedLanguageInfo ? (
-            <Stack direction="row" spacing={1.5} flexWrap="wrap">
+            <Stack direction="row" spacing={1.5} flexWrap="wrap" useFlexGap>
               <Typography variant="caption" color="text.secondary">
                 {t('problems.detail.timeLimit')}:{' '}
                 {selectedLanguageInfo.timeLimit ?? problem?.timeLimit ?? '--'} ms

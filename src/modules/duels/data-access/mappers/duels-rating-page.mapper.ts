@@ -3,8 +3,8 @@ import { DuelsRatingPageTableRow, DuelsRatingRow } from 'modules/duels/domain/in
 export const mapDuelsRatingPageTableRows = (
   rows: DuelsRatingRow[],
 ): DuelsRatingPageTableRow[] =>
-  rows.map((row) => ({
-    id: `${row.user.username}-${row.rowIndex}`,
+  rows.map((row, index) => ({
+    id: `${row.user.username}-${row.rowIndex ?? index + 1}`,
     username: row.user.username,
     avatar: row.user.avatar,
     contestsRating: row.user.contestsRating,
@@ -13,5 +13,5 @@ export const mapDuelsRatingPageTableRows = (
     wins: row.wins ?? 0,
     draws: row.draws ?? 0,
     losses: row.losses ?? 0,
-    rowIndex: row.rowIndex,
+    rowIndex: row.rowIndex ?? index + 1,
   }));

@@ -1,4 +1,5 @@
 import { ReactNode, useEffect, useState } from 'react';
+import { useTranslation } from 'react-i18next';
 import {
   Box,
   Button,
@@ -16,7 +17,6 @@ import {
   formControlLabelClasses,
   styled,
 } from '@mui/material';
-import { useTranslation } from 'react-i18next';
 import { useNavContext } from 'app/layouts/main-layout/NavProvider';
 import { useBreakpoints } from 'app/providers/BreakpointsProvider.tsx';
 import IconifyIcon from 'shared/components/base/IconifyIcon.tsx';
@@ -138,7 +138,7 @@ const FilterDrawer = ({
               {clearLabel}
             </Button>
           ) : null}
-          <Button shape="circle" color="neutral" onClick={onClose}>
+          <Button shape="circle" color="neutral" onClick={onClose} aria-label="Close filters">
             <IconifyIcon icon="material-symbols:close-rounded" sx={{ fontSize: 20 }} />
           </Button>
         </Stack>
@@ -191,7 +191,8 @@ const FilterDrawer = ({
             [`& .${drawerClasses.paper}`]: {
               top: theme.mixins.topOffset(topbarHeight),
               height: theme.mixins.contentHeight(topbarHeight),
-              width: drawerWidth,
+              width: { xs: '100vw', sm: drawerWidth },
+              maxWidth: '100vw',
               border: 0,
               zIndex: theme.zIndex.drawer,
               outline: `1px solid ${theme.vars.palette.divider}`,

@@ -9,6 +9,7 @@ interface PageHeaderProps {
   breadcrumb?: PageBreadcrumbItem[];
   actionComponent?: JSX.Element;
   sx?: SxProps;
+  paperSx?: SxProps;
 }
 
 const PageHeader = ({
@@ -16,12 +17,19 @@ const PageHeader = ({
   breadcrumb,
   actionComponent,
   sx,
+  paperSx,
 }: PropsWithChildren<PageHeaderProps>) => {
   const { down } = useBreakpoints();
   const downLg = down('lg');
 
   return (
-    <Paper className={coreSurfacePaperClassName} sx={{ px: { xs: 3, md: 5 }, py: 3 }}>
+    <Paper
+      className={coreSurfacePaperClassName}
+      sx={[
+        { px: { xs: 3, md: 5 }, py: 3 },
+        ...(Array.isArray(paperSx) ? paperSx : [paperSx]),
+      ]}
+    >
       <Stack
         sx={{
           gap: 2,
@@ -33,7 +41,10 @@ const PageHeader = ({
       >
         <div>
           {breadcrumb?.length ? <PageBreadcrumb items={breadcrumb} sx={{ mb: 1 }} /> : null}
-          <Typography variant="h4" sx={[{ fontWeight: 500 }, downLg && { fontSize: 'h5.fontSize' }]}>
+          <Typography
+            variant="h4"
+            sx={[{ fontWeight: 500 }, downLg && { fontSize: 'h5.fontSize' }]}
+          >
             {title}
           </Typography>
         </div>

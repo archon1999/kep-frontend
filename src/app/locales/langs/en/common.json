@@ -11,6 +11,10 @@
     "minutesShort": "min",
     "searchPlaceholder": "Search",
     "dataGrid": {
+      "emptyState": {
+        "description": "Items will appear here when data becomes available.",
+        "filteredDescription": "No items match the current filters. Try adjusting or clearing them."
+      },
       "noRows": {
         "default": "No data found.",
         "users": "No users found.",

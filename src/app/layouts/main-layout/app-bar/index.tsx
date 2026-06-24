@@ -35,7 +35,7 @@ const AppBar = () => {
       ]}
     >
       {navColor === 'vibrant' && !upMd && <VibrantBackground position="top" />}
-      <Toolbar variant="appbar" sx={{ px: { xs: 3, md: 5 } }}>
+      <Toolbar variant="appbar" sx={{ px: { xs: 0.5, sm: 3, md: 5 } }}>
         <Box
           sx={{
             display: { xs: 'flex', md: 'none' },
@@ -60,6 +60,7 @@ const AppBar = () => {
           sx={{
             alignItems: 'center',
             flex: 1,
+            minWidth: 0,
           }}
         >
           {upMd && (

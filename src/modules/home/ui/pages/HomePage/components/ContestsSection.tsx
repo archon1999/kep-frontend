@@ -88,7 +88,7 @@ const HomeContestCard = ({ contest }: HomeContestCardProps) => {
                 color="text.secondary"
                 fontWeight={800}
                 textTransform="uppercase"
-                noWrap
+                sx={{ overflowWrap: 'anywhere' }}
               >
                 {contest.categoryTitle}
               </Typography>
@@ -101,7 +101,12 @@ const HomeContestCard = ({ contest }: HomeContestCardProps) => {
               />
             </Stack>
 
-            <Chip label={statusLabel} color={statusColor} variant="filled" sx={{ fontWeight: 700 }} />
+            <Chip
+              label={statusLabel}
+              color={statusColor}
+              variant="filled"
+              sx={{ fontWeight: 700 }}
+            />
           </Stack>
 
           <Stack direction="column" spacing={1}>
@@ -164,12 +169,7 @@ const ContestsSection = () => {
             {t('homePage.contests.title')}
           </Typography>
 
-          <Button
-            variant="text"
-            color="primary"
-            component={RouterLink}
-            to={resources.Contests}
-          >
+          <Button variant="text" color="primary" component={RouterLink} to={resources.Contests}>
             {t('homePage.contests.viewAll')}
           </Button>
         </Stack>

@@ -134,8 +134,7 @@ const parseContent = (content?: string): NotificationContent => {
 };
 
 const getNotificationMeta = (notification: ApiNotification): string =>
-  notification.createdNaturaltime ||
-  formatRelativeTime(notification.created, 'Just now');
+  notification.createdNaturaltime || formatRelativeTime(notification.created, 'Just now');
 
 interface NotificationView {
   title: string;
@@ -647,6 +646,8 @@ const NotificationMenu = ({ type = 'default' }: NotificationMenuProps) => {
   return (
     <>
       <Button
+        aria-label={t('notifications.title')}
+        title={t('notifications.title')}
         color="neutral"
         variant={type === 'default' ? 'soft' : 'text'}
         shape="circle"

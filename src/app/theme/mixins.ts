@@ -41,7 +41,7 @@ const mixins: MixinsOptions = {
       md: 103,
     },
   },
-  footer: { xs: 72, sm: 56 },
+  footer: { xs: 56, sm: 56 },
   topOffset: (topbarHeight, offset: number = 0, important) =>
     Object.entries(topbarHeight).reduce((acc: { [key: string]: string }, [key, value]) => {
       acc[key] = `${value + offset}px${important ? ' !important' : ''}`;

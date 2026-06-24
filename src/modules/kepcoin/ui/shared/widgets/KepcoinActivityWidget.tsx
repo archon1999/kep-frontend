@@ -14,10 +14,6 @@ import {
   Typography,
 } from '@mui/material';
 import { alpha } from '@mui/material/styles';
-import IconifyIcon from 'shared/components/base/IconifyIcon';
-import KepcoinValue from 'shared/components/common/KepcoinValue';
-import { formatDateTime } from 'shared/lib/dateTime';
-import { responsivePagePaddingSx } from 'shared/lib/styles';
 import {
   KepcoinEarnHistoryItem,
   KepcoinEarnType,
@@ -25,6 +21,9 @@ import {
   KepcoinSpendType,
 } from 'modules/kepcoin/domain/entities/kepcoin.entity';
 import { HistoryView } from 'modules/kepcoin/ui/types';
+import IconifyIcon from 'shared/components/base/IconifyIcon';
+import KepcoinValue from 'shared/components/common/KepcoinValue';
+import { formatDateTime } from 'shared/lib/dateTime';
 
 type HistoryItem = KepcoinEarnHistoryItem | KepcoinSpendHistoryItem;
 
@@ -175,15 +174,15 @@ const KepcoinActivityWidget = ({
   return (
     <Card
       sx={{
-        borderRadius: 5,
+        borderRadius: 2,
         border: (theme) => `1px solid ${alpha(theme.palette.primary.main, 0.08)}`,
-        boxShadow: '0 24px 50px rgba(18, 28, 45, 0.08)',
+        boxShadow: 'none',
       }}
     >
-      <CardContent sx={responsivePagePaddingSx}>
+      <CardContent sx={{ p: { xs: 2, md: 3 } }}>
         <Stack spacing={3}>
           <Stack direction={{ xs: 'column', sm: 'row' }} justifyContent="space-between" gap={2}>
-            <Typography variant="h4" fontWeight={800}>
+            <Typography variant="h5" fontWeight={700}>
               {t('kepcoinPage.history.title')}
             </Typography>
 
@@ -241,7 +240,7 @@ const KepcoinActivityWidget = ({
               sx={{
                 p: { xs: 3, md: 4 },
                 textAlign: 'center',
-                borderRadius: 4,
+                borderRadius: 2,
                 border: (theme) => `1px dashed ${alpha(theme.palette.primary.main, 0.16)}`,
                 bgcolor: (theme) => alpha(theme.palette.primary.main, 0.03),
               }}
@@ -294,8 +293,8 @@ const KepcoinActivityWidget = ({
                     <Box
                       sx={{
                         flex: 1,
-                        p: 2.5,
-                        borderRadius: 4,
+                        p: { xs: 2, sm: 2.5 },
+                        borderRadius: 2,
                         border: (theme) =>
                           `1px solid ${alpha(
                             isEarn ? theme.palette.success.main : theme.palette.warning.main,

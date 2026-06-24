@@ -71,7 +71,8 @@ const SettingsPanel = () => {
         sx={(theme) => ({
           zIndex: theme.zIndex.tooltip + 1,
           [`& .${paperClasses.root}`]: {
-            width: 313,
+            width: { xs: 'calc(100vw - 24px)', sm: 313 },
+            maxWidth: 313,
             backgroundColor: theme.vars.palette.background.menu,
             backgroundImage: isDark
               ? `linear-gradient(180deg, ${alpha(theme.palette.common.white, 0.035)} 0%, transparent 100%)`

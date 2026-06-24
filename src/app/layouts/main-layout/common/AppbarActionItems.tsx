@@ -1,11 +1,11 @@
 import { ReactElement } from 'react';
 import { Stack, SxProps } from '@mui/material';
+import DailyTasksMenu from './DailyTasksMenu';
+import KepcoinMenu from './KepcoinMenu';
 import LanguageMenu from './LanguageMenu';
 import NotificationMenu from './NotificationMenu';
 import ProfileMenu from './ProfileMenu';
 import ThemeToggler from './ThemeToggler';
-import KepcoinMenu from './KepcoinMenu';
-import DailyTasksMenu from './DailyTasksMenu';
 
 interface AppbarActionItemsProps {
   type?: 'default' | 'slim';
@@ -14,15 +14,22 @@ interface AppbarActionItemsProps {
   showThemeToggler?: boolean;
 }
 
-const AppbarActionItems = ({ type = 'default', sx, searchComponent, showThemeToggler = true }: AppbarActionItemsProps) => {
+const AppbarActionItems = ({
+  type = 'default',
+  sx,
+  searchComponent,
+  showThemeToggler = true,
+}: AppbarActionItemsProps) => {
   return (
     <Stack
       className="action-items"
       direction="row"
-      spacing={1}
+      spacing={{ xs: 0.5, sm: 1 }}
       sx={{
         alignItems: 'center',
         ml: 'auto',
+        minWidth: 0,
+        flexShrink: 0,
         ...sx,
       }}
     >

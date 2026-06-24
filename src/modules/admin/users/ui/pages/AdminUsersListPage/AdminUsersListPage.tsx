@@ -28,7 +28,9 @@ import FilterDrawer, {
   DEFAULT_FILTER_DRAWER_WIDTH,
   useFilterDrawer,
 } from 'shared/components/common/FilterDrawer';
-import DataGridNoRowsOverlay from 'shared/components/common/DataGridNoRowsOverlay';
+import DataGridNoRowsOverlay, {
+  getDataGridNoRowsOverlaySlotProps,
+} from 'shared/components/common/DataGridNoRowsOverlay';
 import useGridPagination from 'shared/hooks/useGridPagination';
 import { useAdminUsers } from 'modules/admin/users/application/queries';
 import { usersAdminClient } from 'modules/admin/users/data-access/usersAdminClient';
@@ -470,6 +472,9 @@ const AdminUsersListPage = () => {
           noRowsOverlay: DataGridNoRowsOverlay,
         }}
         localeText={{ noRowsLabel: t('common.dataGrid.noRows.adminUsers') }}
+        slotProps={getDataGridNoRowsOverlaySlotProps({
+          filtered: Boolean(debouncedSearch || activeFilters.length),
+        })}
         columns={columns}
         paginationModel={paginationModel}
         onPaginationModelChange={onPaginationModelChange}

@@ -2,18 +2,17 @@ import { useEffect, useMemo, useRef, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { Panel, PanelGroup } from 'react-resizable-panels';
 import { useNavigate, useParams, useSearchParams } from 'react-router-dom';
-import { Box, Card, LinearProgress } from '@mui/material';
+import { Box, Card, LinearProgress, useMediaQuery, useTheme } from '@mui/material';
 import { useAuth } from 'app/providers/AuthProvider';
 import { useDocumentTitle } from 'app/providers/DocumentTitleProvider';
 import { getResourceById, resources } from 'app/routes/resources';
 import { Page404 } from 'modules/errors/ui/pages';
+import {
+  problemsQueries,
+  useAttemptsList,
+  useProblemDetail,
+} from 'modules/problems/application/queries';
 import { getDifficultyColor } from 'modules/problems/config/difficulty';
-import { VerdictKey } from 'shared/components/problems/attemptVerdict.utils';
-import useGridPagination from 'shared/hooks/useGridPagination';
-import { useThemeMode } from 'shared/hooks/useThemeMode.tsx';
-import { wsService } from 'shared/services/websocket';
-import { toast } from 'sonner';
-import { problemsQueries, useAttemptsList, useProblemDetail } from 'modules/problems/application/queries';
 import { ProblemSampleTest } from 'modules/problems/domain/entities/problem.entity';
 import { AttemptsListParams } from 'modules/problems/domain/ports/problems.repository';
 import { usePersistedCode } from 'modules/problems/hooks/usePersistedCode';
@@ -24,10 +23,15 @@ import ProblemDescriptionSkeleton from 'modules/problems/ui/shared/components/pr
 import { ProblemEditorPanel } from 'modules/problems/ui/shared/components/problem-detail/ProblemEditorPanel';
 import ProblemEditorSkeleton from 'modules/problems/ui/shared/components/problem-detail/ProblemEditorSkeleton';
 import { ProblemHeader } from 'modules/problems/ui/shared/components/problem-detail/ProblemHeader';
+import { VerdictKey } from 'shared/components/problems/attemptVerdict.utils';
+import useGridPagination from 'shared/hooks/useGridPagination';
 import useRouteQueryState from 'shared/hooks/useRouteQueryState';
+import { useThemeMode } from 'shared/hooks/useThemeMode.tsx';
 import { useLoginRedirect } from 'shared/lib/authRedirect';
 import { isNotFoundError } from 'shared/lib/detailRouteNotFound';
 import { booleanFlagParam, enumParam, stringParam } from 'shared/lib/queryParams';
+import { wsService } from 'shared/services/websocket';
+import { toast } from 'sonner';
 
 const useProblemPermissions = (permissionsRaw: any) => {
   return useMemo(() => {
@@ -60,6 +64,8 @@ const ProblemDetailPage = () => {
   const { currentUser } = useAuth();
   const redirectToLogin = useLoginRedirect();
   const themeMode = useThemeMode();
+  const theme = useTheme();
+  const isNarrowLayout = useMediaQuery(theme.breakpoints.down('md'));
   const permissions = useProblemPermissions(currentUser?.permissions);
   const [editorTheme, setEditorTheme] = useState<'vs' | 'vs-dark'>(
     themeMode.mode === 'dark' ? 'vs-dark' : 'vs',
@@ -534,11 +540,12 @@ const ProblemDetailPage = () => {
   return (
     <Box
       sx={{
-        height: '100vh',
+        height: '100dvh',
         display: 'flex',
-        minWidth: 1000,
+        minWidth: 0,
         flexDirection: 'column',
         bgcolor: 'background.elevation1',
+        overflow: 'hidden',
       }}
     >
       <ProblemHeader
@@ -577,8 +584,11 @@ const ProblemDetailPage = () => {
           <LinearProgress sx={{ position: 'absolute', top: 0, left: 0, right: 0, zIndex: 2 }} />
         ) : null}
 
-        <PanelGroup direction="horizontal" style={{ flex: 1, minHeight: 0 }}>
-          <Panel defaultSize={50} minSize={35}>
+        <PanelGroup
+          direction={isNarrowLayout ? 'vertical' : 'horizontal'}
+          style={{ flex: 1, minHeight: 0 }}
+        >
+          <Panel defaultSize={isNarrowLayout ? 45 : 50} minSize={isNarrowLayout ? 25 : 35}>
             {problem && !showInitialSkeleton ? (
               <ProblemDescription
                 problem={problem}
@@ -610,9 +620,9 @@ const ProblemDetailPage = () => {
             )}
           </Panel>
 
-          <PanelHandle />
+          <PanelHandle orientation={isNarrowLayout ? 'vertical' : 'horizontal'} />
 
-          <Panel defaultSize={50} minSize={35}>
+          <Panel defaultSize={isNarrowLayout ? 55 : 50} minSize={isNarrowLayout ? 35 : 35}>
             {problem && !showInitialSkeleton ? (
               <ProblemEditorPanel
                 problem={problem}

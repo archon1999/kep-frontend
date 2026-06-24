@@ -75,7 +75,7 @@ const TopnavLayout = ({ children }: PropsWithChildren) => {
                 [`& .${drawerClasses.paper}`]: {
                   pt: 3,
                   boxSizing: 'border-box',
-                  width: mainDrawerWidth.full,
+                  width: { xs: 'min(300px, calc(100vw - 24px))', sm: mainDrawerWidth.full },
                 },
               },
               navColor === 'vibrant' && sidenavVibrantStyle,
@@ -89,6 +89,7 @@ const TopnavLayout = ({ children }: PropsWithChildren) => {
             component="main"
             sx={(theme) => ({
               flexGrow: 1,
+              minWidth: 0,
               p: 0,
               height: '100vh',
               overflow: 'auto',
@@ -103,12 +104,14 @@ const TopnavLayout = ({ children }: PropsWithChildren) => {
 
             <Box
               sx={(theme) => ({
-                minHeight: theme.mixins.contentHeight(theme.mixins.topbar[topnavType]),
+                minWidth: 0,
                 display: 'flex',
+                flex: '1 0 auto',
                 flexDirection: 'column',
+                minHeight: theme.mixins.contentHeight(theme.mixins.topbar[topnavType]),
               })}
             >
-              <Box sx={{ flex: '1 0 auto' }}>{children}</Box>
+              <Box sx={{ flex: '1 0 auto', minWidth: 0 }}>{children}</Box>
               <Footer />
             </Box>
           </Box>

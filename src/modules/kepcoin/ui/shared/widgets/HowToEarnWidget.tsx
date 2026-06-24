@@ -6,7 +6,6 @@ import { alpha } from '@mui/material/styles';
 import DailyTasksMenu from 'app/layouts/main-layout/common/DailyTasksMenu';
 import { resources } from 'app/routes/resources';
 import KepcoinValue from 'shared/components/common/KepcoinValue';
-import { responsivePagePaddingSx } from 'shared/lib/styles';
 
 const actionButtonSx = {
   borderRadius: 999,
@@ -108,14 +107,14 @@ const HowToEarnWidget = () => {
   return (
     <Card
       sx={{
-        borderRadius: 5,
+        borderRadius: 2,
         border: (theme) => `1px solid ${alpha(theme.palette.primary.main, 0.08)}`,
-        boxShadow: '0 24px 50px rgba(18, 28, 45, 0.08)',
+        boxShadow: 'none',
       }}
     >
-      <CardContent sx={responsivePagePaddingSx}>
+      <CardContent sx={{ p: { xs: 2, md: 3 } }}>
         <Stack direction="column" spacing={2}>
-          <Typography variant="h5" fontWeight={700}>
+          <Typography variant="h6" fontWeight={700}>
             {t('kepcoinPage.howToEarn.title')}
           </Typography>
           <Typography variant="body2" color="text.secondary">

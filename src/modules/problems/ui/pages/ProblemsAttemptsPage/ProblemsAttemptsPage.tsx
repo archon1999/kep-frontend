@@ -21,8 +21,8 @@ import {
 } from 'shared/components/common/FilterDrawer';
 import OnlyMeSwitch from 'shared/components/common/OnlyMeSwitch';
 import PageHeader from 'shared/components/sections/common/PageHeader';
-import useGridPagination from 'shared/hooks/useGridPagination';
 import useDebouncedValue from 'shared/hooks/useDebouncedValue';
+import useGridPagination from 'shared/hooks/useGridPagination';
 import useRouteQueryState from 'shared/hooks/useRouteQueryState';
 import { useLoginRedirect } from 'shared/lib/authRedirect';
 import { enumParam, stringParam } from 'shared/lib/queryParams';
@@ -168,10 +168,17 @@ const ProblemsAttemptsPage = () => {
 
   useEffect(() => {
     if (debouncedTestCaseNumber === filter.testCaseNumber) return;
+    if (debouncedTestCaseNumber !== testCaseNumberInput) return;
 
     patchFilterState({ testCaseNumber: debouncedTestCaseNumber });
     setPaginationModel((prev) => ({ ...prev, page: 0 }));
-  }, [debouncedTestCaseNumber, filter.testCaseNumber, patchFilterState, setPaginationModel]);
+  }, [
+    debouncedTestCaseNumber,
+    filter.testCaseNumber,
+    patchFilterState,
+    setPaginationModel,
+    testCaseNumberInput,
+  ]);
 
   const isOnlyMyAttempts = Boolean(
     currentUser?.username && filter.username === currentUser.username,
@@ -287,10 +294,15 @@ const ProblemsAttemptsPage = () => {
             { label: t('problems.attempts.title'), active: true },
           ]}
           actionComponent={
-            <Stack direction={{ xs: 'column', sm: 'row' }} spacing={1}>
+            <Stack
+              direction={{ xs: 'column', sm: 'row' }}
+              spacing={1}
+              sx={{ width: { xs: 1, sm: 'auto' } }}
+            >
               <OnlyMeSwitch
                 label={t('problems.attempts.onlyMy')}
                 checked={isOnlyMyAttempts}
+                sx={{ width: { xs: 1, sm: 'auto' } }}
                 onChange={(_, checked) => {
                   if (!currentUser?.username) {
                     redirectToLogin();
@@ -300,20 +312,30 @@ const ProblemsAttemptsPage = () => {
                 }}
               />
 
-              <Tooltip title={t('problems.attempts.refresh')}>
-                <Button variant="soft" color="neutral" onClick={() => mutate()}>
-                  <IconifyIcon icon="mdi:reload" width={18} height={18} />
-                </Button>
-              </Tooltip>
-              <FilterButton
-                id="attempts-filters-button"
-                onClick={filterDrawer.toggle}
-                aria-haspopup="true"
-                aria-expanded={filterDrawer.open ? 'true' : undefined}
-                aria-controls={filterDrawer.open ? 'attempts-filters-drawer' : undefined}
-                label={t('problems.filterTitle')}
-                badgeContent={activeFilterCount}
-              />
+              <Stack direction="row" spacing={1} sx={{ width: { xs: 1, sm: 'auto' } }}>
+                <Tooltip title={t('problems.attempts.refresh')}>
+                  <Button
+                    variant="soft"
+                    color="neutral"
+                    onClick={() => mutate()}
+                    aria-label={t('problems.attempts.refresh')}
+                    sx={{ minWidth: 44, px: 1.25, flexShrink: 0 }}
+                  >
+                    <IconifyIcon icon="mdi:reload" width={18} height={18} />
+                  </Button>
+                </Tooltip>
+                <FilterButton
+                  id="attempts-filters-button"
+                  onClick={filterDrawer.toggle}
+                  aria-haspopup="true"
+                  aria-expanded={filterDrawer.open ? 'true' : undefined}
+                  aria-controls={filterDrawer.open ? 'attempts-filters-drawer' : undefined}
+                  label={t('problems.filterTitle')}
+                  badgeContent={activeFilterCount}
+                  containerSx={{ flex: { xs: 1, sm: '0 0 auto' } }}
+                  sx={{ width: { xs: 1, sm: 'auto' } }}
+                />
+              </Stack>
             </Stack>
           }
         />
@@ -326,6 +348,13 @@ const ProblemsAttemptsPage = () => {
             onPaginationChange={onPaginationModelChange}
             isLoading={isLoading}
             onRerun={() => mutate()}
+            isFiltered={Boolean(
+              filter.username ||
+              filter.problemId ||
+              filter.verdict ||
+              filter.lang ||
+              filter.testCaseNumber,
+            )}
           />
         </Box>
       </Stack>

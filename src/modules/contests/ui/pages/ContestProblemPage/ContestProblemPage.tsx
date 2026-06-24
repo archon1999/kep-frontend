@@ -15,12 +15,23 @@ import {
   Stack,
   Tooltip,
   Typography,
+  useMediaQuery,
+  useTheme,
 } from '@mui/material';
 import { alpha } from '@mui/material/styles';
 import AppbarActionItems from 'app/layouts/main-layout/common/AppbarActionItems';
 import { useAuth } from 'app/providers/AuthProvider';
 import { useDocumentTitle } from 'app/providers/DocumentTitleProvider';
 import { getResourceByParams, resources } from 'app/routes/resources';
+import {
+  useContest,
+  useContestContestant,
+  useContestProblem,
+  useContestProblems,
+} from 'modules/contests/application/queries';
+import { contestsQueries } from 'modules/contests/application/queries.ts';
+import { ContestStatus } from 'modules/contests/domain/entities/contest-status';
+import { sortContestProblems } from 'modules/contests/ui/shared/utils/sortContestProblems';
 import { problemsQueries, useAttemptsList } from 'modules/problems/application/queries.ts';
 import { ProblemSampleTest } from 'modules/problems/domain/entities/problem.entity';
 import { AttemptsListParams } from 'modules/problems/domain/ports/problems.repository';
@@ -36,23 +47,14 @@ import IconifyIcon from 'shared/components/base/IconifyIcon';
 import Logo from 'shared/components/common/Logo.tsx';
 import ResponsiveTabs from 'shared/components/common/ResponsiveTabs';
 import { VerdictKey } from 'shared/components/problems/attemptVerdict.utils';
-import { diffDateTime, formatCountdownClock } from 'shared/lib/dateTime';
 import useGridPagination from 'shared/hooks/useGridPagination';
 import useRouteQueryState from 'shared/hooks/useRouteQueryState';
-import { enumParam } from 'shared/lib/queryParams';
 import { useThemeMode } from 'shared/hooks/useThemeMode.tsx';
 import { useLoginRedirect } from 'shared/lib/authRedirect';
+import { diffDateTime, formatCountdownClock } from 'shared/lib/dateTime';
+import { enumParam } from 'shared/lib/queryParams';
 import { wsService } from 'shared/services/websocket';
 import { toast } from 'sonner';
-import {
-  useContest,
-  useContestContestant,
-  useContestProblem,
-  useContestProblems,
-} from 'modules/contests/application/queries';
-import { contestsQueries } from 'modules/contests/application/queries.ts';
-import { ContestStatus } from 'modules/contests/domain/entities/contest-status';
-import { sortContestProblems } from 'modules/contests/ui/shared/utils/sortContestProblems';
 import ContestantResultsFooter from './components/ContestantResultsFooter.tsx';
 
 type ContestProblemTab = 'description' | 'attempts';
@@ -92,6 +94,8 @@ const ContestProblemPage = () => {
   const redirectToLogin = useLoginRedirect();
   const navigate = useNavigate();
   const themeMode = useThemeMode();
+  const theme = useTheme();
+  const isNarrowLayout = useMediaQuery(theme.breakpoints.down('md'));
   const permissions = useProblemPermissions(currentUser?.permissions);
   const { state, setField } = useRouteQueryState<{ activeTab: ContestProblemTab }>({
     defaults: {
@@ -451,11 +455,12 @@ const ContestProblemPage = () => {
   return (
     <Box
       sx={{
-        height: '100vh',
+        height: '100dvh',
         display: 'flex',
-        minWidth: 1000,
+        minWidth: 0,
         flexDirection: 'column',
         bgcolor: 'background.elevation1',
+        overflow: 'hidden',
       }}
     >
       <Box
@@ -464,12 +469,22 @@ const ContestProblemPage = () => {
           borderColor: 'divider',
           px: { xs: 2, md: 3 },
           py: 1.5,
-          display: 'flex',
+          display: 'grid',
+          gridTemplateColumns: { xs: '1fr auto', md: '1fr auto 1fr' },
+          gridTemplateAreas: {
+            xs: '"nav user" "actions actions"',
+            md: '"nav actions user"',
+          },
           alignItems: 'center',
-          gap: 2,
+          gap: { xs: 1, md: 2 },
         }}
       >
-        <Stack direction="row" spacing={1.5} alignItems="center" sx={{ minWidth: 0, flex: 1 }}>
+        <Stack
+          direction="row"
+          spacing={1.5}
+          alignItems="center"
+          sx={{ gridArea: 'nav', minWidth: 0, overflowX: 'auto' }}
+        >
           <Logo showName={false} />
 
           <Divider orientation="vertical" flexItem />
@@ -573,7 +588,7 @@ const ContestProblemPage = () => {
           spacing={1}
           alignItems="center"
           justifyContent="center"
-          sx={{ flex: 1, minWidth: 0 }}
+          sx={{ gridArea: 'actions', minWidth: 0 }}
         >
           <Stack direction="row" spacing={1}>
             <Tooltip title={t('problems.detail.runHotkey')}>
@@ -606,7 +621,7 @@ const ContestProblemPage = () => {
           </Stack>
         </Stack>
 
-        <Box sx={{ flex: 1, display: 'flex', justifyContent: 'flex-end' }}>
+        <Box sx={{ gridArea: 'user', display: 'flex', justifyContent: 'flex-end' }}>
           <AppbarActionItems type="slim" />
         </Box>
       </Box>
@@ -644,8 +659,11 @@ const ContestProblemPage = () => {
           </Box>
         ) : null}
 
-        <PanelGroup direction="horizontal" style={{ flex: 1, minHeight: 0 }}>
-          <Panel defaultSize={50} minSize={35}>
+        <PanelGroup
+          direction={isNarrowLayout ? 'vertical' : 'horizontal'}
+          style={{ flex: 1, minHeight: 0 }}
+        >
+          <Panel defaultSize={isNarrowLayout ? 45 : 50} minSize={isNarrowLayout ? 25 : 35}>
             {problem && !showInitialSkeleton ? (
               <Card
                 background={0}
@@ -688,7 +706,7 @@ const ContestProblemPage = () => {
                   />
                   <Divider />
 
-                  <Box sx={{ p: 3 }}>
+                  <Box sx={{ p: { xs: 2, md: 3 } }}>
                     {state.activeTab === 'description' ? (
                       <Stack direction="column" spacing={2}>
                         <Stack direction="column" spacing={1} flexWrap="wrap">
@@ -749,9 +767,9 @@ const ContestProblemPage = () => {
             )}
           </Panel>
 
-          <PanelHandle />
+          <PanelHandle orientation={isNarrowLayout ? 'vertical' : 'horizontal'} />
 
-          <Panel defaultSize={50} minSize={35}>
+          <Panel defaultSize={isNarrowLayout ? 55 : 50} minSize={isNarrowLayout ? 35 : 35}>
             {problem && !showInitialSkeleton ? (
               <ProblemEditorPanel
                 problem={problem}

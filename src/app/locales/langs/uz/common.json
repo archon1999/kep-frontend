@@ -11,6 +11,10 @@
     "minutesShort": "daq",
     "searchPlaceholder": "Qidirish",
     "dataGrid": {
+      "emptyState": {
+        "description": "Ma'lumotlar mavjud bo'lishi bilan shu yerda ko'rinadi.",
+        "filteredDescription": "Joriy filterlarga mos ma'lumot topilmadi. Filterlarni o'zgartirib yoki tozalab ko'ring."
+      },
       "noRows": {
         "default": "Ma'lumot topilmadi.",
         "users": "Foydalanuvchilar topilmadi.",

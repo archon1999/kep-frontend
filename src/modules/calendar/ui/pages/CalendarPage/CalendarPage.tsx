@@ -1,8 +1,8 @@
 import { useMemo, useRef, useState } from 'react';
+import { useTranslation } from 'react-i18next';
 import { DatesSetArg, EventInput } from '@fullcalendar/core/index.js';
 import ReactFullCalendar from '@fullcalendar/react';
 import { Alert, Box, CircularProgress, Stack, Typography } from '@mui/material';
-import { useTranslation } from 'react-i18next';
 import { useTheme } from '@mui/material/styles';
 import { useCalendarEvents } from 'modules/calendar/application';
 import type { CalendarEventEntity } from 'modules/calendar/domain';
@@ -10,6 +10,8 @@ import FullCalendar from 'shared/components/base/FullCalendar';
 import { formatDateRange, formatDateTime } from 'shared/lib/dateTime';
 import { responsivePagePaddingSx } from 'shared/lib/styles';
 import CalendarToolbar, { CalendarView } from './components/CalendarToolbar';
+
+const initialCalendarDate = new Date();
 
 const formatRangeLabel = (start: Date, end: Date, view: CalendarView) => {
   if (view === 'timeGridDay') {
@@ -42,7 +44,9 @@ const CalendarPage = () => {
   const { data: events, isLoading, error } = useCalendarEvents();
   const calendarRef = useRef<ReactFullCalendar | null>(null);
   const [view, setView] = useState<CalendarView>('dayGridMonth');
-  const [rangeLabel, setRangeLabel] = useState<string>(formatDateTime(new Date(), 'monthYear'));
+  const [rangeLabel, setRangeLabel] = useState<string>(
+    formatDateTime(initialCalendarDate, 'monthYear'),
+  );
   const theme = useTheme();
 
   const eventColors = useMemo<Record<number, string>>(
@@ -52,7 +56,12 @@ const CalendarPage = () => {
       3: theme.palette.warning.main,
       4: theme.palette.success.main,
     }),
-    [theme.palette.info.main, theme.palette.primary.main, theme.palette.success.main, theme.palette.warning.main],
+    [
+      theme.palette.info.main,
+      theme.palette.primary.main,
+      theme.palette.success.main,
+      theme.palette.warning.main,
+    ],
   );
 
   const calendarEvents = useMemo(() => {
@@ -61,7 +70,13 @@ const CalendarPage = () => {
 
     return events
       .filter((event) => event.startTime)
-      .map((event) => mapToEventInput(event, fallbackTitle, eventColors[event.type] ?? theme.palette.primary.main));
+      .map((event) =>
+        mapToEventInput(
+          event,
+          fallbackTitle,
+          eventColors[event.type] ?? theme.palette.primary.main,
+        ),
+      );
   }, [eventColors, events, t, theme.palette.primary.main]);
 
   const handleDatesSet = (info: DatesSetArg) => {
@@ -124,31 +139,44 @@ const CalendarPage = () => {
             {error ? (
               <Alert severity="error">{t('calendar.loadError')}</Alert>
             ) : isLoading ? (
-              <Stack direction="row" alignItems="center" justifyContent="center" sx={{ height: 420 }} spacing={1.5}>
+              <Stack
+                direction="row"
+                alignItems="center"
+                justifyContent="center"
+                sx={{ height: 420 }}
+                spacing={1.5}
+              >
                 <CircularProgress color="primary" />
                 <Typography variant="body2" color="text.secondary">
                   {t('calendar.loading')}
                 </Typography>
               </Stack>
             ) : calendarEvents.length === 0 ? (
-              <Stack
-                direction="row"
-                alignItems="center"
-                justifyContent="center"
-                sx={{ height: 420, textAlign: 'center', px: { xs: 2, sm: 6 } }}
-                spacing={1}
-              >
-                <Typography variant="subtitle1" fontWeight={700}>
-                  {t('calendar.emptyTitle')}
-                </Typography>
-                <Typography variant="body2" color="text.secondary">
-                  {t('calendar.emptySubtitle')}
-                </Typography>
+              <Stack direction="column" spacing={2}>
+                <FullCalendar
+                  ref={calendarRef}
+                  events={calendarEvents}
+                  initialDate={initialCalendarDate}
+                  initialView={view}
+                  datesSet={handleDatesSet}
+                  height="auto"
+                  expandRows
+                  eventOverlap
+                />
+                <Stack direction="row" alignItems="center" justifyContent="center" spacing={1}>
+                  <Typography variant="subtitle1" fontWeight={700}>
+                    {t('calendar.emptyTitle')}
+                  </Typography>
+                  <Typography variant="body2" color="text.secondary">
+                    {t('calendar.emptySubtitle')}
+                  </Typography>
+                </Stack>
               </Stack>
             ) : (
               <FullCalendar
                 ref={calendarRef}
                 events={calendarEvents}
+                initialDate={initialCalendarDate}
                 initialView={view}
                 datesSet={handleDatesSet}
                 height="auto"
@@ -164,4 +192,3 @@ const CalendarPage = () => {
 };
 
 export default CalendarPage;
-

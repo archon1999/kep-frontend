@@ -159,12 +159,12 @@ const TabsNav = ({
           fontWeight: 800,
           textTransform: 'none',
         },
-        '& .MuiTab-root.Mui-selected': {
+        '& .MuiTab-root.MuiTab-textColorPrimary.Mui-selected': {
           bgcolor: 'primary.main',
-          color: 'primary.contrastText !important',
-          '& .MuiTab-iconWrapper, & svg, & span': {
-            color: 'inherit',
-          },
+          color: 'primary.contrastText',
+        },
+        '& .MuiTab-root.Mui-selected .MuiTab-iconWrapper, & .MuiTab-root.Mui-selected svg': {
+          color: 'primary.contrastText',
         },
       },
     }}

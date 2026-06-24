@@ -14,15 +14,15 @@ import { LineChart } from 'echarts/charts';
 import { GridComponent, TooltipComponent } from 'echarts/components';
 import * as echarts from 'echarts/core';
 import { CanvasRenderer } from 'echarts/renderers';
+import { useOnlineUsers, useUserActivityStatistics } from 'modules/home/application/queries';
+import type { HomeOnlineUsers } from 'modules/home/domain/entities/home.entity';
 import UserPopover from 'modules/users/ui/shared/components/UserPopover';
 import IconifyIcon from 'shared/components/base/IconifyIcon';
 import ReactEchart from 'shared/components/base/ReactEchart';
-import { getColor } from 'shared/lib/echart-utils';
 import { formatDateTime } from 'shared/lib/dateTime';
+import { getColor } from 'shared/lib/echart-utils';
 import { createNumberFormatter } from 'shared/lib/numberFormat';
 import { getPastDates } from 'shared/lib/utils';
-import { useOnlineUsers, useUserActivityStatistics } from 'modules/home/application/queries';
-import type { HomeOnlineUsers } from 'modules/home/domain/entities/home.entity';
 
 echarts.use([LineChart, GridComponent, TooltipComponent, CanvasRenderer]);
 
@@ -102,9 +102,7 @@ const UserActivitySection = () => {
 
   const createChartOptions = useMemo(
     () => (series: number[], color: string) => {
-      const labels = getPastDates(series.length).map((date) =>
-        formatDateTime(date, 'monthDay'),
-      );
+      const labels = getPastDates(series.length).map((date) => formatDateTime(date, 'monthDay'));
       const [min, max] = withPadding(series);
 
       return {
@@ -206,8 +204,13 @@ const UserActivitySection = () => {
 
   return (
     <Stack direction="column">
-      <Paper sx={{ p: 4 }}>
-        <Stack direction="row" alignItems="center" justifyContent="space-between" spacing={2}>
+      <Paper sx={{ p: { xs: 2, sm: 3, md: 4 } }}>
+        <Stack
+          direction={{ xs: 'column', sm: 'row' }}
+          alignItems={{ xs: 'flex-start', sm: 'center' }}
+          justifyContent="space-between"
+          spacing={2}
+        >
           <Stack direction="column" spacing={0.5}>
             <Typography variant="h5" sx={{ fontWeight: 600 }}>
               {t('homePage.userActivity.title')}
@@ -217,7 +220,7 @@ const UserActivitySection = () => {
             </Typography>
           </Stack>
 
-          <Stack direction="column" alignItems="flex-end" spacing={1}>
+          <Stack direction="column" alignItems={{ xs: 'flex-start', sm: 'flex-end' }} spacing={1}>
             <Typography variant="body2" color="text.secondary">
               {t('homePage.userActivity.onlineNow')}
             </Typography>
@@ -259,10 +262,10 @@ const UserActivitySection = () => {
 
       <Grid container>
         <Grid size={{ xs: 12, md: 6 }}>
-          <Paper sx={{ p: 4, height: '100%' }}>
+          <Paper sx={{ p: { xs: 2, sm: 3, md: 4 }, height: '100%' }}>
             <Stack spacing={3} direction="column" sx={{ height: '100%' }}>
               <Stack
-                direction="row"
+                direction={{ xs: 'column', sm: 'row', md: 'column', lg: 'row' }}
                 justifyContent="space-between"
                 alignItems="flex-start"
                 spacing={2}
@@ -280,12 +283,12 @@ const UserActivitySection = () => {
                   </Typography>
                 </Stack>
 
-                <Stack justifyContent="flex-end" direction="column" spacing={2}>
+                <Stack justifyContent="flex-end" direction="column" spacing={1.5}>
                   <Typography variant="subtitle2" color="text.secondary">
                     {t('homePage.userActivity.changeLabel')}
                   </Typography>
 
-                  <Stack direction="row" justifyContent="flex-end">
+                  <Stack direction="row" justifyContent={{ xs: 'flex-start', sm: 'flex-end' }}>
                     {showSkeleton ? (
                       <Skeleton width={140} height={36} />
                     ) : (
@@ -314,10 +317,10 @@ const UserActivitySection = () => {
         </Grid>
 
         <Grid size={{ xs: 12, md: 6 }}>
-          <Paper sx={{ p: 4, height: '100%' }}>
+          <Paper sx={{ p: { xs: 2, sm: 3, md: 4 }, height: '100%' }}>
             <Stack spacing={3} direction="column" sx={{ height: '100%' }}>
               <Stack
-                direction="row"
+                direction={{ xs: 'column', sm: 'row', md: 'column', lg: 'row' }}
                 justifyContent="space-between"
                 alignItems="flex-start"
                 spacing={2}
@@ -335,12 +338,12 @@ const UserActivitySection = () => {
                   </Typography>
                 </Stack>
 
-                <Stack justifyContent="flex-end" direction="column" spacing={2}>
+                <Stack justifyContent="flex-end" direction="column" spacing={1.5}>
                   <Typography variant="subtitle2" color="text.secondary">
                     {t('homePage.userActivity.changeLabel')}
                   </Typography>
 
-                <Stack direction="row" justifyContent="flex-end">
+                  <Stack direction="row" justifyContent={{ xs: 'flex-start', sm: 'flex-end' }}>
                     {showSkeleton ? (
                       <Skeleton width={140} height={36} />
                     ) : (

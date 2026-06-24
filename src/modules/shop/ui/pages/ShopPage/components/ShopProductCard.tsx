@@ -15,10 +15,10 @@ import {
   Typography,
 } from '@mui/material';
 import { useAuth } from 'app/providers/AuthProvider';
+import { ShopProduct } from 'modules/shop/domain/entities/product.entity';
 import IconifyIcon from 'shared/components/base/IconifyIcon';
 import KepcoinValue from 'shared/components/common/KepcoinValue';
 import { useLoginRedirect } from 'shared/lib/authRedirect';
-import { ShopProduct } from 'modules/shop/domain/entities/product.entity';
 import ShopCheckoutModal from './ShopCheckoutModal';
 
 interface ShopProductCardProps {
@@ -107,13 +107,19 @@ const ShopProductCard = ({ product, onPurchaseSuccess }: ShopProductCardProps) =
           position: 'relative',
         }}
       >
-        <Box sx={{ position: 'relative', bgcolor: 'background.paper', height: 500 }}>
+        <Box
+          sx={{
+            position: 'relative',
+            bgcolor: 'background.level1',
+            height: { xs: 360, md: 420, xl: 500 },
+          }}
+        >
           {currentImage ? (
             <Box
               component="img"
               src={currentImage.url}
               alt={currentImage.name || product.title}
-              sx={{ width: 1, height: 1, objectFit: 'cover' }}
+              sx={{ width: 1, height: 1, objectFit: 'contain', display: 'block' }}
             />
           ) : (
             <Stack
@@ -133,6 +139,7 @@ const ShopProductCard = ({ product, onPurchaseSuccess }: ShopProductCardProps) =
           {hasMultipleImages && (
             <>
               <IconButton
+                aria-label="Previous image"
                 size="small"
                 onClick={() => handleImageShift('prev')}
                 sx={{
@@ -147,6 +154,7 @@ const ShopProductCard = ({ product, onPurchaseSuccess }: ShopProductCardProps) =
                 <IconifyIcon icon="mdi:chevron-left" />
               </IconButton>
               <IconButton
+                aria-label="Next image"
                 size="small"
                 onClick={() => handleImageShift('next')}
                 sx={{
