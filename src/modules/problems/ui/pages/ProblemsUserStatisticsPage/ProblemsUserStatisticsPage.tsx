@@ -5,7 +5,6 @@ import {
   Card,
   CardContent,
   CardHeader,
-  Chip,
   LinearProgress,
   MenuItem,
   Select,
@@ -29,6 +28,18 @@ import {
 import type { EChartsCoreOption } from 'echarts/core';
 import * as echarts from 'echarts/core';
 import { CanvasRenderer } from 'echarts/renderers';
+import {
+  useProblemsUserStatistics,
+  useProblemsUserStatisticsActivity,
+  useProblemsUserStatisticsHeatmap,
+} from 'modules/problems/application/queries';
+import { difficultyColorByKey, difficultyOptions } from 'modules/problems/config/difficulty';
+import {
+  ProblemsStatisticsAttemptsChartEntry,
+  ProblemsStatisticsTagStat,
+  ProblemsUserStatisticsActivity,
+  ProblemsUserStatisticsHeatmap,
+} from 'modules/problems/domain/entities/problem.entity';
 import KepIcon from 'shared/components/base/KepIcon';
 import ReactEchart from 'shared/components/base/ReactEchart';
 import AttemptLanguage from 'shared/components/problems/AttemptLanguage';
@@ -43,17 +54,6 @@ import {
 import { getColor } from 'shared/lib/echart-utils';
 import { createNumberFormatter } from 'shared/lib/numberFormat';
 import { numberParam, stringParam } from 'shared/lib/queryParams';
-import {
-  useProblemsUserStatistics,
-  useProblemsUserStatisticsActivity,
-  useProblemsUserStatisticsHeatmap,
-} from 'modules/problems/application/queries';
-import { difficultyColorByKey, difficultyOptions } from 'modules/problems/config/difficulty';
-import {
-  ProblemsStatisticsAttemptsChartEntry,
-  ProblemsUserStatisticsActivity,
-  ProblemsUserStatisticsHeatmap,
-} from 'modules/problems/domain/entities/problem.entity';
 import ProblemsUserStatisticsPageFactsCard from './ProblemsUserStatisticsPageFactsCard.tsx';
 import ProblemsUserStatisticsPageOverviewCard from './ProblemsUserStatisticsPageOverviewCard.tsx';
 
@@ -74,6 +74,12 @@ const DEFAULT_HEATMAP_FILTER = 'recent';
 const HEATMAP_START_YEAR = 2021;
 const ACTIVITY_DAY_OPTIONS = [3, 7, 14, 30] as const;
 const chartContentSx = { p: 0, '&:last-child': { pb: 0 } };
+const countTextSx = {
+  color: 'primary.main',
+  fontWeight: 800,
+  lineHeight: 1,
+  whiteSpace: 'nowrap',
+};
 
 const integerAxisLabelFormatter = (value: number) => Math.round(value).toString();
 
@@ -155,10 +161,22 @@ const buildHeatmapOption = (
   if (!data.length) return null;
 
   const maxValue = Math.max(...data.map((item) => item[1] as number), 1);
+  const textColor = getColor(themeVars.palette.text.secondary);
+  const paperColor = getColor(themeVars.palette.background.paper);
+  const emptyCellColor = getColor(themeVars.palette.background.default) || paperColor;
+  const dividerColor = getColor(themeVars.palette.divider);
+  const primaryLightColor = getColor(themeVars.palette.primary.light);
+  const primaryMainColor = getColor(themeVars.palette.primary.main);
 
   return {
+    backgroundColor: 'transparent',
     tooltip: {
       position: 'top',
+      backgroundColor: paperColor,
+      borderColor: dividerColor,
+      textStyle: {
+        color: getColor(themeVars.palette.text.primary),
+      },
       formatter: (params: any) => {
         const date = formatMachineDateTime(params.value[0], 'isoDate');
         return `${date}: ${params.value[1]}`;
@@ -174,23 +192,25 @@ const buildHeatmapOption = (
       splitLine: {
         show: true,
         lineStyle: {
-          color: getColor(themeVars.palette.text.secondary),
+          color: dividerColor,
           width: 0.5,
         },
       },
       itemStyle: {
-        borderWidth: 0,
+        color: emptyCellColor,
+        borderColor: dividerColor,
+        borderWidth: 0.5,
       },
       yearLabel: { show: false },
       monthLabel: {
         margin: 14,
-        color: getColor(themeVars.palette.text.secondary),
+        color: textColor,
         formatter: (value: string) => formatMachineDateTime(value, 'monthShort'),
       },
       dayLabel: {
         firstDay: 0,
         margin: 14,
-        color: getColor(themeVars.palette.text.secondary),
+        color: textColor,
         nameMap: weekdayLabels,
       },
     },
@@ -201,12 +221,11 @@ const buildHeatmapOption = (
       orient: 'horizontal',
       left: 'center',
       bottom: 8,
+      textStyle: {
+        color: textColor,
+      },
       inRange: {
-        color: [
-          getColor(themeVars.palette.background.paper),
-          getColor(themeVars.palette.primary.light),
-          getColor(themeVars.palette.primary.main),
-        ],
+        color: [paperColor, primaryLightColor, primaryMainColor],
       },
     },
     series: [
@@ -217,13 +236,13 @@ const buildHeatmapOption = (
         itemStyle: {
           borderRadius: 4,
           borderWidth: 1,
-          borderColor: getColor(themeVars.palette.background.paper),
+          borderColor: paperColor,
         },
         emphasis: {
           itemStyle: {
             borderRadius: 4,
             borderWidth: 1,
-            borderColor: getColor(themeVars.palette.background.paper),
+            borderColor: getColor(themeVars.palette.primary.contrastText),
           },
         },
       },
@@ -391,12 +410,51 @@ const ProblemsUserStatisticsPage = () => {
     () => buildAttemptsOption(statistics?.numberOfAttempts?.chartSeries ?? []),
     [statistics?.numberOfAttempts?.chartSeries],
   );
+  const tagGroups = useMemo(() => {
+    const tags = [...(statistics?.byTag ?? [])].sort((a, b) => b.value - a.value);
+    const hasCategories = tags.some((tag) => tag.categoryId || tag.categoryTitle);
+
+    if (!hasCategories) {
+      return [{ key: 'all', title: undefined, total: 0, tags }];
+    }
+
+    const groups = new Map<
+      string,
+      {
+        key: string;
+        title: string;
+        code?: string;
+        total: number;
+        tags: ProblemsStatisticsTagStat[];
+      }
+    >();
+
+    tags.forEach((tag) => {
+      const key = String(tag.categoryId ?? tag.categoryCode ?? 'other');
+      const group = groups.get(key) ?? {
+        key,
+        title: tag.categoryTitle ?? t('problems.statisticsPage.profile.tags'),
+        code: tag.categoryCode,
+        total: 0,
+        tags: [],
+      };
+
+      group.total += tag.value;
+      group.tags.push(tag);
+      groups.set(key, group);
+    });
+
+    return [...groups.values()].sort((a, b) => b.total - a.total);
+  }, [statistics?.byTag, t]);
 
   const numberFormatter = useMemo(
     () =>
-      createNumberFormatter({
-        maximumFractionDigits: 2,
-      }, i18n.language),
+      createNumberFormatter(
+        {
+          maximumFractionDigits: 2,
+        },
+        i18n.language,
+      ),
     [i18n.language],
   );
 
@@ -424,7 +482,7 @@ const ProblemsUserStatisticsPage = () => {
               <Grid container spacing={2}>
                 <Grid size={{ xs: 12, md: 6, lg: 3 }}>
                   <ProblemsUserStatisticsPageOverviewCard
-                    icon="check-circle"
+                    icon="solved"
                     label={t('problems.statisticsPage.cards.solved')}
                     value={numberFormatter.format(statistics.general?.solved ?? 0)}
                     subtitle={t('problems.statisticsPage.cards.problems')}
@@ -449,7 +507,7 @@ const ProblemsUserStatisticsPage = () => {
                 </Grid>
                 <Grid size={{ xs: 12, md: 6, lg: 3 }}>
                   <ProblemsUserStatisticsPageOverviewCard
-                    icon="award"
+                    icon="attempt"
                     label={t('problems.statisticsPage.cards.singleAttempt')}
                     value={numberFormatter.format(statistics.facts?.solvedWithSingleAttempt ?? 0)}
                     subtitle={
@@ -484,12 +542,9 @@ const ProblemsUserStatisticsPage = () => {
                                 />
                                 <Typography variant="body2">{lang.langFull}</Typography>
                               </Stack>
-                              <Chip
-                                label={lang.solved}
-                                size="small"
-                                color="primary"
-                                variant="outlined"
-                              />
+                              <Typography variant="body2" sx={countTextSx}>
+                                x{numberFormatter.format(lang.solved)}
+                              </Typography>
                             </Stack>
                           ))}
                           {!statistics.byLang?.length ? (
@@ -504,13 +559,39 @@ const ProblemsUserStatisticsPage = () => {
                     <Card variant="outlined">
                       <CardHeader title={t('problems.statisticsPage.profile.tags')} />
                       <CardContent>
-                        <Stack direction="row" spacing={1} flexWrap="wrap" useFlexGap>
-                          {(statistics.byTag ?? []).map((tag) => (
-                            <Chip
-                              key={tag.name}
-                              label={`${tag.name} (${tag.value})`}
-                              size="small"
-                            />
+                        <Stack spacing={2}>
+                          {tagGroups.map((group) => (
+                            <Stack key={group.key} spacing={1}>
+                              {group.title ? (
+                                <Stack direction="row" spacing={1} alignItems="center">
+                                  <KepIcon name="tags" fontSize={18} />
+                                  <Typography variant="subtitle2">{group.title}</Typography>
+                                  <Typography variant="caption" sx={countTextSx}>
+                                    x{numberFormatter.format(group.total)}
+                                  </Typography>
+                                </Stack>
+                              ) : null}
+                              <Stack direction="row" spacing={1} flexWrap="wrap" useFlexGap>
+                                {group.tags.map((tag) => (
+                                  <Box
+                                    key={`${group.key}-${tag.name}`}
+                                    sx={{
+                                      px: 1.25,
+                                      py: 0.5,
+                                      borderRadius: 999,
+                                      bgcolor: 'action.hover',
+                                      typography: 'body2',
+                                      fontWeight: 600,
+                                    }}
+                                  >
+                                    {tag.name}{' '}
+                                    <Box component="span" sx={countTextSx}>
+                                      x{numberFormatter.format(tag.value)}
+                                    </Box>
+                                  </Box>
+                                ))}
+                              </Stack>
+                            </Stack>
                           ))}
                           {!statistics.byTag?.length ? (
                             <Typography variant="body2" color="text.secondary">
@@ -537,12 +618,12 @@ const ProblemsUserStatisticsPage = () => {
                                 <KepIcon name="tags" fontSize={18} />
                                 <Typography variant="body2">{topic.topic}</Typography>
                               </Stack>
-                              <Chip
-                                label={topic.solved}
-                                size="small"
-                                color="success"
-                                variant="outlined"
-                              />
+                              <Typography
+                                variant="body2"
+                                sx={{ ...countTextSx, color: 'success.main' }}
+                              >
+                                x{numberFormatter.format(topic.solved)}
+                              </Typography>
                             </Stack>
                           ))}
                           {!statistics.byTopic?.length ? (

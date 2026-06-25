@@ -230,6 +230,7 @@ const ProblemListCard = ({ problem }: ProblemListCardProps) => {
 
         <Box
           sx={{
+            display: { xs: 'block', sm: 'none' },
             gridColumn: { xs: 2, sm: 'auto' },
             gridRow: { xs: 1, sm: 'auto' },
             justifySelf: 'end',
@@ -238,6 +239,18 @@ const ProblemListCard = ({ problem }: ProblemListCardProps) => {
         >
           {renderDifficultyBadge()}
         </Box>
+
+        <Stack
+          direction="row"
+          spacing={1}
+          alignItems="center"
+          justifyContent="flex-end"
+          flexShrink={0}
+          sx={{ display: { xs: 'none', sm: 'flex' } }}
+        >
+          {renderDifficultyBadge()}
+          {renderProblemRatingBadge()}
+        </Stack>
 
         <Box
           sx={{
@@ -254,6 +267,7 @@ const ProblemListCard = ({ problem }: ProblemListCardProps) => {
 
         <Box
           sx={{
+            display: { xs: 'block', sm: 'none' },
             gridColumn: { xs: 2, sm: 'auto' },
             gridRow: { xs: 2, sm: 'auto' },
             justifySelf: 'end',

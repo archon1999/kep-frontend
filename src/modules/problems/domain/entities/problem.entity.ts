@@ -517,6 +517,9 @@ export interface ProblemsStatisticsLangStat {
 export interface ProblemsStatisticsTagStat {
   name: string;
   value: number;
+  categoryId?: number;
+  categoryTitle?: string;
+  categoryCode?: string;
 }
 
 export interface ProblemsStatisticsTopicStat {

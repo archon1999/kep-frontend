@@ -1,8 +1,10 @@
 import { useTranslation } from 'react-i18next';
-import { Card, CardContent, CardHeader, Stack, Typography } from '@mui/material';
+import { Link as RouterLink } from 'react-router-dom';
+import { Card, CardContent, CardHeader, Link, Stack, Typography } from '@mui/material';
+import { getResourceById, resources } from 'app/routes/resources';
+import { ProblemsUserStatistics } from 'modules/problems/domain/entities/problem.entity';
 import KepIcon from 'shared/components/base/KepIcon';
 import { formatMachineDateTime } from 'shared/lib/dateTime';
-import { ProblemsUserStatistics } from 'modules/problems/domain/entities/problem.entity';
 
 interface ProblemsUserStatisticsPageFactsCardProps {
   statistics: ProblemsUserStatistics | undefined;
@@ -17,24 +19,38 @@ const ProblemsUserStatisticsPageFactsCard = ({
     {
       key: 'firstAttempt',
       label: t('problems.statisticsPage.facts.firstAttempt'),
-      icon: 'activity',
+      icon: 'attempt',
+      fallbackIcon: 'mdi:target',
     },
     {
       key: 'firstAccepted',
       label: t('problems.statisticsPage.facts.firstAccepted'),
-      icon: 'check-circle',
+      icon: 'solved',
+      fallbackIcon: 'mdi:check-circle-outline',
     },
-    { key: 'lastAttempt', label: t('problems.statisticsPage.facts.lastAttempt'), icon: 'clock' },
-    { key: 'lastAccepted', label: t('problems.statisticsPage.facts.lastAccepted'), icon: 'award' },
+    {
+      key: 'lastAttempt',
+      label: t('problems.statisticsPage.facts.lastAttempt'),
+      icon: 'attempt',
+      fallbackIcon: 'mdi:history',
+    },
+    {
+      key: 'lastAccepted',
+      label: t('problems.statisticsPage.facts.lastAccepted'),
+      icon: 'check',
+      fallbackIcon: 'mdi:trophy-outline',
+    },
     {
       key: 'mostAttemptedProblem',
       label: t('problems.statisticsPage.facts.mostAttempted'),
-      icon: 'alert',
+      icon: 'attempts',
+      fallbackIcon: 'mdi:repeat-variant',
     },
     {
       key: 'mostAttemptedForSolveProblem',
       label: t('problems.statisticsPage.facts.mostAttemptedForSolve'),
-      icon: 'trending-up',
+      icon: 'ranking',
+      fallbackIcon: 'mdi:chart-line-variant',
     },
   ] as const;
 
@@ -56,13 +72,26 @@ const ProblemsUserStatisticsPageFactsCard = ({
                 justifyContent="space-between"
               >
                 <Stack direction="row" spacing={1} alignItems="center">
-                  <KepIcon name={item.icon as any} fontSize={20} />
+                  <KepIcon name={item.icon as any} fallbackIcon={item.fallbackIcon} fontSize={20} />
                   <Typography variant="body2">{item.label}</Typography>
                 </Stack>
                 <Stack direction="column" spacing={0.25} alignItems="flex-end">
-                  <Typography variant="subtitle2">
-                    {fact.problemTitle ?? t('problems.statisticsPage.emptyValue')}
-                  </Typography>
+                  {fact.problemId ? (
+                    <Link
+                      component={RouterLink}
+                      to={getResourceById(resources.Problem, fact.problemId)}
+                      variant="subtitle2"
+                      underline="hover"
+                      color="text.primary"
+                      sx={{ fontWeight: 700, textAlign: 'right' }}
+                    >
+                      {fact.problemTitle ?? t('problems.statisticsPage.emptyValue')}
+                    </Link>
+                  ) : (
+                    <Typography variant="subtitle2" textAlign="right">
+                      {fact.problemTitle ?? t('problems.statisticsPage.emptyValue')}
+                    </Typography>
+                  )}
                   {fact.datetime ? (
                     <Typography variant="caption" color="text.secondary">
                       {formatMachineDateTime(fact.datetime, 'isoDateTimeMinute')}

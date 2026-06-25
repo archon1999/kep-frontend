@@ -1,6 +1,5 @@
-import { MouseEvent, useMemo } from 'react';
+import { MouseEvent, ReactNode, useMemo } from 'react';
 import { useTranslation } from 'react-i18next';
-import { Link as RouterLink } from 'react-router-dom';
 import {
   Avatar,
   Box,
@@ -15,8 +14,12 @@ import {
 } from '@mui/material';
 import Grid from '@mui/material/Grid';
 import { DataGrid, GridColDef, GridPaginationModel } from '@mui/x-data-grid';
-import { getResourceByUsername, resources } from 'app/routes/resources';
+import ContestantView from 'modules/contests/ui/shared/components/ContestantView';
 import { useProblemSolvers } from 'modules/problems/application/queries.ts';
+import {
+  ProblemSolver,
+  ProblemSolversOrdering,
+} from 'modules/problems/domain/entities/problem.entity';
 import UserPopover from 'modules/users/ui/shared/components/UserPopover';
 import IconifyIcon from 'shared/components/base/IconifyIcon';
 import ContestsRatingChip from 'shared/components/rating/ContestsRatingChip';
@@ -24,7 +27,6 @@ import useGridPagination from 'shared/hooks/useGridPagination';
 import useRouteQueryState from 'shared/hooks/useRouteQueryState';
 import { formatMachineDateTime } from 'shared/lib/dateTime';
 import { stringParam } from 'shared/lib/queryParams';
-import { ProblemSolver, ProblemSolversOrdering } from 'modules/problems/domain/entities/problem.entity';
 
 interface ProblemSolversTabProps {
   problemId: number;
@@ -51,7 +53,7 @@ const SummaryCard = ({
   icon,
 }: {
   title: string;
-  value: string;
+  value: ReactNode;
   subtitle?: string;
   icon: string;
 }) => (
@@ -71,9 +73,7 @@ const SummaryCard = ({
         <Stack direction="row" alignItems="center" justifyContent="space-between">
           <Chip icon={<IconifyIcon icon={icon} />} label={title} size="small" variant="soft" />
         </Stack>
-        <Typography variant="h4" fontWeight={800}>
-          {value}
-        </Typography>
+        <Box sx={{ minWidth: 0 }}>{value}</Box>
         {subtitle ? (
           <Typography variant="body2" color="text.secondary">
             {subtitle}
@@ -125,37 +125,57 @@ export const ProblemSolversTab = ({ problemId }: ProblemSolversTabProps) => {
 
   const latestSolver = latestSolvers?.data?.[0];
   const shortestCodeOwner = shortestCodeSolvers?.data?.[0];
+  const renderSummarySolver = (solver?: ProblemSolver) =>
+    solver ? (
+      <ContestantView
+        contestant={solver}
+        imgSize={22}
+        showFullName={false}
+        sx={{
+          minWidth: 0,
+          '& .MuiTypography-root': {
+            fontSize: { xs: 18, md: 22 },
+            fontWeight: 700,
+          },
+        }}
+      />
+    ) : (
+      <Typography variant="h5" fontWeight={700}>
+        --
+      </Typography>
+    );
 
   const columns = useMemo<GridColDef<ProblemSolver>[]>(
     () => [
       {
         field: 'username',
         headerName: t('problems.detail.user'),
-        minWidth: 240,
-        flex: 1.5,
+        minWidth: 160,
+        flex: 1.1,
         sortable: false,
         renderCell: ({ row }) => {
-          const profileLink = getResourceByUsername(resources.UserProfile, row.username);
-
           return (
             <UserPopover username={row.username} avatar={row.avatar}>
               <Stack
                 direction="row"
                 spacing={1.25}
                 alignItems="center"
-                component={RouterLink}
-                to={profileLink}
-                sx={{ textDecoration: 'none', color: 'inherit', minWidth: 0 }}
+                sx={{
+                  color: 'inherit',
+                  minWidth: 0,
+                  maxWidth: '100%',
+                  cursor: 'pointer',
+                }}
               >
-                <Avatar src={row.avatar} alt={row.username} sx={{ width: 40, height: 40 }} />
-                <Stack minWidth={0}>
-                  <Typography variant="subtitle2" fontWeight={700} noWrap>
-                    {row.username}
-                  </Typography>
-                  {row.ratingTitle ? (
-                    <ContestsRatingChip title={row.ratingTitle} imgSize={18} />
-                  ) : null}
-                </Stack>
+                <Avatar src={row.avatar} alt={row.username} sx={{ width: 32, height: 32 }} />
+                <ContestantView
+                  contestant={row}
+                  imgSize={24}
+                  showFullName={false}
+                  showRating={false}
+                  disablePopover
+                  sx={{ minWidth: 0 }}
+                />
               </Stack>
             </UserPopover>
           );
@@ -164,27 +184,31 @@ export const ProblemSolversTab = ({ problemId }: ProblemSolversTabProps) => {
       {
         field: 'rating',
         headerName: t('problems.rating.columns.rating'),
-        minWidth: 120,
+        minWidth: 105,
         flex: 0.55,
         sortable: false,
         headerAlign: 'right',
         align: 'right',
         renderCell: ({ row }) => (
-          <Typography
-            variant="body2"
-            fontWeight={700}
-            color="secondary.main"
-            sx={{ width: '100%', textAlign: 'right' }}
+          <Stack
+            direction="row"
+            spacing={0.5}
+            alignItems="center"
+            justifyContent="flex-end"
+            width="100%"
           >
-            {row.rating ?? '--'}
-          </Typography>
+            {row.ratingTitle ? <ContestsRatingChip title={row.ratingTitle} imgSize={18} /> : null}
+            <Typography variant="body2" fontWeight={700} color="secondary.main">
+              {row.rating ?? '--'}
+            </Typography>
+          </Stack>
         ),
       },
       {
         field: 'latestSolvedAt',
         headerName: t('problems.detail.latestSolved'),
-        minWidth: 170,
-        flex: 0.8,
+        minWidth: 145,
+        flex: 0.75,
         sortable: false,
         renderCell: ({ row }) => (
           <Chip label={formatDateTime(row.latestSolvedAt)} size="small" variant="outlined" />
@@ -193,8 +217,8 @@ export const ProblemSolversTab = ({ problemId }: ProblemSolversTabProps) => {
       {
         field: 'attemptsToSolve',
         headerName: t('problems.detail.attemptsToSolve'),
-        minWidth: 140,
-        flex: 0.6,
+        minWidth: 112,
+        flex: 0.55,
         sortable: false,
         headerAlign: 'right',
         align: 'right',
@@ -207,8 +231,8 @@ export const ProblemSolversTab = ({ problemId }: ProblemSolversTabProps) => {
       {
         field: 'shortestCodeSize',
         headerName: t('problems.detail.shortestCode'),
-        minWidth: 140,
-        flex: 0.6,
+        minWidth: 110,
+        flex: 0.55,
         sortable: false,
         headerAlign: 'right',
         align: 'right',
@@ -241,46 +265,23 @@ export const ProblemSolversTab = ({ problemId }: ProblemSolversTabProps) => {
 
   return (
     <Stack spacing={2.5} sx={{ mt: 2 }}>
-      <Card
-        sx={{
-          overflow: 'hidden',
-          color: 'common.white',
-          background:
-            'radial-gradient(circle at top right, rgba(255,255,255,0.18), transparent 28%), linear-gradient(135deg, #0f172a 0%, #0f766e 100%)',
-          boxShadow: '0 28px 56px rgba(15, 23, 42, 0.16)',
-        }}
-      >
-        <CardContent sx={{ p: { xs: 2, md: 3 } }}>
-          <Stack spacing={1}>
-            <Typography
-              variant="overline"
-              sx={{ color: 'rgba(255,255,255,0.74)', letterSpacing: 1.1 }}
-            >
-              {t('problems.detail.solversTitle')}
-            </Typography>
-            <Typography variant="h4" fontWeight={800}>
-              {t('problems.detail.solversTab')}
-            </Typography>
-            <Typography variant="body1" sx={{ color: 'rgba(255,255,255,0.8)' }}>
-              {t('problems.detail.solversSubtitle')}
-            </Typography>
-          </Stack>
-        </CardContent>
-      </Card>
-
       <Grid container spacing={2.5}>
         <Grid size={{ xs: 12, md: 4 }}>
           <SummaryCard
             title={t('problems.detail.solversTab')}
-            value={String(data?.total ?? 0)}
-            subtitle={t('problems.detail.dataCockpitAudience')}
+            value={
+              <Typography variant="h4" fontWeight={800}>
+                {data?.total ?? 0}
+              </Typography>
+            }
+            subtitle={t('users.title')}
             icon="mdi:account-group"
           />
         </Grid>
         <Grid size={{ xs: 12, md: 4 }}>
           <SummaryCard
             title={t('problems.detail.latestSolved')}
-            value={latestSolver?.username ?? '--'}
+            value={renderSummarySolver(latestSolver)}
             subtitle={
               latestSolver?.latestSolvedAt ? formatDateTime(latestSolver.latestSolvedAt) : undefined
             }
@@ -290,7 +291,7 @@ export const ProblemSolversTab = ({ problemId }: ProblemSolversTabProps) => {
         <Grid size={{ xs: 12, md: 4 }}>
           <SummaryCard
             title={t('problems.detail.shortestCode')}
-            value={shortestCodeOwner?.username ?? '--'}
+            value={renderSummarySolver(shortestCodeOwner)}
             subtitle={
               shortestCodeOwner?.shortestCodeSize !== undefined
                 ? `${shortestCodeOwner.shortestCodeSize} B`
@@ -313,9 +314,6 @@ export const ProblemSolversTab = ({ problemId }: ProblemSolversTabProps) => {
               <Box>
                 <Typography variant="h6" fontWeight={800}>
                   {t('problems.detail.solversTab')}
-                </Typography>
-                <Typography variant="body2" color="text.secondary">
-                  {t('problems.detail.solversSubtitle')}
                 </Typography>
               </Box>
 

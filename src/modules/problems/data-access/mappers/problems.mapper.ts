@@ -870,6 +870,12 @@ export const mapProblemsUserStatistics = (payload: any): ProblemsUserStatistics 
     byTag: (payload?.byTag ?? payload?.tags ?? []).map((item: any) => ({
       name: item?.name ?? '',
       value: toNumber(item?.value),
+      categoryId:
+        item?.categoryId !== undefined || item?.category_id !== undefined
+          ? toNumber(item?.categoryId ?? item?.category_id)
+          : undefined,
+      categoryTitle: item?.categoryTitle ?? item?.category_title,
+      categoryCode: item?.categoryCode ?? item?.category_code,
     })),
     byWeekday: (payload?.byWeekday ?? []).map(mapTimeEntry),
     byMonth: (payload?.byMonth ?? []).map(mapTimeEntry),

@@ -29,6 +29,7 @@ interface ContestantViewProps extends Omit<StackProps, 'children'> {
   isVirtual?: boolean;
   showCountry?: boolean;
   showFullName?: boolean;
+  showRating?: boolean;
   disablePopover?: boolean;
 }
 
@@ -55,6 +56,7 @@ const ContestantView = ({
   isVirtual,
   showCountry = false,
   showFullName = true,
+  showRating = true,
   disablePopover = false,
   sx,
   ...stackProps
@@ -227,7 +229,9 @@ const ContestantView = ({
 
     return (
       <Stack direction="row" spacing={0.75} alignItems="center" minWidth={0}>
-        {ratingTitle ? <ContestsRatingChip title={ratingTitle} imgSize={imgSize} /> : null}
+        {showRating && ratingTitle ? (
+          <ContestsRatingChip title={ratingTitle} imgSize={imgSize} />
+        ) : null}
         {popoverContent}
         {countryCode && showCountry ? <CountryFlagIcon code={countryCode} size={18} /> : null}
       </Stack>

@@ -303,7 +303,13 @@ export const ProblemEditorPanel = (props: ProblemEditorPanelProps) => {
           bgcolor: 'background.paper',
         }}
       >
-        <Stack direction="row" spacing={1.5} alignItems="center" flexWrap="wrap" useFlexGap>
+        <Stack
+          direction="row"
+          spacing={{ xs: 1, sm: 1.5 }}
+          alignItems="center"
+          flexWrap={{ xs: 'nowrap', sm: 'wrap' }}
+          useFlexGap
+        >
           <TextField
             select
             size="small"
@@ -313,7 +319,7 @@ export const ProblemEditorPanel = (props: ProblemEditorPanelProps) => {
             onChange={(event) => onLangChange(event.target.value)}
             disabled={isDisabled}
             sx={{
-              flex: { xs: '1 1 calc(50% - 6px)', sm: '0 0 auto' },
+              flex: { xs: '1 1 0', sm: '0 0 auto' },
               minWidth: { xs: 0, sm: 180 },
               '& .MuiOutlinedInput-root': { borderRadius: 2 },
             }}
@@ -335,7 +341,7 @@ export const ProblemEditorPanel = (props: ProblemEditorPanelProps) => {
               onChange={(event) => onSampleChange(Number(event.target.value))}
               disabled={isDisabled}
               sx={{
-                flex: { xs: '1 1 calc(50% - 6px)', sm: '0 0 auto' },
+                flex: { xs: '1 1 0', sm: '0 0 auto' },
                 minWidth: { xs: 0, sm: 140 },
                 '& .MuiOutlinedInput-root': { borderRadius: 2 },
               }}
@@ -355,12 +361,21 @@ export const ProblemEditorPanel = (props: ProblemEditorPanelProps) => {
             startIcon={<KepIcon name="upload" width={18} height={18} />}
             disabled={isDisabled}
             sx={{
-              flex: { xs: '1 1 100%', sm: '0 0 auto' },
-              minHeight: { xs: 32, sm: 'auto' },
+              flex: { xs: '0 0 38px', sm: '0 0 auto' },
+              minWidth: { xs: 38, sm: 64 },
+              width: { xs: 38, sm: 'auto' },
+              minHeight: { xs: 38, sm: 'auto' },
+              px: { xs: 0, sm: 1 },
               borderRadius: 2,
+              '& .MuiButton-startIcon': {
+                m: { xs: 0 },
+                mr: { sm: 0.75 },
+              },
             }}
           >
-            {t('problems.detail.uploadFile')}
+            <Box component="span" sx={{ display: { xs: 'none', sm: 'inline' } }}>
+              {t('problems.detail.uploadFile')}
+            </Box>
             <input
               hidden
               type="file"
@@ -462,40 +477,42 @@ export const ProblemEditorPanel = (props: ProblemEditorPanelProps) => {
                 boxShadow: (theme) => theme.shadows[1],
               }}
             >
-              <ResponsiveTabs
-                value={editorTab}
-                onChange={(value) => {
-                  if (isDisabled) return;
-                  onEditorTabChange(value);
-                }}
-                items={[
-                  {
-                    value: 'console',
-                    label: t('problems.detail.console'),
-                    disabled: isDisabled,
-                  },
-                  {
-                    value: 'samples',
-                    label: t('problems.detail.samplesResult'),
-                    disabled: isDisabled,
-                  },
-                ]}
-                ariaLabel="editor output tabs"
-                tabsProps={{
-                  variant: 'fullWidth',
-                  textColor: 'primary',
-                  indicatorColor: 'primary',
-                  sx: {
-                    px: 1,
-                    borderBottom: '1px solid',
-                    borderColor: 'divider',
-                    '& .MuiTab-root': {
-                      minHeight: 0,
-                      fontWeight: 600,
+              <Box sx={{ display: { xs: 'none', sm: 'block' } }}>
+                <ResponsiveTabs
+                  value={editorTab}
+                  onChange={(value) => {
+                    if (isDisabled) return;
+                    onEditorTabChange(value);
+                  }}
+                  items={[
+                    {
+                      value: 'console',
+                      label: t('problems.detail.console'),
+                      disabled: isDisabled,
                     },
-                  },
-                }}
-              />
+                    {
+                      value: 'samples',
+                      label: t('problems.detail.samplesResult'),
+                      disabled: isDisabled,
+                    },
+                  ]}
+                  ariaLabel="editor output tabs"
+                  tabsProps={{
+                    variant: 'fullWidth',
+                    textColor: 'primary',
+                    indicatorColor: 'primary',
+                    sx: {
+                      px: 1,
+                      borderBottom: '1px solid',
+                      borderColor: 'divider',
+                      '& .MuiTab-root': {
+                        minHeight: 0,
+                        fontWeight: 600,
+                      },
+                    },
+                  }}
+                />
+              </Box>
 
               <Box
                 sx={{
@@ -631,6 +648,7 @@ export const ProblemEditorPanel = (props: ProblemEditorPanelProps) => {
       <Box
         component="footer"
         sx={{
+          display: { xs: 'none', sm: 'block' },
           flexShrink: 0,
           px: { xs: 1.5, sm: 3 },
           py: { xs: 1, sm: 1.25 },

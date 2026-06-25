@@ -2,6 +2,9 @@ import { useTranslation } from 'react-i18next';
 import { Link as RouterLink } from 'react-router-dom';
 import { Box, Button, Divider, IconButton, Stack, Tooltip } from '@mui/material';
 import AppbarActionItems from 'app/layouts/main-layout/common/AppbarActionItems';
+import LanguageMenu from 'app/layouts/main-layout/common/LanguageMenu';
+import ProfileMenu from 'app/layouts/main-layout/common/ProfileMenu';
+import ThemeToggler from 'app/layouts/main-layout/common/ThemeToggler';
 import { useAuth } from 'app/providers/AuthProvider';
 import { getResourceById, resources } from 'app/routes/resources';
 import { ProblemDetail } from 'modules/problems/domain/entities/problem.entity';
@@ -74,11 +77,11 @@ export const ProblemHeader = ({
       sx={{
         borderColor: 'divider',
         px: { xs: 2, md: 3 },
-        py: 1.5,
+        py: { xs: 1, md: 1.5 },
         display: 'grid',
-        gridTemplateColumns: { xs: '1fr auto', md: '1fr auto 1fr' },
+        gridTemplateColumns: { xs: '1fr', md: '1fr auto 1fr' },
         gridTemplateAreas: {
-          xs: '"nav user" "actions actions"',
+          xs: '"mobile"',
           md: '"nav actions user"',
         },
         alignItems: 'center',
@@ -94,7 +97,12 @@ export const ProblemHeader = ({
         direction="row"
         spacing={1.5}
         alignItems="center"
-        sx={{ gridArea: 'nav', minWidth: 0, overflowX: 'auto' }}
+        sx={{
+          gridArea: 'nav',
+          minWidth: 0,
+          overflowX: 'auto',
+          display: { xs: 'none', md: 'flex' },
+        }}
       >
         <Logo showName={false} />
         <Divider orientation="vertical" flexItem />
@@ -161,7 +169,7 @@ export const ProblemHeader = ({
         spacing={1}
         alignItems="center"
         justifyContent="center"
-        sx={{ gridArea: 'actions', minWidth: 0 }}
+        sx={{ gridArea: 'actions', minWidth: 0, display: { xs: 'none', md: 'flex' } }}
       >
         <Tooltip title={isRunning ? t('problems.detail.running') : t('problems.detail.runHotkey')}>
           <span>
@@ -241,9 +249,75 @@ export const ProblemHeader = ({
         </Tooltip>
       </Stack>
 
-      <Box sx={{ gridArea: 'user', display: 'flex', justifyContent: 'flex-end' }}>
+      <Box
+        sx={{
+          gridArea: 'user',
+          display: { xs: 'none', md: 'flex' },
+          justifyContent: 'flex-end',
+        }}
+      >
         <AppbarActionItems type="slim" />
       </Box>
+
+      <Stack
+        direction="row"
+        spacing={0.5}
+        alignItems="center"
+        sx={{
+          gridArea: 'mobile',
+          display: { xs: 'flex', md: 'none' },
+          minWidth: 0,
+          width: '100%',
+        }}
+      >
+        <Tooltip title={t('problems.title')}>
+          <IconButton component={RouterLink} to={resources.Problems} color="primary" size="small">
+            <IconifyIcon icon="mdi:format-list-bulleted" width={20} height={20} />
+          </IconButton>
+        </Tooltip>
+
+        <Tooltip title={isRunning ? t('problems.detail.running') : t('problems.detail.runHotkey')}>
+          <span>
+            <IconButton
+              color="primary"
+              onClick={requireAuth(onRun)}
+              disabled={isRunning || !hasCode}
+              size="small"
+            >
+              <IconifyIcon icon="mdi:play-circle-outline" width={20} height={20} />
+            </IconButton>
+          </span>
+        </Tooltip>
+
+        <Tooltip title={t('problems.detail.submitHotkey')}>
+          <span>
+            <IconButton
+              color="primary"
+              onClick={requireAuth(onSubmit)}
+              disabled={isSubmitting || !hasCode}
+              size="small"
+              sx={{
+                borderRadius: 2,
+                bgcolor: 'primary.main',
+                color: 'primary.contrastText',
+                '&:hover': { bgcolor: 'primary.dark' },
+                '&.Mui-disabled': {
+                  bgcolor: 'action.disabledBackground',
+                  color: 'action.disabled',
+                },
+              }}
+            >
+              <IconifyIcon icon="mdi:send-outline" width={18} height={18} />
+            </IconButton>
+          </span>
+        </Tooltip>
+
+        <Box sx={{ ml: 'auto', display: 'flex', alignItems: 'center', gap: 0.25 }}>
+          <LanguageMenu type="slim" />
+          <ThemeToggler type="slim" />
+          <ProfileMenu type="slim" />
+        </Box>
+      </Stack>
     </Box>
   );
 };
