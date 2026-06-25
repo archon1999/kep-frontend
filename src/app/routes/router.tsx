@@ -86,7 +86,6 @@ import { TournamentPage, TournamentsListPage } from 'modules/tournaments/ui/page
 import { UserProfilePage, UsersListPage } from 'modules/users/ui/pages';
 import AuthGuard from 'shared/components/guard/AuthGuard';
 import SuperuserGuard from 'shared/components/guard/SuperuserGuard';
-import { DelayedPageLoader } from 'shared/components/loading/PageLoader';
 import { legacyRedirectRoutes } from './legacy-routes';
 import { resources } from './resources';
 import { authPaths, rootPaths } from './route-config';
@@ -95,15 +94,13 @@ import { adminMenu } from './sitemap';
 const IS_PROD = import.meta.env.PROD;
 
 const withAuthGuard = (element: ReactNode) => <AuthGuard>{element}</AuthGuard>;
-const withSuspense = (element: ReactNode) => (
-  <Suspense fallback={<DelayedPageLoader />}>{element}</Suspense>
-);
+const withSuspense = (element: ReactNode) => <Suspense fallback={null}>{element}</Suspense>;
 
 export const SuspenseOutlet = () => {
   const location = useLocation();
 
   return (
-    <Suspense key={location.pathname} fallback={<DelayedPageLoader />}>
+    <Suspense key={location.pathname} fallback={null}>
       <Outlet />
     </Suspense>
   );
