@@ -353,7 +353,9 @@
       "profile": {
         "languages": "Languages",
         "tags": "Tags",
-        "topics": "Topics"
+        "topics": "Topics",
+        "byCategoryAndTags": "By Category & By Tags",
+        "byTags": "By Tags"
       },
       "activity": {
         "title": "Activity",

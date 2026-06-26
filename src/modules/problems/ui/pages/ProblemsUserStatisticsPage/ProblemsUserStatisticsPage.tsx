@@ -1,6 +1,9 @@
 import { useMemo } from 'react';
 import { useTranslation } from 'react-i18next';
 import {
+  Accordion,
+  AccordionDetails,
+  AccordionSummary,
   Box,
   Card,
   CardContent,
@@ -557,81 +560,113 @@ const ProblemsUserStatisticsPage = () => {
                     </Card>
 
                     <Card variant="outlined">
-                      <CardHeader title={t('problems.statisticsPage.profile.tags')} />
+                      <CardHeader
+                        title={t('problems.statisticsPage.profile.byCategoryAndTags', {
+                          defaultValue: 'By Category & By Tags',
+                        })}
+                      />
                       <CardContent>
-                        <Stack spacing={2}>
-                          {tagGroups.map((group) => (
-                            <Stack key={group.key} spacing={1}>
-                              {group.title ? (
-                                <Stack direction="row" spacing={1} alignItems="center">
-                                  <KepIcon name="tags" fontSize={18} />
-                                  <Typography variant="subtitle2">{group.title}</Typography>
-                                  <Typography variant="caption" sx={countTextSx}>
-                                    x{numberFormatter.format(group.total)}
-                                  </Typography>
+                        {statistics.byTag?.length ? (
+                          <Stack spacing={1.25}>
+                            {tagGroups.map((group) =>
+                              group.title ? (
+                                <Accordion
+                                  key={group.key}
+                                  sx={{
+                                    border: 1,
+                                    borderColor: 'divider',
+                                    bgcolor: 'action.hover',
+                                    '&.Mui-expanded': {
+                                      bgcolor: 'background.paper',
+                                    },
+                                  }}
+                                >
+                                  <AccordionSummary>
+                                    <Stack
+                                      direction="row"
+                                      spacing={1}
+                                      alignItems="center"
+                                      justifyContent="space-between"
+                                      sx={{ width: 1, minWidth: 0 }}
+                                    >
+                                      <Stack
+                                        direction="row"
+                                        spacing={1}
+                                        alignItems="center"
+                                        sx={{ minWidth: 0 }}
+                                      >
+                                        <KepIcon name="tags" fontSize={18} />
+                                        <Typography variant="subtitle2" noWrap>
+                                          {group.title}
+                                        </Typography>
+                                      </Stack>
+                                      <Typography variant="caption" sx={countTextSx}>
+                                        x{numberFormatter.format(group.total)}
+                                      </Typography>
+                                    </Stack>
+                                  </AccordionSummary>
+                                  <AccordionDetails sx={{ pt: 0 }}>
+                                    <Stack direction="row" spacing={1} flexWrap="wrap" useFlexGap>
+                                      {group.tags.map((tag) => (
+                                        <Box
+                                          key={`${group.key}-${tag.name}`}
+                                          sx={{
+                                            px: 1.25,
+                                            py: 0.5,
+                                            borderRadius: 999,
+                                            bgcolor: 'action.hover',
+                                            typography: 'body2',
+                                            fontWeight: 600,
+                                          }}
+                                        >
+                                          {tag.name}{' '}
+                                          <Box component="span" sx={countTextSx}>
+                                            x{numberFormatter.format(tag.value)}
+                                          </Box>
+                                        </Box>
+                                      ))}
+                                    </Stack>
+                                  </AccordionDetails>
+                                </Accordion>
+                              ) : (
+                                <Stack key={group.key} spacing={1}>
+                                  <Stack direction="row" spacing={1} alignItems="center">
+                                    <KepIcon name="tags" fontSize={18} />
+                                    <Typography variant="subtitle2">
+                                      {t('problems.statisticsPage.profile.byTags', {
+                                        defaultValue: 'By Tags',
+                                      })}
+                                    </Typography>
+                                  </Stack>
+                                  <Stack direction="row" spacing={1} flexWrap="wrap" useFlexGap>
+                                    {group.tags.map((tag) => (
+                                      <Box
+                                        key={`${group.key}-${tag.name}`}
+                                        sx={{
+                                          px: 1.25,
+                                          py: 0.5,
+                                          borderRadius: 999,
+                                          bgcolor: 'action.hover',
+                                          typography: 'body2',
+                                          fontWeight: 600,
+                                        }}
+                                      >
+                                        {tag.name}{' '}
+                                        <Box component="span" sx={countTextSx}>
+                                          x{numberFormatter.format(tag.value)}
+                                        </Box>
+                                      </Box>
+                                    ))}
+                                  </Stack>
                                 </Stack>
-                              ) : null}
-                              <Stack direction="row" spacing={1} flexWrap="wrap" useFlexGap>
-                                {group.tags.map((tag) => (
-                                  <Box
-                                    key={`${group.key}-${tag.name}`}
-                                    sx={{
-                                      px: 1.25,
-                                      py: 0.5,
-                                      borderRadius: 999,
-                                      bgcolor: 'action.hover',
-                                      typography: 'body2',
-                                      fontWeight: 600,
-                                    }}
-                                  >
-                                    {tag.name}{' '}
-                                    <Box component="span" sx={countTextSx}>
-                                      x{numberFormatter.format(tag.value)}
-                                    </Box>
-                                  </Box>
-                                ))}
-                              </Stack>
-                            </Stack>
-                          ))}
-                          {!statistics.byTag?.length ? (
-                            <Typography variant="body2" color="text.secondary">
-                              {t('problems.statisticsPage.noData')}
-                            </Typography>
-                          ) : null}
-                        </Stack>
-                      </CardContent>
-                    </Card>
-
-                    <Card variant="outlined">
-                      <CardHeader title={t('problems.statisticsPage.profile.topics')} />
-                      <CardContent>
-                        <Stack spacing={1}>
-                          {(statistics.byTopic ?? []).map((topic) => (
-                            <Stack
-                              key={topic.id}
-                              direction="row"
-                              spacing={1}
-                              alignItems="center"
-                              justifyContent="space-between"
-                            >
-                              <Stack direction="row" spacing={1} alignItems="center">
-                                <KepIcon name="tags" fontSize={18} />
-                                <Typography variant="body2">{topic.topic}</Typography>
-                              </Stack>
-                              <Typography
-                                variant="body2"
-                                sx={{ ...countTextSx, color: 'success.main' }}
-                              >
-                                x{numberFormatter.format(topic.solved)}
-                              </Typography>
-                            </Stack>
-                          ))}
-                          {!statistics.byTopic?.length ? (
-                            <Typography variant="body2" color="text.secondary">
-                              {t('problems.statisticsPage.noData')}
-                            </Typography>
-                          ) : null}
-                        </Stack>
+                              ),
+                            )}
+                          </Stack>
+                        ) : (
+                          <Typography variant="body2" color="text.secondary">
+                            {t('problems.statisticsPage.noData')}
+                          </Typography>
+                        )}
                       </CardContent>
                     </Card>
                   </Stack>

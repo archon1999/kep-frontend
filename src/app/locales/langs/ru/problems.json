@@ -331,7 +331,9 @@
       "profile": {
         "languages": "Языки",
         "tags": "Теги",
-        "topics": "Темы"
+        "topics": "Темы",
+        "byCategoryAndTags": "По категориям и тегам",
+        "byTags": "По тегам"
       },
       "activity": {
         "title": "Активность",
