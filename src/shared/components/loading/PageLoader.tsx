@@ -1,22 +1,24 @@
 'use client';
 
-import { Box, BoxProps } from '@mui/material';
-import { responsivePagePaddingSx } from 'shared/lib/styles';
+import { Box, BoxProps, CircularProgress } from '@mui/material';
 
 const pageLoaderSx = {
-  ...responsivePagePaddingSx,
-  pt: { xs: 2, md: 4 },
-  pb: { xs: 4, md: 6 },
+  alignItems: 'center',
+  display: 'flex',
   flex: 1,
-  minHeight: ({ mixins }) => mixins.contentHeight(mixins.topbar.default),
+  justifyContent: 'center',
+  minHeight: '100dvh',
+  width: 1,
 };
 
 const PageLoader = (props: BoxProps) => (
   <Box
     {...props}
-    aria-hidden
+    role="status"
     sx={[pageLoaderSx, ...(Array.isArray(props.sx) ? props.sx : [props.sx])]}
-  />
+  >
+    <CircularProgress size={76} thickness={4} />
+  </Box>
 );
 
 export default PageLoader;
