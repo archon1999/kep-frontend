@@ -30,6 +30,7 @@ import {
 } from 'echarts/components';
 import type { EChartsCoreOption } from 'echarts/core';
 import * as echarts from 'echarts/core';
+import { LegacyGridContainLabel } from 'echarts/features';
 import { CanvasRenderer } from 'echarts/renderers';
 import {
   useProblemsUserStatistics,
@@ -66,6 +67,7 @@ echarts.use([
   TooltipComponent,
   LegendComponent,
   VisualMapComponent,
+  LegacyGridContainLabel,
   HeatmapChart,
   BarChart,
   LineChart,

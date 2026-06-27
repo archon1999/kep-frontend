@@ -249,7 +249,7 @@ const ArenaPlayerStatisticsCard = ({
           </Stack>
 
           <Stack direction="column" spacing={1}>
-            {safeStats.opponents.map((opponent) => {
+            {safeStats.opponents.map((opponent, index) => {
               const rowContent = (
                 <Stack
                   direction="row"
@@ -307,7 +307,7 @@ const ArenaPlayerStatisticsCard = ({
               );
 
               return (
-                <Box key={`${safeStats.username}-${opponent.username}`}>
+                <Box key={`${safeStats.username}-${opponent.username}-${index}`}>
                   {opponent.username ? (
                     <UserPopover username={opponent.username} avatar={opponent.avatar}>
                       {rowContent}

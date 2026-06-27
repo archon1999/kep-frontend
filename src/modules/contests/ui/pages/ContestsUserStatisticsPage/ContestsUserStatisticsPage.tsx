@@ -20,6 +20,7 @@ import { BarChart, PieChart } from 'echarts/charts';
 import { GridComponent, LegendComponent, TooltipComponent } from 'echarts/components';
 import * as echarts from 'echarts/core';
 import type { EChartsCoreOption } from 'echarts/core';
+import { LegacyGridContainLabel } from 'echarts/features';
 import { CanvasRenderer } from 'echarts/renderers';
 import { useContestUserStatistics } from 'modules/contests/application/queries';
 import {
@@ -44,7 +45,15 @@ import ContestsUserStatisticsPageStatCard, {
   type ContestsUserStatisticsPageStatCardProps,
 } from './ContestsUserStatisticsPageStatCard.tsx';
 
-echarts.use([GridComponent, TooltipComponent, LegendComponent, BarChart, PieChart, CanvasRenderer]);
+echarts.use([
+  GridComponent,
+  TooltipComponent,
+  LegendComponent,
+  LegacyGridContainLabel,
+  BarChart,
+  PieChart,
+  CanvasRenderer,
+]);
 
 const integerAxisLabelFormatter = (value: number) => Math.round(value).toString();
 

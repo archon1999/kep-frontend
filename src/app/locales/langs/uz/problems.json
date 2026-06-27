@@ -160,7 +160,7 @@
         "rating": "Reyting",
         "solved": "Yechilgan"
       },
-      "emptyValue": "вЂ”",
+      "emptyValue": "--",
       "total": "{{count}} foydalanuvchi",
       "score": "Reyting {{value}}",
       "solved": "{{value}} yechildi",

@@ -4,7 +4,7 @@ import { Box, Card, CardContent, Chip, LinearProgress, Stack, Typography } from 
 import Grid from '@mui/material/Grid';
 import { useTheme } from '@mui/material/styles';
 import { LineChart, PieChart } from 'echarts/charts';
-import { GridComponent, TooltipComponent } from 'echarts/components';
+import { GridComponent, TitleComponent, TooltipComponent } from 'echarts/components';
 import * as echarts from 'echarts/core';
 import type { EChartsCoreOption } from 'echarts/core';
 import { CanvasRenderer } from 'echarts/renderers';
@@ -15,7 +15,7 @@ import AttemptLanguage from 'shared/components/problems/AttemptLanguage';
 import { getColor } from 'shared/lib/echart-utils';
 import { ProblemDetail, Verdicts } from 'modules/problems/domain/entities/problem.entity';
 
-echarts.use([GridComponent, TooltipComponent, PieChart, LineChart, CanvasRenderer]);
+echarts.use([GridComponent, TitleComponent, TooltipComponent, PieChart, LineChart, CanvasRenderer]);
 
 const integerAxisLabelFormatter = (value: number) => Math.round(value).toString();
 

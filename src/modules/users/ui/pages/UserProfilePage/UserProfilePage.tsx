@@ -65,6 +65,7 @@ import { formatDateTime } from 'shared/lib/dateTime';
 import { getCountryLabel } from 'shared/utils/country';
 import ProfileFollowButton from './components/user-profile/ProfileFollowButton';
 import UserFollowersCard from './components/user-profile/UserFollowersCard';
+import UserFollowersDialog from './components/user-profile/UserFollowersDialog';
 import UserProfileAchievementsTab from './components/user-profile/UserProfileAchievementsTab';
 import UserProfileActivityHistoryTab from './components/user-profile/UserProfileActivityHistoryTab';
 import UserProfilePurchasesTab from './components/user-profile/UserProfilePurchasesTab';
@@ -824,6 +825,8 @@ const ProfileTabsSection = ({
 
 const UserProfilePage = () => {
   const { username = '' } = useParams();
+  const location = useLocation();
+  const navigate = useNavigate();
   const { currentUser } = useAuth();
   const { data: userDetails } = useUserDetails(username);
   const { data: userRatings, isLoading: isRatingsLoading } = useUserRatings(username);
@@ -831,6 +834,11 @@ const UserProfilePage = () => {
   const { data: social } = useUserSocial(username);
   const [isCoverPreviewOpen, setIsCoverPreviewOpen] = useState(false);
   const isOwner = currentUser?.username === username;
+  const isFollowersDialogOpen = location.pathname.endsWith('/followers');
+
+  const handleFollowersDialogClose = () => {
+    navigate(getResourceByUsername(resources.UserProfile, username), { replace: true });
+  };
 
   useDocumentTitle(
     userDetails?.username || username ? 'pageTitles.userProfile' : undefined,
@@ -919,6 +927,12 @@ const UserProfilePage = () => {
           ) : null}
         </DialogContent>
       </Dialog>
+
+      <UserFollowersDialog
+        open={isFollowersDialogOpen}
+        onClose={handleFollowersDialogClose}
+        username={username}
+      />
     </Paper>
   );
 };

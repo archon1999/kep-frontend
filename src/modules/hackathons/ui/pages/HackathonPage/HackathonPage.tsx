@@ -7,6 +7,7 @@ import {
   useRegisterHackathon,
   useUnregisterHackathon,
 } from 'modules/hackathons/application';
+import { HackathonStatus } from 'modules/hackathons/domain/enums';
 import { HackathonCountdownCard, HackathonPageHeader, HackathonTabs } from 'modules/hackathons/ui/shared';
 import { responsivePagePaddingSx } from 'shared/lib/styles';
 
@@ -17,6 +18,7 @@ const HackathonPage = () => {
   const { data: hackathon, isLoading, mutate } = useHackathon(id);
   const { trigger: registerHackathon, isMutating: isRegistering } = useRegisterHackathon();
   const { trigger: unregisterHackathon, isMutating: isUnregistering } = useUnregisterHackathon();
+  const canChangeRegistration = hackathon?.status === HackathonStatus.ALREADY;
   useDocumentTitle(
     hackathon?.title ? 'pageTitles.hackathon' : undefined,
     hackathon?.title
@@ -51,7 +53,7 @@ const HackathonPage = () => {
               <Button
                 variant={hackathon.isRegistered ? 'outlined' : 'contained'}
                 onClick={handleRegistration}
-                disabled={isRegistering || isUnregistering}
+                disabled={!canChangeRegistration || isRegistering || isUnregistering}
                 sx={{ width: { xs: 1, sm: 'auto' } }}
               >
                 {hackathon.isRegistered ? t('hackathons.unregister') : t('hackathons.register')}

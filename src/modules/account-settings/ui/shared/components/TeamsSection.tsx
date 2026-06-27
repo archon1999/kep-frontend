@@ -21,6 +21,7 @@ import {
   Typography,
 } from '@mui/material';
 import { useAuth } from 'app/providers/AuthProvider.tsx';
+import { getResourceById, resources } from 'app/routes/resources';
 import {
   useAccountTeams,
   useCreateTeam,
@@ -57,7 +58,7 @@ const TeamsSection = () => {
   const isCreator = (team: AccountTeam) => currentUser?.username === team.createrUsername;
 
   const handleCopy = async (code: string) => {
-    const link = `${window.location.origin}/team/${code}`;
+    const link = `${window.location.origin}${getResourceById(resources.TeamJoin, code)}`;
     await navigator.clipboard.writeText(link);
     toast.success(t('settings.linkCopied'));
   };

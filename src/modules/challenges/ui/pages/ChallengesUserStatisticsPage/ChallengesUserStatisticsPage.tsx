@@ -29,6 +29,7 @@ import {
 } from 'echarts/components';
 import type { EChartsCoreOption } from 'echarts/core';
 import * as echarts from 'echarts/core';
+import { LegacyGridContainLabel } from 'echarts/features';
 import { CanvasRenderer } from 'echarts/renderers';
 import {
   useChallengeUserStatistics,
@@ -48,7 +49,6 @@ import useRouteQueryState from 'shared/hooks/useRouteQueryState';
 import {
   formatDateTime,
   formatMachineDateTime,
-  getDateTimeValue,
   getDateWeekday,
   getDateYear,
 } from 'shared/lib/dateTime';
@@ -64,6 +64,7 @@ echarts.use([
   TooltipComponent,
   LegendComponent,
   VisualMapComponent,
+  LegacyGridContainLabel,
   HeatmapChart,
   BarChart,
   LineChart,
@@ -522,8 +523,9 @@ const ChallengesUserStatisticsPage = () => {
     ];
     const data = entries.map((item) => {
       const day = getDateWeekday(item.date);
-      return [getDateTimeValue(item.date), day === 0 ? 6 : day - 1, item.count];
+      return [formatMachineDateTime(item.date, 'isoDate'), day === 0 ? 6 : day - 1, item.count];
     });
+    const dates = Array.from(new Set(data.map((item) => item[0] as string)));
     const maxValue = Math.max(...entries.map((item) => item.count), 1);
 
     return {
@@ -536,9 +538,13 @@ const ChallengesUserStatisticsPage = () => {
       },
       grid: { left: 16, right: 16, top: 12, bottom: 42 },
       xAxis: {
-        type: 'time',
-        splitNumber: 12,
-        axisLabel: { formatter: '{MMM}', color: axisLabelColor },
+        type: 'category',
+        data: dates,
+        axisLabel: {
+          formatter: (value: string) => formatMachineDateTime(value, 'monthShort'),
+          hideOverlap: true,
+          color: axisLabelColor,
+        },
         axisLine: { lineStyle: { color: neutralColor } },
       },
       yAxis: { type: 'category', data: weekdayLabels, axisLabel: { color: axisLabelColor } },

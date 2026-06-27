@@ -16,12 +16,18 @@ const PasswordForm = () => {
   const [oldPassword, setOldPassword] = useState('');
   const [newPassword, setNewPassword] = useState('');
   const [confirmPassword, setConfirmPassword] = useState('');
+  const [submitted, setSubmitted] = useState(false);
   const [showFields, setShowFields] = useState({ old: false, neu: false, confirm: false });
 
   const passwordsMismatch = useMemo(() => newPassword !== confirmPassword, [newPassword, confirmPassword]);
 
   const handleSave = async () => {
+    setSubmitted(true);
     if (!username) return;
+    if (!oldPassword || !newPassword || !confirmPassword) {
+      return;
+    }
+
     if (passwordsMismatch) {
       toast.error(t('settings.confirmNewPasswordIncorrect'));
       return;
@@ -33,6 +39,7 @@ const PasswordForm = () => {
       setOldPassword('');
       setNewPassword('');
       setConfirmPassword('');
+      setSubmitted(false);
     } catch {
       toast.error(t('settings.wrongPassword'));
     }
@@ -43,24 +50,30 @@ const PasswordForm = () => {
     value: string,
     onChange: (value: string) => void,
     visibleKey: keyof typeof showFields,
-  ) => (
-    <TextField
-      fullWidth
-      label={label}
-      type={showFields[visibleKey] ? 'text' : 'password'}
-      value={value}
-      onChange={(event) => onChange(event.target.value)}
-      InputProps={{
-        endAdornment: (
-          <InputAdornment position="end">
-            <IconButton onClick={() => setShowFields((prev) => ({ ...prev, [visibleKey]: !prev[visibleKey] }))}>
-              <IconifyIcon icon={showFields[visibleKey] ? 'material-symbols:visibility-off' : 'material-symbols:visibility'} />
-            </IconButton>
-          </InputAdornment>
-        ),
-      }}
-    />
-  );
+  ) => {
+    const hasError = submitted && !value;
+
+    return (
+      <TextField
+        fullWidth
+        label={label}
+        type={showFields[visibleKey] ? 'text' : 'password'}
+        value={value}
+        onChange={(event) => onChange(event.target.value)}
+        error={hasError}
+        helperText={hasError ? t('auth.requiredField') : undefined}
+        InputProps={{
+          endAdornment: (
+            <InputAdornment position="end">
+              <IconButton onClick={() => setShowFields((prev) => ({ ...prev, [visibleKey]: !prev[visibleKey] }))}>
+                <IconifyIcon icon={showFields[visibleKey] ? 'material-symbols:visibility-off' : 'material-symbols:visibility'} />
+              </IconButton>
+            </InputAdornment>
+          ),
+        }}
+      />
+    );
+  };
 
   return (
     <Card sx={{ outline: 'none', borderRadius: 3 }} background={1}>

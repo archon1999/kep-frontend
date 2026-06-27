@@ -581,7 +581,19 @@ export const mapVerdicts = (payload: any): AttemptFilterOption[] => {
     }),
   );
 
-  return mapped.filter((item: AttemptFilterOption) => Boolean(item.label));
+  const seenLabels = new Set<string>();
+
+  return mapped.filter((item: AttemptFilterOption) => {
+    const label = item.label.trim();
+    const normalizedLabel = label.toLowerCase();
+
+    if (!label || seenLabels.has(normalizedLabel)) {
+      return false;
+    }
+
+    seenLabels.add(normalizedLabel);
+    return true;
+  });
 };
 
 export const mapPeriodRating = (payload: any): PeriodRatingEntry[] => {

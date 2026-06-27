@@ -5,10 +5,12 @@ import {
   Dialog,
   DialogContent,
   DialogTitle,
+  IconButton,
   LinearProgress,
   Stack,
   Typography,
 } from '@mui/material';
+import IconifyIcon from 'shared/components/base/IconifyIcon';
 import { toast } from 'sonner';
 import AttemptJudgeSummaryCard from './AttemptJudgeSummaryCard';
 import { problemsQueries } from 'modules/problems/application/queries';
@@ -73,6 +75,9 @@ const AttemptProtocolDialog = ({
               #{baseAttempt?.id} {baseAttempt?.problemTitle ?? ''}
             </Typography>
           </Stack>
+          <IconButton aria-label={t('common.close')} onClick={onClose} size="small">
+            <IconifyIcon icon="mdi:close" width={20} height={20} />
+          </IconButton>
         </Stack>
       </DialogTitle>
       <DialogContent dividers>

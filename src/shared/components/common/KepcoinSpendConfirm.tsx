@@ -1,4 +1,12 @@
-import { ReactNode, useMemo, useState } from 'react';
+import {
+  MouseEvent,
+  ReactElement,
+  ReactNode,
+  cloneElement,
+  isValidElement,
+  useMemo,
+  useState,
+} from 'react';
 import { useTranslation } from 'react-i18next';
 import {
   Button,
@@ -28,6 +36,11 @@ interface KepcoinSpendConfirmProps {
   disabled?: boolean;
   fullWidth?: boolean;
 }
+
+type TriggerElementProps = {
+  disabled?: boolean;
+  onClick?: (event: MouseEvent<HTMLElement>) => void;
+};
 
 const KepcoinSpendConfirm = ({
   value,
@@ -65,6 +78,48 @@ const KepcoinSpendConfirm = ({
     setOpen(true);
   };
 
+  const triggerDisabled = disabled && Boolean(currentUser);
+
+  const renderTrigger = () => {
+    if (isValidElement<TriggerElementProps>(children)) {
+      const child = children as ReactElement<TriggerElementProps>;
+      const childDisabled = Boolean(child.props.disabled);
+
+      return cloneElement(child, {
+        disabled: childDisabled || triggerDisabled,
+        onClick: (event: MouseEvent<HTMLElement>) => {
+          child.props.onClick?.(event);
+
+          if (!event.defaultPrevented && !childDisabled) {
+            handleTriggerClick();
+          }
+        },
+      });
+    }
+
+    return (
+      <ButtonBase
+        onClick={handleTriggerClick}
+        disabled={triggerDisabled}
+        sx={{
+          borderRadius: 1,
+          width: fullWidth ? 1 : 'fit-content',
+          px: children ? 0 : 1,
+          py: children ? 0 : 0.75,
+        }}
+      >
+        {children ?? (
+          <KepcoinValue
+            value={formattedValue}
+            iconSize={16}
+            textVariant="caption"
+            fontWeight={600}
+          />
+        )}
+      </ButtonBase>
+    );
+  };
+
   const handleClose = () => {
     if (!isMutating) {
       setOpen(false);
@@ -100,25 +155,7 @@ const KepcoinSpendConfirm = ({
 
   return (
     <>
-      <ButtonBase
-        onClick={handleTriggerClick}
-        disabled={disabled && Boolean(currentUser)}
-        sx={{
-          borderRadius: 1,
-          width: fullWidth ? 1 : 'fit-content',
-          px: children ? 0 : 1,
-          py: children ? 0 : 0.75,
-        }}
-      >
-        {children ?? (
-          <KepcoinValue
-            value={formattedValue}
-            iconSize={16}
-            textVariant="caption"
-            fontWeight={600}
-          />
-        )}
-      </ButtonBase>
+      {renderTrigger()}
 
       <Dialog open={open} onClose={handleClose} maxWidth="xs" fullWidth>
         <DialogTitle>{t('kepcoinSpend.confirmTitle')}</DialogTitle>

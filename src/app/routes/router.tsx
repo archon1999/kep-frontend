@@ -4,7 +4,7 @@ import App from 'app/App.tsx';
 import AuthLayout from 'app/layouts/auth-layout';
 import DefaultAuthLayout from 'app/layouts/auth-layout/DefaultAuthLayout';
 import MainLayout from 'app/layouts/main-layout';
-import { AccountSettingsPage } from 'modules/account-settings/ui/pages';
+import { AccountSettingsPage, TeamJoinPage } from 'modules/account-settings/ui/pages';
 import {
   AdminContestFilterFormPage,
   AdminContestFiltersListPage,
@@ -305,6 +305,14 @@ export const routes: RouteObject[] = [
           },
           {
             path: resources.UserProfile,
+            element: <UserProfilePage />,
+            handle: {
+              titleKey: 'pageTitles.userProfile',
+              fallbackTitleKey: 'pageTitles.users',
+            },
+          },
+          {
+            path: resources.UserProfileFollowers,
             element: <UserProfilePage />,
             handle: {
               titleKey: 'pageTitles.userProfile',
@@ -652,6 +660,11 @@ export const routes: RouteObject[] = [
           {
             path: resources.SettingsSystem,
             element: withAuthGuard(<AccountSettingsPage />),
+            handle: { titleKey: 'pageTitles.accountSettings' },
+          },
+          {
+            path: resources.TeamJoin,
+            element: withAuthGuard(<TeamJoinPage />),
             handle: { titleKey: 'pageTitles.accountSettings' },
           },
         ],

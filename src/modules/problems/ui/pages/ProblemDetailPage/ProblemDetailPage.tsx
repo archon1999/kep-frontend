@@ -341,16 +341,23 @@ const ProblemDetailPage = () => {
     if (!problem?.id || !selectedLang || !codeRef.current || isRunning) return;
     setIsRunning(true);
     setOutput('');
-    const response = await problemsQueries.problemsRepository.runCustomTest({
-      problemId: problem.id,
-      sourceCode: codeRef.current,
-      lang: selectedLang,
-      inputData: input,
-    });
-    if (response?.id) {
-      wsService.send('custom-test-add', response.id);
+    try {
+      const response = await problemsQueries.problemsRepository.runCustomTest({
+        problemId: problem.id,
+        sourceCode: codeRef.current,
+        lang: selectedLang,
+        inputData: input,
+      });
+      if (response?.id) {
+        wsService.send('custom-test-add', response.id);
+      }
+      setTimeout(() => setIsRunning(false), 8000);
+    } catch (error: any) {
+      const message =
+        error?.response?.data?.message ?? error?.message ?? t('problems.detail.error');
+      toast.error(message);
+      setIsRunning(false);
     }
-    setTimeout(() => setIsRunning(false), 8000);
   };
 
   const handleCheckSamples = async () => {
@@ -362,14 +369,21 @@ const ProblemDetailPage = () => {
     if (!problem?.id || !selectedLang || !codeRef.current || isCheckingSamples) return;
     setIsCheckingSamples(true);
     setCheckSamplesResult([]);
-    const response = await problemsQueries.problemsRepository.checkSampleTests(problem.id, {
-      sourceCode: codeRef.current,
-      lang: selectedLang,
-    });
-    if (response?.id) {
-      wsService.send('check-sample-tests-add', response.id);
+    try {
+      const response = await problemsQueries.problemsRepository.checkSampleTests(problem.id, {
+        sourceCode: codeRef.current,
+        lang: selectedLang,
+      });
+      if (response?.id) {
+        wsService.send('check-sample-tests-add', response.id);
+      }
+      setTimeout(() => setIsCheckingSamples(false), 15000);
+    } catch (error: any) {
+      const message =
+        error?.response?.data?.message ?? error?.message ?? t('problems.detail.error');
+      toast.error(message);
+      setIsCheckingSamples(false);
     }
-    setTimeout(() => setIsCheckingSamples(false), 15000);
   };
 
   const handleAnswerForInput = async (payload?: any) => {
@@ -386,15 +400,22 @@ const ProblemDetailPage = () => {
       setTimeout(() => setIsAnswering(false), 12000);
       return;
     }
-    const response = await problemsQueries.problemsRepository.answerForInput(problem.id, {
-      input_data: input,
-      lang: selectedLang,
-      sourceCode: codeRef.current,
-    });
-    if (response?.id) {
-      wsService.send('answer-for-input-add', response.id);
+    try {
+      const response = await problemsQueries.problemsRepository.answerForInput(problem.id, {
+        input_data: input,
+        lang: selectedLang,
+        sourceCode: codeRef.current,
+      });
+      if (response?.id) {
+        wsService.send('answer-for-input-add', response.id);
+      }
+      setTimeout(() => setIsAnswering(false), 12000);
+    } catch (error: any) {
+      const message =
+        error?.response?.data?.message ?? error?.message ?? t('problems.detail.error');
+      toast.error(message);
+      setIsAnswering(false);
     }
-    setTimeout(() => setIsAnswering(false), 12000);
   };
 
   const handleFavoriteToggle = async () => {

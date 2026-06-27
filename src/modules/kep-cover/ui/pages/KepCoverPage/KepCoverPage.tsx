@@ -1,6 +1,5 @@
 import { useEffect, useRef, useState } from 'react';
-import { LoadingButton } from '@mui/lab';
-import { Alert, Box, Chip, Paper, Skeleton, Stack, Typography } from '@mui/material';
+import { Alert, Box, Button, Chip, Paper, Skeleton, Stack, Typography } from '@mui/material';
 import { useTranslation } from 'react-i18next';
 import { toast } from 'sonner';
 import { useAuth } from 'app/providers/AuthProvider';
@@ -244,9 +243,9 @@ const KepCoverPage = () => {
             <Box ref={sentinelRef} sx={{ height: 1 }} />
 
             {hasMore ? (
-              <LoadingButton loading={isLoadingMore} onClick={loadMore} variant="outlined">
+              <Button loading={isLoadingMore} onClick={loadMore} variant="outlined">
                 {t('kepCover.loadMore')}
-              </LoadingButton>
+              </Button>
             ) : null}
           </>
         ) : (

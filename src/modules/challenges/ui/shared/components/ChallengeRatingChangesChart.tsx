@@ -12,6 +12,7 @@ import {
 } from 'echarts/components';
 import type { EChartsCoreOption } from 'echarts/core';
 import * as echarts from 'echarts/core';
+import { LegacyGridContainLabel } from 'echarts/features';
 import { CanvasRenderer } from 'echarts/renderers';
 import { useChallengeRatingChanges } from 'modules/challenges/application/queries';
 import type { ChallengeRatingChange, ChallengeRatingHistoryEntry } from 'modules/challenges/domain';
@@ -35,6 +36,7 @@ echarts.use([
   VisualMapComponent,
   MarkAreaComponent,
   MarkLineComponent,
+  LegacyGridContainLabel,
   LineChart,
   CanvasRenderer,
 ]);

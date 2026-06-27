@@ -152,6 +152,7 @@ const ContestsListPageFilterDrawer = ({
           </Typography>
           <ToggleButtonGroup
             color="primary"
+            exclusive
             value={participation}
             onChange={(_, value: 'all' | 'participated' | 'registered' | null) => {
               if (value) {

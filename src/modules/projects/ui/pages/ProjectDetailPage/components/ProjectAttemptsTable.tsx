@@ -7,6 +7,7 @@ import {
   DialogContent,
   DialogTitle,
   Divider,
+  IconButton,
   Stack,
   Table,
   TableBody,
@@ -114,9 +115,14 @@ const ProjectAttemptsTable = ({
 
   const renderLogDialog = () => (
     <Dialog open={isLogOpen} onClose={handleCloseLog} fullWidth maxWidth="md">
-      <DialogTitle sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
-        <IconifyIcon icon="mdi:file-document-outline" />
-        {t('projects.attemptLog')}
+      <DialogTitle sx={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', gap: 2 }}>
+        <Stack direction="row" alignItems="center" spacing={1}>
+          <IconifyIcon icon="mdi:file-document-outline" />
+          {t('projects.attemptLog')}
+        </Stack>
+        <IconButton aria-label={t('common.close')} onClick={handleCloseLog} size="small">
+          <IconifyIcon icon="mdi:close" />
+        </IconButton>
       </DialogTitle>
       <DialogContent dividers>
         {isFetchingLog ? (

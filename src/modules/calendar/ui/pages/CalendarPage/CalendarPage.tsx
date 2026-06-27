@@ -80,23 +80,25 @@ const CalendarPage = () => {
   }, [eventColors, events, t, theme.palette.primary.main]);
 
   const handleDatesSet = (info: DatesSetArg) => {
-    setRangeLabel(formatRangeLabel(info.start, info.end, view));
+    const currentView = info.view.type as CalendarView;
+
+    setView(currentView);
+    setRangeLabel(formatRangeLabel(info.view.currentStart, info.view.currentEnd, currentView));
   };
 
   const handleViewChange = (nextView: CalendarView) => {
     const api = calendarRef.current?.getApi();
     if (api) {
       api.changeView(nextView);
-      setRangeLabel(formatRangeLabel(api.view.activeStart, api.view.activeEnd, nextView));
+      setRangeLabel(formatRangeLabel(api.view.currentStart, api.view.currentEnd, nextView));
     }
-    setView(nextView);
   };
 
   const handleToday = () => {
     const api = calendarRef.current?.getApi();
     api?.today();
     if (api) {
-      setRangeLabel(formatRangeLabel(api.view.activeStart, api.view.activeEnd, view));
+      setRangeLabel(formatRangeLabel(api.view.currentStart, api.view.currentEnd, view));
     }
   };
 
@@ -104,7 +106,7 @@ const CalendarPage = () => {
     const api = calendarRef.current?.getApi();
     api?.prev();
     if (api) {
-      setRangeLabel(formatRangeLabel(api.view.activeStart, api.view.activeEnd, view));
+      setRangeLabel(formatRangeLabel(api.view.currentStart, api.view.currentEnd, view));
     }
   };
 
@@ -112,7 +114,7 @@ const CalendarPage = () => {
     const api = calendarRef.current?.getApi();
     api?.next();
     if (api) {
-      setRangeLabel(formatRangeLabel(api.view.activeStart, api.view.activeEnd, view));
+      setRangeLabel(formatRangeLabel(api.view.currentStart, api.view.currentEnd, view));
     }
   };
 

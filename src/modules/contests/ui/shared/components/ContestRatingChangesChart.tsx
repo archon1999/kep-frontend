@@ -13,6 +13,7 @@ import {
 } from 'echarts/components';
 import * as echarts from 'echarts/core';
 import type { EChartsCoreOption } from 'echarts/core';
+import { LegacyGridContainLabel } from 'echarts/features';
 import { CanvasRenderer } from 'echarts/renderers';
 import { useContestRatingChanges } from 'modules/contests/application/queries';
 import ReactEchart from 'shared/components/base/ReactEchart';
@@ -36,6 +37,7 @@ echarts.use([
   VisualMapComponent,
   MarkAreaComponent,
   MarkLineComponent,
+  LegacyGridContainLabel,
   LineChart,
   CanvasRenderer,
 ]);

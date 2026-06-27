@@ -14,6 +14,25 @@ import { AppErrorBoundary } from 'modules/errors/ui';
 import { DateTimeLocalizationProvider } from 'shared/lib/dateTime';
 import SWRConfiguration from 'shared/services/configuration/SWRConfiguration';
 
+const isMonacoCancellation = (reason: unknown) => {
+  if (!reason || typeof reason !== 'object') {
+    return false;
+  }
+
+  const candidate = reason as { type?: unknown; msg?: unknown; message?: unknown };
+  return (
+    candidate.type === 'cancelation' &&
+    (candidate.msg === 'operation is manually canceled' ||
+      candidate.message === 'operation is manually canceled')
+  );
+};
+
+window.addEventListener('unhandledrejection', (event) => {
+  if (isMonacoCancellation(event.reason)) {
+    event.preventDefault();
+  }
+});
+
 ReactDOM.createRoot(document.getElementById('root')!).render(
   <React.StrictMode>
     <AppErrorBoundary>

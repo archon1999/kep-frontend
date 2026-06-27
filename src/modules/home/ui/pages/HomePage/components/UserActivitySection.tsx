@@ -13,6 +13,7 @@ import { useTheme } from '@mui/material/styles';
 import { LineChart } from 'echarts/charts';
 import { GridComponent, TooltipComponent } from 'echarts/components';
 import * as echarts from 'echarts/core';
+import { LegacyGridContainLabel } from 'echarts/features';
 import { CanvasRenderer } from 'echarts/renderers';
 import { useOnlineUsers, useUserActivityStatistics } from 'modules/home/application/queries';
 import type { HomeOnlineUsers } from 'modules/home/domain/entities/home.entity';
@@ -24,7 +25,7 @@ import { getColor } from 'shared/lib/echart-utils';
 import { createNumberFormatter } from 'shared/lib/numberFormat';
 import { getPastDates } from 'shared/lib/utils';
 
-echarts.use([LineChart, GridComponent, TooltipComponent, CanvasRenderer]);
+echarts.use([LineChart, GridComponent, TooltipComponent, LegacyGridContainLabel, CanvasRenderer]);
 
 type TrendStyles = { color: ChipProps['color']; icon: string };
 

@@ -4,7 +4,7 @@ import { useParams } from 'react-router-dom';
 import { Avatar, Card, CardContent, Chip, Divider, Grid, Skeleton, Stack, Typography } from '@mui/material';
 import { useTheme } from '@mui/material/styles';
 import { BarChart, LineChart, PieChart } from 'echarts/charts';
-import { GridComponent, LegendComponent, TooltipComponent } from 'echarts/components';
+import { GraphicComponent, GridComponent, LegendComponent, TooltipComponent } from 'echarts/components';
 import * as echarts from 'echarts/core';
 import type { EChartsCoreOption } from 'echarts/core';
 import { CanvasRenderer } from 'echarts/renderers';
@@ -22,7 +22,16 @@ import {
 import ContestantView from 'modules/contests/ui/shared/components/ContestantView';
 import ContestPageHeader from 'modules/contests/ui/shared/components/ContestPageHeader';
 
-echarts.use([GridComponent, TooltipComponent, LegendComponent, LineChart, BarChart, PieChart, CanvasRenderer]);
+echarts.use([
+  GridComponent,
+  TooltipComponent,
+  LegendComponent,
+  GraphicComponent,
+  LineChart,
+  BarChart,
+  PieChart,
+  CanvasRenderer,
+]);
 
 const integerAxisLabelFormatter = (value: number) => Math.round(value).toString();
 

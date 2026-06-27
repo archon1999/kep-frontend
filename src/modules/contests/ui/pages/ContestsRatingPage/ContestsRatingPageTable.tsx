@@ -156,7 +156,7 @@ const ContestsRatingPageTable = ({
       onPaginationModelChange={onPaginationModelChange}
       sortModel={sortModel}
       onSortModelChange={onSortModelChange}
-      pageSizeOptions={[12]}
+      pageSizeOptions={[10, 20, 50]}
       disableColumnFilter
       disableColumnMenu
       disableColumnSelector

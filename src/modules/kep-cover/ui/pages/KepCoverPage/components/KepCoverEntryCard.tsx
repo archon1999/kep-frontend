@@ -1,4 +1,3 @@
-import { LoadingButton } from '@mui/lab';
 import { Avatar, Box, Button, Chip, Paper, Stack, Typography } from '@mui/material';
 import { useTranslation } from 'react-i18next';
 import { Link as RouterLink } from 'react-router-dom';
@@ -110,7 +109,7 @@ const KepCoverEntryCard = ({
             {t('kepCover.actions.signIn')}
           </Button>
         ) : (
-          <LoadingButton
+          <Button
             variant={entry.isLiked ? 'contained' : 'outlined'}
             color={entry.isLiked ? 'error' : 'primary'}
             loading={isVoting}
@@ -118,7 +117,7 @@ const KepCoverEntryCard = ({
             onClick={() => onVote?.(entry.id)}
           >
             {entry.isLiked ? t('kepCover.actions.unlike') : t('kepCover.actions.like')}
-          </LoadingButton>
+          </Button>
         )}
       </Stack>
     </Paper>

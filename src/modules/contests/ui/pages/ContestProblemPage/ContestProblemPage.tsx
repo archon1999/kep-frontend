@@ -368,16 +368,23 @@ const ContestProblemPage = () => {
     if (!problem?.id || !selectedLang || !codeRef.current || isRunning || isContestLocked) return;
     setIsRunning(true);
     setOutput('');
-    const response = await problemsQueries.problemsRepository.runCustomTest({
-      problemId: problem.id,
-      sourceCode: codeRef.current,
-      lang: selectedLang,
-      inputData: input,
-    });
-    if (response?.id) {
-      wsService.send('custom-test-add', response.id);
+    try {
+      const response = await problemsQueries.problemsRepository.runCustomTest({
+        problemId: problem.id,
+        sourceCode: codeRef.current,
+        lang: selectedLang,
+        inputData: input,
+      });
+      if (response?.id) {
+        wsService.send('custom-test-add', response.id);
+      }
+      setTimeout(() => setIsRunning(false), 8000);
+    } catch (error: any) {
+      const message =
+        error?.response?.data?.message ?? error?.message ?? t('problems.detail.error');
+      toast.error(message);
+      setIsRunning(false);
     }
-    setTimeout(() => setIsRunning(false), 8000);
   };
 
   const handleCheckSamples = async () => {
@@ -390,14 +397,21 @@ const ContestProblemPage = () => {
       return;
     setIsCheckingSamples(true);
     setCheckSamplesResult([]);
-    const response = await problemsQueries.problemsRepository.checkSampleTests(problem.id, {
-      sourceCode: codeRef.current,
-      lang: selectedLang,
-    });
-    if (response?.id) {
-      wsService.send('check-sample-tests-add', response.id);
+    try {
+      const response = await problemsQueries.problemsRepository.checkSampleTests(problem.id, {
+        sourceCode: codeRef.current,
+        lang: selectedLang,
+      });
+      if (response?.id) {
+        wsService.send('check-sample-tests-add', response.id);
+      }
+      setTimeout(() => setIsCheckingSamples(false), 15000);
+    } catch (error: any) {
+      const message =
+        error?.response?.data?.message ?? error?.message ?? t('problems.detail.error');
+      toast.error(message);
+      setIsCheckingSamples(false);
     }
-    setTimeout(() => setIsCheckingSamples(false), 15000);
   };
 
   const canUseCheckSamples = Boolean(permissions.canUseCheckSamples || currentUser?.isSuperuser);
@@ -555,22 +569,26 @@ const ContestProblemPage = () => {
             />
             <Stack direction="row" spacing={0.5} alignItems="center">
               <Tooltip title={t('contests.problem.prev')}>
-                <Button
-                  onClick={handlePrev}
-                  variant="text"
-                  color="primary"
-                  disabled={!prevSymbol}
-                  startIcon={<IconifyIcon icon="mdi:chevron-left" width={18} height={18} />}
-                />
+                <span style={{ display: 'inline-flex' }}>
+                  <Button
+                    onClick={handlePrev}
+                    variant="text"
+                    color="primary"
+                    disabled={!prevSymbol}
+                    startIcon={<IconifyIcon icon="mdi:chevron-left" width={18} height={18} />}
+                  />
+                </span>
               </Tooltip>
               <Tooltip title={t('contests.problem.next')}>
-                <Button
-                  onClick={handleNext}
-                  variant="text"
-                  color="primary"
-                  disabled={!nextSymbol}
-                  endIcon={<IconifyIcon icon="mdi:chevron-right" width={18} height={18} />}
-                />
+                <span style={{ display: 'inline-flex' }}>
+                  <Button
+                    onClick={handleNext}
+                    variant="text"
+                    color="primary"
+                    disabled={!nextSymbol}
+                    endIcon={<IconifyIcon icon="mdi:chevron-right" width={18} height={18} />}
+                  />
+                </span>
               </Tooltip>
               {canOpenOriginalProblem ? (
                 <Tooltip title={t('contests.problem.openOriginal')}>

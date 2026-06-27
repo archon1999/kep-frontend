@@ -183,7 +183,11 @@ const AttemptCompareDialog = ({
           <Typography variant="h6" fontWeight={700}>
             {t('problems.attempts.modal.compareTitle', { id: baseAttempt?.id ?? '--' })}
           </Typography>
-          <IconButton onClick={onClose} size="small">
+          <IconButton
+            aria-label={t('common.close')}
+            onClick={onClose}
+            size="small"
+          >
             <IconifyIcon icon="mdi:close" width={20} height={20} />
           </IconButton>
         </Stack>
@@ -430,6 +434,13 @@ const AttemptDetailDialog = ({
                 balls={baseAttempt?.balls}
                 showBalls={isGraderAttempt}
               />
+              <IconButton
+                aria-label={t('common.close')}
+                onClick={onClose}
+                size="small"
+              >
+                <IconifyIcon icon="mdi:close" width={20} height={20} />
+              </IconButton>
             </Stack>
           </Stack>
         </DialogTitle>

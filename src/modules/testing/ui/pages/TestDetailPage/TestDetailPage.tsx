@@ -414,9 +414,9 @@ const TestDetailPage = () => {
                     <CircularProgress size={24} />
                   ) : (
                     <Stack direction="column" spacing={1}>
-                      {(results?.bestResults ?? []).map((result) => (
+                      {(results?.bestResults ?? []).map((result, index) => (
                         <Stack
-                          key={`${result.username}-${result.finished}`}
+                          key={`${result.username}-${result.finished}-${index}`}
                           direction="row"
                           justifyContent="space-between"
                           alignItems="center"
@@ -457,9 +457,9 @@ const TestDetailPage = () => {
                     </Typography>
                   </Stack>
                   <Stack direction="column" spacing={1}>
-                    {(results?.lastResults ?? []).map((result) => (
+                    {(results?.lastResults ?? []).map((result, index) => (
                       <Stack
-                        key={`${result.username}-${result.finished}`}
+                        key={`${result.username}-${result.finished}-${index}`}
                         direction="row"
                         justifyContent="space-between"
                         alignItems="center"

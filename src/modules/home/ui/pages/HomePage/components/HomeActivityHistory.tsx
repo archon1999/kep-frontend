@@ -1,6 +1,5 @@
 import { useTranslation } from 'react-i18next';
 import {
-  LoadingButton,
   Timeline,
   TimelineConnector,
   TimelineContent,
@@ -9,7 +8,7 @@ import {
   TimelineOppositeContent,
   TimelineSeparator,
 } from '@mui/lab';
-import { Box, Paper, Skeleton, Stack, Typography } from '@mui/material';
+import { Box, Button, Paper, Skeleton, Stack, Typography } from '@mui/material';
 import { TFunction } from 'i18next';
 import type {
   HomeUserActivityHistory,
@@ -404,14 +403,14 @@ const HomeActivityHistory = ({
 
       {!isLoading && activities.length > 0 && hasMore ? (
         <Box display="flex" justifyContent="center">
-          <LoadingButton
+          <Button
             variant="outlined"
             size="small"
             loading={isLoadingMore}
             onClick={onLoadMore}
           >
             {t('homePage.activityHistory.loadMore')}
-          </LoadingButton>
+          </Button>
         </Box>
       ) : null}
     </Stack>

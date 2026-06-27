@@ -80,6 +80,8 @@
     "linkCopied": "Havola nusxalandi",
     "teamCodeLabel": "Jamoa kodi",
     "teamName": "Nomi",
+    "teamJoinInviteDescription": "Siz jamoaga taklif qilindingiz. Davom etish uchun quyidagi jamoa kodini tasdiqlang.",
+    "teamJoinFailed": "Bu jamoaga qo'shilib bo'lmadi. Taklif havolasi hali ham yaroqli ekanini tekshiring.",
     "createTeam": "Jamoa yaratish",
     "delete": "O'chirish",
     "cancel": "Bekor qilish",

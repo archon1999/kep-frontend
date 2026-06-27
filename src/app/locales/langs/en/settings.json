@@ -80,6 +80,8 @@
     "linkCopied": "Link copied",
     "teamCodeLabel": "Team code",
     "teamName": "Name",
+    "teamJoinInviteDescription": "You have been invited to join a team. Confirm the team code below to continue.",
+    "teamJoinFailed": "Could not join this team. Check that the invite link is still valid.",
     "createTeam": "Create team",
     "delete": "Delete",
     "cancel": "Cancel",

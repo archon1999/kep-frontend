@@ -21,6 +21,7 @@ const ProfileInformationForm = () => {
 
   const [formState, setFormState] = useState<AccountProfileInfo | null>(null);
   const [errors, setErrors] = useState<Record<string, string[]>>();
+  const countryOptions = countries ?? [];
 
   useEffect(() => {
     if (data) {
@@ -98,10 +99,16 @@ const ProfileInformationForm = () => {
                 label={t('settings.country')}
                 value={formState?.country || ''}
                 onChange={handleChange('country')}
+                disabled={!countryOptions.length}
                 error={Boolean(errors?.country?.length)}
                 helperText={errors?.country?.[0]}
               >
-                {countries?.map((code) => (
+                {!countryOptions.length ? (
+                  <MenuItem value="" disabled>
+                    {t('common.loading')}
+                  </MenuItem>
+                ) : null}
+                {countryOptions.map((code) => (
                   <MenuItem key={code} value={code}>
                     <Stack direction="row" spacing={1} alignItems="center">
                       <CountryFlagIcon code={code} size={18} />
