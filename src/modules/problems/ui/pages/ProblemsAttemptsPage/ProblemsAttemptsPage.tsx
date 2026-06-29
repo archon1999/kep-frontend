@@ -340,7 +340,7 @@ const ProblemsAttemptsPage = () => {
           }
         />
 
-        <Box sx={{ flex: 1, px: { xs: 2, sm: 3, md: 5 }} }}>
+        <Box sx={{ flex: 1, px: { xs: 2, sm: 3, md: 5 }}}>
           <ProblemsAttemptsTable
             attempts={attempts}
             total={total}
