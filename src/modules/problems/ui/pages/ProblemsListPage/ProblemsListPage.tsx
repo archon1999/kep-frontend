@@ -511,7 +511,7 @@ const ProblemsListPage = () => {
           }
         />
 
-        <Box sx={{ flex: 1, px: { xs: 2, sm: 3, md: 5 }, pb: { xs: 8, md: 6 } }}>
+        <Box sx={{ flex: 1, px: { xs: 2, sm: 3, md: 5 }, pb: { xs: 2 } }}>
           <Grid container spacing={3}>
             <Grid size={12}>
               <FilterCard

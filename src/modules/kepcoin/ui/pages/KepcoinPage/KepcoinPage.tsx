@@ -210,7 +210,7 @@ const KepcoinPage = () => {
         }
       />
 
-      <Grid container spacing={3} sx={{ px: { xs: 2, sm: 3, md: 5 }, pb: { xs: 8, md: 6 } }}>
+      <Grid container spacing={3} sx={{ px: { xs: 2, sm: 3, md: 5 }, pb: { xs: 4 }}}>
         <Grid size={{ xs: 12, lg: 6 }}>
           <Card sx={{ ...surfaceCardSx, height: 1 }}>
             <CardContent sx={{ p: { xs: 2, md: 3 } }}>
