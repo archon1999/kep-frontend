@@ -1,25 +1,23 @@
-import { ChangeEvent, FC, KeyboardEvent, MouseEvent, useEffect, useMemo, useRef, useState } from 'react';
+import {
+  ChangeEvent,
+  FC,
+  KeyboardEvent,
+  MouseEvent,
+  useEffect,
+  useMemo,
+  useRef,
+  useState,
+} from 'react';
 import { useTranslation } from 'react-i18next';
 import Editor from '@monaco-editor/react';
-import {
-  Box,
-  Button,
-  Card,
-  CardContent,
-  CardHeader,
-  Chip,
-  Stack,
-  TextField,
-  Tooltip,
-  Typography,
-} from '@mui/material';
+import { Box, Button, Card, Chip, Stack, TextField, Tooltip, Typography } from '@mui/material';
+import { useAuth } from 'app/providers/AuthProvider';
+import type { ProblemDetail } from 'modules/problems/domain/entities/problem.entity';
 import Swiper from 'shared/components/base/Swiper';
 import { useThemeMode } from 'shared/hooks/useThemeMode.tsx';
 import { toast } from 'sonner';
 import 'swiper/css';
 import { SwiperSlide } from 'swiper/react';
-import { useAuth } from 'app/providers/AuthProvider';
-import type { ProblemDetail } from 'modules/problems/domain/entities/problem.entity';
 
 interface CustomProblemBodyProps {
   problem: ProblemDetail;
@@ -636,34 +634,75 @@ const Problem1637Body: FC<CustomProblemBodyProps> = () => {
 const Problem1638Body: FC<CustomProblemBodyProps> = () => {
   const paragraphs = [
     `Salom. Biz yuqori intellektga ega shaxslarni qidiryapmiz. Buning uchun test ishlab chiqdik.`,
-    `Ushbu yerda yashirin xabar bor. Uni toping va u sizga bizni qanday topishni ko'rsatadi.`,
-    `Biz hamma yo'lni bosib o'tishga muvaffaq bo'lganlarni kutamiz.`,
+    `Ushbu yerda yashirin xabar bor. Uni toping va u sizga bizni qanday topishni ko\`rsatadi.`,
+    `Biz hamma yo\`lni bosib o\`tishga muvaffaq bo\`lganlarni kutamiz.`,
     'Omad.',
     '1033',
   ];
 
+  const highlightedChars: Record<number, number> = {
+    0: 31,
+    1: 39,
+    2: 55,
+  };
+
   return (
-    <Card sx={{ maxWidth: 700 }}>
-      <CardHeader
-        avatar={
-          <Box
-            component="img"
-            src="https://avatars.dzeninfra.ru/get-zen_doc/759807/pub_5bc971d983474800aa9a3cc6_5bc9720387f84200aa150f11/scale_1200"
-            alt=""
-            sx={{ width: 90, height: 90, objectFit: 'cover', borderRadius: 1 }}
-          />
-        }
-      />
-      <CardContent>
-        <Stack direction="column" spacing={2}>
-          {paragraphs.map((text, idx) => (
-            <Typography key={idx} sx={{ lineHeight: 1.6 }}>
-              {text}
-            </Typography>
-          ))}
-        </Stack>
-      </CardContent>
-    </Card>
+    <Box
+      sx={{
+        userSelect: 'none',
+        bgcolor: '#000000',
+        border: '1px solid',
+        borderColor: 'divider',
+        borderRadius: 1,
+        maxWidth: '100%',
+        overflow: 'hidden',
+        width: { xs: '100%', sm: 300 },
+      }}
+    >
+      <Box sx={{ display: 'block', textAlign: 'center', pt: 3 }}>
+        <Box
+          component="img"
+          height={90}
+          src="https://avatars.dzeninfra.ru/get-zen_doc/759807/pub_5bc971d983474800aa9a3cc6_5bc9720387f84200aa150f11/scale_1200"
+          alt=""
+        />
+      </Box>
+      <Box>
+        {paragraphs.map((text, paragraphIndex) => (
+          <Typography
+            key={paragraphIndex}
+            component="p"
+            sx={{
+              color: '#fff',
+              fontSize: '1rem',
+              lineHeight: 1.6,
+              m: 0,
+              px: 2,
+              pb: 3,
+              whiteSpace: 'normal',
+              overflowWrap: 'anywhere',
+            }}
+          >
+            {Array.from(text).map((char, charIndex) => {
+              const isHighlighted = highlightedChars[paragraphIndex] === charIndex + 1;
+
+              return (
+                <Box
+                  key={`${paragraphIndex}-${charIndex}`}
+                  component="span"
+                  sx={{
+                    fontSize: isHighlighted ? '1.05rem' : '1rem',
+                    fontWeight: isHighlighted ? 500 : undefined,
+                  }}
+                >
+                  {char === ' ' ? '\u00a0' : char}
+                </Box>
+              );
+            })}
+          </Typography>
+        ))}
+      </Box>
+    </Box>
   );
 };
 
