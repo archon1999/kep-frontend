@@ -47,6 +47,7 @@ export const contestHasBalls = (
     ContestType.CodeGolf,
     ContestType.Exam,
     ContestType.Ball,
+    ContestType.CTF,
     ContestType.DC,
   ];
 

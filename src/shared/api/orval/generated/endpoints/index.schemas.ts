@@ -588,6 +588,7 @@ export const ContestType = {
   MultiL: 'MultiL',
   CodeGolf: 'CodeGolf',
   Exam: 'Exam',
+  CTF: 'CTF',
 } as const;
 
 export type ContestCategory = (typeof ContestCategory)[keyof typeof ContestCategory];
