@@ -1,9 +1,10 @@
-import { useEffect, useLayoutEffect } from 'react';
+import { useCallback, useEffect, useLayoutEffect, useState } from 'react';
 import { Outlet, useLocation } from 'react-router';
 import AuthProvider, { useAuth } from 'app/providers/AuthProvider.tsx';
 import DocumentTitleProvider from 'app/providers/DocumentTitleProvider.tsx';
 import { useSettingsContext } from 'app/providers/SettingsProvider.tsx';
 import { REFRESH } from 'app/reducers/SettingsReducer.ts';
+import KepBirthdayEffect from 'shared/components/seasonal/KepBirthdayEffect.tsx';
 import SettingPanelToggler from 'shared/components/settings-panel/SettingPanelToggler.tsx';
 import SettingsPanel from 'shared/components/settings-panel/SettingsPanel.tsx';
 import useIcons from 'shared/hooks/useIcons.tsx';
@@ -19,9 +20,12 @@ const normalizeTitle = (title: string, fallback: string) =>
 const SPLASH_MIN_VISIBLE_MS = 1400;
 const SPLASH_FADE_MS = 420;
 
-const hideInitialSplash = () => {
+const hideInitialSplash = (onHidden: () => void) => {
   const splash = document.getElementById('loading-bg');
-  if (!splash) return undefined;
+  if (!splash) {
+    onHidden();
+    return undefined;
+  }
 
   const splashStartedAt = (window as Window & { __kepSplashStartedAt?: number })
     .__kepSplashStartedAt;
@@ -30,20 +34,23 @@ const hideInitialSplash = () => {
 
   const timeoutId = window.setTimeout(() => {
     splash.classList.add('kep-splash-hidden');
-    window.setTimeout(() => splash.remove(), SPLASH_FADE_MS);
+    window.setTimeout(() => {
+      splash.remove();
+      onHidden();
+    }, SPLASH_FADE_MS);
   }, remainingMs);
 
   return () => window.clearTimeout(timeoutId);
 };
 
-const InitialSplashController = () => {
+const InitialSplashController = ({ onHidden }: { onHidden: () => void }) => {
   const { isAuthLoading } = useAuth();
 
   useEffect(() => {
     if (isAuthLoading) return undefined;
 
-    return hideInitialSplash();
-  }, [isAuthLoading]);
+    return hideInitialSplash(onHidden);
+  }, [isAuthLoading, onHidden]);
 
   return null;
 };
@@ -52,6 +59,12 @@ const App = () => {
   const { pathname, search, hash } = useLocation();
   const { mode } = useThemeMode();
   const { configDispatch } = useSettingsContext();
+  const [isInitialSplashHidden, setIsInitialSplashHidden] = useState(
+    () => !document.getElementById('loading-bg'),
+  );
+  const handleInitialSplashHidden = useCallback(() => {
+    setIsInitialSplashHidden(true);
+  }, []);
   useIcons();
 
   useEffect(() => {
@@ -78,11 +91,12 @@ const App = () => {
 
   return (
     <AuthProvider>
-      <InitialSplashController />
+      <InitialSplashController onHidden={handleInitialSplashHidden} />
       <DocumentTitleProvider>
         <Outlet />
         <SettingsPanel />
         <SettingPanelToggler />
+        {isInitialSplashHidden && <KepBirthdayEffect />}
       </DocumentTitleProvider>
     </AuthProvider>
   );
