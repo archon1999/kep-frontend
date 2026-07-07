@@ -30,6 +30,7 @@ const contestTypes = [
   'OneAttempt',
   'IQ',
   'Ball',
+  'CTF',
   'DC',
   'MultiL',
   'CodeGolf',
