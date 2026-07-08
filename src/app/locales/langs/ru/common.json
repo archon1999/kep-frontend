@@ -44,10 +44,6 @@
       "tasksCount": "{{count}} задач",
       "completed": "Выполнено",
       "empty": "Ежедневных задач нет"
-    },
-    "birthdayEffect": {
-      "title": "С днем рождения, KEP.uz!",
-      "subtitle": "Сегодня день рождения KEP.uz"
     }
   },
   "notifications": {

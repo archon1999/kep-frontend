@@ -44,10 +44,6 @@
       "tasksCount": "{{count}} tasks",
       "completed": "Completed",
       "empty": "No daily tasks for now"
-    },
-    "birthdayEffect": {
-      "title": "Happy birthday, KEP.uz!",
-      "subtitle": "Today is KEP.uz birthday"
     }
   },
   "notifications": {

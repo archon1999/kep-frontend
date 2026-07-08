@@ -44,10 +44,6 @@
       "tasksCount": "{{count}} ta vazifa",
       "completed": "Bajarilgan",
       "empty": "Hozircha kunlik vazifalar yo'q"
-    },
-    "birthdayEffect": {
-      "title": "KEP.uz tug'ilgan kuni muborak!",
-      "subtitle": "Bugun KEP.uz tug'ilgan kuni"
     }
   },
   "notifications": {
