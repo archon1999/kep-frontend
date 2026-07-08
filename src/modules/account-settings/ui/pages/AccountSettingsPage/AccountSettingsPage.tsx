@@ -1,4 +1,4 @@
-import { useEffect, useMemo, useState } from 'react';
+import { SyntheticEvent, useEffect, useMemo, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { TabContext } from '@mui/lab';
 import { useLocation, useNavigate } from 'react-router';
@@ -137,7 +137,7 @@ const AccountSettingsPage = () => {
     [t],
   );
 
-  const handleTabChange = (newValue: string) => {
+  const handleTabChange = (_: SyntheticEvent, newValue: string) => {
     const nextTab = newValue as AccountSettingsTabValue;
     const nextRoute = accountSettingsTabRoutes[nextTab] ?? accountSettingsTabRoutes.general;
 
@@ -179,7 +179,6 @@ const AccountSettingsPage = () => {
               <SimpleBar>
                 <SideTabList
                   tabs={tabs}
-                  activeValue={activeTab}
                   onChange={handleTabChange}
                   onTabClick={() => setShowTabList(false)}
                 />
@@ -196,7 +195,7 @@ const AccountSettingsPage = () => {
               }}
             >
               <SimpleBar>
-                <SideTabList tabs={tabs} activeValue={activeTab} onChange={handleTabChange} />
+                <SideTabList tabs={tabs} onChange={handleTabChange} />
               </SimpleBar>
             </Paper>
           )}

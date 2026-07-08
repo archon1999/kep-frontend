@@ -91,7 +91,22 @@ const ContestPageHeader = ({
               spacing={{ xs: 1, md: 1.5 }}
               alignItems={{ xs: 'flex-start', md: 'center' }}
             >
-              <Stack direction="row" spacing={1} alignItems="center" flexWrap="wrap" useFlexGap>
+              <Skeleton
+                variant="rounded"
+                height={38}
+                sx={{
+                  display: { xs: 'block', sm: 'none' },
+                  width: 1,
+                }}
+              />
+              <Stack
+                direction="row"
+                spacing={1}
+                alignItems="center"
+                flexWrap="wrap"
+                useFlexGap
+                sx={{ display: { xs: 'none', sm: 'flex' } }}
+              >
                 {Array.from({ length: 5 }).map((_, index) => (
                   <Skeleton key={index} variant="rounded" width={108} height={36} />
                 ))}
