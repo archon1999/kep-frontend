@@ -17,6 +17,7 @@ import {
   useDuelCalls,
 } from 'modules/duels/application/queries.ts';
 import { DuelInvitation } from 'modules/duels/domain/index.ts';
+import { getDuelErrorMessage } from 'modules/duels/ui/shared/helpers/getDuelErrorMessage.ts';
 import DuelInvitationCard from './components/DuelInvitationCard.tsx';
 import DuelListSection from './components/DuelListSection.tsx';
 import DuelScheduleDialog from './dialogs/DuelScheduleDialog.tsx';
@@ -125,12 +126,16 @@ const DuelsListPageMyDuelsTab = () => {
     invitation: DuelInvitation | null;
   }>({ mode: 'accept', invitation: null });
 
-  const { data: needsResponsePage } = useDuelCalls({
+  const {
+    data: needsResponsePage,
+    error: needsResponseError,
+    isLoading: isNeedsResponseLoading,
+  } = useDuelCalls({
     scope: 'needs_response',
     page: 1,
     pageSize: 20,
   });
-  const { data: myCallsPage } = useDuelCalls({
+  const { data: myCallsPage, error: myCallsError, isLoading: isMyCallsLoading } = useDuelCalls({
     scope: 'mine',
     page: 1,
     pageSize: 20,
@@ -141,6 +146,13 @@ const DuelsListPageMyDuelsTab = () => {
   const { trigger: rejectDuelCall } = useRejectDuelCall();
   const { trigger: cancelDuelCall } = useCancelDuelCall();
   const { trigger: counterDuelCall, isMutating: isCountering } = useCounterDuelCall();
+
+  const needsResponseCalls = needsResponsePage?.data ?? [];
+  const needsResponseIds = new Set(needsResponseCalls.map((invitation) => invitation.id));
+  const activeCalls = (myCallsPage?.data ?? []).filter(
+    (invitation) => invitation.status <= 3 && !needsResponseIds.has(invitation.id),
+  );
+  const callsError = needsResponseError || myCallsError;
 
   const refreshAll = async () => {
     await mutateCache(isDuelsCollectionCacheKey, undefined, { revalidate: true });
@@ -163,8 +175,8 @@ const DuelsListPageMyDuelsTab = () => {
       });
       toast.success(t('duels.acceptedToast'));
       await refreshAll();
-    } catch {
-      toast.error(t('duels.error'));
+    } catch (error) {
+      toast.error(getDuelErrorMessage(error, t('duels.error')));
     } finally {
       setActionLoadingKey(null);
     }
@@ -179,8 +191,8 @@ const DuelsListPageMyDuelsTab = () => {
       });
       toast.success(t('duels.counteredToast'));
       await refreshAll();
-    } catch {
-      toast.error(t('duels.error'));
+    } catch (error) {
+      toast.error(getDuelErrorMessage(error, t('duels.error')));
     } finally {
       setActionLoadingKey(null);
     }
@@ -196,8 +208,8 @@ const DuelsListPageMyDuelsTab = () => {
       if (updatedInvitation?.duelId) {
         navigate(getResourceById(resources.Duel, updatedInvitation.duelId));
       }
-    } catch {
-      toast.error(t('duels.error'));
+    } catch (error) {
+      toast.error(getDuelErrorMessage(error, t('duels.error')));
     } finally {
       setActionLoadingKey(null);
     }
@@ -209,8 +221,8 @@ const DuelsListPageMyDuelsTab = () => {
       await rejectDuelCall(invitation.id);
       toast.success(t('duels.rejectedToast'));
       await refreshAll();
-    } catch {
-      toast.error(t('duels.error'));
+    } catch (error) {
+      toast.error(getDuelErrorMessage(error, t('duels.error')));
     } finally {
       setActionLoadingKey(null);
     }
@@ -222,8 +234,8 @@ const DuelsListPageMyDuelsTab = () => {
       await cancelDuelCall(invitation.id);
       toast.success(t('duels.cancelledToast'));
       await refreshAll();
-    } catch {
-      toast.error(t('duels.error'));
+    } catch (error) {
+      toast.error(getDuelErrorMessage(error, t('duels.error')));
     } finally {
       setActionLoadingKey(null);
     }
@@ -232,39 +244,53 @@ const DuelsListPageMyDuelsTab = () => {
   return (
     <>
       <Stack spacing={4}>
-        <DuelsListPageCallsSection
-          title={t('duels.needsMyResponse')}
-          description={t('duels.needsResponseSubtitle')}
-          invitations={needsResponsePage?.data ?? []}
-          loading={!needsResponsePage}
-          emptyText={t('duels.noNeedsResponseCalls')}
-          actionLoadingKey={actionLoadingKey}
-          onAccept={(invitation) => openScheduleDialog('accept', invitation)}
-          onConfirm={handleConfirm}
-          onReject={handleReject}
-          onCancel={handleCancel}
-          onCounter={(invitation) => openScheduleDialog('counter', invitation)}
-          onOpen={(invitation) =>
-            invitation.duelId && navigate(getResourceById(resources.Duel, invitation.duelId))
-          }
-        />
+        {callsError ? (
+          <Card variant="outlined">
+            <CardContent>
+              <Typography variant="body2" color="error.main">
+                {t('duels.error')}
+              </Typography>
+            </CardContent>
+          </Card>
+        ) : null}
 
-        <DuelsListPageCallsSection
-          title={t('duels.myCallsTitle')}
-          description={t('duels.myCallsSubtitle')}
-          invitations={myCallsPage?.data ?? []}
-          loading={!myCallsPage}
-          emptyText={t('duels.noMyCalls')}
-          actionLoadingKey={actionLoadingKey}
-          onAccept={(invitation) => openScheduleDialog('accept', invitation)}
-          onConfirm={handleConfirm}
-          onReject={handleReject}
-          onCancel={handleCancel}
-          onCounter={(invitation) => openScheduleDialog('counter', invitation)}
-          onOpen={(invitation) =>
-            invitation.duelId && navigate(getResourceById(resources.Duel, invitation.duelId))
-          }
-        />
+        {!callsError && (isNeedsResponseLoading || needsResponseCalls.length > 0) ? (
+          <DuelsListPageCallsSection
+            title={t('duels.needsMyResponse')}
+            description={t('duels.needsResponseSubtitle')}
+            invitations={needsResponseCalls}
+            loading={isNeedsResponseLoading}
+            emptyText={t('duels.noNeedsResponseCalls')}
+            actionLoadingKey={actionLoadingKey}
+            onAccept={(invitation) => openScheduleDialog('accept', invitation)}
+            onConfirm={handleConfirm}
+            onReject={handleReject}
+            onCancel={handleCancel}
+            onCounter={(invitation) => openScheduleDialog('counter', invitation)}
+            onOpen={(invitation) =>
+              invitation.duelId && navigate(getResourceById(resources.Duel, invitation.duelId))
+            }
+          />
+        ) : null}
+
+        {!callsError && (isMyCallsLoading || activeCalls.length > 0) ? (
+          <DuelsListPageCallsSection
+            title={t('duels.myCallsTitle')}
+            description={t('duels.myCallsSubtitle')}
+            invitations={activeCalls}
+            loading={isMyCallsLoading}
+            emptyText={t('duels.noMyCalls')}
+            actionLoadingKey={actionLoadingKey}
+            onAccept={(invitation) => openScheduleDialog('accept', invitation)}
+            onConfirm={handleConfirm}
+            onReject={handleReject}
+            onCancel={handleCancel}
+            onCounter={(invitation) => openScheduleDialog('counter', invitation)}
+            onOpen={(invitation) =>
+              invitation.duelId && navigate(getResourceById(resources.Duel, invitation.duelId))
+            }
+          />
+        ) : null}
 
         <DuelListSection scope="my" />
       </Stack>

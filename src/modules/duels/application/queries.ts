@@ -27,13 +27,13 @@ export const useDuelsRating = (params?: DuelsRatingParams) =>
     () => duelsRepository.getDuelsRating(params),
   );
 
-export const useDuelPresets = () =>
-  useSWR<DuelPreset[]>('duel-presets', () =>
+export const useDuelPresets = (enabled = true) =>
+  useSWR<DuelPreset[]>(enabled ? 'duel-presets' : null, () =>
     duelsRepository.getDuelPresets(),
   );
 
-export const useDuelTypes = () =>
-  useSWR<DuelTypeInfo[]>('duel-types', () =>
+export const useDuelTypes = (enabled = true) =>
+  useSWR<DuelTypeInfo[]>(enabled ? 'duel-types' : null, () =>
     duelsRepository.getDuelTypes(),
   );
 

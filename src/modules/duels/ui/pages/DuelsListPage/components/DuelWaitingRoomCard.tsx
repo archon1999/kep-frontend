@@ -1,7 +1,7 @@
 import { useTranslation } from 'react-i18next';
 import { Button, Card, CardContent, Chip, Stack, Tooltip, Typography } from '@mui/material';
 import UserPopover from 'modules/users/ui/shared/components/UserPopover.tsx';
-import { DuelInvitation } from 'modules/duels/domain/index.ts';
+import { DuelInvitation, formatDuelDuration } from 'modules/duels/domain/index.ts';
 import ContestsRatingChip from 'shared/components/rating/ContestsRatingChip.tsx';
 import { formatRelativeTime } from 'shared/lib/dateTime';
 
@@ -68,7 +68,11 @@ const DuelWaitingRoomCard = ({ invitation, actionLoadingKey, onAccept, onCancel 
               />
             ) : null}
             {invitation.preset?.duration ? (
-              <Chip size="small" label={invitation.preset.duration} variant="outlined" />
+              <Chip
+                size="small"
+                label={formatDuelDuration(invitation.preset.duration)}
+                variant="outlined"
+              />
             ) : null}
             {typeof invitation.preset?.problemsCount === 'number' ? (
               <Chip

@@ -25,6 +25,8 @@
     "noNeedsResponseCalls": "Sizdan javob kutayotgan call yo'q.",
     "noMyCalls": "Sizda hali duel call yo'q.",
     "noDuels": "Hozircha duellar yo'q",
+    "signInTitle": "Duellarda qatnashish uchun kiring",
+    "signInDescription": "Akkauntingizdan call yarating, botlar bilan bellashing va boshlanish vaqtini kelishing.",
     "selectPreset": "Duel presetini tanlang",
     "selectDuelType": "Duel turini tanlang",
     "createCallTitle": "Duel call yaratish",

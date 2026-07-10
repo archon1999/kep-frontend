@@ -120,10 +120,7 @@ export class HttpDuelsRepository implements DuelsRepository {
   }
 
   async getDuelsRating(params?: DuelsRatingParams): Promise<PageResult<DuelsRatingRow>> {
-    const response = await duelsApiClient.listRating({
-      ...params,
-      pin_current_user: params?.pinCurrentUser ? 'true' : undefined,
-    } as any);
+    const response = await duelsApiClient.listRating(params);
     return mapPageResult(response, mapDuelsRatingRow);
   }
 }

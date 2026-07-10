@@ -12,7 +12,11 @@ import {
 import { alpha } from '@mui/material/styles';
 import { useTranslation } from 'react-i18next';
 import UserPopover from 'modules/users/ui/shared/components/UserPopover.tsx';
-import { DuelInvitation, DuelInvitationUser } from 'modules/duels/domain/index.ts';
+import {
+  DuelInvitation,
+  DuelInvitationUser,
+  formatDuelDuration,
+} from 'modules/duels/domain/index.ts';
 import ContestsRatingChip from 'shared/components/rating/ContestsRatingChip.tsx';
 import IconifyIcon from 'shared/components/base/IconifyIcon.tsx';
 import { formatCalendarDateTime, formatRelativeTime } from 'shared/lib/dateTime';
@@ -173,7 +177,12 @@ const DuelInvitationCard = ({
   const creator = invitation.challenger;
   const claimant = invitation.invitee ?? null;
   const shouldShowAccept = invitation.status === 1 && invitation.viewerRole !== 'challenger';
-  const shouldShowConfirm = Boolean(invitation.requiresResponse || invitation.canConfirm || invitation.confirmDisabledReason);
+  const isNegotiating = invitation.status === 2 || invitation.status === 3;
+  const shouldShowConfirm =
+    isNegotiating &&
+    Boolean(
+      invitation.requiresResponse || invitation.canConfirm || invitation.confirmDisabledReason,
+    );
   const acceptReason = invitation.acceptDisabledReason || '';
   const confirmReason = invitation.confirmDisabledReason || '';
 
@@ -258,7 +267,11 @@ const DuelInvitationCard = ({
                     />
                   ) : null}
                   {invitation.preset?.duration ? (
-                    <Chip size="small" label={invitation.preset.duration} variant="outlined" />
+                    <Chip
+                      size="small"
+                      label={formatDuelDuration(invitation.preset.duration)}
+                      variant="outlined"
+                    />
                   ) : null}
                   {typeof invitation.preset?.problemsCount === 'number' ? (
                     <Chip

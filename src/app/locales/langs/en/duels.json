@@ -25,6 +25,8 @@
     "noNeedsResponseCalls": "You have no calls waiting for your response.",
     "noMyCalls": "You have no duel calls yet.",
     "noDuels": "No duels yet",
+    "signInTitle": "Sign in to join duels",
+    "signInDescription": "Create calls, challenge bots and negotiate a start time from your account.",
     "selectPreset": "Select duel preset",
     "selectDuelType": "Select duel type",
     "createCallTitle": "Create duel call",

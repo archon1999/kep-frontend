@@ -56,7 +56,7 @@ const DuelListSection = ({
 
   const resolvedPage = page ?? state.page;
   const shouldFetch = duels === undefined || total === undefined || loading === undefined;
-  const { data: fetchedPage } = useDuelsList(
+  const { data: fetchedPage, error, isLoading } = useDuelsList(
     shouldFetch
       ? {
           my: scope === 'my',
@@ -68,7 +68,7 @@ const DuelListSection = ({
 
   const resolvedDuels = duels ?? fetchedPage?.data ?? [];
   const resolvedTotal = total ?? fetchedPage?.total ?? 0;
-  const resolvedLoading = loading ?? !fetchedPage;
+  const resolvedLoading = loading ?? (isLoading && !fetchedPage);
   const resolvedTitle =
     title ?? (scope === 'my' ? t('duels.myDuelsSection') : t('duels.recentDuelsSection'));
   const resolvedDescription =
@@ -128,7 +128,17 @@ const DuelListSection = ({
             ))
           : null}
 
-        {!resolvedLoading && !resolvedDuels.length ? (
+        {!resolvedLoading && error ? (
+          <Card variant="outlined">
+            <CardContent>
+              <Typography variant="body2" color="error.main">
+                {t('duels.error')}
+              </Typography>
+            </CardContent>
+          </Card>
+        ) : null}
+
+        {!resolvedLoading && !error && !resolvedDuels.length ? (
           <Card variant="outlined">
             <CardContent>
               <Typography variant="body2" color="text.secondary">
@@ -138,7 +148,7 @@ const DuelListSection = ({
           </Card>
         ) : null}
 
-        {!resolvedLoading &&
+        {!resolvedLoading && !error &&
           resolvedDuels.map((duel) => (
             <DuelListCard
               key={duel.id}
@@ -148,15 +158,17 @@ const DuelListSection = ({
           ))}
       </Stack>
 
-      <Grid container justifyContent="center">
-        <Pagination
-          count={pageCount}
-          page={resolvedPage}
-          onChange={(_, value) => handlePageChange(value)}
-          color="primary"
-          shape="rounded"
-        />
-      </Grid>
+      {pageCount > 1 ? (
+        <Grid container justifyContent="flex-end">
+          <Pagination
+            count={pageCount}
+            page={resolvedPage}
+            onChange={(_, value) => handlePageChange(value)}
+            color="primary"
+            shape="rounded"
+          />
+        </Grid>
+      ) : null}
     </Stack>
   );
 };

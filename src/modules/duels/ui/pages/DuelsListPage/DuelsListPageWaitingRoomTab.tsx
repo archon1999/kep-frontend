@@ -11,6 +11,7 @@ import {
   useDuelCalls,
 } from 'modules/duels/application/queries.ts';
 import { DuelInvitation } from 'modules/duels/domain/index.ts';
+import { getDuelErrorMessage } from 'modules/duels/ui/shared/helpers/getDuelErrorMessage.ts';
 import DuelScheduleDialog from './dialogs/DuelScheduleDialog.tsx';
 import DuelWaitingRoomCard from './components/DuelWaitingRoomCard.tsx';
 
@@ -19,7 +20,7 @@ const DuelsListPageWaitingRoomTab = () => {
   const { mutate: mutateCache } = useSWRConfig();
   const [selectedInvitation, setSelectedInvitation] = useState<DuelInvitation | null>(null);
   const [actionLoadingKey, setActionLoadingKey] = useState<string | null>(null);
-  const { data: queueCallsPage, mutate: mutateQueueCalls } = useDuelCalls({
+  const { data: queueCallsPage, error, isLoading, mutate: mutateQueueCalls } = useDuelCalls({
     scope: 'queue',
     page: 1,
     pageSize: 20,
@@ -28,7 +29,7 @@ const DuelsListPageWaitingRoomTab = () => {
   const { trigger: cancelDuelCall } = useCancelDuelCall();
 
   const invitations = queueCallsPage?.data ?? [];
-  const loading = !queueCallsPage;
+  const loading = isLoading && !queueCallsPage;
 
   const refreshAll = async () => {
     await mutateCache(isDuelsCollectionCacheKey, undefined, { revalidate: true });
@@ -43,8 +44,8 @@ const DuelsListPageWaitingRoomTab = () => {
       });
       toast.success(t('duels.acceptedToast'));
       await refreshAll();
-    } catch {
-      toast.error(t('duels.error'));
+    } catch (error) {
+      toast.error(getDuelErrorMessage(error, t('duels.error')));
     } finally {
       setActionLoadingKey(null);
     }
@@ -56,8 +57,8 @@ const DuelsListPageWaitingRoomTab = () => {
       await cancelDuelCall(invitation.id);
       toast.success(t('duels.cancelledToast'));
       await refreshAll();
-    } catch {
-      toast.error(t('duels.error'));
+    } catch (error) {
+      toast.error(getDuelErrorMessage(error, t('duels.error')));
     } finally {
       setActionLoadingKey(null);
     }
@@ -98,14 +99,26 @@ const DuelsListPageWaitingRoomTab = () => {
 
         <Grid container spacing={2}>
           {loading
-            ? Array.from({ length: 8 }).map((_) => (
-                <Grid size={{ xs: 12, sm: 6, lg: 4, xl: 3 }}>
+            ? Array.from({ length: 4 }).map((_, index) => (
+                <Grid key={index} size={{ xs: 12, sm: 6, lg: 3 }}>
                   <Skeleton variant="rectangular" height={180} sx={{ borderRadius: 2 }} />
                 </Grid>
               ))
             : null}
 
-          {!loading && !invitations.length ? (
+          {!loading && error ? (
+            <Grid size={12}>
+              <Card variant="outlined" sx={{ borderRadius: 2 }}>
+                <CardContent>
+                  <Typography variant="body2" color="error.main">
+                    {t('duels.error')}
+                  </Typography>
+                </CardContent>
+              </Card>
+            </Grid>
+          ) : null}
+
+          {!loading && !error && !invitations.length ? (
             <Grid size={12}>
               <Card variant="outlined" sx={{ borderRadius: 3 }}>
                 <CardContent>
@@ -117,9 +130,9 @@ const DuelsListPageWaitingRoomTab = () => {
             </Grid>
           ) : null}
 
-          {!loading &&
+          {!loading && !error &&
             invitations.map((invitation) => (
-              <Grid size={{ xs: 12, sm: 6, lg: 4, xl: 3 }}>
+              <Grid key={invitation.id} size={{ xs: 12, sm: 6, lg: 3 }}>
                 <DuelWaitingRoomCard
                   invitation={invitation}
                   actionLoadingKey={actionLoadingKey}

@@ -84,29 +84,45 @@ export const duelsApiClient = {
     return response.data;
   },
   confirmDuelCall: async (id: number | string) => {
-    const response = await instance.post(`/api/duel-calls/${id}/confirm/`, {});
-    return response.data;
-  },
-  rejectDuelCall: async (id: number | string) => {
-    const response = await instance.post(`/api/duel-calls/${id}/reject/`, {});
-    return response.data;
-  },
-  cancelDuelCall: async (id: number | string) => {
-    const response = await instance.post(`/api/duel-calls/${id}/cancel/`, {});
-    return response.data;
-  },
-  counterDuelCall: async (id: number | string, payload: DuelCounterPayload) => {
-    const response = await instance.post(`/api/duel-calls/${id}/counter/`, {
-      proposed_start_time: payload.proposedStartTime,
+    const response = await instance.post(`/api/duel-calls/${id}/confirm/`, {}, {
+      params: { scope: 'mine' },
     });
     return response.data;
   },
-  listRating: async (params?: { page?: number; pageSize?: number; ordering?: string }) => {
+  rejectDuelCall: async (id: number | string) => {
+    const response = await instance.post(`/api/duel-calls/${id}/reject/`, {}, {
+      params: { scope: 'mine' },
+    });
+    return response.data;
+  },
+  cancelDuelCall: async (id: number | string) => {
+    const response = await instance.post(`/api/duel-calls/${id}/cancel/`, {}, {
+      params: { scope: 'mine' },
+    });
+    return response.data;
+  },
+  counterDuelCall: async (id: number | string, payload: DuelCounterPayload) => {
+    const response = await instance.post(
+      `/api/duel-calls/${id}/counter/`,
+      {
+        proposed_start_time: payload.proposedStartTime,
+      },
+      { params: { scope: 'mine' } },
+    );
+    return response.data;
+  },
+  listRating: async (params?: {
+    page?: number;
+    pageSize?: number;
+    ordering?: string;
+    pinCurrentUser?: boolean;
+  }) => {
     const response = await instance.get('/api/duels-rating/', {
       params: {
         page: params?.page,
         page_size: params?.pageSize,
         ordering: params?.ordering,
+        pin_current_user: params?.pinCurrentUser || undefined,
       },
     });
     return response.data;

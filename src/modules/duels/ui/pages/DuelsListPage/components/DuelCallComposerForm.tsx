@@ -12,7 +12,7 @@ import {
 import { alpha } from '@mui/material/styles';
 import { useMemo } from 'react';
 import { useTranslation } from 'react-i18next';
-import { DuelPreset, DuelTypeInfo } from 'modules/duels/domain/index.ts';
+import { DuelPreset, DuelTypeInfo, formatDuelDuration } from 'modules/duels/domain/index.ts';
 import IconifyIcon from 'shared/components/base/IconifyIcon.tsx';
 
 type Props = {
@@ -67,7 +67,7 @@ const PresetOptionContent = ({
             size="small"
             variant="outlined"
             color="primary"
-            label={preset.duration}
+            label={formatDuelDuration(preset.duration)}
             sx={{ fontWeight: 700 }}
           />
         ) : null}
@@ -93,9 +93,6 @@ const PresetOptionContent = ({
 
     <Stack spacing={0.35} minWidth={compact ? 84 : 110} alignItems="flex-end">
       <DifficultyStars difficulty={preset.difficulty} />
-      <Typography variant="caption" color="text.secondary" fontWeight={700} noWrap>
-        {preset.difficultyDisplay}
-      </Typography>
     </Stack>
   </Stack>
 );
@@ -235,7 +232,11 @@ const DuelCallComposerForm = ({
 
                 <Stack direction="row" spacing={1} flexWrap="wrap" useFlexGap>
                   {selectedPreset.duration ? (
-                    <Chip size="small" color="primary" label={selectedPreset.duration} />
+                    <Chip
+                      size="small"
+                      color="primary"
+                      label={formatDuelDuration(selectedPreset.duration)}
+                    />
                   ) : null}
                   {typeof selectedPreset.problemsCount === 'number' ? (
                     <Chip
@@ -243,9 +244,6 @@ const DuelCallComposerForm = ({
                       variant="outlined"
                       label={t('duels.presetProblemsCount', { count: selectedPreset.problemsCount })}
                     />
-                  ) : null}
-                  {selectedPreset.difficultyDisplay ? (
-                    <Chip size="small" variant="outlined" label={selectedPreset.difficultyDisplay} />
                   ) : null}
                 </Stack>
               </>

@@ -25,6 +25,8 @@
     "noNeedsResponseCalls": "Сейчас нет call'ов, которые ждут вашего ответа.",
     "noMyCalls": "У вас пока нет duel call'ов.",
     "noDuels": "Пока нет дуэлей",
+    "signInTitle": "Войдите, чтобы участвовать в дуэлях",
+    "signInDescription": "Создавайте вызовы, играйте с ботами и согласовывайте время старта из своего аккаунта.",
     "selectPreset": "Выберите пресет дуэли",
     "selectDuelType": "Выберите тип дуэли",
     "createCallTitle": "Создать duel call",

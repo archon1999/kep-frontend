@@ -35,10 +35,12 @@ const DuelScheduleDialog = ({
   const [value, setValue] = useState('');
   const minStartTime = useMemo(() => {
     const start = new Date();
-    start.setMinutes(start.getMinutes() + 5);
+    // Keep a buffer over the backend's five-minute minimum so normal dialog
+    // interaction and network latency cannot invalidate the selected time.
+    start.setMinutes(start.getMinutes() + 10);
     start.setSeconds(0, 0);
     return formatDateTimeLocalInputValue(start);
-  }, []);
+  }, [open]);
 
   useEffect(() => {
     if (!open) return;
