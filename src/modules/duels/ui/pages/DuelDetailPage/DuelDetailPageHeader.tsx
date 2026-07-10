@@ -1,5 +1,5 @@
 import { useEffect, useMemo, useState } from 'react';
-import { Box, Button, Chip, Divider, Stack, Tooltip, Typography } from '@mui/material';
+import { Box, Button, Chip, Divider, Stack, Tooltip } from '@mui/material';
 import { Link as RouterLink } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
 import AppbarActionItems from 'app/layouts/main-layout/common/AppbarActionItems';
@@ -8,7 +8,6 @@ import {
   Duel,
   DuelDetailPageNavigationProblem,
 } from 'modules/duels/domain/index.ts';
-import ContestsRatingChip from 'shared/components/rating/ContestsRatingChip.tsx';
 import IconifyIcon from 'shared/components/base/IconifyIcon';
 import Logo from 'shared/components/common/Logo.tsx';
 import useRouteQueryState from 'shared/hooks/useRouteQueryState';
@@ -118,7 +117,6 @@ export const useDuelDetailPageHeaderState = ({
 };
 
 const DuelDetailPageHeader = ({
-  duel,
   timerText,
   prevProblem,
   nextProblem,
@@ -177,49 +175,6 @@ const DuelDetailPageHeader = ({
           </Button>
 
           <Divider orientation="vertical" flexItem sx={{ borderColor: 'rgba(255,255,255,0.18)' }} />
-
-          <Stack
-            direction={{ xs: 'column', md: 'row' }}
-            spacing={1}
-            alignItems={{ xs: 'flex-start', md: 'center' }}
-            sx={{ minWidth: 0 }}
-          >
-            <Stack direction="row" spacing={1} alignItems="center" flexWrap="wrap" useFlexGap>
-              <Stack direction="row" spacing={0.75} alignItems="center">
-                {duel.playerFirst.ratingTitle ? (
-                  <ContestsRatingChip title={duel.playerFirst.ratingTitle} imgSize={20} />
-                ) : null}
-                <Typography variant="subtitle2" fontWeight={800} noWrap>
-                  {duel.playerFirst.username}
-                </Typography>
-                {duel.playerFirst.isBot ? (
-                  <Chip size="small" color="secondary" variant="outlined" label="BOT" />
-                ) : null}
-              </Stack>
-
-              <Typography variant="body2" color="text.secondary">
-                vs
-              </Typography>
-
-              {duel.playerSecond ? (
-                <Stack direction="row" spacing={0.75} alignItems="center">
-                  {duel.playerSecond.ratingTitle ? (
-                    <ContestsRatingChip title={duel.playerSecond.ratingTitle} imgSize={20} />
-                  ) : null}
-                  <Typography variant="subtitle2" fontWeight={800} noWrap>
-                    {duel.playerSecond.username}
-                  </Typography>
-                  {duel.playerSecond.isBot ? (
-                    <Chip size="small" color="secondary" variant="outlined" label="BOT" />
-                  ) : null}
-                </Stack>
-              ) : null}
-            </Stack>
-
-            {duel.duelType?.title ? (
-              <Chip size="small" color="primary" variant="outlined" label={duel.duelType.title} />
-            ) : null}
-          </Stack>
 
           <Stack direction="row" spacing={0.5} alignItems="center">
             <Tooltip title={t('contests.problem.prev')}>

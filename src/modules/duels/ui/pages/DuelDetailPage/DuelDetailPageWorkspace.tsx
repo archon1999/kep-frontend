@@ -1,6 +1,5 @@
 import { useEffect, useMemo, useRef, useState } from 'react';
-import { Box, Card, CardContent, Chip, Divider, LinearProgress, Stack, Typography } from '@mui/material';
-import { alpha } from '@mui/material/styles';
+import { Box, Card, CardContent, Chip, Divider, Stack, Typography } from '@mui/material';
 import { GridPaginationModel } from '@mui/x-data-grid';
 import { Panel, PanelGroup } from 'react-resizable-panels';
 import { useTranslation } from 'react-i18next';
@@ -10,11 +9,8 @@ import { duelsQueries } from 'modules/duels/application/queries.ts';
 import {
   Duel,
   DuelDetailPageNavigationProblem,
-  DuelDetailPageStandingRow,
   DuelDetailPageWorkspaceTab,
-  DuelDetailPageWorkspaceView,
   DuelProblem,
-  getDuelDetailPagePlayerRows,
 } from 'modules/duels/domain/index.ts';
 import { problemsQueries } from 'modules/problems/application/queries.ts';
 import { AttemptsListParams } from 'modules/problems/domain/ports/problems.repository';
@@ -42,13 +38,10 @@ export type DuelDetailPageWorkspaceProps = {
   duel: Duel;
   isLoading: boolean;
   isValidating: boolean;
-  view: DuelDetailPageWorkspaceView;
   activeTab: DuelDetailPageWorkspaceTab;
   navigationProblems: DuelDetailPageNavigationProblem[];
   activeNavigationProblem: DuelDetailPageNavigationProblem | null;
   activeProblem: DuelProblem | null;
-  standingsRows: DuelDetailPageStandingRow[];
-  maxScore: number;
   isAuthenticated: boolean;
   attempts: any[];
   attemptsTotal: number;
@@ -57,7 +50,6 @@ export type DuelDetailPageWorkspaceProps = {
   isAttemptsLoading: boolean;
   workspaceAttemptLink: string;
   onRefreshAttempts: () => void;
-  onChangeView: (view: DuelDetailPageWorkspaceView) => void;
   onChangeTab: (tab: DuelDetailPageWorkspaceTab) => void;
   onSelectProblem: (symbol: string) => void;
   initialCode: string;
@@ -94,7 +86,6 @@ export type DuelDetailPageWorkspaceProps = {
 };
 
 type DuelDetailQueryState = {
-  view: DuelDetailPageWorkspaceView;
   activeTab: DuelDetailPageWorkspaceTab;
   problem: string;
 };
@@ -173,15 +164,10 @@ export const useDuelDetailPageWorkspaceState = ({
   const permissions = useProblemPermissions(currentUser?.permissions);
   const { state: routeState, patchState, setField } = useRouteQueryState<DuelDetailQueryState>({
     defaults: {
-      view: 'problems',
       activeTab: 'description',
       problem: '',
     },
     schema: {
-      view: {
-        ...enumParam(['problems', 'standings'] as const),
-        param: 'view',
-      },
       activeTab: {
         ...enumParam(['description', 'attempts'] as const),
         param: 'tab',
@@ -192,7 +178,6 @@ export const useDuelDetailPageWorkspaceState = ({
       },
     },
     historyByKey: {
-      view: 'push',
       activeTab: 'push',
       problem: 'push',
     },
@@ -236,7 +221,6 @@ export const useDuelDetailPageWorkspaceState = ({
   });
 
   const problems = duel?.problems ?? [];
-  const view = routeState.view;
   const activeTab = routeState.activeTab;
   const navigationProblems = useMemo<DuelDetailPageNavigationProblem[]>(() => {
     if (problems.length) {
@@ -262,15 +246,6 @@ export const useDuelDetailPageWorkspaceState = ({
     null;
   const activeProblem =
     problems.find((problem) => problem.symbol === activeNavigationProblem?.symbol) ?? null;
-  const standingsRows = useMemo<DuelDetailPageStandingRow[]>(() => {
-    if (!duel) return [];
-
-    return getDuelDetailPagePlayerRows(duel)
-      .map((row) => ({ ...row, total: row.player.balls ?? 0 }))
-      .sort((left, right) => right.total - left.total || left.order - right.order)
-      .map((row, index) => ({ ...row, rank: index + 1 }));
-  }, [duel]);
-  const maxScore = standingsRows.reduce((best, row) => Math.max(best, row.total), 0);
   const isWorkspaceLocked = duel?.status === -1 || !activeProblem?.problem;
   const showDuelAttempts = Boolean(duel?.viewerRole && duel.viewerRole !== 'spectator');
   const canUseCheckSamples = Boolean(permissions.canUseCheckSamples || currentUser?.isSuperuser);
@@ -391,12 +366,10 @@ export const useDuelDetailPageWorkspaceState = ({
   });
 
   const updateSearch = (values: {
-    view?: DuelDetailPageWorkspaceView;
     tab?: DuelDetailPageWorkspaceTab;
     symbol?: string | null;
   }) => {
     patchState((prev) => ({
-      view: values.view ?? prev.view,
       activeTab: values.tab ?? prev.activeTab,
       problem: values.symbol ?? activeNavigationProblem?.symbol ?? prev.problem,
     }));
@@ -435,7 +408,7 @@ export const useDuelDetailPageWorkspaceState = ({
       }
 
       toast.success(t('problems.detail.submitSuccess'));
-      updateSearch({ view: 'problems', tab: 'attempts' });
+      updateSearch({ tab: 'attempts' });
       await Promise.all([mutateAttempts(), mutateDuel()]);
     } catch (error: any) {
       const message =
@@ -626,7 +599,7 @@ export const useDuelDetailPageWorkspaceState = ({
   }
 
   const workspaceAttemptLink = activeNavigationProblem?.symbol
-    ? `/duels/${duel.id}?view=problems&problem=${activeNavigationProblem.symbol}&tab=attempts`
+    ? `/duels/${duel.id}?problem=${activeNavigationProblem.symbol}&tab=attempts`
     : `/duels/${duel.id}`;
 
   return {
@@ -634,13 +607,10 @@ export const useDuelDetailPageWorkspaceState = ({
       duel,
       isLoading,
       isValidating,
-      view,
       activeTab,
       navigationProblems,
       activeNavigationProblem,
       activeProblem,
-      standingsRows,
-      maxScore,
       isAuthenticated: Boolean(currentUser),
       attempts: attemptsPage?.data ?? [],
       attemptsTotal: attemptsPage?.total ?? 0,
@@ -651,9 +621,8 @@ export const useDuelDetailPageWorkspaceState = ({
       onRefreshAttempts: () => {
         void mutateAttempts();
       },
-      onChangeView: (nextView) => updateSearch({ view: nextView }),
       onChangeTab: (tab) => updateSearch({ tab }),
-      onSelectProblem: (symbol) => updateSearch({ symbol, view: 'problems' }),
+      onSelectProblem: (symbol) => updateSearch({ symbol }),
       initialCode,
       editorKey,
       onCodeChange: persistCode,
@@ -691,13 +660,10 @@ const DuelDetailPageWorkspace = ({
   duel,
   isLoading,
   isValidating,
-  view,
   activeTab,
   navigationProblems,
   activeNavigationProblem,
   activeProblem,
-  standingsRows,
-  maxScore,
   isAuthenticated,
   attempts,
   attemptsTotal,
@@ -706,7 +672,6 @@ const DuelDetailPageWorkspace = ({
   isAttemptsLoading,
   workspaceAttemptLink,
   onRefreshAttempts,
-  onChangeView,
   onChangeTab,
   onSelectProblem,
   initialCode,
@@ -744,95 +709,9 @@ const DuelDetailPageWorkspace = ({
         position: 'relative',
       }}
     >
-      {isLoading || isValidating ? (
-        <LinearProgress sx={{ position: 'absolute', top: 0, left: 0, right: 0, zIndex: 2 }} />
-      ) : null}
-
       <PanelGroup direction="horizontal" style={{ flex: 1, minHeight: 0 }}>
         <Panel defaultSize={50} minSize={35}>
-          {view === 'standings' ? (
-            <Card
-              background={0}
-              sx={{
-                height: '100%',
-                display: 'flex',
-                flexDirection: 'column',
-                overflow: 'hidden',
-              }}
-            >
-              <CardContent sx={{ flex: 1, minHeight: 0, overflowY: 'auto', p: 3 }}>
-                <Stack spacing={2.5}>
-                  <Stack spacing={0.5}>
-                    <Typography variant="h5" fontWeight={700}>
-                      {t('duels.standings')}
-                    </Typography>
-                    <Typography color="text.secondary">{t('duels.standingsSubtitle')}</Typography>
-                  </Stack>
-
-                  {standingsRows.map((row) => (
-                    <Card
-                      key={row.key}
-                      variant="outlined"
-                      sx={(theme) => ({
-                        borderColor:
-                          row.total === maxScore
-                            ? alpha(theme.palette[row.accent].main, 0.45)
-                            : alpha(
-                                theme.palette.divider,
-                                theme.palette.mode === 'dark' ? 0.75 : 1,
-                              ),
-                        backgroundColor:
-                          row.total === maxScore
-                            ? alpha(
-                                theme.palette[row.accent].main,
-                                theme.palette.mode === 'dark' ? 0.14 : 0.06,
-                              )
-                            : 'transparent',
-                      })}
-                    >
-                      <CardContent>
-                        <Stack spacing={1.5}>
-                          <Stack
-                            direction="row"
-                            spacing={1.25}
-                            alignItems="center"
-                            flexWrap="wrap"
-                            useFlexGap
-                          >
-                            <Typography fontWeight={800}>#{row.rank}</Typography>
-                            <Typography variant="subtitle1" fontWeight={700}>
-                              {row.player.username}
-                            </Typography>
-                            {row.player.isBot ? (
-                              <Chip size="small" color="secondary" variant="outlined" label="BOT" />
-                            ) : null}
-                            <Typography variant="body2" color="text.secondary">
-                              {row.player.ratingTitle || '--'}
-                            </Typography>
-                            <Chip
-                              label={`${row.total} pts`}
-                              color={row.accent}
-                              variant="outlined"
-                              size="small"
-                            />
-                          </Stack>
-                        </Stack>
-                      </CardContent>
-                    </Card>
-                  ))}
-                </Stack>
-              </CardContent>
-
-              <DuelResultsFooter
-                duel={duel}
-                problems={navigationProblems}
-                activeSymbol={activeNavigationProblem?.symbol}
-                view={view}
-                onChangeView={onChangeView}
-                onSelectProblem={onSelectProblem}
-              />
-            </Card>
-          ) : activeProblem?.problem ? (
+          {activeProblem?.problem ? (
             <Card
               background={0}
               sx={{
@@ -913,15 +792,6 @@ const DuelDetailPageWorkspace = ({
                   )}
                 </Box>
               </CardContent>
-
-              <DuelResultsFooter
-                duel={duel}
-                problems={navigationProblems}
-                activeSymbol={activeNavigationProblem?.symbol}
-                view={view}
-                onChangeView={onChangeView}
-                onSelectProblem={onSelectProblem}
-              />
             </Card>
           ) : navigationProblems.length && duel.status !== -1 && (isLoading || isValidating) ? (
             <ProblemDescriptionSkeleton />
@@ -961,15 +831,6 @@ const DuelDetailPageWorkspace = ({
                   </Typography>
                 </Stack>
               </CardContent>
-
-              <DuelResultsFooter
-                duel={duel}
-                problems={navigationProblems}
-                activeSymbol={activeNavigationProblem?.symbol}
-                view={view}
-                onChangeView={onChangeView}
-                onSelectProblem={onSelectProblem}
-              />
             </Card>
           )}
         </Panel>
@@ -1033,6 +894,13 @@ const DuelDetailPageWorkspace = ({
           )}
         </Panel>
       </PanelGroup>
+
+      <DuelResultsFooter
+        duel={duel}
+        problems={navigationProblems}
+        activeSymbol={activeNavigationProblem?.symbol}
+        onSelectProblem={onSelectProblem}
+      />
     </Card>
   );
 };

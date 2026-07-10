@@ -1,11 +1,22 @@
-import { Button, Card, Chip, Stack, Typography } from '@mui/material';
+import {
+  Button,
+  Card,
+  Chip,
+  Stack,
+  Table,
+  TableBody,
+  TableCell,
+  TableContainer,
+  TableHead,
+  TableRow,
+  Typography,
+} from '@mui/material';
 import { alpha } from '@mui/material/styles';
-import { useTranslation } from 'react-i18next';
+import ContestsRatingChip from 'shared/components/rating/ContestsRatingChip.tsx';
 import IconifyIcon from 'shared/components/base/IconifyIcon';
 import {
   Duel,
   DuelDetailPageNavigationProblem,
-  DuelDetailPageWorkspaceView,
   getDuelDetailPagePlayerRows,
 } from 'modules/duels/domain/index.ts';
 
@@ -13,20 +24,15 @@ type Props = {
   duel: Duel;
   problems: DuelDetailPageNavigationProblem[];
   activeSymbol?: string | null;
-  view: DuelDetailPageWorkspaceView;
   onSelectProblem: (symbol: string) => void;
-  onChangeView: (view: DuelDetailPageWorkspaceView) => void;
 };
 
 const DuelResultsFooter = ({
   duel,
   problems,
   activeSymbol,
-  view,
   onSelectProblem,
-  onChangeView,
 }: Props) => {
-  const { t } = useTranslation();
   const rows = getDuelDetailPagePlayerRows(duel);
 
   if (!rows.length || !problems.length) {
@@ -36,123 +42,115 @@ const DuelResultsFooter = ({
   return (
     <Card
       sx={{
-        px: 2.5,
-        py: 2,
         borderTop: '1px solid',
         borderColor: 'divider',
         borderRadius: 0,
         bgcolor: (theme) =>
-          alpha(theme.palette.background.default, theme.palette.mode === 'dark' ? 0.22 : 0.72),
+          alpha(theme.palette.background.default, theme.palette.mode === 'dark' ? 0.28 : 0.82),
       }}
     >
-      <Stack spacing={1.5}>
-        <Stack
-          direction={{ xs: 'column', lg: 'row' }}
-          spacing={1.25}
-          justifyContent="space-between"
-          alignItems={{ xs: 'stretch', lg: 'center' }}
+      <TableContainer sx={{ overflowX: 'auto' }}>
+        <Table
+          size="small"
+          aria-label="Duel live standings"
+          sx={{ minWidth: Math.max(720, 310 + problems.length * 104) }}
         >
-          <Stack
-            direction="row"
-            spacing={0.75}
-            alignItems="center"
-            sx={(theme) => ({
-              width: 'fit-content',
-              p: 0.5,
-              borderRadius: 999,
-              border: '1px solid',
-              borderColor: theme.palette.divider,
-              bgcolor: alpha(
-                theme.palette.background.paper,
-                theme.palette.mode === 'dark' ? 0.55 : 0.9,
-              ),
-            })}
-          >
-            <Button
-              size="small"
-              variant={view === 'problems' ? 'contained' : 'text'}
-              color="primary"
-              onClick={() => onChangeView('problems')}
-              startIcon={<IconifyIcon icon="mdi:format-list-bulleted" width={16} height={16} />}
-              sx={{ textTransform: 'none', borderRadius: 999 }}
-            >
-              {t('contests.tabs.problems')}
-            </Button>
-            <Button
-              size="small"
-              variant={view === 'standings' ? 'contained' : 'text'}
-              color="primary"
-              onClick={() => onChangeView('standings')}
-              startIcon={<IconifyIcon icon="mdi:podium" width={16} height={16} />}
-              sx={{ textTransform: 'none', borderRadius: 999 }}
-            >
-              {t('duels.standings')}
-            </Button>
-          </Stack>
+          <TableHead>
+            <TableRow>
+              <TableCell sx={{ minWidth: 190, py: 1.1 }}>
+                <IconifyIcon icon="mdi:account-outline" width={21} height={21} />
+              </TableCell>
+              <TableCell align="center" sx={{ width: 110, py: 1.1 }}>
+                <IconifyIcon icon="mdi:chart-bar" width={21} height={21} />
+              </TableCell>
+              {problems.map((problem) => {
+                const isActive = problem.symbol === activeSymbol;
 
-          <Stack direction="row" spacing={1} flexWrap="wrap" useFlexGap>
-            {rows.map((row) => (
-              <Chip
-                key={`${row.key}-total`}
-                label={`${row.player.username}: ${row.player.balls ?? 0}`}
-                color={row.accent}
-                variant="outlined"
-                size="small"
-              />
-            ))}
-          </Stack>
-        </Stack>
-
-        <Stack direction="row" spacing={1} sx={{ overflowX: 'auto', pb: 0.25 }}>
-          {problems.map((problem) => {
-            const isActive = activeSymbol === problem.symbol;
-
-            return (
-              <Button
-                key={problem.symbol}
-                onClick={() => onSelectProblem(problem.symbol)}
-                variant={isActive ? 'contained' : 'outlined'}
-                color={isActive ? 'primary' : 'inherit'}
-                sx={{
-                  minWidth: 150,
-                  flexShrink: 0,
-                  px: 1.5,
-                  py: 1.15,
-                  borderRadius: 2.5,
-                  textTransform: 'none',
-                  alignItems: 'stretch',
-                }}
-              >
-                <Stack spacing={0.4} alignItems="flex-start" sx={{ width: '100%' }}>
-                  <Stack
-                    direction="row"
-                    justifyContent="space-between"
-                    alignItems="center"
-                    sx={{ width: '100%' }}
+                return (
+                  <TableCell
+                    key={problem.symbol}
+                    align="center"
+                    sx={(theme) => ({
+                      width: 104,
+                      py: 0.4,
+                      bgcolor: isActive
+                        ? alpha(theme.palette.primary.main, theme.palette.mode === 'dark' ? 0.12 : 0.06)
+                        : 'transparent',
+                    })}
                   >
-                    <Typography variant="subtitle2" fontWeight={800}>
-                      {problem.symbol}
-                    </Typography>
-                    <Typography variant="caption" color={isActive ? 'inherit' : 'text.secondary'}>
-                      {problem.ball ?? 0} pts
-                    </Typography>
-                  </Stack>
-
-                  {rows.map((row) => (
-                    <Typography
-                      key={`${row.key}-${problem.symbol}`}
-                      variant="caption"
-                      color={isActive ? 'inherit' : 'text.secondary'}
+                    <Button
+                      size="small"
+                      color={isActive ? 'primary' : 'inherit'}
+                      variant="text"
+                      onClick={() => onSelectProblem(problem.symbol)}
+                      sx={{ minWidth: 40, fontWeight: 800, fontSize: '0.95rem' }}
                     >
-                      {row.player.username}: {row.scoreAccessor(problem)}
+                      {problem.symbol}
+                    </Button>
+                  </TableCell>
+                );
+              })}
+            </TableRow>
+          </TableHead>
+
+          <TableBody>
+            {rows.map((row) => (
+              <TableRow key={row.key} hover>
+                <TableCell sx={{ py: 1.15 }}>
+                  <Stack direction="row" spacing={1} alignItems="center" sx={{ minWidth: 0 }}>
+                    {row.player.ratingTitle ? (
+                      <ContestsRatingChip title={row.player.ratingTitle} imgSize={28} />
+                    ) : null}
+                    <Typography fontWeight={800} noWrap>
+                      {row.player.username}
                     </Typography>
-                  ))}
-                </Stack>
-              </Button>
-            );
-          })}
-        </Stack>
-      </Stack>
+                    {row.player.isBot ? (
+                      <Chip size="small" color="secondary" variant="outlined" label="BOT" />
+                    ) : null}
+                  </Stack>
+                </TableCell>
+
+                <TableCell align="center">
+                  <Chip
+                    label={row.player.balls ?? 0}
+                    color={row.accent}
+                    size="small"
+                    sx={{ minWidth: 58, fontWeight: 800 }}
+                  />
+                </TableCell>
+
+                {problems.map((problem) => {
+                  const score = row.scoreAccessor(problem);
+                  const isActive = problem.symbol === activeSymbol;
+
+                  return (
+                    <TableCell
+                      key={`${row.key}-${problem.symbol}`}
+                      align="center"
+                      sx={(theme) => ({
+                        bgcolor: isActive
+                          ? alpha(theme.palette.primary.main, theme.palette.mode === 'dark' ? 0.12 : 0.06)
+                          : 'transparent',
+                      })}
+                    >
+                      {score > 0 ? (
+                        <Chip
+                          label={score}
+                          color="success"
+                          size="small"
+                          sx={{ minWidth: 54, fontWeight: 800 }}
+                        />
+                      ) : (
+                        <Typography color="text.disabled">—</Typography>
+                      )}
+                    </TableCell>
+                  );
+                })}
+              </TableRow>
+            ))}
+          </TableBody>
+        </Table>
+      </TableContainer>
     </Card>
   );
 };
