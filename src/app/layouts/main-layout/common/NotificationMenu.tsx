@@ -178,6 +178,9 @@ const NotificationMenu = ({ type = 'default' }: NotificationMenuProps) => {
   const { currentUser } = useAuth();
   const [isSystemDialogOpen, setIsSystemDialogOpen] = useState(false);
   const [systemNotificationMessage, setSystemNotificationMessage] = useState('');
+  const [systemNotificationAction, setSystemNotificationAction] = useState<
+    (NonNullable<NotificationView['action']> & { notificationId?: number }) | null
+  >(null);
   const showAllRef = useRef(showAll);
   const { t } = useTranslation();
   const currentUsername = currentUser?.username;
@@ -246,9 +249,22 @@ const NotificationMenu = ({ type = 'default' }: NotificationMenuProps) => {
   }, [showAll]);
 
   const showSystemNotification = useCallback(
-    (message?: string) => {
+    (notification: ApiNotification) => {
       const fallbackMessage = t('notifications.systemNotificationFallback');
-      setSystemNotificationMessage(message?.trim() ? message : fallbackMessage);
+      const message = notification.message ?? '';
+      const apiAction = (notification as ApiNotificationWithAction).action;
+      const labelKey = apiAction?.kind ? notificationActionLabelKeys[apiAction.kind] : undefined;
+
+      setSystemNotificationMessage(message.trim() ? message : fallbackMessage);
+      setSystemNotificationAction(
+        apiAction?.path?.startsWith('/')
+          ? {
+              label: t(labelKey ?? 'notifications.openDuels'),
+              to: apiAction.path,
+              notificationId: notification.id,
+            }
+          : null,
+      );
       setIsSystemDialogOpen(true);
     },
     [t],
@@ -275,7 +291,7 @@ const NotificationMenu = ({ type = 'default' }: NotificationMenuProps) => {
         });
 
         if (Number(notification.type) === 1) {
-          showSystemNotification(notification.message ?? '');
+          showSystemNotification(notification);
         }
 
         if (!showAllRef.current) {
@@ -792,6 +808,20 @@ const NotificationMenu = ({ type = 'default' }: NotificationMenuProps) => {
           <DialogContentText>{systemNotificationMessage}</DialogContentText>
         </DialogContent>
         <DialogActions sx={{ px: 3, pb: 2 }}>
+          {systemNotificationAction ? (
+            <Button
+              component={RouterLink}
+              to={systemNotificationAction.to}
+              variant="contained"
+              fullWidth
+              onClick={() => {
+                handleMarkRead(systemNotificationAction.notificationId);
+                setIsSystemDialogOpen(false);
+              }}
+            >
+              {systemNotificationAction.label}
+            </Button>
+          ) : null}
           <Button variant="contained" fullWidth onClick={() => setIsSystemDialogOpen(false)}>
             {t('notifications.systemNotificationOk')}
           </Button>
