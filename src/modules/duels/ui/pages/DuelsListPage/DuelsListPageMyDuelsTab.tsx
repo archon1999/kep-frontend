@@ -1,9 +1,7 @@
 import { useState } from 'react';
-import { useNavigate } from 'react-router';
-import { Card, CardContent, Skeleton, Stack, Typography } from '@mui/material';
 import { useTranslation } from 'react-i18next';
-import { toast } from 'sonner';
-import { useSWRConfig } from 'swr';
+import { useNavigate } from 'react-router';
+import { Card, CardContent, Stack, Typography } from '@mui/material';
 import { getResourceById, resources } from 'app/routes/resources.ts';
 import {
   useAcceptDuelCall,
@@ -12,13 +10,14 @@ import {
   useCounterDuelCall,
   useRejectDuelCall,
 } from 'modules/duels/application/mutations.ts';
-import {
-  isDuelsCollectionCacheKey,
-  useDuelCalls,
-} from 'modules/duels/application/queries.ts';
+import { isDuelsCollectionCacheKey, useDuelCalls } from 'modules/duels/application/queries.ts';
 import { DuelInvitation } from 'modules/duels/domain/index.ts';
 import { getDuelErrorMessage } from 'modules/duels/ui/shared/helpers/getDuelErrorMessage.ts';
-import DuelInvitationCard from './components/DuelInvitationCard.tsx';
+import { toast } from 'sonner';
+import { useSWRConfig } from 'swr';
+import DuelInvitationCard, {
+  DuelInvitationCardSkeleton,
+} from './components/DuelInvitationCard.tsx';
 import DuelListSection from './components/DuelListSection.tsx';
 import DuelScheduleDialog from './dialogs/DuelScheduleDialog.tsx';
 
@@ -76,17 +75,7 @@ const DuelsListPageCallsSection = ({
     </Stack>
 
     {loading
-      ? Array.from({ length: 2 }).map((_, index) => (
-          <Card key={index} variant="outlined">
-            <CardContent>
-              <Stack spacing={1}>
-                <Skeleton width="50%" />
-                <Skeleton width="80%" />
-                <Skeleton width="40%" />
-              </Stack>
-            </CardContent>
-          </Card>
-        ))
+      ? Array.from({ length: 2 }).map((_, index) => <DuelInvitationCardSkeleton key={index} />)
       : null}
 
     {!loading && !invitations.length ? (
@@ -135,7 +124,11 @@ const DuelsListPageMyDuelsTab = () => {
     page: 1,
     pageSize: 20,
   });
-  const { data: myCallsPage, error: myCallsError, isLoading: isMyCallsLoading } = useDuelCalls({
+  const {
+    data: myCallsPage,
+    error: myCallsError,
+    isLoading: isMyCallsLoading,
+  } = useDuelCalls({
     scope: 'mine',
     page: 1,
     pageSize: 20,

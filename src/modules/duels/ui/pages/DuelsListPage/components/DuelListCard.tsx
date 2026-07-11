@@ -1,6 +1,6 @@
-import { Button, Card, Chip, Stack, Typography } from '@mui/material';
-import { alpha } from '@mui/material/styles';
 import { useTranslation } from 'react-i18next';
+import { Button, Card, Chip, Skeleton, Stack, Typography } from '@mui/material';
+import { alpha } from '@mui/material/styles';
 import { Duel, DuelPlayer } from 'modules/duels/domain/index.ts';
 import UserPopover from 'modules/users/ui/shared/components/UserPopover.tsx';
 import IconifyIcon from 'shared/components/base/IconifyIcon.tsx';
@@ -12,8 +12,53 @@ type Props = {
   onView?: () => void;
 };
 
-const formatDate = (value?: string | null) =>
-  value ? formatCalendarDateTime(value, value) : '—';
+export const DuelListCardSkeleton = () => (
+  <Card
+    sx={{
+      p: { xs: 1.5, sm: 2 },
+      borderRadius: 2,
+      border: 0,
+      borderLeft: '5px solid',
+      borderLeftColor: 'divider',
+    }}
+  >
+    <Stack
+      direction={{ xs: 'column', md: 'row' }}
+      spacing={{ xs: 1.5, md: 2.5 }}
+      alignItems={{ xs: 'stretch', md: 'center' }}
+      justifyContent="space-between"
+    >
+      <Stack spacing={1} minWidth={0} flex={1}>
+        <Stack direction="row" spacing={1} alignItems="center">
+          <Skeleton variant="circular" width={20} height={20} />
+          <Skeleton variant="text" width={112} height={26} />
+          <Skeleton variant="text" width={20} />
+          <Skeleton variant="circular" width={20} height={20} />
+          <Skeleton variant="text" width={112} height={26} />
+          <Skeleton variant="rounded" width={42} height={24} sx={{ borderRadius: 999 }} />
+        </Stack>
+
+        <Stack direction="row" spacing={1} alignItems="center" flexWrap="wrap" useFlexGap>
+          <Skeleton variant="rounded" width={72} height={24} sx={{ borderRadius: 999 }} />
+          <Skeleton variant="rounded" width={96} height={24} sx={{ borderRadius: 999 }} />
+          <Skeleton variant="rounded" width={180} height={24} sx={{ borderRadius: 999 }} />
+          <Skeleton variant="text" width={132} />
+        </Stack>
+      </Stack>
+
+      <Stack direction="row" spacing={2} alignItems="center" justifyContent="space-between">
+        <Stack direction="row" spacing={0.75} alignItems="center" minWidth={96}>
+          <Skeleton variant="text" width={28} height={38} />
+          <Skeleton variant="text" width={14} />
+          <Skeleton variant="text" width={28} height={38} />
+        </Stack>
+        <Skeleton variant="rounded" width={96} height={32} sx={{ borderRadius: 999 }} />
+      </Stack>
+    </Stack>
+  </Card>
+);
+
+const formatDate = (value?: string | null) => (value ? formatCalendarDateTime(value, value) : '—');
 
 const statusTone = (status: Duel['status']) => {
   if (status === -1) {
@@ -92,7 +137,12 @@ const DuelListCard = ({ duel, onView }: Props) => {
               <Chip size="small" label={duel.preset.title} variant="outlined" />
             ) : null}
             <Stack direction="row" spacing={0.5} alignItems="center">
-              <IconifyIcon icon="mdi:calendar-clock" width={16} height={16} color="text.secondary" />
+              <IconifyIcon
+                icon="mdi:calendar-clock"
+                width={16}
+                height={16}
+                color="text.secondary"
+              />
               <Typography variant="caption" color="text.secondary">
                 {formatDate(duel.startTime)}
               </Typography>
@@ -101,7 +151,13 @@ const DuelListCard = ({ duel, onView }: Props) => {
         </Stack>
 
         <Stack direction="row" spacing={2} alignItems="center" justifyContent="space-between">
-          <Stack direction="row" spacing={0.75} alignItems="baseline" minWidth={96} justifyContent="center">
+          <Stack
+            direction="row"
+            spacing={0.75}
+            alignItems="baseline"
+            minWidth={96}
+            justifyContent="center"
+          >
             <Typography variant="h5" fontWeight={800} color="primary.main">
               {firstScore}
             </Typography>

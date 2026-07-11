@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import { useTranslation } from 'react-i18next';
-import { Button, Card, CardContent, Skeleton, Stack, Typography } from '@mui/material';
+import { Button, Card, CardContent, Stack, Typography } from '@mui/material';
 import Grid from '@mui/material/Grid';
 import { useAcceptDuelCall, useCancelDuelCall } from 'modules/duels/application/mutations.ts';
 import { isDuelsCollectionCacheKey, useDuelCalls } from 'modules/duels/application/queries.ts';
@@ -9,7 +9,9 @@ import { getDuelErrorMessage } from 'modules/duels/ui/shared/helpers/getDuelErro
 import IconifyIcon from 'shared/components/base/IconifyIcon.tsx';
 import { toast } from 'sonner';
 import { useSWRConfig } from 'swr';
-import DuelWaitingRoomCard from './components/DuelWaitingRoomCard.tsx';
+import DuelWaitingRoomCard, {
+  DuelWaitingRoomCardSkeleton,
+} from './components/DuelWaitingRoomCard.tsx';
 import DuelScheduleDialog from './dialogs/DuelScheduleDialog.tsx';
 
 const DuelsListPageWaitingRoomTab = () => {
@@ -101,9 +103,9 @@ const DuelsListPageWaitingRoomTab = () => {
 
         <Grid container spacing={2}>
           {loading
-            ? Array.from({ length: 4 }).map((_, index) => (
-                <Grid key={index} size={{ xs: 12, sm: 6, lg: 3 }}>
-                  <Skeleton variant="rectangular" height={180} sx={{ borderRadius: 2 }} />
+            ? Array.from({ length: 8 }).map((_, index) => (
+                <Grid key={index} size={{ xs: 12, sm: 6, lg: 3 }} sx={{ display: 'flex' }}>
+                  <DuelWaitingRoomCardSkeleton />
                 </Grid>
               ))
             : null}

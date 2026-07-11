@@ -103,6 +103,25 @@ interface NotificationContent {
   [key: string]: unknown;
 }
 
+interface NotificationApiAction {
+  kind?: string;
+  path?: string;
+}
+
+type ApiNotificationWithAction = ApiNotification & {
+  action?: NotificationApiAction | null;
+};
+
+const notificationActionLabelKeys: Record<string, string> = {
+  contest_results: 'notifications.viewContestStandings',
+  blog: 'notifications.openBlog',
+  challenge: 'notifications.goToChallenge',
+  arena_results: 'notifications.viewArenaResults',
+  duel: 'notifications.openDuel',
+  duels: 'notifications.openDuels',
+  achievements: 'notifications.viewAchievements',
+};
+
 const typeIconMap: Partial<Record<number, KepIconName>> = {
   1: 'info',
   2: 'rating-changes',
@@ -288,6 +307,7 @@ const NotificationMenu = ({ type = 'default' }: NotificationMenuProps) => {
   const buildNotificationView = useCallback(
     (notification: ApiNotification): NotificationView => {
       const parsedContent = parseContent(notification.content);
+      const apiAction = (notification as ApiNotificationWithAction).action;
       const chips: ReactNode[] = [];
       const notificationType = Number(notification.type ?? 0);
       const icon = typeIconMap[notificationType] ?? 'info';
@@ -454,6 +474,14 @@ const NotificationMenu = ({ type = 'default' }: NotificationMenuProps) => {
             title = notification.content;
           }
         }
+      }
+
+      if (apiAction?.path?.startsWith('/')) {
+        const labelKey = apiAction.kind ? notificationActionLabelKeys[apiAction.kind] : undefined;
+        action = {
+          label: t(labelKey ?? 'notifications.openDuels'),
+          to: apiAction.path,
+        };
       }
 
       return { title, description, action, chips, icon };

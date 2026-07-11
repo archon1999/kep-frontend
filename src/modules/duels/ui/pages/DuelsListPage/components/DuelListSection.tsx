@@ -1,14 +1,14 @@
 import { ReactNode } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useNavigate } from 'react-router';
-import { Card, CardContent, Pagination, Skeleton, Stack, Typography } from '@mui/material';
+import { Card, CardContent, Pagination, Stack, Typography } from '@mui/material';
 import Grid from '@mui/material/Grid';
 import { getResourceById, resources } from 'app/routes/resources.ts';
 import { useDuelsList } from 'modules/duels/application/queries.ts';
 import { Duel } from 'modules/duels/domain/index.ts';
 import useRouteQueryState from 'shared/hooks/useRouteQueryState';
 import { numberParam } from 'shared/lib/queryParams';
-import DuelListCard from './DuelListCard.tsx';
+import DuelListCard, { DuelListCardSkeleton } from './DuelListCard.tsx';
 
 type Props = {
   scope?: 'recent' | 'my';
@@ -117,17 +117,7 @@ const DuelListSection = ({
 
       <Stack spacing={2}>
         {resolvedLoading
-          ? Array.from({ length: 3 }).map((_, index) => (
-              <Card key={index} variant="outlined">
-                <CardContent>
-                  <Stack spacing={1}>
-                    <Skeleton width="60%" />
-                    <Skeleton width="90%" />
-                    <Skeleton width="40%" />
-                  </Stack>
-                </CardContent>
-              </Card>
-            ))
+          ? Array.from({ length: 3 }).map((_, index) => <DuelListCardSkeleton key={index} />)
           : null}
 
         {!resolvedLoading && error ? (

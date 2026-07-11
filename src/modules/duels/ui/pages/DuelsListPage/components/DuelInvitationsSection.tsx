@@ -1,7 +1,7 @@
-import { Card, CardContent, Skeleton, Stack, Typography } from '@mui/material';
 import { ReactNode } from 'react';
+import { Card, CardContent, Stack, Typography } from '@mui/material';
 import { DuelInvitation } from 'modules/duels/domain/index.ts';
-import DuelInvitationCard from './DuelInvitationCard.tsx';
+import DuelInvitationCard, { DuelInvitationCardSkeleton } from './DuelInvitationCard.tsx';
 
 type Props = {
   title?: string;
@@ -68,17 +68,7 @@ const DuelInvitationsSection = ({
       ) : null}
 
       {loading
-        ? Array.from({ length: 2 }).map((_, index) => (
-            <Card key={index} variant="outlined">
-              <CardContent>
-                <Stack spacing={1}>
-                  <Skeleton width="50%" />
-                  <Skeleton width="80%" />
-                  <Skeleton width="40%" />
-                </Stack>
-              </CardContent>
-            </Card>
-          ))
+        ? Array.from({ length: 2 }).map((_, index) => <DuelInvitationCardSkeleton key={index} />)
         : null}
 
       {!loading && !invitations.length ? (

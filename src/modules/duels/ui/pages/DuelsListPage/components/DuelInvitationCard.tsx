@@ -6,6 +6,7 @@ import {
   CardContent,
   Chip,
   Divider,
+  Skeleton,
   Stack,
   Tooltip,
   Typography,
@@ -31,6 +32,60 @@ type Props = {
   onCounter?: () => void;
   onOpen?: () => void;
 };
+
+export const DuelInvitationCardSkeleton = () => (
+  <Card variant="outlined" sx={{ borderRadius: 3 }}>
+    <CardContent sx={{ p: 2.25 }}>
+      <Stack spacing={2}>
+        <Stack
+          direction={{ xs: 'column', md: 'row' }}
+          justifyContent="space-between"
+          alignItems={{ xs: 'flex-start', md: 'flex-start' }}
+          spacing={2}
+        >
+          <Stack spacing={1.5} sx={{ minWidth: 0, flex: 1 }}>
+            <Stack direction="row" spacing={1} alignItems="center">
+              <Skeleton variant="rounded" width={84} height={24} sx={{ borderRadius: 999 }} />
+              <Skeleton variant="rounded" width={72} height={24} sx={{ borderRadius: 999 }} />
+            </Stack>
+
+            <Stack direction="row" spacing={2} alignItems="center">
+              <Stack spacing={0.5}>
+                <Skeleton variant="text" width={128} height={25} />
+                <Skeleton variant="text" width={92} />
+              </Stack>
+              <Divider flexItem orientation="vertical" />
+              <Skeleton variant="text" width={24} />
+              <Stack spacing={0.5}>
+                <Skeleton variant="text" width={128} height={25} />
+                <Skeleton variant="text" width={92} />
+              </Stack>
+            </Stack>
+
+            <Stack spacing={0.75}>
+              <Skeleton variant="text" width="54%" height={28} />
+              <Stack direction="row" spacing={1}>
+                <Skeleton variant="rounded" width={96} height={24} sx={{ borderRadius: 999 }} />
+                <Skeleton variant="rounded" width={52} height={24} sx={{ borderRadius: 999 }} />
+                <Skeleton variant="rounded" width={44} height={24} sx={{ borderRadius: 999 }} />
+              </Stack>
+            </Stack>
+          </Stack>
+
+          <Stack spacing={1} alignItems={{ xs: 'flex-start', md: 'flex-end' }}>
+            <Skeleton variant="text" width={116} />
+            <Skeleton variant="text" width={156} />
+          </Stack>
+        </Stack>
+
+        <Stack direction="row" spacing={1} justifyContent="flex-end">
+          <Skeleton variant="rounded" width={88} height={32} sx={{ borderRadius: 999 }} />
+          <Skeleton variant="rounded" width={112} height={32} sx={{ borderRadius: 999 }} />
+        </Stack>
+      </Stack>
+    </CardContent>
+  </Card>
+);
 
 const formatDate = (value?: string | null) => {
   if (!value) return '--';

@@ -5,6 +5,7 @@ import {
   CardContent,
   Chip,
   Divider,
+  Skeleton,
   Stack,
   Tooltip,
   Typography,
@@ -20,6 +21,44 @@ type Props = {
   onAccept?: () => void;
   onCancel?: () => void;
 };
+
+export const DuelWaitingRoomCardSkeleton = () => (
+  <Card background={0} sx={{ width: 1, height: 1, minHeight: 220, display: 'flex' }}>
+    <CardContent sx={{ display: 'flex', flex: 1 }}>
+      <Stack spacing={2} sx={{ width: 1, flex: 1 }}>
+        <Stack direction="row" spacing={0.75} alignItems="center">
+          <Skeleton variant="circular" width={22} height={22} />
+          <Skeleton variant="text" width={92} />
+          <Skeleton variant="rounded" width={42} height={24} sx={{ borderRadius: 999 }} />
+        </Stack>
+
+        <Stack spacing={0.25}>
+          <Skeleton variant="text" width="88%" height={28} />
+          <Skeleton variant="text" width="62%" height={28} />
+        </Stack>
+
+        <Stack direction="row" spacing={0.75} alignItems="center">
+          <Skeleton variant="rounded" width={92} height={24} sx={{ borderRadius: 999 }} />
+          <Divider flexItem orientation="vertical" />
+          <Skeleton variant="rounded" width={46} height={24} sx={{ borderRadius: 999 }} />
+          <Divider flexItem orientation="vertical" />
+          <Skeleton variant="rounded" width={42} height={24} sx={{ borderRadius: 999 }} />
+        </Stack>
+
+        <Stack
+          direction="row"
+          alignItems="center"
+          justifyContent="space-between"
+          spacing={1}
+          sx={{ mt: 'auto' }}
+        >
+          <Skeleton variant="text" width={88} />
+          <Skeleton variant="rounded" width={92} height={32} sx={{ borderRadius: 999 }} />
+        </Stack>
+      </Stack>
+    </CardContent>
+  </Card>
+);
 
 const DuelWaitingRoomCard = ({ invitation, actionLoadingKey, onAccept, onCancel }: Props) => {
   const { t } = useTranslation();
