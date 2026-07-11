@@ -1,4 +1,5 @@
 import { useEffect, useMemo, useState } from 'react';
+import { useTranslation } from 'react-i18next';
 import {
   Box,
   Button,
@@ -18,10 +19,13 @@ import {
   Typography,
   useTheme,
 } from '@mui/material';
-import { useTranslation } from 'react-i18next';
+import {
+  DuelPreset,
+  DuelReadyPlayer,
+  getDuelPresetCategoryTitle,
+} from 'modules/duels/domain/index.ts';
 import IconifyIcon from 'shared/components/base/IconifyIcon.tsx';
 import { cssVarRgba } from 'shared/lib/utils.ts';
-import { DuelPreset, DuelReadyPlayer } from 'modules/duels/domain/index.ts';
 
 type Props = {
   open: boolean;
@@ -58,61 +62,71 @@ const PresetOptionContent = ({
 }: {
   preset: DuelPreset;
   compact?: boolean;
-}) => (
-  <Stack
-    direction="row"
-    alignItems="center"
-    justifyContent="space-between"
-    spacing={2}
-    width="100%"
-    sx={{ minWidth: 0 }}
-  >
-    <Stack spacing={compact ? 0.2 : 0.45} sx={{ minWidth: 0, flex: 1 }}>
-      <Typography variant={compact ? 'subtitle2' : 'subtitle1'} fontWeight={800} noWrap>
-        {preset.title}
-      </Typography>
-      {!compact ? (
-        <Typography
-          variant="body2"
-          color="text.secondary"
-          sx={{
-            display: '-webkit-box',
-            WebkitLineClamp: 2,
-            WebkitBoxOrient: 'vertical',
-            overflow: 'hidden',
-          }}
-        >
-          {preset.description}
+}) => {
+  const categoryTitle = getDuelPresetCategoryTitle(preset);
+
+  return (
+    <Stack
+      direction="row"
+      alignItems="center"
+      justifyContent="space-between"
+      spacing={2}
+      width="100%"
+      sx={{ minWidth: 0 }}
+    >
+      <Stack spacing={compact ? 0.2 : 0.45} sx={{ minWidth: 0, flex: 1 }}>
+        <Typography variant={compact ? 'subtitle2' : 'subtitle1'} fontWeight={800} noWrap>
+          {preset.title}
         </Typography>
-      ) : (
         <Stack direction="row" spacing={0.75} alignItems="center" flexWrap="wrap" rowGap={0.5}>
-          <Chip
-            size="small"
-            color="primary"
-            variant="outlined"
-            label={preset.duration}
-            sx={{ fontWeight: 700 }}
-          />
-          {preset.problemsCount ? (
-            <Chip
-              size="small"
-              variant="outlined"
-              label={`${preset.problemsCount}P`}
-              sx={{ fontWeight: 700 }}
-            />
+          {categoryTitle ? (
+            <Chip size="small" color="secondary" label={categoryTitle} sx={{ fontWeight: 700 }} />
+          ) : null}
+          {compact ? (
+            <>
+              <Chip
+                size="small"
+                color="primary"
+                variant="outlined"
+                label={preset.duration}
+                sx={{ fontWeight: 700 }}
+              />
+              {preset.problemsCount ? (
+                <Chip
+                  size="small"
+                  variant="outlined"
+                  label={`${preset.problemsCount}P`}
+                  sx={{ fontWeight: 700 }}
+                />
+              ) : null}
+            </>
           ) : null}
         </Stack>
-      )}
-    </Stack>
+        {!compact ? (
+          <Typography
+            variant="body2"
+            color="text.secondary"
+            sx={{
+              display: '-webkit-box',
+              WebkitLineClamp: 2,
+              WebkitBoxOrient: 'vertical',
+              overflow: 'hidden',
+            }}
+          >
+            {preset.description}
+          </Typography>
+        ) : null}
+      </Stack>
 
-    <Stack spacing={0.4} minWidth={compact ? 88 : 118} alignItems="flex-end">
-      <DifficultyStars difficulty={preset.difficulty} />
-      <Typography variant="caption" color="text.secondary" fontWeight={700} noWrap>
-        {preset.difficultyDisplay}
-      </Typography>
+      <Stack spacing={0.4} minWidth={compact ? 88 : 118} alignItems="flex-end">
+        <DifficultyStars difficulty={preset.difficulty} />
+        <Typography variant="caption" color="text.secondary" fontWeight={700} noWrap>
+          {preset.difficultyDisplay}
+        </Typography>
+      </Stack>
     </Stack>
-  </Stack>
-);
+  );
+};
 
 const DuelPresetDialog = ({
   open,
@@ -273,6 +287,14 @@ const DuelPresetDialog = ({
                 </Stack>
 
                 <Stack direction="row" spacing={1} flexWrap="wrap" rowGap={1}>
+                  {getDuelPresetCategoryTitle(selectedPreset) ? (
+                    <Chip
+                      size="small"
+                      color="secondary"
+                      label={getDuelPresetCategoryTitle(selectedPreset)}
+                      sx={{ fontWeight: 700 }}
+                    />
+                  ) : null}
                   <Chip
                     size="small"
                     color="primary"
@@ -284,7 +306,9 @@ const DuelPresetDialog = ({
                     <Chip
                       size="small"
                       variant="outlined"
-                      label={t('duels.presetProblemsCount', { count: selectedPreset.problemsCount })}
+                      label={t('duels.presetProblemsCount', {
+                        count: selectedPreset.problemsCount,
+                      })}
                       sx={{ fontWeight: 700 }}
                     />
                   ) : null}

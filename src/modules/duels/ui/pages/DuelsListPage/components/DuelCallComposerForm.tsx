@@ -1,3 +1,5 @@
+import { useMemo } from 'react';
+import { useTranslation } from 'react-i18next';
 import {
   Box,
   Chip,
@@ -10,9 +12,12 @@ import {
   Typography,
 } from '@mui/material';
 import { alpha } from '@mui/material/styles';
-import { useMemo } from 'react';
-import { useTranslation } from 'react-i18next';
-import { DuelPreset, DuelTypeInfo, formatDuelDuration } from 'modules/duels/domain/index.ts';
+import {
+  DuelPreset,
+  DuelTypeInfo,
+  formatDuelDuration,
+  getDuelPresetCategoryTitle,
+} from 'modules/duels/domain/index.ts';
 import IconifyIcon from 'shared/components/base/IconifyIcon.tsx';
 
 type Props = {
@@ -48,54 +53,66 @@ const PresetOptionContent = ({
 }: {
   preset: DuelPreset;
   compact?: boolean;
-}) => (
-  <Stack
-    direction="row"
-    alignItems="center"
-    justifyContent="space-between"
-    spacing={2}
-    width="100%"
-    sx={{ minWidth: 0 }}
-  >
-    <Stack spacing={compact ? 0.25 : 0.45} sx={{ minWidth: 0, flex: 1 }}>
-      <Typography variant={compact ? 'subtitle2' : 'subtitle1'} fontWeight={800} noWrap>
-        {preset.title}
-      </Typography>
-      <Stack direction="row" spacing={0.75} alignItems="center" flexWrap="wrap" rowGap={0.5}>
-        {preset.duration ? (
-          <Chip
-            size="small"
-            variant="outlined"
-            color="primary"
-            label={formatDuelDuration(preset.duration)}
-            sx={{ fontWeight: 700 }}
-          />
-        ) : null}
-        {typeof preset.problemsCount === 'number' ? (
-          <Chip size="small" variant="outlined" label={`${preset.problemsCount}P`} sx={{ fontWeight: 700 }} />
+}) => {
+  const categoryTitle = getDuelPresetCategoryTitle(preset);
+
+  return (
+    <Stack
+      direction="row"
+      alignItems="center"
+      justifyContent="space-between"
+      spacing={2}
+      width="100%"
+      sx={{ minWidth: 0 }}
+    >
+      <Stack spacing={compact ? 0.25 : 0.45} sx={{ minWidth: 0, flex: 1 }}>
+        <Typography variant={compact ? 'subtitle2' : 'subtitle1'} fontWeight={800} noWrap>
+          {preset.title}
+        </Typography>
+        <Stack direction="row" spacing={0.75} alignItems="center" flexWrap="wrap" rowGap={0.5}>
+          {categoryTitle ? (
+            <Chip size="small" color="secondary" label={categoryTitle} sx={{ fontWeight: 700 }} />
+          ) : null}
+          {preset.duration ? (
+            <Chip
+              size="small"
+              variant="outlined"
+              color="primary"
+              label={formatDuelDuration(preset.duration)}
+              sx={{ fontWeight: 700 }}
+            />
+          ) : null}
+          {typeof preset.problemsCount === 'number' ? (
+            <Chip
+              size="small"
+              variant="outlined"
+              label={`${preset.problemsCount}P`}
+              sx={{ fontWeight: 700 }}
+            />
+          ) : null}
+        </Stack>
+        {!compact && preset.description ? (
+          <Typography
+            variant="body2"
+            color="text.secondary"
+            sx={{
+              display: '-webkit-box',
+              WebkitLineClamp: 2,
+              WebkitBoxOrient: 'vertical',
+              overflow: 'hidden',
+            }}
+          >
+            {preset.description}
+          </Typography>
         ) : null}
       </Stack>
-      {!compact && preset.description ? (
-        <Typography
-          variant="body2"
-          color="text.secondary"
-          sx={{
-            display: '-webkit-box',
-            WebkitLineClamp: 2,
-            WebkitBoxOrient: 'vertical',
-            overflow: 'hidden',
-          }}
-        >
-          {preset.description}
-        </Typography>
-      ) : null}
-    </Stack>
 
-    <Stack spacing={0.35} minWidth={compact ? 84 : 110} alignItems="flex-end">
-      <DifficultyStars difficulty={preset.difficulty} />
+      <Stack spacing={0.35} minWidth={compact ? 84 : 110} alignItems="flex-end">
+        <DifficultyStars difficulty={preset.difficulty} />
+      </Stack>
     </Stack>
-  </Stack>
-);
+  );
+};
 
 const DuelTypeOptionContent = ({
   duelType,
@@ -231,6 +248,13 @@ const DuelCallComposerForm = ({
                 </Stack>
 
                 <Stack direction="row" spacing={1} flexWrap="wrap" useFlexGap>
+                  {getDuelPresetCategoryTitle(selectedPreset) ? (
+                    <Chip
+                      size="small"
+                      color="secondary"
+                      label={getDuelPresetCategoryTitle(selectedPreset)}
+                    />
+                  ) : null}
                   {selectedPreset.duration ? (
                     <Chip
                       size="small"
@@ -242,7 +266,9 @@ const DuelCallComposerForm = ({
                     <Chip
                       size="small"
                       variant="outlined"
-                      label={t('duels.presetProblemsCount', { count: selectedPreset.problemsCount })}
+                      label={t('duels.presetProblemsCount', {
+                        count: selectedPreset.problemsCount,
+                      })}
                     />
                   ) : null}
                 </Stack>

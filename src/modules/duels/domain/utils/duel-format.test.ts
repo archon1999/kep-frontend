@@ -1,6 +1,6 @@
 import assert from 'node:assert/strict';
 import test from 'node:test';
-import { formatDuelDuration } from './duel-format.ts';
+import { formatDuelDuration, getDuelPresetCategoryTitle } from './duel-format.ts';
 
 test('formats backend duration strings for compact duel cards', () => {
   assert.equal(formatDuelDuration('02:00:00'), '2h');
@@ -11,4 +11,13 @@ test('formats backend duration strings for compact duel cards', () => {
 test('keeps unsupported duration values readable', () => {
   assert.equal(formatDuelDuration(undefined), '');
   assert.equal(formatDuelDuration('unknown'), 'unknown');
+});
+
+test('reads a duel preset category from API objects and legacy strings', () => {
+  assert.equal(
+    getDuelPresetCategoryTitle({ category: { title: 'Competitive Programming' } }),
+    'Competitive Programming',
+  );
+  assert.equal(getDuelPresetCategoryTitle({ category: 'Python' }), 'Python');
+  assert.equal(getDuelPresetCategoryTitle({}), '');
 });
