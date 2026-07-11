@@ -23,6 +23,7 @@ import { VerdictKey } from 'shared/components/problems/attemptVerdict.utils';
 import { formatCalendarDateTime } from 'shared/lib/dateTime';
 import { playSuccessSound } from 'shared/lib/soundSettings';
 import { wsService } from 'shared/services/websocket';
+import useStableGridRowCount from 'shared/hooks/useStableGridRowCount';
 import { problemsQueries } from 'modules/problems/application/queries';
 import { AttemptListItem, Verdicts } from 'modules/problems/domain/entities/problem.entity';
 import AttemptDetailDialog from './AttemptDetailDialog.tsx';
@@ -68,6 +69,7 @@ const ProblemsAttemptsTable = ({
   const { t, i18n } = useTranslation();
   const theme = useTheme();
   const { currentUser } = useAuth();
+  const stableRowCount = useStableGridRowCount(total, Boolean(isLoading));
   const [rows, setRows] = useState<AttemptListItem[]>(attempts ?? []);
   const [lastUpdatedAttempt, setLastUpdatedAttempt] = useState<AttemptListItem | null>(null);
   const [selectedAttempt, setSelectedAttempt] = useState<AttemptListItem | null>(null);
@@ -412,7 +414,7 @@ const ProblemsAttemptsTable = ({
         localeText={{ noRowsLabel: t('common.dataGrid.noRows.problemAttempts') }}
         slotProps={getDataGridNoRowsOverlaySlotProps({ filtered: isFiltered })}
         loading={isLoading}
-        rowCount={total}
+        rowCount={stableRowCount}
         pageSizeOptions={[10, 20, 50]}
         paginationMode="server"
         paginationModel={paginationModel}

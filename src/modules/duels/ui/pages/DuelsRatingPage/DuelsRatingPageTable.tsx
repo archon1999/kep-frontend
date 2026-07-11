@@ -9,6 +9,7 @@ import UserPopover from 'modules/users/ui/shared/components/UserPopover.tsx';
 import ContestsRatingChip from 'shared/components/rating/ContestsRatingChip.tsx';
 import useGridPagination from 'shared/hooks/useGridPagination';
 import useRouteQueryState from 'shared/hooks/useRouteQueryState';
+import useStableGridRowCount from 'shared/hooks/useStableGridRowCount';
 import { mergePinnedRows, rowMatchesUsername } from 'shared/lib/pinnedRows';
 import { stringParam } from 'shared/lib/queryParams';
 import { mapDuelsRatingPageTableRows } from 'modules/duels/data-access/mappers/duels-rating-page.mapper.ts';
@@ -55,6 +56,7 @@ const DuelsRatingPageTable = () => {
       ),
     [ratingPage?.data, ratingPage?.pinnedRows],
   );
+  const rowCount = useStableGridRowCount(ratingPage?.total, isLoading);
 
   const columns: GridColDef<DuelsRatingPageTableRow>[] = useMemo(
     () => [
@@ -147,11 +149,11 @@ const DuelsRatingPageTable = () => {
         rowMatchesUsername(row, currentUser?.username) ? 'MuiDataGrid-row--currentUser' : ''
       }
       localeText={{ noRowsLabel: t('common.dataGrid.noRows.duelsRating') }}
-      rowCount={ratingPage?.total ?? rows.length}
+      rowCount={rowCount}
       paginationModel={paginationModel}
       onPaginationModelChange={onPaginationModelChange}
       paginationMode="server"
-      pageSizeOptions={[12]}
+      pageSizeOptions={[10]}
       disableColumnMenu
       disableColumnFilter
       disableColumnSelector

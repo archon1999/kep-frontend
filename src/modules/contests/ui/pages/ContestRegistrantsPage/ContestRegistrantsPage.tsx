@@ -13,6 +13,7 @@ import { ApiContestsRegistrantsListOrdering } from 'shared/api/orval/generated/e
 import ContestsRatingChip from 'shared/components/rating/ContestsRatingChip';
 import useGridPagination from 'shared/hooks/useGridPagination';
 import useRouteQueryState from 'shared/hooks/useRouteQueryState';
+import useStableGridRowCount from 'shared/hooks/useStableGridRowCount';
 import { enumParam } from 'shared/lib/queryParams';
 import { responsivePagePaddingSx } from 'shared/lib/styles';
 
@@ -89,6 +90,7 @@ const ContestRegistrantsPage = () => {
   });
 
   const total = registrantsPage?.total ?? 0;
+  const stableRowCount = useStableGridRowCount(total, isLoading);
   const registrants = registrantsPage?.data ?? [];
 
   const columns: GridColDef<ContestRegistrant>[] = useMemo(
@@ -205,7 +207,7 @@ const ContestRegistrantsPage = () => {
             columns={columns}
             localeText={{ noRowsLabel: t('common.dataGrid.noRows.contestRegistrants') }}
             loading={isLoading}
-            rowCount={total}
+            rowCount={stableRowCount}
             paginationMode="server"
             sortingMode="server"
             onSortModelChange={handleSortChange}

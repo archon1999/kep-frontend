@@ -32,6 +32,7 @@ import DataGridNoRowsOverlay, {
   getDataGridNoRowsOverlaySlotProps,
 } from 'shared/components/common/DataGridNoRowsOverlay';
 import useGridPagination from 'shared/hooks/useGridPagination';
+import useStableGridRowCount from 'shared/hooks/useStableGridRowCount';
 import { useAdminUsers } from 'modules/admin/users/application/queries';
 import { usersAdminClient } from 'modules/admin/users/data-access/usersAdminClient';
 import { AdminUser } from 'modules/admin/users/domain/types';
@@ -105,6 +106,7 @@ const AdminUsersListPage = () => {
 
   const { data, isLoading, isValidating, mutate } = useAdminUsers(queryParams);
   const isGridLoading = isLoading || (isValidating && !data?.data);
+  const rowCount = useStableGridRowCount(data?.total, isGridLoading);
 
   const handleSearchChange = (event: ChangeEvent<HTMLInputElement>) => setSearch(event.target.value);
 
@@ -465,7 +467,7 @@ const AdminUsersListPage = () => {
       <DataGrid
         autoHeight
         rows={data?.data ?? []}
-        rowCount={data?.total ?? 0}
+        rowCount={rowCount}
         loading={isGridLoading}
         slots={{
           loadingOverlay: AdminDataGridSkeletonLoadingOverlay,

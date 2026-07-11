@@ -25,6 +25,7 @@ import IconifyIcon from 'shared/components/base/IconifyIcon';
 import ContestsRatingChip from 'shared/components/rating/ContestsRatingChip';
 import useGridPagination from 'shared/hooks/useGridPagination';
 import useRouteQueryState from 'shared/hooks/useRouteQueryState';
+import useStableGridRowCount from 'shared/hooks/useStableGridRowCount';
 import { formatMachineDateTime } from 'shared/lib/dateTime';
 import { stringParam } from 'shared/lib/queryParams';
 
@@ -112,6 +113,7 @@ export const ProblemSolversTab = ({ problemId }: ProblemSolversTabProps) => {
     page: pageParams.page,
     pageSize: pageParams.pageSize,
   });
+  const stableRowCount = useStableGridRowCount(data?.total, isLoading);
   const { data: latestSolvers } = useProblemSolvers(problemId, {
     ordering: '-latest_solved_at',
     page: 1,
@@ -340,7 +342,7 @@ export const ProblemSolversTab = ({ problemId }: ProblemSolversTabProps) => {
               columns={columns}
               localeText={{ noRowsLabel: t('common.dataGrid.noRows.problemSolvers') }}
               loading={isLoading}
-              rowCount={data?.total ?? 0}
+              rowCount={stableRowCount}
               paginationModel={paginationModel}
               onPaginationModelChange={onPaginationModelChange}
               pageSizeOptions={[10, 20, 50]}

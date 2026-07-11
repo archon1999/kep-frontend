@@ -10,6 +10,7 @@ import {
 import UserPopover from 'modules/users/ui/shared/components/UserPopover.tsx';
 import ChallengesRatingChip from 'shared/components/rating/ChallengesRatingChip.tsx';
 import { rowMatchesUsername } from 'shared/lib/pinnedRows';
+import useStableGridRowCount from 'shared/hooks/useStableGridRowCount';
 
 export type ChallengesRatingPageRow = GridValidRowModel & {
   username: string;
@@ -46,6 +47,7 @@ const ChallengesRatingPageTable = ({
   currentUsername,
 }: ChallengesRatingPageTableProps) => {
   const { t } = useTranslation();
+  const stableRowCount = useStableGridRowCount(rowCount, loading);
 
   const columns: GridColDef<ChallengesRatingPageRow>[] = [
     {
@@ -134,7 +136,7 @@ const ChallengesRatingPageTable = ({
         rowMatchesUsername(row, currentUsername) ? 'MuiDataGrid-row--currentUser' : ''
       }
       localeText={{ noRowsLabel: t('common.dataGrid.noRows.challengesRating') }}
-      rowCount={rowCount}
+      rowCount={stableRowCount}
       paginationMode="server"
       sortingMode="server"
       paginationModel={paginationModel}

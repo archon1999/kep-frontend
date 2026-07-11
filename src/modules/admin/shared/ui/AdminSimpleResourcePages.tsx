@@ -30,6 +30,7 @@ import AttemptLanguage from 'shared/components/problems/AttemptLanguage';
 import AttemptVerdict from 'shared/components/problems/AttemptVerdict';
 import { VerdictKey } from 'shared/components/problems/attemptVerdict.utils';
 import useGridPagination from 'shared/hooks/useGridPagination';
+import useStableGridRowCount from 'shared/hooks/useStableGridRowCount';
 import { adminApiClient } from '../helpers/adminApiClient.ts';
 import { AdminChoiceOption, AdminListParams } from '../helpers/types.ts';
 import AdminBatchActionsToolbar from './AdminBatchActionsToolbar';
@@ -676,6 +677,7 @@ const AdminSimpleResourceListPage = ({ config }: AdminSimpleResourcePageProps) =
   const filtersId = `admin-${config.resource.replace(/[^a-z0-9]+/gi, '-')}`;
 
   const isGridLoading = isLoading || (isValidating && !data);
+  const rowCount = useStableGridRowCount(data?.total, isGridLoading);
 
   return (
     <AdminListPageLayout
@@ -733,7 +735,7 @@ const AdminSimpleResourceListPage = ({ config }: AdminSimpleResourcePageProps) =
       <DataGrid
         autoHeight
         rows={data?.data ?? []}
-        rowCount={data?.total ?? 0}
+        rowCount={rowCount}
         loading={isGridLoading}
         slots={{
           loadingOverlay: AdminDataGridSkeletonLoadingOverlay,

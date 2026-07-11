@@ -12,6 +12,7 @@ import { difficultyColorByKey, difficultyOptions } from 'modules/problems/config
 import { ProblemsRatingRow } from 'modules/problems/domain/entities/problem.entity';
 import UserPopover from 'modules/users/ui/shared/components/UserPopover.tsx';
 import { rowMatchesUsername } from 'shared/lib/pinnedRows';
+import useStableGridRowCount from 'shared/hooks/useStableGridRowCount';
 
 export type ProblemsRatingDataGridLabels = {
   rank: string;
@@ -47,6 +48,7 @@ const ProblemsRatingDataGrid = ({
 }: ProblemsRatingDataGridProps) => {
   const theme = useTheme();
   const { t } = useTranslation();
+  const stableRowCount = useStableGridRowCount(rowCount, Boolean(loading));
 
   const renderDifficultyCell = (key: (typeof difficultyOptions)[number]['key']) => {
     const colorKey = difficultyColorByKey[key];
@@ -150,7 +152,7 @@ const ProblemsRatingDataGrid = ({
       rowHeight={76}
       rows={rows}
       sortingOrder={['desc', 'asc', null]}
-      rowCount={rowCount}
+      rowCount={stableRowCount}
       loading={loading}
       paginationModel={paginationModel}
       onPaginationModelChange={onPaginationModelChange}

@@ -13,6 +13,7 @@ import { useTranslation } from 'react-i18next';
 import { ContestRatingRow } from 'modules/contests/domain/entities/contest-rating.entity';
 import ContestantView from 'modules/contests/ui/shared/components/ContestantView';
 import { rowMatchesUsername } from 'shared/lib/pinnedRows';
+import useStableGridRowCount from 'shared/hooks/useStableGridRowCount';
 
 export type ContestsRatingPageRow = GridValidRowModel & ContestRatingRow;
 
@@ -38,6 +39,7 @@ const ContestsRatingPageTable = ({
   currentUsername,
 }: ContestsRatingPageTableProps) => {
   const { t } = useTranslation();
+  const stableRowCount = useStableGridRowCount(rowCount, loading);
 
   const columns: GridColDef<ContestsRatingPageRow>[] = useMemo(
     () => [
@@ -149,7 +151,7 @@ const ContestsRatingPageTable = ({
       getRowClassName={({ row }) =>
         rowMatchesUsername(row, currentUsername) ? 'MuiDataGrid-row--currentUser' : ''
       }
-      rowCount={rowCount}
+      rowCount={stableRowCount}
       paginationMode="server"
       sortingMode="server"
       paginationModel={paginationModel}

@@ -22,6 +22,7 @@ import DataGridNoRowsOverlay, {
   getDataGridNoRowsOverlaySlotProps,
 } from 'shared/components/common/DataGridNoRowsOverlay';
 import useGridPagination from 'shared/hooks/useGridPagination';
+import useStableGridRowCount from 'shared/hooks/useStableGridRowCount';
 import { useAdminContestMeta, useAdminContests } from 'modules/admin/contests/application/queries';
 import { contestsAdminClient } from 'modules/admin/contests/data-access/contestsAdminClient';
 import { AdminContest } from 'modules/admin/contests/domain/types';
@@ -101,6 +102,7 @@ const AdminContestsListPage = () => {
   const { data, isLoading, isValidating, mutate } = useAdminContests(queryParams);
   const { data: meta } = useAdminContestMeta();
   const isGridLoading = isLoading || (isValidating && !data?.data);
+  const rowCount = useStableGridRowCount(data?.total, isGridLoading);
 
   const handleSearchChange = (event: ChangeEvent<HTMLInputElement>) => setSearch(event.target.value);
 
@@ -504,7 +506,7 @@ const AdminContestsListPage = () => {
       <DataGrid
         autoHeight
         rows={data?.data ?? []}
-        rowCount={data?.total ?? 0}
+        rowCount={rowCount}
         loading={isGridLoading}
         slots={{
           loadingOverlay: AdminDataGridSkeletonLoadingOverlay,

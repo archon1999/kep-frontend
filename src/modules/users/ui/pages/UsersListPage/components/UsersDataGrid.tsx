@@ -16,6 +16,7 @@ import { rowMatchesUsername } from 'shared/lib/pinnedRows';
 import ChallengesRatingChip from 'shared/components/rating/ChallengesRatingChip';
 import ContestsRatingChip from 'shared/components/rating/ContestsRatingChip';
 import Streak from 'shared/components/rating/Streak';
+import useStableGridRowCount from 'shared/hooks/useStableGridRowCount';
 
 export interface UsersDataGridLabels {
   user: string;
@@ -56,6 +57,7 @@ const UsersDataGrid = ({
   currentUsername,
 }: UsersDataGridProps) => {
   const { t } = useTranslation();
+  const stableRowCount = useStableGridRowCount(rowCount, Boolean(loading));
   const columns: GridColDef<GridValidRowModel>[] = [
     {
       field: 'username',
@@ -243,7 +245,7 @@ const UsersDataGrid = ({
       sortingOrder={['desc', 'asc', null]}
       rowHeight={72}
       rows={rows}
-      rowCount={rowCount}
+      rowCount={stableRowCount}
       loading={loading}
       paginationModel={paginationModel}
       onPaginationModelChange={onPaginationModelChange}
