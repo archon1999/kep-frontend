@@ -1,17 +1,14 @@
-import { useMemo } from 'react';
 import { useTranslation } from 'react-i18next';
 import {
-  Box,
   Chip,
+  FilledInput,
   FormControl,
   InputLabel,
   MenuItem,
-  OutlinedInput,
   Select,
   Stack,
   Typography,
 } from '@mui/material';
-import { alpha } from '@mui/material/styles';
 import {
   DuelPreset,
   DuelTypeInfo,
@@ -155,24 +152,16 @@ const DuelCallComposerForm = ({
   onTypeChange,
 }: Props) => {
   const { t } = useTranslation();
-  const selectedPreset = useMemo(
-    () => presets.find((preset) => String(preset.id ?? '') === selectedPresetId),
-    [presets, selectedPresetId],
-  );
-  const selectedType = useMemo(
-    () => duelTypes.find((duelType) => String(duelType.id ?? '') === selectedTypeId),
-    [duelTypes, selectedTypeId],
-  );
 
   return (
     <Stack spacing={2.5}>
-      <FormControl fullWidth>
+      <FormControl fullWidth variant="filled">
         <InputLabel id="duel-preset-select-label">{t('duels.preset')}</InputLabel>
         <Select
           labelId="duel-preset-select-label"
           value={selectedPresetId}
           onChange={(event) => onPresetChange(String(event.target.value))}
-          input={<OutlinedInput label={t('duels.preset')} />}
+          input={<FilledInput disableUnderline />}
           renderValue={(value) => {
             const preset = presets.find((item) => String(item.id ?? '') === String(value));
             if (!preset) {
@@ -181,8 +170,10 @@ const DuelCallComposerForm = ({
             return <PresetOptionContent preset={preset} compact />;
           }}
           sx={{
+            borderRadius: 2,
             '& .MuiSelect-select': {
-              py: 1.5,
+              pt: 3,
+              pb: 1.25,
             },
           }}
         >
@@ -194,13 +185,13 @@ const DuelCallComposerForm = ({
         </Select>
       </FormControl>
 
-      <FormControl fullWidth>
+      <FormControl fullWidth variant="filled">
         <InputLabel id="duel-type-select-label">{t('duels.duelType')}</InputLabel>
         <Select
           labelId="duel-type-select-label"
           value={selectedTypeId}
           onChange={(event) => onTypeChange(String(event.target.value))}
-          input={<OutlinedInput label={t('duels.duelType')} />}
+          input={<FilledInput disableUnderline />}
           renderValue={(value) => {
             const duelType = duelTypes.find((item) => String(item.id ?? '') === String(value));
             if (!duelType) {
@@ -209,8 +200,10 @@ const DuelCallComposerForm = ({
             return <DuelTypeOptionContent duelType={duelType} compact />;
           }}
           sx={{
+            borderRadius: 2,
             '& .MuiSelect-select': {
-              py: 1.5,
+              pt: 3,
+              pb: 1.25,
             },
           }}
         >
@@ -221,78 +214,6 @@ const DuelCallComposerForm = ({
           ))}
         </Select>
       </FormControl>
-
-      {selectedPreset || selectedType ? (
-        <Box
-          sx={(theme) => ({
-            borderRadius: 3,
-            p: 1.75,
-            bgcolor: alpha(theme.palette.primary.main, 0.05),
-            border: '1px solid',
-            borderColor: alpha(theme.palette.primary.main, 0.12),
-          })}
-        >
-          <Stack spacing={1}>
-            {selectedPreset ? (
-              <>
-                <Stack direction="row" justifyContent="space-between" spacing={2}>
-                  <Stack spacing={0.25}>
-                    <Typography variant="subtitle2" color="text.secondary">
-                      {t('duels.presetDetails')}
-                    </Typography>
-                    <Typography variant="subtitle1" fontWeight={800}>
-                      {selectedPreset.title}
-                    </Typography>
-                  </Stack>
-                  <DifficultyStars difficulty={selectedPreset.difficulty} />
-                </Stack>
-
-                <Stack direction="row" spacing={1} flexWrap="wrap" useFlexGap>
-                  {getDuelPresetCategoryTitle(selectedPreset) ? (
-                    <Chip
-                      size="small"
-                      color="secondary"
-                      label={getDuelPresetCategoryTitle(selectedPreset)}
-                    />
-                  ) : null}
-                  {selectedPreset.duration ? (
-                    <Chip
-                      size="small"
-                      color="primary"
-                      label={formatDuelDuration(selectedPreset.duration)}
-                    />
-                  ) : null}
-                  {typeof selectedPreset.problemsCount === 'number' ? (
-                    <Chip
-                      size="small"
-                      variant="outlined"
-                      label={t('duels.presetProblemsCount', {
-                        count: selectedPreset.problemsCount,
-                      })}
-                    />
-                  ) : null}
-                </Stack>
-              </>
-            ) : null}
-
-            {selectedType ? (
-              <Stack spacing={0.25}>
-                <Typography variant="subtitle2" color="text.secondary">
-                  {t('duels.duelType')}
-                </Typography>
-                <Typography variant="body2" fontWeight={700}>
-                  {selectedType.title}
-                </Typography>
-                {selectedType.description ? (
-                  <Typography variant="body2" color="text.secondary">
-                    {selectedType.description}
-                  </Typography>
-                ) : null}
-              </Stack>
-            ) : null}
-          </Stack>
-        </Box>
-      ) : null}
     </Stack>
   );
 };
