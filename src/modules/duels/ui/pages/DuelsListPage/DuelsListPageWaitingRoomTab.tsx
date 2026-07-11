@@ -1,26 +1,28 @@
 import { useState } from 'react';
-import { toast } from 'sonner';
+import { useTranslation } from 'react-i18next';
 import { Button, Card, CardContent, Skeleton, Stack, Typography } from '@mui/material';
 import Grid from '@mui/material/Grid';
-import { useTranslation } from 'react-i18next';
-import { useSWRConfig } from 'swr';
-import IconifyIcon from 'shared/components/base/IconifyIcon.tsx';
 import { useAcceptDuelCall, useCancelDuelCall } from 'modules/duels/application/mutations.ts';
-import {
-  isDuelsCollectionCacheKey,
-  useDuelCalls,
-} from 'modules/duels/application/queries.ts';
+import { isDuelsCollectionCacheKey, useDuelCalls } from 'modules/duels/application/queries.ts';
 import { DuelInvitation } from 'modules/duels/domain/index.ts';
 import { getDuelErrorMessage } from 'modules/duels/ui/shared/helpers/getDuelErrorMessage.ts';
-import DuelScheduleDialog from './dialogs/DuelScheduleDialog.tsx';
+import IconifyIcon from 'shared/components/base/IconifyIcon.tsx';
+import { toast } from 'sonner';
+import { useSWRConfig } from 'swr';
 import DuelWaitingRoomCard from './components/DuelWaitingRoomCard.tsx';
+import DuelScheduleDialog from './dialogs/DuelScheduleDialog.tsx';
 
 const DuelsListPageWaitingRoomTab = () => {
   const { t } = useTranslation();
   const { mutate: mutateCache } = useSWRConfig();
   const [selectedInvitation, setSelectedInvitation] = useState<DuelInvitation | null>(null);
   const [actionLoadingKey, setActionLoadingKey] = useState<string | null>(null);
-  const { data: queueCallsPage, error, isLoading, mutate: mutateQueueCalls } = useDuelCalls({
+  const {
+    data: queueCallsPage,
+    error,
+    isLoading,
+    mutate: mutateQueueCalls,
+  } = useDuelCalls({
     scope: 'queue',
     page: 1,
     pageSize: 20,
@@ -130,9 +132,10 @@ const DuelsListPageWaitingRoomTab = () => {
             </Grid>
           ) : null}
 
-          {!loading && !error &&
+          {!loading &&
+            !error &&
             invitations.map((invitation) => (
-              <Grid key={invitation.id} size={{ xs: 12, sm: 6, lg: 3 }}>
+              <Grid key={invitation.id} size={{ xs: 12, sm: 6, lg: 3 }} sx={{ display: 'flex' }}>
                 <DuelWaitingRoomCard
                   invitation={invitation}
                   actionLoadingKey={actionLoadingKey}

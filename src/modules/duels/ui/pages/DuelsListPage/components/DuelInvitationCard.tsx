@@ -1,3 +1,4 @@
+import { useTranslation } from 'react-i18next';
 import {
   Box,
   Button,
@@ -10,15 +11,14 @@ import {
   Typography,
 } from '@mui/material';
 import { alpha } from '@mui/material/styles';
-import { useTranslation } from 'react-i18next';
-import UserPopover from 'modules/users/ui/shared/components/UserPopover.tsx';
 import {
   DuelInvitation,
   DuelInvitationUser,
   formatDuelDuration,
 } from 'modules/duels/domain/index.ts';
-import ContestsRatingChip from 'shared/components/rating/ContestsRatingChip.tsx';
+import UserPopover from 'modules/users/ui/shared/components/UserPopover.tsx';
 import IconifyIcon from 'shared/components/base/IconifyIcon.tsx';
+import ContestsRatingChip from 'shared/components/rating/ContestsRatingChip.tsx';
 import { formatCalendarDateTime, formatRelativeTime } from 'shared/lib/dateTime';
 
 type Props = {
@@ -95,9 +95,7 @@ const ParticipantBadge = ({ user }: { user: DuelInvitationUser }) => {
         <Typography variant="subtitle2" fontWeight={800} noWrap>
           {user.displayName || user.username}
         </Typography>
-        {user.isBot ? (
-          <Chip size="small" color="secondary" variant="outlined" label="BOT" />
-        ) : null}
+        {user.isBot ? <Chip size="small" color="secondary" variant="outlined" label="BOT" /> : null}
       </Stack>
 
       <Stack direction="row" spacing={1} alignItems="center" flexWrap="wrap" useFlexGap>
@@ -172,7 +170,8 @@ const DuelInvitationCard = ({
   const problemsLabel = invitation.problems
     ?.map((problem) => `${problem.symbol}${problem.ball ? ` ${problem.ball}` : ''}`)
     .join(' · ');
-  const waitingFor = invitation.actionRequiredBy?.displayName || invitation.actionRequiredBy?.username;
+  const waitingFor =
+    invitation.actionRequiredBy?.displayName || invitation.actionRequiredBy?.username;
   const createdRelative = formatRelativeTime(invitation.created, '');
   const creator = invitation.challenger;
   const claimant = invitation.invitee ?? null;
@@ -191,10 +190,9 @@ const DuelInvitationCard = ({
       variant="outlined"
       sx={(theme) => ({
         borderRadius: 3,
-        borderColor:
-          invitation.requiresResponse
-            ? alpha(theme.palette.warning.main, 0.35)
-            : alpha(theme.palette.primary.main, 0.12),
+        borderColor: invitation.requiresResponse
+          ? alpha(theme.palette.warning.main, 0.35)
+          : alpha(theme.palette.primary.main, 0.12),
       })}
     >
       <CardContent sx={{ p: 2.25 }}>
@@ -215,7 +213,12 @@ const DuelInvitationCard = ({
                   size="small"
                 />
                 {invitation.isBot ? (
-                  <Chip label={t('duels.botCall')} size="small" variant="outlined" color="secondary" />
+                  <Chip
+                    label={t('duels.botCall')}
+                    size="small"
+                    variant="outlined"
+                    color="secondary"
+                  />
                 ) : null}
                 {waitingFor ? (
                   <Chip
@@ -276,7 +279,9 @@ const DuelInvitationCard = ({
                   {typeof invitation.preset?.problemsCount === 'number' ? (
                     <Chip
                       size="small"
-                      label={t('duels.presetProblemsCountShort', { count: invitation.preset.problemsCount })}
+                      label={t('duels.presetProblemsCountShort', {
+                        count: invitation.preset.problemsCount,
+                      })}
                       variant="outlined"
                     />
                   ) : null}
@@ -396,12 +401,6 @@ const DuelInvitationCard = ({
                 />
               ) : null}
             </Stack>
-
-            {!invitation.canAccept && shouldShowAccept && acceptReason ? (
-              <Typography variant="caption" color="text.secondary" textAlign="right">
-                {acceptReason}
-              </Typography>
-            ) : null}
 
             {!invitation.canConfirm && shouldShowConfirm && confirmReason ? (
               <Typography variant="caption" color="text.secondary" textAlign="right">

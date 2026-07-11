@@ -1,13 +1,13 @@
+import { ReactNode } from 'react';
+import { useTranslation } from 'react-i18next';
+import { useNavigate } from 'react-router';
 import { Card, CardContent, Pagination, Skeleton, Stack, Typography } from '@mui/material';
 import Grid from '@mui/material/Grid';
-import { ReactNode } from 'react';
-import { useNavigate } from 'react-router';
-import { useTranslation } from 'react-i18next';
 import { getResourceById, resources } from 'app/routes/resources.ts';
-import useRouteQueryState from 'shared/hooks/useRouteQueryState';
-import { numberParam } from 'shared/lib/queryParams';
 import { useDuelsList } from 'modules/duels/application/queries.ts';
 import { Duel } from 'modules/duels/domain/index.ts';
+import useRouteQueryState from 'shared/hooks/useRouteQueryState';
+import { numberParam } from 'shared/lib/queryParams';
 import DuelListCard from './DuelListCard.tsx';
 
 type Props = {
@@ -56,7 +56,11 @@ const DuelListSection = ({
 
   const resolvedPage = page ?? state.page;
   const shouldFetch = duels === undefined || total === undefined || loading === undefined;
-  const { data: fetchedPage, error, isLoading } = useDuelsList(
+  const {
+    data: fetchedPage,
+    error,
+    isLoading,
+  } = useDuelsList(
     shouldFetch
       ? {
           my: scope === 'my',
@@ -71,9 +75,7 @@ const DuelListSection = ({
   const resolvedLoading = loading ?? (isLoading && !fetchedPage);
   const resolvedTitle =
     title ?? (scope === 'my' ? t('duels.myDuelsSection') : t('duels.recentDuelsSection'));
-  const resolvedDescription =
-    description ??
-    (scope === 'my' ? t('duels.myDuelsDescription') : t('duels.recentDuelsDescription'));
+  const resolvedDescription = description;
   const pageCount = Math.max(1, Math.ceil((resolvedTotal || 0) / pageSize));
 
   const handlePageChange = (value: number) => {
@@ -148,7 +150,8 @@ const DuelListSection = ({
           </Card>
         ) : null}
 
-        {!resolvedLoading && !error &&
+        {!resolvedLoading &&
+          !error &&
           resolvedDuels.map((duel) => (
             <DuelListCard
               key={duel.id}

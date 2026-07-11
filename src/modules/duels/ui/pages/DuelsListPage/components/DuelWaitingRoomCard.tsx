@@ -1,7 +1,16 @@
 import { useTranslation } from 'react-i18next';
-import { Button, Card, CardContent, Chip, Stack, Tooltip, Typography } from '@mui/material';
-import UserPopover from 'modules/users/ui/shared/components/UserPopover.tsx';
+import {
+  Button,
+  Card,
+  CardContent,
+  Chip,
+  Divider,
+  Stack,
+  Tooltip,
+  Typography,
+} from '@mui/material';
 import { DuelInvitation, formatDuelDuration } from 'modules/duels/domain/index.ts';
+import UserPopover from 'modules/users/ui/shared/components/UserPopover.tsx';
 import ContestsRatingChip from 'shared/components/rating/ContestsRatingChip.tsx';
 import { formatRelativeTime } from 'shared/lib/dateTime';
 
@@ -26,9 +35,9 @@ const DuelWaitingRoomCard = ({ invitation, actionLoadingKey, onAccept, onCancel 
   const action = invitation.canCancel ? onCancel : onAccept;
 
   return (
-    <Card background={0}>
-      <CardContent>
-        <Stack spacing={2} sx={{ height: '100%' }}>
+    <Card background={0} sx={{ width: 1, height: 1, display: 'flex' }}>
+      <CardContent sx={{ display: 'flex', flex: 1 }}>
+        <Stack spacing={2} sx={{ width: 1, flex: 1 }}>
           <Stack direction="row" justifyContent="space-between" spacing={1} alignItems="flex-start">
             <Stack spacing={0.75} sx={{ minWidth: 0 }}>
               <Stack direction="row" spacing={0.75} alignItems="center" flexWrap="wrap" useFlexGap>
@@ -58,7 +67,14 @@ const DuelWaitingRoomCard = ({ invitation, actionLoadingKey, onAccept, onCancel 
             {invitation.preset?.title ?? t('duels.createDuel')}
           </Typography>
 
-          <Stack direction="row" spacing={0.75} flexWrap="wrap" useFlexGap>
+          <Stack
+            direction="row"
+            spacing={0.75}
+            alignItems="center"
+            flexWrap="wrap"
+            useFlexGap
+            divider={<Divider flexItem orientation="vertical" />}
+          >
             {invitation.duelType?.title ? (
               <Chip
                 size="small"
@@ -85,7 +101,13 @@ const DuelWaitingRoomCard = ({ invitation, actionLoadingKey, onAccept, onCancel 
             ) : null}
           </Stack>
 
-          <Stack direction="row" alignItems="center" justifyContent="space-between">
+          <Stack
+            direction="row"
+            alignItems="center"
+            justifyContent="space-between"
+            spacing={1}
+            sx={{ mt: 'auto' }}
+          >
             {createdRelative ? (
               <Typography variant="caption" color="text.secondary" noWrap>
                 {createdRelative}
@@ -106,11 +128,6 @@ const DuelWaitingRoomCard = ({ invitation, actionLoadingKey, onAccept, onCancel 
                 </Button>
               </span>
             </Tooltip>
-            {actionDisabled && actionReason ? (
-              <Typography variant="caption" color="text.secondary">
-                {actionReason}
-              </Typography>
-            ) : null}
           </Stack>
         </Stack>
       </CardContent>
