@@ -23,6 +23,7 @@ export type DuelDetailPageHeaderProps = {
   isRunning: boolean;
   isSubmitting: boolean;
   isWorkspaceLocked: boolean;
+  isSubmitLocked: boolean;
   onRun: () => void;
   onSubmit: () => void;
   onSelectProblem: (symbol: string) => void;
@@ -124,6 +125,7 @@ const DuelDetailPageHeader = ({
   isRunning,
   isSubmitting,
   isWorkspaceLocked,
+  isSubmitLocked,
   onRun,
   onSubmit,
   onSelectProblem,
@@ -183,7 +185,7 @@ const DuelDetailPageHeader = ({
                   onClick={() => prevProblem && onSelectProblem(prevProblem.symbol)}
                   variant="text"
                   color="primary"
-                  disabled={!prevProblem}
+                  disabled={!prevProblem || (prevProblem.isLocked && !prevProblem.unlockAt)}
                   startIcon={<IconifyIcon icon="mdi:chevron-left" width={18} height={18} />}
                 />
               </span>
@@ -194,7 +196,7 @@ const DuelDetailPageHeader = ({
                   onClick={() => nextProblem && onSelectProblem(nextProblem.symbol)}
                   variant="text"
                   color="primary"
-                  disabled={!nextProblem}
+                  disabled={!nextProblem || (nextProblem.isLocked && !nextProblem.unlockAt)}
                   endIcon={<IconifyIcon icon="mdi:chevron-right" width={18} height={18} />}
                 />
               </span>
@@ -230,7 +232,7 @@ const DuelDetailPageHeader = ({
               variant="contained"
               color="primary"
               onClick={onSubmit}
-              disabled={isSubmitting || !hasCode || isWorkspaceLocked}
+              disabled={isSubmitting || !hasCode || isSubmitLocked}
               startIcon={<IconifyIcon icon="mdi:send-outline" width={18} height={18} />}
             >
               {t('problems.detail.submit')}

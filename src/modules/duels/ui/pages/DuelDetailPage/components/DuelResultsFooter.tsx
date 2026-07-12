@@ -34,6 +34,13 @@ const DuelResultsFooter = ({
   onSelectProblem,
 }: Props) => {
   const rows = getDuelDetailPagePlayerRows(duel);
+  const firstTotal = duel.playerFirst.balls ?? 0;
+  const secondTotal = duel.playerSecond?.balls ?? 0;
+  const getTotalColor = (order: number): 'default' | 'success' | 'error' => {
+    if (!duel.playerSecond || firstTotal === secondTotal) return 'default';
+    const isFirstLeading = firstTotal > secondTotal;
+    return (order === 0) === isFirstLeading ? 'success' : 'error';
+  };
 
   if (!rows.length || !problems.length) {
     return null;
@@ -83,6 +90,12 @@ const DuelResultsFooter = ({
                       color={isActive ? 'primary' : 'inherit'}
                       variant="text"
                       onClick={() => onSelectProblem(problem.symbol)}
+                      disabled={Boolean(problem.isLocked && !problem.unlockAt)}
+                      startIcon={
+                        problem.isLocked ? (
+                          <IconifyIcon icon="mdi:lock-outline" width={16} height={16} />
+                        ) : undefined
+                      }
                       sx={{ minWidth: 40, fontWeight: 800, fontSize: '0.95rem' }}
                     >
                       {problem.symbol}
@@ -113,7 +126,7 @@ const DuelResultsFooter = ({
                 <TableCell align="center">
                   <Chip
                     label={row.player.balls ?? 0}
-                    color={row.accent}
+                    color={getTotalColor(row.order)}
                     size="small"
                     sx={{ minWidth: 58, fontWeight: 800 }}
                   />

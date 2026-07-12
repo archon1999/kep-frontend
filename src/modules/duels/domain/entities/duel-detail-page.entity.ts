@@ -8,6 +8,12 @@ export interface DuelDetailPageNavigationProblem {
   ball?: number;
   playerFirstBall?: number;
   playerSecondBall?: number;
+  isLocked?: boolean;
+  isClaimed?: boolean;
+  firstAcceptedAttemptId?: number;
+  unlockAt?: string | null;
+  firstAcceptedByUserId?: number;
+  firstAcceptedByUsername?: string | null;
 }
 
 export interface DuelDetailPagePlayerRow {

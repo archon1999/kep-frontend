@@ -50,7 +50,7 @@ export const isDuelsCollectionCacheKey = (key: unknown) =>
 export const useDuelDetail = (id?: number | string) =>
   useSWR<Duel | null>(id ? ['duel-detail', id] : null, () => duelsRepository.getDuel(id!), {
     revalidateOnFocus: false,
-    refreshInterval: 5000,
+    refreshInterval: 15000,
   });
 
 export const useDuelResults = (id?: number | string) =>

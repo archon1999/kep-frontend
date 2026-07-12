@@ -30,6 +30,13 @@ export interface DuelProblem {
   playerFirstBall?: number;
   playerSecondBall?: number;
   problem?: ProblemDetail;
+  isLocked?: boolean;
+  isClaimed?: boolean;
+  firstAcceptedAttemptId?: number;
+  unlockAt?: string | null;
+  firstAcceptedByUserId?: number;
+  firstAcceptedByUsername?: string | null;
+  canSubmit?: boolean;
 }
 
 export interface DuelPresetTypeInfo {

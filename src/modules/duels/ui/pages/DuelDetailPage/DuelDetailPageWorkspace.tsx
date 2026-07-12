@@ -33,6 +33,7 @@ import { formatCalendarDateTime } from 'shared/lib/dateTime';
 import { enumParam, stringParam } from 'shared/lib/queryParams';
 import { wsService } from 'shared/services/websocket';
 import DuelResultsFooter from './components/DuelResultsFooter.tsx';
+import { playDuelTickSound } from './duelTickSound.ts';
 
 export type DuelDetailPageWorkspaceProps = {
   duel: Duel;
@@ -100,6 +101,7 @@ type CheckSamplesResult = Array<{
 
 type DuelDetailPageWorkspaceCurrentUser =
   | {
+      id?: number;
       username?: string;
       permissions?: unknown;
       isSuperuser?: boolean;
@@ -122,6 +124,7 @@ export type DuelDetailPageWorkspaceState = {
   isRunning: boolean;
   isSubmitting: boolean;
   isWorkspaceLocked: boolean;
+  isSubmitLocked: boolean;
   onRun: () => void;
   onSubmit: () => void;
 };
@@ -194,6 +197,8 @@ export const useDuelDetailPageWorkspaceState = ({
   const [editorTheme, setEditorTheme] = useState<'vs' | 'vs-dark'>(
     themeMode.mode === 'dark' ? 'vs-dark' : 'vs',
   );
+  const handledFirstAcAttemptsRef = useRef(new Set<number>());
+  const hasInitializedFirstAcClaimsRef = useRef(false);
   const actionStatesRef = useRef({
     currentUser,
     hasCode: false,
@@ -202,6 +207,7 @@ export const useDuelDetailPageWorkspaceState = ({
     isCheckingSamples,
     canUseCheckSamples: false,
     isWorkspaceLocked: true,
+    isSubmitLocked: true,
   });
   const actionHandlersRef = useRef({
     onRun: () => {},
@@ -229,6 +235,12 @@ export const useDuelDetailPageWorkspaceState = ({
         ball: problem.ball,
         playerFirstBall: problem.playerFirstBall,
         playerSecondBall: problem.playerSecondBall,
+        isLocked: problem.isLocked,
+        isClaimed: problem.isClaimed,
+        firstAcceptedAttemptId: problem.firstAcceptedAttemptId,
+        unlockAt: problem.unlockAt,
+        firstAcceptedByUserId: problem.firstAcceptedByUserId,
+        firstAcceptedByUsername: problem.firstAcceptedByUsername,
       }));
     }
 
@@ -247,7 +259,12 @@ export const useDuelDetailPageWorkspaceState = ({
   const activeProblem =
     problems.find((problem) => problem.symbol === activeNavigationProblem?.symbol) ?? null;
   const isWorkspaceLocked = duel?.status === -1 || !activeProblem?.problem;
-  const showDuelAttempts = Boolean(duel?.viewerRole && duel.viewerRole !== 'spectator');
+  const isSubmitLocked = isWorkspaceLocked || !activeProblem?.canSubmit;
+  const showDuelAttempts = Boolean(
+    currentUser &&
+      duel &&
+      (duel.viewerRole !== 'spectator' || duel.duelType?.code === 'BallF'),
+  );
   const canUseCheckSamples = Boolean(permissions.canUseCheckSamples || currentUser?.isSuperuser);
 
   useEffect(() => {
@@ -261,6 +278,37 @@ export const useDuelDetailPageWorkspaceState = ({
     }
     setField('problem', navigationProblems[0].symbol, { history: 'replace' });
   }, [currentSymbol, navigationProblems, setField]);
+
+  useEffect(() => {
+    handledFirstAcAttemptsRef.current.clear();
+    hasInitializedFirstAcClaimsRef.current = false;
+  }, [duel?.id]);
+
+  useEffect(() => {
+    const claimedProblems = navigationProblems.filter(
+      (problem) => problem.firstAcceptedAttemptId,
+    );
+    if (!hasInitializedFirstAcClaimsRef.current) {
+      claimedProblems.forEach((problem) => {
+        handledFirstAcAttemptsRef.current.add(problem.firstAcceptedAttemptId!);
+      });
+      hasInitializedFirstAcClaimsRef.current = true;
+      return;
+    }
+
+    claimedProblems.forEach((problem) => {
+      const attemptId = problem.firstAcceptedAttemptId!;
+      if (handledFirstAcAttemptsRef.current.has(attemptId)) return;
+      handledFirstAcAttemptsRef.current.add(attemptId);
+
+      if (problem.firstAcceptedByUserId !== currentUser?.id) {
+        playDuelTickSound();
+      }
+      const index = navigationProblems.findIndex((item) => item.symbol === problem.symbol);
+      const nextProblem = navigationProblems[index + 1];
+      if (nextProblem?.unlockAt) setField('problem', nextProblem.symbol);
+    });
+  }, [currentUser?.id, navigationProblems, setField]);
 
   useEffect(() => {
     setSelectedSampleIndex(0);
@@ -307,6 +355,55 @@ export const useDuelDetailPageWorkspaceState = ({
       unsubscribers.forEach((unsubscribe) => unsubscribe());
     };
   }, []);
+
+  useEffect(() => {
+    if (!duel?.id) return;
+
+    wsService.send('duel-add', duel.id);
+    const unsubscribe = wsService.on<{
+      event?: string;
+      duelId?: number;
+      duel_id?: number;
+      attemptId?: number;
+      attempt_id?: number;
+      winnerUserId?: number;
+      winner_user_id?: number;
+      nextSymbol?: string | null;
+      next_symbol?: string | null;
+    }>('duel-update', (event) => {
+      const eventDuelId = event.duelId ?? event.duel_id;
+      if (eventDuelId !== duel.id || event.event !== 'first_ac') return;
+
+      const attemptId = event.attemptId ?? event.attempt_id;
+      if (attemptId && handledFirstAcAttemptsRef.current.has(attemptId)) return;
+      if (attemptId) handledFirstAcAttemptsRef.current.add(attemptId);
+
+      const winnerUserId = event.winnerUserId ?? event.winner_user_id;
+      if (winnerUserId !== currentUser?.id) {
+        playDuelTickSound();
+      }
+
+      const nextSymbol = event.nextSymbol ?? event.next_symbol;
+      if (nextSymbol) setField('problem', nextSymbol);
+      void mutateDuel();
+    });
+
+    return () => {
+      unsubscribe();
+      wsService.send('duel-delete', duel.id);
+    };
+  }, [currentUser?.id, duel?.id, mutateDuel, setField]);
+
+  useEffect(() => {
+    if (!activeNavigationProblem?.isLocked || !activeNavigationProblem.unlockAt) return;
+    const unlockTime = new Date(activeNavigationProblem.unlockAt).getTime();
+    if (Number.isNaN(unlockTime)) return;
+    const timeout = window.setTimeout(
+      () => void mutateDuel(),
+      Math.max(0, unlockTime - Date.now()) + 150,
+    );
+    return () => window.clearTimeout(timeout);
+  }, [activeNavigationProblem?.isLocked, activeNavigationProblem?.unlockAt, mutateDuel]);
 
   const attemptsParams = useMemo<AttemptsListParams | null>(() => {
     if (!activeProblem?.problem?.id || !currentUser?.username || !duel) return null;
@@ -387,25 +484,19 @@ export const useDuelDetailPageWorkspaceState = ({
       !codeRef.current ||
       !duel ||
       isSubmitting ||
-      duel.status === -1
+      duel.status === -1 ||
+      !activeProblem.canSubmit
     ) {
       return;
     }
 
     setIsSubmitting(true);
     try {
-      if (duel.canSubmitForDuel) {
-        await duelsQueries.duelsRepository.submitToDuel(duel.id, {
-          duelProblem: activeProblem.symbol,
-          sourceCode: codeRef.current,
-          lang: selectedLang,
-        });
-      } else {
-        await problemsQueries.problemsRepository.submitSolution(activeProblem.problem.id, {
-          sourceCode: codeRef.current,
-          lang: selectedLang,
-        });
-      }
+      await duelsQueries.duelsRepository.submitToDuel(duel.id, {
+        duelProblem: activeProblem.symbol,
+        sourceCode: codeRef.current,
+        lang: selectedLang,
+      });
 
       toast.success(t('problems.detail.submitSuccess'));
       updateSearch({ tab: 'attempts' });
@@ -518,6 +609,7 @@ export const useDuelDetailPageWorkspaceState = ({
       isCheckingSamples,
       canUseCheckSamples,
       isWorkspaceLocked,
+      isSubmitLocked,
     };
   }, [
     canUseCheckSamples,
@@ -527,6 +619,7 @@ export const useDuelDetailPageWorkspaceState = ({
     isRunning,
     isSubmitting,
     isWorkspaceLocked,
+    isSubmitLocked,
   ]);
 
   useEffect(() => {
@@ -574,7 +667,7 @@ export const useDuelDetailPageWorkspaceState = ({
         state.currentUser &&
         state.hasCode &&
         !state.isSubmitting &&
-        !state.isWorkspaceLocked
+        !state.isSubmitLocked
       ) {
         event.preventDefault();
         handlers.onSubmit();
@@ -593,6 +686,7 @@ export const useDuelDetailPageWorkspaceState = ({
       isRunning,
       isSubmitting,
       isWorkspaceLocked,
+      isSubmitLocked,
       onRun: handleRun,
       onSubmit: handleSubmit,
     };
@@ -651,6 +745,7 @@ export const useDuelDetailPageWorkspaceState = ({
     isRunning,
     isSubmitting,
     isWorkspaceLocked,
+    isSubmitLocked,
     onRun: handleRun,
     onSubmit: handleSubmit,
   };
@@ -698,6 +793,23 @@ const DuelDetailPageWorkspace = ({
   editorTheme,
 }: DuelDetailPageWorkspaceProps) => {
   const { t } = useTranslation();
+  const [unlockNow, setUnlockNow] = useState(Date.now());
+  const unlockSeconds = activeNavigationProblem?.unlockAt
+    ? Math.max(
+        0,
+        Math.ceil((new Date(activeNavigationProblem.unlockAt).getTime() - unlockNow) / 1000),
+      )
+    : null;
+
+  useEffect(() => {
+    if (!activeNavigationProblem?.isLocked || !activeNavigationProblem.unlockAt) return;
+    const interval = window.setInterval(() => setUnlockNow(Date.now()), 250);
+    return () => window.clearInterval(interval);
+  }, [activeNavigationProblem?.isLocked, activeNavigationProblem?.unlockAt]);
+
+  const lockedProblemMessage = activeNavigationProblem?.unlockAt
+    ? t('duels.problemUnlocksIn', { seconds: unlockSeconds ?? 0 })
+    : t('duels.solvePreviousProblemFirst');
 
   return (
     <Card
@@ -793,7 +905,10 @@ const DuelDetailPageWorkspace = ({
                 </Box>
               </CardContent>
             </Card>
-          ) : navigationProblems.length && duel.status !== -1 && (isLoading || isValidating) ? (
+          ) : navigationProblems.length &&
+            duel.status !== -1 &&
+            !activeNavigationProblem?.isLocked &&
+            (isLoading || isValidating) ? (
             <ProblemDescriptionSkeleton />
           ) : (
             <Card
@@ -827,7 +942,9 @@ const DuelDetailPageWorkspace = ({
                       ? t('duels.workspaceLockedDescription', {
                           startTime: formatDuelDetailPageDate(duel.startTime),
                         })
-                      : t('duels.noProblems')}
+                      : activeNavigationProblem?.isLocked
+                        ? lockedProblemMessage
+                        : t('duels.noProblems')}
                   </Typography>
                 </Stack>
               </CardContent>
@@ -865,7 +982,10 @@ const DuelDetailPageWorkspace = ({
               canUseCheckSamples={false}
               editorTheme={editorTheme}
             />
-          ) : navigationProblems.length && duel.status !== -1 && (isLoading || isValidating) ? (
+          ) : navigationProblems.length &&
+            duel.status !== -1 &&
+            !activeNavigationProblem?.isLocked &&
+            (isLoading || isValidating) ? (
             <ProblemEditorSkeleton />
           ) : (
             <Card
@@ -887,7 +1007,11 @@ const DuelDetailPageWorkspace = ({
                     : t('duels.problems')}
                 </Typography>
                 <Typography color="text.secondary">
-                  {duel.status === -1 ? t('duels.editorUnlockedOnStart') : t('duels.noProblems')}
+                  {duel.status === -1
+                    ? t('duels.editorUnlockedOnStart')
+                    : activeNavigationProblem?.isLocked
+                      ? lockedProblemMessage
+                      : t('duels.noProblems')}
                 </Typography>
               </Stack>
             </Card>

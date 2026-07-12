@@ -109,6 +109,8 @@
     "problemsHiddenUntilStart": "Masalalar duel boshlanganda ochiladi.",
     "workspaceLockedDescription": "Masala statementlari {{startTime}} gacha yopiq turadi.",
     "editorUnlockedOnStart": "Editor duel boshlanganda ochiladi.",
+    "problemUnlocksIn": "Keyingi masala {{seconds}} soniyadan keyin ochiladi.",
+    "solvePreviousProblemFirst": "Oldingi masala First AC bo‘lmaguncha bu masala yopiq qoladi.",
     "prevProblem": "Oldingi",
     "nextProblem": "Keyingi",
     "submitModeDuel": "Duel uchun submit",

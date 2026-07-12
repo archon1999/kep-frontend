@@ -78,6 +78,18 @@ export const mapDuelProblem = (payload: any): DuelProblem => ({
     payload?.problem || payload?.problem_detail
       ? mapProblemDetail(payload?.problem ?? payload?.problem_detail)
       : undefined,
+  isLocked: Boolean(payload?.isLocked ?? payload?.is_locked ?? false),
+  isClaimed: Boolean(payload?.isClaimed ?? payload?.is_claimed ?? false),
+  firstAcceptedAttemptId: toNullableNumber(
+    payload?.firstAcceptedAttemptId ?? payload?.first_accepted_attempt_id,
+  ),
+  unlockAt: payload?.unlockAt ?? payload?.unlock_at ?? null,
+  firstAcceptedByUserId: toNullableNumber(
+    payload?.firstAcceptedByUserId ?? payload?.first_accepted_by_user_id,
+  ),
+  firstAcceptedByUsername:
+    payload?.firstAcceptedByUsername ?? payload?.first_accepted_by_username ?? null,
+  canSubmit: Boolean(payload?.canSubmit ?? payload?.can_submit ?? false),
 });
 
 export const mapDuel = (payload: any): Duel => ({

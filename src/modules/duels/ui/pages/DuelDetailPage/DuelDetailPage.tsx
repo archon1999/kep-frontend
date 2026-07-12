@@ -80,6 +80,7 @@ const DuelDetailPage = () => {
         isRunning={workspaceState.isRunning}
         isSubmitting={workspaceState.isSubmitting}
         isWorkspaceLocked={workspaceState.isWorkspaceLocked}
+        isSubmitLocked={workspaceState.isSubmitLocked}
         onRun={workspaceState.onRun}
         onSubmit={workspaceState.onSubmit}
       />

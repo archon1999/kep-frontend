@@ -41,7 +41,8 @@ const DuelCreateCallDialog = ({
 
   useEffect(() => {
     if (!selectedTypeId && duelTypes.length) {
-      setSelectedTypeId(String(duelTypes[0]?.id ?? ''));
+      const preferredType = duelTypes.find((duelType) => duelType.code === 'BallF');
+      setSelectedTypeId(String(preferredType?.id ?? duelTypes[0]?.id ?? ''));
     }
   }, [duelTypes, selectedTypeId]);
 

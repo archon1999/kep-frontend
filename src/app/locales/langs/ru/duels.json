@@ -109,6 +109,8 @@
     "problemsHiddenUntilStart": "Задачи откроются после старта дуэли.",
     "workspaceLockedDescription": "Условия задач будут скрыты до {{startTime}}.",
     "editorUnlockedOnStart": "Редактор откроется после старта дуэли.",
+    "problemUnlocksIn": "Следующая задача откроется через {{seconds}} сек.",
+    "solvePreviousProblemFirst": "Задача останется закрытой до первого AC по предыдущей задаче.",
     "prevProblem": "Назад",
     "nextProblem": "Далее",
     "submitModeDuel": "Дуэльная отправка",

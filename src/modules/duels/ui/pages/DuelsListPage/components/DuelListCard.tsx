@@ -89,6 +89,17 @@ const DuelListCard = ({ duel, onView }: Props) => {
   const tone = statusTone(duel.status);
   const firstScore = duel.playerFirst.balls ?? 0;
   const secondScore = duel.playerSecond?.balls ?? 0;
+  const scoresAreTied = !duel.playerSecond || firstScore === secondScore;
+  const firstScoreColor = scoresAreTied
+    ? 'text.primary'
+    : firstScore > secondScore
+      ? 'success.main'
+      : 'error.main';
+  const secondScoreColor = scoresAreTied
+    ? 'text.primary'
+    : secondScore > firstScore
+      ? 'success.main'
+      : 'error.main';
 
   return (
     <Card
@@ -158,13 +169,13 @@ const DuelListCard = ({ duel, onView }: Props) => {
             minWidth={96}
             justifyContent="center"
           >
-            <Typography variant="h5" fontWeight={800} color="primary.main">
+            <Typography variant="h5" fontWeight={800} color={firstScoreColor}>
               {firstScore}
             </Typography>
             <Typography variant="body2" color="text.secondary" fontWeight={700}>
               —
             </Typography>
-            <Typography variant="h5" fontWeight={800} color="secondary.main">
+            <Typography variant="h5" fontWeight={800} color={secondScoreColor}>
               {secondScore}
             </Typography>
           </Stack>

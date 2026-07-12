@@ -109,6 +109,8 @@
     "problemsHiddenUntilStart": "Problems unlock when the duel starts.",
     "workspaceLockedDescription": "Problem statements stay hidden until {{startTime}}.",
     "editorUnlockedOnStart": "Editor unlocks when the duel starts.",
+    "problemUnlocksIn": "Next problem unlocks in {{seconds}} seconds.",
+    "solvePreviousProblemFirst": "This problem stays locked until the previous problem gets a First AC.",
     "prevProblem": "Prev",
     "nextProblem": "Next",
     "submitModeDuel": "Duel submit",
