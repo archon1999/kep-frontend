@@ -45,6 +45,7 @@
     "createDuel": "Создать дуэль",
     "cancel": "Отмена",
     "cancelCall": "Отменить call",
+    "deleteCall": "Удалить",
     "createdToast": "Дуэль создана",
     "confirmedToast": "Дуэль подтверждена",
     "callCreatedToast": "Duel call создан",

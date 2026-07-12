@@ -12,6 +12,7 @@ import {
 } from '@mui/material';
 import { DuelInvitation, formatDuelDuration } from 'modules/duels/domain/index.ts';
 import UserPopover from 'modules/users/ui/shared/components/UserPopover.tsx';
+import IconifyIcon from 'shared/components/base/IconifyIcon.tsx';
 import ContestsRatingChip from 'shared/components/rating/ContestsRatingChip.tsx';
 import { formatRelativeTime } from 'shared/lib/dateTime';
 
@@ -67,7 +68,7 @@ const DuelWaitingRoomCard = ({ invitation, actionLoadingKey, onAccept, onCancel 
   const isLoading =
     actionLoadingKey === `accept-${invitation.id}` ||
     actionLoadingKey === `cancel-${invitation.id}`;
-  const actionTitle = invitation.canCancel ? t('duels.cancelCall') : t('duels.accept');
+  const actionTitle = invitation.canCancel ? t('duels.deleteCall') : t('duels.accept');
   const actionDisabled = invitation.canCancel ? false : !invitation.canAccept;
   const actionReason = invitation.canCancel ? '' : invitation.acceptDisabledReason || '';
 
@@ -157,11 +158,16 @@ const DuelWaitingRoomCard = ({ invitation, actionLoadingKey, onAccept, onCancel 
               <span>
                 <Button
                   variant={invitation.canCancel ? 'outlined' : 'contained'}
-                  color={invitation.canCancel ? 'inherit' : 'primary'}
+                  color={invitation.canCancel ? 'error' : 'primary'}
                   size="small"
                   fullWidth
                   disabled={actionDisabled || isLoading}
                   onClick={action}
+                  startIcon={
+                    invitation.canCancel ? (
+                      <IconifyIcon icon="mdi:trash-can-outline" width={16} />
+                    ) : undefined
+                  }
                 >
                   {actionTitle}
                 </Button>

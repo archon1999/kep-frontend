@@ -45,6 +45,7 @@
     "createDuel": "Create duel",
     "cancel": "Cancel",
     "cancelCall": "Cancel call",
+    "deleteCall": "Delete",
     "createdToast": "Duel created",
     "confirmedToast": "Duel confirmed",
     "callCreatedToast": "Duel call created",

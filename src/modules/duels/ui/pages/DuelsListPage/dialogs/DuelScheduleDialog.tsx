@@ -5,13 +5,18 @@ import {
   DialogContent,
   DialogTitle,
   Stack,
-  TextField,
   Typography,
 } from '@mui/material';
+import { DateTimePicker } from '@mui/x-date-pickers/DateTimePicker';
 import { useEffect, useMemo, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { DuelInvitation } from 'modules/duels/domain/index.ts';
-import { formatDateTimeLocalInputValue, toBackendOffsetDateTime } from 'shared/lib/dateTime';
+import {
+  DateTimePickerValue,
+  formatDateTimePickerValue,
+  parseDateTimePickerValue,
+  toBackendOffsetDateTime,
+} from 'shared/lib/dateTime';
 
 type Props = {
   open: boolean;
@@ -32,21 +37,21 @@ const DuelScheduleDialog = ({
 }: Props) => {
   const { t } = useTranslation();
   const isAccept = mode === 'accept';
-  const [value, setValue] = useState('');
+  const [value, setValue] = useState<DateTimePickerValue>(null);
   const minStartTime = useMemo(() => {
     const start = new Date();
     // Keep a buffer over the backend's five-minute minimum so normal dialog
     // interaction and network latency cannot invalidate the selected time.
     start.setMinutes(start.getMinutes() + 10);
     start.setSeconds(0, 0);
-    return formatDateTimeLocalInputValue(start);
+    return parseDateTimePickerValue(start);
   }, [open]);
 
   useEffect(() => {
     if (!open) return;
     setValue(
       invitation?.proposedStartTime
-        ? formatDateTimeLocalInputValue(invitation.proposedStartTime)
+        ? parseDateTimePickerValue(invitation.proposedStartTime)
         : minStartTime,
     );
   }, [invitation?.proposedStartTime, minStartTime, open]);
@@ -68,13 +73,19 @@ const DuelScheduleDialog = ({
           <Typography variant="body2" color="text.secondary">
             {description}
           </Typography>
-          <TextField
+          <DateTimePicker
             label={t('duels.startTime')}
-            type="datetime-local"
             value={value}
-            onChange={(event) => setValue(event.target.value)}
-            inputProps={{ min: minStartTime }}
-            fullWidth
+            onChange={setValue}
+            minDateTime={minStartTime ?? undefined}
+            disablePast
+            ampm={false}
+            minutesStep={5}
+            format="DD.MM.YYYY HH:mm"
+            slotProps={{
+              textField: { fullWidth: true },
+              popper: { placement: 'bottom-start' },
+            }}
           />
         </Stack>
       </DialogContent>
@@ -84,8 +95,10 @@ const DuelScheduleDialog = ({
         </Button>
         <Button
           variant="contained"
-          onClick={() => onSubmit(toBackendOffsetDateTime(value))}
-          disabled={!value || loading}
+          onClick={() =>
+            onSubmit(toBackendOffsetDateTime(formatDateTimePickerValue(value)))
+          }
+          disabled={!value?.isValid() || loading}
           sx={{ borderRadius: 999 }}
         >
           {isAccept ? t('duels.sendTimeProposal') : t('duels.sendCounterOffer')}

@@ -45,6 +45,7 @@
     "createDuel": "Duel yaratish",
     "cancel": "Bekor qilish",
     "cancelCall": "Callni bekor qilish",
+    "deleteCall": "O'chirish",
     "createdToast": "Duel yaratildi",
     "confirmedToast": "Duel tasdiqlandi",
     "callCreatedToast": "Duel call yaratildi",
