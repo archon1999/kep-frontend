@@ -4,6 +4,8 @@ import { Box, CircularProgress, Typography } from '@mui/material';
 import { useAuth } from 'app/providers/AuthProvider';
 import { useDocumentTitle } from 'app/providers/DocumentTitleProvider';
 import { useDuelDetail } from 'modules/duels/application/queries.ts';
+import { Page404 } from 'modules/errors/ui/pages';
+import { isNotFoundError } from 'shared/lib/detailRouteNotFound';
 import DuelDetailPageHeader, {
   useDuelDetailPageHeaderState,
 } from './DuelDetailPageHeader.tsx';
@@ -18,6 +20,7 @@ const DuelDetailPage = () => {
   const duelId = Number(id);
   const {
     data: duel,
+    error: duelError,
     isLoading,
     isValidating,
     mutate: mutateDuel,
@@ -44,6 +47,10 @@ const DuelDetailPage = () => {
     duel,
     navigationProblems: workspaceState.navigationProblems,
   });
+
+  if (isNotFoundError(duelError)) {
+    return <Page404 />;
+  }
 
   if (isLoading) {
     return (

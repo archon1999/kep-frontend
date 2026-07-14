@@ -51,7 +51,7 @@ const DateTimePicker: Components<Omit<Theme, 'components'>>['MuiDateTimePicker']
         <Popper
           {...props}
           sx={(theme) => ({
-            zIndex: 10,
+            zIndex: theme.zIndex.modal + 1,
             [`& .${pickersLayoutClasses.root}`]: {
               width: 536,
 

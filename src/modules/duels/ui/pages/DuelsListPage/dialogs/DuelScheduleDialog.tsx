@@ -27,6 +27,21 @@ type Props = {
   onSubmit: (value: string) => void;
 };
 
+const MIN_START_LEAD_MS = 5 * 60 * 1000;
+const START_TIME_STEP_MS = 5 * 60 * 1000;
+
+const getScheduleTimes = () => {
+  const minimum = new Date(Date.now() + MIN_START_LEAD_MS);
+  const initial = new Date(
+    Math.ceil(minimum.getTime() / START_TIME_STEP_MS) * START_TIME_STEP_MS,
+  );
+
+  return {
+    minimum: parseDateTimePickerValue(minimum),
+    initial: parseDateTimePickerValue(initial),
+  };
+};
+
 const DuelScheduleDialog = ({
   open,
   mode,
@@ -38,23 +53,16 @@ const DuelScheduleDialog = ({
   const { t } = useTranslation();
   const isAccept = mode === 'accept';
   const [value, setValue] = useState<DateTimePickerValue>(null);
-  const minStartTime = useMemo(() => {
-    const start = new Date();
-    // Keep a buffer over the backend's five-minute minimum so normal dialog
-    // interaction and network latency cannot invalidate the selected time.
-    start.setMinutes(start.getMinutes() + 10);
-    start.setSeconds(0, 0);
-    return parseDateTimePickerValue(start);
-  }, [open]);
+  const scheduleTimes = useMemo(getScheduleTimes, [open]);
 
   useEffect(() => {
     if (!open) return;
     setValue(
       invitation?.proposedStartTime
         ? parseDateTimePickerValue(invitation.proposedStartTime)
-        : minStartTime,
+        : scheduleTimes.initial,
     );
-  }, [invitation?.proposedStartTime, minStartTime, open]);
+  }, [invitation?.proposedStartTime, open, scheduleTimes.initial]);
 
   const title = isAccept ? t('duels.acceptCallTitle') : t('duels.suggestNewTime');
   const description = isAccept
@@ -77,7 +85,7 @@ const DuelScheduleDialog = ({
             label={t('duels.startTime')}
             value={value}
             onChange={setValue}
-            minDateTime={minStartTime ?? undefined}
+            minDateTime={scheduleTimes.minimum ?? undefined}
             disablePast
             ampm={false}
             minutesStep={5}

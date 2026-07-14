@@ -51,7 +51,7 @@ const DesktopDateTimePicker: Components<Omit<Theme, 'components'>>['MuiDesktopDa
         <Popper
           {...props}
           sx={(theme) => ({
-            zIndex: theme.zIndex.modal,
+            zIndex: theme.zIndex.modal + 1,
             [`& .${pickersLayoutClasses.root}`]: {
               width: 536,
 

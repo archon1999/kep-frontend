@@ -81,8 +81,14 @@ const UsersDataGrid = ({
               <Typography
                 color="primary"
                 fontWeight={800}
-                sx={{ width: 34, flexShrink: 0, fontSize: 18, textAlign: 'right' }}
-                noWrap
+                sx={{
+                  minWidth: 34,
+                  flexShrink: 0,
+                  fontSize: 18,
+                  textAlign: 'right',
+                  overflow: 'visible',
+                  textOverflow: 'clip',
+                }}
               >
                 {user.rowIndex}.
               </Typography>
