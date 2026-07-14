@@ -39,7 +39,7 @@ const countdown = (value?: string | null) => {
   const target = new Date(value).getTime();
   if (Number.isNaN(target)) return '';
 
-  const seconds = Math.max(0, Math.floor((target - Date.now()) / 1000));
+  const seconds = Math.max(0, Math.ceil((target - Date.now()) / 1000));
   const hours = String(Math.floor(seconds / 3600)).padStart(2, '0');
   const minutes = String(Math.floor((seconds % 3600) / 60)).padStart(2, '0');
   const rest = String(seconds % 60).padStart(2, '0');
@@ -93,10 +93,24 @@ export const useDuelDetailPageHeaderState = ({
       setTimerText('');
       return;
     }
+    const targetTime = new Date(target).getTime();
+    if (Number.isNaN(targetTime)) {
+      setTimerText('');
+      return;
+    }
 
     const render = () => {
       const prefix = duel.status === -1 ? t('duels.startsIn') : t('duels.timeLeft');
       setTimerText(`${prefix}: ${countdown(target)}`);
+
+      if (targetTime > Date.now()) return;
+
+      const refreshMarker = `${duel.id}:${duel.status}:${target}`;
+      const refreshStorageKey = 'duel:auto-refresh-at-zero';
+      if (window.sessionStorage.getItem(refreshStorageKey) === refreshMarker) return;
+
+      window.sessionStorage.setItem(refreshStorageKey, refreshMarker);
+      window.location.reload();
     };
 
     render();
