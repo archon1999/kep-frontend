@@ -31,7 +31,7 @@ const DuelListSection = ({
   duels,
   total,
   page,
-  pageSize = 8,
+  pageSize = 10,
   loading,
   onPageChange,
 }: Props) => {
@@ -117,7 +117,9 @@ const DuelListSection = ({
 
       <Stack spacing={2}>
         {resolvedLoading
-          ? Array.from({ length: 3 }).map((_, index) => <DuelListCardSkeleton key={index} />)
+          ? Array.from({ length: pageSize }).map((_, index) => (
+              <DuelListCardSkeleton key={index} />
+            ))
           : null}
 
         {!resolvedLoading && error ? (
