@@ -1,7 +1,11 @@
+import { useState } from 'react';
+import { useTranslation } from 'react-i18next';
 import {
   Button,
   Card,
   Chip,
+  Divider,
+  IconButton,
   Stack,
   Table,
   TableBody,
@@ -9,6 +13,7 @@ import {
   TableContainer,
   TableHead,
   TableRow,
+  Tooltip,
   Typography,
 } from '@mui/material';
 import { alpha } from '@mui/material/styles';
@@ -19,6 +24,7 @@ import {
   DuelDetailPageNavigationProblem,
   getDuelDetailPagePlayerRows,
 } from 'modules/duels/domain/index.ts';
+import UserPopover from 'modules/users/ui/shared/components/UserPopover.tsx';
 
 type Props = {
   duel: Duel;
@@ -33,6 +39,8 @@ const DuelResultsFooter = ({
   activeSymbol,
   onSelectProblem,
 }: Props) => {
+  const { t } = useTranslation();
+  const [isCollapsed, setIsCollapsed] = useState(false);
   const rows = getDuelDetailPagePlayerRows(duel);
   const firstTotal = duel.playerFirst.balls ?? 0;
   const secondTotal = duel.playerSecond?.balls ?? 0;
@@ -44,6 +52,73 @@ const DuelResultsFooter = ({
 
   if (!rows.length || !problems.length) {
     return null;
+  }
+
+  if (isCollapsed) {
+    return (
+      <Card
+        sx={{
+          borderTop: '1px solid',
+          borderColor: 'divider',
+          borderRadius: 0,
+          bgcolor: (theme) =>
+            alpha(theme.palette.background.default, theme.palette.mode === 'dark' ? 0.28 : 0.82),
+        }}
+      >
+        <Stack direction="row" alignItems="center" spacing={1.5} sx={{ minHeight: 44, px: 1.5 }}>
+          <Stack direction="row" alignItems="center" spacing={0.75} color="text.secondary">
+            <IconifyIcon icon="mdi:chart-bar" width={20} height={20} />
+            <Typography variant="subtitle2" fontWeight={800}>
+              {t('duels.standings')}
+            </Typography>
+          </Stack>
+
+          <Stack
+            direction="row"
+            alignItems="center"
+            justifyContent="center"
+            spacing={1.25}
+            divider={<Divider orientation="vertical" flexItem />}
+            sx={{ flex: 1, minWidth: 0, overflow: 'hidden' }}
+          >
+            {rows.map((row) => (
+              <UserPopover key={row.key} username={row.player.username}>
+                <Stack direction="row" alignItems="center" spacing={0.75} sx={{ minWidth: 0 }}>
+                  {row.player.ratingTitle ? (
+                    <ContestsRatingChip title={row.player.ratingTitle} imgSize={20} />
+                  ) : null}
+                  <Typography
+                    variant="body2"
+                    fontWeight={700}
+                    noWrap
+                    sx={{ display: { xs: 'none', sm: 'block' }, maxWidth: 140 }}
+                  >
+                    {row.player.username}
+                  </Typography>
+                  <Chip
+                    label={row.player.balls ?? 0}
+                    color={getTotalColor(row.order)}
+                    size="small"
+                    sx={{ minWidth: 48, fontWeight: 800 }}
+                  />
+                </Stack>
+              </UserPopover>
+            ))}
+          </Stack>
+
+          <Tooltip title={t('duels.expandStandings')}>
+            <IconButton
+              size="small"
+              onClick={() => setIsCollapsed(false)}
+              aria-label={t('duels.expandStandings')}
+              aria-expanded={false}
+            >
+              <IconifyIcon icon="mdi:chevron-up" width={22} height={22} />
+            </IconButton>
+          </Tooltip>
+        </Stack>
+      </Card>
+    );
   }
 
   return (
@@ -65,7 +140,19 @@ const DuelResultsFooter = ({
           <TableHead>
             <TableRow>
               <TableCell sx={{ minWidth: 190, py: 1.1 }}>
-                <IconifyIcon icon="mdi:account-outline" width={21} height={21} />
+                <Stack direction="row" alignItems="center" justifyContent="space-between">
+                  <IconifyIcon icon="mdi:account-outline" width={21} height={21} />
+                  <Tooltip title={t('duels.collapseStandings')}>
+                    <IconButton
+                      size="small"
+                      onClick={() => setIsCollapsed(true)}
+                      aria-label={t('duels.collapseStandings')}
+                      aria-expanded
+                    >
+                      <IconifyIcon icon="mdi:chevron-down" width={22} height={22} />
+                    </IconButton>
+                  </Tooltip>
+                </Stack>
               </TableCell>
               <TableCell align="center" sx={{ width: 110, py: 1.1 }}>
                 <IconifyIcon icon="mdi:chart-bar" width={21} height={21} />
@@ -110,17 +197,19 @@ const DuelResultsFooter = ({
             {rows.map((row) => (
               <TableRow key={row.key} hover>
                 <TableCell sx={{ py: 1.15 }}>
-                  <Stack direction="row" spacing={1} alignItems="center" sx={{ minWidth: 0 }}>
-                    {row.player.ratingTitle ? (
-                      <ContestsRatingChip title={row.player.ratingTitle} imgSize={28} />
-                    ) : null}
-                    <Typography fontWeight={800} noWrap>
-                      {row.player.username}
-                    </Typography>
-                    {row.player.isBot ? (
-                      <Chip size="small" color="secondary" variant="outlined" label="BOT" />
-                    ) : null}
-                  </Stack>
+                  <UserPopover username={row.player.username}>
+                    <Stack direction="row" spacing={1} alignItems="center" sx={{ minWidth: 0 }}>
+                      {row.player.ratingTitle ? (
+                        <ContestsRatingChip title={row.player.ratingTitle} imgSize={28} />
+                      ) : null}
+                      <Typography fontWeight={800} noWrap>
+                        {row.player.username}
+                      </Typography>
+                      {row.player.isBot ? (
+                        <Chip size="small" color="secondary" variant="outlined" label="BOT" />
+                      ) : null}
+                    </Stack>
+                  </UserPopover>
                 </TableCell>
 
                 <TableCell align="center">

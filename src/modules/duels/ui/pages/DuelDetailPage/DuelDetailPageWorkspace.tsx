@@ -232,6 +232,7 @@ export const useDuelDetailPageWorkspaceState = ({
     if (problems.length) {
       return problems.map((problem) => ({
         symbol: problem.symbol,
+        problemId: problem.problem?.id,
         ball: problem.ball,
         playerFirstBall: problem.playerFirstBall,
         playerSecondBall: problem.playerSecondBall,

@@ -119,6 +119,8 @@
     "signInForAttempts": "Sign in to view your attempts.",
     "standings": "Standings",
     "standingsSubtitle": "Live score for both participants",
+    "collapseStandings": "Minimize standings",
+    "expandStandings": "Expand standings",
     "incomingInvitations": "Incoming invitations",
     "outgoingInvitations": "Outgoing invitations",
     "noIncomingInvitations": "No incoming invitations",

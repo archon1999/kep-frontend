@@ -5,6 +5,7 @@ export type DuelDetailPageWorkspaceTab = 'description' | 'attempts';
 
 export interface DuelDetailPageNavigationProblem {
   symbol: string;
+  problemId?: number;
   ball?: number;
   playerFirstBall?: number;
   playerSecondBall?: number;

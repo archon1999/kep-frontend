@@ -119,6 +119,8 @@
     "signInForAttempts": "Войдите, чтобы видеть свои попытки.",
     "standings": "Результаты",
     "standingsSubtitle": "Живой счет двух участников",
+    "collapseStandings": "Свернуть результаты",
+    "expandStandings": "Развернуть результаты",
     "incomingInvitations": "Входящие приглашения",
     "outgoingInvitations": "Исходящие приглашения",
     "noIncomingInvitations": "Нет входящих приглашений",

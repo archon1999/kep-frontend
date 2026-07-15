@@ -119,6 +119,8 @@
     "signInForAttempts": "Urinishlaringizni ko'rish uchun tizimga kiring.",
     "standings": "Natijalar",
     "standingsSubtitle": "Ikkala ishtirokchi uchun jonli hisob",
+    "collapseStandings": "Natijalarni yig'ish",
+    "expandStandings": "Natijalarni ochish",
     "incomingInvitations": "Kiruvchi takliflar",
     "outgoingInvitations": "Chiquvchi takliflar",
     "noIncomingInvitations": "Kiruvchi takliflar yo'q",

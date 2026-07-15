@@ -1,9 +1,9 @@
 import { useEffect, useMemo, useState } from 'react';
-import { Box, Button, Chip, Divider, Stack, Tooltip } from '@mui/material';
+import { Box, Button, Chip, Divider, IconButton, Stack, Tooltip } from '@mui/material';
 import { Link as RouterLink } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
 import AppbarActionItems from 'app/layouts/main-layout/common/AppbarActionItems';
-import { resources } from 'app/routes/resources';
+import { getResourceById, resources } from 'app/routes/resources';
 import {
   Duel,
   DuelDetailPageNavigationProblem,
@@ -16,6 +16,7 @@ import { stringParam } from 'shared/lib/queryParams';
 export type DuelDetailPageHeaderProps = {
   duel: Duel;
   timerText: string;
+  currentProblem: DuelDetailPageNavigationProblem | null;
   prevProblem: DuelDetailPageNavigationProblem | null;
   nextProblem: DuelDetailPageNavigationProblem | null;
   hasCurrentUser: boolean;
@@ -72,6 +73,8 @@ export const useDuelDetailPageHeaderState = ({
     [navigationProblems, state.problem],
   );
   const prevProblem = currentIndex > 0 ? navigationProblems[currentIndex - 1] : null;
+  const currentProblem =
+    currentIndex >= 0 ? navigationProblems[currentIndex] : navigationProblems[0] ?? null;
   const nextProblem =
     currentIndex >= 0 && currentIndex < navigationProblems.length - 1
       ? navigationProblems[currentIndex + 1]
@@ -125,6 +128,7 @@ export const useDuelDetailPageHeaderState = ({
   return {
     duel,
     timerText,
+    currentProblem,
     prevProblem,
     nextProblem,
     onSelectProblem: (symbol: string) => setField('problem', symbol),
@@ -132,7 +136,9 @@ export const useDuelDetailPageHeaderState = ({
 };
 
 const DuelDetailPageHeader = ({
+  duel,
   timerText,
+  currentProblem,
   prevProblem,
   nextProblem,
   hasCode,
@@ -145,6 +151,9 @@ const DuelDetailPageHeader = ({
   onSelectProblem,
 }: DuelDetailPageHeaderProps) => {
   const { t } = useTranslation();
+  const problemHref = currentProblem?.problemId
+    ? getResourceById(resources.Problem, currentProblem.problemId)
+    : null;
 
   return (
     <Box
@@ -215,6 +224,18 @@ const DuelDetailPageHeader = ({
                 />
               </span>
             </Tooltip>
+            {duel.status === 1 && problemHref ? (
+              <Tooltip title={t('contests.problem.openOriginal')}>
+                <IconButton
+                  component={RouterLink}
+                  to={problemHref}
+                  color="primary"
+                  size="small"
+                >
+                  <IconifyIcon icon="mdi:open-in-new" width={18} height={18} />
+                </IconButton>
+              </Tooltip>
+            ) : null}
           </Stack>
         </Stack>
       </Stack>
