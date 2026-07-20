@@ -4,6 +4,7 @@ import { Link as RouterLink } from 'react-router-dom';
 import { Button, Divider, Paper, Stack, Typography } from '@mui/material';
 import { useLoginHref } from 'shared/lib/authRedirect';
 import { formatDateTime } from 'shared/lib/dateTime';
+import { createSafeHtml } from 'shared/lib/safeHtml';
 import { responsivePagePaddingSx } from 'shared/lib/styles';
 import type { HomeUserActivityHistory, HomeUserRatings } from 'modules/home/domain/entities/home.entity';
 import HomeActivityHistory from './HomeActivityHistory';
@@ -65,9 +66,9 @@ const HomeProfileSection = ({
             display="flex"
             columnGap={1}
             flexWrap="wrap"
-            dangerouslySetInnerHTML={{
-              __html: t('homePage.greeting.goodMorning', { name: displayName }),
-            }}
+            dangerouslySetInnerHTML={createSafeHtml(
+              t('homePage.greeting.goodMorning', { name: displayName }),
+            )}
           />
           {!isAuthenticated && (
             <Stack direction="row" spacing={1.5} alignItems="center" flexWrap="wrap">

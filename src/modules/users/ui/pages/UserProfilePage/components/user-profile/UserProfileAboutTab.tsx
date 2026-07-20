@@ -99,10 +99,12 @@ const UserProfileAboutTab = () => {
               {t('users.profile.about')}
             </Typography>
             <Typography
-              dangerouslySetInnerHTML={{ __html: bio }}
               variant="body2"
               color="text.secondary"
-            />
+              sx={{ whiteSpace: 'pre-wrap' }}
+            >
+              {bio}
+            </Typography>
           </Stack>
         </CardContent>
       </Card>

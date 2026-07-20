@@ -21,6 +21,7 @@ import {
 import { Chess, Move, Square } from 'chess.js';
 import { ChessPuzzlePayload, Question, QuestionType } from 'modules/testing/domain';
 import { ChessChallengeResult } from 'modules/challenges/domain/ports/challenges.repository.ts';
+import { createSafeHtml } from 'shared/lib/safeHtml';
 import {
   clearChessPuzzleProgress,
   getChessPuzzleProgressKey,
@@ -377,7 +378,7 @@ const ChallengeChessPuzzleQuestion = forwardRef<
           />
 
           <Typography
-            dangerouslySetInnerHTML={{ __html: question.body ?? '' }}
+            dangerouslySetInnerHTML={createSafeHtml(question.body)}
             variant="body2"
             color="text.secondary"
           />

@@ -20,6 +20,7 @@ import { useHackathonAttemptLog, useRerunHackathonAttempt } from 'modules/hackat
 import { ProjectAttempt, ProjectAttemptLog } from 'modules/projects/domain/entities/project.entity';
 import { formatHackathonDateTime } from 'modules/hackathons/ui/shared';
 import IconifyIcon from 'shared/components/base/IconifyIcon';
+import { createSafeHtml } from 'shared/lib/safeHtml';
 
 interface HackathonAttemptsTableProps {
   attempts: ProjectAttempt[] | undefined;
@@ -76,7 +77,11 @@ const HackathonAttemptsTable = ({ attempts, isLoading, onRerun }: HackathonAttem
           <Stack direction="row" spacing={2}>
             {log.log ? (
               <Box component="pre" sx={{ p: 2, bgcolor: 'background.neutral', borderRadius: 2, overflow: 'auto' }}>
-                <Typography component="div" variant="body2" dangerouslySetInnerHTML={{ __html: log.log }} />
+                <Typography
+                  component="div"
+                  variant="body2"
+                  dangerouslySetInnerHTML={createSafeHtml(log.log)}
+                />
               </Box>
             ) : null}
 
@@ -101,7 +106,11 @@ const HackathonAttemptsTable = ({ attempts, isLoading, onRerun }: HackathonAttem
                     component="pre"
                     sx={{ p: 2, bgcolor: 'background.neutral', borderRadius: '0 0 12px 12px', overflow: 'auto' }}
                   >
-                    <Typography component="div" variant="body2" dangerouslySetInnerHTML={{ __html: task.log }} />
+                    <Typography
+                      component="div"
+                      variant="body2"
+                      dangerouslySetInnerHTML={createSafeHtml(task.log)}
+                    />
                   </Box>
                 ) : null}
               </Box>

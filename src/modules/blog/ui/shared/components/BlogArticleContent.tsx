@@ -1,5 +1,6 @@
 import { Box, Typography } from '@mui/material';
 import { SxProps, Theme } from '@mui/material/styles';
+import { createSafeHtml } from 'shared/lib/safeHtml';
 
 interface BlogArticleContentProps {
   html?: string;
@@ -107,7 +108,7 @@ const BlogArticleContent = ({ html, emptyMessage, sx }: BlogArticleContentProps)
         },
         ...(Array.isArray(sx) ? sx : [sx]),
       ]}
-      dangerouslySetInnerHTML={{ __html: html }}
+      dangerouslySetInnerHTML={createSafeHtml(html)}
     />
   );
 };

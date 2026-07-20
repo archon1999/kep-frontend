@@ -30,6 +30,7 @@ import ScrollSpyContent from 'shared/components/scroll-spy/ScrollSpyContent';
 import ScrollSpyNavItem from 'shared/components/scroll-spy/ScrollSpyNavItem';
 import useHashScrollIntoView from 'shared/hooks/useHashScrollIntoView';
 import { formatDateTime, formatMachineDateTime } from 'shared/lib/dateTime';
+import { createSafeHtml } from 'shared/lib/safeHtml';
 
 type UpdateGroup = {
   date: string;
@@ -153,7 +154,7 @@ const UpdateLogItem = ({ update, onChanged }: UpdateLogItemProps) => {
               <Box
                 component="span"
                 color="text.secondary"
-                dangerouslySetInnerHTML={{ __html: update.description }}
+                dangerouslySetInnerHTML={createSafeHtml(update.description)}
                 sx={{
                   '& p': { display: 'inline', m: 0 },
                   '& p + p': { display: 'block', mt: 1 },

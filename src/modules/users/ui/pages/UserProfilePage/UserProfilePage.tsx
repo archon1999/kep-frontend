@@ -204,10 +204,11 @@ const PersonalProfileSection = ({
             <Stack direction="column" gap={1.5}>
               <Typography variant="h6">{t('users.profile.about')}</Typography>
               <Typography
-                dangerouslySetInnerHTML={{ __html: bio }}
                 color="text.secondary"
                 sx={{ fontSize: 18, lineHeight: 1.4 }}
-              />
+              >
+                {bio}
+              </Typography>
             </Stack>
           ) : null}
 

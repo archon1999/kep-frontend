@@ -24,6 +24,9 @@ const getBasicAuthHeader = () => {
 export const instance: AxiosInstance = axios.create({
   baseURL,
   withCredentials: true,
+  withXSRFToken: true,
+  xsrfCookieName: 'csrftoken',
+  xsrfHeaderName: 'X-CSRFToken',
   timeout: 10000,
 });
 

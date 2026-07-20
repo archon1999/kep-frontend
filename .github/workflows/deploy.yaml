@@ -1,13 +1,25 @@
 name: Frontend CI/CD
 
 on:
+  pull_request:
+    branches:
+      - production
   push:
     branches:
       - production
 
+permissions:
+  contents: read
+
+concurrency:
+  group: frontend-${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: ${{ github.event_name == 'pull_request' }}
+
 jobs:
-  build:
+  quality:
+    name: Quality and build
     runs-on: ubuntu-latest
+    timeout-minutes: 15
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
@@ -17,6 +29,7 @@ jobs:
         with:
           node-version: 20
           cache: npm
+          cache-dependency-path: package-lock.json
 
       - name: Install dependencies
         run: |
@@ -26,24 +39,38 @@ jobs:
           npm config set fetch-timeout 600000
           npm ci --legacy-peer-deps --no-audit --no-fund
 
+      - name: Lint
+        run: npm run lint
+
+      - name: Unit tests
+        run: npm run test:unit
+
+      - name: Audit dependencies
+        run: npm audit --audit-level=high
+
       - name: Build
         run: npm run build
 
-      - name: Upload frontend build
+      - name: Upload production build
+        if: github.event_name == 'push' && github.ref == 'refs/heads/production'
         uses: actions/upload-artifact@v4
         with:
-          name: frontend-dist
+          name: frontend-dist-${{ github.sha }}
           path: dist
+          if-no-files-found: error
+          retention-days: 3
 
   deploy-production:
-    if: github.ref_name == 'production'
-    needs: build
+    name: Deploy production
+    if: github.event_name == 'push' && github.ref == 'refs/heads/production'
+    needs: quality
     runs-on: ubuntu-latest
+    timeout-minutes: 20
     steps:
       - name: Download frontend build
         uses: actions/download-artifact@v4
         with:
-          name: frontend-dist
+          name: frontend-dist-${{ github.sha }}
           path: frontend-dist
 
       - name: Copy frontend build to production
@@ -54,7 +81,7 @@ jobs:
           password: ${{ secrets.PASSWORD }}
           port: ${{ secrets.PORT }}
           source: frontend-dist
-          target: /tmp/kep-frontend-deploy
+          target: /tmp/kep-frontend-${{ github.sha }}
           rm: true
 
       - name: Deploy frontend to production
@@ -64,15 +91,106 @@ jobs:
           username: ${{ secrets.USERNAME }}
           password: ${{ secrets.PASSWORD }}
           port: ${{ secrets.PORT }}
+          command_timeout: 15m
           script: |
-            set -e
-            cd /home/KEP.uz
-            git -C frontend fetch origin production
-            git -C frontend checkout production
-            git -C frontend pull --ff-only origin production
-            rm -rf /home/KEP.uz/frontend/dist
-            cp -a /tmp/kep-frontend-deploy/frontend-dist /home/KEP.uz/frontend/dist
-            cd /home/KEP.uz/frontend
-            cd /home/KEP.uz/backend
-            docker compose up -d --build frontend
-            docker image prune -f
+            bash -seuo pipefail <<'DEPLOY_SCRIPT'
+            release_sha='${{ github.sha }}'
+            app_root='/home/KEP.uz/frontend'
+            compose_root='/home/KEP.uz/backend'
+            upload_root="/tmp/kep-frontend-${release_sha}"
+            rollback_root='/home/KEP.uz/.deploy-rollback/frontend'
+            rollback_dist="${rollback_root}/dist"
+            staging_dist=''
+            rollback_needed=0
+            old_image_available=0
+
+            rollback() {
+              exit_code=$?
+              trap - ERR
+              set +e
+
+              if [ "${rollback_needed}" -eq 1 ]; then
+                echo 'Frontend deployment failed; restoring the previous release.' >&2
+
+                if [ -d "${rollback_dist}" ]; then
+                  failed_dist="${rollback_root}/dist.failed-${release_sha}"
+                  rm -rf -- "${failed_dist}"
+                  if [ -d "${app_root}/dist" ]; then
+                    mv -- "${app_root}/dist" "${failed_dist}"
+                  fi
+                  mv -- "${rollback_dist}" "${app_root}/dist"
+                fi
+
+                if [ "${old_image_available}" -eq 1 ]; then
+                  docker image tag kep-frontend:rollback kep-frontend:latest
+                  cd "${compose_root}"
+                  docker compose up -d --no-deps --force-recreate frontend
+                fi
+              fi
+
+              if [ -n "${staging_dist}" ] && [ -d "${staging_dist}" ]; then
+                rm -rf -- "${staging_dist}"
+              fi
+
+              exit "${exit_code}"
+            }
+            trap rollback ERR
+
+            test -f "${upload_root}/frontend-dist/index.html"
+
+            git -C "${app_root}" fetch origin production
+            git -C "${app_root}" checkout production
+            git -C "${app_root}" pull --ff-only origin production
+            test "$(git -C "${app_root}" rev-parse HEAD)" = "${release_sha}"
+
+            install -d -m 700 "${rollback_root}"
+            staging_dist=$(mktemp -d "${app_root}/.dist-staging.XXXXXX")
+            cp -a "${upload_root}/frontend-dist/." "${staging_dist}/"
+            test -f "${staging_dist}/index.html"
+
+            if docker image inspect kep-frontend:latest >/dev/null 2>&1; then
+              docker image tag kep-frontend:latest kep-frontend:rollback
+              old_image_available=1
+            fi
+
+            rm -rf -- "${rollback_dist}"
+            if [ -d "${app_root}/dist" ]; then
+              mv -- "${app_root}/dist" "${rollback_dist}"
+            fi
+            mv -- "${staging_dist}" "${app_root}/dist"
+            staging_dist=''
+            rollback_needed=1
+
+            cd "${compose_root}"
+            docker compose build frontend
+            docker compose up -d --no-deps frontend
+
+            container_id=$(docker compose ps -q frontend)
+            test -n "${container_id}"
+
+            healthy=0
+            for attempt in $(seq 1 45); do
+              container_status=$(docker inspect --format '{{if .State.Health}}{{.State.Health.Status}}{{else}}{{.State.Status}}{{end}}' "${container_id}" 2>/dev/null || true)
+              if [ "${container_status}" = 'healthy' ]; then
+                healthy=1
+                break
+              fi
+              if [ "${container_status}" = 'exited' ] || [ "${container_status}" = 'dead' ]; then
+                break
+              fi
+              sleep 2
+            done
+
+            if [ "${healthy}" -ne 1 ]; then
+              docker logs --tail 100 "${container_id}" >&2 || true
+              false
+            fi
+
+            curl --fail --silent --show-error --max-time 10 \
+              http://127.0.0.1:18080/healthz >/dev/null
+
+            rollback_needed=0
+            trap - ERR
+            rm -rf -- "${upload_root}"
+            echo "Frontend ${release_sha} deployed successfully."
+            DEPLOY_SCRIPT

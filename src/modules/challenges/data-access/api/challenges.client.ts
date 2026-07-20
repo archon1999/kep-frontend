@@ -1,4 +1,5 @@
 import { instance } from 'shared/api/http/axiosInstance.ts';
+import { getCsrfToken } from 'shared/api/http/csrf.ts';
 import { getStoredLocale, toBackendLanguage } from 'app/locales/locale.ts';
 
 export interface ChallengeListParams {
@@ -61,9 +62,13 @@ export const sendChallengeAntiCheatPenaltyKeepalive = (
     'Django-Language': djangoLanguage,
   };
   const basicAuthHeader = shouldUseBasicAuth ? getBasicAuthHeader() : null;
+  const csrfToken = getCsrfToken();
 
   if (basicAuthHeader) {
     headers.Authorization = basicAuthHeader;
+  }
+  if (csrfToken) {
+    headers['X-CSRFToken'] = csrfToken;
   }
 
   fetch(buildPenaltyUrl(challengeId), {

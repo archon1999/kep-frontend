@@ -1,4 +1,5 @@
 import { PropsWithChildren, useMemo } from 'react';
+import { useTranslation } from 'react-i18next';
 import { Drawer, drawerClasses } from '@mui/material';
 import Box from '@mui/material/Box';
 import Toolbar, { ToolbarOwnProps } from '@mui/material/Toolbar';
@@ -29,6 +30,7 @@ const MainLayout = ({
   menuItems = clientMenu,
   navLabel,
 }: PropsWithChildren<MainLayoutProps>) => {
+  const { t } = useTranslation();
   const {
     config: {
       drawerWidth,
@@ -62,6 +64,30 @@ const MainLayout = ({
 
   return (
     <Box>
+      <Box
+        component="a"
+        href="#main-content"
+        sx={(theme) => ({
+          position: 'fixed',
+          top: 8,
+          left: 8,
+          zIndex: theme.zIndex.tooltip + 1,
+          px: 2,
+          py: 1,
+          borderRadius: 1,
+          bgcolor: 'background.paper',
+          color: 'text.primary',
+          boxShadow: theme.shadows[4],
+          transform: 'translateY(calc(-100% - 16px))',
+          transition: theme.transitions.create('transform'),
+          '&:focus': {
+            transform: 'translateY(0)',
+          },
+        })}
+      >
+        {t('common.accessibility.skipToContent')}
+      </Box>
+
       <Box
         className={clsx({
           'nav-vibrant': navColor === 'vibrant',
@@ -113,6 +139,8 @@ const MainLayout = ({
 
           <Box
             component="main"
+            id="main-content"
+            tabIndex={-1}
             sx={(theme) => ({
               flexGrow: 1,
               minWidth: 0,

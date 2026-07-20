@@ -16,6 +16,7 @@ import {
   isBeforeNow,
 } from 'shared/lib/dateTime';
 import { cssVarRgba } from 'shared/lib/utils';
+import { createSafeHtml } from 'shared/lib/safeHtml';
 import ContestTopContestants from './ContestTopContestants';
 
 interface ContestCardProps {
@@ -41,7 +42,9 @@ const DescriptionBlock = ({ contest }: { contest: ContestListItem }) => {
   return (
     <Typography
       component="div"
-      dangerouslySetInnerHTML={{ __html: contest.description || t('contests.noDescription') }}
+      dangerouslySetInnerHTML={createSafeHtml(
+        contest.description || t('contests.noDescription'),
+      )}
       variant="body2"
       color="text.secondary"
       sx={{ '& p': { m: 0 } }}

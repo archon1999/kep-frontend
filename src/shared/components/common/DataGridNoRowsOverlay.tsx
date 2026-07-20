@@ -12,6 +12,7 @@ export interface DataGridNoRowsOverlayProps extends GridOverlayProps {
 }
 
 declare module '@mui/x-data-grid' {
+  // eslint-disable-next-line @typescript-eslint/no-empty-object-type
   interface NoRowsOverlayPropsOverrides extends DataGridNoRowsOverlayProps {}
 }
 

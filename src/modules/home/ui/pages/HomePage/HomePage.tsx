@@ -1,4 +1,4 @@
-import { Box, Stack } from '@mui/material';
+import { Box, Stack, Typography } from '@mui/material';
 import Grid from '@mui/material/Grid';
 import { useTranslation } from 'react-i18next';
 import HomeProfileSection from './components/HomeProfileSection.tsx';
@@ -30,6 +30,23 @@ const HomePage = () => {
 
   return (
     <Box>
+      <Typography
+        component="h1"
+        sx={{
+          position: 'absolute',
+          width: 1,
+          height: 1,
+          p: 0,
+          m: -1,
+          overflow: 'hidden',
+          clip: 'rect(0 0 0 0)',
+          whiteSpace: 'nowrap',
+          border: 0,
+        }}
+      >
+        {t('pageTitles.home')}
+      </Typography>
+
       <HomePromosSection />
 
       <Grid size={12} container>

@@ -19,6 +19,7 @@ import {
 import { useAuth } from 'app/providers/AuthProvider';
 import IconifyIcon from 'shared/components/base/IconifyIcon';
 import { formatDateTime } from 'shared/lib/dateTime';
+import { createSafeHtml } from 'shared/lib/safeHtml';
 import { projectsQueries } from 'modules/projects/application/queries';
 import { Project, ProjectAttempt, ProjectAttemptLog } from 'modules/projects/domain/entities/project.entity';
 
@@ -137,7 +138,7 @@ const ProjectAttemptsTable = ({
                 <Typography
                   component="div"
                   variant="body2"
-                  dangerouslySetInnerHTML={{ __html: log.log }}
+                  dangerouslySetInnerHTML={createSafeHtml(log.log)}
                 />
               </Box>
             ) : null}
@@ -175,7 +176,7 @@ const ProjectAttemptsTable = ({
                     <Typography
                       component="div"
                       variant="body2"
-                      dangerouslySetInnerHTML={{ __html: task.log }}
+                      dangerouslySetInnerHTML={createSafeHtml(task.log)}
                     />
                   </Box>
                 ) : null}

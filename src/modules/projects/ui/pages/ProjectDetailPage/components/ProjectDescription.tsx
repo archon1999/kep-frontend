@@ -10,6 +10,7 @@ import {
 } from '@mui/material';
 import IconifyIcon from 'shared/components/base/IconifyIcon';
 import KepcoinValue from 'shared/components/common/KepcoinValue';
+import { createSafeHtml } from 'shared/lib/safeHtml';
 import { Project } from 'modules/projects/domain/entities/project.entity';
 
 interface ProjectDescriptionProps {
@@ -54,7 +55,7 @@ const ProjectDescription = ({ project }: ProjectDescriptionProps) => {
         <Typography
           variant="body1"
           component="div"
-          dangerouslySetInnerHTML={{ __html: project.description }}
+          dangerouslySetInnerHTML={createSafeHtml(project.description)}
         />
       ) : null}
 
@@ -86,7 +87,7 @@ const ProjectDescription = ({ project }: ProjectDescriptionProps) => {
                   component="div"
                   variant="body2"
                   color="text.secondary"
-                  dangerouslySetInnerHTML={{ __html: task.description }}
+                  dangerouslySetInnerHTML={createSafeHtml(task.description)}
                 />
               </AccordionDetails>
             </Accordion>
@@ -109,7 +110,7 @@ const ProjectDescription = ({ project }: ProjectDescriptionProps) => {
                   component="div"
                   variant="body2"
                   color="text.secondary"
-                  dangerouslySetInnerHTML={{ __html: technology.info }}
+                  dangerouslySetInnerHTML={createSafeHtml(technology.info)}
                 />
               </AccordionDetails>
             </Accordion>

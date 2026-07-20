@@ -6,6 +6,7 @@ import { useHomeUpdates } from 'modules/home/application/queries';
 import SystemUpdateLikeButton from 'modules/home/ui/shared/components/SystemUpdateLikeButton';
 import IconifyIcon from 'shared/components/base/IconifyIcon';
 import { formatDateTime } from 'shared/lib/dateTime';
+import { createSafeHtml } from 'shared/lib/safeHtml';
 import { responsivePagePaddingSx } from 'shared/lib/styles.ts';
 
 const UpdatesSection = () => {
@@ -91,7 +92,7 @@ const UpdatesSection = () => {
                       component="div"
                       variant="body2"
                       color="text.secondary"
-                      dangerouslySetInnerHTML={{ __html: update.description }}
+                      dangerouslySetInnerHTML={createSafeHtml(update.description)}
                       sx={{
                         display: '-webkit-box',
                         WebkitLineClamp: 2,

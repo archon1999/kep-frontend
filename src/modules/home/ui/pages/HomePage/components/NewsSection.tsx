@@ -8,6 +8,7 @@ import type { BlogPost } from 'modules/blog/domain/entities/blog.entity';
 import IconifyIcon from 'shared/components/base/IconifyIcon';
 import Image from 'shared/components/base/Image';
 import useResolvedThemeMode from 'shared/hooks/useResolvedThemeMode';
+import { createSafeHtml } from 'shared/lib/safeHtml';
 import { responsivePagePaddingSx } from 'shared/lib/styles.ts';
 import { cssVarRgba } from 'shared/lib/utils';
 import 'swiper/css';
@@ -283,7 +284,7 @@ const NewsSection = () => {
                               color: 'primary.main',
                               maxWidth: 320,
                             }}
-                            dangerouslySetInnerHTML={{ __html: post.bodyShort ?? '' }}
+                            dangerouslySetInnerHTML={createSafeHtml(post.bodyShort)}
                           ></Typography>
                         </Stack>
                       </Stack>

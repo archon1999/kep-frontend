@@ -2,6 +2,7 @@ import { Card, CardContent, Chip, Divider, Stack, Typography } from '@mui/materi
 import { useTranslation } from 'react-i18next';
 import type { TournamentDetailEntity } from 'modules/tournaments/domain';
 import { formatDateTime } from 'shared/lib/dateTime';
+import { createSafeHtml } from 'shared/lib/safeHtml';
 
 interface TournamentInfoCardProps {
   tournament: TournamentDetailEntity;
@@ -39,7 +40,7 @@ const TournamentInfoCard = ({ tournament }: TournamentInfoCardProps) => {
                 '& p': { m: 0, mb: 1 },
                 '& ul': { m: 0, pl: 3 },
               }}
-              dangerouslySetInnerHTML={{ __html: tournament.description }}
+              dangerouslySetInnerHTML={createSafeHtml(tournament.description)}
             />
           ) : (
             <Typography variant="body2" color="text.secondary">

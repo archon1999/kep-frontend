@@ -18,6 +18,7 @@ import {
 } from '@mui/material';
 import { useDocumentTitle } from 'app/providers/DocumentTitleProvider';
 import { responsivePagePaddingSx } from 'shared/lib/styles';
+import { createSafeHtml } from 'shared/lib/safeHtml';
 import {
   contestsQueries,
   useContest,
@@ -170,7 +171,7 @@ const ContestQuestionsPage = () => {
                               variant="body2"
                               component="div"
                               sx={{ mt: 0.5 }}
-                              dangerouslySetInnerHTML={{ __html: item.answer }}
+                              dangerouslySetInnerHTML={createSafeHtml(item.answer)}
                             />
                           </Box>
                         ) : null}

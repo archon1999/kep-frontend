@@ -10,6 +10,7 @@ import {
 import { HackathonStatus } from 'modules/hackathons/domain/enums';
 import { HackathonCountdownCard, HackathonPageHeader, HackathonTabs } from 'modules/hackathons/ui/shared';
 import { responsivePagePaddingSx } from 'shared/lib/styles';
+import { createSafeHtml } from 'shared/lib/safeHtml';
 
 const HackathonPage = () => {
   const { t } = useTranslation();
@@ -87,7 +88,7 @@ const HackathonPage = () => {
                         color="text.secondary"
                         component="div"
                         sx={{ '& p': { m: 0 }, '& p + p': { mt: 2 } }}
-                        dangerouslySetInnerHTML={{ __html: hackathon.description }}
+                        dangerouslySetInnerHTML={createSafeHtml(hackathon.description)}
                       />
                     ) : (
                       <Typography variant="body1" color="text.secondary">

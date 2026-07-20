@@ -42,6 +42,7 @@ const PageHeader = ({
         <div>
           {breadcrumb?.length ? <PageBreadcrumb items={breadcrumb} sx={{ mb: 1 }} /> : null}
           <Typography
+            component="h1"
             variant="h4"
             sx={[{ fontWeight: 500 }, downLg && { fontSize: 'h5.fontSize' }]}
           >

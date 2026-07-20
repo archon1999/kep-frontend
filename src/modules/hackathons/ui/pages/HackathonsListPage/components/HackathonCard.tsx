@@ -5,6 +5,7 @@ import { getResourceById, resources } from 'app/routes/resources';
 import { type Hackathon, HackathonStatus } from 'modules/hackathons/domain';
 import IconifyIcon from 'shared/components/base/IconifyIcon';
 import { formatDateTime, formatRelativeTime, isAfterNow, isBeforeNow } from 'shared/lib/dateTime';
+import { createSafeHtml } from 'shared/lib/safeHtml';
 
 interface HackathonCardProps {
   hackathon: Hackathon;
@@ -88,7 +89,7 @@ const HackathonCard = ({ hackathon }: HackathonCardProps) => {
                 overflow: 'hidden',
                 '& p': { m: 0 },
               }}
-              dangerouslySetInnerHTML={{ __html: hackathon.description }}
+              dangerouslySetInnerHTML={createSafeHtml(hackathon.description)}
             />
           ) : null}
 

@@ -12,6 +12,7 @@ import { useTranslation } from 'react-i18next';
 import { type HackathonProject } from 'modules/hackathons/domain';
 import { getHackathonProjectPoints, HackathonPointsBadge } from 'modules/hackathons/ui/shared';
 import IconifyIcon from 'shared/components/base/IconifyIcon';
+import { createSafeHtml } from 'shared/lib/safeHtml';
 
 interface HackathonProjectDescriptionProps {
   hackathonProject: HackathonProject;
@@ -56,7 +57,11 @@ const HackathonProjectDescription = ({ hackathonProject }: HackathonProjectDescr
       </Stack>
 
       {project.description ? (
-        <Typography variant="body1" component="div" dangerouslySetInnerHTML={{ __html: project.description }} />
+        <Typography
+          variant="body1"
+          component="div"
+          dangerouslySetInnerHTML={createSafeHtml(project.description)}
+        />
       ) : null}
 
       <Divider />
@@ -82,7 +87,7 @@ const HackathonProjectDescription = ({ hackathonProject }: HackathonProjectDescr
                   component="div"
                   variant="body2"
                   color="text.secondary"
-                  dangerouslySetInnerHTML={{ __html: task.description }}
+                  dangerouslySetInnerHTML={createSafeHtml(task.description)}
                 />
               </AccordionDetails>
             </Accordion>
@@ -106,7 +111,7 @@ const HackathonProjectDescription = ({ hackathonProject }: HackathonProjectDescr
                   component="div"
                   variant="body2"
                   color="text.secondary"
-                  dangerouslySetInnerHTML={{ __html: technology.info }}
+                  dangerouslySetInnerHTML={createSafeHtml(technology.info)}
                 />
               </AccordionDetails>
             </Accordion>

@@ -143,7 +143,6 @@ const CommentsSection = ({
               </Stack>
 
               <Typography
-                dangerouslySetInnerHTML={{ __html: comment.body }}
                 variant="body2"
                 sx={{
                   color: 'text.secondary',
@@ -153,7 +152,9 @@ const CommentsSection = ({
                     my: 0,
                   },
                 }}
-              />
+              >
+                {comment.body}
+              </Typography>
             </Stack>
           </Box>
         ))}

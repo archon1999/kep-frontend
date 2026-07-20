@@ -2,6 +2,9 @@
   "home": "Главная",
   "kepcoin": "Кепкоин",
   "common": {
+    "accessibility": {
+      "skipToContent": "\u041f\u0435\u0440\u0435\u0439\u0442\u0438 \u043a \u043e\u0441\u043d\u043e\u0432\u043d\u043e\u043c\u0443 \u0441\u043e\u0434\u0435\u0440\u0436\u0438\u043c\u043e\u043c\u0443"
+    },
     "back": "Назад",
     "loading": "Загрузка...",
     "wins": "Победы",

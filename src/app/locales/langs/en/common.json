@@ -2,6 +2,9 @@
   "home": "Home",
   "kepcoin": "Kepcoin",
   "common": {
+    "accessibility": {
+      "skipToContent": "Skip to main content"
+    },
     "back": "Back",
     "loading": "Loading...",
     "wins": "Wins",

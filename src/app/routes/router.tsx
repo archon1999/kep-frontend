@@ -1,8 +1,6 @@
-import { type ReactNode, Suspense } from 'react';
+import { type ReactNode, Suspense, lazy } from 'react';
 import { Navigate, Outlet, RouteObject, createBrowserRouter, useLocation } from 'react-router';
 import App from 'app/App.tsx';
-import AuthLayout from 'app/layouts/auth-layout';
-import DefaultAuthLayout from 'app/layouts/auth-layout/DefaultAuthLayout';
 import MainLayout from 'app/layouts/main-layout';
 import { AccountSettingsPage, TeamJoinPage } from 'modules/account-settings/ui/pages';
 import {
@@ -56,7 +54,7 @@ import {
   ContestsUserStatisticsPage,
 } from 'modules/contests/ui/pages';
 import { DuelDetailPage, DuelsListPage, DuelsRatingPage } from 'modules/duels/ui/pages';
-import { Page403, Page404, RouteErrorPage } from 'modules/errors/ui/pages';
+import RouteErrorPage from 'modules/errors/ui/pages/RouteErrorPage/RouteErrorPage';
 import {
   HackathonAttemptsPage,
   HackathonPage,
@@ -93,6 +91,11 @@ import { authPaths, rootPaths } from './route-config';
 import { adminMenu } from './sitemap';
 
 const IS_PROD = import.meta.env.PROD;
+
+const AuthLayout = lazy(() => import('app/layouts/auth-layout'));
+const DefaultAuthLayout = lazy(() => import('app/layouts/auth-layout/DefaultAuthLayout'));
+const Page403 = lazy(() => import('modules/errors/ui/pages/Page403/Page403'));
+const Page404 = lazy(() => import('modules/errors/ui/pages/Page404/Page404'));
 
 const withAuthGuard = (element: ReactNode) => <AuthGuard>{element}</AuthGuard>;
 const withSuspense = (element: ReactNode) => (
@@ -690,7 +693,7 @@ export const routes: RouteObject[] = [
 
       {
         path: rootPaths.authRoot,
-        element: <AuthLayout />,
+        element: withSuspense(<AuthLayout />),
         children: [
           {
             element: (
@@ -711,19 +714,19 @@ export const routes: RouteObject[] = [
 
       {
         path: resources.Forbidden,
-        element: <Page403 />,
+        element: withSuspense(<Page403 />),
         handle: { titleKey: 'pageTitles.forbidden' },
       },
 
       {
         path: resources.NotFound,
-        element: <Page404 />,
+        element: withSuspense(<Page404 />),
         handle: { titleKey: 'pageTitles.notFound' },
       },
 
       {
         path: '*',
-        element: <Page404 />,
+        element: withSuspense(<Page404 />),
         handle: { titleKey: 'pageTitles.notFound' },
       },
     ],

@@ -24,6 +24,7 @@ import { HistoryView } from 'modules/kepcoin/ui/types';
 import IconifyIcon from 'shared/components/base/IconifyIcon';
 import KepcoinValue from 'shared/components/common/KepcoinValue';
 import { formatDateTime } from 'shared/lib/dateTime';
+import { createSafeHtml } from 'shared/lib/safeHtml';
 
 type HistoryItem = KepcoinEarnHistoryItem | KepcoinSpendHistoryItem;
 
@@ -344,9 +345,9 @@ const KepcoinActivityWidget = ({
                             variant="subtitle1"
                             fontWeight={700}
                             component="div"
-                            dangerouslySetInnerHTML={{
-                              __html: getHistoryMarkup(view, item, t),
-                            }}
+                            dangerouslySetInnerHTML={createSafeHtml(
+                              getHistoryMarkup(view, item, t),
+                            )}
                           />
 
                           {item.note ? (
@@ -354,9 +355,9 @@ const KepcoinActivityWidget = ({
                               variant="body2"
                               color="text.secondary"
                               component="div"
-                              dangerouslySetInnerHTML={{
-                                __html: `${t('kepcoinPage.history.notePrefix')}: ${item.note}`,
-                              }}
+                              dangerouslySetInnerHTML={createSafeHtml(
+                                `${t('kepcoinPage.history.notePrefix')}: ${item.note}`,
+                              )}
                             />
                           ) : null}
                         </Stack>

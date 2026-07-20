@@ -26,7 +26,6 @@ import useGridPagination from 'shared/hooks/useGridPagination';
 import useRouteQueryState from 'shared/hooks/useRouteQueryState';
 import { useLoginRedirect } from 'shared/lib/authRedirect';
 import { enumParam, stringParam } from 'shared/lib/queryParams';
-import { responsivePagePaddingSx } from 'shared/lib/styles';
 import useSWR from 'swr';
 import ProblemsAttemptsFilterDrawer from './components/ProblemsAttemptsFilterDrawer.tsx';
 

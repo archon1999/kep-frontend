@@ -9,6 +9,7 @@ import {
 } from 'modules/contests/ui/shared/utils/contestType';
 import KepIcon from 'shared/components/base/KepIcon';
 import { KepIconName } from 'shared/config/icons';
+import { createSafeHtml } from 'shared/lib/safeHtml';
 
 interface ContestTypeInfoCardProps {
   contest: ContestDetail;
@@ -20,7 +21,7 @@ const Description = ({ html }: { html?: string | null }) =>
       component="div"
       variant="body2"
       color="text.secondary"
-      dangerouslySetInnerHTML={{ __html: html }}
+      dangerouslySetInnerHTML={createSafeHtml(html)}
       sx={{ '& p': { m: 0 } }}
     />
   ) : null;

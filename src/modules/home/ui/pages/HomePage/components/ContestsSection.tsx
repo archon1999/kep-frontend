@@ -46,12 +46,12 @@ const HomeContestCard = ({ contest }: HomeContestCardProps) => {
     <CardActionArea
       component={RouterLink}
       to={getResourceById(resources.Contest, contest.id)}
-      sx={{ display: 'block', borderRadius: 3, overflow: 'hidden' }}
+      sx={{ display: 'block', width: 1, minWidth: 0, borderRadius: 3, overflow: 'hidden' }}
     >
       <Box
         sx={(theme) => ({
           position: 'relative',
-          p: { xs: 3, sm: 3.5 },
+          p: { xs: 2, sm: 3.5 },
           background: `linear-gradient(135deg, ${cssVarRgba(theme.vars.palette.primary.mainChannel, 0.08)}, ${cssVarRgba(theme.vars.palette.info.mainChannel, 0.06)})`,
           borderRadius: 3,
           border: `1px solid ${cssVarRgba(theme.vars.palette.primary.mainChannel, 0.1)}`,
@@ -80,8 +80,22 @@ const HomeContestCard = ({ contest }: HomeContestCardProps) => {
         />
 
         <Stack direction="column" spacing={2} sx={{ position: 'relative', zIndex: 1 }}>
-          <Stack direction="row" spacing={1.5} alignItems="center" justifyContent="space-between">
-            <Stack direction="row" spacing={1} alignItems="center" flex={1} minWidth={0}>
+          <Stack
+            direction={{ xs: 'column', sm: 'row' }}
+            spacing={1.5}
+            alignItems={{ xs: 'flex-start', sm: 'center' }}
+            justifyContent="space-between"
+            sx={{ minWidth: 0 }}
+          >
+            <Stack
+              direction="row"
+              spacing={1}
+              alignItems="center"
+              flex={1}
+              minWidth={0}
+              flexWrap="wrap"
+              useFlexGap
+            >
               <KepIcon name="contest" fontSize={20} />
               <Typography
                 variant="overline"
@@ -105,7 +119,17 @@ const HomeContestCard = ({ contest }: HomeContestCardProps) => {
               label={statusLabel}
               color={statusColor}
               variant="filled"
-              sx={{ fontWeight: 700 }}
+              sx={{
+                maxWidth: '100%',
+                height: 'auto',
+                fontWeight: 700,
+                '& .MuiChip-label': {
+                  display: 'block',
+                  py: 0.5,
+                  whiteSpace: 'normal',
+                  overflowWrap: 'anywhere',
+                },
+              }}
             />
           </Stack>
 

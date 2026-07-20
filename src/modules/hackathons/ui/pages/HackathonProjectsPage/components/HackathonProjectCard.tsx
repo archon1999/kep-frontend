@@ -5,6 +5,7 @@ import { getResourceByParams, resources } from 'app/routes/resources';
 import { type HackathonProject } from 'modules/hackathons/domain';
 import { getHackathonProjectPoints, HackathonPointsBadge } from 'modules/hackathons/ui/shared';
 import IconifyIcon from 'shared/components/base/IconifyIcon';
+import { createSafeHtml } from 'shared/lib/safeHtml';
 
 interface HackathonProjectCardProps {
   hackathonId: number | string;
@@ -69,7 +70,7 @@ const HackathonProjectCard = ({ hackathonId, project }: HackathonProjectCardProp
                   m: 0,
                 },
               }}
-              dangerouslySetInnerHTML={{ __html: project.project.descriptionShort }}
+              dangerouslySetInnerHTML={createSafeHtml(project.project.descriptionShort)}
             />
           ) : null}
         </Stack>

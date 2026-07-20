@@ -2,6 +2,9 @@
   "home": "Bosh sahifa",
   "kepcoin": "Kepcoin",
   "common": {
+    "accessibility": {
+      "skipToContent": "Asosiy kontentga o'tish"
+    },
     "back": "Orqaga",
     "loading": "Yuklanmoqda...",
     "wins": "G'alabalar",
