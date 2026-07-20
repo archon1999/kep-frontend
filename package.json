@@ -7,7 +7,7 @@
     "dev": "vite",
     "build": "node --max-old-space-size=2048 ./node_modules/vite/bin/vite.js build",
     "lint": "eslint . --report-unused-disable-directives --max-warnings 0",
-    "test:unit": "node --experimental-strip-types --test src/shared/lib/queryParams.test.ts src/modules/duels/domain/utils/duel-format.test.ts",
+    "test:unit": "node --experimental-strip-types --test src/shared/lib/queryParams.test.ts src/shared/lib/html.test.ts src/modules/duels/domain/utils/duel-format.test.ts",
     "preview": "vite preview",
     "pretty": "prettier --write .",
     "orval:gen-api": "orval --config orval.config.ts"

@@ -17,6 +17,7 @@ import type {
 import KepIcon from 'shared/components/base/KepIcon';
 import type { KepIconName } from 'shared/config/icons';
 import { formatDateTime } from 'shared/lib/dateTime';
+import { decodeHtmlEntities } from 'shared/lib/html';
 
 const SKELETON_ITEMS = 3;
 
@@ -64,7 +65,7 @@ const parseNumber = (value: unknown): number | undefined => {
 
 const parseString = (value: unknown): string | undefined => {
   if (typeof value === 'string' && value.trim().length > 0) {
-    return value;
+    return decodeHtmlEntities(value);
   }
   return undefined;
 };
@@ -322,10 +323,11 @@ const HomeActivityHistory = ({
               const texts = getActivityTexts(activity, t);
               const icon = ACTIVITY_ICON_MAP[activity.activityType];
               const recordedAt = activity.recordedFor;
-              const label =
+              const label = decodeHtmlEntities(
                 activity.activityTypeDisplay ||
                 activity.user?.username ||
-                t('homePage.activityHistory.defaultLabel');
+                  t('homePage.activityHistory.defaultLabel'),
+              );
 
               const isFirst = index === 0;
               const isLast = index === activities.length - 1;

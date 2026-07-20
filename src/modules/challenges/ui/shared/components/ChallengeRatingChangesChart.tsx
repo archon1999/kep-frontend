@@ -127,7 +127,7 @@ const getDateAxisConfig = (minTime: number, maxTime: number) => {
   const years = diffDateTime(maxTime, minTime, 'year', true);
   const months = Math.max(1, diffDateTime(maxTime, minTime, 'month'));
 
-  if (years > 4) {
+  if (years > 3) {
     return {
       interval: YEAR_MS,
       splitNumber: Math.ceil(years),

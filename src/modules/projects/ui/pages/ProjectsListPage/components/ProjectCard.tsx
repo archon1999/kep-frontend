@@ -72,7 +72,10 @@ const ProjectCard = ({
         height: 56,
         borderRadius: 2,
         p: 0.75,
-        bgcolor: alpha(theme.palette.background.paper, 0.9),
+        bgcolor:
+          theme.palette.mode === 'dark'
+            ? theme.palette.background.elevation2
+            : alpha(theme.palette.background.paper, 0.9),
         border: `1px solid ${alpha(categoryMeta.accent, 0.18)}`,
         boxShadow: `0 18px 30px -24px ${alpha(categoryMeta.accent, 0.7)}`,
         display: 'grid',
@@ -170,7 +173,7 @@ const ProjectCard = ({
         borderRadius: 2,
         bgcolor:
           theme.palette.mode === 'dark'
-            ? alpha(theme.palette.common.white, 0.06)
+            ? theme.palette.background.default
             : alpha(theme.palette.background.paper, 0.72),
         border: `1px solid ${alpha(categoryMeta.accent, 0.12)}`,
       }}
@@ -231,12 +234,18 @@ const ProjectCard = ({
         p: { xs: 2, sm: 3 },
         borderRadius: 2,
         border: `1px solid ${alpha(categoryMeta.accent, 0.16)}`,
-        background: alpha(theme.palette.background.paper, 0.98),
+        background:
+          theme.palette.mode === 'dark'
+            ? `linear-gradient(145deg, ${theme.palette.background.elevation1} 0%, ${theme.palette.background.paper} 100%)`
+            : alpha(theme.palette.background.paper, 0.98),
         boxShadow: 'none',
         transition: 'background-color 180ms ease, border-color 180ms ease, transform 180ms ease',
         '&:hover': {
           transform: 'translateY(-4px)',
-          bgcolor: alpha(categoryMeta.accent, 0.04),
+          bgcolor:
+            theme.palette.mode === 'dark'
+              ? theme.palette.background.elevation1
+              : alpha(categoryMeta.accent, 0.04),
           borderColor: alpha(categoryMeta.accent, 0.28),
         },
       }}

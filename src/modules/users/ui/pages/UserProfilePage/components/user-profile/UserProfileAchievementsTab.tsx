@@ -78,10 +78,16 @@ const isTelegramStarsPrize = (prize: UserCompetitionPrize) =>
   /telegram\s+stars?|stars?/i.test(`${prize.prizeTitle} ${prize.note}`);
 
 const getAchievementProgress = (item: UserAchievement) => {
-  if (item.userResult?.done) return 100;
-  if (!item.totalProgress || !item.userResult) return 0;
+  const total = Math.max(0, Number(item.totalProgress) || 0);
+  const rawCurrent = Math.max(0, Number(item.userResult?.progress) || 0);
+  const current = total > 0 ? Math.min(rawCurrent, total) : rawCurrent;
+  const percentage = item.userResult?.done
+    ? 100
+    : total > 0
+      ? Math.min(100, Math.round((current / total) * 100))
+      : 0;
 
-  return Math.min(100, Math.round(((item.userResult.progress ?? 0) / item.totalProgress) * 100));
+  return { current, total, percentage };
 };
 
 const getAchievementTone = (item: UserAchievement): AchievementTone => {
@@ -232,9 +238,29 @@ const AchievementBadgeCard = ({ item }: { item: UserAchievement }) => {
             <KepIcon name={tone.icon} fontSize={34} color={`${tone.color}.main`} />
           </Box>
 
-          <Stack direction="column" spacing={0.5} sx={{ minWidth: 0 }}>
-            <Stack direction="row" spacing={0.75} alignItems="center" justifyContent="center">
-              <Chip size="small" variant="outlined" label={`${progress}%`} />
+          <Stack direction="column" spacing={0.75} sx={{ minWidth: 0, width: 1 }}>
+            <Stack
+              direction="row"
+              spacing={0.75}
+              alignItems="center"
+              justifyContent="center"
+              flexWrap="wrap"
+              useFlexGap
+            >
+              <Chip
+                size="small"
+                color={tone.color}
+                variant={isDone ? 'filled' : 'outlined'}
+                label={`${progress.percentage}%`}
+                sx={{ fontWeight: 800 }}
+              />
+              <Typography
+                variant="caption"
+                color="text.secondary"
+                sx={{ fontWeight: 800, fontVariantNumeric: 'tabular-nums' }}
+              >
+                {progress.current} / {progress.total}
+              </Typography>
             </Stack>
             <Typography variant="subtitle1" fontWeight={900} sx={{ overflowWrap: 'anywhere' }}>
               {item.title}
@@ -246,8 +272,9 @@ const AchievementBadgeCard = ({ item }: { item: UserAchievement }) => {
 
           <LinearProgress
             variant="determinate"
-            value={progress}
+            value={progress.percentage}
             color={tone.color}
+            aria-label={`${progress.current} / ${progress.total}`}
             sx={{ width: 1, height: 7, borderRadius: 1 }}
           />
         </Stack>

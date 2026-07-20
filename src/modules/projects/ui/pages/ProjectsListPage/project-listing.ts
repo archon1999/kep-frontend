@@ -1,4 +1,5 @@
 import { Project, ProjectAttempt } from 'modules/projects/domain/entities/project.entity';
+import { decodeHtmlEntities } from 'shared/lib/html';
 
 export type ProjectCategoryKey = 'frontend' | 'backend' | 'python' | 'devops';
 
@@ -92,9 +93,8 @@ export const getProjectTaskCount = (project: Project) =>
   project.tasks.length || LEVEL_TASK_COUNTS[project.level] || 0;
 
 export const stripProjectDescription = (value?: string) =>
-  (value ?? '')
+  decodeHtmlEntities(value ?? '')
     .replace(/<[^>]+>/g, ' ')
-    .replace(/&nbsp;/g, ' ')
     .replace(/\s+/g, ' ')
     .trim();
 
