@@ -98,6 +98,7 @@
     "vite-tsconfig-paths": "^5.1.4"
   },
   "overrides": {
-    "dompurify": "3.4.12"
+    "dompurify": "3.4.12",
+    "js-yaml": "4.3.0"
   }
 }
