@@ -6,11 +6,13 @@ import {
   use,
   useCallback,
   useEffect,
+  useLayoutEffect,
   useMemo,
   useState,
 } from 'react';
 import { initialConfig } from 'app/config.ts';
 import { removeItemFromStore } from 'shared/lib/utils';
+import { wsService } from 'shared/services/websocket';
 import { useCurrentUser, useLogOutUser } from 'modules/authentication/application';
 import type { AuthUser } from 'modules/authentication/domain';
 
@@ -66,6 +68,13 @@ const AuthProvider = ({ children }: PropsWithChildren) => {
 
   const isAuthLoading =
     currentUser === null && (isLoading || (data !== undefined && data !== null));
+  const isAuthenticated = Boolean(resolvedCurrentUser?.username);
+
+  useLayoutEffect(() => {
+    wsService.setEnabled(isAuthenticated);
+
+    return () => wsService.setEnabled(false);
+  }, [isAuthenticated]);
 
   const contextValue = useMemo(
     () => ({

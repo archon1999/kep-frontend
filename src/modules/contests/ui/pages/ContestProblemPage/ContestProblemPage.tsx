@@ -271,6 +271,8 @@ const ContestProblemPage = () => {
   }, [problem?.id, sampleTests, selectedSampleIndex]);
 
   useEffect(() => {
+    if (!currentUser?.username) return undefined;
+
     const unsubscribers: Array<() => void> = [];
 
     unsubscribers.push(
@@ -298,7 +300,7 @@ const ContestProblemPage = () => {
     return () => {
       unsubscribers.forEach((unsubscribe) => unsubscribe());
     };
-  }, [t]);
+  }, [currentUser?.username, t]);
 
   const sortedProblems = useMemo(() => sortContestProblems(contestProblems), [contestProblems]);
 

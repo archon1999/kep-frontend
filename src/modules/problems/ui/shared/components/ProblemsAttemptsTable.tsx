@@ -100,6 +100,11 @@ const ProblemsAttemptsTable = ({
   }, [attempts, selectedAttempt?.id, protocolAttempt?.id]);
 
   useEffect(() => {
+    if (!currentUser?.username) {
+      trackedIdsRef.current = [];
+      return;
+    }
+
     const newIds = (attempts ?? []).map((attempt) => attempt.id);
     const previousIds = trackedIdsRef.current;
 
@@ -111,7 +116,7 @@ const ProblemsAttemptsTable = ({
 
     trackedIdsRef.current = newIds;
     wsService.send('lang-change', i18n.language);
-  }, [attempts, i18n.language]);
+  }, [attempts, currentUser?.username, i18n.language]);
 
   useEffect(
     () => () => {
@@ -121,6 +126,8 @@ const ProblemsAttemptsTable = ({
   );
 
   useEffect(() => {
+    if (!currentUser?.username) return undefined;
+
     const unsubscribe = wsService.on<AttemptUpdatePayload>('attempt-update', (payload) => {
       const currentAttempt = rowsRef.current.find((attempt) => attempt.id === payload.id);
       if (!currentAttempt) return;

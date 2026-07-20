@@ -15,6 +15,10 @@ interface WebsocketServiceOptions {
 class WebsocketService {
   private socket: WebSocket | null = null;
 
+  private url?: string;
+
+  private enabled = false;
+
   private reconnectAttempts: number;
 
   private reconnectInterval: number;
@@ -27,16 +31,35 @@ class WebsocketService {
 
   private pendingMessages: string[] = [];
 
-  constructor(
-    private url?: string,
-    options: WebsocketServiceOptions = {},
-  ) {
+  constructor(url?: string, options: WebsocketServiceOptions = {}) {
+    this.url = url;
     this.reconnectAttempts = options.reconnectAttempts ?? 10;
     this.reconnectInterval = options.reconnectInterval ?? 5000;
   }
 
+  setEnabled(enabled: boolean) {
+    if (this.enabled === enabled) return;
+
+    this.enabled = enabled;
+
+    if (enabled) return;
+
+    if (this.reconnectTimer) {
+      clearTimeout(this.reconnectTimer);
+      this.reconnectTimer = null;
+    }
+
+    this.reconnectCount = 0;
+    this.pendingMessages = [];
+    this.listeners.clear();
+
+    const socket = this.socket;
+    this.socket = null;
+    socket?.close();
+  }
+
   connect() {
-    if (!this.url) return;
+    if (!this.enabled || !this.url) return;
 
     if (
       this.socket &&
@@ -44,27 +67,36 @@ class WebsocketService {
     )
       return;
 
-    this.socket = new WebSocket(this.url);
+    const socket = new WebSocket(this.url);
+    this.socket = socket;
 
-    this.socket.onopen = () => {
+    socket.onopen = () => {
+      if (this.socket !== socket || !this.enabled) return;
+
       this.reconnectCount = 0;
       this.flushPendingMessages();
     };
 
-    this.socket.onmessage = (event) => this.handleMessage(event);
-
-    this.socket.onerror = () => {
-      this.socket?.close();
+    socket.onmessage = (event) => {
+      if (this.socket === socket && this.enabled) {
+        this.handleMessage(event);
+      }
     };
 
-    this.socket.onclose = () => {
+    socket.onerror = () => {
+      socket.close();
+    };
+
+    socket.onclose = () => {
+      if (this.socket !== socket) return;
+
       this.socket = null;
       this.scheduleReconnect();
     };
   }
 
   send(event: string, data: unknown = {}) {
-    if (!event) return;
+    if (!this.enabled || !event) return;
 
     const payload = JSON.stringify({ event, data });
 
@@ -78,6 +110,8 @@ class WebsocketService {
   }
 
   on<T>(event: string, listener: Listener<T>) {
+    if (!this.enabled || !event) return () => {};
+
     this.connect();
 
     const existingListeners = this.listeners.get(event) ?? new Set<Listener<unknown>>();
@@ -108,10 +142,18 @@ class WebsocketService {
   }
 
   private scheduleReconnect() {
-    if (this.reconnectTimer || this.reconnectCount >= this.reconnectAttempts) return;
+    if (
+      !this.enabled ||
+      this.reconnectTimer ||
+      this.reconnectCount >= this.reconnectAttempts
+    )
+      return;
 
     this.reconnectTimer = setTimeout(() => {
       this.reconnectTimer = null;
+
+      if (!this.enabled) return;
+
       this.reconnectCount += 1;
       this.connect();
     }, this.reconnectInterval);
@@ -132,7 +174,7 @@ class WebsocketService {
 
 export const wsService = new WebsocketService(
   resolveWebsocketUrl(
-    import.meta.env.VITE_WS_URL,
+    import.meta.env?.VITE_WS_URL,
     typeof window === 'undefined' ? undefined : window.location,
   ),
   {
@@ -141,5 +183,5 @@ export const wsService = new WebsocketService(
   },
 );
 
-export type { WebsocketService };
+export { WebsocketService };
 export default wsService;

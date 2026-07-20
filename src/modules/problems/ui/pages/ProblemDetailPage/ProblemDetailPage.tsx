@@ -233,6 +233,8 @@ const ProblemDetailPage = () => {
   }, [problem?.id, sampleTests, selectedSampleIndex]);
 
   useEffect(() => {
+    if (!currentUser?.username) return undefined;
+
     const unsubscribers: Array<() => void> = [];
 
     unsubscribers.push(
@@ -267,7 +269,7 @@ const ProblemDetailPage = () => {
     // wsService.send('lang-change', i18n.language);
 
     return () => unsubscribers.forEach((off) => off());
-  }, [t]);
+  }, [currentUser?.username, t]);
 
   const handleTabChange = (value: 'description' | 'attempts' | 'stats' | 'solvers') => {
     setRouteField('activeTab', value);

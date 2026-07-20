@@ -55,22 +55,24 @@ const ProjectAttempts = ({ project, hackathonId }: ProjectAttemptsProps) => {
   const attemptIds = useMemo(() => (data?.data ?? []).map((attempt) => attempt.id), [data?.data]);
 
   useEffect(() => {
-    if (!i18n.language) return;
+    if (!currentUser?.username || !i18n.language) return;
 
     wsService.send('lang-change', i18n.language);
-  }, [i18n.language]);
+  }, [currentUser?.username, i18n.language]);
 
   useEffect(() => {
-    if (!attemptIds.length) return undefined;
+    if (!currentUser?.username || !attemptIds.length) return undefined;
 
     attemptIds.forEach((id) => wsService.send('attempt-add', id));
 
     return () => {
       attemptIds.forEach((id) => wsService.send('attempt-delete', id));
     };
-  }, [attemptIds]);
+  }, [attemptIds, currentUser?.username]);
 
   useEffect(() => {
+    if (!currentUser?.username) return undefined;
+
     const unsubscribe = wsService.on<{ id?: number }>('attempt-update', (payload) => {
       if (!payload?.id) return;
 
@@ -80,7 +82,7 @@ const ProjectAttempts = ({ project, hackathonId }: ProjectAttemptsProps) => {
     });
 
     return unsubscribe;
-  }, [attemptIds, mutate]);
+  }, [attemptIds, currentUser?.username, mutate]);
 
   const handlePageChange = (_: any, value: number) => {
     setField('page', value);

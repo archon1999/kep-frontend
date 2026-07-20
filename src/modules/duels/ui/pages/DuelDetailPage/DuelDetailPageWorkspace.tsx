@@ -328,6 +328,8 @@ export const useDuelDetailPageWorkspaceState = ({
   }, [activeProblem?.problem?.id, activeProblem?.problem?.sampleTests, selectedSampleIndex]);
 
   useEffect(() => {
+    if (!currentUser?.username) return undefined;
+
     const unsubscribers: Array<() => void> = [];
 
     unsubscribers.push(
@@ -355,10 +357,10 @@ export const useDuelDetailPageWorkspaceState = ({
     return () => {
       unsubscribers.forEach((unsubscribe) => unsubscribe());
     };
-  }, []);
+  }, [currentUser?.username]);
 
   useEffect(() => {
-    if (!duel?.id) return;
+    if (!currentUser?.id || !duel?.id) return;
 
     wsService.send('duel-add', duel.id);
     const unsubscribe = wsService.on<{
