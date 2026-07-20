@@ -11,11 +11,13 @@ const LegacyRedirect = ({ to, mapParams }: LegacyRedirectProps) => {
 
   const mappedParams = mapParams ? mapParams(params) : params;
   const normalizedParams = Object.fromEntries(
-    Object.entries(mappedParams).filter(([, value]) => value !== undefined),
-  ) as Record<string, string | number>;
+    Object.entries(mappedParams)
+      .filter(([, value]) => value !== undefined)
+      .map(([key, value]) => [key, String(value)]),
+  ) as Record<string, string>;
 
   const targetPath = Object.entries(normalizedParams).reduce(
-    (result, [key, value]) => result.split(`:${key}`).join(encodeURIComponent(value.toString())),
+    (result, [key, value]) => result.split(`:${key}`).join(encodeURIComponent(value)),
     generatePath(to, normalizedParams),
   );
   const [pathnameWithSearch, targetHash] = targetPath.split('#');

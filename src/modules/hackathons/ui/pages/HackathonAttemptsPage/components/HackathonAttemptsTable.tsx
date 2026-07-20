@@ -18,6 +18,7 @@ import { useTranslation } from 'react-i18next';
 import { useAuth } from 'app/providers/AuthProvider';
 import { useHackathonAttemptLog, useRerunHackathonAttempt } from 'modules/hackathons/application';
 import { ProjectAttempt, ProjectAttemptLog } from 'modules/projects/domain/entities/project.entity';
+import { canViewAttemptLog } from 'modules/projects/ui/shared/lib/attemptPermissions.ts';
 import { formatHackathonDateTime } from 'modules/hackathons/ui/shared';
 import IconifyIcon from 'shared/components/base/IconifyIcon';
 import { createSafeHtml } from 'shared/lib/safeHtml';
@@ -193,9 +194,11 @@ const HackathonAttemptsTable = ({ attempts, isLoading, onRerun }: HackathonAttem
               </TableCell>
               <TableCell align="right">
                 <Stack direction="row" spacing={1} justifyContent="flex-end">
-                  <Button size="small" variant="outlined" onClick={() => handleOpenLog(attempt.id)}>
-                    {t('projects.log')}
-                  </Button>
+                  {canViewAttemptLog(currentUser, attempt.username) ? (
+                    <Button size="small" variant="outlined" onClick={() => handleOpenLog(attempt.id)}>
+                      {t('projects.log')}
+                    </Button>
+                  ) : null}
                   {currentUser?.isSuperuser ? (
                     <Button
                       size="small"

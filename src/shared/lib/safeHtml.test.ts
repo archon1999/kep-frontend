@@ -9,7 +9,7 @@ test('sanitizeRichHtml uses a safe escaped fallback outside the browser', () => 
   );
 });
 
-test('createSafeHtml is the single React inner-html boundary', () => {
+test('createSafeHtml applies the safe escaped fallback', () => {
   assert.deepEqual(createSafeHtml('<script>alert(1)</script>'), {
     __html: '&lt;script&gt;alert(1)&lt;/script&gt;',
   });

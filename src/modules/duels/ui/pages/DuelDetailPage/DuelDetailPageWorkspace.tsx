@@ -101,7 +101,7 @@ type CheckSamplesResult = Array<{
 
 type DuelDetailPageWorkspaceCurrentUser =
   | {
-      id?: number;
+      id?: number | string;
       username?: string;
       permissions?: unknown;
       isSuperuser?: boolean;

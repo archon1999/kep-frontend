@@ -10,6 +10,7 @@ import {
   ContestsCategory,
   ContestsRatingDetail,
 } from 'shared/api/orval/generated/endpoints/index.schemas';
+import { cancelContestRegistrationRequest } from './contests.requests.ts';
 
 export const contestsApiClient = {
   list: (params?: ApiContestsListParams) =>
@@ -48,7 +49,7 @@ export const contestsApiClient = {
   register: (id: number | string, payload?: Record<string, unknown>) =>
     apiClient.apiContestsRegistrationCreate(String(id), (payload ?? {}) as any),
   cancelRegistration: (id: number | string) =>
-    apiClient.apiContestsCancelRegistration(String(id)) as Promise<any>,
+    axiosMutator<any>(cancelContestRegistrationRequest(id)),
   submitQuestion: (id: number | string, payload: { problem?: string | null; question: string }) =>
     apiClient.apiContestsNewQuestion(String(id), payload as any),
   getStatistics: (id: number | string) =>

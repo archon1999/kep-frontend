@@ -11,6 +11,12 @@ export default ({ mode, command }) => {
     build: {
       sourcemap: false,
     },
+    define: isBuild
+      ? {
+          'import.meta.env.VITE_BASIC_AUTH_LOGIN': 'undefined',
+          'import.meta.env.VITE_BASIC_AUTH_PASSWORD': 'undefined',
+        }
+      : undefined,
     plugins: [
       tsconfigPaths(),
       react(),

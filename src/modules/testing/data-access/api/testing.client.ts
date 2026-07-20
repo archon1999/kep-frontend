@@ -1,4 +1,6 @@
 import { instance } from 'shared/api/http/axiosInstance.ts';
+import { pollPendingResponse } from './testing.poll.ts';
+import { finishTestRequest, startTestRequest } from './testing.requests.ts';
 
 export interface TestsListParams {
   page?: number;
@@ -27,7 +29,7 @@ export const testingApiClient = {
     return response.data;
   },
   startTest: async (testId: number) => {
-    const response = await instance.get(`/api/tests/${testId}/start/`);
+    const response = await instance.request(startTestRequest(testId));
     return response.data;
   },
   submitAnswer: async (testPassId: number, questionNumber: number, answer: unknown) => {
@@ -38,7 +40,9 @@ export const testingApiClient = {
     return response.data;
   },
   finishTest: async (testPassId: number) => {
-    const response = await instance.get(`/api/test-pass/${testPassId}/finish/`);
-    return response.data;
+    return pollPendingResponse(async () => {
+      const response = await instance.request(finishTestRequest(testPassId));
+      return response.data;
+    });
   },
 };

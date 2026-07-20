@@ -1,3 +1,5 @@
+import { resolveWebsocketUrl } from './websocketUrl.ts';
+
 interface WebsocketMessage<T> {
   event: string;
   data: T;
@@ -128,10 +130,16 @@ class WebsocketService {
   }
 }
 
-export const wsService = new WebsocketService(import.meta.env.VITE_WS_URL, {
-  reconnectAttempts: 10,
-  reconnectInterval: 5000,
-});
+export const wsService = new WebsocketService(
+  resolveWebsocketUrl(
+    import.meta.env.VITE_WS_URL,
+    typeof window === 'undefined' ? undefined : window.location,
+  ),
+  {
+    reconnectAttempts: 10,
+    reconnectInterval: 5000,
+  },
+);
 
 export type { WebsocketService };
 export default wsService;

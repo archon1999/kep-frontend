@@ -83,7 +83,7 @@ const DuelsListPage = () => {
                 <Typography variant="body2" color="text.secondary">
                   {t('duels.signInDescription')}
                 </Typography>
-                <Button variant="contained" onClick={redirectToLogin}>
+                <Button variant="contained" onClick={() => redirectToLogin()}>
                   {t('auth.login')}
                 </Button>
               </Stack>

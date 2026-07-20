@@ -1,5 +1,6 @@
 import { FC, useEffect, useRef } from 'react';
 import { Box, BoxProps } from '@mui/material';
+import { sanitizeRichHtml } from 'shared/lib/safeHtml';
 
 declare global {
   interface Window {
@@ -20,7 +21,7 @@ const MathJaxView: FC<MathJaxViewProps> = ({ rawHtml, ...props }) => {
   useEffect(() => {
     if (!ref.current) return;
 
-    ref.current.innerHTML = rawHtml ?? '';
+    ref.current.innerHTML = sanitizeRichHtml(rawHtml);
 
     const mj = window.MathJax;
 
