@@ -58,6 +58,7 @@
     "pool": "Options",
     "myRating": "My challenge rating",
     "submitAnswer": "Submit answer",
+    "submitAnswerError": "The answer could not be submitted. Please try again.",
     "notFound": "Challenge not found.",
     "ratingTitle": "Challenge rating",
     "ratingSubtitle": "Track the strongest head-to-head players.",

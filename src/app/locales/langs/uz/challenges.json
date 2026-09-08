@@ -55,6 +55,7 @@
     "pool": "Variantlar",
     "myRating": "Bellashuv reytingim",
     "submitAnswer": "Javobni yuborish",
+    "submitAnswerError": "Javobni yuborib bo‘lmadi. Qayta urinib ko‘ring.",
     "notFound": "Bellashuv topilmadi.",
     "ratingTitle": "Bellashuvlar reytingi",
     "ratingSubtitle": "Eng kuchli duelchilar.",

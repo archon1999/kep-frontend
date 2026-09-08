@@ -18,13 +18,21 @@ const ConformityQuestion = ({ question, groupOne, groupTwo, onChange }: Conformi
         <Typography variant="subtitle2" color="text.secondary">
           {question.options?.[0]?.optionMain || ''}
         </Typography>
-        <SortableList items={groupOne} onChange={(items) => onChange({ groupOne: items })} />
+        <SortableList
+          items={groupOne}
+          dragScope={`conformity:${question.id}:${question.number}:group-one`}
+          onChange={(items) => onChange({ groupOne: items })}
+        />
       </Stack>
       <Stack direction="column" spacing={1} sx={{ flex: 1 }}>
         <Typography variant="subtitle2" color="text.secondary">
           {question.options?.[0]?.optionSecondary || ''}
         </Typography>
-        <SortableList items={groupTwo} onChange={(items) => onChange({ groupTwo: items })} />
+        <SortableList
+          items={groupTwo}
+          dragScope={`conformity:${question.id}:${question.number}:group-two`}
+          onChange={(items) => onChange({ groupTwo: items })}
+        />
       </Stack>
     </Stack>
   </Stack>

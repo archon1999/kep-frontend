@@ -63,28 +63,35 @@ const buildChallengeAnswer = (
 const ChallengeQuestionCard = forwardRef<QuestionCardHandle, QuestionCardProps>(
   ({ challengeId, questionNumber, question, onSubmit, disabled, isSubmitting }, ref) => {
     const { t } = useTranslation();
-    const [questionStates, setQuestionStates] = useState<Record<number, QuestionState>>({});
+    const [questionStates, setQuestionStates] = useState<Record<string, QuestionState>>({});
     const chessQuestionRef = useRef<ChessPuzzleQuestionHandle>(null);
+    const questionStateKey = question
+      ? `${questionNumber ?? question.number}:${question.id}`
+      : null;
 
     useEffect(() => {
-      if (!question || question.type === QuestionType.ChessPuzzle) return;
-      setQuestionStates((prev) => ({
-        ...prev,
-        [question.id]: buildInitialState(question as TestPassQuestion),
-      }));
-    }, [question?.id, question]);
+      if (!question || !questionStateKey || question.type === QuestionType.ChessPuzzle) return;
+      setQuestionStates((prev) =>
+        prev[questionStateKey]
+          ? prev
+          : {
+              ...prev,
+              [questionStateKey]: buildInitialState(question as TestPassQuestion),
+            },
+      );
+    }, [question, questionStateKey]);
 
     const currentQuestionState = useMemo(
-      () => (question ? questionStates[question.id] : undefined),
-      [questionStates, question?.id],
+      () => (questionStateKey ? questionStates[questionStateKey] : undefined),
+      [questionStateKey, questionStates],
     );
 
     const updateState = (updater: (prev: QuestionState) => QuestionState) => {
-      if (!question) return;
+      if (!question || !questionStateKey) return;
       setQuestionStates((prev) => ({
         ...prev,
-        [question.id]: updater(
-          prev[question.id] ?? buildInitialState(question as TestPassQuestion),
+        [questionStateKey]: updater(
+          prev[questionStateKey] ?? buildInitialState(question as TestPassQuestion),
         ),
       }));
     };

@@ -1,8 +1,9 @@
 import { Paper, Stack, Typography } from '@mui/material';
 import { useTranslation } from 'react-i18next';
-import { useState } from 'react';
+import { DragEvent, useState } from 'react';
 import QuestionHeader from './QuestionHeader';
 import { ClassificationGroup, TestPassQuestion } from '../types';
+import { DragLocation, moveClassificationItem } from '../dragAndDrop';
 
 interface ClassificationQuestionProps {
   question: TestPassQuestion;
@@ -12,25 +13,20 @@ interface ClassificationQuestionProps {
 
 const ClassificationQuestion = ({ question, groups, onChange }: ClassificationQuestionProps) => {
   const { t } = useTranslation();
-  const [dragSource, setDragSource] = useState<{ groupIndex: number; itemIndex: number } | null>(
-    null,
-  );
+  const [dragSource, setDragSource] = useState<DragLocation | null>(null);
 
-  const handleDrop = (targetGroupIndex: number, targetIndex?: number) => {
+  const handleDrop = (event: DragEvent, targetGroupIndex: number, targetIndex?: number) => {
+    event.preventDefault();
+    event.stopPropagation();
     if (!dragSource) {
       return;
     }
 
-    const updated = groups.map((group) => ({ ...group, values: [...group.values] }));
-    const [item] = updated[dragSource.groupIndex].values.splice(dragSource.itemIndex, 1);
-    const insertionIndex =
-      typeof targetIndex === 'number'
-        ? targetIndex
-        : updated[targetGroupIndex].values.length;
-
-    updated[targetGroupIndex].values.splice(insertionIndex, 0, item);
+    const updated = moveClassificationItem(groups, dragSource, targetGroupIndex, targetIndex);
     setDragSource(null);
-    onChange(updated);
+    if (updated !== groups) {
+      onChange(updated);
+    }
   };
 
   return (
@@ -48,8 +44,11 @@ const ClassificationQuestion = ({ question, groups, onChange }: ClassificationQu
               border: '1px solid',
               borderColor: 'divider',
             }}
-            onDragOver={(event) => event.preventDefault()}
-            onDrop={() => handleDrop(groupIndex)}
+            onDragOver={(event) => {
+              event.preventDefault();
+              event.dataTransfer.dropEffect = 'move';
+            }}
+            onDrop={(event) => handleDrop(event, groupIndex)}
           >
             <Typography variant="subtitle2" fontWeight={700}>
               {group.key || `Group ${groupIndex + 1}`}
@@ -57,11 +56,21 @@ const ClassificationQuestion = ({ question, groups, onChange }: ClassificationQu
             <Stack direction="row" spacing={1}>
               {group.values.map((value, valueIndex) => (
                 <Paper
-                  key={`${value}-${valueIndex}`}
+                  key={`${value}-${group.values.slice(0, valueIndex).filter((item) => item === value).length}`}
                   draggable
-                  onDragStart={() => setDragSource({ groupIndex, itemIndex: valueIndex })}
-                  onDrop={() => handleDrop(groupIndex, valueIndex)}
-                  onDragOver={(event) => event.preventDefault()}
+                  onDragStart={(event) => {
+                    event.stopPropagation();
+                    event.dataTransfer.effectAllowed = 'move';
+                    event.dataTransfer.setData('text/plain', 'classification-item');
+                    setDragSource({ groupIndex, itemIndex: valueIndex });
+                  }}
+                  onDragEnd={() => setDragSource(null)}
+                  onDrop={(event) => handleDrop(event, groupIndex, valueIndex)}
+                  onDragOver={(event) => {
+                    event.preventDefault();
+                    event.stopPropagation();
+                    event.dataTransfer.dropEffect = 'move';
+                  }}
                   sx={{
                     px: 1.25,
                     py: 1,
@@ -81,8 +90,12 @@ const ClassificationQuestion = ({ question, groups, onChange }: ClassificationQu
                     borderStyle: 'dashed',
                     color: 'text.secondary',
                   }}
-                  onDragOver={(event) => event.preventDefault()}
-                  onDrop={() => handleDrop(groupIndex)}
+                  onDragOver={(event) => {
+                    event.preventDefault();
+                    event.stopPropagation();
+                    event.dataTransfer.dropEffect = 'move';
+                  }}
+                  onDrop={(event) => handleDrop(event, groupIndex)}
                 >
                   <Typography variant="caption">{t('tests.dropHere')}</Typography>
                 </Paper>

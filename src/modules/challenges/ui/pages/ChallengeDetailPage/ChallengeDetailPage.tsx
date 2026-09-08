@@ -442,15 +442,19 @@ const ChallengeDetailPage = () => {
     payload: { answer: unknown; isFinish?: boolean; forceFail?: boolean },
   ) => {
     if (!challenge) return;
-    const result = await submitAnswer({ challengeId: challenge.id, payload });
+    try {
+      const result = await submitAnswer({ challengeId: challenge.id, payload });
 
-    if (result?.success !== undefined) {
-      const message = result.success ? t('challenges.answerCorrect') : t('challenges.answerWrong');
-      const notify = result.success ? toast.success : toast.error;
-      notify(message);
+      if (result?.success !== undefined) {
+        const message = result.success ? t('challenges.answerCorrect') : t('challenges.answerWrong');
+        const notify = result.success ? toast.success : toast.error;
+        notify(message);
+      }
+
+      await mutate();
+    } catch {
+      toast.error(t('challenges.submitAnswerError'));
     }
-
-    await mutate();
   };
 
   const goBack = () => {
