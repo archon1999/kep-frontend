@@ -19,6 +19,25 @@ export const CHALLENGES_RATING_LEVELS: ChallengesRatingLevel[] = [
 export const normalizeChallengesRatingTitle = (title?: string | null) =>
   title?.trim().toUpperCase() ?? '';
 
+const ratingImages = import.meta.glob('../../assets/images/ranks/challenges/*.svg', {
+  eager: true,
+  import: 'default',
+}) as Record<string, string>;
+
+const ratingImageMap = Object.fromEntries(
+  Object.entries(ratingImages).map(([path, src]) => [
+    path
+      .split('/')
+      .pop()
+      ?.replace(/\.svg$/i, '')
+      .toUpperCase(),
+    src,
+  ]),
+);
+
+export const getChallengesRatingImageSrc = (title?: string | null) =>
+  ratingImageMap[normalizeChallengesRatingTitle(title)] ?? null;
+
 export const getChallengesRatingLevelByTitle = (title?: string | null) => {
   const normalizedTitle = normalizeChallengesRatingTitle(title);
   return (

@@ -20,7 +20,7 @@ export const CONTESTS_RATING_LEVELS: ContestsRatingLevel[] = [
   { min: 3200, title: 'RIDWAN', color: '#A00000' },
 ];
 
-const ratingImages = import.meta.glob('../../assets/images/contests/ratings/*.png', {
+const ratingImages = import.meta.glob('../../assets/images/ranks/contests/*.svg', {
   eager: true,
   import: 'default',
 }) as Record<string, string>;
@@ -32,7 +32,7 @@ const ratingImageMap = Object.entries(ratingImages).reduce<Record<string, string
       return acc;
     }
 
-    acc[fileName.replace(/\.png$/i, '').toLowerCase()] = value;
+    acc[fileName.replace(/\.svg$/i, '').toLowerCase()] = value;
     return acc;
   },
   {},

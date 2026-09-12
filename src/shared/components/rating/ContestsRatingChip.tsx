@@ -1,5 +1,5 @@
-import { Box, Stack, StackProps, Tooltip, Typography } from '@mui/material';
 import { useMemo } from 'react';
+import { Box, Stack, StackProps, Tooltip, Typography } from '@mui/material';
 import { getContestsRatingImageSrc } from './contestsRating';
 
 interface ContestsRatingChipProps extends Omit<StackProps, 'title'> {
@@ -8,7 +8,12 @@ interface ContestsRatingChipProps extends Omit<StackProps, 'title'> {
   withTitle?: boolean;
 }
 
-const ContestsRatingChip = ({ title, imgSize = 24, withTitle = false, ...stackProps }: ContestsRatingChipProps) => {
+const ContestsRatingChip = ({
+  title,
+  imgSize = 24,
+  withTitle = false,
+  ...stackProps
+}: ContestsRatingChipProps) => {
   const imageSrc = useMemo(() => {
     return getContestsRatingImageSrc(title);
   }, [title]);
@@ -24,7 +29,7 @@ const ContestsRatingChip = ({ title, imgSize = 24, withTitle = false, ...stackPr
           component="img"
           src={imageSrc}
           alt={title ?? 'Contests rating'}
-          sx={{ width: imgSize, height: imgSize, borderRadius: '50%' }}
+          sx={{ width: imgSize, height: imgSize, objectFit: 'contain', flexShrink: 0 }}
         />
       ) : null}
       {withTitle && title ? (
