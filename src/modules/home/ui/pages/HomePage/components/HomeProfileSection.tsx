@@ -2,11 +2,15 @@ import { useMemo } from 'react';
 import { useTranslation } from 'react-i18next';
 import { Link as RouterLink } from 'react-router-dom';
 import { Button, Divider, Paper, Stack, Typography } from '@mui/material';
+import type {
+  HomeUserActivityHistory,
+  HomeUserRatings,
+} from 'modules/home/domain/entities/home.entity';
+import Kepper from 'shared/components/common/Kepper';
 import { useLoginHref } from 'shared/lib/authRedirect';
 import { formatDateTime } from 'shared/lib/dateTime';
 import { createSafeHtml } from 'shared/lib/safeHtml';
 import { responsivePagePaddingSx } from 'shared/lib/styles';
-import type { HomeUserActivityHistory, HomeUserRatings } from 'modules/home/domain/entities/home.entity';
 import HomeActivityHistory from './HomeActivityHistory';
 import RanksSection from './RanksSection';
 
@@ -50,38 +54,41 @@ const HomeProfileSection = ({
           overflow: 'hidden',
         }}
       >
-        <Stack direction="column" spacing={1}>
-          <Typography
-            variant="subtitle1"
-            sx={{
-              color: 'text.secondary',
-              fontWeight: 500,
-            }}
-          >
-            {todayLabel}
-          </Typography>
+        <Stack direction="row" justifyContent="space-between" alignItems="center" gap={1}>
+          <Stack direction="column" spacing={1} sx={{ minWidth: 0 }}>
+            <Typography
+              variant="subtitle1"
+              sx={{
+                color: 'text.secondary',
+                fontWeight: 500,
+              }}
+            >
+              {todayLabel}
+            </Typography>
 
-          <Typography
-            variant="h5"
-            display="flex"
-            columnGap={1}
-            flexWrap="wrap"
-            dangerouslySetInnerHTML={createSafeHtml(
-              t('homePage.greeting.goodMorning', { name: displayName }),
+            <Typography
+              variant="h5"
+              display="flex"
+              columnGap={1}
+              flexWrap="wrap"
+              dangerouslySetInnerHTML={createSafeHtml(
+                t('homePage.greeting.goodMorning', { name: displayName }),
+              )}
+            />
+            {!isAuthenticated && (
+              <Stack direction="row" spacing={1.5} alignItems="center" flexWrap="wrap">
+                <Typography variant="body2" sx={{ color: 'text.secondary' }}>
+                  {t('homePage.greeting.loginPrompt')}
+                </Typography>
+                <Button component={RouterLink} to={loginHref} size="small" variant="contained">
+                  {t('homePage.greeting.loginCta')}
+                </Button>
+              </Stack>
             )}
-          />
-          {!isAuthenticated && (
-            <Stack direction="row" spacing={1.5} alignItems="center" flexWrap="wrap">
-              <Typography variant="body2" sx={{ color: 'text.secondary' }}>
-                {t('homePage.greeting.loginPrompt')}
-              </Typography>
-              <Button component={RouterLink} to={loginHref} size="small" variant="contained">
-                {t('homePage.greeting.loginCta')}
-              </Button>
-            </Stack>
-          )}
-        </Stack>
+          </Stack>
 
+          <Kepper pose="welcome" motion="loop" size={96} />
+        </Stack>
         <Divider />
 
         <RanksSection ratings={ratings} isLoading={isLoading} />

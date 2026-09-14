@@ -10,6 +10,7 @@ import {
 } from '@mui/material';
 import { Challenge } from 'modules/challenges/domain';
 import KepIcon from 'shared/components/base/KepIcon.tsx';
+import Kepper from 'shared/components/common/Kepper';
 import ChallengeResultsCard from '../components/ChallengeResultsCard.tsx';
 
 type FinishDialogProps = {
@@ -19,12 +20,7 @@ type FinishDialogProps = {
   onBackToList: () => void;
 };
 
-const ChallengeFinishDialog = ({
-  open,
-  challenge,
-  onClose,
-  onBackToList,
-}: FinishDialogProps) => {
+const ChallengeFinishDialog = ({ open, challenge, onClose, onBackToList }: FinishDialogProps) => {
   const { t } = useTranslation();
 
   return (
@@ -36,6 +32,9 @@ const ChallengeFinishDialog = ({
         </Stack>
       </DialogTitle>
       <DialogContent dividers>
+        <Stack alignItems="center" sx={{ mb: 2 }}>
+          <Kepper pose="gg" motion="loop" size={100} />
+        </Stack>
         <ChallengeResultsCard challenge={challenge} />
       </DialogContent>
       <DialogActions>

@@ -17,6 +17,7 @@ import { alpha } from '@mui/material/styles';
 import { useAuth } from 'app/providers/AuthProvider';
 import IconifyIcon from 'shared/components/base/IconifyIcon';
 import KepcoinValue from 'shared/components/common/KepcoinValue';
+import Kepper from 'shared/components/common/Kepper';
 import Streak from 'shared/components/rating/Streak';
 import axiosFetcher from 'shared/services/axios/axiosFetcher';
 import useSWR from 'swr';
@@ -260,7 +261,7 @@ const DailyTasksMenu = ({ type = 'default', label }: DailyTasksMenuProps) => {
         }}
         sx={{
           [`& .${paperClasses.root}`]: {
-            width: 380,
+            width: 'min(380px, calc(100vw - 32px))',
             display: 'flex',
             flexDirection: 'column',
             p: 0,
@@ -273,7 +274,14 @@ const DailyTasksMenu = ({ type = 'default', label }: DailyTasksMenuProps) => {
           justifyContent="space-between"
           sx={{ px: 2, pt: 2, pb: 1 }}
         >
-          <Box>
+          <Kepper
+            pose={
+              dailyTasks.length > 0 && completedTasks === dailyTasks.length ? 'celebrate' : 'coding'
+            }
+            motion="loop"
+            size={68}
+          />
+          <Box sx={{ flex: 1 }}>
             <Typography variant="h6">{t('common.dailyTasks.title')}</Typography>
             <Typography variant="caption" color="text.secondary">
               {t('common.dailyTasks.subtitle')}

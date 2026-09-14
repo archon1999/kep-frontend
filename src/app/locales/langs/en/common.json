@@ -47,6 +47,12 @@
       "tasksCount": "{{count}} tasks",
       "completed": "Completed",
       "empty": "No daily tasks for now"
+    },
+    "mascot": {
+      "name": "KEPPER",
+      "companion": "Your coding companion on KEP.uz",
+      "loading": "Loading",
+      "notFound": "KEPPER could not find this page. Let's get you back on track."
     }
   },
   "notifications": {

@@ -30,6 +30,7 @@ import UserPopover from 'modules/users/ui/shared/components/UserPopover';
 import IconifyIcon from 'shared/components/base/IconifyIcon';
 import KepcoinSpendConfirm from 'shared/components/common/KepcoinSpendConfirm';
 import KepcoinValue from 'shared/components/common/KepcoinValue';
+import Kepper from 'shared/components/common/Kepper';
 import ResponsiveTabs from 'shared/components/common/ResponsiveTabs';
 import AttemptLanguage from 'shared/components/problems/AttemptLanguage';
 import AttemptVerdict from 'shared/components/problems/AttemptVerdict';
@@ -183,11 +184,7 @@ const AttemptCompareDialog = ({
           <Typography variant="h6" fontWeight={700}>
             {t('problems.attempts.modal.compareTitle', { id: baseAttempt?.id ?? '--' })}
           </Typography>
-          <IconButton
-            aria-label={t('common.close')}
-            onClick={onClose}
-            size="small"
-          >
+          <IconButton aria-label={t('common.close')} onClick={onClose} size="small">
             <IconifyIcon icon="mdi:close" width={20} height={20} />
           </IconButton>
         </Stack>
@@ -434,11 +431,7 @@ const AttemptDetailDialog = ({
                 balls={baseAttempt?.balls}
                 showBalls={isGraderAttempt}
               />
-              <IconButton
-                aria-label={t('common.close')}
-                onClick={onClose}
-                size="small"
-              >
+              <IconButton aria-label={t('common.close')} onClick={onClose} size="small">
                 <IconifyIcon icon="mdi:close" width={20} height={20} />
               </IconButton>
             </Stack>
@@ -546,6 +539,27 @@ const AttemptDetailDialog = ({
                 ) : null}
               </Stack>
 
+              <Stack direction="row" alignItems="center" justifyContent="center" sx={{ py: 1 }}>
+                <Kepper
+                  pose={
+                    baseAttempt?.verdict === Verdicts.Accepted
+                      ? 'success'
+                      : baseAttempt?.verdict === Verdicts.Running ||
+                          baseAttempt?.verdict === Verdicts.InQueue
+                        ? 'loading'
+                        : 'thinking'
+                  }
+                  motion={
+                    baseAttempt?.verdict === Verdicts.Accepted
+                      ? 'loop'
+                      : baseAttempt?.verdict === Verdicts.Running ||
+                          baseAttempt?.verdict === Verdicts.InQueue
+                        ? 'loop'
+                        : 'static'
+                  }
+                  size={88}
+                />
+              </Stack>
               {isLoading ? <LinearProgress /> : null}
               <Divider />
               {canViewAttempt ? (

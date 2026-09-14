@@ -47,6 +47,12 @@
       "tasksCount": "{{count}} ta vazifa",
       "completed": "Bajarilgan",
       "empty": "Hozircha kunlik vazifalar yo'q"
+    },
+    "mascot": {
+      "name": "KEPPER",
+      "companion": "KEP.uz’dagi dasturlash hamrohingiz",
+      "loading": "Yuklanmoqda",
+      "notFound": "KEPPER bu sahifani topa olmadi. Keling, ortga qaytamiz."
     }
   },
   "notifications": {

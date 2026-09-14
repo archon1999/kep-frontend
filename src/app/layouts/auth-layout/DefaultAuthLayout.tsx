@@ -1,15 +1,13 @@
 import { PropsWithChildren, Suspense } from 'react';
-import { Stack } from '@mui/material';
+import { useTranslation } from 'react-i18next';
+import { Stack, Typography } from '@mui/material';
 import Grid from '@mui/material/Grid';
-import Lottie from 'lottie-react';
+import Kepper from 'shared/components/common/Kepper';
 import Logo from 'shared/components/common/Logo';
 import DefaultLoader from 'shared/components/loading/DefaultLoader';
-import authDark from 'shared/assets/json/auth-dark.json';
-import auth from 'shared/assets/json/auth.json';
-import { useThemeMode } from 'shared/hooks/useThemeMode';
 
 const DefaultAuthLayout = ({ children }: PropsWithChildren) => {
-  const { isDark } = useThemeMode();
+  const { t } = useTranslation();
 
   return (
     <Grid
@@ -55,10 +53,24 @@ const DefaultAuthLayout = ({ children }: PropsWithChildren) => {
             sx={{
               justifyContent: 'center',
               alignItems: 'center',
-              display: { xs: 'none', md: 'flex', flexDirection: 'row-reverse' },
+              flex: 1,
+              display: 'flex',
+              flexDirection: 'column',
+              py: { xs: 2, md: 6 },
             }}
           >
-            {isDark ? <Lottie animationData={authDark} /> : <Lottie animationData={auth} />}
+            <Stack sx={{ display: { xs: 'none', md: 'flex' } }}>
+              <Kepper pose="welcome" motion="loop" size={300} />
+            </Stack>
+            <Stack sx={{ display: { xs: 'flex', md: 'none' } }}>
+              <Kepper pose="welcome" size={80} />
+            </Stack>
+            <Typography variant="h4" sx={{ mt: 2 }}>
+              {t('common.mascot.name')}
+            </Typography>
+            <Typography color="text.secondary" textAlign="center" sx={{ mt: 1, maxWidth: 320 }}>
+              {t('common.mascot.companion')}
+            </Typography>
           </Stack>
         </Stack>
       </Grid>
@@ -68,7 +80,7 @@ const DefaultAuthLayout = ({ children }: PropsWithChildren) => {
           xs: 12,
         }}
         sx={{
-          display: { xs: 'lock', md: 'block' },
+          display: { xs: 'block', md: 'block' },
           flexDirection: 'column',
           flex: 1,
         }}

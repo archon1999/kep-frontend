@@ -17,6 +17,7 @@ import { HistoryView } from 'modules/kepcoin/ui/types';
 import IconifyIcon from 'shared/components/base/IconifyIcon';
 import KepcoinSpendConfirm from 'shared/components/common/KepcoinSpendConfirm';
 import KepcoinValue from 'shared/components/common/KepcoinValue';
+import Kepper from 'shared/components/common/Kepper';
 import Streak from 'shared/components/rating/Streak';
 import PageHeader from 'shared/components/sections/common/PageHeader';
 import useRouteQueryState from 'shared/hooks/useRouteQueryState';
@@ -210,27 +211,30 @@ const KepcoinPage = () => {
         }
       />
 
-      <Grid container spacing={3} sx={{ px: { xs: 2, sm: 3, md: 5 }, pb: { xs: 4 }}}>
+      <Grid container spacing={3} sx={{ px: { xs: 2, sm: 3, md: 5 }, pb: { xs: 4 } }}>
         <Grid size={{ xs: 12, lg: 6 }}>
           <Card sx={{ ...surfaceCardSx, height: 1 }}>
             <CardContent sx={{ p: { xs: 2, md: 3 } }}>
-              <Stack spacing={2.25}>
-                <Stack direction="row" spacing={1} alignItems="center" color="text.secondary">
-                  <IconifyIcon icon="solar:wallet-money-line-duotone" fontSize={22} />
-                  <Typography variant="body2" fontWeight={700} color="inherit">
-                    {t('kepcoinSpend.balanceLabel')}
+              <Stack direction="row" alignItems="center" justifyContent="space-between" gap={2}>
+                <Stack spacing={2.25} sx={{ minWidth: 0 }}>
+                  <Stack direction="row" spacing={1} alignItems="center" color="text.secondary">
+                    <IconifyIcon icon="solar:wallet-money-line-duotone" fontSize={22} />
+                    <Typography variant="body2" fontWeight={700} color="inherit">
+                      {t('kepcoinSpend.balanceLabel')}
+                    </Typography>
+                  </Stack>
+
+                  {isSummaryLoading ? (
+                    <Skeleton variant="rounded" width={180} height={52} />
+                  ) : (
+                    <KepcoinValue value={balance} iconSize={38} textVariant="h3" fontWeight={800} />
+                  )}
+
+                  <Typography variant="body2" color="text.secondary">
+                    {t('kepcoinPage.hero.balanceCaption')}
                   </Typography>
                 </Stack>
-
-                {isSummaryLoading ? (
-                  <Skeleton variant="rounded" width={180} height={52} />
-                ) : (
-                  <KepcoinValue value={balance} iconSize={38} textVariant="h3" fontWeight={800} />
-                )}
-
-                <Typography variant="body2" color="text.secondary">
-                  {t('kepcoinPage.hero.balanceCaption')}
-                </Typography>
+                <Kepper pose="coin" size={{ xs: 104, sm: 144 }} />
               </Stack>
             </CardContent>
           </Card>

@@ -1,6 +1,7 @@
-import { Alert, Box, Button, Stack, Typography, alpha } from '@mui/material';
 import { useTranslation } from 'react-i18next';
+import { Alert, Box, Button, Stack, Typography, alpha } from '@mui/material';
 import { useStaleClientContent, useUnexpectedErrorContent } from 'modules/errors/application';
+import Kepper from 'shared/components/common/Kepper';
 import type { AppErrorKind } from '../utils/app-error';
 
 interface AppErrorPageProps {
@@ -50,6 +51,7 @@ const AppErrorPage = ({ kind }: AppErrorPageProps) => {
           backdropFilter: 'blur(16px)',
         })}
       >
+        <Kepper pose={isStaleClient ? 'coding' : 'debug'} size={128} />
         <Stack spacing={1.5}>
           <Typography
             variant="overline"
@@ -74,10 +76,10 @@ const AppErrorPage = ({ kind }: AppErrorPageProps) => {
         <Alert severity={isStaleClient ? 'warning' : 'error'} variant="outlined">
           {isStaleClient
             ? t('errors.staleClientHint', {
-                defaultValue: "Update olish uchun sahifani qayta yuklang.",
+                defaultValue: 'Update olish uchun sahifani qayta yuklang.',
               })
             : t('errors.unexpectedHint', {
-                defaultValue: "Xatolik tafsilotlari konsolda saqlanadi.",
+                defaultValue: 'Xatolik tafsilotlari konsolda saqlanadi.',
               })}
         </Alert>
 

@@ -1,6 +1,7 @@
 import { useTranslation } from 'react-i18next';
 import { Button, Card, CardContent, Grid, Skeleton, Stack, Typography } from '@mui/material';
 import { ChallengeCall } from 'modules/challenges/domain';
+import Kepper from 'shared/components/common/Kepper';
 import ChallengeCallCard from './components/ChallengeCallCard.tsx';
 
 type ChallengesListPageQueueTabProps = {
@@ -56,9 +57,12 @@ const ChallengesListPageQueueTab = ({
           <Grid size={{ xs: 12 }}>
             <Card variant="outlined">
               <CardContent>
-                <Typography variant="body2" color="text.secondary">
-                  {t('challenges.noCalls')}
-                </Typography>
+                <Stack alignItems="center" spacing={1.5} sx={{ py: 2 }}>
+                  <Kepper pose="coffee" motion="loop" size={128} />
+                  <Typography variant="body2" color="text.secondary">
+                    {t('challenges.noCalls')}
+                  </Typography>
+                </Stack>
               </CardContent>
             </Card>
           </Grid>

@@ -17,12 +17,16 @@ import {
 import { useTheme } from '@mui/material/styles';
 import { useDocumentTitle } from 'app/providers/DocumentTitleProvider';
 import { getResourceById, resources } from 'app/routes/resources';
-import MathJaxView from 'shared/components/base/MathJaxView.tsx';
 import { useStudyPlan } from 'modules/problems/application/queries.ts';
 import { difficultyOptions, getDifficultyColor } from 'modules/problems/config/difficulty.ts';
-import type { DifficultyBreakdown, StudyPlanDetail } from 'modules/problems/domain/entities/problem.entity.ts';
+import type {
+  DifficultyBreakdown,
+  StudyPlanDetail,
+} from 'modules/problems/domain/entities/problem.entity.ts';
 import { getStudyPlanBranding } from 'modules/problems/ui/shared/utils/studyPlanBranding.ts';
 import IconifyIcon from 'shared/components/base/IconifyIcon.tsx';
+import MathJaxView from 'shared/components/base/MathJaxView.tsx';
+import Kepper from 'shared/components/common/Kepper';
 
 const StudyPlanPage = () => {
   const { t } = useTranslation();
@@ -63,7 +67,12 @@ const StudyPlanPage = () => {
 
           <Grid size={{ xs: 12, lg: 4 }}>
             <Stack spacing={2}>
-              <Button startIcon={<IconifyIcon icon="mdi:chevron-left"/>} component={RouterLink} to={resources.StudyPlans} variant="soft">
+              <Button
+                startIcon={<IconifyIcon icon="mdi:chevron-left" />}
+                component={RouterLink}
+                to={resources.StudyPlans}
+                variant="soft"
+              >
                 {t('problems.studyPlans.backToPlans')}
               </Button>
 
@@ -223,7 +232,14 @@ const StudyPlanProgressCard = ({
       <CardContent>
         <Stack spacing={2.5}>
           <div>
-            <Typography variant="h6">{t('problems.studyPlans.progressTitle')}</Typography>
+            <Stack direction="row" alignItems="center" justifyContent="space-between" gap={2}>
+              <Typography variant="h6">{t('problems.studyPlans.progressTitle')}</Typography>
+              <Kepper
+                pose={problemsCount > 0 && solvedPercent >= 100 ? 'celebrate' : 'coding'}
+                motion={problemsCount > 0 && solvedPercent >= 100 ? 'loop' : 'static'}
+                size={92}
+              />
+            </Stack>
             <Typography variant="body2" color="text.secondary" mt={0.5}>
               {t('problems.studyPlans.progressSubtitle', {
                 solved: statistics?.totalSolved ?? 0,
@@ -255,7 +271,8 @@ const StudyPlanProgressCard = ({
           <Stack spacing={1.5}>
             {difficultyOptions.map((difficulty) => {
               const key = difficulty.key as keyof DifficultyBreakdown;
-              const totalKey = `all${difficulty.key[0].toUpperCase()}${difficulty.key.slice(1)}` as keyof DifficultyBreakdown;
+              const totalKey =
+                `all${difficulty.key[0].toUpperCase()}${difficulty.key.slice(1)}` as keyof DifficultyBreakdown;
               const solved = statistics?.[key] ?? 0;
               const total = statistics?.[totalKey] ?? 0;
               if (!total) return null;

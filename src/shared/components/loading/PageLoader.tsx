@@ -1,6 +1,7 @@
 'use client';
 
-import { Box, BoxProps, CircularProgress } from '@mui/material';
+import { Box, BoxProps } from '@mui/material';
+import DefaultLoader from './DefaultLoader';
 
 const pageLoaderSx = {
   alignItems: 'center',
@@ -17,7 +18,7 @@ const PageLoader = (props: BoxProps) => (
     role="status"
     sx={[pageLoaderSx, ...(Array.isArray(props.sx) ? props.sx : [props.sx])]}
   >
-    <CircularProgress size={76} thickness={4} />
+    <DefaultLoader />
   </Box>
 );
 
