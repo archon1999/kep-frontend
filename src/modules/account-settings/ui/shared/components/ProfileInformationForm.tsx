@@ -1,5 +1,6 @@
 import { ChangeEvent, useEffect, useState } from 'react';
 import { Button, Card, CardContent, CardHeader, Grid, LinearProgress, MenuItem, Stack, TextField, Typography } from '@mui/material';
+import { DatePicker } from '@mui/x-date-pickers/DatePicker';
 import { useTranslation } from 'react-i18next';
 import { useAuth } from 'app/providers/AuthProvider.tsx';
 import { useAccountProfileInfo, useUpdateProfileInfo } from 'modules/account-settings/application';
@@ -7,7 +8,7 @@ import type { AccountProfileInfo } from 'modules/account-settings/domain';
 import { toast } from 'sonner';
 import { useUsersCountries } from 'modules/users/application/queries.ts';
 import CountryFlagIcon from 'shared/components/common/CountryFlagIcon.tsx';
-import { formatDateInputValue } from 'shared/lib/dateTime';
+import { formatDateInputValue, parseDateTimePickerValue } from 'shared/lib/dateTime';
 import { getCountryLabel } from 'shared/utils/country.ts';
 
 const ProfileInformationForm = () => {
@@ -33,9 +34,11 @@ const ProfileInformationForm = () => {
     setFormState((prev) => ({ ...prev!, [field]: event.target.value }));
   };
 
-  const handleDateChange = (event: ChangeEvent<HTMLInputElement>) => {
-    const value = event.target.value;
-    setFormState((prev) => ({ ...prev!, dateOfBirth: formatDateInputValue(value) }));
+  const handleDateChange = (value: ReturnType<typeof parseDateTimePickerValue>) => {
+    setFormState((prev) => ({
+      ...prev!,
+      dateOfBirth: value?.isValid() ? formatDateInputValue(value) : '',
+    }));
   };
 
   const handleReset = () => setFormState(data || null);
@@ -71,15 +74,22 @@ const ProfileInformationForm = () => {
           />
           <Grid container spacing={2}>
             <Grid size={{ xs: 12, md: 6 }}>
-              <TextField
-                fullWidth
-                type="date"
+              <DatePicker
                 label={t('settings.birthDate')}
-                value={formatDateInputValue(formState?.dateOfBirth)}
+                value={parseDateTimePickerValue(formState?.dateOfBirth)}
                 onChange={handleDateChange}
-                InputLabelProps={{ shrink: true }}
-                error={Boolean(errors?.dateOfBirth?.length)}
-                helperText={errors?.dateOfBirth?.[0]}
+                format="DD.MM.YYYY"
+                views={['year', 'month', 'day']}
+                openTo="year"
+                disableFuture
+                slotProps={{
+                  field: { clearable: true },
+                  textField: {
+                    fullWidth: true,
+                    error: Boolean(errors?.dateOfBirth?.length),
+                    helperText: errors?.dateOfBirth?.[0],
+                  },
+                }}
               />
             </Grid>
             <Grid size={{ xs: 12, md: 6 }}>
