@@ -14,6 +14,10 @@ export type GiveawayDto = GiveawaySummary & {
 
 export const mapGiveaway = (dto: GiveawayDto, sentAt: number, receivedAt: number): Giveaway => ({
   ...dto,
-  participants: dto.participants.map((user) => ({ id: user.id, username: user.username })),
+  participants: dto.participants.map((user) => ({
+    id: user.id,
+    username: user.username,
+    avatar: user.avatar ?? null,
+  })),
   serverOffsetMs: Date.parse(dto.serverTime) - (sentAt + receivedAt) / 2,
 });

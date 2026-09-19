@@ -72,9 +72,13 @@ export default function Participants({
               minWidth: 0,
             }}
           >
-            <UserPopover username={person.username}>
+            <UserPopover username={person.username} avatar={person.avatar ?? undefined}>
               <ButtonBase sx={{ gap: 1, minWidth: 0, borderRadius: 1, textAlign: 'left' }}>
-                <Avatar sx={{ width: 32, height: 32, fontSize: 12 }}>
+                <Avatar
+                  src={person.avatar ?? undefined}
+                  alt={person.username}
+                  sx={{ width: 32, height: 32, fontSize: 12 }}
+                >
                   {person.username.slice(0, 2).toUpperCase()}
                 </Avatar>
                 <Typography noWrap variant="body2" fontWeight={600}>

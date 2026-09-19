@@ -1,4 +1,4 @@
-export type Participant = { id: number; username: string };
+export type Participant = { id: number; username: string; avatar?: string | null };
 export type GiveawaySummary = {
   id: number;
   title: string;

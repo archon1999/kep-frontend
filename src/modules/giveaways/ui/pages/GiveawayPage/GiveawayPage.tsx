@@ -206,6 +206,8 @@ function GiveawayExperience({ id, username }: { id: string; username: string }) 
                     {t('giveaways.winner')}
                   </Typography>
                   <Avatar
+                    src={data.winner.avatar ?? undefined}
+                    alt={data.winner.username}
                     sx={{
                       width: 76,
                       height: 76,
@@ -221,7 +223,10 @@ function GiveawayExperience({ id, username }: { id: string; username: string }) 
                     component="h2"
                     sx={{ fontSize: { xs: 28, md: 40 }, fontWeight: 850, overflowWrap: 'anywhere' }}
                   >
-                    <UserPopover username={data.winner.username}>
+                    <UserPopover
+                      username={data.winner.username}
+                      avatar={data.winner.avatar ?? undefined}
+                    >
                       <ButtonBase
                         sx={{
                           font: 'inherit',
