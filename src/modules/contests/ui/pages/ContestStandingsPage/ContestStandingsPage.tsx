@@ -316,7 +316,18 @@ const ContestStandingsPage = () => {
   };
 
   const tabsRightContent = (
-    <>
+    <Stack direction="row" spacing={1} alignItems="center">
+      {contest?.statusCode === ContestStatus.Finished && (
+        <Button
+          variant="soft"
+          color="neutral"
+          startIcon={<IconifyIcon icon="mdi:play-circle-outline" />}
+          onClick={() => setReplayOpen(true)}
+          sx={{ whiteSpace: 'nowrap' }}
+        >
+          {t('contests.replay.title')}
+        </Button>
+      )}
       <FilterButton
         id="contest-standings-filters-button"
         onClick={handleFiltersToggle}
@@ -447,7 +458,7 @@ const ContestStandingsPage = () => {
           </TextField>
         </Stack>
       </Menu>
-    </>
+    </Stack>
   );
 
   const columns: GridColDef<ContestantEntity>[] = useMemo(() => {
@@ -712,9 +723,6 @@ const ContestStandingsPage = () => {
 
       {contest ? <ContestStandingsCountdown contest={contest} /> : null}
 
-      {contest?.statusCode === ContestStatus.Finished && (
-        <Box><Button variant="outlined" startIcon={<IconifyIcon icon="mdi:play-circle-outline" />} onClick={() => setReplayOpen(true)}>{t('contests.replay.title')}</Button></Box>
-      )}
       {replayOpen && contest?.statusCode === ContestStatus.Finished && contestId && (
         <ContestReplayDialog key={contestId} contestId={contestId} title={contest.title} contestType={contest.type} typeInfo={contest.typeInfo} problemDetails={contestProblems} showPenalties={contestHasPenalties(contest.type, contest.typeInfo)} onClose={() => setReplayOpen(false)} />
       )}
