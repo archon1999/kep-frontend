@@ -91,6 +91,7 @@ import { authPaths, rootPaths } from './route-config';
 import { adminMenu } from './sitemap';
 
 const IS_PROD = import.meta.env.PROD;
+const GiveawayPage = lazy(() => import('modules/giveaways/ui/pages/GiveawayPage/GiveawayPage'));
 
 const AuthLayout = lazy(() => import('app/layouts/auth-layout'));
 const DefaultAuthLayout = lazy(() => import('app/layouts/auth-layout/DefaultAuthLayout'));
@@ -419,6 +420,11 @@ export const routes: RouteObject[] = [
             path: resources.Arena,
             element: <ArenaListPage />,
             handle: { titleKey: 'pageTitles.arena' },
+          },
+          {
+            path: resources.Giveaway,
+            element: withAuthGuard(withSuspense(<GiveawayPage />)),
+            handle: { titleKey: 'giveaways.pageTitle' },
           },
           {
             path: resources.ArenaTournament,

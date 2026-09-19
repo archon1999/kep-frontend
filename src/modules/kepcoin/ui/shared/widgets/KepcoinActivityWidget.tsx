@@ -45,6 +45,7 @@ const earnTypeKeyMap: Record<KepcoinEarnType, string> = {
   [KepcoinEarnType.NewYear2026Login]: 'kepcoinPage.earnTypes.newYear2026Login',
   [KepcoinEarnType.MerchRefund]: 'kepcoinPage.earnTypes.merchRefund',
   [KepcoinEarnType.OneTimeTaskCompletion]: 'kepcoinPage.earnTypes.oneTimeTaskCompletion',
+  [KepcoinEarnType.Giveaway]: 'giveaways.pageTitle',
 };
 
 const spendTypeKeyMap: Record<KepcoinSpendType, string> = {

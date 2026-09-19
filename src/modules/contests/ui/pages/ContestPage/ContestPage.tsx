@@ -13,6 +13,7 @@ import {
   Typography,
 } from '@mui/material';
 import { useAuth } from 'app/providers/AuthProvider';
+import { LinkedGiveaways } from 'modules/giveaways';
 import { useDocumentTitle } from 'app/providers/DocumentTitleProvider';
 import { getResourceByParams, resources } from 'app/routes/resources';
 import {
@@ -224,6 +225,7 @@ const ContestPage = () => {
 
   return (
     <Stack spacing={3} sx={responsivePagePaddingSx}>
+      <LinkedGiveaways source="contest" id={contest?.id} />
       <ContestPageHeader
         title={contest?.title ?? t('contests.tabs.overview')}
         contest={contest}

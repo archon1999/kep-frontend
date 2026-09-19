@@ -4,6 +4,7 @@ import { useNavigate, useParams } from 'react-router';
 import { Alert, Box, Grid, Skeleton, Stack } from '@mui/material';
 import { toast } from 'sonner';
 import { useAuth } from 'app/providers/AuthProvider.tsx';
+import { LinkedGiveaways } from 'modules/giveaways';
 import { useDocumentTitle } from 'app/providers/DocumentTitleProvider';
 import { getResourceById, resources } from 'app/routes/resources.ts';
 import { useArenaLivePolling } from 'modules/arena/application/hooks/useArenaLivePolling.ts';
@@ -228,6 +229,7 @@ const ArenaDetailPage = () => {
         ) : (
           <>
             <ArenaCountdownCard arena={arena} />
+            <LinkedGiveaways source="arena" id={arena.id} />
 
             <Grid container spacing={3}>
               <Grid size={{ xs: 12, md: 4 }}>

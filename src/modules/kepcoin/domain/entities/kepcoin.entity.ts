@@ -15,6 +15,7 @@ export enum KepcoinEarnType {
   NewYear2026Login = 14,
   MerchRefund = 15,
   OneTimeTaskCompletion = 16,
+  Giveaway = 17,
 }
 
 export enum KepcoinSpendType {

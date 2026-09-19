@@ -36,8 +36,9 @@ export type UserCompetitionPrizeType =
   | 'TELEGRAM_PREMIUM'
   | 'TELEGRAM_STARS'
   | 'KEPCOIN'
-  | 'MERCH';
-export type UserCompetitionPrizeCompetitionType = 'CONTEST' | 'ARENA' | 'TOURNAMENT' | 'CUP';
+  | 'MERCH'
+  | 'CUSTOM';
+export type UserCompetitionPrizeCompetitionType = 'CONTEST' | 'ARENA' | 'TOURNAMENT' | 'CUP' | 'GIVEAWAY';
 
 export type UserCompetitionPrize = {
   prizeTitle: string;

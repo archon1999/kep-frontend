@@ -193,6 +193,9 @@ const getPrizePresentation = (prize: UserCompetitionPrize): PrizePresentation =>
 };
 
 const getPrizeRoute = (prize: UserCompetitionPrize) => {
+  if (prize.competitionType === 'GIVEAWAY') {
+    return getResourceById(resources.Giveaway, prize.competitionId);
+  }
   if (prize.competitionType === 'CONTEST') {
     return getResourceById(resources.ContestStandings, prize.competitionId);
   }
