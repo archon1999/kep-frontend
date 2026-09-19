@@ -19,6 +19,7 @@ import {
   PageResult,
 } from '../../domain/ports/contests.repository';
 import { contestsApiClient } from '../api/contests.client';
+import { mapContestReplay } from '../mappers/contest-replay.mapper';
 import { mapContestDetail } from '../mappers/contest-detail.mapper';
 import { mapContestProblem } from '../mappers/contest-problem.mapper';
 import { mapContestQuestions } from '../mappers/contest-questions.mapper';
@@ -45,6 +46,10 @@ import {
 } from '../mappers/contestant.mapper';
 
 export class HttpContestsRepository implements ContestsRepository {
+  async replay(contestId: number | string) {
+    return mapContestReplay(await contestsApiClient.getReplay(contestId));
+  }
+
   async list(params?: ApiContestsListParams): Promise<PageResult<ContestListItem>> {
     const result = await contestsApiClient.list(params);
     return mapPageResult(result, mapContest);

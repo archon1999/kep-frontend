@@ -300,6 +300,27 @@
       "Exam": "Exam"
     },
     "authors": "Authors",
-    "registrantsLabel": "{{count}} registrations"
+    "registrantsLabel": "{{count}} registrations",
+    "replay": {
+      "title": "Contest replay",
+      "close": "Close replay",
+      "loading": "Preparing replay…",
+      "retry": "Retry",
+      "error": "Could not load the replay.",
+      "unavailable": "This contest does not have enough reliable history to replay its final standings.",
+      "empty": "There are no participants to replay.",
+      "play": "Play",
+      "pause": "Pause",
+      "restart": "Restart",
+      "duration": "Replay length",
+      "minutes": "{{count}} min",
+      "visible": "Show",
+      "top": "Top {{count}}",
+      "finished": "Finished",
+      "contestTime": "Contest time",
+      "participant": "Participant",
+      "points": "Points",
+      "penalty": "Penalty"
+    }
   }
 }

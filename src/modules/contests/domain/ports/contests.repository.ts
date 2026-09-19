@@ -4,6 +4,7 @@ import {
   ApiContestsRegistrantsListOrdering,
 } from 'shared/api/orval/generated/endpoints/index.schemas';
 import { ContestDetail } from '../entities/contest-detail.entity';
+import { ContestReplay } from '../entities/contest-replay.types';
 import { ContestProblemEntity } from '../entities/contest-problem.entity';
 import { ContestQuestion } from '../entities/contest-question.entity';
 import { ContestRatingRow } from '../entities/contest-rating.entity';
@@ -32,6 +33,7 @@ export type ContestsRatingParams = ApiContestsRatingListParams & {
 };
 
 export interface ContestsRepository {
+  replay: (contestId: number | string) => Promise<ContestReplay>;
   list: (params?: ApiContestsListParams) => Promise<PageResult<ContestListItem>>;
   categories: () => Promise<ContestCategoryEntity[]>;
   getById: (contestId: number | string) => Promise<ContestDetail>;

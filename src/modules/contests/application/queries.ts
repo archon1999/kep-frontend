@@ -34,6 +34,12 @@ import {
 
 const contestsRepository = new HttpContestsRepository();
 
+export const useContestReplay = (contestId?: number | string) =>
+  useSWR(contestId ? ['contest-replay', contestId] : null, () => contestsRepository.replay(contestId!), {
+    revalidateOnFocus: false,
+    revalidateOnReconnect: false,
+  });
+
 const listKey = (params?: ApiContestsListParams) => [
   'contests-list',
   params?.page,

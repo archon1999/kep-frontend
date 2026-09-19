@@ -49,6 +49,7 @@ import useRouteQueryState from 'shared/hooks/useRouteQueryState';
 import { booleanFlagParam, stringParam } from 'shared/lib/queryParams';
 import { responsivePagePaddingSx } from 'shared/lib/styles';
 import ContestantResultsDialog from './ContestantResultsDialog';
+import ContestReplayDialog from './dialogs/ContestReplayDialog';
 
 const getStandingsRowId = (row: ContestantEntity) =>
   `${row.rowType ?? 'official'}-${row.id ?? row.username}-${row.virtualTime ?? ''}`;
@@ -95,6 +96,7 @@ const ContestStandingsPage = () => {
   const [searchParams] = useSearchParams();
   const [selectedContestant, setSelectedContestant] = useState<ContestantEntity | null>(null);
   const [filtersAnchor, setFiltersAnchor] = useState<HTMLElement | null>(null);
+  const [replayOpen, setReplayOpen] = useState(false);
   const dataGridApiRef = useGridApiRef();
   const focusedParticipantRef = useRef<string | null>(null);
   const isCompactLayout = useMediaQuery('(max-width:600px)');
@@ -709,6 +711,13 @@ const ContestStandingsPage = () => {
       />
 
       {contest ? <ContestStandingsCountdown contest={contest} /> : null}
+
+      {contest?.statusCode === ContestStatus.Finished && (
+        <Box><Button variant="outlined" startIcon={<IconifyIcon icon="mdi:play-circle-outline" />} onClick={() => setReplayOpen(true)}>{t('contests.replay.title')}</Button></Box>
+      )}
+      {replayOpen && contest?.statusCode === ContestStatus.Finished && contestId && (
+        <ContestReplayDialog key={contestId} contestId={contestId} title={contest.title} contestType={contest.type} typeInfo={contest.typeInfo} problemDetails={contestProblems} showPenalties={contestHasPenalties(contest.type, contest.typeInfo)} onClose={() => setReplayOpen(false)} />
+      )}
 
       <DataGrid
         apiRef={dataGridApiRef}

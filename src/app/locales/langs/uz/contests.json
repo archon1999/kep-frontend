@@ -300,6 +300,27 @@
       "upsolve": "Upsolve"
     },
     "authors": "Mualliflar",
-    "registrantsLabel": "{{count}} ta roʻyhatdan oʻtgan"
+    "registrantsLabel": "{{count}} ta roʻyhatdan oʻtgan",
+    "replay": {
+      "title": "Contest replay",
+      "close": "Replayni yopish",
+      "loading": "Replay tayyorlanmoqda…",
+      "retry": "Qayta urinish",
+      "error": "Replayni yuklab bo‘lmadi.",
+      "unavailable": "Ushbu contestning yakuniy natijalarini tiklash uchun yetarli ishonchli tarix mavjud emas.",
+      "empty": "Replay uchun ishtirokchilar yo‘q.",
+      "play": "Boshlash",
+      "pause": "Pauza",
+      "restart": "Boshidan",
+      "duration": "Replay davomiyligi",
+      "minutes": "{{count}} daqiqa",
+      "visible": "Ko‘rsatish",
+      "top": "Top {{count}}",
+      "finished": "Yakunlandi",
+      "contestTime": "Contest vaqti",
+      "participant": "Ishtirokchi",
+      "points": "Ball",
+      "penalty": "Jarima"
+    }
   }
 }

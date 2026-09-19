@@ -11,8 +11,11 @@ import {
   ContestsRatingDetail,
 } from 'shared/api/orval/generated/endpoints/index.schemas';
 import { cancelContestRegistrationRequest } from './contests.requests.ts';
+import type { ContestReplayDto } from '../mappers/contest-replay.mapper';
 
 export const contestsApiClient = {
+  getReplay: (id: number | string) =>
+    axiosMutator<ContestReplayDto>({ url: `/api/contests/${id}/replay/`, method: 'GET' }),
   list: (params?: ApiContestsListParams) =>
     apiClient.apiContestsList(params) as Promise<ApiContestsList200>,
   categories: () => apiClient.apiContestsCategoriesList() as Promise<ContestsCategory[]>,
