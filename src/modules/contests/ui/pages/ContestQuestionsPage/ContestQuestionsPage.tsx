@@ -191,7 +191,7 @@ const ContestQuestionsPage = () => {
                     {t('contests.questions.ask')}
                   </Typography>
                   <FormControl variant="standard" size="small" fullWidth>
-                    <InputLabel id="contest-question-problem-label">
+                    <InputLabel id="contest-question-problem-label" shrink>
                       {t('contests.questions.problem')}
                     </InputLabel>
                     <Select
