@@ -101,6 +101,8 @@ jobs:
           command_timeout: 15m
           script: |
             bash -seuo pipefail <<'DEPLOY_SCRIPT'
+            # Use direct connectivity instead of inherited server proxy settings.
+            unset HTTP_PROXY HTTPS_PROXY ALL_PROXY http_proxy https_proxy all_proxy
             release_sha='${{ github.sha }}'
             app_root='/home/KEP.uz/frontend'
             compose_root='/home/KEP.uz/backend'
