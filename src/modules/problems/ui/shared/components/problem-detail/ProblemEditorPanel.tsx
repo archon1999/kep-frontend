@@ -26,6 +26,7 @@ import {
 import { detectPastedLanguage } from 'modules/problems/lib/detectPastedLanguage';
 import KepIcon from 'shared/components/base/KepIcon';
 import ResponsiveTabs from 'shared/components/common/ResponsiveTabs';
+import Textarea from 'shared/components/common/Textarea';
 import AttemptVerdict from 'shared/components/problems/AttemptVerdict';
 import { VerdictKey } from 'shared/components/problems/attemptVerdict.utils';
 import { useLoginHref } from 'shared/lib/authRedirect';
@@ -75,6 +76,7 @@ interface ProblemEditorPanelProps {
   onEditorTabChange: (value: 'console' | 'samples') => void;
   canUseCheckSamples: boolean;
   editorTheme: string;
+  showSampleResultsTab?: boolean;
   isDisabled?: boolean;
   upsolveHref?: string;
 }
@@ -102,6 +104,7 @@ export const ProblemEditorPanel = (props: ProblemEditorPanelProps) => {
     editorTab,
     onEditorTabChange,
     editorTheme,
+    showSampleResultsTab = true,
     isDisabled = false,
     upsolveHref,
   } = props;
@@ -490,11 +493,15 @@ export const ProblemEditorPanel = (props: ProblemEditorPanelProps) => {
                       label: t('problems.detail.console'),
                       disabled: isDisabled,
                     },
-                    {
-                      value: 'samples',
-                      label: t('problems.detail.samplesResult'),
-                      disabled: isDisabled,
-                    },
+                    ...(showSampleResultsTab
+                      ? [
+                          {
+                            value: 'samples' as const,
+                            label: t('problems.detail.samplesResult'),
+                            disabled: isDisabled,
+                          },
+                        ]
+                      : []),
                   ]}
                   ariaLabel="editor output tabs"
                   tabsProps={{
@@ -521,10 +528,9 @@ export const ProblemEditorPanel = (props: ProblemEditorPanelProps) => {
                   overflow: 'auto',
                 }}
               >
-                {editorTab === 'console' ? (
+                {!showSampleResultsTab || editorTab === 'console' ? (
                   <Stack direction="column" spacing={1.5}>
-                    <TextField
-                      multiline
+                    <Textarea
                       minRows={3}
                       label={t('problems.detail.customInput')}
                       value={input}
@@ -532,18 +538,14 @@ export const ProblemEditorPanel = (props: ProblemEditorPanelProps) => {
                       disabled={isDisabled}
                     />
                     <Stack direction={{ xs: 'column', md: 'row' }} spacing={1.5}>
-                      <TextField
-                        fullWidth
+                      <Textarea
                         label={t('problems.detail.yourOutput')}
-                        multiline
                         minRows={4}
                         value={output}
                         InputProps={{ readOnly: true }}
                       />
-                      <TextField
-                        fullWidth
+                      <Textarea
                         label={t('problems.detail.answer')}
-                        multiline
                         minRows={4}
                         value={answer}
                         InputProps={{ readOnly: true }}

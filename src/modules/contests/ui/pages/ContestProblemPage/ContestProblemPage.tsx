@@ -816,6 +816,7 @@ const ContestProblemPage = () => {
                 onEditorTabChange={setEditorTab}
                 canUseCheckSamples={canUseCheckSamples}
                 editorTheme={editorTheme}
+                showSampleResultsTab={false}
                 isDisabled={false}
                 upsolveHref={upsolveHref}
               />

@@ -1,15 +1,21 @@
 import { useEffect, useRef, useState } from 'react';
 import { useTranslation } from 'react-i18next';
-import { Button } from '@mui/material';
+import { Button, IconButton, Tooltip } from '@mui/material';
 import KepIcon from '../base/KepIcon';
 
 interface ClipboardButtonProps {
   text?: string;
   onCopy?: () => void;
   size?: 'small' | 'medium';
+  iconOnly?: boolean;
 }
 
-const ClipboardButton = ({ text = '', onCopy, size = 'small' }: ClipboardButtonProps) => {
+const ClipboardButton = ({
+  text = '',
+  onCopy,
+  size = 'small',
+  iconOnly = false,
+}: ClipboardButtonProps) => {
   const { t } = useTranslation();
   const [copied, setCopied] = useState(false);
   const timeoutRef = useRef<number | undefined>(undefined);
@@ -49,15 +55,33 @@ const ClipboardButton = ({ text = '', onCopy, size = 'small' }: ClipboardButtonP
     }
   };
 
+  const label = copied ? t('problems.detail.copied') : t('problems.detail.copy');
+  const icon = <KepIcon name={copied ? 'check' : 'copy'} width={18} height={18} />;
+
+  if (iconOnly) {
+    return (
+      <Tooltip title={label}>
+        <IconButton
+          size={size}
+          color={copied ? 'success' : 'default'}
+          aria-label={label}
+          onClick={handleCopy}
+        >
+          {icon}
+        </IconButton>
+      </Tooltip>
+    );
+  }
+
   return (
     <Button
       size={size}
       variant="text"
       color={copied ? 'success' : 'primary'}
-      startIcon={<KepIcon name={copied ? 'check' : 'copy'} width={18} height={18} />}
+      startIcon={icon}
       onClick={handleCopy}
     >
-      {copied ? t('problems.detail.copied') : t('problems.detail.copy')}
+      {label}
     </Button>
   );
 };
