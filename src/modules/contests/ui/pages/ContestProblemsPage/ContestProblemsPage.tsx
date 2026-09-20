@@ -98,7 +98,7 @@ const ContestProblemsPage = () => {
                       textDecoration: 'none',
                       color: 'inherit',
                       border: '1px solid',
-                      borderColor: 'divider',
+                      borderColor: problem.isSolved ? 'success.main' : problem.isAttempted ? 'error.main' : 'divider',
                       transition: (theme) =>
                         theme.transitions.create(
                           ['transform', 'box-shadow', 'border-color', 'background-color'],
@@ -109,7 +109,11 @@ const ContestProblemsPage = () => {
                       '&:hover': {
                         transform: 'translateY(-2px)',
                         boxShadow: 4,
-                        borderColor: 'primary.main',
+                        borderColor: problem.isSolved
+                          ? 'success.main'
+                          : problem.isAttempted
+                            ? 'error.main'
+                            : 'primary.main',
                         bgcolor: 'background.paper',
                       },
                       '&:focus-visible': {
@@ -120,7 +124,11 @@ const ContestProblemsPage = () => {
                     }}
                   >
                     <Stack direction="row" spacing={1.25} alignItems="center" sx={{ minWidth: 0, flex: 1 }}>
-                      <Chip label={problem.symbol} color="primary" size="small" />
+                      <Chip
+                        label={problem.symbol}
+                        color={problem.isSolved ? 'success' : problem.isAttempted ? 'error' : 'primary'}
+                        size="small"
+                      />
                       <Stack spacing={0.25} minWidth={0}>
                         <Typography sx={{ textDecoration: 'none', color: 'text.primary', fontWeight: 700 }} noWrap>
                           {problem.problem.title}

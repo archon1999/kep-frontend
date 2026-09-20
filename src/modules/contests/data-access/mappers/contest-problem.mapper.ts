@@ -23,7 +23,9 @@ export const mapContestProblem = (payload: any): ContestProblemEntity => ({
   solved: toNumber(payload?.solved),
   unsolved: toNumber(payload?.unsolved),
   attemptUsersCount: toNumber(payload?.attemptUsersCount ?? payload?.attempt_users_count),
-  isSolved: Boolean(payload?.isSolved ?? payload?.solved ?? payload?.is_solved),
+  // `solved` is the total number of users who solved the problem, while these
+  // flags describe the current viewer. Do not use the aggregate as a fallback.
+  isSolved: Boolean(payload?.isSolved ?? payload?.is_solved),
   isAttempted: Boolean(payload?.isAttempted ?? payload?.attempted ?? payload?.is_attempted),
   duel: payload?.duel ?? undefined,
   problem: mapProblemDetail(payload?.problem ?? payload),
