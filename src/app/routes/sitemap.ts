@@ -75,14 +75,6 @@ export const clientMenu: MenuItem[] = [
         icon: 'mdi:clipboard-text-outline',
         active: true,
       },
-      {
-        name: 'KEPPER Game',
-        key: 'menu.kepperGame',
-        path: resources.KepperGame,
-        pathName: 'practice-kepper-game',
-        icon: 'mdi:gamepad-variant-outline',
-        active: true,
-      },
     ],
   },
   {
