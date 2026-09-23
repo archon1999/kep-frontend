@@ -1,0 +1,86 @@
+{
+  "game": {
+    "chapter": "CHAPTER 01 · 3D ADVENTURE",
+    "title": "KEPPER: Code Islands",
+    "subtitle": "Build a program and watch KEPPER bring it to life across floating islands.",
+    "worldLabel": "Interactive 3D island with KEPPER",
+    "levelSelector": "Choose an island",
+    "progress": "{{done}} of {{total}} islands completed",
+    "concepts": {
+      "sequence": "Sequence",
+      "loop": "Loops",
+      "condition": "Conditions",
+      "debug": "Debugging",
+      "final": "Final challenge"
+    },
+    "levels": {
+      "1": {
+        "title": "First steps",
+        "description": "Guide KEPPER to the glowing portal. Commands run from top to bottom.",
+        "hint": "The starter already moves once. Add two more Move commands."
+      },
+      "2": {
+        "title": "The bend",
+        "description": "Take the turn and reach the portal. Repeat can save you from writing Move again and again.",
+        "hint": "Move twice, turn right, then move twice more."
+      },
+      "3": {
+        "title": "Two possible roads",
+        "description": "One program must win on both maps. Check whether the tile ahead is blocked.",
+        "hint": "The clear road runs east. On the blocked map, go north first, then east along the upper path."
+      },
+      "4": {
+        "title": "Find the bug",
+        "description": "The starter program has wrong turns. Fix it so KEPPER reaches the portal.",
+        "hint": "After the first Move, the path turns right, then left, then right again."
+      },
+      "5": {
+        "title": "Crystal crossing",
+        "description": "Collect the gold crystal before reaching the portal. The same program must work on both maps.",
+        "hint": "Use If blocked to choose a route. The long route goes north twice and east four times; the clear route stays straight."
+      }
+    },
+    "testCases": "Maps",
+    "editorTitle": "KEPPER's program",
+    "editorCaption": "Commands are executed in order",
+    "modes": { "blocks": "Blocks", "code": "Code" },
+    "commands": {
+      "move": "Move",
+      "left": "Turn left",
+      "right": "Turn right",
+      "repeat": "Repeat",
+      "ifBlocked": "If blocked"
+    },
+    "times": "Times",
+    "repeatBody": "Repeat these commands",
+    "whenBlocked": "WHEN BLOCKED",
+    "otherwise": "OTHERWISE",
+    "moveUp": "Move command up",
+    "moveDown": "Move command down",
+    "remove": "Remove command",
+    "codeLabel": "Game code editor",
+    "codeHelp": "Commands: move, left, right, repeat 2 { … }, if blocked { … } else { … }. No browser code is executed.",
+    "run": "Run program",
+    "stop": "Stop",
+    "resetCode": "Reset code",
+    "showHint": "Show hint",
+    "hideHint": "Hide hint",
+    "won": "Island cleared!",
+    "allTestsPassed": "All {{count}} map tests passed.",
+    "nextLevel": "Next island →",
+    "running": "KEPPER is following your commands…",
+    "runTip": "Press Run to test every map. Ctrl+Enter also works.",
+    "syntaxError": "Check the command on line {{line}}. Use the game commands shown below the editor.",
+    "unavailable": "This command unlocks on a later island.",
+    "failures": {
+      "blocked": "Map {{scenario}}: KEPPER reached an edge. Change the route and try again.",
+      "crystal": "Map {{scenario}}: collect the gold crystal before entering the portal.",
+      "unfinished": "Map {{scenario}}: KEPPER stopped before reaching the portal.",
+      "limit": "Map {{scenario}}: the program ran too long. Shorten the loop."
+    },
+    "rotateHint": "Drag to rotate · scroll to zoom",
+    "keyboardHint": "Ctrl+Enter to run",
+    "localSave": "Progress saved on this device",
+    "canvasFallback": "3D view is unavailable in this browser."
+  }
+}

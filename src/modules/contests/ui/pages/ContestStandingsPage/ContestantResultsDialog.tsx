@@ -63,7 +63,7 @@ interface ContestantSummaryRowProps {
 const renderContestantAvatar = (contestant?: ContestantEntity | null, size = 48) => {
   if (contestant?.team?.members?.length) {
     return (
-      <AvatarGroup max={4} sx={{ '& .MuiAvatar-root': { width: size, height: size } }}>
+      <AvatarGroup component="div" max={4} sx={{ '& .MuiAvatar-root': { width: size, height: size } }}>
         {contestant.team.members.map((member) => (
           <Avatar key={member.username} src={member.avatar ?? undefined} alt={member.username}>
             {getInitial(member.username)}

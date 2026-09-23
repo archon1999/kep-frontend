@@ -39,6 +39,7 @@ export const resources = {
 
   Problems: '/problems',
   StudyPlans: '/problems/study-plans',
+  KepperGame: '/games/kepper',
   Problem: '/problems/:id',
   ProblemsRating: '/problems/rating',
   ProblemsRatingHistory: '/problems/rating/history',
@@ -142,10 +143,7 @@ export function getResourceByUsername(resource: string, username: string) {
   return resource.replace(':username', username);
 }
 
-export function getResourceByParams(
-  resource: string,
-  params: Record<string, string | number>,
-) {
+export function getResourceByParams(resource: string, params: Record<string, string | number>) {
   return Object.entries(params).reduce(
     (result, [key, value]) => result.replace(`:${key}`, value.toString()),
     resource,

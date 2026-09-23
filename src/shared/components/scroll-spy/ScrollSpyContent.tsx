@@ -1,8 +1,8 @@
-import { ElementType, PropsWithChildren } from 'react';
+import { PropsWithChildren } from 'react';
 import { Box, BoxProps } from '@mui/material';
 import { ScrollSpyOffSet, useScrollSpyContext } from '.';
 
-interface ScrollSpyContentInterface extends BoxProps<ElementType, { component?: ElementType }> {
+interface ScrollSpyContentInterface extends BoxProps<'div'> {
   id: string;
   offset?: ScrollSpyOffSet;
 }

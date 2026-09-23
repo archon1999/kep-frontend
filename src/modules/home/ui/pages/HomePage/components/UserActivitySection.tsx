@@ -233,7 +233,7 @@ const UserActivitySection = () => {
                 <Skeleton variant="circular" width={36} height={36} />
               </Stack>
             ) : onlineUsers.length ? (
-              <AvatarGroup max={40} sx={{ '& .MuiAvatar-root': { width: 36, height: 36 } }}>
+              <AvatarGroup component="div" max={40} sx={{ '& .MuiAvatar-root': { width: 36, height: 36 } }}>
                 {onlineUsers.map((user) => {
                   const displayName = getDisplayName(user);
 

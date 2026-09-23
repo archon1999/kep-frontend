@@ -1,0 +1,86 @@
+{
+  "game": {
+    "chapter": "1-BOB · 3D SARGUZASHT",
+    "title": "KEPPER: Kod orollari",
+    "subtitle": "Dastur tuzing va KEPPER uni suzuvchi orollarda qanday bajarishini ko‘ring.",
+    "worldLabel": "KEPPER ishtirokidagi interaktiv 3D orol",
+    "levelSelector": "Orolni tanlang",
+    "progress": "{{total}} oroldan {{done}} tasi tugallandi",
+    "concepts": {
+      "sequence": "Ketma-ketlik",
+      "loop": "Takrorlash",
+      "condition": "Shart",
+      "debug": "Xatoni tuzatish",
+      "final": "Yakuniy sinov"
+    },
+    "levels": {
+      "1": {
+        "title": "Birinchi qadamlar",
+        "description": "KEPPERni yorqin portalga olib boring. Buyruqlar yuqoridan pastga bajariladi.",
+        "hint": "Boshlang‘ich dasturda bitta Qadam bor. Yana ikkita Qadam qo‘shing."
+      },
+      "2": {
+        "title": "Burilish",
+        "description": "Yo‘lni burilib o‘ting. Takrorlash yordamida Qadam buyrug‘ini qayta yozmaysiz.",
+        "hint": "Ikki qadam yuring, o‘ngga buriling, so‘ng yana ikki qadam yuring."
+      },
+      "3": {
+        "title": "Ikki xil yo‘l",
+        "description": "Bitta dastur ikkala xaritada ham ishlashi kerak. Oldingi katak bo‘sh yoki bandligini tekshiring.",
+        "hint": "Ochiq yo‘l sharqqa ketadi. Yo‘l band bo‘lsa, avval shimolga, keyin yuqori yo‘l bo‘ylab sharqqa yuring."
+      },
+      "4": {
+        "title": "Xatoni toping",
+        "description": "Boshlang‘ich dasturda burilishlar noto‘g‘ri. KEPPER portalga yetishi uchun tuzating.",
+        "hint": "Birinchi qadamdan so‘ng yo‘l o‘ngga, keyin chapga va yana o‘ngga buriladi."
+      },
+      "5": {
+        "title": "Kristall ko‘prik",
+        "description": "Portalga kirishdan oldin oltin kristallni oling. Bitta dastur ikkala xaritada ham ishlasin.",
+        "hint": "Yo‘l band bo‘lsa shartidan foydalaning. Uzun yo‘l shimolga ikki va sharqqa to‘rt qadam, ochiq yo‘l esa to‘g‘ri ketadi."
+      }
+    },
+    "testCases": "Xaritalar",
+    "editorTitle": "KEPPER dasturi",
+    "editorCaption": "Buyruqlar tartib bilan bajariladi",
+    "modes": { "blocks": "Bloklar", "code": "Kod" },
+    "commands": {
+      "move": "Qadam",
+      "left": "Chapga buril",
+      "right": "O‘ngga buril",
+      "repeat": "Takrorla",
+      "ifBlocked": "Yo‘l band bo‘lsa"
+    },
+    "times": "Marta",
+    "repeatBody": "Shu buyruqlarni takrorlash",
+    "whenBlocked": "YO‘L BAND BO‘LSA",
+    "otherwise": "AKS HOLDA",
+    "moveUp": "Buyruqni yuqoriga ko‘chirish",
+    "moveDown": "Buyruqni pastga ko‘chirish",
+    "remove": "Buyruqni o‘chirish",
+    "codeLabel": "O‘yin kodi oynasi",
+    "codeHelp": "Buyruqlar: move, left, right, repeat 2 { … }, if blocked { … } else { … }. Brauzer kodi ishga tushirilmaydi.",
+    "run": "Dasturni ishga tushirish",
+    "stop": "To‘xtatish",
+    "resetCode": "Kodni tiklash",
+    "showHint": "Ishora ko‘rsatish",
+    "hideHint": "Ishorani yashirish",
+    "won": "Orol o‘tildi!",
+    "allTestsPassed": "{{count}} ta xarita sinovidan o‘tdi.",
+    "nextLevel": "Keyingi orol →",
+    "running": "KEPPER buyruqlarni bajaryapti…",
+    "runTip": "Barcha xaritalarni tekshirish uchun ishga tushiring. Ctrl+Enter ham ishlaydi.",
+    "syntaxError": "{{line}}-qatordagi buyruqni tekshiring. Tahrirlagich ostidagi o‘yin buyruqlaridan foydalaning.",
+    "unavailable": "Bu buyruq keyingi orolda ochiladi.",
+    "failures": {
+      "blocked": "{{scenario}}-xarita: KEPPER yo‘l chetiga yetdi. Marshrutni o‘zgartiring.",
+      "crystal": "{{scenario}}-xarita: portalga kirishdan oldin oltin kristallni oling.",
+      "unfinished": "{{scenario}}-xarita: KEPPER portalga yetmasdan to‘xtadi.",
+      "limit": "{{scenario}}-xarita: dastur juda uzoq ishladi. Takrorlashni qisqartiring."
+    },
+    "rotateHint": "Aylantirish uchun torting · yaqinlashtirish uchun skroll qiling",
+    "keyboardHint": "Ishga tushirish: Ctrl+Enter",
+    "localSave": "Natija shu qurilmada saqlanadi",
+    "canvasFallback": "Bu brauzerda 3D ko‘rinish ishlamaydi."
+  }
+}

@@ -1,6 +1,6 @@
 import { SxProps } from '@mui/material';
-import { rootPaths } from './route-config';
 import { resources } from './resources';
+import { rootPaths } from './route-config';
 
 export interface MenuItem {
   name: string;
@@ -73,6 +73,14 @@ export const clientMenu: MenuItem[] = [
         pathName: 'practice-tests',
         selectionPrefix: resources.Tests,
         icon: 'mdi:clipboard-text-outline',
+        active: true,
+      },
+      {
+        name: 'KEPPER Game',
+        key: 'menu.kepperGame',
+        path: resources.KepperGame,
+        pathName: 'practice-kepper-game',
+        icon: 'mdi:gamepad-variant-outline',
         active: true,
       },
     ],

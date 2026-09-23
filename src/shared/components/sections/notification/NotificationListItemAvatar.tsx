@@ -57,7 +57,7 @@ const NotificationListItemAvatar = ({ notification, variant }: NotificationListI
         },
       }}
     >
-      <AvatarGroup max={2} sx={{ mr: 1.5 }}>
+      <AvatarGroup component="div" max={2} sx={{ mr: 1.5 }}>
         {notification.user.slice(0, 2).map((user, index) => (
           <Avatar
             alt={user.name}

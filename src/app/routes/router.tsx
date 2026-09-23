@@ -92,6 +92,9 @@ import { adminMenu } from './sitemap';
 
 const IS_PROD = import.meta.env.PROD;
 const GiveawayPage = lazy(() => import('modules/giveaways/ui/pages/GiveawayPage/GiveawayPage'));
+const KepperGamePage = lazy(
+  () => import('modules/kepper-game/ui/pages/KepperGamePage/KepperGamePage'),
+);
 
 const AuthLayout = lazy(() => import('app/layouts/auth-layout'));
 const DefaultAuthLayout = lazy(() => import('app/layouts/auth-layout/DefaultAuthLayout'));
@@ -332,6 +335,11 @@ export const routes: RouteObject[] = [
             path: resources.StudyPlans,
             element: <StudyPlansPage />,
             handle: { titleKey: 'pageTitles.studyPlans' },
+          },
+          {
+            path: resources.KepperGame,
+            element: <KepperGamePage />,
+            handle: { titleKey: 'pageTitles.kepperGame' },
           },
           {
             path: resources.StudyPlan,

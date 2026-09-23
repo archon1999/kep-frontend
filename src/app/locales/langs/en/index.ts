@@ -8,6 +8,7 @@ import common from './common.json';
 import contests from './contests.json';
 import duels from './duels.json';
 import giveaways from './giveaways.json';
+import game from './game.json';
 import hackathons from './hackathons.json';
 import homePage from './home-page.json';
 import kepCover from './kep-cover.json';
@@ -25,6 +26,7 @@ import users from './users.json';
 
 export const enTranslation = {
   ...giveaways,
+  ...game,
   ...admin,
   ...common,
   ...menu,

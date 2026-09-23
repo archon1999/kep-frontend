@@ -46,7 +46,7 @@ const ContestantOptionContent = ({
 }) => (
   <Stack direction="row" spacing={1} alignItems="center" sx={{ minWidth: 0, width: '100%' }}>
     {contestant.team?.members?.length ? (
-      <AvatarGroup max={3} sx={{ '& .MuiAvatar-root': { width: 30, height: 30 } }}>
+      <AvatarGroup component="div" max={3} sx={{ '& .MuiAvatar-root': { width: 30, height: 30 } }}>
         {contestant.team.members.map((member) => (
           <Avatar key={member.username} src={member.avatar ?? undefined} alt={member.username}>
             {getInitial(member.username)}

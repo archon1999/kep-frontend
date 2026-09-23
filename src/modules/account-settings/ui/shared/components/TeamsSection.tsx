@@ -104,7 +104,7 @@ const TeamsSection = () => {
         />
         <CardContent>
           <Stack direction="row" spacing={1.5}>
-            <AvatarGroup>
+            <AvatarGroup component="div">
               {team.members?.map((member) => (
                 <Tooltip key={member.username} title={member.username}>
                   <Avatar src={member.avatar} alt={member.username} />

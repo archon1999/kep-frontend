@@ -101,6 +101,7 @@
     "kepCover": "{{ contestTitle }} - KEP Cover",
     "login": "Login",
     "notFound": "Page not found",
-    "forbidden": "Access denied"
+    "forbidden": "Access denied",
+    "kepperGame": "KEPPER: Code Islands"
   }
 }
