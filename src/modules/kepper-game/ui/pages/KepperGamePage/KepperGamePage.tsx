@@ -1,31 +1,107 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { useTranslation } from 'react-i18next';
-import { Alert, Box, Button, Chip, LinearProgress, Stack, Typography } from '@mui/material';
+import {
+  Alert,
+  Box,
+  Button,
+  IconButton,
+  Menu,
+  MenuItem,
+  Paper,
+  Slider,
+  Stack,
+  Tooltip,
+  Typography,
+} from '@mui/material';
 import { useAuth } from 'app/providers/AuthProvider';
 import { useGameSession } from 'modules/kepper-game/application';
+import { codeIslandsScore } from 'modules/kepper-game/domain';
 import IconifyIcon from 'shared/components/base/IconifyIcon';
+import PageHeader from 'shared/components/sections/common/PageHeader';
 import { responsivePagePaddingSx } from 'shared/lib/styles';
 import GameWorld from './components/GameWorld.tsx';
+import LevelNavigator from './components/LevelNavigator.tsx';
 import ProgramEditor from './components/ProgramEditor.tsx';
 
-const KepperGamePage = () => {
+type KepperGamePageProps = {
+  onScore?: (score: number) => void;
+  onAudioStart?: () => void;
+  onAudioStop?: () => void;
+  onAudioCue?: (kind: 'run' | 'correct' | 'wrong') => void;
+  embedded?: boolean;
+};
+
+const KepperGamePage = ({
+  onScore,
+  onAudioStart,
+  onAudioStop,
+  onAudioCue,
+  embedded = false,
+}: KepperGamePageProps) => {
   const { t } = useTranslation();
   const { currentUser } = useAuth();
   const game = useGameSession(currentUser?.username);
   const [showHint, setShowHint] = useState(false);
+  const [speedAnchor, setSpeedAnchor] = useState<HTMLElement | null>(null);
+  const boardRef = useRef<HTMLDivElement>(null);
+  const revealBoardOnRunRef = useRef(false);
+  const score = codeIslandsScore(game.progress);
+
+  const runProgram = () => {
+    if (game.playing) return;
+    onAudioStart?.();
+    onAudioCue?.('run');
+    revealBoardOnRunRef.current = window.matchMedia('(max-width: 899.95px)').matches;
+    if (
+      revealBoardOnRunRef.current &&
+      document.activeElement instanceof HTMLElement &&
+      document.activeElement.matches('input, textarea, [contenteditable="true"]')
+    ) {
+      document.activeElement.blur();
+    }
+    game.run();
+  };
 
   useEffect(() => setShowHint(false), [game.level.id]);
+  useEffect(() => {
+    if (score > 0) onScore?.(score);
+  }, [onScore, score]);
+  useEffect(() => {
+    if (game.feedback?.kind === 'win') onAudioCue?.('correct');
+    else if (game.feedback && game.feedback.kind !== 'unavailable') onAudioCue?.('wrong');
+  }, [game.feedback, onAudioCue]);
+  useEffect(() => {
+    if (game.progress.completed.length === game.levels.length) onAudioStop?.();
+  }, [game.progress.completed.length, game.levels.length, onAudioStop]);
   useEffect(() => {
     const onKeyDown = (event: KeyboardEvent) => {
       if ((event.ctrlKey || event.metaKey) && event.key === 'Enter') {
         event.preventDefault();
-        game.run();
+        runProgram();
       }
       if (event.key === 'Escape' && game.playing) game.stop();
+      const target = event.target as HTMLElement | null;
+      const typing =
+        target?.isContentEditable || target?.tagName === 'INPUT' || target?.tagName === 'TEXTAREA';
+      if (!typing && !game.playing && event.key === 'ArrowLeft')
+        game.seekFrame(game.frameIndex - 1);
+      if (!typing && !game.playing && event.key === 'ArrowRight')
+        game.seekFrame(game.frameIndex + 1);
     };
     window.addEventListener('keydown', onKeyDown);
     return () => window.removeEventListener('keydown', onKeyDown);
   }, [game]);
+  useEffect(() => {
+    if (!game.playing || !revealBoardOnRunRef.current) return;
+    revealBoardOnRunRef.current = false;
+    const board = boardRef.current;
+    if (!board) return;
+    const bounds = board.getBoundingClientRect();
+    const visibleHeight = window.visualViewport?.height ?? window.innerHeight;
+    if (bounds.top < 80 || bounds.bottom > visibleHeight - 76) {
+      board.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    }
+  }, [game.playing]);
 
   const resultText =
     game.feedback?.kind === 'fail'
@@ -37,247 +113,199 @@ const KepperGamePage = () => {
           : '';
 
   return (
-    <Box sx={{ ...responsivePagePaddingSx, maxWidth: 1660, mx: 'auto', color: '#172b48' }}>
-      <Stack spacing={2.5}>
-        <Box
-          sx={{
-            position: 'relative',
-            overflow: 'hidden',
-            borderRadius: 4,
-            px: { xs: 2.5, md: 4 },
-            py: { xs: 2.5, md: 3.5 },
-            background: 'linear-gradient(115deg, #123d88, #2377dd 63%, #49a9ed)',
-            color: 'white',
-            boxShadow: '0 18px 42px #2b78cd2b',
-          }}
-        >
-          <Box
-            sx={{
-              position: 'absolute',
-              width: 220,
-              height: 220,
-              border: '38px solid #ffffff16',
-              borderRadius: '50%',
-              right: -40,
-              top: -95,
-            }}
-          />
-          <Stack direction="row" alignItems="center" gap={2} sx={{ position: 'relative' }}>
-            <Box
-              component="img"
-              src={`${import.meta.env.BASE_URL}mascot/kepper/game-idle.png`}
-              alt=""
-              sx={{
-                width: { xs: 72, md: 112 },
-                height: { xs: 72, md: 112 },
-                objectFit: 'contain',
-                filter: 'drop-shadow(0 12px 15px #0b37716a)',
-              }}
-            />
-            <Box>
-              <Typography variant="overline" sx={{ letterSpacing: 2, opacity: 0.9 }}>
-                {t('game.chapter')}
-              </Typography>
-              <Typography
-                component="h1"
-                sx={{ fontSize: { xs: 27, md: 38 }, fontWeight: 900, lineHeight: 1.18 }}
-              >
-                {t('game.title')}
-              </Typography>
-              <Typography
-                sx={{ opacity: 0.92, mt: 0.65, maxWidth: 700, fontSize: { xs: 13, md: 15 } }}
-              >
-                {t('game.subtitle')}
-              </Typography>
-            </Box>
-          </Stack>
-        </Box>
-
-        <Box
-          sx={{
-            bgcolor: '#f5faff',
-            border: '1px solid #d9e9f8',
-            borderRadius: 3,
-            p: { xs: 1.5, md: 2 },
-          }}
-        >
-          <Stack
-            direction="row"
-            justifyContent="space-between"
-            alignItems="center"
-            gap={1}
-            sx={{ mb: 1.5 }}
-          >
-            <Typography fontWeight={800}>{t('game.levelSelector')}</Typography>
-            <Typography variant="caption" color="text.secondary">
-              {t('game.progress', {
-                done: game.progress.completed.length,
-                total: game.levels.length,
-              })}
-            </Typography>
-          </Stack>
-          <Stack direction="row" gap={1} flexWrap="wrap">
-            {game.levels.map((level) => {
-              const locked = level.id > game.unlocked;
-              const selected = level.id === game.level.id;
-              const finished = game.progress.completed.includes(level.id);
-              return (
-                <Button
-                  key={level.id}
-                  disabled={locked || game.playing}
-                  onClick={() => game.selectLevel(level.id)}
-                  variant={selected ? 'contained' : 'outlined'}
-                  startIcon={
-                    <IconifyIcon
-                      icon={
-                        locked
-                          ? 'mdi:lock-outline'
-                          : finished
-                            ? 'mdi:check-circle'
-                            : 'mdi:circle-outline'
-                      }
-                      width={18}
-                    />
-                  }
-                  sx={{
-                    borderRadius: 2.2,
-                    textTransform: 'none',
-                    fontWeight: 800,
-                    bgcolor: selected ? undefined : 'white',
-                    minWidth: { xs: 'calc(50% - 4px)', sm: 140 },
-                    justifyContent: 'flex-start',
-                  }}
-                >
-                  {level.id}. {t(level.titleKey)}
-                  {finished && (
-                    <Box
-                      component="span"
-                      sx={{ ml: 0.5, color: selected ? '#fff7bf' : '#d89500', fontSize: 12 }}
-                    >
-                      {'★'.repeat(game.progress.stars[level.id] ?? 1)}
-                    </Box>
-                  )}
-                </Button>
-              );
-            })}
-          </Stack>
-          <LinearProgress
-            variant="determinate"
-            value={(game.progress.completed.length / game.levels.length) * 100}
-            sx={{ mt: 1.75, height: 4, borderRadius: 2, bgcolor: '#dbe9fb' }}
-          />
-        </Box>
-
-        <Stack direction={{ xs: 'column', lg: 'row' }} alignItems="stretch" gap={2.5}>
-          <Box sx={{ minWidth: 0, flex: { lg: '1 1 60%' } }}>
-            <Box
-              sx={{
-                bgcolor: 'white',
-                border: '1px solid #dceaf7',
-                borderRadius: 4,
-                overflow: 'hidden',
-                boxShadow: '0 12px 40px #14478a12',
-                height: '100%',
-              }}
-            >
-              <Box sx={{ p: { xs: 1.5, md: 2.2 } }}>
-                <Stack
-                  direction={{ xs: 'column', sm: 'row' }}
-                  justifyContent="space-between"
-                  alignItems={{ sm: 'center' }}
-                  gap={1}
-                  sx={{ mb: 1.25 }}
-                >
-                  <Box>
-                    <Stack direction="row" alignItems="center" gap={1}>
-                      <Chip
-                        size="small"
-                        label={`${game.level.id} / ${game.levels.length}`}
-                        sx={{ bgcolor: '#e3efff', color: '#1c62b7', fontWeight: 900 }}
-                      />
-                      <Typography variant="h6" fontWeight={900}>
-                        {t(game.level.titleKey)}
-                      </Typography>
-                    </Stack>
-                    <Typography variant="body2" color="text.secondary" sx={{ mt: 0.5 }}>
-                      {t(game.level.descriptionKey)}
-                    </Typography>
-                  </Box>
-                  <Chip
-                    size="small"
-                    label={t(game.level.conceptKey)}
-                    sx={{
-                      bgcolor: '#e5fbf5',
-                      color: '#088e76',
-                      fontWeight: 800,
-                      alignSelf: 'flex-start',
-                    }}
-                  />
-                </Stack>
-                {game.level.scenarios.length > 1 && (
-                  <Stack direction="row" alignItems="center" gap={0.75} sx={{ mb: 1.25 }}>
-                    <Typography variant="caption" color="text.secondary" fontWeight={700}>
-                      {t('game.testCases')}:
-                    </Typography>
-                    {game.level.scenarios.map((scenario, index) => (
-                      <Button
-                        key={scenario.id}
-                        size="small"
-                        disabled={game.playing}
-                        variant={index === game.scenarioIndex ? 'contained' : 'outlined'}
-                        onClick={() => game.selectScenario(index)}
-                        sx={{ minWidth: 34, px: 0.8, borderRadius: 1.5 }}
-                      >
-                        {index + 1}
-                      </Button>
-                    ))}
-                  </Stack>
-                )}
-                <GameWorld
-                  map={game.map}
-                  frame={game.currentFrame}
-                  playing={game.playing}
-                  completed={game.feedback?.kind === 'win'}
-                  fallbackLabel={t('game.canvasFallback')}
-                  ariaLabel={t('game.worldLabel')}
+    <Box
+      sx={
+        embedded
+          ? { width: '100%', pb: { xs: 'calc(84px + env(safe-area-inset-bottom))', md: 0 } }
+          : {
+              ...responsivePagePaddingSx,
+              maxWidth: 1660,
+              mx: 'auto',
+              pb: { xs: 'calc(84px + env(safe-area-inset-bottom))', md: 3, lg: 5 },
+            }
+      }
+    >
+      <Stack spacing={2}>
+        {!embedded && (
+          <PageHeader
+            title={t('game.title')}
+            paperSx={{ px: { xs: 2, md: 3 }, py: { xs: 2, md: 2.5 } }}
+            actionComponent={
+              <Stack direction="row" alignItems="center" gap={1.5}>
+                <Box
+                  component="img"
+                  src={`${import.meta.env.BASE_URL}mascot/kepper/game-idle.png`}
+                  alt=""
+                  sx={{ width: 58, height: 58, objectFit: 'contain' }}
                 />
-                <Stack
-                  direction="row"
-                  alignItems="center"
-                  flexWrap="wrap"
-                  gap={1}
-                  sx={{ mt: 1.3, px: 0.5 }}
-                >
-                  <Chip
+                <Stack spacing={0.25}>
+                  <Typography variant="overline" color="primary.main" fontWeight={700}>
+                    {t('game.chapter')}
+                  </Typography>
+                  <Typography variant="body2" color="text.secondary" maxWidth={380}>
+                    {t('game.subtitle')}
+                  </Typography>
+                </Stack>
+              </Stack>
+            }
+          />
+        )}
+
+        <Box
+          sx={{
+            display: 'grid',
+            gridTemplateColumns: {
+              xs: 'minmax(0, 1fr)',
+              lg: 'minmax(0, 1.35fr) minmax(340px, .9fr)',
+            },
+            gap: { xs: 2.25, lg: 3 },
+            alignItems: 'stretch',
+          }}
+        >
+          <Paper
+            ref={boardRef}
+            background={0}
+            sx={{
+              minWidth: 0,
+              overflow: 'hidden',
+              borderRadius: 0,
+              border: 0,
+              outline: 'none',
+              boxShadow: 'none',
+              scrollMarginTop: { xs: 80, md: 0 },
+            }}
+          >
+            <Box sx={{ pb: 1 }}>
+              <LevelNavigator
+                levels={game.levels}
+                selected={game.level.id}
+                unlocked={game.unlocked}
+                completed={game.progress.completed}
+                score={score}
+                stars={game.progress.stars}
+                playing={game.playing}
+                onSelect={game.selectLevel}
+              />
+              <GameWorld
+                map={game.map}
+                frame={game.currentFrame}
+                playing={game.playing}
+                completed={game.feedback?.kind === 'win'}
+                fallbackLabel={t('game.canvasFallback')}
+                ariaLabel={t('game.worldLabel')}
+              />
+              {game.level.scenarios.length > 1 && (
+                <Stack direction="row" alignItems="center" gap={0.75} sx={{ mt: 1.5 }}>
+                  <Typography variant="body2" color="text.secondary" sx={{ mr: 0.5 }}>
+                    {t('game.testCases')}:
+                  </Typography>
+                  {game.level.scenarios.map((scenario, index) => (
+                    <Button
+                      key={scenario.id}
+                      size="small"
+                      disabled={game.playing}
+                      variant={index === game.scenarioIndex ? 'contained' : 'text'}
+                      onClick={() => game.selectScenario(index)}
+                      sx={{ minWidth: 32, px: 0.8 }}
+                    >
+                      {index + 1}
+                    </Button>
+                  ))}
+                </Stack>
+              )}
+              {(game.map.crystals.size > 0 ||
+                game.map.switches.size > 0 ||
+                game.map.fragile.size > 0 ||
+                game.map.teleports.size > 0 ||
+                game.map.conveyors.size > 0) && (
+                <Stack direction="row" gap={1.5} flexWrap="wrap" sx={{ mt: 1.5 }}>
+                  {game.map.crystals.size > 0 && (
+                    <Typography variant="caption" color="text.secondary">
+                      {t('game.tiles.crystal')}
+                    </Typography>
+                  )}
+                  {game.map.switches.size > 0 && (
+                    <Typography variant="caption" color="text.secondary">
+                      {t('game.tiles.switchGate')}
+                    </Typography>
+                  )}
+                  {game.map.fragile.size > 0 && (
+                    <Typography variant="caption" color="text.secondary">
+                      {t('game.tiles.fragile')}
+                    </Typography>
+                  )}
+                  {game.map.teleports.size > 0 && (
+                    <Typography variant="caption" color="text.secondary">
+                      {t('game.tiles.teleport')}
+                    </Typography>
+                  )}
+                  {game.map.conveyors.size > 0 && (
+                    <Typography variant="caption" color="text.secondary">
+                      {t('game.tiles.conveyor')}
+                    </Typography>
+                  )}
+                </Stack>
+              )}
+            </Box>
+            {game.trace && (
+              <Box sx={{ px: { xs: 1.5, md: 2 }, py: 1.5 }}>
+                <Stack direction="row" alignItems="center" gap={1}>
+                  <Tooltip title={t('game.stepBack')}>
+                    <span>
+                      <IconButton
+                        size="small"
+                        aria-label={t('game.stepBack')}
+                        disabled={game.playing || !game.trace || game.frameIndex === 0}
+                        onClick={() => game.seekFrame(game.frameIndex - 1)}
+                      >
+                        <IconifyIcon icon="mdi:step-backward" />
+                      </IconButton>
+                    </span>
+                  </Tooltip>
+                  <Slider
                     size="small"
-                    icon={<IconifyIcon icon="mdi:mouse" width={16} />}
-                    label={t('game.rotateHint')}
-                    sx={{ bgcolor: '#f1f7ff' }}
+                    min={0}
+                    max={Math.max(1, (game.trace?.length ?? 1) - 1)}
+                    value={game.frameIndex}
+                    disabled={game.playing || !game.trace}
+                    onChange={(_, value) => game.seekFrame(value as number)}
+                    aria-label={t('game.playback')}
+                    sx={{ flex: 1, minWidth: 70 }}
                   />
-                  <Chip
-                    size="small"
-                    icon={<IconifyIcon icon="mdi:keyboard-outline" width={16} />}
-                    label={t('game.keyboardHint')}
-                    sx={{ bgcolor: '#f1f7ff' }}
-                  />
-                  <Typography variant="caption" color="text.secondary" sx={{ ml: 'auto' }}>
-                    {t('game.localSave')}
+                  <Tooltip title={t('game.stepForward')}>
+                    <span>
+                      <IconButton
+                        size="small"
+                        aria-label={t('game.stepForward')}
+                        disabled={
+                          game.playing ||
+                          !game.trace ||
+                          game.frameIndex >= (game.trace?.length ?? 1) - 1
+                        }
+                        onClick={() => game.seekFrame(game.frameIndex + 1)}
+                      >
+                        <IconifyIcon icon="mdi:step-forward" />
+                      </IconButton>
+                    </span>
+                  </Tooltip>
+                  <Typography
+                    variant="caption"
+                    color="text.secondary"
+                    sx={{ minWidth: 50, textAlign: 'right' }}
+                  >
+                    {game.trace ? `${game.frameIndex + 1}/${game.trace.length}` : '—'}
                   </Typography>
                 </Stack>
               </Box>
-            </Box>
-          </Box>
-
-          <Box sx={{ minWidth: 0, flex: { lg: '1 1 40%' } }}>
-            <Stack
-              spacing={1.5}
+            )}
+          </Paper>
+          <Box component="section" sx={{ minWidth: 0, py: { xs: 0, lg: 0.5 } }}>
+            <Box
               sx={{
-                bgcolor: 'white',
-                border: '1px solid #dceaf7',
-                borderRadius: 4,
-                p: { xs: 2, md: 2.5 },
-                boxShadow: '0 12px 40px #14478a12',
                 height: '100%',
+                display: 'flex',
+                flexDirection: 'column',
+                gap: 1.25,
               }}
             >
               <ProgramEditor
@@ -290,44 +318,73 @@ const KepperGamePage = () => {
                 onSourceChange={game.changeSource}
                 onModeChange={game.changeMode}
               />
-              <Box sx={{ flex: 1 }} />
-              <Stack direction="row" flexWrap="wrap" gap={1}>
+              <Stack
+                direction="row"
+                alignItems="center"
+                gap={0.75}
+                sx={{ display: { xs: 'none', md: 'flex' } }}
+              >
                 <Button
                   variant="contained"
                   size="large"
-                  onClick={game.playing ? game.stop : game.run}
+                  onClick={game.playing ? game.stop : runProgram}
                   startIcon={<IconifyIcon icon={game.playing ? 'mdi:stop' : 'mdi:play'} />}
                   sx={{
                     flex: 1,
-                    minWidth: 130,
+                    minWidth: 0,
                     textTransform: 'none',
-                    fontWeight: 900,
-                    borderRadius: 2,
-                    boxShadow: '0 9px 20px #2d7fe045',
+                    fontWeight: 700,
+                    borderRadius: 1.25,
+                    whiteSpace: 'nowrap',
+                    fontSize: 14,
+                    minHeight: 44,
+                    px: 1.5,
+                    '& .MuiButton-startIcon': { mr: 0.5 },
                   }}
                 >
-                  {t(game.playing ? 'game.stop' : 'game.run')}
+                  {t(game.playing ? 'game.stop' : 'game.runShort')}
                 </Button>
-                <Button
-                  variant="outlined"
-                  onClick={game.resetProgram}
-                  disabled={game.playing}
-                  sx={{ textTransform: 'none', borderRadius: 2 }}
-                >
-                  {t('game.resetCode')}
-                </Button>
+                <Tooltip title={t('game.speed')}>
+                  <span>
+                    <Button
+                      size="small"
+                      disabled={game.playing}
+                      onClick={(event) => setSpeedAnchor(event.currentTarget)}
+                      aria-label={`${t('game.speed')}: ${game.playbackSpeed}×`}
+                      sx={{ minWidth: 48, height: 44, px: 0.5, fontWeight: 700, fontSize: 12 }}
+                    >
+                      {game.playbackSpeed}×
+                    </Button>
+                  </span>
+                </Tooltip>
+                <Tooltip title={t('game.showHint')}>
+                  <IconButton
+                    onClick={() => setShowHint((value) => !value)}
+                    aria-label={t(showHint ? 'game.hideHint' : 'game.showHint')}
+                    sx={{
+                      width: 44,
+                      height: 44,
+                      color: showHint ? 'primary.main' : 'text.secondary',
+                    }}
+                  >
+                    <IconifyIcon icon="mdi:lightbulb-outline" width={20} />
+                  </IconButton>
+                </Tooltip>
+                <Tooltip title={t('game.resetCode')}>
+                  <span>
+                    <IconButton
+                      onClick={game.resetProgram}
+                      disabled={game.playing}
+                      aria-label={t('game.resetCode')}
+                      sx={{ width: 44, height: 44 }}
+                    >
+                      <IconifyIcon icon="mdi:restore" width={20} />
+                    </IconButton>
+                  </span>
+                </Tooltip>
               </Stack>
-              <Button
-                variant="text"
-                size="small"
-                onClick={() => setShowHint((value) => !value)}
-                sx={{ alignSelf: 'flex-start', textTransform: 'none' }}
-                startIcon={<IconifyIcon icon="mdi:lightbulb-outline" />}
-              >
-                {t(showHint ? 'game.hideHint' : 'game.showHint')}
-              </Button>
               {showHint && (
-                <Alert severity="info" sx={{ borderRadius: 2 }}>
+                <Alert severity="info" sx={{ borderRadius: 1 }}>
                   {t(game.level.hintKey)}
                 </Alert>
               )}
@@ -353,16 +410,112 @@ const KepperGamePage = () => {
               {game.feedback && game.feedback.kind !== 'win' && (
                 <Alert severity="warning" sx={{ borderRadius: 2 }} role="status">
                   {resultText}
+                  {game.feedback.kind === 'fail' &&
+                    game.feedback.scenario !== game.scenarioIndex + 1 && (
+                      <Button
+                        size="small"
+                        onClick={() => {
+                          const failure = game.feedback;
+                          if (failure?.kind === 'fail') game.selectScenario(failure.scenario - 1);
+                        }}
+                        sx={{ display: 'block', mt: 0.5, textTransform: 'none' }}
+                      >
+                        {t('game.viewFailedMap', { scenario: game.feedback.scenario })}
+                      </Button>
+                    )}
                 </Alert>
               )}
-              {!game.feedback && (
+              {game.playing && !game.feedback && (
                 <Typography variant="caption" color="text.secondary" role="status">
-                  {game.playing ? t('game.running') : t('game.runTip')}
+                  {t('game.running')}
                 </Typography>
               )}
-            </Stack>
+            </Box>
           </Box>
-        </Stack>
+        </Box>
+      </Stack>
+      <Menu anchorEl={speedAnchor} open={Boolean(speedAnchor)} onClose={() => setSpeedAnchor(null)}>
+        {[0.5, 1, 2].map((speed) => (
+          <MenuItem
+            key={speed}
+            selected={game.playbackSpeed === speed}
+            onClick={() => {
+              game.setPlaybackSpeed(speed);
+              setSpeedAnchor(null);
+            }}
+          >
+            {speed}×
+          </MenuItem>
+        ))}
+      </Menu>
+      <Stack
+        direction="row"
+        alignItems="center"
+        gap={1}
+        sx={{
+          display: { xs: 'flex', md: 'none' },
+          position: 'fixed',
+          left: 0,
+          right: 0,
+          bottom: 0,
+          zIndex: (theme) => theme.zIndex.appBar + 1,
+          px: 2,
+          pt: 1,
+          pb: 'calc(8px + env(safe-area-inset-bottom))',
+          bgcolor: 'background.default',
+          boxShadow: '0 -8px 24px rgba(16, 48, 80, .10)',
+        }}
+      >
+        <Button
+          variant="contained"
+          size="large"
+          onClick={game.playing ? game.stop : runProgram}
+          aria-label={t(game.playing ? 'game.stop' : 'game.run')}
+          startIcon={<IconifyIcon icon={game.playing ? 'mdi:stop' : 'mdi:play'} />}
+          sx={{
+            flex: 1,
+            minWidth: 0,
+            minHeight: 48,
+            textTransform: 'none',
+            fontWeight: 700,
+            borderRadius: 1.25,
+            whiteSpace: 'nowrap',
+            fontSize: 14,
+            px: 1,
+            '& .MuiButton-startIcon': { mr: 0.5 },
+          }}
+        >
+          {t(game.playing ? 'game.stop' : 'game.runShort')}
+        </Button>
+        <Button
+          size="small"
+          disabled={game.playing}
+          onClick={(event) => setSpeedAnchor(event.currentTarget)}
+          aria-label={`${t('game.speed')}: ${game.playbackSpeed}×`}
+          sx={{ minWidth: 42, minHeight: 48, px: 0.5, fontWeight: 700 }}
+        >
+          {game.playbackSpeed}×
+        </Button>
+        <IconButton
+          onClick={() => setShowHint((value) => !value)}
+          aria-label={t(showHint ? 'game.hideHint' : 'game.showHint')}
+          sx={{
+            flexShrink: 0,
+            width: 40,
+            height: 48,
+            color: showHint ? 'primary.main' : 'text.secondary',
+          }}
+        >
+          <IconifyIcon icon="mdi:lightbulb-outline" width={19} />
+        </IconButton>
+        <IconButton
+          onClick={game.resetProgram}
+          disabled={game.playing}
+          aria-label={t('game.resetCode')}
+          sx={{ flexShrink: 0, width: 40, height: 48 }}
+        >
+          <IconifyIcon icon="mdi:restore" width={19} />
+        </IconButton>
       </Stack>
     </Box>
   );

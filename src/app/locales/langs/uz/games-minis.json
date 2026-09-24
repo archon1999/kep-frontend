@@ -1,0 +1,210 @@
+{
+  "gamesMinis": {
+    "common": {
+      "score": "{{score}} ball",
+      "best": "Rekord: {{best}}",
+      "round": "{{current}} / {{total}} bosqich",
+      "start": "O‘yinni boshlash",
+      "next": "Keyingi bosqich",
+      "finish": "Natijani ko‘rish",
+      "playAgain": "Yana o‘ynash"
+    },
+    "bugHunt": {
+      "kicker": "XATONI TOPISH",
+      "title": "Bug Hunt",
+      "description": "Kichik dasturlarni o‘qing va xatoli qatorni toping. Eng uzun to‘g‘ri javoblar seriyasi alohida qayd etiladi.",
+      "readyTitle": "Xatoni topa olasizmi?",
+      "instructions": "10 ta kod parchasini tekshiring. 2-bosqichdan tuzatishni tanlaysiz, 6-bosqichdan esa natijani ham yozasiz. Har bosqich — 100 ball.",
+      "streak": "Seriya: {{count}}",
+      "selectLine": "Xato qatorni tanlang.",
+      "selectFix": "Endi shu qatorning to‘g‘ri tuzatilgan variantini tanlang.",
+      "selectOutput": "Tuzatilgan kod qanday natija chiqaradi?",
+      "outputLabel": "Natijani yozing",
+      "outputHint": "Ro‘yxat uchun vergul bilan yozing; masalan, [1, 2, 3].",
+      "checkOutput": "Natijani tekshirish",
+      "scrollCode": "Kodni yon tomonga suring",
+      "lineLabel": "{{line}}-qatorni tanlash",
+      "ruleTitle": "Qanday o‘ynaladi",
+      "ruleText": "Xato qatorni toping. 2-bosqichdan to‘g‘ri tuzatishni tanlang; 6-bosqichdan tuzatilgan kod natijasini ham yozing.",
+      "pointsHint": "Bosqichdagi barcha javoblar to‘g‘ri bo‘lsa 100 ball",
+      "correct": "To‘g‘ri — {{line}}-qator",
+      "incorrect": "Xato {{line}}-qatorda",
+      "incorrectFix": "Qator to‘g‘ri, lekin tuzatish xato",
+      "incorrectOutput": "Tuzatish to‘g‘ri, lekin natija xato",
+      "expectedOutput": "To‘g‘ri natija: {{output}}",
+      "doneTitle": "Tahlil tugadi",
+      "doneDetail": "{{total}} ta xatodan {{correct}} tasi topildi. Eng uzun seriya: {{streak}}.",
+      "questions": {
+        "sum": {
+          "task": "Yig‘indi 10 bo‘lishi kerak, ammo 5 chiqyapti.",
+          "explain": "Sikl yig‘indini har safar almashtiryapti. Sonni yig‘indiga qo‘shish kerak."
+        },
+        "range": {
+          "task": "2, 5, 8, 11 ketma-ketligini oxirgi qiymati bilan birga chiqaring.",
+          "explain": "range da stop chegarasi kirmaydi. Qadamni o‘zgartirmasdan 11 ni kiritish uchun stop ga 1 qo‘shing."
+        },
+        "average": {
+          "task": "Uchta bahoning vaznli o‘rtachasini toping. Javob 7.5.",
+          "explain": "Vaznli yig‘indini baholar soniga emas, jami vaznga bo‘lish kerak."
+        },
+        "maximum": {
+          "task": "Eng katta qiymatning birinchi indeksini chiqaring. Ikkita 9 bor, javob 1.",
+          "explain": "Teng qiymatda yangilash birinchi maksimumni keyingisiga almashtiradi. Faqat qat’iy kattaroq qiymatda yangilang."
+        },
+        "even": {
+          "task": "Faqat juft sonlar — 2 va 4 — qolishi kerak.",
+          "explain": "Juft sonni 2 ga bo‘lganda qoldiq 0 bo‘ladi."
+        },
+        "reverse": {
+          "task": "Ikki ko‘rsatkich bilan oltita qiymatni joyida teskari aylantiring.",
+          "explain": "Har almashishda ikkala ko‘rsatkich bir qadam ichkariga yuradi. right ni ikki qadam surish kerakli almashishni o‘tkazib yuboradi."
+        },
+        "contains": {
+          "task": "Har bir target uchun ism borligini katta-kichik harfni farqlamasdan tekshiring.",
+          "explain": "some kichik harfga aylantirilgan teng ismni izlashi kerak. Boshqa ismning borligi target topilganini anglatmaydi."
+        },
+        "factorial": {
+          "task": "3, 4 va 5 sonlarining faktorialini bitta siklda hisoblang.",
+          "explain": "Ichki siklda tashqi number takrorlanmaydi; har qadamdagi value ga ko‘paytiriladi."
+        },
+        "search": {
+          "task": "a ikki marta uchrasa ham birinchi indeksini toping. Javob 1.",
+          "explain": "Birinchi moslik topilgach, uning indeksini keyingi moslik bilan almashtirmang."
+        },
+        "count": {
+          "task": "Uchta so‘z s bilan boshlanadi, javob 3 bo‘lishi kerak.",
+          "explain": "Mos so‘z topilganda hisoblagich oshishi kerak, bu qator esa kamaytiryapti."
+        },
+        "slice": {
+          "task": "1-indeksdan boshlab uchta sonni oling: 20, 30 va 40.",
+          "explain": "slice ikkinchi argument sifatida sonini emas, yakuniy indeksni oladi. start ga count ni qo‘shing."
+        },
+        "positive": {
+          "task": "Faqat 3 va 5 musbat son hisoblanishi kerak.",
+          "explain": "Nol musbat son emas. >= 0 o‘rniga > 0 ishlating."
+        },
+        "any_all": {
+          "task": "Har bir sinfda 50 dan kam ball olgan o‘quvchi borligini aniqlang.",
+          "explain": "map ichida some ishlating. every esa sinfdagi barcha ballar 50 dan kamligini tekshiradi."
+        },
+        "palindrome": {
+          "task": "Har bir so‘z palindromligini tekshirib, to‘rtta natijani chiqaring.",
+          "explain": "Nolinchi qadamda -index birinchi belgiga ishora qiladi. Qarshi tomondagi belgi uchun -index - 1 kerak."
+        },
+        "sort": {
+          "task": "Vazifalarni priority, so‘ng time, so‘ng ID bo‘yicha o‘sish tartibida saralang.",
+          "explain": "time teskari tartibda solishtirilgan. priority va ID ni saqlab, a.time - b.time bilan solishtiring."
+        },
+        "prefix": {
+          "task": "Prefiks yig‘indilar bilan uchta [left, right) oraliq yig‘indisini toping.",
+          "explain": "Yarim ochiq oraliq uchun prefix[right] dan prefix[left] ayiriladi. left ga 1 qo‘shish birinchi qiymatni tashlab ketadi."
+        },
+        "unique": {
+          "task": "Ismlarning chetidagi bo‘sh joylarni olib, harflar registrini farqlamasdan takrorsiz qoldiring; birinchi yozilishini saqlang.",
+          "explain": "Tekshiruv kichik harfli key bilan bo‘lyapti, shuning uchun seen ga asl ism emas, shu key yozilishi kerak."
+        },
+        "frequency": {
+          "task": "Faqat to‘langan buyurtmalarni shahar bo‘yicha sanang. Bo‘sh joy va harflar registrini farqlamang.",
+          "explain": "Mavjud sanoqni normallashgan city bilan o‘qing. Asl yozilishni o‘qish ayrim guruhlarni qaytadan 1 ga tushiradi."
+        },
+        "window": {
+          "task": "Uchta ketma-ket sonning eng katta yig‘indisini va unga erishgan birinchi boshlang‘ich indeksni toping.",
+          "explain": "Oyna o‘ngga siljiganda right - width indeksidagi son chiqariladi. Ortiqcha + 1 yig‘indi va birinchi indeksni buzadi."
+        },
+        "lower_bound": {
+          "task": "7, 8 va 20 uchun target dan kichik bo‘lmagan birinchi indekslarni toping.",
+          "explain": "Teng qiymat ham birinchi to‘g‘ri javob bo‘lishi mumkin. Takrorlangan 8 larni ham hisobga olib, chap chegarani faqat values[mid] < target bo‘lsa suring."
+        }
+      }
+    },
+    "logicCircuit": {
+      "kicker": "MANTIQIY AMALLAR",
+      "title": "Logic Circuit",
+      "description": "Mantiqiy elementlarni jadvalga mos ulang. Kamroq tekshiruv bilan ko‘proq ball oling.",
+      "readyTitle": "Sxemani yig‘ing",
+      "attempts": "Tekshiruv: {{count}}",
+      "matched": "Mos qator: {{count}} / {{total}}",
+      "task": "Elementlarni tanlang va zarur bo‘lsa NOT qo‘shing. Natijangiz maqsaddagi barcha qatorlarga mos tushsin.",
+      "diagramLabel": "Mantiqiy sxema",
+      "output": "NATIJA",
+      "firstGate": "Birinchi amal · A va B",
+      "secondGate": "Ikkinchi amal · birinchi natija va C",
+      "pairGate": "{{first}} va {{second}} kirishlari",
+      "secondPairGate": "{{first}} va {{second}} kirishlari",
+      "combineGate": "Juftliklarni birlashtirish",
+      "pairing": "Kirishlarni juftlash",
+      "nandGateHelp": "NAND = NOT(AND)",
+      "advancedGateHelp": "NAND = NOT(AND) · NOR = NOT(OR)",
+      "invert": "Yakuniy natijani teskarilash",
+      "check": "Sxemani tekshirish",
+      "truthTable": "Haqiqat jadvali",
+      "tableHint": "Birinchi tekshiruvdan keyin natijangiz ko‘rinadi.",
+      "target": "Maqsad",
+      "yours": "Sizniki",
+      "tryAgain": "{{total}} qatordan {{count}} tasi mos. Elementni o‘zgartirib qayta tekshiring.",
+      "success": "Barcha qatorlar mos. +{{points}} ball",
+      "doneTitle": "Sxemalar tayyor",
+      "doneDetail": "O‘nta sxema yig‘ildi. Kamroq tekshiruv bilan natijani yaxshilang.",
+      "puzzles": {
+        "and": { "title": "Ikkala tugma", "hint": "Chiroq ikkala kirish yoqilganda yonadi." },
+        "xor": { "title": "Aynan bittasi", "hint": "Chiroq faqat bitta kirish yoqilganda yonadi." },
+        "xnor": {
+          "title": "Bir xil signallar",
+          "hint": "Ikkala kirish bir xil bo‘lsa — ikkalasi o‘chiq yoki ikkalasi yoqiq — chiroq yonadi."
+        },
+        "switch": {
+          "title": "Turli signallar",
+          "hint": "C ni A va B birga yoqilgandagi signal bilan solishtiring. Ular farq qilsa, chiroq yonadi."
+        },
+        "gate": {
+          "title": "To‘siq signali",
+          "hint": "A va B yoqiq, C esa o‘chiq bo‘lgandagina chiroq yonadi."
+        },
+        "filter": {
+          "title": "Qarshi signal",
+          "hint": "C o‘chiq bo‘lishi kerak; shunda A yoki B dan biri yoqilsa chiqish faollashadi."
+        },
+        "splitChannels": {
+          "title": "Ajratilgan kanallar",
+          "hint": "A–B juftligi uchun AND natijasini C–D juftligining juft-toqligi bilan solishtiring. Ular farq qilsa, chiqish yonadi."
+        },
+        "evenParity": {
+          "title": "Muvozanat",
+          "hint": "Yoqilgan kirishlar soni juft va toq bo‘lgan qatorlarni solishtiring. Ikkala juftlik uchun bir xil amal kerak bo‘lishi mumkin."
+        },
+        "mixed": {
+          "title": "Kesishgan signallar",
+          "hint": "16 qatorni to‘rtliklarga ajrating. Qaysi kirishlar juftlashganda bir xil kichik naqsh takrorlanishini qidiring."
+        },
+        "final": {
+          "title": "Yakuniy sinov",
+          "hint": "A–D juftligining juft-toqligini B–C uchun AND natijasi bilan solishtiring. Yakuniy natijani teskarilash kerakligini ham tekshiring."
+        }
+      }
+    },
+    "memoryGrid": {
+      "kicker": "XOTIRA VA KETMA-KETLIK",
+      "title": "Memory Grid",
+      "description": "Yongan kataklar tartibini eslab, takrorlang. Har bosqichda maydon kengayib, temp tezlashadi.",
+      "readyTitle": "Ketma-ketlikni takrorlang",
+      "instructions": "Yongan kataklarni tartib bilan bosing. 10 bosqich, 2 jon. Xato ballni kamaytirmaydi; qayta ko‘rish −25 ball.",
+      "winTitle": "Barcha bosqichlar o‘tildi",
+      "doneTitle": "O‘yin tugadi",
+      "doneDetail": "{{total}} bosqichdan {{cleared}} tasi o‘tildi. Natijani yaxshilash uchun qayta o‘ynang.",
+      "lives": "Jon: {{count}}",
+      "sequenceLength": "{{count}} qadam",
+      "watch": "Kataklarni kuzating",
+      "watchHint": "Oxirgi katak o‘chgach bosishni boshlang.",
+      "repeat": "Sizning navbatingiz",
+      "inputHint": "Kataklarni ko‘rsatilgan tartibda bosing.",
+      "roundWon": "Ketma-ketlik topildi",
+      "nextHint": "Uzunroq ketma-ketlikka tayyormisiz?",
+      "gridLabel": "{{side}} ga {{side}} xotira kataklari",
+      "cellLabel": "{{cell}}-katak",
+      "steps": "{{count}} / {{total}} kiritildi",
+      "replay": "Qayta ko‘rish · −25",
+      "success": "Bosqich o‘tildi. +100 ball",
+      "mistake": "Boshqa katak bosildi. Bitta jon ketdi; ketma-ketlikni yana kuzating."
+    }
+  }
+}

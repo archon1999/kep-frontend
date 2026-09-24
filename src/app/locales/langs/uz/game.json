@@ -1,22 +1,41 @@
 {
   "game": {
-    "chapter": "1-BOB · 3D SARGUZASHT",
+    "chapter": "KOD OROLLARI · 10 TA SINOV",
     "title": "KEPPER: Kod orollari",
     "subtitle": "Dastur tuzing va KEPPER uni suzuvchi orollarda qanday bajarishini ko‘ring.",
     "worldLabel": "KEPPER ishtirokidagi interaktiv 3D orol",
     "levelSelector": "Orolni tanlang",
+    "scrollLevelsBack": "Oldingi orollar",
+    "scrollLevelsForward": "Keyingi orollar",
+    "islandsCleared": "orol yakunlandi",
+    "stageTitle": "Simulyatsiya",
+    "stageReady": "Tayyor",
+    "stageRunning": "Bajarilmoqda",
+    "stageCleared": "O‘tildi",
+    "starTarget": "3 yulduz uchun: {{count}} ta buyruq",
     "progress": "{{total}} oroldan {{done}} tasi tugallandi",
+    "totalScore": "{{score}}/1000 ball",
+    "scoreLabel": "ball",
     "concepts": {
       "sequence": "Ketma-ketlik",
       "loop": "Takrorlash",
       "condition": "Shart",
       "debug": "Xatoni tuzatish",
-      "final": "Yakuniy sinov"
+      "final": "Kristall sinovi",
+      "multiCrystal": "Bir nechta kristall",
+      "switchGate": "Tugma va darvoza",
+      "teleport": "Teleportlar",
+      "fragile": "Mo‘rt yo‘l",
+      "jump": "Bo‘shliqdan sakrash",
+      "conveyor": "Harakatlanuvchi yo‘l",
+      "crystalSensor": "Kristallni sezish",
+      "chain": "Zanjirli harakat",
+      "mastery": "Yakuniy sinov"
     },
     "levels": {
       "1": {
         "title": "Birinchi qadamlar",
-        "description": "KEPPERni yorqin portalga olib boring. Buyruqlar yuqoridan pastga bajariladi.",
+        "description": "KEPPERni yorqin portalga olib boring.",
         "hint": "Boshlang‘ich dasturda bitta Qadam bor. Yana ikkita Qadam qo‘shing."
       },
       "2": {
@@ -25,22 +44,48 @@
         "hint": "Ikki qadam yuring, o‘ngga buriling, so‘ng yana ikki qadam yuring."
       },
       "3": {
-        "title": "Ikki xil yo‘l",
-        "description": "Bitta dastur ikkala xaritada ham ishlashi kerak. Oldingi katak bo‘sh yoki bandligini tekshiring.",
-        "hint": "Ochiq yo‘l sharqqa ketadi. Yo‘l band bo‘lsa, avval shimolga, keyin yuqori yo‘l bo‘ylab sharqqa yuring."
-      },
-      "4": {
         "title": "Xatoni toping",
         "description": "Boshlang‘ich dasturda burilishlar noto‘g‘ri. KEPPER portalga yetishi uchun tuzating.",
         "hint": "Birinchi qadamdan so‘ng yo‘l o‘ngga, keyin chapga va yana o‘ngga buriladi."
       },
+      "4": {
+        "title": "Ikki xil yo‘l",
+        "description": "Bitta dastur ikkala xaritada ham ishlashi kerak. Oldingi katak bo‘sh yoki bandligini tekshiring.",
+        "hint": "Ochiq yo‘l sharqqa ketadi. Yo‘l band bo‘lsa, avval shimolga, keyin yuqori yo‘l bo‘ylab sharqqa yuring."
+      },
       "5": {
-        "title": "Kristall ko‘prik",
-        "description": "Portalga kirishdan oldin oltin kristallni oling. Bitta dastur ikkala xaritada ham ishlasin.",
-        "hint": "Yo‘l band bo‘lsa shartidan foydalaning. Uzun yo‘l shimolga ikki va sharqqa to‘rt qadam, ochiq yo‘l esa to‘g‘ri ketadi."
+        "title": "Kristall yo‘li",
+        "description": "Ikkala xaritadagi uchta kristallni ham yig‘ing. Bir yo‘l to‘g‘ri, ikkinchisi to‘siqni aylanib o‘tadi.",
+        "hint": "Boshlang‘ich yo‘lni shart bilan tanlang. Asosiy yo‘lga qaytib qolgan kristallarni yig‘ing va marraga buriling."
+      },
+      "6": {
+        "title": "Darvozani oching",
+        "description": "Tugma bir xaritada yo‘lning tepasida, boshqasida pastida. Darvozani ochib, kristall va marraga yeting.",
+        "hint": "Ikki qadam yuring va shimolga qarang. Katak band bo‘lsa, tugma janubda. Uni bosgach, yana sharqqa qarab yo‘lga qayting."
+      },
+      "7": {
+        "title": "Juft portallar",
+        "description": "Mo‘rt yo‘ldan o‘ting, ikki xil chiqishga moslashing va ikkinchi portal orqali so‘nggi kristallar yo‘liga yeting.",
+        "hint": "Birinchi teleportdan keyin oldingi katakni tekshiring. Ikkinchi portal oldida yo‘llar birlashsin; oxirgi yo‘l ikki marta buriladi."
+      },
+      "8": {
+        "title": "Bo‘shliq ustidan",
+        "description": "Bitta dastur uch xaritada ishlasin: kristallar o‘rni va o‘rta yo‘l o‘zgaradi. Uzun qaytish yo‘lidagi barcha kristallarni yig‘ing.",
+        "hint": "Birinchi katakni va o‘rtadagi o‘tishni tekshiring. Yo‘lakdan keyin kristallar izidan pastga, yon tomonga, so‘ng marraga qayting."
+      },
+      "9": {
+        "title": "Yo‘lni o‘qing",
+        "description": "To‘rt xaritada kristallar oltita uzilgan yo‘lda o‘rnini almashtiradi. Yo‘lni qayta-qayta tekshirib, orolning tashqi chetini aylaning.",
+        "hint": "Boshida kristallni tekshirish usulini takrorlang, keyin uni tashqi aylanada yana uch marta qo‘llang. Mo‘rt kirish ortga qaytishga yo‘l qo‘ymaydi."
+      },
+      "10": {
+        "title": "So‘nggi o‘tish",
+        "description": "To‘rt xarita, ikki orol, ikki darvoza va o‘rni almashadigan kristallar. Ikkinchi portaldan o‘tib, barcha kristallarni yig‘ing.",
+        "hint": "Teleportdan oldin birinchi darvozani oching. Ikkinchi orolda ikkala kristall o‘tishini tekshirib, yo‘lakdan o‘ting va janubiy chet bo‘ylab yakunlang."
       }
     },
     "testCases": "Xaritalar",
+    "viewFailedMap": "{{scenario}}-xaritani ko‘rish",
     "editorTitle": "KEPPER dasturi",
     "editorCaption": "Buyruqlar tartib bilan bajariladi",
     "modes": { "blocks": "Bloklar", "code": "Kod" },
@@ -49,18 +94,26 @@
       "left": "Chapga buril",
       "right": "O‘ngga buril",
       "repeat": "Takrorla",
-      "ifBlocked": "Yo‘l band bo‘lsa"
+      "ifBlocked": "Yo‘l band bo‘lsa",
+      "ifCrystalAhead": "Oldinda kristall bo‘lsa",
+      "jump": "Ikki katak sakra"
     },
     "times": "Marta",
-    "repeatBody": "Shu buyruqlarni takrorlash",
+    "repeatBody": "Takror ichida",
+    "addCommand": "Buyruq qo‘shish",
     "whenBlocked": "YO‘L BAND BO‘LSA",
+    "whenCrystalAhead": "OLDINDA KRISTALL BO‘LSA",
     "otherwise": "AKS HOLDA",
     "moveUp": "Buyruqni yuqoriga ko‘chirish",
     "moveDown": "Buyruqni pastga ko‘chirish",
     "remove": "Buyruqni o‘chirish",
     "codeLabel": "O‘yin kodi oynasi",
-    "codeHelp": "Buyruqlar: move, left, right, repeat 2 { … }, if blocked { … } else { … }. Brauzer kodi ishga tushirilmaydi.",
+    "copyCode": "Kodni nusxalash",
+    "copiedCode": "Kod nusxalandi",
+    "codeHelpTitle": "Buyruqlar sintaksisi",
+    "codeHelp": "move, left, right, jump, repeat 2 { … }, if blocked { … } else { … }, if crystal ahead { … } else { … }",
     "run": "Dasturni ishga tushirish",
+    "runShort": "Ishga tushir",
     "stop": "To‘xtatish",
     "resetCode": "Kodni tiklash",
     "showHint": "Ishora ko‘rsatish",
@@ -81,6 +134,17 @@
     "rotateHint": "Aylantirish uchun torting · yaqinlashtirish uchun skroll qiling",
     "keyboardHint": "Ishga tushirish: Ctrl+Enter",
     "localSave": "Natija shu qurilmada saqlanadi",
-    "canvasFallback": "Bu brauzerda 3D ko‘rinish ishlamaydi."
+    "canvasFallback": "Bu brauzerda 3D ko‘rinish ishlamaydi.",
+    "tiles": {
+      "crystal": "Oltin kristall: barchasini yig‘ing",
+      "switchGate": "Ko‘k tugma qizil darvozani ochadi",
+      "fragile": "Sarg‘ish katak: chiqqach qulaydi",
+      "teleport": "Binafsha halqalar: juft teleport",
+      "conveyor": "Havorang strelka: o‘zi suradi"
+    },
+    "playback": "Harakatlar ketma-ketligi",
+    "stepBack": "Oldingi qadam",
+    "stepForward": "Keyingi qadam",
+    "speed": "Ijro tezligi"
   }
 }

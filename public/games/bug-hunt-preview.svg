@@ -1,0 +1,69 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 960 540" role="img" aria-label="A highlighted bug in a syntax-colored code editor">
+  <defs>
+    <linearGradient id="canvas" x1="0" y1="0" x2="1" y2="1">
+      <stop stop-color="#DBF2F8"/>
+      <stop offset=".52" stop-color="#CBEAF2"/>
+      <stop offset="1" stop-color="#B5D6EE"/>
+    </linearGradient>
+    <radialGradient id="glow" cx="0" cy="0" r="1" gradientTransform="matrix(338 0 0 260 760 18)" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#82E8EC" stop-opacity=".62"/>
+      <stop offset="1" stop-color="#82E8EC" stop-opacity="0"/>
+    </radialGradient>
+    <linearGradient id="editor" x1="0" y1="0" x2="1" y2="1">
+      <stop stop-color="#172A37"/>
+      <stop offset="1" stop-color="#0D1B28"/>
+    </linearGradient>
+    <linearGradient id="selection" x1="0" y1="0" x2="1" y2="0">
+      <stop stop-color="#234D75"/>
+      <stop offset="1" stop-color="#1A364E" stop-opacity=".88"/>
+    </linearGradient>
+    <linearGradient id="marker" x1="0" y1="0" x2="1" y2="1">
+      <stop stop-color="#FFC26B"/>
+      <stop offset="1" stop-color="#F18F50"/>
+    </linearGradient>
+    <filter id="shadow" x="-20%" y="-30%" width="140%" height="170%">
+      <feDropShadow dx="0" dy="20" stdDeviation="26" flood-color="#35648A" flood-opacity=".24"/>
+    </filter>
+    <filter id="soft" x="-100%" y="-100%" width="300%" height="300%">
+      <feGaussianBlur stdDeviation="18"/>
+    </filter>
+    <clipPath id="window"><rect x="70" y="51" width="820" height="438" rx="28"/></clipPath>
+  </defs>
+  <rect width="960" height="540" fill="url(#canvas)"/>
+  <rect width="960" height="540" fill="url(#glow)"/>
+  <circle cx="923" cy="129" r="158" fill="#91D9F1" opacity=".32"/>
+  <circle cx="78" cy="495" r="183" fill="#82BCEF" opacity=".2"/>
+  <g stroke="#FFFFFF" stroke-opacity=".35" fill="none">
+    <path d="M0 94H960M0 446H960"/>
+    <path d="M43 0V540M917 0V540"/>
+  </g>
+  <rect x="70" y="51" width="820" height="438" rx="28" fill="url(#editor)" filter="url(#shadow)"/>
+  <g clip-path="url(#window)">
+    <path d="M70 126H890" stroke="#4E738A" stroke-opacity=".38" stroke-width="2"/>
+    <circle cx="105" cy="89" r="8" fill="#567B8F"/>
+    <circle cx="132" cy="89" r="8" fill="#567B8F" opacity=".6"/>
+    <circle cx="159" cy="89" r="8" fill="#567B8F" opacity=".35"/>
+    <path d="M208 94h100" stroke="#6A91A7" stroke-width="8" stroke-linecap="round" opacity=".3"/>
+    <path d="M766 84h24m-12-12v24M818 84h36" stroke="#69BBEE" stroke-width="3" stroke-linecap="round" opacity=".65"/>
+    <rect x="70" y="243" width="820" height="66" fill="url(#selection)"/>
+    <rect x="70" y="243" width="5" height="66" fill="#62A8FF"/>
+    <path d="M148 127V489" stroke="#6A91A7" stroke-opacity=".28" stroke-width="2"/>
+    <g font-family="ui-monospace, SFMono-Regular, Consolas, monospace" font-size="27" dominant-baseline="middle">
+      <g fill="#8398A8" font-size="20" text-anchor="end">
+        <text x="122" y="174">1</text><text x="122" y="230">2</text><text x="122" y="286">3</text><text x="122" y="342">4</text><text x="122" y="398">5</text><text x="122" y="454">6</text>
+      </g>
+      <text x="178" y="174"><tspan fill="#77B2FF">const</tspan><tspan fill="#D9EAF2"> numbers </tspan><tspan fill="#84C9DA">=</tspan><tspan fill="#D9EAF2"> [</tspan><tspan fill="#F7C078">10</tspan><tspan fill="#D9EAF2">, </tspan><tspan fill="#F7C078">20</tspan><tspan fill="#D9EAF2">, </tspan><tspan fill="#F7C078">30</tspan><tspan fill="#D9EAF2">, </tspan><tspan fill="#F7C078">40</tspan><tspan fill="#D9EAF2">];</tspan></text>
+      <text x="178" y="230"><tspan fill="#77B2FF">const</tspan><tspan fill="#D9EAF2"> firstTwo </tspan><tspan fill="#84C9DA">=</tspan></text>
+      <text x="226" y="286"><tspan fill="#D9EAF2">numbers.</tspan><tspan fill="#77D8C5">slice</tspan><tspan fill="#D9EAF2">(</tspan><tspan fill="#F7C078">0</tspan><tspan fill="#D9EAF2">, </tspan><tspan fill="#FFB67B">1</tspan><tspan fill="#D9EAF2">);</tspan></text>
+      <text x="178" y="342"><tspan fill="#77B2FF">if</tspan><tspan fill="#D9EAF2"> (firstTwo.length </tspan><tspan fill="#84C9DA">===</tspan><tspan fill="#F7C078"> 2</tspan><tspan fill="#D9EAF2">) {</tspan></text>
+      <text x="226" y="398"><tspan fill="#D9EAF2">return</tspan><tspan fill="#B0DBD5"> firstTwo</tspan><tspan fill="#D9EAF2">;</tspan></text>
+      <text x="178" y="454" fill="#D9EAF2">}</text>
+    </g>
+    <path d="M477 300q5-5 10 0t10 0t10 0t10 0" fill="none" stroke="#FFAD63" stroke-width="3" stroke-linecap="round"/>
+    <path d="M738 272h15l8 14-8 14h-15l-8-14z" fill="url(#marker)"/>
+    <path d="M745 279v9m0 5v1" stroke="#523D2F" stroke-width="2.6" stroke-linecap="round"/>
+    <path d="M785 286h51" stroke="#F9AE6E" stroke-opacity=".72" stroke-width="3" stroke-linecap="round"/>
+  </g>
+  <circle cx="745" cy="286" r="24" fill="#FFA76B" opacity=".22" filter="url(#soft)"/>
+  <path d="M111 512h146M708 29h154" stroke="#FFFFFF" stroke-width="3" stroke-linecap="round" opacity=".56"/>
+</svg>

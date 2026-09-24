@@ -1,22 +1,41 @@
 {
   "game": {
-    "chapter": "CHAPTER 01 · 3D ADVENTURE",
+    "chapter": "CODE ISLANDS · 10 CHALLENGES",
     "title": "KEPPER: Code Islands",
     "subtitle": "Build a program and watch KEPPER bring it to life across floating islands.",
     "worldLabel": "Interactive 3D island with KEPPER",
     "levelSelector": "Choose an island",
+    "scrollLevelsBack": "Previous islands",
+    "scrollLevelsForward": "Next islands",
+    "islandsCleared": "islands cleared",
+    "stageTitle": "Simulation",
+    "stageReady": "Ready",
+    "stageRunning": "Running",
+    "stageCleared": "Cleared",
+    "starTarget": "3-star target: {{count}} commands",
     "progress": "{{done}} of {{total}} islands completed",
+    "totalScore": "{{score}}/1000 points",
+    "scoreLabel": "points",
     "concepts": {
       "sequence": "Sequence",
       "loop": "Loops",
       "condition": "Conditions",
       "debug": "Debugging",
-      "final": "Final challenge"
+      "final": "Crystal trial",
+      "multiCrystal": "Multiple crystals",
+      "switchGate": "Switches and gates",
+      "teleport": "Teleporters",
+      "fragile": "Fragile paths",
+      "jump": "Jumping gaps",
+      "conveyor": "Conveyor belts",
+      "crystalSensor": "Crystal sensing",
+      "chain": "Chain reactions",
+      "mastery": "Final challenge"
     },
     "levels": {
       "1": {
         "title": "First steps",
-        "description": "Guide KEPPER to the glowing portal. Commands run from top to bottom.",
+        "description": "Guide KEPPER to the glowing portal.",
         "hint": "The starter already moves once. Add two more Move commands."
       },
       "2": {
@@ -25,22 +44,48 @@
         "hint": "Move twice, turn right, then move twice more."
       },
       "3": {
-        "title": "Two possible roads",
-        "description": "One program must win on both maps. Check whether the tile ahead is blocked.",
-        "hint": "The clear road runs east. On the blocked map, go north first, then east along the upper path."
-      },
-      "4": {
         "title": "Find the bug",
         "description": "The starter program has wrong turns. Fix it so KEPPER reaches the portal.",
         "hint": "After the first Move, the path turns right, then left, then right again."
       },
+      "4": {
+        "title": "Two possible roads",
+        "description": "One program must win on both maps. Check whether the tile ahead is blocked.",
+        "hint": "The clear road runs east. On the blocked map, go north first, then east along the upper path."
+      },
       "5": {
         "title": "Crystal crossing",
-        "description": "Collect the gold crystal before reaching the portal. The same program must work on both maps.",
-        "hint": "Use If blocked to choose a route. The long route goes north twice and east four times; the clear route stays straight."
+        "description": "Collect all three crystals on both maps. One route is straight; the other winds around the blocked section.",
+        "hint": "Use If blocked to choose the opening route. Rejoin the main road, collect its remaining crystals, then turn toward the goal."
+      },
+      "6": {
+        "title": "Open the gate",
+        "description": "The switch is above the road on one map and below it on the other. Open the gate before crossing to the crystal and goal.",
+        "hint": "Move two tiles and face north. If that tile is blocked, the switch must be south. Return facing east after pressing it."
+      },
+      "7": {
+        "title": "Paired portals",
+        "description": "Cross a fragile path, adapt to two possible exits, then use a second portal to reach the final crystal trail.",
+        "hint": "After the first portal, test the tile ahead. Rejoin the road before the second portal; the final trail bends twice."
+      },
+      "8": {
+        "title": "Across the gap",
+        "description": "One program must clear three maps: moving crystals, gaps, and a solid crossing. Collect every crystal on the long return path.",
+        "hint": "Check the first tile and the middle crossing. After the belt, trace the crystal trail down, across, and back toward the goal."
+      },
+      "9": {
+        "title": "Read the road",
+        "description": "Four maps change crystal positions along six broken sections. Sense the road repeatedly and loop around the outer island.",
+        "hint": "Repeat one sensor pattern at the start, then three more times around the outer loop. The fragile entry prevents going back."
+      },
+      "10": {
+        "title": "The last crossing",
+        "description": "Four maps, two islands, two gates, and shifting crystals. Reach the second portal, cross the conveyor island, and gather every crystal.",
+        "hint": "Open the first gate before teleporting. On the second island, sense both crystal crossings, use the conveyor, and finish along the southern edge."
       }
     },
     "testCases": "Maps",
+    "viewFailedMap": "View map {{scenario}}",
     "editorTitle": "KEPPER's program",
     "editorCaption": "Commands are executed in order",
     "modes": { "blocks": "Blocks", "code": "Code" },
@@ -49,18 +94,26 @@
       "left": "Turn left",
       "right": "Turn right",
       "repeat": "Repeat",
-      "ifBlocked": "If blocked"
+      "ifBlocked": "If blocked",
+      "ifCrystalAhead": "If crystal ahead",
+      "jump": "Jump two tiles"
     },
     "times": "Times",
-    "repeatBody": "Repeat these commands",
+    "repeatBody": "Inside loop",
+    "addCommand": "Add command",
     "whenBlocked": "WHEN BLOCKED",
+    "whenCrystalAhead": "IF CRYSTAL AHEAD",
     "otherwise": "OTHERWISE",
     "moveUp": "Move command up",
     "moveDown": "Move command down",
     "remove": "Remove command",
     "codeLabel": "Game code editor",
-    "codeHelp": "Commands: move, left, right, repeat 2 { … }, if blocked { … } else { … }. No browser code is executed.",
+    "copyCode": "Copy code",
+    "copiedCode": "Code copied",
+    "codeHelpTitle": "Command syntax",
+    "codeHelp": "move, left, right, jump, repeat 2 { … }, if blocked { … } else { … }, if crystal ahead { … } else { … }",
     "run": "Run program",
+    "runShort": "Run",
     "stop": "Stop",
     "resetCode": "Reset code",
     "showHint": "Show hint",
@@ -81,6 +134,17 @@
     "rotateHint": "Drag to rotate · scroll to zoom",
     "keyboardHint": "Ctrl+Enter to run",
     "localSave": "Progress saved on this device",
-    "canvasFallback": "3D view is unavailable in this browser."
+    "canvasFallback": "3D view is unavailable in this browser.",
+    "tiles": {
+      "crystal": "Gold crystal: collect all",
+      "switchGate": "Blue switch opens red gate",
+      "fragile": "Amber tile: crumbles after leaving",
+      "teleport": "Purple rings: teleport pair",
+      "conveyor": "Turquoise arrow: automatic push"
+    },
+    "playback": "Replay timeline",
+    "stepBack": "Previous step",
+    "stepForward": "Next step",
+    "speed": "Playback speed"
   }
 }

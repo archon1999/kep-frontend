@@ -9,6 +9,8 @@ import contests from './contests.json';
 import duels from './duels.json';
 import giveaways from './giveaways.json';
 import game from './game.json';
+import games from './games.json';
+import gamesMinis from './games-minis.json';
 import hackathons from './hackathons.json';
 import homePage from './home-page.json';
 import kepCover from './kep-cover.json';
@@ -27,6 +29,8 @@ import users from './users.json';
 export const uzTranslation = {
   ...giveaways,
   ...game,
+  ...games,
+  ...gamesMinis,
   ...admin,
   ...common,
   ...menu,

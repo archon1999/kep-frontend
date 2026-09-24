@@ -1,0 +1,216 @@
+{
+  "gamesMinis": {
+    "common": {
+      "score": "{{score}} points",
+      "best": "Best: {{best}}",
+      "round": "Round {{current}} / {{total}}",
+      "start": "Start playing",
+      "next": "Next round",
+      "finish": "See results",
+      "playAgain": "Play again"
+    },
+    "bugHunt": {
+      "kicker": "DEBUGGING",
+      "title": "Bug Hunt",
+      "description": "Read short programs and spot the faulty line. Your longest correct-answer streak is tracked separately.",
+      "readyTitle": "Can you find the bug?",
+      "instructions": "Inspect ten snippets. From stage two, choose a fix; from stage six, enter the corrected output too. Each stage earns 100 points.",
+      "streak": "Streak: {{count}}",
+      "selectLine": "Select the faulty line.",
+      "selectFix": "Now choose the correct replacement for that line.",
+      "selectOutput": "What does the corrected code print?",
+      "outputLabel": "Enter the output",
+      "outputHint": "Separate list items with commas, for example [1, 2, 3].",
+      "checkOutput": "Check output",
+      "scrollCode": "Swipe code sideways",
+      "lineLabel": "Select line {{line}}",
+      "ruleTitle": "How to play",
+      "ruleText": "Find the faulty line. From stage two, choose its repair. From stage six, enter what the repaired code prints.",
+      "pointsHint": "Earn 100 points only when every answer in the stage is correct",
+      "correct": "Correct — line {{line}}",
+      "incorrect": "The bug is on line {{line}}",
+      "incorrectFix": "Right line, wrong fix",
+      "incorrectOutput": "Right fix, wrong output",
+      "expectedOutput": "Correct output: {{output}}",
+      "doneTitle": "Review complete",
+      "doneDetail": "{{correct}} of {{total}} bugs found. Longest streak: {{streak}}.",
+      "questions": {
+        "sum": {
+          "task": "The sum should be 10, but it prints 5.",
+          "explain": "The loop replaces the total each time. Add the number to the total instead."
+        },
+        "range": {
+          "task": "Print the sequence 2, 5, 8, 11, including its final value.",
+          "explain": "range excludes stop. Increase the stop by one to include 11 without changing the step."
+        },
+        "average": {
+          "task": "Find the weighted average of the three marks. It should be 7.5.",
+          "explain": "The weighted sum must be divided by the total weight, not the number of marks."
+        },
+        "maximum": {
+          "task": "Print the first index of the largest value. Both 9s tie, so the answer is 1.",
+          "explain": "Updating on equality replaces the first maximum with the later one. Update only for a strictly larger value."
+        },
+        "even": {
+          "task": "Only even numbers should remain: 2 and 4.",
+          "explain": "An even number has a remainder of 0 when divided by 2."
+        },
+        "reverse": {
+          "task": "Reverse the six values in place with two pointers.",
+          "explain": "Each swap moves both pointers one step inward. Moving right by two skips a required swap."
+        },
+        "contains": {
+          "task": "For every target, check whether a name matches, ignoring letter case.",
+          "explain": "some must find an equal normalized name. A different name does not prove a target is present."
+        },
+        "factorial": {
+          "task": "Calculate the factorials of 3, 4 and 5 in one loop.",
+          "explain": "The inner loop must multiply by its changing value, not repeat the outer number."
+        },
+        "search": {
+          "task": "Find the first index of a, even though it appears twice. Print 1.",
+          "explain": "After the first match, keep its index instead of overwriting it with a later match."
+        },
+        "count": {
+          "task": "Three words start with s, so the count should be 3.",
+          "explain": "Increase the count when a word matches; this line decreases it."
+        },
+        "slice": {
+          "task": "Starting at index 1, take three numbers: 20, 30 and 40.",
+          "explain": "slice takes an end index, not a count. Add count to start to find the exclusive end."
+        },
+        "positive": {
+          "task": "Only 3 and 5 should count as positive.",
+          "explain": "Zero is not positive. Use > 0 instead of >= 0."
+        },
+        "any_all": {
+          "task": "For each class, check whether at least one score is below 50.",
+          "explain": "Use some inside map. Every asks whether all scores in that class are below 50."
+        },
+        "palindrome": {
+          "task": "Check each word for a palindrome and print the four results.",
+          "explain": "At index zero, -index points to the first character. Use -index - 1 for the mirrored character."
+        },
+        "sort": {
+          "task": "Sort by priority, then time, then ID, all ascending.",
+          "explain": "The time comparison runs backward. Keep the priority and ID comparisons, and compare a.time - b.time."
+        },
+        "prefix": {
+          "task": "Use prefix sums to answer the three half-open ranges [left, right).",
+          "explain": "For a half-open range, subtract prefix[left] from prefix[right]. Adding one to left skips its first value."
+        },
+        "unique": {
+          "task": "Trim spaces and remove repeated names without regard to case, keeping the first spelling.",
+          "explain": "The check uses the lowercase key, so seen must store that same key rather than the original spelling."
+        },
+        "frequency": {
+          "task": "Count paid orders by city, trimming spaces and ignoring case. Skip pending orders.",
+          "explain": "Read the existing count with the normalized city. Looking up the original spelling resets several groups."
+        },
+        "window": {
+          "task": "Find the largest three-number sum and the first starting index that achieves it.",
+          "explain": "When the window moves right, remove the value at right - width. The extra one corrupts both the sum and its first index."
+        },
+        "lower_bound": {
+          "task": "For targets 7, 8 and 20, return each first index whose value is at least the target.",
+          "explain": "An equal value may be the first valid result. Move left only when values[mid] < target, including the duplicate 8s."
+        }
+      }
+    },
+    "logicCircuit": {
+      "kicker": "BOOLEAN LOGIC",
+      "title": "Logic Circuit",
+      "description": "Wire gates to match the target truth table. Fewer checks mean more points.",
+      "readyTitle": "Build the circuit",
+      "attempts": "Checks: {{count}}",
+      "matched": "Matching: {{count}} / {{total}}",
+      "task": "Choose the gates and optional NOT stage so your output matches every target row.",
+      "diagramLabel": "Circuit connection diagram",
+      "output": "OUT",
+      "firstGate": "First gate · A and B",
+      "secondGate": "Second gate · first result and C",
+      "pairGate": "Inputs {{first}} and {{second}}",
+      "secondPairGate": "Inputs {{first}} and {{second}}",
+      "combineGate": "Combine both pairs",
+      "pairing": "Pair the inputs",
+      "nandGateHelp": "NAND = NOT(AND)",
+      "advancedGateHelp": "NAND = NOT(AND) · NOR = NOT(OR)",
+      "invert": "Invert final output",
+      "check": "Check circuit",
+      "truthTable": "Truth table",
+      "tableHint": "Your output appears after the first check.",
+      "target": "Target",
+      "yours": "Yours",
+      "tryAgain": "{{count}} of {{total}} rows match. Change a gate and check again.",
+      "success": "All rows match. +{{points}} points",
+      "doneTitle": "Circuit complete",
+      "doneDetail": "You built all ten circuits. Try again to solve them in fewer checks.",
+      "puzzles": {
+        "and": {
+          "title": "Both switches",
+          "hint": "The light turns on only when both inputs are on."
+        },
+        "xor": {
+          "title": "Exactly one",
+          "hint": "The light turns on when exactly one input is on."
+        },
+        "xnor": {
+          "title": "Matching switches",
+          "hint": "The light is on when both inputs have the same state: both off or both on."
+        },
+        "switch": {
+          "title": "Difference signal",
+          "hint": "Compare C with the signal made when A and B are both on. The output lights when those signals differ."
+        },
+        "gate": {
+          "title": "Blocked signal",
+          "hint": "The output lights only when A and B are both on while C is off."
+        },
+        "filter": {
+          "title": "Counter-signal",
+          "hint": "C must be off; then either A or B can activate the output."
+        },
+        "splitChannels": {
+          "title": "Split channels",
+          "hint": "Compare the A–B AND signal with the C–D parity signal; the output lights when they differ."
+        },
+        "evenParity": {
+          "title": "Balance",
+          "hint": "Compare rows with an even and odd number of active inputs. The same operation may work for both pairs."
+        },
+        "mixed": {
+          "title": "Crossed signals",
+          "hint": "Split the 16 rows into groups of four. Look for a smaller pattern that repeats when the right inputs are paired."
+        },
+        "final": {
+          "title": "Final checkpoint",
+          "hint": "Compare A–D parity with the B–C AND signal. Check whether the final output needs inverting."
+        }
+      }
+    },
+    "memoryGrid": {
+      "kicker": "PATTERN MEMORY",
+      "title": "Memory Grid",
+      "description": "Watch a sequence of cells and tap it back in order. The sequence speeds up as the grid expands.",
+      "readyTitle": "Repeat the pattern",
+      "instructions": "Tap the lit cells in order. Ten rounds, two lives. Mistakes cost no points; replay costs 25.",
+      "winTitle": "Perfect finish",
+      "doneTitle": "Run finished",
+      "doneDetail": "{{cleared}} of {{total}} rounds cleared. Try again to improve your score.",
+      "lives": "Lives: {{count}}",
+      "sequenceLength": "{{count}} steps",
+      "watch": "Watch the pattern",
+      "watchHint": "Wait until the final cell fades before tapping.",
+      "repeat": "Your turn",
+      "inputHint": "Tap the highlighted cells in the same order.",
+      "roundWon": "Pattern complete",
+      "nextHint": "Ready for a longer sequence?",
+      "gridLabel": "{{side}} by {{side}} memory grid",
+      "cellLabel": "Cell {{cell}}",
+      "steps": "{{count}} / {{total}} entered",
+      "replay": "Replay pattern · −25",
+      "success": "Round cleared. +100 points",
+      "mistake": "That was a different cell. One life was used; watch the pattern again."
+    }
+  }
+}

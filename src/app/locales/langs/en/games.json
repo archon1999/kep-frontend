@@ -1,0 +1,177 @@
+{
+  "games": {
+    "title": "Games",
+    "overallScore": "Overall score",
+    "scoreSplit": "Score by game",
+    "played": "Games played",
+    "subtitle": "Five ways to think, explore and compete. Pick a game, then beat your best run.",
+    "allGames": "Game library",
+    "overall": "Overall ranking",
+    "leaderboard": "Leaderboard",
+    "topTen": "Top 10 players",
+    "yourPosition": "Your position",
+    "players": "Players: {{count}}",
+    "points": "points",
+    "personalBest": "Personal best",
+    "play": "Play",
+    "continue": "Continue playing",
+    "back": "All games",
+    "howToPlay": "How to play",
+    "signInToRank": "Sign in to save your score on the leaderboard.",
+    "emptyRanking": "No scores yet.",
+    "rankingError": "The leaderboard is temporarily unavailable.",
+    "overviewError": "Game records are unavailable.",
+    "scoreError": "Your score was saved on this device, but could not reach the leaderboard.",
+    "retry": "Try again",
+    "notRanked": "No ranked score yet",
+    "featured": "Explore in 3D",
+    "quickGames": "Quick games",
+    "rankTitle": "One ranking. Five ways to climb.",
+    "rankDescription": "Your best run in each game adds to your overall score.",
+    "catalog": {
+      "code-islands": {
+        "title": "Code Islands",
+        "description": "Program KEPPER across 10 increasingly difficult islands, from simple moves to integrated puzzles.",
+        "type": "Programming puzzle",
+        "rules": "Create a sequence of commands that passes every map in a level. Earn up to three stars per island."
+      },
+      "keppy-world": {
+        "title": "Keppy World",
+        "description": "Explore the 3D island, restore relays, clear jump trials and race timed routes.",
+        "type": "Open-world adventure",
+        "rules": "Complete every shard, relay, station, jump beacon and timed route. Press Space to jump. A fast, flawless run earns 1000 points."
+      },
+      "bug-hunt": {
+        "title": "Bug Hunt",
+        "description": "Trace 10 increasingly difficult programs and identify the faulty line in each.",
+        "type": "Debugging",
+        "rules": "Select the faulty line in each code sample. Earn 100 points per correct answer; your streak is tracked separately."
+      },
+      "logic-circuit": {
+        "title": "Logic Circuit",
+        "description": "Connect the right conditions to make the output match the target.",
+        "type": "Logic puzzle",
+        "rules": "Solve 10 increasingly difficult logic puzzles. Fewer checks mean a higher score."
+      },
+      "memory-grid": {
+        "title": "Memory Grid",
+        "description": "Watch a path light up, then reproduce its order from memory.",
+        "type": "Memory challenge",
+        "rules": "Repeat 10 increasingly long sequences. Two mistakes end the run, but a wrong tap never subtracts points."
+      }
+    },
+    "world": {
+      "section": "Island expedition",
+      "stats": "Stats",
+      "collapseStats": "Collapse stats",
+      "expandStats": "Expand stats",
+      "exitFullscreen": "Exit fullscreen",
+      "intro": "Explore two islands: cross the bridge, restore relays, jump over obstacles and finish timed routes.",
+      "shards": "Signal shards",
+      "shardShort": "Shards",
+      "relays": "Relays activated",
+      "relayShort": "Relays",
+      "stations": "Pulse stations charged",
+      "stationShort": "Stations",
+      "beaconShort": "Jumps",
+      "routeShort": "Routes",
+      "jump": "Jump",
+      "beacon": "Jump beacon {{number}}",
+      "routeTrial": "Timed route {{number}}",
+      "routes": "Map & destinations",
+      "stationNearHint": "Stay in the cyan ring for 1.4 seconds.",
+      "station": "Pulse station {{number}}",
+      "stationHint": "Enter a station's ring while it glows cyan and stay for 1.4 seconds. If it fades, try the next pulse.",
+      "hits": "Sentry hits",
+      "hitsShort": "Sentry",
+      "recordShort": "Best",
+      "musicOn": "Turn music on",
+      "musicOff": "Turn music off",
+      "hitWarning": "Sentry hit! You were pushed back and lost 10 finish-bonus points. Watch the red tracks.",
+      "relayCooldown": "Relay interference: try again in {{seconds}}s.",
+      "relayGoal": "relay puzzles",
+      "elapsed": "Time",
+      "score": "Expedition score",
+      "map": "Islands map",
+      "you": "You",
+      "shard": "Signal shard {{number}}",
+      "relay": "Relay {{number}}",
+      "moreRelays": "4 more relays",
+      "fewerRelays": "Show fewer",
+      "navigate": "Go to relay",
+      "nearby": "Relay nearby. Press Enter or choose Interact.",
+      "interact": "Interact with relay",
+      "walkHint": "WASD / arrow keys to walk · Space to jump · press Enter near a relay",
+      "touchHint": "Use the direction pad to walk · tap Jump · choose Interact near a relay",
+      "moveForward": "Move forward",
+      "moveBackward": "Move backward",
+      "moveLeft": "Move left",
+      "moveRight": "Move right",
+      "reset": "Restart",
+      "resetConfirmTitle": "Restart this expedition?",
+      "resetConfirmBody": "All progress from this run will be lost.",
+      "resetConfirmAction": "Restart now",
+      "cancel": "Cancel",
+      "replay": "Play again",
+      "complete": "Network restored!",
+      "completeDescription": "Shards, relays, stations, jump beacons and timed routes are complete. Try a cleaner, faster run to improve your score.",
+      "fallTitle": "Game over",
+      "fallDescription": "KEPPER fell off the island. Your earned score has been saved.",
+      "fallScore": "Earned score",
+      "puzzleTitle": "Restore relay {{number}}",
+      "wrong": "Wrong answer. This relay needs 12 seconds to recover.",
+      "answerLabel": "Your answer",
+      "answerNumberHint": "Enter a whole number.",
+      "answerListHint": "Enter the numbers in order, for example: 1, 2, 3.",
+      "submitAnswer": "Check answer",
+      "correct": "Relay restored",
+      "close": "Close",
+      "sceneLabel": "Interactive 3D KEPPER island",
+      "sceneFallback": "3D view is unavailable in this browser.",
+      "terminals": {
+        "t1": {
+          "intro": "Start with the values below. Perform both steps three times:",
+          "code": "a = 2, b = 5\nrepeat 3 times:\n  a = (a + b) mod 7\n  b = b + 1",
+          "question": "What is a at the end?",
+          "options": ["0", "5", "6", "7"]
+        },
+        "t2": {
+          "intro": "Update the array from left to right. Add each current element to the next one:",
+          "code": "a = [2, 4, 1, 3]\nfor i = 0, 1, 2:\n  a[i+1] = a[i+1] + a[i]",
+          "question": "What is a[3] at the end?",
+          "options": ["7", "9", "10", "12"]
+        },
+        "t3": {
+          "intro": "The array is sorted. Run this binary search:",
+          "code": "a = [1, 3, 4, 7, 9, 12, 15, 20]\nl = 0, r = 8\nwhile l < r:\n  m = floor((l + r) / 2)\n  if a[m] < 10:\n    l = m + 1\n  else:\n    r = m",
+          "question": "What is l when the algorithm ends?"
+        },
+        "t4": {
+          "intro": "Rows and columns of a 4×4 grid start at 1. You may move only right or down:",
+          "code": "start:   (1, 1)\nfinish:  (4, 4)\nblocked: (2, 2), (3, 3)\nmoves:   → or ↓",
+          "question": "How many paths to the finish remain?"
+        },
+        "t5": {
+          "intro": "Use exactly four bits. When rotating, the leftmost bit wraps to the right end:",
+          "code": "1101 XOR 0110\n→ rotate the result left by 1 bit",
+          "question": "What is the decimal value of the result?"
+        },
+        "t6": {
+          "intro": "The sequence starts with these values and follows this rule:",
+          "code": "f(0) = 1\nf(1) = 2\nf(n) = f(n−1) + f(n−2)\n       + (n mod 2)",
+          "question": "What is f(5)?"
+        },
+        "t7": {
+          "intro": "You can travel in either direction on every road. Their lengths are:",
+          "code": "A—B: 3    A—C: 6\nB—C: 1    B—D: 7\nC—D: 2    C—E: 9\nD—E: 3",
+          "question": "What is the shortest distance from A to E?"
+        },
+        "t8": {
+          "intro": "Each time, remove the first number and append a new number to the queue:",
+          "code": "queue = [2, 5, 1]\nrepeat 4 times:\n  x = remove first item\n  if x is even:\n    append x/2\n  else:\n    append x+3",
+          "question": "What is the queue after four steps?"
+        }
+      }
+    }
+  }
+}

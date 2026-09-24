@@ -1,11 +1,13 @@
 import { PropsWithChildren, useMemo } from 'react';
 import { useTranslation } from 'react-i18next';
+import { useMatch } from 'react-router';
 import { Drawer, drawerClasses } from '@mui/material';
 import Box from '@mui/material/Box';
 import Toolbar, { ToolbarOwnProps } from '@mui/material/Toolbar';
 import AppBar from 'app/layouts/main-layout/app-bar';
 import Sidenav from 'app/layouts/main-layout/sidenav';
 import { useSettingsContext } from 'app/providers/SettingsProvider';
+import { resources } from 'app/routes/resources';
 import { MenuItem, clientMenu } from 'app/routes/sitemap';
 import { getCanvasFrameStyles } from 'app/theme/styles/surfaceTreatments';
 import { sidenavVibrantStyle } from 'app/theme/styles/vibrantNav';
@@ -31,6 +33,7 @@ const MainLayout = ({
   navLabel,
 }: PropsWithChildren<MainLayoutProps>) => {
   const { t } = useTranslation();
+  const isGameDetail = Boolean(useMatch(`${resources.Games}/:gameId`));
   const {
     config: {
       drawerWidth,
@@ -95,7 +98,7 @@ const MainLayout = ({
         sx={{ display: 'flex', zIndex: 1, position: 'relative' }}
       >
         <NavProvider menuItems={menuItems} navLabel={navLabel}>
-          {navigationMenuType === 'sidenav' && (
+          {!isGameDetail && navigationMenuType === 'sidenav' && (
             <>
               <AppBar />
               {sidenavType === 'default' && <Sidenav />}
@@ -103,7 +106,7 @@ const MainLayout = ({
             </>
           )}
 
-          {navigationMenuType === 'topnav' && (
+          {!isGameDetail && navigationMenuType === 'topnav' && (
             <>
               {topnavType === 'default' && <Topnav />}
               {topnavType === 'slim' && <TopnavSlim />}
@@ -111,31 +114,33 @@ const MainLayout = ({
             </>
           )}
 
-          <Drawer
-            variant="temporary"
-            open={openNavbarDrawer}
-            onClose={toggleNavbarDrawer}
-            ModalProps={{
-              keepMounted: true,
-            }}
-            sx={[
-              {
-                display: { xs: 'block', md: 'none' },
-                [`& .${drawerClasses.paper}`]: {
-                  pt: 3,
-                  boxSizing: 'border-box',
-                  width: { xs: 'min(300px, calc(100vw - 24px))', sm: mainDrawerWidth.full },
+          {!isGameDetail && (
+            <Drawer
+              variant="temporary"
+              open={openNavbarDrawer}
+              onClose={toggleNavbarDrawer}
+              ModalProps={{
+                keepMounted: true,
+              }}
+              sx={[
+                {
+                  display: { xs: 'block', md: 'none' },
+                  [`& .${drawerClasses.paper}`]: {
+                    pt: 3,
+                    boxSizing: 'border-box',
+                    width: { xs: 'min(300px, calc(100vw - 24px))', sm: mainDrawerWidth.full },
+                  },
                 },
-              },
-              navigationMenuType === 'topnav' && {
-                display: { md: 'block', lg: 'none' },
-              },
-              navColor === 'vibrant' && sidenavVibrantStyle,
-            ]}
-          >
-            {navColor === 'vibrant' && <VibrantBackground position="side" />}
-            <SidenavDrawerContent variant="temporary" />
-          </Drawer>
+                navigationMenuType === 'topnav' && {
+                  display: { md: 'block', lg: 'none' },
+                },
+                navColor === 'vibrant' && sidenavVibrantStyle,
+              ]}
+            >
+              {navColor === 'vibrant' && <VibrantBackground position="side" />}
+              <SidenavDrawerContent variant="temporary" />
+            </Drawer>
+          )}
 
           <Box
             component="main"
@@ -147,18 +152,18 @@ const MainLayout = ({
               p: 0,
               minHeight: '100vh',
               overflow: 'visible',
-              width: { xs: '100%', md: `calc(100% - ${drawerWidth}px)` },
+              width: isGameDetail ? '100%' : { xs: '100%', md: `calc(100% - ${drawerWidth}px)` },
               display: 'flex',
               flexDirection: 'column',
               ...getCanvasFrameStyles(theme, backgroundPattern),
-              ...(sidenavType === 'default'
+              ...(!isGameDetail && sidenavType === 'default'
                 ? { ml: { md: `${mainDrawerWidth.collapsed}px`, lg: 0 } }
                 : {}),
-              ...(sidenavType === 'slim' ? { ml: { xs: 0 } } : {}),
-              ...(navigationMenuType === 'topnav' ? { ml: { xs: 0 } } : {}),
+              ...(!isGameDetail && sidenavType === 'slim' ? { ml: { xs: 0 } } : {}),
+              ...(!isGameDetail && navigationMenuType === 'topnav' ? { ml: { xs: 0 } } : {}),
             })}
           >
-            <Toolbar variant={toolbarVarint} />
+            {!isGameDetail && <Toolbar variant={toolbarVarint} />}
 
             <Box
               sx={(theme) => ({
@@ -166,15 +171,17 @@ const MainLayout = ({
                 display: 'flex',
                 flex: '1 0 auto',
                 flexDirection: 'column',
-                minHeight: theme.mixins.contentHeight(
-                  navigationMenuType === 'topnav'
-                    ? theme.mixins.topbar[topnavType]
-                    : theme.mixins.topbar.default,
-                ),
+                minHeight: isGameDetail
+                  ? '100vh'
+                  : theme.mixins.contentHeight(
+                      navigationMenuType === 'topnav'
+                        ? theme.mixins.topbar[topnavType]
+                        : theme.mixins.topbar.default,
+                    ),
               })}
             >
               <Box sx={{ flex: '1 0 auto', minWidth: 0 }}>{children}</Box>
-              <Footer />
+              {!isGameDetail && <Footer />}
             </Box>
           </Box>
         </NavProvider>

@@ -15,8 +15,9 @@ export const formatProgram = (commands: readonly Command[], depth = 0): string =
       if (command.kind === 'repeat') {
         return `${pad}repeat ${command.count} {\n${formatProgram(command.body, depth + 1)}\n${pad}}`;
       }
-      if (command.kind === 'ifBlocked') {
-        return `${pad}if blocked {\n${formatProgram(command.yes, depth + 1)}\n${pad}} else {\n${formatProgram(command.no, depth + 1)}\n${pad}}`;
+      if (command.kind === 'ifBlocked' || command.kind === 'ifCrystalAhead') {
+        const condition = command.kind === 'ifBlocked' ? 'blocked' : 'crystal ahead';
+        return `${pad}if ${condition} {\n${formatProgram(command.yes, depth + 1)}\n${pad}} else {\n${formatProgram(command.no, depth + 1)}\n${pad}}`;
       }
       return `${pad}${command.kind}`;
     })
@@ -43,7 +44,12 @@ export const parseProgram = (source: string): Command[] => {
       if (line.text === '}' || line.text === '} else {') break;
       cursor += 1;
       const id = `code-${++sequence}`;
-      if (line.text === 'move' || line.text === 'left' || line.text === 'right') {
+      if (
+        line.text === 'move' ||
+        line.text === 'left' ||
+        line.text === 'right' ||
+        line.text === 'jump'
+      ) {
         commands.push({ id, kind: line.text });
       } else if (/^repeat [1-8] \{$/.test(line.text)) {
         const count = Number(line.text.match(/[1-8]/)?.[0]);
@@ -52,7 +58,7 @@ export const parseProgram = (source: string): Command[] => {
           throw new GameSyntaxError(lines[cursor]?.number ?? line.number);
         cursor += 1;
         commands.push({ id, kind: 'repeat', count, body });
-      } else if (line.text === 'if blocked {') {
+      } else if (line.text === 'if blocked {' || line.text === 'if crystal ahead {') {
         const yes = readBody(depth + 1);
         const separator = lines[cursor];
         if (!separator || (separator.text !== '} else {' && separator.text !== '}')) {
@@ -66,7 +72,12 @@ export const parseProgram = (source: string): Command[] => {
             throw new GameSyntaxError(lines[cursor]?.number ?? line.number);
           cursor += 1;
         }
-        commands.push({ id, kind: 'ifBlocked', yes, no });
+        commands.push({
+          id,
+          kind: line.text === 'if blocked {' ? 'ifBlocked' : 'ifCrystalAhead',
+          yes,
+          no,
+        });
       } else {
         throw new GameSyntaxError(line.number);
       }

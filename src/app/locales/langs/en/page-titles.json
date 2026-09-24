@@ -102,6 +102,7 @@
     "login": "Login",
     "notFound": "Page not found",
     "forbidden": "Access denied",
-    "kepperGame": "KEPPER: Code Islands"
+    "kepperGame": "KEPPER: Code Islands",
+    "games": "Games"
   }
 }

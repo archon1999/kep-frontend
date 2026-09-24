@@ -1,5 +1,5 @@
 import { type ReactNode, Suspense, lazy } from 'react';
-import { Navigate, Outlet, RouteObject, createBrowserRouter, useLocation } from 'react-router';
+import { Navigate, Outlet, RouteObject, createBrowserRouter, generatePath, useLocation } from 'react-router';
 import App from 'app/App.tsx';
 import MainLayout from 'app/layouts/main-layout';
 import { AccountSettingsPage, TeamJoinPage } from 'modules/account-settings/ui/pages';
@@ -92,9 +92,8 @@ import { adminMenu } from './sitemap';
 
 const IS_PROD = import.meta.env.PROD;
 const GiveawayPage = lazy(() => import('modules/giveaways/ui/pages/GiveawayPage/GiveawayPage'));
-const KepperGamePage = lazy(
-  () => import('modules/kepper-game/ui/pages/KepperGamePage/KepperGamePage'),
-);
+const GamesPage = lazy(() => import('modules/games/ui/pages/GamesPage/GamesPage'));
+const GamePlayPage = lazy(() => import('modules/games/ui/pages/GamePlayPage/GamePlayPage'));
 
 const AuthLayout = lazy(() => import('app/layouts/auth-layout'));
 const DefaultAuthLayout = lazy(() => import('app/layouts/auth-layout/DefaultAuthLayout'));
@@ -337,9 +336,18 @@ export const routes: RouteObject[] = [
             handle: { titleKey: 'pageTitles.studyPlans' },
           },
           {
+            path: resources.Games,
+            element: <GamesPage />,
+            handle: { titleKey: 'pageTitles.games' },
+          },
+          {
             path: resources.KepperGame,
-            element: <KepperGamePage />,
-            handle: { titleKey: 'pageTitles.kepperGame' },
+            element: <Navigate to={generatePath(resources.Game, { gameId: 'code-islands' })} replace />,
+          },
+          {
+            path: resources.Game,
+            element: <GamePlayPage />,
+            handle: { titleKey: 'pageTitles.games' },
           },
           {
             path: resources.StudyPlan,

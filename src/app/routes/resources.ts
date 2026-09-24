@@ -39,6 +39,8 @@ export const resources = {
 
   Problems: '/problems',
   StudyPlans: '/problems/study-plans',
+  Games: '/games',
+  Game: '/games/:gameId',
   KepperGame: '/games/kepper',
   Problem: '/problems/:id',
   ProblemsRating: '/problems/rating',

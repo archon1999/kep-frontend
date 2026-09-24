@@ -1,0 +1,177 @@
+{
+  "games": {
+    "title": "O‘yinlar",
+    "overallScore": "Umumiy ball",
+    "scoreSplit": "O‘yinlar bo‘yicha ball",
+    "played": "O‘ynalgan o‘yinlar",
+    "subtitle": "O‘ylash, kashf qilish va bellashishning besh yo‘li. O‘yinni tanlang va rekordingizni yangilang.",
+    "allGames": "O‘yinlar to‘plami",
+    "overall": "Umumiy reyting",
+    "leaderboard": "Reyting jadvali",
+    "topTen": "Eng yaxshi 10 o‘yinchi",
+    "yourPosition": "Sizning o‘rningiz",
+    "players": "O‘yinchilar: {{count}}",
+    "points": "ball",
+    "personalBest": "Shaxsiy rekord",
+    "play": "O‘ynash",
+    "continue": "Davom ettirish",
+    "back": "Barcha o‘yinlar",
+    "howToPlay": "Qanday o‘ynaladi",
+    "signInToRank": "Natijangizni reytingda saqlash uchun tizimga kiring.",
+    "emptyRanking": "Hozircha natija yo‘q.",
+    "rankingError": "Reyting jadvali vaqtincha ishlamayapti.",
+    "overviewError": "O‘yin natijalari hozircha mavjud emas.",
+    "scoreError": "Natijangiz qurilmada saqlandi, lekin reytingga yuborilmadi.",
+    "retry": "Qayta urinish",
+    "notRanked": "Hali reyting natijasi yo‘q",
+    "featured": "3D dunyoni kashf eting",
+    "quickGames": "Tezkor o‘yinlar",
+    "rankTitle": "Bitta reyting. Yuqoriga besh yo‘l.",
+    "rankDescription": "Har bir o‘yindagi eng yaxshi natijangiz umumiy ballga qo‘shiladi.",
+    "catalog": {
+      "code-islands": {
+        "title": "Kod orollari",
+        "description": "KEPPERni 10 ta tobora qiyinlashadigan oroldan dastur yordamida o‘tkazing.",
+        "type": "Dasturlash boshqotirmasi",
+        "rules": "Har bir bosqichdagi barcha xaritalardan o‘tadigan buyruqlar ketma-ketligini tuzing. Har bir orolda uch yulduzgacha to‘plang."
+      },
+      "keppy-world": {
+        "title": "Keppy dunyosi",
+        "description": "3D orolda uzatkichlarni tiklang, sakrash sinovlari va vaqtli yo‘nalishlardan o‘ting.",
+        "type": "Erkin sarguzasht",
+        "rules": "Bo‘laklar, uzatkichlar, bekatlar, sakrash nishonlari va vaqtli yo‘nalishlarning barchasini bajaring. Space bilan sakrang. 1000 ball uchun xatosiz va tez yakunlang."
+      },
+      "bug-hunt": {
+        "title": "Xatoni top",
+        "description": "Murakkablashib boradigan 10 ta dasturda xato satrni toping.",
+        "type": "Xatolarni tuzatish",
+        "rules": "Har bir kod parchasi ichidagi xato satrni tanlang. To‘g‘ri javob 100 ball beradi; seriya alohida qayd etiladi."
+      },
+      "logic-circuit": {
+        "title": "Mantiqiy zanjir",
+        "description": "To‘g‘ri shartlarni ulang va chiqishni berilgan natijaga moslang.",
+        "type": "Mantiqiy boshqotirma",
+        "rules": "Qiyinlashib boradigan 10 ta mantiqiy jumboqni yeching. Kamroq tekshiruv yuqoriroq ball beradi."
+      },
+      "memory-grid": {
+        "title": "Xotira maydoni",
+        "description": "Yorishgan yo‘lni kuzating va tartibini xotiradan qaytaring.",
+        "type": "Xotira sinovi",
+        "rules": "Uzayib boradigan 10 ta ketma-ketlikni takrorlang. Ikki xato o‘yinni tugatadi, ammo noto‘g‘ri bosish balldan ayirmaydi."
+      }
+    },
+    "world": {
+      "section": "Orol ekspeditsiyasi",
+      "stats": "Statistika",
+      "collapseStats": "Statistikani yig‘ish",
+      "expandStats": "Statistikani ochish",
+      "exitFullscreen": "To‘liq ekrandan chiqish",
+      "intro": "Ikki orolni kashf eting: ko‘prikdan o‘ting, uzatkichlarni tiklang, to‘siqlardan sakrang va vaqtli yo‘nalishlarni yakunlang.",
+      "shards": "Signal bo‘laklari",
+      "shardShort": "Bo‘lak",
+      "relays": "Yoqilgan uzatkichlar",
+      "relayShort": "Uzatkich",
+      "stations": "Quvvatlangan impuls bekatlari",
+      "stationShort": "Bekat",
+      "beaconShort": "Sakrash",
+      "routeShort": "Yo‘nalish",
+      "jump": "Sakrash",
+      "beacon": "Sakrash nishoni {{number}}",
+      "routeTrial": "Vaqtli yo‘nalish {{number}}",
+      "routes": "Xarita va manzillar",
+      "stationNearHint": "Moviy halqada 1,4 soniya turing.",
+      "station": "{{number}}-impuls bekati",
+      "stationHint": "Bekat halqasi moviy yonganida ichiga kiring va 1,4 soniya turing. Chiroq o‘chsa, keyingi impulsni kuting.",
+      "hits": "Patrulga urilishlar",
+      "hitsShort": "Patrul",
+      "recordShort": "Rekord",
+      "musicOn": "Musiqani yoqish",
+      "musicOff": "Musiqani o‘chirish",
+      "hitWarning": "Patrul sizni orqaga surdi va yakuniy bonusdan 10 ball oldi. Qizil yo‘laklarga e’tibor bering.",
+      "relayCooldown": "Uzatkichda xalaqit bor: {{seconds}} soniyadan keyin qayta urinib ko‘ring.",
+      "relayGoal": "ta uzatkich",
+      "elapsed": "Vaqt",
+      "score": "Ekspeditsiya balli",
+      "map": "Orollar xaritasi",
+      "you": "Siz",
+      "shard": "Signal bo‘lagi {{number}}",
+      "relay": "{{number}}-uzatkich",
+      "moreRelays": "Yana 4 uzatkich",
+      "fewerRelays": "Yig‘ish",
+      "navigate": "Uzatkichga borish",
+      "nearby": "Uzatkich yaqinda. Enter ni bosing yoki Muloqotni tanlang.",
+      "interact": "Uzatkich bilan muloqot",
+      "walkHint": "WASD / strelkalar bilan yuring · Space bilan sakrang · uzatkich yonida Enter ni bosing",
+      "touchHint": "Yo‘nalish tugmalari bilan yuring · Sakrash tugmasidan foydalaning · uzatkich yonida Muloqotni bosing",
+      "moveForward": "Oldinga yurish",
+      "moveBackward": "Orqaga yurish",
+      "moveLeft": "Chapga yurish",
+      "moveRight": "O‘ngga yurish",
+      "reset": "Qayta boshlash",
+      "resetConfirmTitle": "Ekspeditsiyani qayta boshlaysizmi?",
+      "resetConfirmBody": "Hozirgi yurishdagi barcha natija o‘chadi.",
+      "resetConfirmAction": "Ha, qayta boshlash",
+      "cancel": "Bekor qilish",
+      "replay": "Yana o‘ynash",
+      "complete": "Tarmoq tiklandi!",
+      "completeDescription": "Bo‘laklar, uzatkichlar, bekatlar, sakrash nishonlari va vaqtli yo‘nalishlar yakunlandi. Ballni oshirish uchun aniqroq va tezroq o‘ting.",
+      "fallTitle": "O‘yin tugadi",
+      "fallDescription": "KEPPER oroldan tushib ketdi. Yig‘ilgan ball saqlandi.",
+      "fallScore": "Yig‘ilgan ball",
+      "puzzleTitle": "{{number}}-uzatkichni tiklash",
+      "wrong": "Javob xato. Uzatkich 12 soniyadan keyin tiklanadi.",
+      "answerLabel": "Javobingiz",
+      "answerNumberHint": "Butun son kiriting.",
+      "answerListHint": "Sonlarni tartib bilan kiriting, masalan: 1, 2, 3.",
+      "submitAnswer": "Tekshirish",
+      "correct": "Uzatkich tiklandi",
+      "close": "Yopish",
+      "sceneLabel": "KEPPERning interaktiv 3D oroli",
+      "sceneFallback": "Bu brauzerda 3D ko‘rinish mavjud emas.",
+      "terminals": {
+        "t1": {
+          "intro": "Boshlang‘ich qiymatlar berilgan. Quyidagi amallarni uch marta bajaring:",
+          "code": "a = 2, b = 5\n3 marta takrorlang:\n  a = (a + b) mod 7\n  b = b + 1",
+          "question": "Oxirida a nechaga teng?",
+          "options": ["0", "5", "6", "7"]
+        },
+        "t2": {
+          "intro": "Massivni chapdan o‘ngga yangilang. Har safar joriy elementni keyingisiga qo‘shing:",
+          "code": "a = [2, 4, 1, 3]\ni = 0, 1, 2 uchun:\n  a[i+1] = a[i+1] + a[i]",
+          "question": "Oxirida a[3] nechaga teng?",
+          "options": ["7", "9", "10", "12"]
+        },
+        "t3": {
+          "intro": "Massiv tartiblangan. Quyidagi ikkilik qidiruvni bajaring:",
+          "code": "a = [1, 3, 4, 7, 9, 12, 15, 20]\nl = 0, r = 8\nl < r bo‘lguncha:\n  m = floor((l + r) / 2)\n  agar a[m] < 10:\n    l = m + 1\n  aks holda:\n    r = m",
+          "question": "Algoritm tugaganda l nechaga teng?"
+        },
+        "t4": {
+          "intro": "4×4 maydonda qator va ustunlar 1 dan boshlanadi. Faqat o‘ngga yoki pastga yurish mumkin:",
+          "code": "boshlanish: (1, 1)\nmanzil:      (4, 4)\nyopiq:       (2, 2), (3, 3)\nyo‘nalish:   → yoki ↓",
+          "question": "Manzilgacha nechta yo‘l qoldi?"
+        },
+        "t5": {
+          "intro": "Aynan to‘rt bit bilan ishlang. Aylantirishda chapdagi bit o‘ng chetga o‘tadi:",
+          "code": "1101 XOR 0110\n→ natijani 1 bit chapga aylantiring",
+          "question": "Hosil bo‘lgan sonning o‘nlik qiymati nechaga teng?"
+        },
+        "t6": {
+          "intro": "Ketma-ketlikning dastlabki qiymatlari va formulasi:",
+          "code": "f(0) = 1\nf(1) = 2\nf(n) = f(n−1) + f(n−2)\n       + (n mod 2)",
+          "question": "f(5) nechaga teng?"
+        },
+        "t7": {
+          "intro": "Barcha yo‘llarda ikki tomonga yurish mumkin. Ularning uzunliklari:",
+          "code": "A—B: 3    A—C: 6\nB—C: 1    B—D: 7\nC—D: 2    C—E: 9\nD—E: 3",
+          "question": "A dan E gacha eng qisqa masofa qancha?"
+        },
+        "t8": {
+          "intro": "Har safar navbat boshidagi sonni olib tashlang va yangi sonni oxiriga qo‘shing:",
+          "code": "navbat = [2, 5, 1]\n4 marta takrorlang:\n  x = navbat boshidan oling\n  agar x juft:\n    oxiriga x/2 qo‘shing\n  aks holda:\n    oxiriga x+3 qo‘shing",
+          "question": "To‘rt amaldan keyin navbat qanday bo‘ladi?"
+        }
+      }
+    }
+  }
+}

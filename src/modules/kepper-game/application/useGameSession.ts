@@ -25,7 +25,7 @@ const firstUnfinished = (progress: GameProgress) =>
 const usedKinds = (commands: readonly Command[]): Command['kind'][] =>
   commands.flatMap((command) => {
     if (command.kind === 'repeat') return [command.kind, ...usedKinds(command.body)];
-    if (command.kind === 'ifBlocked') {
+    if (command.kind === 'ifBlocked' || command.kind === 'ifCrystalAhead') {
       return [command.kind, ...usedKinds(command.yes), ...usedKinds(command.no)];
     }
     return [command.kind];
@@ -47,11 +47,12 @@ export const useGameSession = (username?: string) => {
       return parseProgram(formatProgram(getLevel(levelId).starter));
     }
   });
-  const [mode, setMode] = useState<'blocks' | 'code'>('blocks');
+  const [mode, setMode] = useState<'blocks' | 'code'>('code');
   const [scenarioIndex, setScenarioIndex] = useState(0);
   const [frameIndex, setFrameIndex] = useState(0);
   const [trace, setTrace] = useState<TraceFrame[] | null>(null);
   const [playing, setPlaying] = useState(false);
+  const [playbackSpeed, setPlaybackSpeed] = useState(1);
   const [feedback, setFeedback] = useState<Feedback | null>(null);
   const timer = useRef<number | null>(null);
   const playerRef = useRef(username);
@@ -71,13 +72,14 @@ export const useGameSession = (username?: string) => {
     stop();
     setProgress(saved);
     setLevelId(nextLevelId);
+    setScenarioIndex(0);
     setSource(nextSource);
     try {
       setProgram(parseProgram(nextSource));
     } catch {
       setProgram(parseProgram(formatProgram(getLevel(nextLevelId).starter)));
-      setMode('code');
     }
+    setMode('code');
     setTrace(null);
     setFrameIndex(0);
     setFeedback(null);
@@ -150,11 +152,10 @@ export const useGameSession = (username?: string) => {
     setSource(nextSource);
     try {
       setProgram(parseProgram(nextSource));
-      setMode('blocks');
     } catch {
       setProgram(parseProgram(formatProgram(nextLevel.starter)));
-      setMode('code');
     }
+    setMode('code');
     setScenarioIndex(0);
     setTrace(null);
     setFrameIndex(0);
@@ -172,6 +173,11 @@ export const useGameSession = (username?: string) => {
   const resetProgram = () => {
     stop();
     changeProgram(parseProgram(formatProgram(level.starter)));
+  };
+
+  const seekFrame = (index: number) => {
+    if (playing || !trace) return;
+    setFrameIndex(Math.max(0, Math.min(trace.length - 1, index)));
   };
 
   const run = () => {
@@ -227,7 +233,7 @@ export const useGameSession = (username?: string) => {
           scenario: failed + 1,
         });
       }
-    }, 370);
+    }, 370 / playbackSpeed);
   };
 
   const map = useMemo(() => parseMap(level.scenarios[scenarioIndex].map), [level, scenarioIndex]);
@@ -236,6 +242,8 @@ export const useGameSession = (username?: string) => {
     z: map.start.z,
     direction: 0 as const,
     collected: [],
+    gateOpen: false,
+    collapsed: [],
     action: 'start' as const,
   };
   const unlocked =
@@ -255,6 +263,7 @@ export const useGameSession = (username?: string) => {
     trace,
     frameIndex,
     playing,
+    playbackSpeed,
     feedback,
     changeProgram,
     changeSource,
@@ -264,5 +273,7 @@ export const useGameSession = (username?: string) => {
     resetProgram,
     run,
     stop,
+    setPlaybackSpeed,
+    seekFrame,
   };
 };
