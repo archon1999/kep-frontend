@@ -1,8 +1,9 @@
 import { useTranslation } from 'react-i18next';
-import { Avatar, Box, Button, Paper, Stack, Typography } from '@mui/material';
+import { Avatar, Box, Button, ButtonBase, Paper, Stack, Typography } from '@mui/material';
 import type { GamesOverview } from 'modules/games/application';
 import type { GamesLeaderboard, LeaderboardPlayer } from 'modules/games/domain';
 import { gamesCatalog } from 'modules/games/ui/shared';
+import UserPopover from 'modules/users/ui/shared/components/UserPopover';
 
 type Props = {
   leaderboard?: GamesLeaderboard;
@@ -44,21 +45,39 @@ const PlayerRow = ({ player }: { player: LeaderboardPlayer }) => (
     >
       {String(player.rank).padStart(2, '0')}
     </Typography>
-    <Avatar
-      src={player.avatar ?? undefined}
-      alt={player.username}
-      sx={{ width: 27, height: 27, fontSize: 12 }}
-    >
-      {player.username.slice(0, 1).toUpperCase()}
-    </Avatar>
-    <Typography
-      variant="body2"
-      fontWeight={player.isCurrentUser ? 700 : 500}
-      noWrap
+    <UserPopover
+      username={player.username}
+      avatar={player.avatar ?? undefined}
       sx={{ flex: 1, minWidth: 0 }}
     >
-      {player.username}
-    </Typography>
+      <ButtonBase
+        sx={{
+          width: '100%',
+          minWidth: 0,
+          gap: 1.25,
+          textAlign: 'left',
+          borderRadius: 1,
+          '&.Mui-focusVisible': { outline: '2px solid', outlineColor: 'primary.main' },
+        }}
+      >
+        <Avatar
+          src={player.avatar ?? undefined}
+          alt={player.username}
+          sx={{ width: 27, height: 27, fontSize: 12 }}
+        >
+          {player.username.slice(0, 1).toUpperCase()}
+        </Avatar>
+        <Typography
+          component="span"
+          variant="body2"
+          fontWeight={player.isCurrentUser ? 700 : 500}
+          noWrap
+          sx={{ flex: 1, minWidth: 0 }}
+        >
+          {player.username}
+        </Typography>
+      </ButtonBase>
+    </UserPopover>
     <Typography variant="body2" fontWeight={700} sx={{ fontVariantNumeric: 'tabular-nums' }}>
       {player.score.toLocaleString()}
     </Typography>
