@@ -56,6 +56,14 @@ jobs:
       - name: Build
         run: npm run build
 
+      - name: Verify production Nginx routes and static assets
+        run: |
+          docker build --tag kep-frontend-ci .
+          docker run --detach --name kep-frontend-route-check kep-frontend-ci
+          trap 'docker rm --force kep-frontend-route-check' EXIT
+          docker exec kep-frontend-route-check nginx -t
+          docker exec -i kep-frontend-route-check sh -s < docker/test-routes.sh
+
       - name: Upload production build
         if: github.event_name == 'push' && github.ref == 'refs/heads/production'
         uses: actions/upload-artifact@v7
@@ -197,6 +205,8 @@ jobs:
 
             curl --fail --silent --show-error --max-time 10 \
               http://127.0.0.1:18080/healthz >/dev/null
+
+            docker exec -i "${container_id}" sh -s < "${app_root}/docker/test-routes.sh"
 
             rollback_needed=0
             trap - ERR
