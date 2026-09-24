@@ -267,6 +267,21 @@ export const useWorldSession = (player: string, onScore: (score: number) => void
     [openTerminal, save.completed, save.fallen],
   );
 
+  const earnedScore = worldScore(
+    save.collected.length,
+    save.solved.length,
+    save.charged.length,
+    save.elapsed,
+    save.mistakes,
+    save.hits,
+    save.beacons.length,
+    save.routes.length,
+  );
+
+  useEffect(() => {
+    if (savePlayer === player && earnedScore > 0) onScore(earnedScore);
+  }, [earnedScore, onScore, player, savePlayer]);
+
   useEffect(() => {
     if (completedRef.current || save.fallen) return;
     if (

@@ -27,18 +27,6 @@ export const useGameScore = (id: GameId, username?: string) => {
     setError(false);
   }, [id, player]);
 
-  useEffect(() => {
-    const serverScore = leaderboard?.currentUser?.score;
-    if (!username || leaderboard?.currentUser?.username !== username || serverScore === undefined)
-      return;
-    setBest((current) => Math.max(current, serverScore));
-    saveScore(
-      localStorage,
-      bestKey(id, player),
-      Math.max(storedScore(localStorage, bestKey(id, player)), serverScore),
-    );
-  }, [id, leaderboard, player, username]);
-
   const send = useCallback(
     async (score: number) => {
       if (!username) return;
@@ -74,6 +62,17 @@ export const useGameScore = (id: GameId, username?: string) => {
     },
     [id, mutate, owner, player, username],
   );
+
+  useEffect(() => {
+    if (!username || !leaderboard) return;
+    if (leaderboard.currentUser && leaderboard.currentUser.username !== username) return;
+    const serverScore = leaderboard.currentUser?.score ?? 0;
+    const localScore = storedScore(localStorage, bestKey(id, player));
+    setBest((current) => Math.max(current, serverScore));
+    saveScore(localStorage, bestKey(id, player), Math.max(localScore, serverScore));
+    // Recover a personal best saved locally before an interrupted/failed upload.
+    if (localScore > serverScore) void send(localScore);
+  }, [id, leaderboard, player, send, username]);
 
   useEffect(() => {
     if (!username) return;

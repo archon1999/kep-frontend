@@ -105,6 +105,7 @@ const MemoryGridGame = ({ best, onScore, audio }: MiniGameProps) => {
     }
     const nextCleared = round + 1;
     setCleared(nextCleared);
+    onScore(memoryGridScore(nextCleared, replays));
     setLastMistake(false);
     if (nextCleared === MEMORY_ROUND_LENGTHS.length) {
       audio.stop();

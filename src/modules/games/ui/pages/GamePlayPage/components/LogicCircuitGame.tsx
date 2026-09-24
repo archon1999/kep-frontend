@@ -123,6 +123,7 @@ const LogicCircuitGame = ({ best, onScore, audio }: MiniGameProps) => {
     if (circuitMatches(puzzle, config)) {
       audio.playCue('correct');
       setScore((value) => value + circuitRoundScore(nextAttempts));
+      onScore(score + circuitRoundScore(nextAttempts));
       setFeedback('success');
     } else {
       audio.playCue('wrong');

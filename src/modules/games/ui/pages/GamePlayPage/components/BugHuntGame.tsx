@@ -119,6 +119,7 @@ const BugHuntGame = ({ best, onScore, audio }: MiniGameProps) => {
     if (correctAnswer) {
       audio.playCue('correct');
       setCorrect((value) => value + 1);
+      onScore(bugHuntScore(correct + 1));
       setStreak((value) => {
         setLongestStreak((longest) => Math.max(longest, value + 1));
         return value + 1;
