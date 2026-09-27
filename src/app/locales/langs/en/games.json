@@ -1,5 +1,6 @@
 {
   "games": {
+    "scoreAchievedAt": "Score achieved: {{date}}",
     "title": "Games",
     "overallScore": "Overall score",
     "scoreSplit": "Score by game",

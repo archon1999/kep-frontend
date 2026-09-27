@@ -1,5 +1,6 @@
 {
   "games": {
+    "scoreAchievedAt": "Результат достигнут: {{date}}",
     "title": "Игры",
     "overallScore": "Общий счёт",
     "scoreSplit": "Очки по играм",

@@ -2,6 +2,7 @@ import { useTranslation } from 'react-i18next';
 import { Avatar, Box, Button, ButtonBase, Paper, Skeleton, Stack, Typography } from '@mui/material';
 import { useGamesLeaderboard } from 'modules/games/application';
 import type { LeaderboardId, LeaderboardPlayer } from 'modules/games/domain';
+import LeaderboardScore from 'modules/games/ui/shared/components/LeaderboardScore';
 import UserPopover from 'modules/users/ui/shared/components/UserPopover';
 import IconifyIcon from 'shared/components/base/IconifyIcon';
 
@@ -66,9 +67,7 @@ const PlayerRow = ({ player }: { player: LeaderboardPlayer }) => (
         </Typography>
       </ButtonBase>
     </UserPopover>
-    <Typography variant="body2" fontWeight={700} sx={{ fontVariantNumeric: 'tabular-nums' }}>
-      {player.score.toLocaleString()}
-    </Typography>
+    <LeaderboardScore player={player} />
   </Stack>
 );
 

@@ -8,6 +8,7 @@ export type ApiLeaderboardPlayer = {
   score: number;
   isCurrentUser: boolean;
   isTopThree: boolean;
+  achievedAt?: string | null;
 };
 
 export type ApiGamesLeaderboard = {
@@ -32,6 +33,7 @@ const mapPlayer = (player: ApiLeaderboardPlayer): LeaderboardPlayer => ({
   score: player.score,
   isCurrentUser: player.isCurrentUser,
   isTopThree: player.isTopThree,
+  achievedAt: player.achievedAt ?? null,
 });
 
 export const mapLeaderboard = (payload: ApiGamesLeaderboard): GamesLeaderboard => ({

@@ -17,6 +17,7 @@ export type LeaderboardPlayer = {
   score: number;
   isCurrentUser: boolean;
   isTopThree: boolean;
+  achievedAt?: string | null;
 };
 
 export type GamesLeaderboard = {

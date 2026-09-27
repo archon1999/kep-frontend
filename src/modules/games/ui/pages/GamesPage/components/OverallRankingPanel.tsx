@@ -3,6 +3,7 @@ import { Avatar, Box, Button, ButtonBase, Paper, Stack, Typography } from '@mui/
 import type { GamesOverview } from 'modules/games/application';
 import type { GamesLeaderboard, LeaderboardPlayer } from 'modules/games/domain';
 import { gamesCatalog } from 'modules/games/ui/shared';
+import LeaderboardScore from 'modules/games/ui/shared/components/LeaderboardScore';
 import UserPopover from 'modules/users/ui/shared/components/UserPopover';
 
 type Props = {
@@ -78,9 +79,7 @@ const PlayerRow = ({ player }: { player: LeaderboardPlayer }) => (
         </Typography>
       </ButtonBase>
     </UserPopover>
-    <Typography variant="body2" fontWeight={700} sx={{ fontVariantNumeric: 'tabular-nums' }}>
-      {player.score.toLocaleString()}
-    </Typography>
+    <LeaderboardScore player={player} />
   </Stack>
 );
 

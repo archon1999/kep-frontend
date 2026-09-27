@@ -1,5 +1,6 @@
 {
   "games": {
+    "scoreAchievedAt": "Natijaga erishilgan vaqt: {{date}}",
     "title": "O‘yinlar",
     "overallScore": "Umumiy ball",
     "scoreSplit": "O‘yinlar bo‘yicha ball",
