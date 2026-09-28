@@ -94,6 +94,7 @@
         "empty": "Hozircha yutuqlar mavjud emas."
       },
       "prizes": {
+        "otherCompetition": "Boshqa musobaqa",
         "title": "Musobaqa sovrinlari",
         "empty": "Hozircha sovrinlar yoʻq."
       },

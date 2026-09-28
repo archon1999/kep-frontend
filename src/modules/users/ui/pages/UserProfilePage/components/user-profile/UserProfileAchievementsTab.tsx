@@ -58,9 +58,13 @@ const filterAchievements = (achievements: UserAchievement[], filter: FilterKey) 
 const formatNumber = (value: number | null | undefined) => {
   if (value === null || value === undefined) return '';
 
-  return formatLocalizedNumber(value, {
-    maximumFractionDigits: Number.isInteger(value) ? 0 : 2,
-  }, 'en-US');
+  return formatLocalizedNumber(
+    value,
+    {
+      maximumFractionDigits: Number.isInteger(value) ? 0 : 2,
+    },
+    'en-US',
+  );
 };
 
 const formatMoney = (value: number | null, currency: UserCompetitionPrizeCurrency) => {
@@ -193,6 +197,7 @@ const getPrizePresentation = (prize: UserCompetitionPrize): PrizePresentation =>
 };
 
 const getPrizeRoute = (prize: UserCompetitionPrize) => {
+  if (prize.competitionType === 'OTHER') return null;
   if (prize.competitionType === 'GIVEAWAY') {
     return getResourceById(resources.Giveaway, prize.competitionId);
   }
@@ -313,6 +318,7 @@ const PrizeVisual = ({ presentation }: { presentation: PrizePresentation }) => (
 );
 
 const PrizeSpotlightCard = ({ prize, index }: { prize: UserCompetitionPrize; index: number }) => {
+  const { t } = useTranslation();
   const presentation = getPrizePresentation(prize);
   const prizeRoute = getPrizeRoute(prize);
 
@@ -338,8 +344,9 @@ const PrizeSpotlightCard = ({ prize, index }: { prize: UserCompetitionPrize; ind
       })}
     >
       <CardActionArea
-        component={RouterLink}
-        to={prizeRoute}
+        component={prizeRoute ? RouterLink : 'div'}
+        to={prizeRoute ?? undefined}
+        disabled={!prizeRoute}
         sx={{ height: '100%', alignItems: 'stretch' }}
       >
         <CardContent sx={{ width: 1, height: '100%', p: 2, '&:last-child': { pb: 2 } }}>
@@ -385,7 +392,14 @@ const PrizeSpotlightCard = ({ prize, index }: { prize: UserCompetitionPrize; ind
               {prize.competitionTitle}
             </Typography>
 
-            <Chip size="small" label={prize.competitionType} />
+            <Chip
+              size="small"
+              label={
+                prize.competitionType === 'OTHER'
+                  ? t('users.profile.prizes.otherCompetition')
+                  : prize.competitionType
+              }
+            />
           </Stack>
         </CardContent>
       </CardActionArea>

@@ -38,7 +38,13 @@ export type UserCompetitionPrizeType =
   | 'KEPCOIN'
   | 'MERCH'
   | 'CUSTOM';
-export type UserCompetitionPrizeCompetitionType = 'CONTEST' | 'ARENA' | 'TOURNAMENT' | 'CUP' | 'GIVEAWAY';
+export type UserCompetitionPrizeCompetitionType =
+  | 'CONTEST'
+  | 'ARENA'
+  | 'TOURNAMENT'
+  | 'CUP'
+  | 'GIVEAWAY'
+  | 'OTHER';
 
 export type UserCompetitionPrize = {
   prizeTitle: string;

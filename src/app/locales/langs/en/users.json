@@ -94,6 +94,7 @@
         "empty": "No achievements yet."
       },
       "prizes": {
+        "otherCompetition": "Other competition",
         "title": "Competition prizes",
         "empty": "No prizes yet."
       },
