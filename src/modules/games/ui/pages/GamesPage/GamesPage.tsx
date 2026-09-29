@@ -1,6 +1,9 @@
 import { useTranslation } from 'react-i18next';
-import { Box, Stack, Typography } from '@mui/material';
+import { Link as RouterLink } from 'react-router';
+import { Box, Button, Stack, Typography } from '@mui/material';
 import { useAuth } from 'app/providers/AuthProvider';
+import { resources } from 'app/routes/resources';
+import IconifyIcon from 'shared/components/base/IconifyIcon';
 import { useGamesLeaderboard, useGamesOverview } from 'modules/games/application';
 import { gamesCatalog } from 'modules/games/ui/shared';
 import { responsivePagePaddingSx } from 'shared/lib/styles';
@@ -38,6 +41,11 @@ const GamesPage = () => {
         >
           {t('games.title')}
         </Typography>
+        <Stack direction={{ xs: 'column', sm: 'row' }} gap={2} alignItems={{ sm: 'center' }} sx={{ p: 2, borderRadius: 2, bgcolor: 'background.elevation1' }}>
+          <Box component="img" src="/mascot/world/09-kepper.webp" alt="" sx={{ width: 56, height: 56, display: { xs: 'none', sm: 'block' } }} />
+          <Box sx={{ flex: 1 }}><Typography fontWeight={600}>Keppy World</Typography><Typography variant="body2" color="text.secondary">{t('keppyWorld.intro')}</Typography></Box>
+          <Button component={RouterLink} to={resources.KeppyWorld} variant="contained" endIcon={<IconifyIcon icon="mdi:arrow-right" />}>{t('keppyWorld.enterWorld')}</Button>
+        </Stack>
         <Box
           sx={{
             display: 'grid',

@@ -40,6 +40,7 @@ export const resources = {
   Problems: '/problems',
   StudyPlans: '/problems/study-plans',
   Games: '/games',
+  KeppyWorld: '/games/world',
   Game: '/games/:gameId',
   KepperGame: '/games/kepper',
   Problem: '/problems/:id',

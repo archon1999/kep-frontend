@@ -17,6 +17,7 @@
     "orval:gen-api": "orval --config orval.config.ts"
   },
   "dependencies": {
+    "@colyseus/sdk": "0.18.4",
     "@emotion/cache": "^11.14.0",
     "@emotion/react": "^11.14.0",
     "@emotion/styled": "^11.14.1",

@@ -10,6 +10,7 @@ import duels from './duels.json';
 import giveaways from './giveaways.json';
 import game from './game.json';
 import games from './games.json';
+import keppyWorld from './keppy-world.json';
 import gamesMinis from './games-minis.json';
 import hackathons from './hackathons.json';
 import homePage from './home-page.json';
@@ -30,6 +31,7 @@ export const enTranslation = {
   ...giveaways,
   ...game,
   ...games,
+  ...keppyWorld,
   ...gamesMinis,
   ...admin,
   ...common,
