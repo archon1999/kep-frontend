@@ -12,11 +12,14 @@ for attempt in 1 2 3 4 5; do
     sleep 1
 done
 
-for route in / /games /games/ /games/keppy-world /games/code-islands /games/bug-hunt /games/logic-circuit /games/memory-grid; do
+for route in / /games /games/ /games/world /games/keppy-world /games/code-islands /games/bug-hunt /games/logic-circuit /games/memory-grid; do
     wget -q -O "$response" "http://127.0.0.1$route"
     cmp "$response" /usr/share/nginx/html/index.html
     printf 'SPA route OK: %s\n' "$route"
 done
+
+wget -S -O /dev/null http://127.0.0.1/games/world 2>&1 | grep -iq 'Cache-Control: no-cache, must-revalidate'
+printf 'SPA document cache policy OK\n'
 
 wget -q -O "$response" http://127.0.0.1/games/bug-hunt-preview.svg
 cmp "$response" /usr/share/nginx/html/games/bug-hunt-preview.svg
