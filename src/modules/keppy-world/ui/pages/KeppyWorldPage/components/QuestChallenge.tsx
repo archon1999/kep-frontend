@@ -19,6 +19,7 @@ import {
 import GameCodeEditor from 'modules/kepper-game/ui/pages/KepperGamePage/components/GameCodeEditor';
 import IconifyIcon from 'shared/components/base/IconifyIcon';
 import type { WorldChallenge, WorldResult, WorldRun } from '../../../../domain';
+import { isPlayableWorldChallenge } from '../../../../domain/utils/challenge';
 import WorldBrainChallenge from './WorldBrainChallenge';
 
 type Props = {
@@ -411,6 +412,20 @@ const QuestChallenge = ({ run, pending, onSubmit, onDone }: Props) => {
         <Alert severity="info">{t('keppyWorld.expired')}</Alert>
         <Button disabled={pending} onClick={onDone}>
           {t('keppyWorld.backToWorld')}
+        </Button>
+      </Stack>
+    );
+  if (!isPlayableWorldChallenge(challenge))
+    return (
+      <Stack spacing={2}>
+        <Alert severity="info">{t('keppyWorld.challengeUnavailable')}</Alert>
+        <Button
+          variant="contained"
+          disabled={pending}
+          startIcon={<IconifyIcon icon="mdi:refresh" />}
+          onClick={() => window.location.reload()}
+        >
+          {t('keppyWorld.reloadGame')}
         </Button>
       </Stack>
     );

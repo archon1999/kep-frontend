@@ -12,6 +12,7 @@ import { OrbitControls } from '@react-three/drei';
 import { Canvas, useFrame, useThree } from '@react-three/fiber';
 import { WORLD_INTERACT_DISTANCE } from 'modules/keppy-world/domain/utils/terrain';
 import { mascotVisuals as defaultVisuals } from 'modules/keppy-world/ui/shared/helpers/mascot-visuals';
+import { questPresentation } from 'modules/keppy-world/ui/shared/helpers/quest-presentation';
 import IconifyIcon from 'shared/components/base/IconifyIcon';
 import * as THREE from 'three';
 import type { OrbitControls as OrbitControlsImpl } from 'three-stdlib';
@@ -45,33 +46,6 @@ const movementKeys: Record<string, keyof Controls> = {
   ArrowRight: 'right',
   Space: 'jump',
 };
-const questColors: Record<string, string> = {
-  'bug-hunt': '#cc936b',
-  'logic-circuit': '#4eaca3',
-  'code-islands': '#618fc3',
-  'memory-grid': '#9d85ba',
-  'math-compare': '#ad7394',
-  'quick-math': '#418e9d',
-  'number-sequence': '#7681bd',
-  'number-hunt': '#b48c52',
-  'memory-matrix': '#8b79b3',
-  cargo: '#b0a168',
-  'daily-task': '#657bb0',
-};
-const questSymbols: Record<string, string> = {
-  'bug-hunt': '{ }',
-  'logic-circuit': '&',
-  'code-islands': '↗',
-  'memory-grid': '▦',
-  'math-compare': '≶',
-  'quick-math': '+',
-  'number-sequence': '…',
-  'number-hunt': '123',
-  'memory-matrix': '▧',
-  cargo: '◇',
-  'daily-task': '</>',
-};
-
 const isEditing = (target: EventTarget | null) =>
   target instanceof HTMLElement &&
   Boolean(target.closest('input, textarea, select, [contenteditable="true"], [role="dialog"]'));
@@ -88,24 +62,22 @@ const QuestMarker = memo(
     disabled: boolean;
     onSelect: (id: string) => void;
   }) => {
-    const color = questColors[quest.kind] ?? '#668fbd';
-    const symbol = questSymbols[quest.kind] ?? '◇';
+    const { color, path } = questPresentation(quest.kind);
     const texture = useMemo(() => {
       const canvas = document.createElement('canvas');
-      canvas.width = 128;
-      canvas.height = 128;
+      canvas.width = 192;
+      canvas.height = 192;
       const context = canvas.getContext('2d');
       if (context) {
-        context.fillStyle = '#eaf4f4';
-        context.font = '600 63px system-ui, sans-serif';
-        context.textBaseline = 'middle';
-        context.textAlign = 'center';
-        context.fillText(symbol, 64, 65);
+        context.fillStyle = '#ffffff';
+        context.translate(18, 18);
+        context.scale(6.5, 6.5);
+        context.fill(new Path2D(path));
       }
       const result = new THREE.CanvasTexture(canvas);
       result.colorSpace = THREE.SRGBColorSpace;
       return result;
-    }, [symbol]);
+    }, [path]);
     useEffect(() => () => texture.dispose(), [texture]);
     return (
       <group
@@ -136,13 +108,14 @@ const QuestMarker = memo(
           <cylinderGeometry args={[0.42, 0.3, 0.16, 6]} />
           <meshStandardMaterial color="#ebeee0" roughness={0.8} />
         </mesh>
-        <sprite position={[0, 1.85, 0]} scale={[0.8, 0.8, 1]}>
+        <sprite position={[0, 1.85, 0]} scale={[0.86, 0.86, 1]}>
           <spriteMaterial
             map={texture}
             transparent
             depthWrite={false}
             depthTest={false}
-            color={nearby ? '#ffffff' : '#eaf4f4'}
+            color="#ffffff"
+            toneMapped={false}
           />
         </sprite>
         <mesh position={[0, 1.85, 0]}>

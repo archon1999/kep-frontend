@@ -73,6 +73,7 @@ export type WorldBrainChallenge = ChallengeBase & {
   );
 export type WorldChallenge = ChallengeBase &
   (
+    | { kind: 'unsupported'; originalKind: string }
     | WorldBrainChallenge
     | { kind: 'bug-hunt'; language: string; code: string[]; requiresFix: boolean }
     | {
@@ -138,6 +139,14 @@ export type WorldRanking = {
   completedTasks: number;
   lastCompletedAt: string | null;
   isCurrentUser: boolean;
+};
+export type WorldLeaderboard = {
+  players: WorldRanking[];
+  currentUser: WorldRanking | null;
+  totalPlayers: number;
+  page: number;
+  pageSize: number;
+  totalPages: number;
 };
 export type MoveIntent = { x: number; z: number; jump: boolean; seq: number };
 export type WorldPlayer = {

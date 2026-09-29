@@ -22,6 +22,7 @@ import { useGameAudio } from 'modules/games/application';
 import IconifyIcon from 'shared/components/base/IconifyIcon';
 import { useWorldExperience } from '../../../application';
 import { mascotPortraits, mascotVisuals } from '../../shared/helpers/mascot-visuals';
+import { questPresentation } from '../../shared/helpers/quest-presentation';
 import MascotPicker from './components/MascotPicker';
 import QuestChallenge from './components/QuestChallenge';
 import WorldChat from './components/WorldChat';
@@ -40,20 +41,6 @@ const surface = {
   boxShadow: '0 6px 30px rgba(20, 47, 65, .09)',
   borderRadius: 2.5,
 };
-const questIcons: Record<string, string> = {
-  'bug-hunt': 'mdi:bug-outline',
-  'logic-circuit': 'mdi:electric-switch',
-  'code-islands': 'mdi:code-braces',
-  'memory-grid': 'mdi:grid',
-  'math-compare': 'mdi:compare-horizontal',
-  'quick-math': 'mdi:calculator-variant-outline',
-  'number-sequence': 'mdi:dots-horizontal',
-  'number-hunt': 'mdi:sort-numeric-ascending',
-  'memory-matrix': 'mdi:checkerboard',
-  cargo: 'mdi:package-variant-closed',
-  'daily-task': 'mdi:book-open-page-variant-outline',
-};
-
 const KeppyWorldPage = () => {
   const { t } = useTranslation();
   const { currentUser, isAuthLoading } = useAuth();
@@ -508,7 +495,7 @@ const KeppyWorldPage = () => {
             <IconifyIcon
               icon={
                 panel === 'run'
-                  ? questIcons[run?.kind ?? ''] || 'mdi:flag-outline'
+                  ? questPresentation(run?.kind ?? '').icon
                   : panel === 'ranking'
                     ? 'mdi:trophy-outline'
                     : panel === 'profile'
@@ -577,7 +564,7 @@ const KeppyWorldPage = () => {
                     sx={{ p: 1.5, borderRadius: 1.5, bgcolor: 'background.elevation1' }}
                   >
                     <IconifyIcon
-                      icon={questIcons[quest.kind]}
+                      icon={questPresentation(quest.kind).icon}
                       width={22}
                       sx={{ color: 'primary.main' }}
                     />

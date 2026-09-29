@@ -3,11 +3,13 @@ import type {
   WorldBootstrap,
   WorldChallenge,
   WorldCosmetic,
+  WorldLeaderboard,
   WorldProfile,
   WorldQuest,
   WorldRanking,
   WorldRun,
 } from '../../domain';
+import { isPlayableWorldChallenge } from '../../domain/utils/challenge.ts';
 
 // Keep HTTP serialization decisions out of the application and scene.
 type JsonObject = Record<string, any>;
@@ -87,29 +89,33 @@ export const mapQuest = (data: JsonObject): WorldQuest => ({
   zone: data.zone,
   dailyTaskId: data.dailyTaskId == null ? undefined : Number(data.dailyTaskId),
 });
-export const mapChallenge = (data: JsonObject): WorldChallenge => {
+const decodeChallenge = (data: JsonObject): unknown => {
   const round = {
     prompt: String(data.prompt ?? ''),
     difficulty: Number(data.difficulty),
     round: Number(data.round),
     totalRounds: Number(data.totalRounds),
-    roundId: String(data.roundId),
+    roundId: data.roundId,
     deadlineAt: data.deadlineAt ?? null,
   };
   switch (data.kind) {
     case 'math-compare':
-      return { ...round, kind: data.kind, left: String(data.left), right: String(data.right) };
+      return { ...round, kind: data.kind, left: data.left, right: data.right };
     case 'quick-math':
-      return { ...round, kind: data.kind, expression: String(data.expression) };
+      return { ...round, kind: data.kind, expression: data.expression };
     case 'number-sequence':
-      return { ...round, kind: data.kind, sequence: data.sequence.map(Number) };
+      return {
+        ...round,
+        kind: data.kind,
+        sequence: Array.isArray(data.sequence) ? data.sequence.map(Number) : null,
+      };
     case 'number-hunt':
       return {
         ...round,
         kind: data.kind,
         rows: Number(data.rows),
         columns: Number(data.columns),
-        cells: data.cells.map(Number),
+        cells: Array.isArray(data.cells) ? data.cells.map(Number) : null,
         next: Number(data.next),
       };
     case 'memory-matrix':
@@ -118,15 +124,29 @@ export const mapChallenge = (data: JsonObject): WorldChallenge => {
         kind: data.kind,
         rows: Number(data.rows),
         columns: Number(data.columns),
-        phase: data.phase === 'watch' ? 'watch' : 'recall',
-        highlighted: data.phase === 'watch' ? (data.highlighted ?? []).map(Number) : [],
-        selected: (data.selected ?? []).map(Number),
+        phase: data.phase,
+        highlighted:
+          data.phase === 'watch'
+            ? Array.isArray(data.highlighted)
+              ? data.highlighted.map(Number)
+              : null
+            : [],
+        selected: Array.isArray(data.selected) ? data.selected.map(Number) : [],
         targetCount: Number(data.targetCount),
         revealUntil: data.revealUntil ?? null,
       };
     default:
-      return { ...data } as WorldChallenge;
+      return { ...data };
   }
+};
+export const mapChallenge = (data: JsonObject | null | undefined): WorldChallenge => {
+  const challenge = data && decodeChallenge(data);
+  if (isPlayableWorldChallenge(challenge)) return challenge;
+  return {
+    kind: 'unsupported',
+    originalKind: typeof data?.kind === 'string' ? data.kind : '',
+    prompt: typeof data?.prompt === 'string' ? data.prompt : '',
+  };
 };
 export const mapRun = (data: JsonObject): WorldRun => ({
   id: String(data.id),
@@ -163,4 +183,12 @@ export const mapRanking = (data: JsonObject): WorldRanking => ({
   completedTasks: Number(data.completedTasks ?? 0),
   lastCompletedAt: data.lastCompletedAt ?? null,
   isCurrentUser: Boolean(data.isCurrentUser),
+});
+export const mapLeaderboard = (data: JsonObject): WorldLeaderboard => ({
+  players: (data.top ?? []).map(mapRanking),
+  currentUser: data.currentUser ? mapRanking(data.currentUser) : null,
+  totalPlayers: Number(data.totalPlayers ?? data.top?.length ?? 0),
+  page: Number(data.page ?? 1),
+  pageSize: Number(data.pageSize ?? 30),
+  totalPages: Number(data.totalPages ?? 1),
 });

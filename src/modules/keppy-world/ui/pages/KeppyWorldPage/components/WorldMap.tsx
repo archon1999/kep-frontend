@@ -3,21 +3,9 @@ import { useTranslation } from 'react-i18next';
 import { Box, Stack, Typography } from '@mui/material';
 import type { CommunityWorld, WorldPlayer, WorldQuest } from 'modules/keppy-world/domain';
 import { worldBridges, worldLandPolygons } from 'modules/keppy-world/domain/utils/terrain';
+import { questPresentation } from 'modules/keppy-world/ui/shared/helpers/quest-presentation';
 import IconifyIcon from 'shared/components/base/IconifyIcon';
 
-const questColors: Record<string, string> = {
-  'bug-hunt': '#d9a36e',
-  'logic-circuit': '#419e90',
-  'code-islands': '#5194bd',
-  'memory-grid': '#9277ae',
-  'math-compare': '#ad7394',
-  'quick-math': '#418e9d',
-  'number-sequence': '#7681bd',
-  'number-hunt': '#b48c52',
-  'memory-matrix': '#8b79b3',
-  cargo: '#b89b54',
-  'daily-task': '#6e7a9e',
-};
 const landColors: Record<string, string> = {
   academy: '#b8cec2',
   'workshop-island': '#dfcfb1',
@@ -76,21 +64,29 @@ export default function WorldMap({
               strokeLinecap="round"
             />
           ))}
-          {quests.map((quest) => (
-            <circle
-              key={quest.id}
-              cx={quest.position.x}
-              cy={quest.position.z}
-              r={bounds.unit * 0.8}
-              fill={questColors[quest.kind] ?? '#778d84'}
-              stroke="#fff"
-              strokeWidth={bounds.unit * 0.25}
-            >
-              <title>
-                {quest.title} · {quest.xp} XP
-              </title>
-            </circle>
-          ))}
+          {quests.map((quest) => {
+            const { color, path } = questPresentation(quest.kind);
+            const radius = bounds.unit * 2.1;
+            const iconSize = radius * 1.45;
+            return (
+              <g
+                key={quest.id}
+                transform={`translate(${quest.position.x}, ${quest.position.z})`}
+                role="img"
+                aria-label={`${quest.title} · ${quest.xp} XP`}
+              >
+                <circle r={radius} fill={color} stroke="#fff" strokeWidth={bounds.unit * 0.22} />
+                <path
+                  d={path}
+                  fill="#fff"
+                  transform={`translate(${-iconSize / 2}, ${-iconSize / 2}) scale(${iconSize / 24})`}
+                />
+                <title>
+                  {quest.title} · {quest.xp} XP
+                </title>
+              </g>
+            );
+          })}
           {players
             .filter((p) => !p.falling && p.sessionId !== selfId)
             .map((player) => (

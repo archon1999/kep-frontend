@@ -1,10 +1,11 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import {
   Alert,
   Avatar,
   Button,
   ButtonBase,
+  Pagination,
   Skeleton,
   Stack,
   Table,
@@ -23,22 +24,35 @@ import IconifyIcon from 'shared/components/base/IconifyIcon';
 import { formatDateTime } from 'shared/lib/dateTime';
 import { useWorldLeaderboard } from '../../../../application';
 
+const podiumColors = ['#D99214', '#8396A9', '#B5744D'] as const;
+
 const WorldRanking = () => {
   const { t } = useTranslation();
   const [period, setPeriod] = useState<'week' | 'all'>('week');
+  const [page, setPage] = useState(1);
   const { currentUser } = useAuth();
   const { data, error, isLoading, mutate } = useWorldLeaderboard(
     period,
     true,
     currentUser?.username,
+    page,
   );
+  useEffect(() => {
+    if (data && data.page !== page) setPage(data.page);
+  }, [data, page]);
+  const players = data?.players ?? [];
   return (
     <Stack spacing={2}>
       <ToggleButtonGroup
         size="small"
         value={period}
         exclusive
-        onChange={(_event, value) => value && setPeriod(value)}
+        onChange={(_event, value) => {
+          if (value) {
+            setPeriod(value);
+            setPage(1);
+          }
+        }}
       >
         <ToggleButton value="week">{t('keppyWorld.thisWeek')}</ToggleButton>
         <ToggleButton value="all">{t('keppyWorld.allTime')}</ToggleButton>
@@ -52,28 +66,28 @@ const WorldRanking = () => {
           {t('keppyWorld.loadError')}
         </Alert>
       )}
-      {data?.length === 0 && (
+      {data && !error && players.length === 0 && (
         <Typography color="text.secondary" variant="body2">
           {t('keppyWorld.emptyRanking')}
         </Typography>
       )}
-      {!!data?.length && (
+      {!!players.length && !error && (
         <Table
           size="small"
           aria-label={t('keppyWorld.ranking')}
           sx={{
             tableLayout: 'fixed',
-            '& td, & th': { border: 0, px: 0.5, py: 1.25 },
+            '& td, & th': { border: 0, px: 0.75, py: 1.25 },
             '& th': { color: 'text.secondary', fontSize: 11, fontWeight: 500 },
           }}
         >
           <TableHead>
             <TableRow>
-              <TableCell sx={{ width: 24 }} aria-label={t('keppyWorld.rankColumn')}>
+              <TableCell sx={{ width: 44 }} aria-label={t('keppyWorld.rankColumn')}>
                 #
               </TableCell>
               <TableCell>{t('keppyWorld.playerColumn')}</TableCell>
-              <TableCell align="right" sx={{ width: 64 }}>
+              <TableCell align="right" sx={{ width: 58 }}>
                 <Tooltip title={t('keppyWorld.completedTasksTotal')} describeChild>
                   <Stack
                     direction="row"
@@ -87,13 +101,13 @@ const WorldRanking = () => {
                   </Stack>
                 </Tooltip>
               </TableCell>
-              <TableCell align="right" sx={{ width: 82 }}>
+              <TableCell align="right" sx={{ width: 72 }}>
                 XP
               </TableCell>
             </TableRow>
           </TableHead>
           <TableBody>
-            {data.map((player) => {
+            {players.map((player) => {
               const date = formatDateTime(player.lastCompletedAt, 'compactDateTimeNoComma', '');
               const title = date ? t('keppyWorld.lastTaskCompletedAt', { date }) : '';
               return (
@@ -103,25 +117,51 @@ const WorldRanking = () => {
                 >
                   <TableCell
                     sx={{
-                      color: player.rank === 1 ? 'warning.main' : 'text.secondary',
+                      color: player.rank <= 3 ? podiumColors[player.rank - 1] : 'text.secondary',
                       fontSize: 13,
+                      fontWeight: 700,
+                      fontVariantNumeric: 'tabular-nums',
+                      whiteSpace: 'nowrap',
                     }}
                   >
-                    {player.rank}
+                    {String(player.rank).padStart(2, '0')}
                   </TableCell>
-                  <TableCell>
+                  <TableCell sx={{ overflow: 'hidden' }}>
                     <UserPopover
                       username={player.username}
                       avatar={player.avatar}
-                      sx={{ minWidth: 0 }}
+                      sx={{ display: 'flex', width: '100%', maxWidth: '100%', minWidth: 0 }}
                     >
                       <ButtonBase
-                        sx={{ width: '100%', justifyContent: 'flex-start', gap: 1, minWidth: 0 }}
+                        sx={{
+                          width: '100%',
+                          justifyContent: 'flex-start',
+                          gap: 1,
+                          minWidth: 0,
+                          textAlign: 'left',
+                          borderRadius: 1,
+                          '&.Mui-focusVisible': {
+                            outline: '2px solid',
+                            outlineColor: 'primary.main',
+                          },
+                        }}
                       >
-                        <Avatar src={player.avatar} sx={{ width: 28, height: 28, fontSize: 12 }}>
-                          {player.username.slice(0, 1)}
+                        <Avatar
+                          src={player.avatar}
+                          alt={player.username}
+                          sx={{ width: 28, height: 28, fontSize: 12 }}
+                        >
+                          {player.username.slice(0, 1).toUpperCase()}
                         </Avatar>
-                        <Typography noWrap variant="body2" sx={{ fontSize: 13 }}>
+                        <Typography
+                          noWrap
+                          variant="body2"
+                          sx={{
+                            minWidth: 0,
+                            fontSize: 13,
+                            fontWeight: player.isCurrentUser ? 700 : 500,
+                          }}
+                        >
                           {player.username}
                         </Typography>
                       </ButtonBase>
@@ -159,6 +199,36 @@ const WorldRanking = () => {
             })}
           </TableBody>
         </Table>
+      )}
+      {data && data.totalPlayers > 0 && !error && (
+        <Stack gap={1.25} alignItems="center">
+          <Typography variant="caption" color="text.secondary" role="status">
+            {t('keppyWorld.rankingRange', {
+              from: (data.page - 1) * data.pageSize + 1,
+              to: Math.min(data.page * data.pageSize, data.totalPlayers),
+              total: data.totalPlayers,
+            })}
+          </Typography>
+          {data.totalPages > 1 && (
+            <Pagination
+              page={data.page}
+              count={data.totalPages}
+              onChange={(_event, value) => setPage(value)}
+              size="small"
+              color="primary"
+              siblingCount={0}
+              boundaryCount={1}
+            />
+          )}
+          {data.currentUser && !players.some((player) => player.isCurrentUser) && (
+            <Button
+              size="small"
+              onClick={() => setPage(Math.ceil(data.currentUser!.rank / data.pageSize))}
+            >
+              {t('keppyWorld.yourRank', { rank: data.currentUser.rank })}
+            </Button>
+          )}
+        </Stack>
       )}
     </Stack>
   );

@@ -1,6 +1,7 @@
 import assert from 'node:assert/strict';
 import test from 'node:test';
-import { mapChallenge, mapRanking } from './world.mapper.ts';
+import { isPlayableWorldChallenge } from '../../domain/utils/challenge.ts';
+import { mapChallenge, mapLeaderboard, mapRanking, mapRun } from './world.mapper.ts';
 
 const round = {
   prompt: 'Solve',
@@ -10,6 +11,37 @@ const round = {
   roundId: 'server-round-3',
   deadlineAt: '2026-09-30T12:00:30Z',
 };
+
+test('paginated ranking preserves global ranks and does not append an off-page current user', () => {
+  const player = { rank: 11, username: 'explorer', xp: 900, level: 4, completedTasks: 12 };
+  const result = mapLeaderboard({
+    top: [player],
+    currentUser: { ...player, rank: 33, username: 'me', isCurrentUser: true },
+    page: 2,
+    pageSize: 10,
+    totalPages: 4,
+    totalPlayers: 33,
+  });
+  assert.equal(result.players.length, 1);
+  assert.equal(result.players[0].rank, 11);
+  assert.equal(result.currentUser?.rank, 33);
+  assert.deepEqual(
+    [result.page, result.pageSize, result.totalPages, result.totalPlayers],
+    [2, 10, 4, 33],
+  );
+});
+
+test('ranking tolerates the previous server response during a rolling deployment', () => {
+  const result = mapLeaderboard({ top: [], totalPlayers: 0, currentUser: null });
+  assert.deepEqual(result, {
+    players: [],
+    currentUser: null,
+    totalPlayers: 0,
+    page: 1,
+    pageSize: 30,
+    totalPages: 1,
+  });
+});
 
 test('brain challenge mapping preserves round identity and only exposes playable fields', () => {
   const comparison = mapChallenge({
@@ -65,6 +97,73 @@ test('memory recall cannot retain highlighted cells from a reveal response', () 
   assert.deepEqual(watch.highlighted, [0, 2, 7]);
   assert.deepEqual(recall.highlighted, []);
   assert.deepEqual(recall.selected, [2]);
+});
+
+test('a newer server challenge produces an explicit refresh state while preserving the run', () => {
+  const run = mapRun({
+    id: 'active-run',
+    questId: 'quest',
+    kind: 'future-game',
+    title: 'A new game',
+    difficulty: 1,
+    xp: 50,
+    status: 'active',
+    expiresAt: '2030-01-01T12:00:00Z',
+    challenge: { kind: 'future-game', prompt: 'Try this game', secretAnswer: 12 },
+  });
+  assert.equal(run.id, 'active-run');
+  assert.equal(run.status, 'active');
+  assert.deepEqual(run.challenge, {
+    kind: 'unsupported',
+    originalKind: 'future-game',
+    prompt: 'Try this game',
+  });
+  assert.equal(isPlayableWorldChallenge(run.challenge), false);
+});
+
+test('incomplete challenge payloads cannot render a blank board or throw from array decoding', () => {
+  for (const kind of [
+    'math-compare',
+    'quick-math',
+    'number-sequence',
+    'number-hunt',
+    'memory-matrix',
+  ]) {
+    const challenge = mapChallenge({ ...round, kind });
+    assert.equal(challenge.kind, 'unsupported', kind);
+    assert.equal(isPlayableWorldChallenge(challenge), false, kind);
+  }
+  assert.equal(mapChallenge(null).kind, 'unsupported');
+  assert.equal(mapChallenge(undefined).kind, 'unsupported');
+  assert.equal(
+    mapChallenge({ ...round, kind: 'number-sequence', sequence: [NaN] }).kind,
+    'unsupported',
+  );
+  assert.equal(
+    mapChallenge({ ...round, kind: 'memory-matrix', highlighted: 'not-an-array' }).kind,
+    'unsupported',
+  );
+});
+
+test('legacy quest payloads remain playable alongside the five new mission kinds', () => {
+  const cases = [
+    { kind: 'bug-hunt', code: ['print(2 + 2)'], language: 'python', requiresFix: true },
+    { kind: 'logic-circuit', inputs: ['A'], rows: [{ inputs: [0], output: 1 }], maxGates: 2 },
+    { kind: 'code-islands', grid: ['S.G'], maxCommands: 2, startDirection: 'east' },
+    { kind: 'memory-grid', rows: 3, columns: 3, phase: 'watch', reveal: { index: 0, cell: 2 } },
+    {
+      kind: 'cargo',
+      items: [{ id: 'a', label: 'Crate', weight: 3, value: 4 }],
+      capacity: 5,
+      targetValue: 4,
+    },
+    { kind: 'daily-task', dailyTaskId: 42, href: '/daily-task/42' },
+  ];
+  for (const fields of cases) {
+    const challenge = mapChallenge({ prompt: 'A mission', ...fields });
+    assert.equal(challenge.kind, fields.kind);
+    assert.equal(isPlayableWorldChallenge(challenge), true);
+  }
 });
 
 test('leaderboard keeps lifetime completion counts and the last task timestamp separate from XP achievement', () => {
