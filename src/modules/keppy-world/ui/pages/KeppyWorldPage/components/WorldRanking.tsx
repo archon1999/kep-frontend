@@ -82,6 +82,7 @@ const WorldRanking = () => {
             '& .MuiTableCell-root:first-of-type': { pl: 0.75 },
             '& .MuiTableCell-root:last-of-type': { pr: 0.75 },
             '& th': { color: 'text.secondary', fontSize: 11, fontWeight: 500 },
+            '& thead th': { py: 0.5, height: 30, lineHeight: '16px' },
           }}
         >
           <TableHead>
