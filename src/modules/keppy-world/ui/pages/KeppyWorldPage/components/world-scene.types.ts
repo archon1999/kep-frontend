@@ -17,6 +17,8 @@ export type WorldScenePlayer = {
 
 export type WorldSceneQuest = {
   id: string;
+  rewardEligible?: boolean;
+  rewardAvailableAt?: string | null;
   kind: string;
   title: string;
   difficulty: number;
@@ -43,6 +45,7 @@ export type AtlasRect = { x: number; y: number; width: number; height: number };
 export type WorldMoveIntent = { x: number; z: number; jump: boolean; seq: number };
 
 export type WorldSceneProps = {
+  timeOffset?: number;
   players: WorldScenePlayer[];
   selfSessionId: string | null;
   quests: WorldSceneQuest[];

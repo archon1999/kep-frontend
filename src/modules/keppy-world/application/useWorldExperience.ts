@@ -28,6 +28,7 @@ export const useWorldExperience = (username?: string) => {
     transport.getSnapshot,
     transport.getSnapshot,
   );
+  const [rewardClock, setRewardClock] = useState(Date.now);
   const [pending, setPending] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [finishedRun, setFinishedRun] = useState<WorldRun | null>(null);
@@ -108,6 +109,8 @@ export const useWorldExperience = (username?: string) => {
             current && {
               ...current,
               player: result.player,
+              pointCooldowns: result.pointCooldowns,
+              serverTimeOffsetMs: result.serverTimeOffsetMs,
               world: result.world,
               activeRun: result.run,
             },
@@ -122,6 +125,9 @@ export const useWorldExperience = (username?: string) => {
               current && {
                 ...current,
                 cosmetics: refreshed.cosmetics,
+                quests: refreshed.quests,
+                pointCooldowns: refreshed.pointCooldowns,
+                serverTimeOffsetMs: refreshed.serverTimeOffsetMs,
                 completedDailyTaskIds: refreshed.completedDailyTaskIds,
               },
             { revalidate: false },
@@ -144,14 +150,34 @@ export const useWorldExperience = (username?: string) => {
       transport.refresh();
       return true;
     });
+  const cooldowns = bootstrap.data?.pointCooldowns;
+  const timeOffset = bootstrap.data?.serverTimeOffsetMs ?? 0;
+  useEffect(() => {
+    const update = () => setRewardClock(Date.now() + timeOffset);
+    const next = Math.min(
+      ...Object.values(cooldowns ?? {})
+        .map(Date.parse)
+        .filter((time) => time > Date.now() + timeOffset),
+    );
+    const timer = Number.isFinite(next)
+      ? window.setTimeout(update, Math.max(1, next - Date.now() - timeOffset + 20))
+      : undefined;
+    window.addEventListener('focus', update);
+    document.addEventListener('visibilitychange', update);
+    return () => {
+      window.clearTimeout(timer);
+      window.removeEventListener('focus', update);
+      document.removeEventListener('visibilitychange', update);
+    };
+  }, [cooldowns, timeOffset, rewardClock]);
   const quests = useMemo(
     () =>
       availablePlayerQuests(
         connection.quests ?? bootstrap.data?.quests ?? [],
         bootstrap.data?.completedDailyTaskIds ?? [],
         bootstrap.data?.activeRun?.questId,
-        bootstrap.data?.player.completedByKind,
-        bootstrap.data?.player.kindDailyLimit,
+        cooldowns,
+        Date.now() + timeOffset,
       ).map((quest) => ({
         ...quest,
         title: t(`keppyWorld.kinds.${quest.kind}`, { defaultValue: quest.title }),
@@ -161,8 +187,9 @@ export const useWorldExperience = (username?: string) => {
       bootstrap.data?.quests,
       bootstrap.data?.completedDailyTaskIds,
       bootstrap.data?.activeRun?.questId,
-      bootstrap.data?.player.completedByKind,
-      bootstrap.data?.player.kindDailyLimit,
+      cooldowns,
+      rewardClock,
+      timeOffset,
       t,
     ],
   );
@@ -179,6 +206,11 @@ export const useWorldExperience = (username?: string) => {
     run: finishedRun ?? bootstrap.data?.activeRun,
     world: latestCommunityWorld(bootstrap.data?.world, connection.world),
     quests,
+    pointCount: Math.max(
+      bootstrap.data?.player.pointCount ?? 0,
+      connection.quests?.length ?? bootstrap.data?.quests.length ?? 0,
+    ),
+    timeOffset,
     move: transport.move,
     emote: transport.emote,
     chat: transport.chat,

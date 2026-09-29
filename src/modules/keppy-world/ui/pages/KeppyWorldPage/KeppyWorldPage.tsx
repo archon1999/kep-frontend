@@ -24,6 +24,7 @@ import { useWorldExperience } from '../../../application';
 import { mascotPortraits, mascotVisuals } from '../../shared/helpers/mascot-visuals';
 import { questPresentation } from '../../shared/helpers/quest-presentation';
 import MascotPicker from './components/MascotPicker';
+import PointRewardStatus from './components/PointRewardStatus';
 import QuestChallenge from './components/QuestChallenge';
 import WorldChat from './components/WorldChat';
 import WorldMap from './components/WorldMap';
@@ -260,6 +261,7 @@ const KeppyWorldPage = () => {
                 <WorldScene
                   players={game.connection.players}
                   selfSessionId={game.connection.sessionId}
+                  timeOffset={game.timeOffset}
                   quests={game.quests}
                   kioskQuests={game.connection.quests ?? game.quests}
                   world={game.world}
@@ -328,10 +330,11 @@ const KeppyWorldPage = () => {
                   />
                   <Stack direction="row" justifyContent="space-between">
                     <Typography variant="caption" color="text.secondary">
-                      {t('keppyWorld.today')}
+                      {t('keppyWorld.pointsReady')}
                     </Typography>
                     <Typography variant="caption" fontWeight={700}>
-                      {profile.completedToday} / {profile.dailyLimit}
+                      {game.quests.filter((quest) => quest.rewardEligible !== false).length} /{' '}
+                      {game.pointCount}
                     </Typography>
                   </Stack>
                 </Box>
@@ -553,7 +556,7 @@ const KeppyWorldPage = () => {
             {panel === 'quests' && (
               <Stack spacing={1}>
                 <Typography variant="body2" color="text.secondary" mb={1}>
-                  {t('keppyWorld.questHelp')}
+                  {t('keppyWorld.questHelp')} {t('keppyWorld.pointRewardRule')}
                 </Typography>
                 {game.quests.map((quest) => (
                   <Stack
@@ -566,7 +569,9 @@ const KeppyWorldPage = () => {
                     <IconifyIcon
                       icon={questPresentation(quest.kind).icon}
                       width={22}
-                      sx={{ color: 'primary.main' }}
+                      sx={{
+                        color: quest.rewardEligible === false ? 'success.main' : 'primary.main',
+                      }}
                     />
                     <Box sx={{ flex: 1 }}>
                       <Typography fontSize={14} fontWeight={600}>
@@ -575,9 +580,19 @@ const KeppyWorldPage = () => {
                       <Typography variant="caption" color="text.secondary">
                         {t('keppyWorld.difficulty', { count: quest.difficulty })}
                       </Typography>
+                      {quest.rewardEligible === false && (
+                        <PointRewardStatus
+                          readyAt={quest.rewardAvailableAt}
+                          timeOffset={game.timeOffset}
+                        />
+                      )}
                     </Box>
-                    <Typography fontSize={13} fontWeight={700}>
-                      {quest.xp} XP
+                    <Typography
+                      fontSize={13}
+                      fontWeight={700}
+                      color={quest.rewardEligible === false ? 'success.main' : 'text.primary'}
+                    >
+                      {quest.rewardEligible === false ? t('keppyWorld.practice') : `${quest.xp} XP`}
                     </Typography>
                   </Stack>
                 ))}
@@ -589,6 +604,7 @@ const KeppyWorldPage = () => {
                   key={run.id}
                   run={run}
                   pending={game.pending}
+                  timeOffset={game.timeOffset}
                   onSubmit={game.submit}
                   onDone={() => void game.abandon().then((done) => done && setPanel(null))}
                 />

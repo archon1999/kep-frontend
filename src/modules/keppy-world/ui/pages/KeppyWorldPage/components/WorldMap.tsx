@@ -65,7 +65,11 @@ export default function WorldMap({
             />
           ))}
           {quests.map((quest) => {
-            const { color, path } = questPresentation(quest.kind);
+            const presentation = questPresentation(quest.kind);
+            const color = quest.rewardEligible === false ? '#78a58d' : presentation.color;
+            const path = presentation.path;
+            const rewardLabel =
+              quest.rewardEligible === false ? t('keppyWorld.practiceNoXp') : `${quest.xp} XP`;
             const radius = bounds.unit * 2.1;
             const iconSize = radius * 1.45;
             return (
@@ -73,7 +77,7 @@ export default function WorldMap({
                 key={quest.id}
                 transform={`translate(${quest.position.x}, ${quest.position.z})`}
                 role="img"
-                aria-label={`${quest.title} · ${quest.xp} XP`}
+                aria-label={`${quest.title} · ${rewardLabel}`}
               >
                 <circle r={radius} fill={color} stroke="#fff" strokeWidth={bounds.unit * 0.22} />
                 <path
@@ -82,7 +86,7 @@ export default function WorldMap({
                   transform={`translate(${-iconSize / 2}, ${-iconSize / 2}) scale(${iconSize / 24})`}
                 />
                 <title>
-                  {quest.title} · {quest.xp} XP
+                  {quest.title} · {rewardLabel}
                 </title>
               </g>
             );

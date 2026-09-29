@@ -48,7 +48,7 @@
     "abandon": "Topshiriqni qaytarish",
     "check": "Tekshirish",
     "correctedLine": "To‘g‘rilangan qator",
-    "tryAgain": "Hali to‘g‘ri emas. Qayta urinishingiz mumkin, kunlik limit kamaymadi.",
+    "tryAgain": "Hali to‘g‘ri emas. Qayta urinib ko‘ring — xato javob 24 soatlik kutishni boshlamaydi.",
     "truthTable": "Haqiqat jadvali",
     "output": "Natija",
     "expression": "Mantiqiy ifoda",
@@ -90,7 +90,6 @@
       "space-visor": "Kosmik visor"
     },
     "errors": {
-      "daily_limit": "Bugungi 10 ta mukofotli topshiriq bajarildi.",
       "too_far": "Topshiriq belgisiga yaqinroq boring.",
       "quest_unavailable": "Bu topshiriqni boshqa o‘yinchi oldi. Boshqasini tanlang.",
       "active_run": "Avval joriy topshiriqni bajaring yoki qaytaring.",
@@ -105,8 +104,7 @@
       "not_found": "Bu topshiriq endi mavjud emas.",
       "already_rewarded": "Bu topshiriq uchun ball allaqachon berilgan.",
       "realtime_unconfigured": "Umumiy dunyo hozircha mavjud emas.",
-      "kind_daily_limit": "Bugun shu turdagi 3 ta topshiriqni bajardingiz. Boshqa mini o‘yinni tanlang.",
-      "content_exhausted": "Bugun shu turdagi mavjud topshiriqlarni bajarib bo‘ldingiz. Boshqa mini o‘yinni tanlang."
+      "content_exhausted": "Bu pointda yangi puzzle hozircha yo‘q. Boshqasini tanlang."
     },
     "kinds": {
       "bug-hunt": "Ustaxonani ta’mirlash",
@@ -194,6 +192,11 @@
         "message_too_long": "Ko‘pi bilan 50 ta belgi.",
         "rate_limited": "Keyingi xabar uchun 2 soniya kuting."
       }
-    }
+    },
+    "pointsReady": "XP olish mumkin",
+    "practice": "Mashq",
+    "practiceNoXp": "Mashq · XP berilmaydi",
+    "pointCooldown": "XP ochilishiga {{time}}",
+    "pointRewardRule": "Har bir point 24 soatda bir marta XP beradi. Yangi orollar bilan pointlar ham ko‘payadi. Kutish vaqtida mashq qilish mumkin."
   }
 }

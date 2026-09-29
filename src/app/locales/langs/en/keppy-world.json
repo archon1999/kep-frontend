@@ -48,7 +48,7 @@
     "abandon": "Return quest",
     "check": "Check solution",
     "correctedLine": "Corrected line",
-    "tryAgain": "Not quite. You can retry; your daily allowance is unchanged.",
+    "tryAgain": "Not quite. Try again — a wrong answer does not start the 24-hour wait.",
     "truthTable": "Truth table",
     "output": "Output",
     "expression": "Logic expression",
@@ -90,7 +90,6 @@
       "space-visor": "Space visor"
     },
     "errors": {
-      "daily_limit": "You've completed today's 10 rewarded quests.",
       "too_far": "Move closer to the quest marker.",
       "quest_unavailable": "Another player took this quest. Choose another marker.",
       "active_run": "Finish or return your current quest first.",
@@ -105,8 +104,7 @@
       "not_found": "This quest is no longer available.",
       "already_rewarded": "This quest has already been rewarded.",
       "realtime_unconfigured": "The shared world is not available yet.",
-      "kind_daily_limit": "You have completed 3 quests of this kind today. Try another mini game.",
-      "content_exhausted": "You have completed all available puzzles of this kind today. Try another mini game."
+      "content_exhausted": "A fresh puzzle is not available at this point. Try another one."
     },
     "kinds": {
       "bug-hunt": "Repair the workshop",
@@ -194,6 +192,11 @@
         "message_too_long": "Maximum 50 characters.",
         "rate_limited": "Wait 2 seconds before sending again."
       }
-    }
+    },
+    "pointsReady": "XP points ready",
+    "practice": "Practice",
+    "practiceNoXp": "Practice · no XP",
+    "pointCooldown": "XP available in {{time}}",
+    "pointRewardRule": "Each point awards XP once every 24 hours. New islands add more points. You can practice while a point recharges."
   }
 }

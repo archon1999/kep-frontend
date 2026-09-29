@@ -23,11 +23,7 @@ export const mapProfile = (data: JsonObject): WorldProfile => ({
   levelXp: Number(data.levelXp),
   nextLevelXp: Number(data.nextLevelXp),
   completedToday: Number(data.completedToday),
-  dailyLimit: Number(data.dailyLimit),
-  completedByKind: Object.fromEntries(
-    Object.entries(data.completedByKind ?? {}).map(([kind, count]) => [kind, Number(count)]),
-  ),
-  kindDailyLimit: Number(data.kindDailyLimit ?? 3),
+  pointCount: Number(data.pointCount ?? data.dailyLimit ?? 0),
 });
 export const mapWorld = (data: JsonObject): CommunityWorld => {
   const defaultXp = [0, 1000, 5000, 15000, 35000, 70000, 125000, 200000, 320000, 500000];
@@ -81,6 +77,7 @@ export const mapWorld = (data: JsonObject): CommunityWorld => {
 };
 export const mapQuest = (data: JsonObject): WorldQuest => ({
   id: String(data.id),
+  stationId: data.stationId ? String(data.stationId) : undefined,
   kind: data.kind,
   title: data.title,
   difficulty: Number(data.difficulty),
@@ -151,6 +148,9 @@ export const mapChallenge = (data: JsonObject | null | undefined): WorldChalleng
 export const mapRun = (data: JsonObject): WorldRun => ({
   id: String(data.id),
   questId: String(data.questId),
+  stationId: data.stationId ? String(data.stationId) : undefined,
+  rewardEligible: data.rewardEligible !== false,
+  rewardAvailableAt: data.rewardAvailableAt ?? null,
   kind: data.kind,
   title: data.title,
   difficulty: Number(data.difficulty),
@@ -159,7 +159,20 @@ export const mapRun = (data: JsonObject): WorldRun => ({
   expiresAt: data.expiresAt,
   challenge: mapChallenge(data.challenge),
 });
+export const mapPointCooldowns = (data: JsonObject): Record<string, string> =>
+  Object.fromEntries(
+    Object.entries(data.pointCooldowns ?? {}).filter(
+      (entry): entry is [string, string] =>
+        typeof entry[1] === 'string' && Number.isFinite(Date.parse(entry[1])),
+    ),
+  );
+export const mapServerTimeOffset = (data: JsonObject): number =>
+  typeof data.serverTime === 'string' && Number.isFinite(Date.parse(data.serverTime))
+    ? Date.parse(data.serverTime) - Date.now()
+    : 0;
 export const mapBootstrap = (data: JsonObject): WorldBootstrap => ({
+  pointCooldowns: mapPointCooldowns(data),
+  serverTimeOffsetMs: mapServerTimeOffset(data),
   player: mapProfile(data.player),
   world: mapWorld(data.world),
   quests: data.quests.map(mapQuest),

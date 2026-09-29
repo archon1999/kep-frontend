@@ -2,7 +2,7 @@ import assert from 'node:assert/strict';
 import test from 'node:test';
 import { mapWorld } from '../data-access/mappers/world.mapper.ts';
 import type { CommunityWorld, WorldQuest } from '../domain/entities/world.types.ts';
-import { availablePlayerQuests, latestCommunityWorld } from './world-state.ts';
+import { availablePlayerQuests, latestCommunityWorld, rewardCountdown } from './world-state.ts';
 
 test('a delayed room poll cannot undo a reward or close an unlocked area', () => {
   const awarded: CommunityWorld = mapWorld({
@@ -54,20 +54,37 @@ test('world progress measures the current level instead of total lifetime XP', (
   assert.equal(complete.levelStartXp, 500000);
 });
 
-test('shared room quests respect the current player daily per-kind allowance', () => {
+test('personal point cooldown survives replacement IDs, moves and shared broadcasts', () => {
   const common = { title: 'Quest', difficulty: 1, xp: 10, position: { x: 0, z: 0 }, zone: 'plaza' };
   const quests: WorldQuest[] = [
-    { ...common, id: 'math-1', kind: 'quick-math' },
-    { ...common, id: 'math-2', kind: 'quick-math' },
-    { ...common, id: 'matrix', kind: 'memory-matrix' },
+    { ...common, id: 'new-id', stationId: 'plaza-01', kind: 'quick-math' },
+    { ...common, id: 'math-2', stationId: 'plaza-02', kind: 'quick-math' },
   ];
-  assert.deepEqual(
-    availablePlayerQuests(quests, [], undefined, { 'quick-math': 3, 'memory-matrix': 2 }, 3).map(
-      (quest) => quest.id,
-    ),
-    ['matrix'],
+  const now = Date.parse('2026-09-30T10:00:00Z');
+  const cooldown = { 'plaza-01': '2026-10-01T10:00:00Z' };
+  const mine = availablePlayerQuests(quests, [], undefined, cooldown, now);
+  assert.equal(mine.length, 2, 'Practice points remain on the map.');
+  assert.equal(mine[0].rewardEligible, false);
+  assert.equal(mine[0].rewardAvailableAt, cooldown['plaza-01']);
+  assert.equal(mine[1].rewardEligible, true, 'The same game at another point is available.');
+  assert.equal(availablePlayerQuests(quests, [], undefined, {}, now)[0].rewardEligible, true);
+  assert.equal(
+    quests[0].rewardEligible,
+    undefined,
+    'Personal state never mutates the shared snapshot.',
   );
-  assert.equal(availablePlayerQuests(quests, []).length, 3, 'A fresh day restores all kinds.');
+  const ready = availablePlayerQuests(quests, [], undefined, cooldown, now + 86400000);
+  assert.equal(ready[0].rewardEligible, true);
+  assert.equal(ready[0].rewardAvailableAt, null);
+});
+
+test('countdown has fixed width, counts down seconds and stops at zero', () => {
+  const readyAt = '2026-10-01T10:00:00Z';
+  const time = Date.parse(readyAt);
+  assert.equal(rewardCountdown(readyAt, time - 86400000), '24:00:00');
+  assert.equal(rewardCountdown(readyAt, time - 324000), '00:05:24');
+  assert.equal(rewardCountdown(readyAt, time - 1), '00:00:01');
+  assert.equal(rewardCountdown(readyAt, time + 5000), '00:00:00');
 });
 
 test('world progress uses server milestones when configured thresholds change', () => {

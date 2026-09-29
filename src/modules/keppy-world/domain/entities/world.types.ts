@@ -20,9 +20,7 @@ export type WorldProfile = {
   levelXp: number;
   nextLevelXp: number;
   completedToday: number;
-  dailyLimit: number;
-  completedByKind: Partial<Record<QuestKind, number>>;
-  kindDailyLimit: number;
+  pointCount: number;
 };
 export type WorldMilestone = { level: number; requiredXp: number; zone: string };
 export type CommunityWorld = {
@@ -40,6 +38,9 @@ export type CommunityWorld = {
 };
 export type WorldQuest = {
   id: string;
+  stationId?: string;
+  rewardAvailableAt?: string | null;
+  rewardEligible?: boolean;
   kind: QuestKind;
   title: string;
   difficulty: number;
@@ -104,6 +105,9 @@ export type WorldChallenge = ChallengeBase &
 export type WorldRun = {
   id: string;
   questId: string;
+  stationId?: string;
+  rewardEligible?: boolean;
+  rewardAvailableAt?: string | null;
   kind: QuestKind;
   title: string;
   difficulty: number;
@@ -120,10 +124,14 @@ export type WorldBootstrap = {
   activeRun: WorldRun | null;
   cosmetics: WorldCosmetic[];
   completedDailyTaskIds: number[];
+  pointCooldowns: Record<string, string>;
+  serverTimeOffsetMs: number;
 };
 export type WorldResult = {
   correct: boolean;
   feedback: 'progress' | 'incorrect' | 'completed';
+  pointCooldowns: Record<string, string>;
+  serverTimeOffsetMs: number;
   run: WorldRun;
   player: WorldProfile;
   world: CommunityWorld;

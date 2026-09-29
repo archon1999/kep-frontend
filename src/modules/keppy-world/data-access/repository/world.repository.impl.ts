@@ -1,6 +1,14 @@
 import { instance } from 'shared/api/http/axiosInstance';
 import type { WorldProfile, WorldRepository } from '../../domain';
-import { mapBootstrap, mapLeaderboard, mapProfile, mapRun, mapWorld } from '../mappers';
+import {
+  mapBootstrap,
+  mapLeaderboard,
+  mapPointCooldowns,
+  mapProfile,
+  mapRun,
+  mapServerTimeOffset,
+  mapWorld,
+} from '../mappers';
 
 const base = '/api/world';
 export const worldRepository: WorldRepository = {
@@ -22,6 +30,8 @@ export const worldRepository: WorldRepository = {
     });
     return {
       correct: Boolean(data.correct),
+      pointCooldowns: mapPointCooldowns(data),
+      serverTimeOffsetMs: mapServerTimeOffset(data),
       feedback: data.feedback,
       run: mapRun(data.run),
       player: mapProfile(data.player),

@@ -20,10 +20,12 @@ import GameCodeEditor from 'modules/kepper-game/ui/pages/KepperGamePage/componen
 import IconifyIcon from 'shared/components/base/IconifyIcon';
 import type { WorldChallenge, WorldResult, WorldRun } from '../../../../domain';
 import { isPlayableWorldChallenge } from '../../../../domain/utils/challenge';
+import PointRewardStatus from './PointRewardStatus';
 import WorldBrainChallenge from './WorldBrainChallenge';
 
 type Props = {
   run: WorldRun;
+  timeOffset?: number;
   pending: boolean;
   onSubmit: (answer: unknown) => Promise<WorldResult | undefined>;
   onDone: () => void;
@@ -370,7 +372,7 @@ const CargoChallenge = ({ challenge, pending, submit }: ChallengeProps<'cargo'>)
   );
 };
 
-const QuestChallenge = ({ run, pending, onSubmit, onDone }: Props) => {
+const QuestChallenge = ({ run, pending, timeOffset = 0, onSubmit, onDone }: Props) => {
   const { t } = useTranslation();
   const [incorrect, setIncorrect] = useState(false);
   const [expired, setExpired] = useState(() => Date.parse(run.expiresAt) <= Date.now());
@@ -398,9 +400,16 @@ const QuestChallenge = ({ run, pending, onSubmit, onDone }: Props) => {
         <Typography component="h3" fontSize={24} fontWeight={700}>
           {t('keppyWorld.completed')}
         </Typography>
-        <Typography color="primary.main" fontSize={20}>
-          +{run.xp} XP
-        </Typography>
+        {run.rewardEligible === false ? (
+          <Stack alignItems="center" spacing={0.5}>
+            <Typography color="text.secondary">{t('keppyWorld.practiceNoXp')}</Typography>
+            <PointRewardStatus readyAt={run.rewardAvailableAt} timeOffset={timeOffset} />
+          </Stack>
+        ) : (
+          <Typography color="primary.main" fontSize={20}>
+            +{run.xp} XP
+          </Typography>
+        )}
         <Button variant="contained" disabled={pending} onClick={onDone}>
           {t('keppyWorld.backToWorld')}
         </Button>
@@ -431,6 +440,14 @@ const QuestChallenge = ({ run, pending, onSubmit, onDone }: Props) => {
     );
   return (
     <Stack spacing={2.5}>
+      {run.rewardEligible === false && (
+        <Box sx={{ px: 1.5, py: 1, bgcolor: 'background.elevation1', borderRadius: 1.5 }}>
+          <Typography fontSize={13} fontWeight={600}>
+            {t('keppyWorld.practiceNoXp')}
+          </Typography>
+          <PointRewardStatus readyAt={run.rewardAvailableAt} timeOffset={timeOffset} />
+        </Box>
+      )}
       <Typography
         sx={{ fontSize: 15, lineHeight: 1.7, whiteSpace: 'pre-line', color: 'text.secondary' }}
       >

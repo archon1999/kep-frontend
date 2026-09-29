@@ -1,7 +1,15 @@
 import assert from 'node:assert/strict';
 import test from 'node:test';
 import { isPlayableWorldChallenge } from '../../domain/utils/challenge.ts';
-import { mapChallenge, mapLeaderboard, mapRanking, mapRun } from './world.mapper.ts';
+import {
+  mapChallenge,
+  mapLeaderboard,
+  mapPointCooldowns,
+  mapProfile,
+  mapQuest,
+  mapRanking,
+  mapRun,
+} from './world.mapper.ts';
 
 const round = {
   prompt: 'Solve',
@@ -184,4 +192,32 @@ test('leaderboard keeps lifetime completion counts and the last task timestamp s
   const legacy = mapRanking({ ...data, completedTasks: undefined, lastCompletedAt: undefined });
   assert.equal(legacy.completedTasks, 0);
   assert.equal(legacy.lastCompletedAt, null);
+});
+
+test('point reward mapping preserves server-owned practice state and stable identity', () => {
+  const run = mapRun({
+    id: 'run',
+    questId: 'replenished-quest',
+    stationId: 'plaza-01',
+    rewardEligible: false,
+    rewardAvailableAt: '2026-10-01T10:00:00Z',
+    xp: 0,
+  });
+  assert.equal(run.rewardEligible, false);
+  assert.equal(run.xp, 0);
+  assert.equal(run.stationId, 'plaza-01');
+  assert.equal(run.rewardAvailableAt, '2026-10-01T10:00:00Z');
+  const quest = mapQuest({ id: 'quest', stationId: 'plaza-01', position: { x: 8, z: 9 } });
+  assert.equal(quest.stationId, 'plaza-01');
+  assert.equal(mapProfile({ pointCount: 39 }).pointCount, 39);
+  assert.deepEqual(
+    mapPointCooldowns({
+      pointCooldowns: {
+        'plaza-01': '2026-10-01T10:00:00Z',
+        invalid: 'nonsense',
+        empty: null,
+      },
+    }),
+    { 'plaza-01': '2026-10-01T10:00:00Z' },
+  );
 });

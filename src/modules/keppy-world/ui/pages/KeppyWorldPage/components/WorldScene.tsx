@@ -16,6 +16,7 @@ import { questPresentation } from 'modules/keppy-world/ui/shared/helpers/quest-p
 import IconifyIcon from 'shared/components/base/IconifyIcon';
 import * as THREE from 'three';
 import type { OrbitControls as OrbitControlsImpl } from 'three-stdlib';
+import PointRewardStatus from './PointRewardStatus';
 import { WorldAvatar } from './WorldAvatar';
 import { WorldEnvironment } from './WorldEnvironment';
 import type { WorldMoveIntent, WorldSceneProps, WorldSceneQuest } from './world-scene.types';
@@ -62,7 +63,9 @@ const QuestMarker = memo(
     disabled: boolean;
     onSelect: (id: string) => void;
   }) => {
-    const { color, path } = questPresentation(quest.kind);
+    const presentation = questPresentation(quest.kind);
+    const color = quest.rewardEligible === false ? '#78a58d' : presentation.color;
+    const path = presentation.path;
     const texture = useMemo(() => {
       const canvas = document.createElement('canvas');
       canvas.width = 192;
@@ -328,6 +331,7 @@ const TouchControls = memo(
 );
 
 export const WorldScene = ({
+  timeOffset = 0,
   players,
   selfSessionId,
   quests,
@@ -542,8 +546,13 @@ export const WorldScene = ({
               {nearest.title}
             </Typography>
             <Typography component="span" sx={{ display: 'block', fontSize: 12, color: '#69818e' }}>
-              {t('keppyWorld.interact')} · {nearest.xp} XP
+              {nearest.rewardEligible === false
+                ? t('keppyWorld.practice')
+                : `${t('keppyWorld.interact')} · ${nearest.xp} XP`}
             </Typography>
+            {nearest.rewardEligible === false && (
+              <PointRewardStatus readyAt={nearest.rewardAvailableAt} timeOffset={timeOffset} />
+            )}
           </Box>
         </Button>
       )}
