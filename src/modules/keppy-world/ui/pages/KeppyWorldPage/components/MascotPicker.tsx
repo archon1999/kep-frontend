@@ -26,9 +26,6 @@ const previewViews = [
 const MascotPicker = ({ mascotId, cosmetic, cosmetics, disabled, onMascot, onCosmetic }: Props) => {
   const { t } = useTranslation();
   const [view, setView] = useState<(typeof previewViews)[number]['id']>('front');
-  const [previewCosmetic, setPreviewCosmetic] = useState<string | null>(null);
-  const displayedCosmetic = previewCosmetic ?? cosmetic;
-  const previewItem = cosmetics.find((item) => item.id === previewCosmetic);
   const selected = mascotOptions.find((mascot) => mascot.id === mascotId) ?? mascotOptions[0];
   return (
     <Stack spacing={2.5}>
@@ -44,12 +41,12 @@ const MascotPicker = ({ mascotId, cosmetic, cosmetics, disabled, onMascot, onCos
         >
           <Box
             role="img"
-            aria-label={`${selected.name} · ${t(`keppyWorld.cosmetics.${displayedCosmetic}`)}`}
+            aria-label={`${selected.name} · ${t(`keppyWorld.cosmetics.${cosmetic}`)}`}
             sx={{ height: 170, width: 1 }}
           >
             <MascotAccessoryPreview
               mascotId={mascotId}
-              cosmetic={displayedCosmetic}
+              cosmetic={cosmetic}
               yaw={previewViews.find((item) => item.id === view)?.yaw}
             />
           </Box>
@@ -76,12 +73,6 @@ const MascotPicker = ({ mascotId, cosmetic, cosmetics, disabled, onMascot, onCos
               </Tooltip>
             ))}
           </Stack>
-          {previewItem && (
-            <Typography sx={{ textAlign: 'center', color: 'text.secondary', fontSize: 10, pb: 1 }}>
-              {t(`keppyWorld.cosmetics.${previewItem.id}`)} ·{' '}
-              {t('keppyWorld.level', { count: previewItem.level })}
-            </Typography>
-          )}
         </Box>
         <Box sx={{ flex: 1, minWidth: 0 }}>
           <Stack direction="row" alignItems="center" gap={1} mb={1.25}>
@@ -130,15 +121,6 @@ const MascotPicker = ({ mascotId, cosmetic, cosmetics, disabled, onMascot, onCos
       <Box>
         <Stack direction="row" justifyContent="space-between" alignItems="center" mb={1}>
           <Typography variant="subtitle2">{t('keppyWorld.accessories')}</Typography>
-          {previewCosmetic && (
-            <ButtonBase
-              onClick={() => setPreviewCosmetic(null)}
-              sx={{ fontSize: 11, color: 'primary.main', gap: 0.5, px: 0.5, py: 0.25 }}
-            >
-              <IconifyIcon icon="mdi:check" width={13} />
-              {t('keppyWorld.equipped')}
-            </ButtonBase>
-          )}
         </Stack>
         <Box
           sx={{
@@ -162,14 +144,11 @@ const MascotPicker = ({ mascotId, cosmetic, cosmetics, disabled, onMascot, onCos
             >
               <Box component="span" sx={{ display: 'flex' }}>
                 <ButtonBase
-                  disabled={disabled}
-                  aria-label={`${t(`keppyWorld.cosmetics.${item.id}`)}${!item.unlocked ? ` · ${t('keppyWorld.accessoryPreview')} · ${t('keppyWorld.level', { count: item.level })}` : ''}`}
-                  aria-pressed={displayedCosmetic === item.id}
+                  disabled={disabled || !item.unlocked}
+                  aria-label={`${t(`keppyWorld.cosmetics.${item.id}`)}${!item.unlocked ? ` · ${t('keppyWorld.level', { count: item.level })}` : ''}`}
+                  aria-pressed={cosmetic === item.id}
                   onClick={() => {
-                    if (item.unlocked) {
-                      setPreviewCosmetic(null);
-                      onCosmetic(item.id);
-                    } else setPreviewCosmetic(item.id);
+                    if (!disabled && item.unlocked) onCosmetic(item.id);
                   }}
                   sx={{
                     width: 1,
@@ -179,9 +158,8 @@ const MascotPicker = ({ mascotId, cosmetic, cosmetics, disabled, onMascot, onCos
                     px: 0.25,
                     gap: 0.65,
                     borderRadius: 2,
-                    bgcolor:
-                      displayedCosmetic === item.id ? 'primary.lighter' : 'background.elevation1',
-                    color: displayedCosmetic === item.id ? 'primary.main' : 'text.secondary',
+                    bgcolor: cosmetic === item.id ? 'primary.lighter' : 'background.elevation1',
+                    color: cosmetic === item.id ? 'primary.main' : 'text.secondary',
                     '&:hover': { bgcolor: 'action.selected' },
                     '&.Mui-focusVisible': { outline: '2px solid', outlineColor: 'primary.main' },
                   }}
