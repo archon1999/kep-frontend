@@ -13,6 +13,11 @@ export const gameMusic: Record<GameId, readonly string[]> = {
   'memory-grid': ['feel-good-island-loop.mp3', 'overworld.mp3'],
   'code-islands': ['an-adventure.mp3', 'feel-good-island-loop.mp3'],
   'keppy-world': world,
+  'math-compare': ['overworld.mp3', 'exploration-theme.mp3'],
+  'quick-math': ['an-adventure.mp3', 'overworld.mp3'],
+  'number-sequence': ['exploration-theme.mp3', 'feel-good-island-loop.mp3'],
+  'number-hunt': ['feel-good-island-loop.mp3', 'an-adventure.mp3'],
+  'memory-matrix': ['exploration-theme.mp3', 'overworld.mp3'],
 };
 
 type Track = { audio: HTMLAudioElement; index: number };

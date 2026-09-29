@@ -24,6 +24,7 @@ import { useWorldExperience } from '../../../application';
 import { mascotPortraits, mascotVisuals } from '../../shared/helpers/mascot-visuals';
 import MascotPicker from './components/MascotPicker';
 import QuestChallenge from './components/QuestChallenge';
+import WorldChat from './components/WorldChat';
 import WorldMap from './components/WorldMap';
 import {
   WorldGrowthDetails,
@@ -44,6 +45,11 @@ const questIcons: Record<string, string> = {
   'logic-circuit': 'mdi:electric-switch',
   'code-islands': 'mdi:code-braces',
   'memory-grid': 'mdi:grid',
+  'math-compare': 'mdi:compare-horizontal',
+  'quick-math': 'mdi:calculator-variant-outline',
+  'number-sequence': 'mdi:dots-horizontal',
+  'number-hunt': 'mdi:sort-numeric-ascending',
+  'memory-matrix': 'mdi:checkerboard',
   cargo: 'mdi:package-variant-closed',
   'daily-task': 'mdi:book-open-page-variant-outline',
 };
@@ -59,6 +65,7 @@ const KeppyWorldPage = () => {
   >(null);
   const [collapsed, setCollapsed] = useState(false);
   const [profileCollapsed, setProfileCollapsed] = useState(false);
+  const [chatFocused, setChatFocused] = useState(false);
   const [mascot, setMascot] = useState('keppy');
   const [cosmetic, setCosmetic] = useState('none');
   const audio = useGameAudio('keppy-world', entered && game.connection.status === 'connected');
@@ -272,7 +279,12 @@ const KeppyWorldPage = () => {
                   mascotVisuals={mascotVisuals}
                   onMove={game.move}
                   onQuestSelect={(id) => void selectQuest(id)}
-                  disabled={panel !== null || game.pending || connectionStatus !== 'connected'}
+                  disabled={
+                    panel !== null ||
+                    chatFocused ||
+                    game.pending ||
+                    connectionStatus !== 'connected'
+                  }
                 />
               )}
             </Suspense>
@@ -412,6 +424,14 @@ const KeppyWorldPage = () => {
                 {t(completedRun ? 'keppyWorld.completed' : 'keppyWorld.resume')}
               </Button>
             )}
+            <WorldChat
+              messages={game.connection.chatMessages ?? []}
+              error={game.connection.chatError ?? null}
+              connected={connectionStatus === 'connected'}
+              hidden={panel !== null}
+              onSend={game.chat}
+              onFocusChange={setChatFocused}
+            />
             {connectionStatus !== 'connected' && (
               <Box
                 sx={{
@@ -427,7 +447,11 @@ const KeppyWorldPage = () => {
                   <Stack alignItems="center" spacing={2}>
                     {connectionStatus === 'error' ? (
                       <>
-                        <Typography>{t('keppyWorld.connectionError')}</Typography>
+                        <Typography>
+                          {t(`keppyWorld.${game.connection.error ?? 'connectionError'}`, {
+                            defaultValue: t('keppyWorld.connectionError'),
+                          })}
+                        </Typography>
                         <Button
                           variant="contained"
                           onClick={() => void game.connect()}
@@ -498,7 +522,7 @@ const KeppyWorldPage = () => {
               width={23}
             />
             {panel === 'run'
-              ? run?.title
+              ? run && t(`keppyWorld.kinds.${run.kind}`, { defaultValue: run.title })
               : t(`keppyWorld.${panel === 'growth' ? 'growth.title' : (panel ?? 'quests')}`)}
             <IconButton sx={{ ml: 'auto' }} onClick={closePanel} aria-label={t('keppyWorld.close')}>
               <IconifyIcon icon="mdi:close" width={20} />

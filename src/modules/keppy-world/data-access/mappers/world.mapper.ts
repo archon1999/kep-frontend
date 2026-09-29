@@ -22,6 +22,10 @@ export const mapProfile = (data: JsonObject): WorldProfile => ({
   nextLevelXp: Number(data.nextLevelXp),
   completedToday: Number(data.completedToday),
   dailyLimit: Number(data.dailyLimit),
+  completedByKind: Object.fromEntries(
+    Object.entries(data.completedByKind ?? {}).map(([kind, count]) => [kind, Number(count)]),
+  ),
+  kindDailyLimit: Number(data.kindDailyLimit ?? 3),
 });
 export const mapWorld = (data: JsonObject): CommunityWorld => {
   const defaultXp = [0, 1000, 5000, 15000, 35000, 70000, 125000, 200000, 320000, 500000];
@@ -83,6 +87,47 @@ export const mapQuest = (data: JsonObject): WorldQuest => ({
   zone: data.zone,
   dailyTaskId: data.dailyTaskId == null ? undefined : Number(data.dailyTaskId),
 });
+export const mapChallenge = (data: JsonObject): WorldChallenge => {
+  const round = {
+    prompt: String(data.prompt ?? ''),
+    difficulty: Number(data.difficulty),
+    round: Number(data.round),
+    totalRounds: Number(data.totalRounds),
+    roundId: String(data.roundId),
+    deadlineAt: data.deadlineAt ?? null,
+  };
+  switch (data.kind) {
+    case 'math-compare':
+      return { ...round, kind: data.kind, left: String(data.left), right: String(data.right) };
+    case 'quick-math':
+      return { ...round, kind: data.kind, expression: String(data.expression) };
+    case 'number-sequence':
+      return { ...round, kind: data.kind, sequence: data.sequence.map(Number) };
+    case 'number-hunt':
+      return {
+        ...round,
+        kind: data.kind,
+        rows: Number(data.rows),
+        columns: Number(data.columns),
+        cells: data.cells.map(Number),
+        next: Number(data.next),
+      };
+    case 'memory-matrix':
+      return {
+        ...round,
+        kind: data.kind,
+        rows: Number(data.rows),
+        columns: Number(data.columns),
+        phase: data.phase === 'watch' ? 'watch' : 'recall',
+        highlighted: data.phase === 'watch' ? (data.highlighted ?? []).map(Number) : [],
+        selected: (data.selected ?? []).map(Number),
+        targetCount: Number(data.targetCount),
+        revealUntil: data.revealUntil ?? null,
+      };
+    default:
+      return { ...data } as WorldChallenge;
+  }
+};
 export const mapRun = (data: JsonObject): WorldRun => ({
   id: String(data.id),
   questId: String(data.questId),
@@ -92,7 +137,7 @@ export const mapRun = (data: JsonObject): WorldRun => ({
   xp: Number(data.xp),
   status: data.status,
   expiresAt: data.expiresAt,
-  challenge: { ...data.challenge } as WorldChallenge,
+  challenge: mapChallenge(data.challenge),
 });
 export const mapBootstrap = (data: JsonObject): WorldBootstrap => ({
   player: mapProfile(data.player),
@@ -115,5 +160,7 @@ export const mapRanking = (data: JsonObject): WorldRanking => ({
   xp: Number(data.xp),
   level: Number(data.level),
   achievedAt: data.achievedAt ?? null,
+  completedTasks: Number(data.completedTasks ?? 0),
+  lastCompletedAt: data.lastCompletedAt ?? null,
   isCurrentUser: Boolean(data.isCurrentUser),
 });

@@ -5,7 +5,7 @@
     "overallScore": "Umumiy ball",
     "scoreSplit": "O‘yinlar bo‘yicha ball",
     "played": "O‘ynalgan o‘yinlar",
-    "subtitle": "O‘ylash, kashf qilish va bellashishning besh yo‘li. O‘yinni tanlang va rekordingizni yangilang.",
+    "subtitle": "O‘yinni tanlang va shaxsiy rekordingizni yangilang.",
     "allGames": "O‘yinlar to‘plami",
     "overall": "Umumiy reyting",
     "leaderboard": "Reyting jadvali",
@@ -27,7 +27,7 @@
     "notRanked": "Hali reyting natijasi yo‘q",
     "featured": "3D dunyoni kashf eting",
     "quickGames": "Tezkor o‘yinlar",
-    "rankTitle": "Bitta reyting. Yuqoriga besh yo‘l.",
+    "rankTitle": "Barcha o‘yinlar — bitta reyting",
     "rankDescription": "Har bir o‘yindagi eng yaxshi natijangiz umumiy ballga qo‘shiladi.",
     "catalog": {
       "code-islands": {
@@ -59,6 +59,36 @@
         "description": "Yorishgan yo‘lni kuzating va tartibini xotiradan qaytaring.",
         "type": "Xotira sinovi",
         "rules": "Uzayib boradigan 10 ta ketma-ketlikni takrorlang. Ikki xato o‘yinni tugatadi, ammo noto‘g‘ri bosish balldan ayirmaydi."
+      },
+      "math-compare": {
+        "title": "Ifodalarni taqqoslash",
+        "description": "Ikki ifodaning qiymatini taqqoslang.",
+        "type": "Tez hisoblash",
+        "rules": "<, = yoki > ni tanlang. 10 bosqichda ifodalar murakkablashadi va vaqt qisqaradi."
+      },
+      "quick-math": {
+        "title": "Tez hisob",
+        "description": "Ifodani hisoblab, javobni kiriting.",
+        "type": "Hisoblash",
+        "rules": "Vaqt tugaguncha barcha misollarni yeching. 10 bosqichning har biri 100 ball beradi."
+      },
+      "number-sequence": {
+        "title": "Keyingi son",
+        "description": "Qonuniyatni topib, qatorni davom ettiring.",
+        "type": "Qonuniyatlar",
+        "rules": "Keyingi sonni kiriting. Ayirmalar, almashinuvchi qatorlar va rekurrent bog‘lanishlar 10 bosqichda murakkablashadi."
+      },
+      "number-hunt": {
+        "title": "Raqamlar izidan",
+        "description": "Raqamlarni tartib bilan topib bosing.",
+        "type": "Diqqat sinovi",
+        "rules": "1 dan boshlang. 10 bosqichda kataklar ko‘payadi; vaqt tugaguncha barcha raqamlarni toping."
+      },
+      "memory-matrix": {
+        "title": "Xotira matritsasi",
+        "description": "Yongan kataklar joyini eslab qoling.",
+        "type": "Ko‘rish xotirasi",
+        "rules": "Namunani kuzating, keyin o‘sha kataklarni belgilang. 10 bosqichda maydon kattalashadi, kuzatish vaqti qisqaradi."
       }
     },
     "world": {
@@ -134,13 +164,23 @@
           "intro": "Boshlang‘ich qiymatlar berilgan. Quyidagi amallarni uch marta bajaring:",
           "code": "a = 2, b = 5\n3 marta takrorlang:\n  a = (a + b) mod 7\n  b = b + 1",
           "question": "Oxirida a nechaga teng?",
-          "options": ["0", "5", "6", "7"]
+          "options": [
+            "0",
+            "5",
+            "6",
+            "7"
+          ]
         },
         "t2": {
           "intro": "Massivni chapdan o‘ngga yangilang. Har safar joriy elementni keyingisiga qo‘shing:",
           "code": "a = [2, 4, 1, 3]\ni = 0, 1, 2 uchun:\n  a[i+1] = a[i+1] + a[i]",
           "question": "Oxirida a[3] nechaga teng?",
-          "options": ["7", "9", "10", "12"]
+          "options": [
+            "7",
+            "9",
+            "10",
+            "12"
+          ]
         },
         "t3": {
           "intro": "Massiv tartiblangan. Quyidagi ikkilik qidiruvni bajaring:",

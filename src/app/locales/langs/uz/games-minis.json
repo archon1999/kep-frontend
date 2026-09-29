@@ -146,8 +146,14 @@
       "doneTitle": "Sxemalar tayyor",
       "doneDetail": "O‘nta sxema yig‘ildi. Kamroq tekshiruv bilan natijani yaxshilang.",
       "puzzles": {
-        "and": { "title": "Ikkala tugma", "hint": "Chiroq ikkala kirish yoqilganda yonadi." },
-        "xor": { "title": "Aynan bittasi", "hint": "Chiroq faqat bitta kirish yoqilganda yonadi." },
+        "and": {
+          "title": "Ikkala tugma",
+          "hint": "Chiroq ikkala kirish yoqilganda yonadi."
+        },
+        "xor": {
+          "title": "Aynan bittasi",
+          "hint": "Chiroq faqat bitta kirish yoqilganda yonadi."
+        },
         "xnor": {
           "title": "Bir xil signallar",
           "hint": "Ikkala kirish bir xil bo‘lsa — ikkalasi o‘chiq yoki ikkalasi yoqiq — chiroq yonadi."
@@ -205,6 +211,43 @@
       "replay": "Qayta ko‘rish · −25",
       "success": "Bosqich o‘tildi. +100 ball",
       "mistake": "Boshqa katak bosildi. Bitta jon ketdi; ketma-ketlikni yana kuzating."
+    },
+    "brain": {
+      "instructions": {
+        "math-compare": "Natijasi kattaroq ifodani tanlang yoki tengligini belgilang. 10 bosqich davomida sonlar kattalashadi, qavslar va darajalar qo‘shiladi.",
+        "quick-math": "Ifodani hisoblab, javobni kiriting. Keyingi bosqichni ochish uchun vaqt tugaguncha barcha misollarni yeching.",
+        "number-sequence": "Qonuniyatni topib, keyingi sonni kiriting. 10 bosqich: oddiy qadamdan navbatlashuvchi va rekursiv ketma-ketliklargacha.",
+        "number-hunt": "Sonlarni o‘sish tartibida topib bosing. 10 bosqich davomida maydon kengayadi, har bir son uchun vaqt qisqaradi.",
+        "memory-matrix": "Yoritilgan kataklarni eslab qoling va ular o‘chgach toping. 10 bosqich davomida kataklar ko‘payadi, ko‘rsatish vaqti qisqaradi."
+      },
+      "comparePrompt": "Qaysi ifodaning natijasi kattaroq?",
+      "leftExpression": "Chapdagini tanlash: {{expression}}",
+      "rightExpression": "O‘ngdagini tanlash: {{expression}}",
+      "equal": "Teng",
+      "sequenceLabel": "Sonlar ketma-ketligi",
+      "answer": "Javobingiz",
+      "check": "Tekshirish",
+      "watchCells": "Yoritilgan kataklarni eslab qoling",
+      "recallCells": "Ko‘rgan kataklaringizni toping",
+      "findNumber": "Keyingi sonni toping",
+      "matrixLabel": "Xotira matritsasi",
+      "numberGridLabel": "Sonlar maydoni",
+      "cell": "{{row}}-qator, {{column}}-ustun",
+      "rounds": "Topshiriq {{current}} / {{total}}",
+      "secondsLeft": "{{seconds}} soniya qoldi",
+      "timeRemaining": "Qolgan vaqt",
+      "wrong": "Xato. Yana urinib ko‘ring.",
+      "levelReward": "Bu bosqich uchun 100 ball",
+      "lives": "Urinishlar: {{count}}",
+      "levelCleared": "Bosqich yakunlandi",
+      "earned": "100 ball olindi. Keyingi bosqich qiyinroq.",
+      "tryLevelAgain": "Bu bosqichni qayta sinab ko‘ring",
+      "timeUp": "Vaqt tugadi. Yangi topshiriq bilan qayta urining.",
+      "noLives": "Urinishlar tugadi. Yangi topshiriq bilan qayta urining.",
+      "retryLevel": "Bosqichni qayta boshlash",
+      "savedScore": "Yakunlangan bosqichlardan olgan {{score}} ballingiz saqlandi.",
+      "finished": "10 bosqich yakunlandi",
+      "finishedDetail": "To‘liq 1000 ball oldingiz. Yangi topshiriqlar bilan yana o‘ynashingiz mumkin."
     }
   }
 }

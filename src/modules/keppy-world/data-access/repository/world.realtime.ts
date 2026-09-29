@@ -1,5 +1,11 @@
 import { Client, CloseCode, ErrorCode, type Room } from '@colyseus/sdk';
-import type { MoveIntent, WorldConnection, WorldPlayer, WorldTicket } from '../../domain';
+import type {
+  MoveIntent,
+  WorldChatMessage,
+  WorldConnection,
+  WorldPlayer,
+  WorldTicket,
+} from '../../domain';
 import { mapQuest, mapWorld } from '../mappers/world.mapper.ts';
 
 type NetworkState = {
@@ -20,6 +26,18 @@ const initial = (): WorldConnection => ({
   quests: null,
   error: null,
 });
+
+export function worldConnectionError(error: unknown): string {
+  const details = error && typeof error === 'object' ? (error as Record<string, unknown>) : {};
+  const code = Number(details.code ?? details.status);
+  const message = String(details.message ?? details.data ?? '');
+  if (code === 4211) return 'duplicateSession';
+  if (code === 409 || /shared world is full/i.test(message)) return 'worldFull';
+  if (code === 401 || code === ErrorCode.AUTH_FAILED) return 'authExpired';
+  if (code === 503) return 'backendUnavailable';
+  if (code === 429) return 'rateLimited';
+  return 'connectionError';
+}
 
 /** Reuse Colyseus' reserved seat across reloads as well as transient disconnects. */
 export class WorldRealtime {
@@ -76,7 +94,7 @@ export class WorldRealtime {
   private pageHide = () => {
     this.suspend();
     // A bfcache restore should offer Retry rather than show an endless spinner.
-    this.update({ status: 'error', error: 'disconnected' });
+    this.update({ status: 'error', error: 'connectionError' });
   };
   async connect(pendingTicket: WorldTicket | Promise<WorldTicket>) {
     this.suspend();
@@ -115,6 +133,8 @@ export class WorldRealtime {
         return;
       }
       this.room = room;
+      // The server reserves a seat even if a mobile connection drops just after joining.
+      room.reconnection.minUptime = 0;
       this.remember(room);
       if (typeof window !== 'undefined') window.addEventListener('pagehide', this.pageHide);
       const active = () => this.room === room && generation === this.generation;
@@ -158,6 +178,29 @@ export class WorldRealtime {
       };
       room.onStateChange(readPlayers);
       room.onMessage('welcome', () => undefined);
+      room.onMessage('chatHistory', (data: { messages: WorldChatMessage[] }) => {
+        if (active() && Array.isArray(data?.messages))
+          this.update({ chatMessages: data.messages.slice(-50) });
+      });
+      room.onMessage('chat', (message: WorldChatMessage) => {
+        if (
+          !active() ||
+          !message ||
+          typeof message.id !== 'string' ||
+          typeof message.text !== 'string'
+        )
+          return;
+        const previous = this.snapshot.chatMessages ?? [];
+        this.update({
+          chatMessages: previous.some((item) => item.id === message.id)
+            ? previous
+            : [...previous, message].slice(-50),
+          chatError: null,
+        });
+      });
+      room.onMessage('chatError', (error: { code: string; clientId: string | null }) => {
+        if (active()) this.update({ chatError: error });
+      });
       room.onMessage('fell', () => undefined);
       room.onMessage('respawned', () => undefined);
       room.onMessage('backendUnavailable', () => {
@@ -174,23 +217,33 @@ export class WorldRealtime {
       room.onDrop(() => {
         if (active()) {
           this.remember(room);
-          this.update({ status: 'reconnecting' });
+          this.update({ status: 'reconnecting', error: null });
         }
       });
       room.onReconnect(() => {
         if (active()) {
-          this.remember(room);
+          // The SDK emits onReconnect before assigning the freshly rotated bearer token.
+          queueMicrotask(() => {
+            if (active()) this.remember(room);
+          });
           this.update({ status: 'connected', error: null });
         }
       });
-      room.onError((_code, message) => {
-        if (active()) this.update({ status: 'error', error: message || 'connection' });
+      room.onError((code, message) => {
+        if (active()) {
+          // A failed socket attempt is not terminal while the SDK still owns its retry loop.
+          this.update(
+            room.reconnection.isReconnecting
+              ? { status: 'reconnecting', error: null }
+              : { status: 'error', error: worldConnectionError({ code, message }) },
+          );
+        }
       });
       room.onLeave((code) => {
         if (active()) {
           if (code === CloseCode.CONSENTED) this.forget();
           this.room = null;
-          this.update({ status: 'error', sessionId: null, players: [], error: 'disconnected' });
+          this.update({ status: 'error', sessionId: null, players: [], error: 'connectionError' });
         }
       });
       this.update({ status: 'connected', sessionId: room.sessionId });
@@ -200,13 +253,19 @@ export class WorldRealtime {
       if (generation === this.generation)
         this.update({
           status: 'error',
-          error: error instanceof Error ? error.message : 'connection',
+          error: worldConnectionError(error),
         });
       throw error;
     }
   }
   move = (input: MoveIntent) => {
     if (this.snapshot.status === 'connected') this.room?.send('move', input);
+  };
+  chat = (text: string, clientId: string) => {
+    if (this.snapshot.status !== 'connected' || !this.room) return false;
+    this.update({ chatError: null });
+    this.room.send('chat', { text, clientId });
+    return true;
   };
   emote = (id: 'wave' | 'heart' | 'gg') => {
     if (this.snapshot.status === 'connected') this.room?.send('emote', { id });

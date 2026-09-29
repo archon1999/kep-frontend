@@ -211,6 +211,43 @@
       "replay": "Replay pattern · −25",
       "success": "Round cleared. +100 points",
       "mistake": "That was a different cell. One life was used; watch the pattern again."
+    },
+    "brain": {
+      "instructions": {
+        "math-compare": "Choose the expression with the larger result, or mark them equal. Ten levels introduce larger numbers, parentheses and powers.",
+        "quick-math": "Calculate each expression and enter its value. Clear every question before time runs out to unlock the next level.",
+        "number-sequence": "Find the pattern and enter the next number. Ten levels move from simple steps to alternating and recursive sequences.",
+        "number-hunt": "Find and tap every number in ascending order. The grid grows and the time per number gets shorter over ten levels.",
+        "memory-matrix": "Remember the highlighted cells, then find them after they disappear. Ten levels add more cells and shorten the preview."
+      },
+      "comparePrompt": "Which expression has the larger result?",
+      "leftExpression": "Choose left: {{expression}}",
+      "rightExpression": "Choose right: {{expression}}",
+      "equal": "Equal",
+      "sequenceLabel": "Number sequence",
+      "answer": "Your answer",
+      "check": "Check",
+      "watchCells": "Remember the highlighted cells",
+      "recallCells": "Find the cells you saw",
+      "findNumber": "Find the next number",
+      "matrixLabel": "Memory matrix",
+      "numberGridLabel": "Number grid",
+      "cell": "Row {{row}}, column {{column}}",
+      "rounds": "Question {{current}} / {{total}}",
+      "secondsLeft": "{{seconds}} seconds remaining",
+      "timeRemaining": "Time remaining",
+      "wrong": "Not quite. Try again.",
+      "levelReward": "Complete this level for 100 points",
+      "lives": "Attempts left: {{count}}",
+      "levelCleared": "Level complete",
+      "earned": "100 points earned. The next level is harder.",
+      "tryLevelAgain": "Try this level again",
+      "timeUp": "Time is up. Retry with a new puzzle.",
+      "noLives": "No attempts left. Retry with a new puzzle.",
+      "retryLevel": "Retry level",
+      "savedScore": "Your {{score}} points from completed levels are saved.",
+      "finished": "All 10 levels complete",
+      "finishedDetail": "You earned the full 1000 points. Try another run for fresh puzzles."
     }
   }
 }

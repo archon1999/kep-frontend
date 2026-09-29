@@ -9,7 +9,7 @@ import { type GameId, gameIds } from 'modules/games/domain';
 import IconifyIcon from 'shared/components/base/IconifyIcon';
 import { responsivePagePaddingSx } from 'shared/lib/styles';
 import { LeaderboardCard } from '../../shared';
-import { BugHuntGame, LogicCircuitGame, MemoryGridGame } from './components';
+import { BrainGame, BugHuntGame, LogicCircuitGame, MemoryGridGame } from './components';
 
 const CodeIslandsGame = lazy(
   () => import('modules/kepper-game/ui/pages/KepperGamePage/KepperGamePage'),
@@ -50,6 +50,14 @@ const GameContent = ({ id }: { id: GameId }) => {
         return <LogicCircuitGame onScore={score.record} best={score.best} audio={audio} />;
       case 'memory-grid':
         return <MemoryGridGame onScore={score.record} best={score.best} audio={audio} />;
+      case 'math-compare':
+      case 'quick-math':
+      case 'number-sequence':
+      case 'number-hunt':
+      case 'memory-matrix':
+        return (
+          <BrainGame key={id} id={id} onScore={score.record} best={score.best} audio={audio} />
+        );
     }
   })();
 

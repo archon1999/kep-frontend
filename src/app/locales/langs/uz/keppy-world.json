@@ -25,7 +25,7 @@
     "requestFailed": "Amalni bajarib bo‘lmadi. Qayta urinib ko‘ring.",
     "connecting": "Dunyoga ulanmoqda…",
     "reconnecting": "Qayta ulanmoqda. Natijalaringiz saqlangan.",
-    "connectionError": "Aloqa uzildi yoki dunyo to‘lgan. Qayta ulanib ko‘ring.",
+    "connectionError": "Aloqa uzildi. Qayta ulanishga urinib ko‘ring.",
     "retry": "Qayta urinish",
     "back": "O‘yinlarga qaytish",
     "close": "Yopish",
@@ -102,7 +102,9 @@
       "cosmetic_locked": "Bu aksessuar uchun kerakli darajaga yeting.",
       "not_found": "Bu topshiriq endi mavjud emas.",
       "already_rewarded": "Bu topshiriq uchun ball allaqachon berilgan.",
-      "realtime_unconfigured": "Umumiy dunyo hozircha mavjud emas."
+      "realtime_unconfigured": "Umumiy dunyo hozircha mavjud emas.",
+      "kind_daily_limit": "Bugun shu turdagi 3 ta topshiriqni bajardingiz. Boshqa mini o‘yinni tanlang.",
+      "content_exhausted": "Bugun shu turdagi mavjud topshiriqlarni bajarib bo‘ldingiz. Boshqa mini o‘yinni tanlang."
     },
     "kinds": {
       "bug-hunt": "Ustaxonani ta’mirlash",
@@ -110,7 +112,12 @@
       "code-islands": "Yo‘lni dasturlash",
       "memory-grid": "Signalni eslab qolish",
       "cargo": "Yukni joylash",
-      "daily-task": "KEP kunlik topshirig‘i"
+      "daily-task": "KEP kunlik topshirig‘i",
+      "math-compare": "Ifodalarni taqqoslash",
+      "quick-math": "Tezkor hisob",
+      "number-sequence": "Qatorni davom ettiring",
+      "number-hunt": "Sonlar ovi",
+      "memory-matrix": "Xotira matritsasi"
     },
     "map": "Dunyo xaritasi",
     "accessoryPreview": "Ko‘rinish",
@@ -154,6 +161,34 @@
         "workshop-island": "Janubiy orol, kemasozlik ustaxonasi va yangi bandargoh.",
         "crystal-island": "Sharqiy arxipelag, kristall bog‘lari va tadqiqot markazi.",
         "citadel": "G‘arbiy orol, qal’a, minoralar va keng shahar maydoni."
+      }
+    },
+    "brainRound": "{{current}} / {{total}} raund",
+    "brainWatchTime": "Kataklarni eslab qoling: {{seconds}} soniya",
+    "brainTimeLeft": "Qolgan vaqt: {{seconds}} soniya",
+    "rankColumn": "O‘rin",
+    "playerColumn": "O‘yinchi",
+    "completedTasksColumn": "Jami",
+    "completedTasksTotal": "Barcha vaqtda bajarilgan topshiriqlar soni",
+    "lastTaskCompletedAt": "Oxirgi topshiriq bajarilgan vaqt: {{date}}",
+    "duplicateSession": "Bu akkaunt boshqa tab yoki qurilmada o‘yinga kirgan. O‘sha sessiyani yoping va qayta urinib ko‘ring.",
+    "worldFull": "30 ta joyning barchasi band. Birozdan so‘ng qayta urinib ko‘ring.",
+    "authExpired": "Kirish sessiyasi tugagan. Hisobingizga qayta kiring.",
+    "backendUnavailable": "O‘yin xizmati vaqtincha javob bermayapti. Birozdan so‘ng qayta urinib ko‘ring.",
+    "rateLimited": "Ulanishga juda ko‘p urinish bo‘ldi. Biroz kutib, qayta urinib ko‘ring.",
+    "chat": {
+      "title": "World chati",
+      "open": "Chatni ochish",
+      "collapse": "Chatni yig‘ish",
+      "empty": "Hali xabar yo‘q.",
+      "emoji": "KEP emojilari",
+      "placeholder": "Xabar",
+      "send": "Yuborish",
+      "failed": "Xabar yuborilmadi. Qayta urinib ko‘ring.",
+      "errors": {
+        "invalid_message": "Xabarni tekshiring.",
+        "message_too_long": "Ko‘pi bilan 50 ta belgi.",
+        "rate_limited": "Keyingi xabar uchun 2 soniya kuting."
       }
     }
   }

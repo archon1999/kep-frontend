@@ -50,6 +50,11 @@ const questColors: Record<string, string> = {
   'logic-circuit': '#4eaca3',
   'code-islands': '#618fc3',
   'memory-grid': '#9d85ba',
+  'math-compare': '#ad7394',
+  'quick-math': '#418e9d',
+  'number-sequence': '#7681bd',
+  'number-hunt': '#b48c52',
+  'memory-matrix': '#8b79b3',
   cargo: '#b0a168',
   'daily-task': '#657bb0',
 };
@@ -58,6 +63,11 @@ const questSymbols: Record<string, string> = {
   'logic-circuit': '&',
   'code-islands': '↗',
   'memory-grid': '▦',
+  'math-compare': '≶',
+  'quick-math': '+',
+  'number-sequence': '…',
+  'number-hunt': '123',
+  'memory-matrix': '▧',
   cargo: '◇',
   'daily-task': '</>',
 };

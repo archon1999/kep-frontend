@@ -3,6 +3,11 @@ export type QuestKind =
   | 'logic-circuit'
   | 'code-islands'
   | 'memory-grid'
+  | 'math-compare'
+  | 'quick-math'
+  | 'number-sequence'
+  | 'number-hunt'
+  | 'memory-matrix'
   | 'cargo'
   | 'daily-task';
 export type WorldProfile = {
@@ -16,6 +21,8 @@ export type WorldProfile = {
   nextLevelXp: number;
   completedToday: number;
   dailyLimit: number;
+  completedByKind: Partial<Record<QuestKind, number>>;
+  kindDailyLimit: number;
 };
 export type WorldMilestone = { level: number; requiredXp: number; zone: string };
 export type CommunityWorld = {
@@ -42,8 +49,31 @@ export type WorldQuest = {
   dailyTaskId?: number;
 };
 type ChallengeBase = { prompt: string };
+export type WorldBrainChallenge = ChallengeBase & {
+  difficulty: number;
+  round: number;
+  totalRounds: number;
+  roundId: string;
+  deadlineAt: string | null;
+} & (
+    | { kind: 'math-compare'; left: string; right: string }
+    | { kind: 'quick-math'; expression: string }
+    | { kind: 'number-sequence'; sequence: number[] }
+    | { kind: 'number-hunt'; rows: number; columns: number; cells: number[]; next: number }
+    | {
+        kind: 'memory-matrix';
+        rows: number;
+        columns: number;
+        phase: 'watch' | 'recall';
+        highlighted: number[];
+        selected: number[];
+        targetCount: number;
+        revealUntil: string | null;
+      }
+  );
 export type WorldChallenge = ChallengeBase &
   (
+    | WorldBrainChallenge
     | { kind: 'bug-hunt'; language: string; code: string[]; requiresFix: boolean }
     | {
         kind: 'logic-circuit';
@@ -105,6 +135,8 @@ export type WorldRanking = {
   xp: number;
   level: number;
   achievedAt: string | null;
+  completedTasks: number;
+  lastCompletedAt: string | null;
   isCurrentUser: boolean;
 };
 export type MoveIntent = { x: number; z: number; jump: boolean; seq: number };
@@ -125,10 +157,21 @@ export type WorldPlayer = {
   lastSeq: number;
 };
 export type WorldConnection = {
+  chatMessages?: WorldChatMessage[];
+  chatError?: { code: string; clientId: string | null } | null;
   status: 'idle' | 'connecting' | 'connected' | 'reconnecting' | 'error';
   sessionId: string | null;
   players: WorldPlayer[];
   world: CommunityWorld | null;
   quests: WorldQuest[] | null;
   error: string | null;
+};
+
+export type WorldChatMessage = {
+  id: string;
+  userId: string;
+  username: string;
+  text: string;
+  createdAt: string;
+  clientId: string;
 };

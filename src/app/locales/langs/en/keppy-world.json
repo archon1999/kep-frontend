@@ -25,7 +25,7 @@
     "requestFailed": "Could not complete the action. Please try again.",
     "connecting": "Connecting to the world…",
     "reconnecting": "Reconnecting. Your progress is saved.",
-    "connectionError": "Connection lost or the world is full. Try reconnecting.",
+    "connectionError": "Connection lost. Try reconnecting.",
     "retry": "Try again",
     "back": "Back to games",
     "close": "Close",
@@ -102,7 +102,9 @@
       "cosmetic_locked": "Reach the required level to wear this accessory.",
       "not_found": "This quest is no longer available.",
       "already_rewarded": "This quest has already been rewarded.",
-      "realtime_unconfigured": "The shared world is not available yet."
+      "realtime_unconfigured": "The shared world is not available yet.",
+      "kind_daily_limit": "You have completed 3 quests of this kind today. Try another mini game.",
+      "content_exhausted": "You have completed all available puzzles of this kind today. Try another mini game."
     },
     "kinds": {
       "bug-hunt": "Repair the workshop",
@@ -110,7 +112,12 @@
       "code-islands": "Program the route",
       "memory-grid": "Decode the signal",
       "cargo": "Pack the cargo",
-      "daily-task": "KEP daily task"
+      "daily-task": "KEP daily task",
+      "math-compare": "Compare expressions",
+      "quick-math": "Quick math",
+      "number-sequence": "Continue the sequence",
+      "number-hunt": "Number hunt",
+      "memory-matrix": "Memory matrix"
     },
     "map": "World map",
     "accessoryPreview": "Preview",
@@ -154,6 +161,34 @@
         "workshop-island": "A southern island, shipyard and new harbor.",
         "crystal-island": "Eastern archipelago, crystal gardens and a research center.",
         "citadel": "A western island, citadel, towers and a grand town square."
+      }
+    },
+    "brainRound": "Round {{current}} of {{total}}",
+    "brainWatchTime": "Remember the pattern: {{seconds}} seconds",
+    "brainTimeLeft": "Time left: {{seconds}} seconds",
+    "rankColumn": "Rank",
+    "playerColumn": "Player",
+    "completedTasksColumn": "Done",
+    "completedTasksTotal": "Total completed quests, all time",
+    "lastTaskCompletedAt": "Last quest completed: {{date}}",
+    "duplicateSession": "This account is already in the world in another tab or device. Close that session, then try again.",
+    "worldFull": "All 30 places are occupied. Try again shortly.",
+    "authExpired": "Your login session expired. Sign in again.",
+    "backendUnavailable": "The game service is temporarily unavailable. Try again shortly.",
+    "rateLimited": "Too many connection attempts. Wait a moment and try again.",
+    "chat": {
+      "title": "World chat",
+      "open": "Open chat",
+      "collapse": "Collapse chat",
+      "empty": "No messages yet.",
+      "emoji": "KEP emojis",
+      "placeholder": "Message",
+      "send": "Send",
+      "failed": "Message was not sent. Try again.",
+      "errors": {
+        "invalid_message": "Check your message.",
+        "message_too_long": "Maximum 50 characters.",
+        "rate_limited": "Wait 2 seconds before sending again."
       }
     }
   }

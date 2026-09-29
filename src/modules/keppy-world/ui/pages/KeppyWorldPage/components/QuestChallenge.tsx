@@ -19,6 +19,7 @@ import {
 import GameCodeEditor from 'modules/kepper-game/ui/pages/KepperGamePage/components/GameCodeEditor';
 import IconifyIcon from 'shared/components/base/IconifyIcon';
 import type { WorldChallenge, WorldResult, WorldRun } from '../../../../domain';
+import WorldBrainChallenge from './WorldBrainChallenge';
 
 type Props = {
   run: WorldRun;
@@ -421,6 +422,13 @@ const QuestChallenge = ({ run, pending, onSubmit, onDone }: Props) => {
         {challenge.prompt}
       </Typography>
       {incorrect && <Alert severity="info">{t('keppyWorld.tryAgain')}</Alert>}
+      {(challenge.kind === 'math-compare' ||
+        challenge.kind === 'quick-math' ||
+        challenge.kind === 'number-sequence' ||
+        challenge.kind === 'number-hunt' ||
+        challenge.kind === 'memory-matrix') && (
+        <WorldBrainChallenge challenge={challenge} pending={pending} submit={submit} />
+      )}
       {challenge.kind === 'bug-hunt' && (
         <BugChallenge challenge={challenge} pending={pending} submit={submit} />
       )}

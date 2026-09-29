@@ -150,6 +150,8 @@ export const useWorldExperience = (username?: string) => {
         connection.quests ?? bootstrap.data?.quests ?? [],
         bootstrap.data?.completedDailyTaskIds ?? [],
         bootstrap.data?.activeRun?.questId,
+        bootstrap.data?.player.completedByKind,
+        bootstrap.data?.player.kindDailyLimit,
       ).map((quest) => ({
         ...quest,
         title: t(`keppyWorld.kinds.${quest.kind}`, { defaultValue: quest.title }),
@@ -159,6 +161,8 @@ export const useWorldExperience = (username?: string) => {
       bootstrap.data?.quests,
       bootstrap.data?.completedDailyTaskIds,
       bootstrap.data?.activeRun?.questId,
+      bootstrap.data?.player.completedByKind,
+      bootstrap.data?.player.kindDailyLimit,
       t,
     ],
   );
@@ -177,6 +181,7 @@ export const useWorldExperience = (username?: string) => {
     quests,
     move: transport.move,
     emote: transport.emote,
+    chat: transport.chat,
     leave: transport.disconnect,
     clearError: () => setError(null),
   };

@@ -5,7 +5,7 @@
     "overallScore": "Overall score",
     "scoreSplit": "Score by game",
     "played": "Games played",
-    "subtitle": "Five ways to think, explore and compete. Pick a game, then beat your best run.",
+    "subtitle": "Pick a game and improve your personal best.",
     "allGames": "Game library",
     "overall": "Overall ranking",
     "leaderboard": "Leaderboard",
@@ -27,7 +27,7 @@
     "notRanked": "No ranked score yet",
     "featured": "Explore in 3D",
     "quickGames": "Quick games",
-    "rankTitle": "One ranking. Five ways to climb.",
+    "rankTitle": "All games, one leaderboard",
     "rankDescription": "Your best run in each game adds to your overall score.",
     "catalog": {
       "code-islands": {
@@ -59,6 +59,36 @@
         "description": "Watch a path light up, then reproduce its order from memory.",
         "type": "Memory challenge",
         "rules": "Repeat 10 increasingly long sequences. Two mistakes end the run, but a wrong tap never subtracts points."
+      },
+      "math-compare": {
+        "title": "Compare Expressions",
+        "description": "Compare the values of two expressions.",
+        "type": "Mental arithmetic",
+        "rules": "Choose <, = or >. Complete 10 levels as the expressions become harder and time gets shorter."
+      },
+      "quick-math": {
+        "title": "Quick Math",
+        "description": "Calculate the result and enter your answer.",
+        "type": "Calculation",
+        "rules": "Solve every round before time runs out. Each of the 10 levels earns 100 points."
+      },
+      "number-sequence": {
+        "title": "Next Number",
+        "description": "Find the pattern and continue the sequence.",
+        "type": "Patterns",
+        "rules": "Enter the next number. Differences, alternating patterns and recurrences grow harder over 10 levels."
+      },
+      "number-hunt": {
+        "title": "Number Hunt",
+        "description": "Find and tap the numbers in order.",
+        "type": "Attention",
+        "rules": "Start at 1. Complete increasingly dense grids before time runs out across 10 levels."
+      },
+      "memory-matrix": {
+        "title": "Memory Matrix",
+        "description": "Remember the highlighted cells.",
+        "type": "Visual memory",
+        "rules": "Watch the pattern, then select the same cells. Grids grow and viewing time shrinks over 10 levels."
       }
     },
     "world": {
@@ -134,13 +164,23 @@
           "intro": "Start with the values below. Perform both steps three times:",
           "code": "a = 2, b = 5\nrepeat 3 times:\n  a = (a + b) mod 7\n  b = b + 1",
           "question": "What is a at the end?",
-          "options": ["0", "5", "6", "7"]
+          "options": [
+            "0",
+            "5",
+            "6",
+            "7"
+          ]
         },
         "t2": {
           "intro": "Update the array from left to right. Add each current element to the next one:",
           "code": "a = [2, 4, 1, 3]\nfor i = 0, 1, 2:\n  a[i+1] = a[i+1] + a[i]",
           "question": "What is a[3] at the end?",
-          "options": ["7", "9", "10", "12"]
+          "options": [
+            "7",
+            "9",
+            "10",
+            "12"
+          ]
         },
         "t3": {
           "intro": "The array is sorted. Run this binary search:",

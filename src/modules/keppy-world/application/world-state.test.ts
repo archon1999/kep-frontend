@@ -54,6 +54,22 @@ test('world progress measures the current level instead of total lifetime XP', (
   assert.equal(complete.levelStartXp, 500000);
 });
 
+test('shared room quests respect the current player daily per-kind allowance', () => {
+  const common = { title: 'Quest', difficulty: 1, xp: 10, position: { x: 0, z: 0 }, zone: 'plaza' };
+  const quests: WorldQuest[] = [
+    { ...common, id: 'math-1', kind: 'quick-math' },
+    { ...common, id: 'math-2', kind: 'quick-math' },
+    { ...common, id: 'matrix', kind: 'memory-matrix' },
+  ];
+  assert.deepEqual(
+    availablePlayerQuests(quests, [], undefined, { 'quick-math': 3, 'memory-matrix': 2 }, 3).map(
+      (quest) => quest.id,
+    ),
+    ['matrix'],
+  );
+  assert.equal(availablePlayerQuests(quests, []).length, 3, 'A fresh day restores all kinds.');
+});
+
 test('world progress uses server milestones when configured thresholds change', () => {
   const world = mapWorld({
     totalXp: 400,

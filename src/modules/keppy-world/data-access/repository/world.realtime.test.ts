@@ -1,7 +1,7 @@
 import { Client, CloseCode, ErrorCode, type Room } from '@colyseus/sdk';
 import assert from 'node:assert/strict';
 import test, { type TestContext } from 'node:test';
-import { WorldRealtime } from './world.realtime.ts';
+import { WorldRealtime, worldConnectionError } from './world.realtime.ts';
 
 const ticket = {
   ticket: 'signed-by-django',
@@ -35,7 +35,7 @@ function room(token: string) {
     sessionId: 'same-session',
     reconnectionToken: token,
     state: { players: new Map() },
-    reconnection: { enabled: true },
+    reconnection: { enabled: true, isReconnecting: false, minUptime: 5000 },
     connection: {
       close: (code: number) => {
         assert.ok(
@@ -101,6 +101,7 @@ test('page reload resumes the saved seat, rotates its token, and explicit Leave 
   assert.deepEqual([...entries.values()], ['world:rotated']);
   recovered.raw.reconnectionToken = 'world:rotated-again';
   recovered.events.reconnect?.();
+  await Promise.resolve();
   assert.deepEqual([...entries.values()], ['world:rotated-again']);
   next.disconnect();
   assert.equal(recovered.leaves, 1);
@@ -194,4 +195,52 @@ test('leaving while a ticket is pending cannot join a room afterward', async (t)
   assert.equal(join.mock.callCount(), 0);
   assert.equal(transport.getSnapshot().status, 'idle');
   assert.equal(transport.getSnapshot().sessionId, null);
+});
+
+test('an automatic reconnect stores the token rotated after the SDK callback', async (t) => {
+  const { entries } = browser(t);
+  const connection = room('world:before-reconnect');
+  t.mock.method(Client.prototype, 'joinOrCreate', async () => connection.value);
+  const transport = new WorldRealtime('alice');
+  await transport.connect(ticket);
+  assert.equal(connection.raw.reconnection.minUptime, 0);
+  connection.events.drop?.();
+  connection.raw.reconnection.isReconnecting = false;
+  connection.events.reconnect?.();
+  connection.raw.reconnectionToken = 'world:after-reconnect';
+  await Promise.resolve();
+  assert.deepEqual([...entries.values()], ['world:after-reconnect']);
+  transport.disconnect();
+});
+
+test('a transient retry error remains reconnecting until recovery or final leave', async (t) => {
+  browser(t);
+  const connection = room('world:retrying');
+  t.mock.method(Client.prototype, 'joinOrCreate', async () => connection.value);
+  const transport = new WorldRealtime('alice');
+  await transport.connect(ticket);
+  connection.events.drop?.();
+  connection.raw.reconnection.isReconnecting = true;
+  connection.events.error?.(1006, 'Temporary network interruption');
+  assert.equal(transport.getSnapshot().status, 'reconnecting');
+  assert.equal(transport.getSnapshot().error, null);
+  connection.raw.reconnection.isReconnecting = false;
+  connection.events.leave?.(CloseCode.FAILED_TO_RECONNECT);
+  assert.equal(transport.getSnapshot().status, 'error');
+  assert.equal(transport.getSnapshot().sessionId, null);
+  transport.disconnect();
+});
+
+test('connection errors distinguish duplicate tabs, capacity, authentication and transient outages', () => {
+  assert.equal(worldConnectionError({ code: 4211 }), 'duplicateSession');
+  assert.equal(worldConnectionError({ code: 409 }), 'worldFull');
+  assert.equal(
+    worldConnectionError(new Error('The shared world is full. Please try again shortly.')),
+    'worldFull',
+  );
+  assert.equal(worldConnectionError({ code: 401 }), 'authExpired');
+  assert.equal(worldConnectionError({ code: ErrorCode.AUTH_FAILED }), 'authExpired');
+  assert.equal(worldConnectionError({ status: 503 }), 'backendUnavailable');
+  assert.equal(worldConnectionError({ status: 429 }), 'rateLimited');
+  assert.equal(worldConnectionError(new TypeError('Failed to fetch')), 'connectionError');
 });

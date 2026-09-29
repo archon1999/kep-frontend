@@ -4,6 +4,11 @@ export const gameIds = [
   'bug-hunt',
   'logic-circuit',
   'memory-grid',
+  'math-compare',
+  'quick-math',
+  'number-sequence',
+  'number-hunt',
+  'memory-matrix',
 ] as const;
 
 export type GameId = (typeof gameIds)[number];

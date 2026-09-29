@@ -10,6 +10,11 @@ const questColors: Record<string, string> = {
   'logic-circuit': '#419e90',
   'code-islands': '#5194bd',
   'memory-grid': '#9277ae',
+  'math-compare': '#ad7394',
+  'quick-math': '#418e9d',
+  'number-sequence': '#7681bd',
+  'number-hunt': '#b48c52',
+  'memory-matrix': '#8b79b3',
   cargo: '#b89b54',
   'daily-task': '#6e7a9e',
 };
