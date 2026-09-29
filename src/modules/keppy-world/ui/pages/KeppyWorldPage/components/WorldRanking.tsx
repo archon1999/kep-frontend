@@ -23,6 +23,7 @@ import UserPopover from 'modules/users/ui/shared/components/UserPopover';
 import IconifyIcon from 'shared/components/base/IconifyIcon';
 import { formatDateTime } from 'shared/lib/dateTime';
 import { useWorldLeaderboard } from '../../../../application';
+import WorldLevelBadge from './WorldLevelBadge';
 
 const podiumColors = ['#D99214', '#8396A9', '#B5744D'] as const;
 
@@ -42,7 +43,7 @@ const WorldRanking = () => {
   }, [data, page]);
   const players = data?.players ?? [];
   return (
-    <Stack spacing={2}>
+    <Stack spacing={1}>
       <ToggleButtonGroup
         size="small"
         value={period}
@@ -77,17 +78,19 @@ const WorldRanking = () => {
           aria-label={t('keppyWorld.ranking')}
           sx={{
             tableLayout: 'fixed',
-            '& td, & th': { border: 0, px: 0.75, py: 1.25 },
+            '& td, & th': { border: 0, px: 0.75, py: 0.5 },
+            '& .MuiTableCell-root:first-of-type': { pl: 0.75 },
+            '& .MuiTableCell-root:last-of-type': { pr: 0.75 },
             '& th': { color: 'text.secondary', fontSize: 11, fontWeight: 500 },
           }}
         >
           <TableHead>
             <TableRow>
-              <TableCell sx={{ width: 44 }} aria-label={t('keppyWorld.rankColumn')}>
+              <TableCell sx={{ width: 34 }} aria-label={t('keppyWorld.rankColumn')}>
                 #
               </TableCell>
               <TableCell>{t('keppyWorld.playerColumn')}</TableCell>
-              <TableCell align="right" sx={{ width: 58 }}>
+              <TableCell align="right" sx={{ width: 54 }}>
                 <Tooltip title={t('keppyWorld.completedTasksTotal')} describeChild>
                   <Stack
                     direction="row"
@@ -101,7 +104,7 @@ const WorldRanking = () => {
                   </Stack>
                 </Tooltip>
               </TableCell>
-              <TableCell align="right" sx={{ width: 72 }}>
+              <TableCell align="right" sx={{ width: 68 }}>
                 XP
               </TableCell>
             </TableRow>
@@ -139,7 +142,8 @@ const WorldRanking = () => {
                         sx={{
                           width: '100%',
                           justifyContent: 'flex-start',
-                          gap: 1,
+                          gap: 0.75,
+                          minHeight: 28,
                           minWidth: 0,
                           textAlign: 'left',
                           borderRadius: 1,
@@ -152,21 +156,33 @@ const WorldRanking = () => {
                         <Avatar
                           src={player.avatar}
                           alt={player.username}
-                          sx={{ width: 28, height: 28, fontSize: 12 }}
+                          sx={{ width: 26, height: 26, fontSize: 12, flexShrink: 0 }}
                         >
                           {player.username.slice(0, 1).toUpperCase()}
                         </Avatar>
-                        <Typography
-                          noWrap
-                          variant="body2"
-                          sx={{
-                            minWidth: 0,
-                            fontSize: 13,
-                            fontWeight: player.isCurrentUser ? 700 : 500,
-                          }}
+                        <Stack
+                          component="span"
+                          direction={{ xs: 'column', sm: 'row' }}
+                          alignItems={{ xs: 'flex-start', sm: 'center' }}
+                          gap={{ xs: 0.25, sm: 0.75 }}
+                          sx={{ minWidth: 0, flex: 1 }}
                         >
-                          {player.username}
-                        </Typography>
+                          <Typography
+                            component="span"
+                            noWrap
+                            variant="body2"
+                            sx={{
+                              minWidth: 0,
+                              maxWidth: '100%',
+                              fontSize: 13,
+                              lineHeight: '16px',
+                              fontWeight: player.isCurrentUser ? 700 : 500,
+                            }}
+                          >
+                            {player.username}
+                          </Typography>
+                          <WorldLevelBadge level={player.level} />
+                        </Stack>
                       </ButtonBase>
                     </UserPopover>
                   </TableCell>
@@ -204,8 +220,8 @@ const WorldRanking = () => {
         </Table>
       )}
       {data && data.totalPlayers > 0 && !error && (
-        <Stack gap={1.25} alignItems="center">
-          <Typography variant="caption" color="text.secondary" role="status">
+        <Stack gap={0.5} alignItems="center">
+          <Typography variant="caption" color="text.secondary" fontSize={11} role="status">
             {t('keppyWorld.rankingRange', {
               from: (data.page - 1) * data.pageSize + 1,
               to: Math.min(data.page * data.pageSize, data.totalPlayers),
