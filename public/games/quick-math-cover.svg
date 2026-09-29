@@ -1,0 +1,24 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 960 540" role="img" aria-label="A mental arithmetic challenge with an answer field">
+  <defs>
+    <filter id="shadow" x="-25%" y="-25%" width="150%" height="160%"><feDropShadow dx="0" dy="12" stdDeviation="14" flood-color="#172C35" flood-opacity=".12"/></filter>
+    <pattern id="grid" width="32" height="32" patternUnits="userSpaceOnUse"><path d="M32 0H0V32" fill="none" stroke="currentColor" stroke-width="1"/></pattern>
+  </defs>
+  <rect width="960" height="540" fill="#DCEAE3"/>
+
+  <rect width="960" height="540" fill="url(#grid)" color="#BDD4CB" opacity=".45"/>
+  <g filter="url(#shadow)">
+    <rect x="110" y="59" width="740" height="422" rx="18" fill="#FBFCF8" stroke="#B9CEC3" stroke-width="2"/>
+  </g>
+  <path d="M110 130H850" stroke="#DCE7DF" stroke-width="2"/>
+  <g fill="#388B72"><circle cx="150" cy="95" r="6"/><circle cx="171" cy="95" r="6"/><circle cx="192" cy="95" r="6"/></g>
+  <path d="M218 95h190" stroke="#E0E8E2" stroke-width="5" stroke-linecap="round"/>
+  <g fill="none" stroke="#618676" stroke-width="3"><circle cx="798" cy="95" r="16"/><path d="M798 84v12l7 4M791 72h14"/></g>
+<text x="480" y="230" fill="#203F36" font-family="Arial, Helvetica, sans-serif" font-size="108" font-weight="600" text-anchor="middle" dominant-baseline="middle">24 × 3</text>
+  <path d="M415 292h130" stroke="#D5E2D9" stroke-width="2"/>
+  <rect x="283" y="325" width="312" height="96" rx="10" fill="#213F37"/>
+<text x="433" y="376" fill="#E8F5ED" font-family="Arial, Helvetica, sans-serif" font-size="59" font-weight="500" text-anchor="middle" dominant-baseline="middle">72</text>
+  <path d="M481 350v49" stroke="#87D7AD" stroke-width="3"/>
+  <rect x="611" y="325" width="78" height="96" rx="10" fill="#A7DCC1"/>
+  <path d="M635 374h30m-12-12 12 12-12 12" stroke="#254F40" stroke-width="4" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
+
+</svg>

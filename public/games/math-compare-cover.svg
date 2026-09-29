@@ -1,0 +1,33 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 960 540" role="img" aria-label="Compare two arithmetic expressions and choose the greater value">
+  <defs>
+    <filter id="shadow" x="-25%" y="-25%" width="150%" height="160%"><feDropShadow dx="0" dy="12" stdDeviation="14" flood-color="#172C35" flood-opacity=".12"/></filter>
+    <pattern id="grid" width="32" height="32" patternUnits="userSpaceOnUse"><path d="M32 0H0V32" fill="none" stroke="currentColor" stroke-width="1"/></pattern>
+  </defs>
+  <rect width="960" height="540" fill="#F4EFE6"/>
+
+  <path d="M0 447L960 80" stroke="#E6DECF" stroke-width="110"/>
+  <path d="M64 64h136M896 476H760" stroke="#C3B8A5" stroke-width="2"/>
+  <g filter="url(#shadow)">
+    <g transform="rotate(-4 245 270)">
+      <rect x="63" y="97" width="366" height="346" rx="18" fill="#223D43"/>
+      <path d="M63 170H429" stroke="#4D666B"/>
+      <circle cx="97" cy="133" r="6" fill="#A2CEBB"/>
+      <path d="M117 133h58" stroke="#6E8D8D" stroke-width="5" stroke-linecap="round"/>
+<text x="246" y="276" fill="#F7F5EC" font-family="Arial, Helvetica, sans-serif" font-size="61" font-weight="600" text-anchor="middle" dominant-baseline="middle">50 + 29</text>
+      <path d="M119 364H373" stroke="#A2CEBB" stroke-width="3"/>
+      <path d="M119 364v-7m254 7v-7" stroke="#A2CEBB" stroke-width="3"/>
+    </g>
+    <g transform="rotate(4 715 270)">
+      <rect x="531" y="97" width="366" height="346" rx="18" fill="#FFFDFA" stroke="#D5CCBC" stroke-width="2"/>
+      <path d="M531 170H897" stroke="#DDD6CB"/>
+      <circle cx="565" cy="133" r="6" fill="#C8BFB0"/>
+      <path d="M585 133h58" stroke="#D7CEC0" stroke-width="5" stroke-linecap="round"/>
+<text x="714" y="276" fill="#263B40" font-family="Arial, Helvetica, sans-serif" font-size="57" font-weight="600" text-anchor="middle" dominant-baseline="middle">100 − 32</text>
+      <path d="M587 364H841" stroke="#CEC5B6" stroke-width="3"/>
+      <path d="M587 364v-7m254 7v-7" stroke="#CEC5B6" stroke-width="3"/>
+    </g>
+  </g>
+  <circle cx="480" cy="270" r="51" fill="#DE805C" stroke="#F4EFE6" stroke-width="9"/>
+  <path d="M467 253l27 17-27 17" stroke="#FFF9F2" stroke-width="6" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
+
+</svg>
