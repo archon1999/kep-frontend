@@ -39,37 +39,56 @@ const BugChallenge = ({ challenge, pending, submit }: ChallengeProps<'bug-hunt'>
   return (
     <Stack spacing={2}>
       <Box sx={{ bgcolor: 'background.elevation1', borderRadius: 2, py: 1, overflowX: 'auto' }}>
-        {challenge.code.map((code, index) => (
-          <ButtonBase
-            key={index}
-            disabled={pending}
-            onClick={() => {
-              setLine(index + 1);
-              setFix(code.trim());
-            }}
-            aria-pressed={line === index + 1}
-            sx={{
-              display: 'flex',
-              width: '100%',
-              minWidth: 'max-content',
-              textAlign: 'left',
-              py: 0.7,
-              px: 2,
-              bgcolor: line === index + 1 ? 'primary.lighter' : undefined,
-              color: line === index + 1 ? 'primary.main' : 'text.primary',
-            }}
-          >
-            <Box
-              component="span"
-              sx={{ width: 32, color: 'text.disabled', font: '13px/1.7 monospace' }}
+        <Box sx={{ width: 'max-content', minWidth: '100%' }}>
+          {challenge.code.map((code, index) => (
+            <ButtonBase
+              key={index}
+              disabled={pending}
+              onClick={() => {
+                setLine(index + 1);
+                setFix(code.trim());
+              }}
+              aria-pressed={line === index + 1}
+              sx={{
+                display: 'flex',
+                justifyContent: 'flex-start',
+                width: '100%',
+                textAlign: 'left',
+                py: 0.25,
+                px: 2,
+                gap: 2,
+                bgcolor: line === index + 1 ? 'primary.lighter' : undefined,
+                color: line === index + 1 ? 'primary.main' : 'text.primary',
+                '&:hover': { bgcolor: 'action.hover' },
+                '&.Mui-focusVisible': {
+                  outline: '2px solid',
+                  outlineColor: 'primary.main',
+                  outlineOffset: -2,
+                },
+              }}
             >
-              {index + 1}
-            </Box>
-            <Box component="code" sx={{ whiteSpace: 'pre', font: '14px/1.7 Consolas, monospace' }}>
-              {code || ' '}
-            </Box>
-          </ButtonBase>
-        ))}
+              <Box
+                component="span"
+                aria-hidden="true"
+                sx={{
+                  flex: '0 0 3ch',
+                  textAlign: 'right',
+                  userSelect: 'none',
+                  color: 'text.disabled',
+                  font: '13px/1.7 monospace',
+                }}
+              >
+                {index + 1}
+              </Box>
+              <Box
+                component="code"
+                sx={{ whiteSpace: 'pre', tabSize: 4, font: '14px/1.7 Consolas, monospace' }}
+              >
+                {code || ' '}
+              </Box>
+            </ButtonBase>
+          ))}
+        </Box>
       </Box>
       {challenge.requiresFix && (
         <TextField
