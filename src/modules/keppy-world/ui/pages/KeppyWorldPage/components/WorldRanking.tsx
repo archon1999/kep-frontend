@@ -115,16 +115,19 @@ const WorldRanking = () => {
                   key={player.username}
                   sx={{ bgcolor: player.isCurrentUser ? 'action.selected' : undefined }}
                 >
-                  <TableCell
-                    sx={{
-                      color: player.rank <= 3 ? podiumColors[player.rank - 1] : 'text.secondary',
-                      fontSize: 13,
-                      fontWeight: 700,
-                      fontVariantNumeric: 'tabular-nums',
-                      whiteSpace: 'nowrap',
-                    }}
-                  >
-                    {String(player.rank).padStart(2, '0')}
+                  <TableCell>
+                    <Typography
+                      component="span"
+                      sx={{
+                        color: player.rank <= 3 ? podiumColors[player.rank - 1] : 'text.secondary',
+                        fontSize: 13,
+                        fontWeight: 700,
+                        fontVariantNumeric: 'tabular-nums',
+                        whiteSpace: 'nowrap',
+                      }}
+                    >
+                      {String(player.rank).padStart(2, '0')}
+                    </Typography>
                   </TableCell>
                   <TableCell sx={{ overflow: 'hidden' }}>
                     <UserPopover
