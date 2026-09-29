@@ -31,6 +31,8 @@
     "close": "Yopish",
     "collapse": "Yig‘ish",
     "expand": "Ochish",
+    "collapseProfile": "Shaxsiy statistikani yig‘ish",
+    "expandProfile": "Shaxsiy statistikani ochish",
     "leave": "Dunyodan chiqish",
     "fullscreen": "To‘liq ekran",
     "save": "Saqlash",

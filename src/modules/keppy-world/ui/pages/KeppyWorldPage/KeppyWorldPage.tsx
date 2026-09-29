@@ -58,6 +58,7 @@ const KeppyWorldPage = () => {
     'profile' | 'ranking' | 'quests' | 'run' | 'map' | 'growth' | null
   >(null);
   const [collapsed, setCollapsed] = useState(false);
+  const [profileCollapsed, setProfileCollapsed] = useState(false);
   const [mascot, setMascot] = useState('keppy');
   const [cosmetic, setCosmetic] = useState('none');
   const audio = useGameAudio('keppy-world', entered && game.connection.status === 'connected');
@@ -282,7 +283,7 @@ const KeppyWorldPage = () => {
                   position: 'absolute',
                   top: 16,
                   left: 16,
-                  width: { xs: 200, md: 236 },
+                  width: profileCollapsed ? 'auto' : { xs: 200, md: 236 },
                   p: 1.5,
                 }}
               >
@@ -293,7 +294,7 @@ const KeppyWorldPage = () => {
                     alt=""
                     sx={{ width: 42, height: 42, objectFit: 'contain' }}
                   />
-                  <Box sx={{ minWidth: 0, flex: 1 }}>
+                  <Box sx={{ minWidth: 0, flex: 1, display: profileCollapsed ? 'none' : 'block' }}>
                     <Typography noWrap fontSize={14} fontWeight={700}>
                       {profile.username}
                     </Typography>
@@ -302,23 +303,39 @@ const KeppyWorldPage = () => {
                       {profile.xp.toLocaleString()} XP
                     </Typography>
                   </Box>
+                  <IconButton
+                    size="small"
+                    aria-label={t(
+                      profileCollapsed ? 'keppyWorld.expandProfile' : 'keppyWorld.collapseProfile',
+                    )}
+                    aria-expanded={!profileCollapsed}
+                    aria-controls="world-player-progress"
+                    onClick={() => setProfileCollapsed((current) => !current)}
+                  >
+                    <IconifyIcon
+                      icon={profileCollapsed ? 'mdi:chevron-down' : 'mdi:chevron-up'}
+                      width={18}
+                    />
+                  </IconButton>
                 </Stack>
-                <LinearProgress
-                  variant="determinate"
-                  value={Math.max(
-                    0,
-                    Math.min(100, (100 * profile.levelXp) / Math.max(1, profile.nextLevelXp)),
-                  )}
-                  sx={{ my: 1.25 }}
-                />
-                <Stack direction="row" justifyContent="space-between">
-                  <Typography variant="caption" color="text.secondary">
-                    {t('keppyWorld.today')}
-                  </Typography>
-                  <Typography variant="caption" fontWeight={700}>
-                    {profile.completedToday} / {profile.dailyLimit}
-                  </Typography>
-                </Stack>
+                <Box id="world-player-progress" hidden={profileCollapsed}>
+                  <LinearProgress
+                    variant="determinate"
+                    value={Math.max(
+                      0,
+                      Math.min(100, (100 * profile.levelXp) / Math.max(1, profile.nextLevelXp)),
+                    )}
+                    sx={{ my: 1.25 }}
+                  />
+                  <Stack direction="row" justifyContent="space-between">
+                    <Typography variant="caption" color="text.secondary">
+                      {t('keppyWorld.today')}
+                    </Typography>
+                    <Typography variant="caption" fontWeight={700}>
+                      {profile.completedToday} / {profile.dailyLimit}
+                    </Typography>
+                  </Stack>
+                </Box>
               </Paper>
             )}
             {game.world && (

@@ -31,6 +31,8 @@
     "close": "Close",
     "collapse": "Collapse",
     "expand": "Expand",
+    "collapseProfile": "Collapse player stats",
+    "expandProfile": "Expand player stats",
     "leave": "Leave world",
     "fullscreen": "Fullscreen",
     "save": "Save",
