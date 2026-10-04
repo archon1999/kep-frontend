@@ -1,4 +1,4 @@
-import { ChangeEvent, PropsWithChildren, ReactNode, useEffect, useMemo, useRef, useState } from 'react';
+import { PropsWithChildren, ReactNode, useEffect, useMemo, useRef, useState } from 'react';
 import {
   Avatar,
   Box,
@@ -32,7 +32,7 @@ import type { UsersListItem } from 'modules/users/domain/entities/user.entity';
 import type { ProblemListItem } from 'modules/problems/domain/entities/problem.entity';
 import type { ContestListItem } from 'modules/contests/domain/entities/contest.entity';
 import type { BlogPost } from 'modules/blog/domain/entities/blog.entity';
-import { useDebouncedValue } from 'shared/hooks/useDebouncedValue';
+import DebouncedTextField from 'shared/components/common/DebouncedTextField';
 import { clearRecentPages, getRecentPages, RecentPage } from 'shared/lib/recent-pages';
 import type { TFunction } from 'i18next';
 
@@ -64,7 +64,7 @@ const SearchResult = ({ handleClose }: { handleClose: () => void }) => {
   const contestsRepository = useMemo(() => new HttpContestsRepository(), []);
   const blogRepository = useMemo(() => new HttpBlogRepository(), []);
 
-  const debouncedQuery = useDebouncedValue(searchQuery.trim(), 300);
+  const debouncedQuery = searchQuery.trim();
   const canSearch = debouncedQuery.length >= 2;
   const hasTyped = searchQuery.trim().length > 0;
 
@@ -107,10 +107,6 @@ const SearchResult = ({ handleClose }: { handleClose: () => void }) => {
     { revalidateOnFocus: false },
   );
 
-  const handleSearchChange = (event: ChangeEvent<HTMLInputElement>) => {
-    setSearchQuery(event.target.value);
-  };
-
   const handleClearHistory = () => {
     clearRecentPages();
     setRecentPages([]);
@@ -131,7 +127,7 @@ const SearchResult = ({ handleClose }: { handleClose: () => void }) => {
 
   return (
     <>
-      <SearchField handleClose={handleClose} value={searchQuery} onChange={handleSearchChange} />
+      <SearchField handleClose={handleClose} value={searchQuery} onChange={setSearchQuery} />
       <SimpleBar style={{ maxHeight: 600, minHeight: 0, width: '100%' }}>
         {showRecentPages ? (
           <ResultSection
@@ -352,7 +348,7 @@ export const SearchField = ({
 }: {
   handleClose: () => void;
   value: string;
-  onChange: (event: ChangeEvent<HTMLInputElement>) => void;
+  onChange: (value: string) => void;
 }) => {
   const initialFocusRef = useRef<HTMLInputElement | null>(null);
 
@@ -361,10 +357,11 @@ export const SearchField = ({
   }, []);
 
   return (
-    <SearchTextField
+    <DebouncedTextField
+      textFieldComponent={SearchTextField}
       fullWidth
       value={value}
-      onChange={onChange}
+      onValueChange={onChange}
       sx={{
         [`& .${inputBaseClasses.root}`]: {
           borderRadius: '4px 4px 0 0',

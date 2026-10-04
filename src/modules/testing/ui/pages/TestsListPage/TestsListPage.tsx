@@ -21,6 +21,7 @@ import { useAuth } from 'app/providers/AuthProvider';
 import { useTestsCatalog } from 'modules/testing/application/queries';
 import IconifyIcon from 'shared/components/base/IconifyIcon';
 import StyledTextField from 'shared/components/styled/StyledTextField';
+import DebouncedTextField from 'shared/components/common/DebouncedTextField';
 import { responsivePagePaddingSx } from 'shared/lib/styles';
 import ChapterTestsList, { ChapterTestsListSkeleton } from './components/ChapterTestsList';
 import TestsDataGrid from './components/TestsDataGrid';
@@ -186,12 +187,10 @@ const TestsListPage = () => {
                     )}
                   </Stack>
                 </Stack>
-                <StyledTextField
+                <DebouncedTextField
                   placeholder={t('tests.searchPlaceholder')}
                   value={search}
-                  onChange={(event) => {
-                    setSearch(event.target.value);
-                  }}
+                  onValueChange={setSearch}
                   fullWidth
                   sx={{ maxWidth: { sm: 360 } }}
                   slotProps={{

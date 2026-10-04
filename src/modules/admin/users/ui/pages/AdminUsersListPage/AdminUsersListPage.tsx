@@ -1,4 +1,4 @@
-﻿import { ChangeEvent, useEffect, useMemo, useState } from 'react';
+﻿import { useEffect, useMemo, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import {
   Button,
@@ -40,7 +40,6 @@ import { AdminUser } from 'modules/admin/users/domain/types';
 const AdminUsersListPage = () => {
   const { t } = useTranslation();
   const [search, setSearch] = useState('');
-  const [debouncedSearch, setDebouncedSearch] = useState('');
   const [activeFilter, setActiveFilter] = useState('');
   const [staffFilter, setStaffFilter] = useState('');
   const [superuserFilter, setSuperuserFilter] = useState('');
@@ -65,14 +64,9 @@ const AdminUsersListPage = () => {
     });
 
   useEffect(() => {
-    const timeoutId = window.setTimeout(() => setDebouncedSearch(search), 400);
-    return () => window.clearTimeout(timeoutId);
-  }, [search]);
-
-  useEffect(() => {
     setPaginationModel((prev) => ({ ...prev, page: 0 }));
   }, [
-    debouncedSearch,
+    search,
     activeFilter,
     staffFilter,
     superuserFilter,
@@ -86,7 +80,7 @@ const AdminUsersListPage = () => {
       page: pageParams.page,
       pageSize: pageParams.pageSize,
       ordering: getOrderingFromSortModel(sortModel),
-      search: debouncedSearch,
+      search,
       isActive: activeFilter ? activeFilter === 'true' : undefined,
       isStaff: staffFilter ? staffFilter === 'true' : undefined,
       isSuperuser: superuserFilter ? superuserFilter === 'true' : undefined,
@@ -96,7 +90,7 @@ const AdminUsersListPage = () => {
       pageParams.page,
       pageParams.pageSize,
       sortModel,
-      debouncedSearch,
+      search,
       activeFilter,
       staffFilter,
       superuserFilter,
@@ -108,7 +102,7 @@ const AdminUsersListPage = () => {
   const isGridLoading = isLoading || (isValidating && !data?.data);
   const rowCount = useStableGridRowCount(data?.total, isGridLoading);
 
-  const handleSearchChange = (event: ChangeEvent<HTMLInputElement>) => setSearch(event.target.value);
+  const handleSearchChange = (value: string) => setSearch(value);
 
   const selectedIds = useMemo(
     () => Array.from(rowSelectionModel.ids).map((id) => Number(id)).filter(Number.isFinite),
@@ -475,7 +469,7 @@ const AdminUsersListPage = () => {
         }}
         localeText={{ noRowsLabel: t('common.dataGrid.noRows.adminUsers') }}
         slotProps={getDataGridNoRowsOverlaySlotProps({
-          filtered: Boolean(debouncedSearch || activeFilters.length),
+          filtered: Boolean(search || activeFilters.length),
         })}
         columns={columns}
         paginationModel={paginationModel}

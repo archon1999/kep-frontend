@@ -26,6 +26,7 @@ import {
 import { ProblemsListParams } from 'modules/problems/domain/ports/problems.repository.ts';
 import IconifyIcon from 'shared/components/base/IconifyIcon.tsx';
 import AppliedFilters from 'shared/components/common/AppliedFilters.tsx';
+import DebouncedTextField from 'shared/components/common/DebouncedTextField';
 import FilterButton from 'shared/components/common/FilterButton.tsx';
 import {
   DEFAULT_FILTER_DRAWER_WIDTH,
@@ -839,11 +840,12 @@ const FilterCard = ({
                 containerSx={{ width: { xs: 1, sm: 'auto' } }}
                 sx={{ width: { xs: 1, sm: 'auto' } }}
               />
-              <SearchTextField
+              <DebouncedTextField
+                textFieldComponent={SearchTextField}
                 sx={{ minWidth: 100, width: { xs: 1, sm: 260, md: 300 } }}
                 value={filter.search ?? ''}
                 placeholder={t('problems.searchPlaceholder')}
-                onChange={(event) => onChange('search', event.target.value)}
+                onValueChange={(value) => onChange('search', value)}
               />
             </Stack>
           </Stack>

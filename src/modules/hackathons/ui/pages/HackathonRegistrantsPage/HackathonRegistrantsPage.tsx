@@ -18,6 +18,7 @@ import {
   HackathonDetailLayout,
 } from 'modules/hackathons/ui/shared';
 import IconifyIcon from 'shared/components/base/IconifyIcon';
+import DebouncedTextField from 'shared/components/common/DebouncedTextField';
 import HackathonRegistrantsTable from './components/HackathonRegistrantsTable';
 
 const HackathonRegistrantsPage = () => {
@@ -77,9 +78,10 @@ const HackathonRegistrantsPage = () => {
                   <Typography variant="body2" color="text.secondary">
                     {t('hackathons.participantsCount', { count: registrants?.length ?? 0 })}
                   </Typography>
-                  <TextField
+                  <DebouncedTextField
+                    textFieldComponent={TextField}
                     value={search}
-                    onChange={(event) => setSearch(event.target.value)}
+                    onValueChange={setSearch}
                     placeholder={t('hackathons.registrantsSearchPlaceholder')}
                     size="small"
                     sx={{ width: { xs: 1, sm: 280 } }}

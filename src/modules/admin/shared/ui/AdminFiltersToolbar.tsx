@@ -1,8 +1,9 @@
-import { ChangeEvent, ReactNode, useState } from 'react';
+import { ReactNode, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { Button, Chip, Stack, Typography } from '@mui/material';
 import SearchTextField from 'app/layouts/main-layout/common/search-box/SearchTextField';
 import FilterButton from 'shared/components/common/FilterButton';
+import DebouncedTextField from 'shared/components/common/DebouncedTextField';
 import FilterDrawer, { DEFAULT_FILTER_DRAWER_WIDTH } from 'shared/components/common/FilterDrawer';
 
 export interface AdminActiveFilter {
@@ -14,7 +15,7 @@ export interface AdminActiveFilter {
 interface AdminFiltersToolbarProps {
   id: string;
   search: string;
-  onSearchChange: (event: ChangeEvent<HTMLInputElement>) => void;
+  onSearchChange: (value: string) => void;
   searchPlaceholder: string;
   filters?: ReactNode;
   activeFilters?: AdminActiveFilter[];
@@ -64,12 +65,13 @@ const AdminFiltersToolbar = ({
             sx={{ width: { xs: 1, sm: 'auto' } }}
           />
         ) : null}
-        <SearchTextField
+        <DebouncedTextField
+          textFieldComponent={SearchTextField}
           sx={{ minWidth: { xs: 1, sm: 280 } }}
           value={search}
           placeholder={searchPlaceholder}
           variant="filled"
-          onChange={onSearchChange}
+          onValueChange={onSearchChange}
         />
       </Stack>
 

@@ -5,6 +5,7 @@ import { ContestCategoryEntity } from 'modules/contests/domain/entities/contest.
 import KepIcon from 'shared/components/base/KepIcon';
 import FilterDrawer from 'shared/components/common/FilterDrawer';
 import StyledTextField from 'shared/components/styled/StyledTextField';
+import DebouncedTextField from 'shared/components/common/DebouncedTextField';
 
 interface ContestsListPageFilterDrawerProps {
   open: boolean;
@@ -83,9 +84,9 @@ const ContestsListPageFilterDrawer = ({
       onClear={onClear}
     >
       <Stack direction="column" gap={1.25}>
-        <StyledTextField
+        <DebouncedTextField
           value={title}
-          onChange={(event) => onTitleChange(event.target.value)}
+          onValueChange={onTitleChange}
           InputProps={{
             startAdornment: (
               <InputAdornment position="start">

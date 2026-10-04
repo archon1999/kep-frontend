@@ -3,6 +3,7 @@ import { Stack, Typography } from '@mui/material';
 import SearchTextField from 'app/layouts/main-layout/common/search-box/SearchTextField';
 import AppliedFilters, { AppliedFilterItem } from 'shared/components/common/AppliedFilters';
 import FilterButton from 'shared/components/common/FilterButton';
+import DebouncedTextField from 'shared/components/common/DebouncedTextField';
 import ResponsiveTabs from 'shared/components/common/ResponsiveTabs';
 import {
   PROJECT_CATEGORY_META,
@@ -87,11 +88,12 @@ const ProjectsToolbar = ({
             containerSx={{ width: { xs: 1, sm: 'auto' } }}
             sx={{ width: { xs: 1, sm: 'auto' } }}
           />
-          <SearchTextField
+          <DebouncedTextField
+            textFieldComponent={SearchTextField}
             sx={{ minWidth: 100, width: { xs: 1, sm: 260, md: 300 } }}
             value={filters.search}
             placeholder={t('projects.searchPlaceholder')}
-            onChange={(event) => onChange('search', event.target.value)}
+            onValueChange={(value) => onChange('search', value)}
             slotProps={{ htmlInput: { 'aria-label': t('projects.searchPlaceholder') } }}
           />
         </Stack>

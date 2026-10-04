@@ -1,4 +1,4 @@
-import { ChangeEvent, ReactNode, useEffect, useMemo, useState } from 'react';
+import { ReactNode, useEffect, useMemo, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import useSWR from 'swr';
 import {
@@ -292,7 +292,6 @@ const toPayloadFieldValue = (value: any, field: AdminFormFieldConfig) => {
 const AdminSimpleResourceListPage = ({ config }: AdminSimpleResourcePageProps) => {
   const { t } = useTranslation();
   const [search, setSearch] = useState('');
-  const [debouncedSearch, setDebouncedSearch] = useState('');
   const [filters, setFilters] = useState<Record<string, any>>({});
   const [rowSelectionModel, setRowSelectionModel] = useState<GridRowSelectionModel>({
     type: 'include',
@@ -318,23 +317,18 @@ const AdminSimpleResourceListPage = ({ config }: AdminSimpleResourcePageProps) =
     { revalidateOnFocus: false },
   );
 
-  useEffect(() => {
-    const timeoutId = window.setTimeout(() => setDebouncedSearch(search), 400);
-    return () => window.clearTimeout(timeoutId);
-  }, [search]);
-
   const filterSignature = useMemo(() => JSON.stringify(filters), [filters]);
 
   useEffect(() => {
     setPaginationModel((prev) => ({ ...prev, page: 0 }));
-  }, [debouncedSearch, filterSignature, sortModel, setPaginationModel]);
+  }, [search, filterSignature, sortModel, setPaginationModel]);
 
   const queryParams = useMemo<AdminListParams>(() => {
     const params: AdminListParams = {
       page: pageParams.page,
       pageSize: pageParams.pageSize,
       ordering: getOrderingFromSortModel(sortModel),
-      search: debouncedSearch,
+      search,
     };
 
     (config.filters ?? []).forEach((filter) => {
@@ -354,7 +348,7 @@ const AdminSimpleResourceListPage = ({ config }: AdminSimpleResourcePageProps) =
     return params;
   }, [
     config.filters,
-    debouncedSearch,
+    search,
     filters,
     pageParams.page,
     pageParams.pageSize,
@@ -685,7 +679,7 @@ const AdminSimpleResourceListPage = ({ config }: AdminSimpleResourcePageProps) =
       createPath={config.createPath}
       createLabel={config.createButtonKey ? t(config.createButtonKey) : undefined}
       search={search}
-      onSearchChange={(event: ChangeEvent<HTMLInputElement>) => setSearch(event.target.value)}
+      onSearchChange={setSearch}
       searchPlaceholder={t(config.searchPlaceholderKey)}
       filterDrawerOpen={filterDrawer.open}
       filterDrawerWidth={DEFAULT_FILTER_DRAWER_WIDTH}
@@ -709,7 +703,7 @@ const AdminSimpleResourceListPage = ({ config }: AdminSimpleResourcePageProps) =
           <AdminFiltersToolbar
             id={filtersId}
             search={search}
-            onSearchChange={(event) => setSearch(event.target.value)}
+            onSearchChange={setSearch}
             searchPlaceholder={t(config.searchPlaceholderKey)}
             filters={filterControls}
             activeFilters={activeFilters}
@@ -747,7 +741,7 @@ const AdminSimpleResourceListPage = ({ config }: AdminSimpleResourcePageProps) =
           }),
         }}
         slotProps={getDataGridNoRowsOverlaySlotProps({
-          filtered: hasDataGridActiveFilters({ search: debouncedSearch, ...filters }),
+          filtered: hasDataGridActiveFilters({ search, ...filters }),
         })}
         columns={columns}
         paginationModel={paginationModel}

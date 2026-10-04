@@ -1,4 +1,4 @@
-﻿import { ChangeEvent, useEffect, useMemo, useState } from 'react';
+﻿import { useEffect, useMemo, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { Checkbox, Chip, Link, Stack, Typography } from '@mui/material';
 import { DataGrid, GridColDef, GridRowSelectionModel, GridSortModel } from '@mui/x-data-grid';
@@ -30,7 +30,6 @@ import { AdminContest } from 'modules/admin/contests/domain/types';
 const AdminContestsListPage = () => {
   const { t } = useTranslation();
   const [search, setSearch] = useState('');
-  const [debouncedSearch, setDebouncedSearch] = useState('');
   const [typeFilter, setTypeFilter] = useState('');
   const [categoryFilter, setCategoryFilter] = useState<number | ''>('');
   const [participationTypeFilter, setParticipationTypeFilter] = useState<number | ''>('');
@@ -54,14 +53,9 @@ const AdminContestsListPage = () => {
     });
 
   useEffect(() => {
-    const timeoutId = window.setTimeout(() => setDebouncedSearch(search), 400);
-    return () => window.clearTimeout(timeoutId);
-  }, [search]);
-
-  useEffect(() => {
     setPaginationModel((prev) => ({ ...prev, page: 0 }));
   }, [
-    debouncedSearch,
+    search,
     typeFilter,
     categoryFilter,
     participationTypeFilter,
@@ -77,7 +71,7 @@ const AdminContestsListPage = () => {
       page: pageParams.page,
       pageSize: pageParams.pageSize,
       ordering: getOrderingFromSortModel(sortModel),
-      search: debouncedSearch,
+      search,
       type: typeFilter || undefined,
       category: categoryFilter || undefined,
       participationType: participationTypeFilter || undefined,
@@ -89,7 +83,7 @@ const AdminContestsListPage = () => {
       pageParams.page,
       pageParams.pageSize,
       sortModel,
-      debouncedSearch,
+      search,
       typeFilter,
       categoryFilter,
       participationTypeFilter,
@@ -104,7 +98,7 @@ const AdminContestsListPage = () => {
   const isGridLoading = isLoading || (isValidating && !data?.data);
   const rowCount = useStableGridRowCount(data?.total, isGridLoading);
 
-  const handleSearchChange = (event: ChangeEvent<HTMLInputElement>) => setSearch(event.target.value);
+  const handleSearchChange = (value: string) => setSearch(value);
 
   const selectedIds = useMemo(
     () => Array.from(rowSelectionModel.ids).map((id) => Number(id)).filter(Number.isFinite),
@@ -514,7 +508,7 @@ const AdminContestsListPage = () => {
         }}
         localeText={{ noRowsLabel: t('common.dataGrid.noRows.adminContests') }}
         slotProps={getDataGridNoRowsOverlaySlotProps({
-          filtered: Boolean(debouncedSearch || activeFilters.length),
+          filtered: Boolean(search || activeFilters.length),
         })}
         columns={columns}
         paginationModel={paginationModel}

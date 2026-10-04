@@ -1,4 +1,4 @@
-import { ChangeEvent, useEffect, useMemo, useRef, useState } from 'react';
+import { ChangeEvent, useMemo } from 'react';
 import { useTranslation } from 'react-i18next';
 import { Box, InputAdornment, Stack } from '@mui/material';
 import { GridSortModel } from '@mui/x-data-grid';
@@ -6,6 +6,7 @@ import { useAuth } from 'app/providers/AuthProvider';
 import { useUsersCountries, useUsersList } from 'modules/users/application/queries';
 import IconifyIcon from 'shared/components/base/IconifyIcon';
 import AppliedFilters from 'shared/components/common/AppliedFilters';
+import DebouncedTextField from 'shared/components/common/DebouncedTextField';
 import FilterButton from 'shared/components/common/FilterButton';
 import {
   DEFAULT_FILTER_DRAWER_WIDTH,
@@ -14,10 +15,10 @@ import {
 } from 'shared/components/common/FilterDrawer';
 import ResponsiveTabs from 'shared/components/common/ResponsiveTabs';
 import PageHeader from 'shared/components/sections/common/PageHeader';
-import StyledTextField from 'shared/components/styled/StyledTextField';
+import useDebouncedValue from 'shared/hooks/useDebouncedValue';
 import useGridPagination from 'shared/hooks/useGridPagination';
 import useRouteQueryState from 'shared/hooks/useRouteQueryState';
-import { booleanFlagParam, enumParam, stringParam } from 'shared/lib/queryParams';
+import { booleanFlagParam, enumParam, numberParam, stringParam } from 'shared/lib/queryParams';
 import { mergePinnedRows } from 'shared/lib/pinnedRows';
 import { getCountryAlpha2, getCountryLabel } from 'shared/utils/country';
 import UsersDataGrid from './UsersDataGrid';
@@ -63,6 +64,7 @@ const orderingFieldMap = Object.fromEntries(
 ) as Record<string, string>;
 
 type UsersListQueryState = FiltersState & {
+  page: number;
   tabValue: TabValue;
   ordering: string;
 };
@@ -70,8 +72,9 @@ type UsersListQueryState = FiltersState & {
 const UsersListContainer = () => {
   const { t, i18n } = useTranslation();
   const { currentUser } = useAuth();
-  const { state, setField, resetState } = useRouteQueryState<UsersListQueryState>({
+  const { state, setField, patchState, resetState } = useRouteQueryState<UsersListQueryState>({
     defaults: {
+      page: 1,
       tabValue: 'skills',
       search: '',
       country: '',
@@ -83,6 +86,7 @@ const UsersListContainer = () => {
       ordering: '',
     },
     schema: {
+      page: numberParam({ min: 1 }),
       tabValue: {
         ...enumParam(['all', 'skills', 'activity', 'contests', 'challenges'] as const),
         param: 'tab',
@@ -123,6 +127,17 @@ const UsersListContainer = () => {
     historyByKey: {
       tabValue: 'push',
     },
+    pageResetKeys: [
+      'tabValue',
+      'ordering',
+      'search',
+      'country',
+      'ageFrom',
+      'ageTo',
+      'hasCountry',
+      'hasCodeforces',
+      'hasTelegram',
+    ],
   });
   const filters = useMemo(
     () => ({
@@ -145,9 +160,12 @@ const UsersListContainer = () => {
     ],
   );
   const filterDrawer = useFilterDrawer();
-  const [debouncedFilters, setDebouncedFilters] = useState(filters);
-  const didMountRef = useRef(false);
-  const { paginationModel, onPaginationModelChange, pageParams, setPaginationModel } =
+  const ageFilters = useMemo(
+    () => ({ ageFrom: filters.ageFrom, ageTo: filters.ageTo }),
+    [filters.ageFrom, filters.ageTo],
+  );
+  const debouncedAgeFilters = useDebouncedValue(ageFilters);
+  const { paginationModel, onPaginationModelChange, pageParams } =
     useGridPagination({
       initialPageSize: 10,
       querySync: {
@@ -166,21 +184,6 @@ const UsersListContainer = () => {
 
     return [{ field, sort: isDescending ? 'desc' : 'asc' }];
   }, [state.ordering]);
-
-  useEffect(() => {
-    const timeoutId = setTimeout(() => setDebouncedFilters(filters), 500);
-
-    return () => clearTimeout(timeoutId);
-  }, [filters]);
-
-  useEffect(() => {
-    if (!didMountRef.current) {
-      didMountRef.current = true;
-      return;
-    }
-
-    setPaginationModel((prev) => ({ ...prev, page: 0 }));
-  }, [debouncedFilters, setPaginationModel, state.tabValue]);
 
   const { data: countries } = useUsersCountries();
 
@@ -229,16 +232,23 @@ const UsersListContainer = () => {
       page: pageParams.page,
       pageSize: pageParams.pageSize,
       ordering,
-      search: debouncedFilters.search || undefined,
-      country: debouncedFilters.country || undefined,
-      ageFrom: debouncedFilters.ageFrom ? Number(debouncedFilters.ageFrom) : undefined,
-      ageTo: debouncedFilters.ageTo ? Number(debouncedFilters.ageTo) : undefined,
-      hasCountry: debouncedFilters.hasCountry || undefined,
-      hasCodeforces: debouncedFilters.hasCodeforces || undefined,
-      hasTelegram: debouncedFilters.hasTelegram || undefined,
+      search: filters.search || undefined,
+      country: filters.country || undefined,
+      ageFrom: debouncedAgeFilters.ageFrom ? Number(debouncedAgeFilters.ageFrom) : undefined,
+      ageTo: debouncedAgeFilters.ageTo ? Number(debouncedAgeFilters.ageTo) : undefined,
+      hasCountry: filters.hasCountry || undefined,
+      hasCodeforces: filters.hasCodeforces || undefined,
+      hasTelegram: filters.hasTelegram || undefined,
       pinCurrentUser: Boolean(currentUser?.username),
     }),
-    [pageParams.page, pageParams.pageSize, ordering, debouncedFilters, currentUser?.username],
+    [
+      pageParams.page,
+      pageParams.pageSize,
+      ordering,
+      filters,
+      debouncedAgeFilters,
+      currentUser?.username,
+    ],
   );
 
   const { data, isLoading, isValidating } = useUsersList(queryParams);
@@ -335,9 +345,7 @@ const UsersListContainer = () => {
   const rowCount = data?.total ?? 0;
 
   const handleTabChange = (value: TabValue) => {
-    setField('tabValue', value);
-    setField('ordering', '');
-    setPaginationModel((prev) => ({ ...prev, page: 0 }));
+    patchState({ tabValue: value, ordering: '' });
   };
   const tabs = useMemo(
     () => [
@@ -353,18 +361,17 @@ const UsersListContainer = () => {
   const handleFilterChange =
     (field: keyof FiltersState) => (event: ChangeEvent<HTMLInputElement>) => {
       setField(field, event.target.value);
-      setPaginationModel((prev) => ({ ...prev, page: 0 }));
     };
 
   const handleClearFilters = () => {
     resetState(['country', 'ageFrom', 'ageTo', 'hasCountry', 'hasCodeforces', 'hasTelegram']);
-    setPaginationModel((prev) => ({ ...prev, page: 0 }));
   };
 
   const handleAgeRangeChange = (value: [number, number]) => {
-    setField('ageFrom', value[0] === AGE_RANGE[0] ? '' : String(value[0]));
-    setField('ageTo', value[1] === AGE_RANGE[1] ? '' : String(value[1]));
-    setPaginationModel((prev) => ({ ...prev, page: 0 }));
+    patchState({
+      ageFrom: value[0] === AGE_RANGE[0] ? '' : String(value[0]),
+      ageTo: value[1] === AGE_RANGE[1] ? '' : String(value[1]),
+    });
   };
 
   const handleSortModelChange = (model: GridSortModel) => {
@@ -422,15 +429,12 @@ const UsersListContainer = () => {
           onAgeRangeChange={handleAgeRangeChange}
           onHasCountryChange={(checked) => {
             setField('hasCountry', checked);
-            setPaginationModel((prev) => ({ ...prev, page: 0 }));
           }}
           onHasCodeforcesChange={(checked) => {
             setField('hasCodeforces', checked);
-            setPaginationModel((prev) => ({ ...prev, page: 0 }));
           }}
           onHasTelegramChange={(checked) => {
             setField('hasTelegram', checked);
-            setPaginationModel((prev) => ({ ...prev, page: 0 }));
           }}
         />
       }
@@ -476,13 +480,13 @@ const UsersListContainer = () => {
                   containerSx={{ width: { xs: 1, sm: 'auto' } }}
                   sx={{ width: { xs: 1, sm: 'auto' } }}
                 />
-                <StyledTextField
+                <DebouncedTextField
                   id="search-box"
                   type="search"
                   variant="filled"
                   fullWidth
                   value={filters.search}
-                  onChange={handleFilterChange('search')}
+                  onValueChange={(value) => setField('search', value)}
                   placeholder={t('users.filters.searchPlaceholder')}
                   slotProps={{
                     input: {

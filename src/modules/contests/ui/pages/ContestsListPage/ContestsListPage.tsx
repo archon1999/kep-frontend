@@ -9,7 +9,6 @@ import {
   FilterDrawerLayout,
   useFilterDrawer,
 } from 'shared/components/common/FilterDrawer';
-import useDebouncedValue from 'shared/hooks/useDebouncedValue';
 import useRouteQueryState from 'shared/hooks/useRouteQueryState';
 import { enumParam, numberParam, stringParam } from 'shared/lib/queryParams';
 import { responsivePagePaddingSx } from 'shared/lib/styles';
@@ -90,19 +89,17 @@ const ContestsListPage = () => {
     pageResetKeys: ['title', 'category', 'type', 'participation'],
   });
 
-  const debouncedTitle = useDebouncedValue(state.title, 400);
-
   const queryParams = useMemo(
     () => ({
       page: state.page,
       pageSize: DEFAULT_PAGE_SIZE,
-      title: debouncedTitle || undefined,
+      title: state.title || undefined,
       category: state.category ? String(state.category) : undefined,
       type: state.type,
       is_participated: state.participation === 'participated' ? '1' : undefined,
       is_registered: state.participation === 'registered' ? '1' : undefined,
     }),
-    [debouncedTitle, state.category, state.page, state.participation, state.type],
+    [state.title, state.category, state.page, state.participation, state.type],
   );
 
   const { data: pageResult, isLoading } = useContestsList(queryParams);

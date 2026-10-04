@@ -4,7 +4,6 @@ import { Link as RouterLink } from 'react-router';
 import { Box, Button, Pagination, Skeleton, Stack, Typography } from '@mui/material';
 import { resources } from 'app/routes/resources';
 import KepIcon from 'shared/components/base/KepIcon';
-import useDebouncedValue from 'shared/hooks/useDebouncedValue';
 import useRouteQueryState from 'shared/hooks/useRouteQueryState';
 import { numberParam, stringParam } from 'shared/lib/queryParams';
 import { responsivePagePaddingSx } from 'shared/lib/styles';
@@ -120,18 +119,17 @@ const BlogListPage = () => {
     }),
     [state.author, state.orderBy, state.title, state.topic],
   );
-  const debouncedTitle = useDebouncedValue(filters.title);
 
   const listParams = useMemo(
     () => ({
       page: state.page,
       pageSize: PAGE_SIZE,
-      title: debouncedTitle || undefined,
+      title: filters.title || undefined,
       author: filters.author || undefined,
       order_by: filters.orderBy || undefined,
       topic: filters.topic || undefined,
     }),
-    [debouncedTitle, filters.author, filters.orderBy, filters.topic, state.page],
+    [filters.title, filters.author, filters.orderBy, filters.topic, state.page],
   );
 
   const { data: postsPage, isLoading } = useBlogPosts(listParams);

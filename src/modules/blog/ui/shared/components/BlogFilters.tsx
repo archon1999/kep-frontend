@@ -15,7 +15,7 @@ import { BlogTopic } from 'modules/blog/domain/entities/blog.entity';
 import KepIcon from 'shared/components/base/KepIcon';
 import FilterButton from 'shared/components/common/FilterButton';
 import ResponsiveTabs from 'shared/components/common/ResponsiveTabs';
-import StyledTextField from 'shared/components/styled/StyledTextField';
+import DebouncedTextField from 'shared/components/common/DebouncedTextField';
 import { cssVarRgba } from 'shared/lib/utils';
 
 export interface BlogFilterState {
@@ -57,8 +57,7 @@ const BlogFilters = ({
     [filters.author, filters.orderBy],
   );
 
-  const handleSearchChange = (event: ChangeEvent<HTMLInputElement>) =>
-    onChange({ ...filters, title: event.target.value });
+  const handleSearchChange = (title: string) => onChange({ ...filters, title });
 
   const handleTopicChange = (topic: string) => onChange({ ...filters, topic });
 
@@ -151,12 +150,12 @@ const BlogFilters = ({
             sx={{ width: { xs: 1, sm: 'auto' } }}
           />
 
-          <StyledTextField
+          <DebouncedTextField
             type="search"
             variant="filled"
             fullWidth
             value={filters.title}
-            onChange={handleSearchChange}
+            onValueChange={handleSearchChange}
             placeholder={t('common.searchPlaceholder')}
             slotProps={{
               input: {

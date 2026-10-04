@@ -11,6 +11,7 @@ import {
   Typography,
 } from '@mui/material';
 import UserPopover from 'modules/users/ui/shared/components/UserPopover';
+import DebouncedTextField from 'shared/components/common/DebouncedTextField';
 import type { Participant } from '../../../../domain/entities/giveaway.types';
 
 export default function Participants({
@@ -41,12 +42,13 @@ export default function Participants({
           </Typography>
           <Chip size="small" label={users.length} />
         </Stack>
-        <TextField
+        <DebouncedTextField
+          textFieldComponent={TextField}
           size="small"
           label={t('giveaways.search')}
           value={search}
-          onChange={(event) => {
-            setSearch(event.target.value);
+          onValueChange={(value) => {
+            setSearch(value);
             setPage(1);
           }}
         />

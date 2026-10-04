@@ -1,4 +1,4 @@
-﻿import { ChangeEvent, useEffect, useMemo, useState } from 'react';
+﻿import { useEffect, useMemo, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import {
   Autocomplete,
@@ -63,7 +63,6 @@ const formatProblemRatingBand = (min?: string, max?: string) => {
 const AdminProblemsListPage = () => {
   const { t } = useTranslation();
   const [search, setSearch] = useState('');
-  const [debouncedSearch, setDebouncedSearch] = useState('');
   const [selectedDifficulties, setSelectedDifficulties] = useState<number[]>([]);
   const [selectedGroups, setSelectedGroups] = useState<number[]>([]);
   const [problemRatingMin, setProblemRatingMin] = useState('');
@@ -87,14 +86,9 @@ const AdminProblemsListPage = () => {
     });
 
   useEffect(() => {
-    const timeoutId = window.setTimeout(() => setDebouncedSearch(search), 400);
-    return () => window.clearTimeout(timeoutId);
-  }, [search]);
-
-  useEffect(() => {
     setPaginationModel((prev) => ({ ...prev, page: 0 }));
   }, [
-    debouncedSearch,
+    search,
     selectedDifficulties,
     selectedGroups,
     problemRatingMin,
@@ -110,7 +104,7 @@ const AdminProblemsListPage = () => {
       page: pageParams.page,
       pageSize: pageParams.pageSize,
       ordering: getOrderingFromSortModel(sortModel, problemOrderingFieldMap),
-      search: debouncedSearch,
+      search,
       difficulty: selectedDifficulties,
       groups: selectedGroups,
       problemRatingMin: problemRatingMin ? Number(problemRatingMin) : undefined,
@@ -122,7 +116,7 @@ const AdminProblemsListPage = () => {
       pageParams.page,
       pageParams.pageSize,
       sortModel,
-      debouncedSearch,
+      search,
       selectedDifficulties,
       selectedGroups,
       problemRatingMin,
@@ -137,7 +131,7 @@ const AdminProblemsListPage = () => {
   const isGridLoading = isLoading || (isValidating && !data?.data);
   const rowCount = useStableGridRowCount(data?.total, isGridLoading);
 
-  const handleSearchChange = (event: ChangeEvent<HTMLInputElement>) => setSearch(event.target.value);
+  const handleSearchChange = (value: string) => setSearch(value);
 
   const selectedIds = useMemo(
     () => Array.from(rowSelectionModel.ids).map((id) => Number(id)).filter(Number.isFinite),
@@ -665,7 +659,7 @@ const AdminProblemsListPage = () => {
         }}
         localeText={{ noRowsLabel: t('common.dataGrid.noRows.adminProblems') }}
         slotProps={getDataGridNoRowsOverlaySlotProps({
-          filtered: Boolean(debouncedSearch || activeFilters.length),
+          filtered: Boolean(search || activeFilters.length),
         })}
         columns={columns}
         paginationModel={paginationModel}

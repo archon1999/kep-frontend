@@ -1,4 +1,4 @@
-import { ChangeEvent, ReactNode } from 'react';
+import { ReactNode } from 'react';
 import { useTranslation } from 'react-i18next';
 import { Box, Button, Stack } from '@mui/material';
 import { Link } from 'react-router';
@@ -15,7 +15,7 @@ interface AdminListPageLayoutProps {
   createPath: string;
   createLabel?: string;
   search: string;
-  onSearchChange: (event: ChangeEvent<HTMLInputElement>) => void;
+  onSearchChange: (value: string) => void;
   searchPlaceholder?: string;
   filters?: ReactNode;
   toolbar?: ReactNode;
