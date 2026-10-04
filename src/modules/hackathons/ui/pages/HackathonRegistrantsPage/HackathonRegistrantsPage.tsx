@@ -1,87 +1,149 @@
-import { Avatar, Box, Card, CardContent, Skeleton, Stack, Typography } from '@mui/material';
+import { useMemo, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useParams } from 'react-router-dom';
+import {
+  Card,
+  Grid,
+  IconButton,
+  InputAdornment,
+  Stack,
+  TextField,
+  Typography,
+} from '@mui/material';
 import { useDocumentTitle } from 'app/providers/DocumentTitleProvider';
 import { useHackathon, useHackathonRegistrants } from 'modules/hackathons/application';
-import { HackathonPageHeader, HackathonTabs } from 'modules/hackathons/ui/shared';
-import { responsivePagePaddingSx } from 'shared/lib/styles';
+import {
+  HackathonAsyncState,
+  HackathonCountdownCard,
+  HackathonDetailLayout,
+} from 'modules/hackathons/ui/shared';
+import IconifyIcon from 'shared/components/base/IconifyIcon';
+import HackathonRegistrantsTable from './components/HackathonRegistrantsTable';
 
 const HackathonRegistrantsPage = () => {
   const { id } = useParams();
   const { t } = useTranslation();
-
-  const { data: hackathon } = useHackathon(id);
-  const { data: registrants, isLoading } = useHackathonRegistrants(id);
+  const [search, setSearch] = useState('');
+  const {
+    data: hackathon,
+    isLoading: isHackathonLoading,
+    error: hackathonError,
+  } = useHackathon(id);
+  const { data: registrants, isLoading, error } = useHackathonRegistrants(id);
   useDocumentTitle(
     hackathon?.title ? 'pageTitles.hackathonRegistrants' : undefined,
-    hackathon?.title
-      ? {
-          hackathonTitle: hackathon.title,
-        }
-      : undefined,
+    hackathon?.title ? { hackathonTitle: hackathon.title } : undefined,
   );
 
+  const filteredRegistrants = useMemo(() => {
+    const query = search.trim().toLocaleLowerCase();
+    return (registrants ?? [])
+      .map((registrant, index) => ({ ...registrant, position: index + 1 }))
+      .filter(
+        (registrant) =>
+          !query ||
+          `${registrant.username} ${registrant.userFullName ?? ''}`
+            .toLocaleLowerCase()
+            .includes(query),
+      );
+  }, [registrants, search]);
+
   return (
-    <Box sx={responsivePagePaddingSx}>
-      <Stack direction="column" spacing={3}>
-        {hackathon ? <HackathonTabs hackathon={hackathon} /> : <Skeleton variant="rectangular" height={56} />}
-
-        {hackathon ? (
-          <HackathonPageHeader
-            hackathon={hackathon}
-            eyebrow={hackathon.title}
-            title={t('hackathons.registrants')}
-            lead={t('hackathons.registrantsLead')}
-          />
-        ) : (
-          <Skeleton variant="rounded" height={260} />
-        )}
-
-        <Card background={1} sx={{ borderRadius: 3, outline: 'none' }}>
-          <CardContent sx={{ p: { xs: 3, md: 4 } }}>
-            <Stack direction="column" spacing={2}>
-              <Typography variant="h6" fontWeight={800}>
-                {t('hackathons.registrants')}
-              </Typography>
-
-              {(registrants ?? []).map((registrant, index) => (
-                <Stack
-                  key={registrant.username}
-                  direction="row"
-                  spacing={2}
-                  alignItems="center"
-                  sx={{
-                    p: 2,
-                    borderRadius: 3,
-                    bgcolor: 'background.neutral',
-                    border: (theme) => `1px solid ${theme.palette.divider}`,
-                  }}
+    <HackathonDetailLayout
+      hackathon={hackathon}
+      isLoading={isHackathonLoading}
+      error={hackathonError}
+    >
+      <Grid container spacing={3}>
+        <Grid size={{ xs: 12, md: 8 }} sx={{ minWidth: 0 }}>
+          <Card sx={{ borderRadius: 3 }}>
+            {hackathon ? (
+              <>
+                <Typography
+                  component="h2"
+                  variant="subtitle1"
+                  fontWeight={700}
+                  sx={{ px: 3, pt: 3 }}
                 >
-                  <Typography variant="subtitle2" width={32} textAlign="center">
-                    {index + 1}
-                  </Typography>
-                  <Avatar src={registrant.userAvatar} sx={{ width: 44, height: 44 }} />
-                  <Stack direction="column" spacing={0.25}>
-                    <Typography fontWeight={700}>{registrant.username}</Typography>
-                    {registrant.userFullName ? (
-                      <Typography variant="body2" color="text.secondary">
-                        {registrant.userFullName}
-                      </Typography>
-                    ) : null}
-                  </Stack>
-                </Stack>
-              ))}
-
-              {!isLoading && (!registrants || registrants.length === 0) ? (
-                <Typography variant="body2" color="text.secondary" textAlign="center" sx={{ py: 4 }}>
-                  {t('hackathons.noRegistrants')}
+                  {t('hackathons.registrants')}
                 </Typography>
-              ) : null}
-            </Stack>
-          </CardContent>
-        </Card>
-      </Stack>
-    </Box>
+                <Stack
+                  direction={{ xs: 'column', sm: 'row' }}
+                  alignItems={{ sm: 'center' }}
+                  justifyContent="space-between"
+                  spacing={2}
+                  sx={{ px: 3, py: 2.5 }}
+                >
+                  <Typography variant="body2" color="text.secondary">
+                    {t('hackathons.participantsCount', { count: registrants?.length ?? 0 })}
+                  </Typography>
+                  <TextField
+                    value={search}
+                    onChange={(event) => setSearch(event.target.value)}
+                    placeholder={t('hackathons.registrantsSearchPlaceholder')}
+                    size="small"
+                    sx={{ width: { xs: 1, sm: 280 } }}
+                    slotProps={{
+                      htmlInput: { 'aria-label': t('hackathons.registrantsSearchPlaceholder') },
+                      input: {
+                        startAdornment: (
+                          <InputAdornment position="start">
+                            <IconifyIcon
+                              icon="material-symbols:search-rounded"
+                              sx={{ color: 'text.secondary', fontSize: 20 }}
+                            />
+                          </InputAdornment>
+                        ),
+                        endAdornment: search ? (
+                          <InputAdornment position="end">
+                            <IconButton
+                              size="small"
+                              onClick={() => setSearch('')}
+                              aria-label={t('hackathons.clearRegistrantSearch')}
+                            >
+                              <IconifyIcon
+                                icon="material-symbols:close-rounded"
+                                sx={{ fontSize: 18 }}
+                              />
+                            </IconButton>
+                          </InputAdornment>
+                        ) : undefined,
+                      },
+                    }}
+                  />
+                </Stack>
+                {isLoading || error || !filteredRegistrants.length ? (
+                  <HackathonAsyncState
+                    isLoading={isLoading}
+                    error={error}
+                    isEmpty={!filteredRegistrants.length}
+                    emptyTitle={
+                      search.trim()
+                        ? t('hackathons.noMatchingRegistrants')
+                        : t('hackathons.noRegistrants')
+                    }
+                    emptyMessage={
+                      search.trim() ? t('hackathons.noMatchingRegistrantsHint') : undefined
+                    }
+                  />
+                ) : (
+                  <HackathonRegistrantsTable registrants={filteredRegistrants} />
+                )}
+              </>
+            ) : (
+              <HackathonAsyncState
+                isLoading={isHackathonLoading}
+                error={hackathonError}
+                loadingHeight={180}
+              />
+            )}
+          </Card>
+        </Grid>
+        <Grid size={{ xs: 12, md: 4 }}>
+          <HackathonCountdownCard hackathon={hackathon} />
+        </Grid>
+      </Grid>
+    </HackathonDetailLayout>
   );
 };
 

@@ -1,11 +1,11 @@
 import { useMemo } from 'react';
-import { Box } from '@mui/material';
 import { useTranslation } from 'react-i18next';
 import { Link as RouterLink, useLocation, useNavigate } from 'react-router-dom';
-import IconifyIcon from 'shared/components/base/IconifyIcon';
-import ResponsiveTabs from 'shared/components/common/ResponsiveTabs';
-import { resources, getResourceById } from 'app/routes/resources';
+import { Box } from '@mui/material';
+import { getResourceById, resources } from 'app/routes/resources';
 import { type Hackathon } from 'modules/hackathons/domain';
+import KepIcon from 'shared/components/base/KepIcon';
+import ResponsiveTabs from 'shared/components/common/ResponsiveTabs';
 
 interface HackathonTabsProps {
   hackathon?: Hackathon;
@@ -22,34 +22,38 @@ const HackathonTabs = ({ hackathon }: HackathonTabsProps) => {
     return [
       {
         label: t('hackathons.overview'),
+        icon: 'hackathon' as const,
         to: getResourceById(resources.Hackathon, hackathon.id),
-        icon: 'mdi:trophy-variant-outline',
       },
       {
         label: t('hackathons.projects'),
+        icon: 'projects' as const,
         to: getResourceById(resources.HackathonProjects, hackathon.id),
-        icon: 'mdi:clipboard-text-outline',
       },
       {
         label: t('hackathons.attempts'),
+        icon: 'attempts' as const,
         to: getResourceById(resources.HackathonAttempts, hackathon.id),
-        icon: 'mdi:code-braces-box',
       },
       {
         label: t('hackathons.standings'),
+        icon: 'ranking' as const,
         to: getResourceById(resources.HackathonStandings, hackathon.id),
-        icon: 'mdi:podium-gold',
       },
       {
         label: t('hackathons.registrants'),
+        icon: 'users' as const,
         to: getResourceById(resources.HackathonRegistrants, hackathon.id),
-        icon: 'mdi:account-group-outline',
       },
     ];
   }, [hackathon, t]);
 
   const activeValue = useMemo(
-    () => tabs.find((tab) => location.pathname.startsWith(tab.to))?.to ?? tabs[0]?.to,
+    () =>
+      [...tabs]
+        .sort((a, b) => b.to.length - a.to.length)
+        .find((tab) => location.pathname === tab.to || location.pathname.startsWith(`${tab.to}/`))
+        ?.to ?? tabs[0]?.to,
     [location.pathname, tabs],
   );
 
@@ -59,11 +63,9 @@ const HackathonTabs = ({ hackathon }: HackathonTabsProps) => {
     <Box
       sx={{
         width: '100%',
-        overflowX: 'auto',
-        p: 0.75,
-        borderRadius: 3,
-        bgcolor: 'background.paper',
-        border: (theme) => `1px solid ${theme.palette.divider}`,
+        minWidth: 0,
+        borderBottom: '1px solid',
+        borderColor: 'divider',
       }}
     >
       <ResponsiveTabs
@@ -72,20 +74,29 @@ const HackathonTabs = ({ hackathon }: HackathonTabsProps) => {
         items={tabs.map((tab) => ({
           value: tab.to,
           label: tab.label,
-          icon: <IconifyIcon icon={tab.icon} />,
+          icon: <KepIcon name={tab.icon} fontSize={18} />,
           tabProps: {
             iconPosition: 'start',
             component: RouterLink,
             to: tab.to,
-            sx: { fontWeight: 700, minHeight: 52, borderRadius: 2 },
+            sx: {
+              fontWeight: 500,
+              textTransform: 'none',
+            },
           },
         }))}
-        ariaLabel="hackathon tabs"
+        ariaLabel={t('hackathons.navigation')}
+        selectProps={{
+          sx: {
+            minHeight: 38,
+            '& .MuiSelect-select': { py: 0.8, fontSize: '0.85rem' },
+          },
+        }}
         tabsProps={{
           variant: 'scrollable',
-          scrollButtons: true,
+          scrollButtons: 'auto',
           allowScrollButtonsMobile: true,
-          sx: { minHeight: 52 },
+          sx: { width: '100%', minWidth: 0 },
         }}
       />
     </Box>

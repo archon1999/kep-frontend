@@ -1,4 +1,9 @@
 export { default as HackathonCountdownCard } from './HackathonCountdownCard';
 export { default as HackathonPageHeader } from './HackathonPageHeader';
+export { default as HackathonDetailLayout } from './HackathonDetailLayout';
 export { default as HackathonPointsBadge } from './HackathonPointsBadge';
 export { default as HackathonTabs } from './HackathonTabs';
+export { default as HackathonStatusChip } from './HackathonStatusChip';
+export { default as HackathonAsyncState } from './HackathonAsyncState';
+export { default as HackathonProjectCard } from './HackathonProjectCard';
+export { default as HackathonProjectsSection } from './HackathonProjectsSection';

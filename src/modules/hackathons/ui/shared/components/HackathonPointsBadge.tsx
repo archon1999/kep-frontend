@@ -1,6 +1,5 @@
-import { Chip, ChipProps } from '@mui/material';
 import { useTranslation } from 'react-i18next';
-import IconifyIcon from 'shared/components/base/IconifyIcon';
+import { Chip, ChipProps } from '@mui/material';
 
 interface HackathonPointsBadgeProps extends Omit<ChipProps, 'label'> {
   value?: number | string | null;
@@ -11,9 +10,14 @@ const HackathonPointsBadge = ({ value = 0, ...chipProps }: HackathonPointsBadgeP
 
   return (
     <Chip
+      size="small"
+      variant="soft"
       {...chipProps}
-      icon={<IconifyIcon icon="mdi:star-circle-outline" />}
-      label={`${value} ${t('hackathons.pointsUnit')}`}
+      label={`${value ?? 0} ${t('hackathons.pointsUnit')}`}
+      sx={[
+        { fontVariantNumeric: 'tabular-nums', fontWeight: 600 },
+        ...(Array.isArray(chipProps.sx) ? chipProps.sx : chipProps.sx ? [chipProps.sx] : []),
+      ]}
     />
   );
 };

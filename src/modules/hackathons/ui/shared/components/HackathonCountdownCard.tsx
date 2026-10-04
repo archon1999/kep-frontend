@@ -1,92 +1,132 @@
-import { useEffect, useMemo, useState } from 'react';
-import { Card, CardContent, Divider, LinearProgress, Stack, Typography } from '@mui/material';
+import { useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
+import { Box, Card, CardContent, Chip, Stack, Typography } from '@mui/material';
 import { type Hackathon, HackathonStatus } from 'modules/hackathons/domain';
-import { diffDateTime, formatCountdownClock } from 'shared/lib/dateTime';
-import { formatHackathonDateTime } from '../helpers/format';
+import KepIcon from 'shared/components/base/KepIcon';
+import { diffDateTime, formatDateTime, getCountdownParts } from 'shared/lib/dateTime';
+import { cssVarRgba } from 'shared/lib/utils';
 
-interface HackathonCountdownCardProps {
-  hackathon?: Hackathon;
-}
-
-const HackathonCountdownCard = ({ hackathon }: HackathonCountdownCardProps) => {
+const HackathonCountdownCard = ({ hackathon }: { hackathon?: Hackathon }) => {
   const { t } = useTranslation();
   const [now, setNow] = useState(() => Date.now());
+  const hasSchedule = Boolean(hackathon?.startTime && hackathon.finishTime);
+  const untilStart = diffDateTime(hackathon?.startTime, now, 'millisecond');
+  const untilFinish = diffDateTime(hackathon?.finishTime, now, 'millisecond');
+  const finished =
+    hackathon?.status === HackathonStatus.FINISHED || (hasSchedule && untilFinish <= 0);
+  const upcoming = !finished && untilStart > 0;
+  const remaining = finished ? 0 : Math.max(0, upcoming ? untilStart : untilFinish);
+  const { hours, minutes, seconds } = getCountdownParts(remaining);
+  const color = finished ? 'default' : upcoming ? 'warning' : 'success';
 
   useEffect(() => {
+    if (!hasSchedule || finished) return;
     const timer = setInterval(() => setNow(Date.now()), 1000);
     return () => clearInterval(timer);
-  }, []);
-
-  const { label, progress, timerLabel } = useMemo(() => {
-    if (!hackathon?.startTime || !hackathon.finishTime) {
-      return { label: '', progress: 0, timerLabel: '00:00:00' };
-    }
-
-    if (hackathon.status === HackathonStatus.NOT_STARTED || diffDateTime(hackathon.startTime, now) > 0) {
-      const total = diffDateTime(hackathon.finishTime, hackathon.startTime, 'millisecond');
-      const remaining = diffDateTime(hackathon.startTime, now, 'millisecond');
-      return {
-        label: t('hackathons.startsIn'),
-        progress: total ? Math.min(100, Math.max(0, 100 - (remaining / total) * 100)) : 0,
-        timerLabel: formatCountdownClock(remaining),
-      };
-    }
-
-    if (hackathon.status === HackathonStatus.ALREADY && diffDateTime(hackathon.finishTime, now) > 0) {
-      const total = diffDateTime(hackathon.finishTime, hackathon.startTime, 'millisecond');
-      const remaining = diffDateTime(hackathon.finishTime, now, 'millisecond');
-      return {
-        label: t('hackathons.endsIn'),
-        progress: total ? Math.min(100, Math.max(0, 100 - (remaining / total) * 100)) : 0,
-        timerLabel: formatCountdownClock(remaining),
-      };
-    }
-
-    return { label: t('hackathons.finished'), progress: 100, timerLabel: '00:00:00' };
-  }, [hackathon, now, t]);
+  }, [hasSchedule, finished]);
 
   if (!hackathon) return null;
 
   return (
-    <Card sx={{ borderRadius: 3, outline: 'none' }} background={1}>
-      <CardContent sx={{ p: 3 }}>
-        <Stack direction="column" spacing={2}>
-          <Typography variant="subtitle2" color="text.secondary">
-            {label}
-          </Typography>
-          <Typography variant="h4" fontWeight={800} color="text.primary">
-            {timerLabel}
-          </Typography>
-          <LinearProgress
-            value={progress}
-            variant="determinate"
-            color={hackathon.status === HackathonStatus.ALREADY ? 'success' : 'warning'}
-            sx={{ height: 10, borderRadius: 5 }}
-          />
-
-          <Divider />
-
-          <Stack direction="column" spacing={1.25}>
-            <Stack direction="row" justifyContent="space-between" spacing={2}>
-              <Typography variant="body2" color="text.secondary">
-                {t('hackathons.startsAt')}
-              </Typography>
-              <Typography variant="body2" fontWeight={700} textAlign="right">
-                {formatHackathonDateTime(hackathon.startTime)}
-              </Typography>
+    <Card
+      variant="outlined"
+      sx={(theme) => ({
+        position: 'relative',
+        overflow: 'hidden',
+        borderRadius: 3,
+        color: 'text.primary',
+        background: `linear-gradient(135deg, ${cssVarRgba(theme.vars.palette.primary.lightChannel, 0.12)}, ${cssVarRgba(theme.vars.palette.primary.mainChannel, 0.08)} 58%, ${cssVarRgba(theme.vars.palette.primary.mainChannel, 0.04)})`,
+        borderColor: cssVarRgba(theme.vars.palette.primary.mainChannel, 0.12),
+      })}
+    >
+      <Box
+        sx={(theme) => ({
+          position: 'absolute',
+          inset: 0,
+          pointerEvents: 'none',
+          background: `radial-gradient(circle at 14% 18%, ${cssVarRgba(theme.vars.palette.primary.lightChannel, 0.16)}, transparent 34%), radial-gradient(circle at 85% 14%, ${cssVarRgba(theme.vars.palette.primary.mainChannel, 0.12)}, transparent 28%)`,
+        })}
+      />
+      <CardContent sx={{ position: 'relative', zIndex: 1 }}>
+        {hasSchedule ? (
+          <Stack direction="column" spacing={2}>
+            <Stack direction="row" justifyContent="center">
+              <Chip
+                icon={<KepIcon name="timer" fontSize={16} />}
+                label={t(
+                  finished
+                    ? 'hackathons.finished'
+                    : upcoming
+                      ? 'hackathons.startsIn'
+                      : 'hackathons.endsIn',
+                )}
+                color={color}
+                variant="filled"
+                sx={{
+                  color: finished ? 'text.primary' : 'primary.contrastText',
+                  bgcolor: finished ? 'background.paper' : undefined,
+                  fontWeight: 700,
+                }}
+              />
             </Stack>
-
-            <Stack direction="row" justifyContent="space-between" spacing={2}>
-              <Typography variant="body2" color="text.secondary">
-                {t('hackathons.endsAt')}
-              </Typography>
-              <Typography variant="body2" fontWeight={700} textAlign="right">
-                {formatHackathonDateTime(hackathon.finishTime)}
-              </Typography>
+            <Stack direction="row" spacing={1.5} justifyContent="center" flexWrap="wrap" useFlexGap>
+              {[
+                { value: hours, label: t('contests.timeLabels.hour') },
+                { value: minutes, label: t('contests.timeLabels.minute') },
+                { value: seconds, label: t('contests.timeLabels.second') },
+              ].map((item) => (
+                <Stack
+                  key={item.label}
+                  direction="column"
+                  spacing={0.5}
+                  alignItems="center"
+                  sx={(theme) => ({
+                    px: 2,
+                    py: 1.5,
+                    minWidth: 72,
+                    borderRadius: 2,
+                    background: theme.vars.palette.background.paper,
+                    boxShadow: `0 10px 40px ${theme.palette.common.black}0a`,
+                    color: theme.vars.palette.text.primary,
+                  })}
+                >
+                  <Typography
+                    variant="h4"
+                    fontWeight={800}
+                    sx={{ fontVariantNumeric: 'tabular-nums' }}
+                  >
+                    {String(item.value).padStart(2, '0')}
+                  </Typography>
+                  <Typography
+                    variant="caption"
+                    sx={{ textTransform: 'uppercase', letterSpacing: 0.4 }}
+                  >
+                    {item.label}
+                  </Typography>
+                </Stack>
+              ))}
             </Stack>
+            <Typography align="center" variant="caption" fontWeight={500}>
+              {t(
+                upcoming
+                  ? 'contests.startsLabel'
+                  : finished
+                    ? 'contests.countdownCard.finishedAt'
+                    : 'contests.endsLabel',
+                {
+                  date: formatDateTime(
+                    upcoming ? hackathon.startTime : hackathon.finishTime,
+                    'compactDateTime',
+                  ),
+                },
+              )}
+            </Typography>
           </Stack>
-        </Stack>
+        ) : (
+          <Typography variant="body2" color="text.secondary">
+            {t('hackathons.noSchedule')}
+          </Typography>
+        )}
       </CardContent>
     </Card>
   );

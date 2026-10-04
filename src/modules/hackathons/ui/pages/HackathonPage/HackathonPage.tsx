@@ -1,112 +1,87 @@
-import { Box, Button, Card, CardContent, Grid, Skeleton, Stack, Typography } from '@mui/material';
-import { useTranslation } from 'react-i18next';
-import { useParams } from 'react-router-dom';
+import { useState } from 'react';
+import { useParams } from 'react-router';
+import { Grid } from '@mui/material';
 import { useDocumentTitle } from 'app/providers/DocumentTitleProvider';
 import {
   useHackathon,
+  useHackathonProjects,
+  useHackathonStandings,
   useRegisterHackathon,
   useUnregisterHackathon,
 } from 'modules/hackathons/application';
-import { HackathonStatus } from 'modules/hackathons/domain/enums';
-import { HackathonCountdownCard, HackathonPageHeader, HackathonTabs } from 'modules/hackathons/ui/shared';
-import { responsivePagePaddingSx } from 'shared/lib/styles';
-import { createSafeHtml } from 'shared/lib/safeHtml';
+import { HackathonStatus } from 'modules/hackathons/domain';
+import { HackathonDetailLayout, getHackathonProjectPoints } from 'modules/hackathons/ui/shared';
+import HackathonOverviewAside from './components/HackathonOverviewAside';
+import HackathonOverviewContent from './components/HackathonOverviewContent';
 
 const HackathonPage = () => {
-  const { t } = useTranslation();
   const { id } = useParams();
-
-  const { data: hackathon, isLoading, mutate } = useHackathon(id);
+  const [registrationError, setRegistrationError] = useState(false);
+  const { data: hackathon, isLoading, error, mutate } = useHackathon(id);
+  const {
+    data: projects,
+    isLoading: isProjectsLoading,
+    error: projectsError,
+  } = useHackathonProjects(id);
+  const {
+    data: standings,
+    isLoading: isStandingsLoading,
+    error: standingsError,
+  } = useHackathonStandings(
+    hackathon && hackathon.status !== HackathonStatus.NOT_STARTED ? id : undefined,
+    { refreshInterval: hackathon?.status === HackathonStatus.FINISHED ? 0 : 30000 },
+  );
   const { trigger: registerHackathon, isMutating: isRegistering } = useRegisterHackathon();
   const { trigger: unregisterHackathon, isMutating: isUnregistering } = useUnregisterHackathon();
   const canChangeRegistration = hackathon?.status === HackathonStatus.ALREADY;
   useDocumentTitle(
     hackathon?.title ? 'pageTitles.hackathon' : undefined,
-    hackathon?.title
-      ? {
-          hackathonTitle: hackathon.title,
-        }
-      : undefined,
+    hackathon?.title ? { hackathonTitle: hackathon.title } : undefined,
   );
 
   const handleRegistration = async () => {
-    if (!id) return;
-
-    if (hackathon?.isRegistered) {
-      await unregisterHackathon(id);
-    } else {
-      await registerHackathon(id);
+    if (!id || !canChangeRegistration) return;
+    setRegistrationError(false);
+    try {
+      if (hackathon?.isRegistered) await unregisterHackathon(id);
+      else await registerHackathon(id);
+      await mutate();
+    } catch {
+      setRegistrationError(true);
     }
-
-    await mutate();
   };
 
   return (
-    <Box sx={responsivePagePaddingSx}>
-      <Stack direction="column" spacing={3}>
-        {hackathon ? <HackathonTabs hackathon={hackathon} /> : <Skeleton variant="rectangular" height={56} />}
-
-        {hackathon ? (
-          <HackathonPageHeader
-            hackathon={hackathon}
-            lead={t('hackathons.subtitle')}
-            action={
-              <Button
-                variant={hackathon.isRegistered ? 'outlined' : 'contained'}
-                onClick={handleRegistration}
-                disabled={!canChangeRegistration || isRegistering || isUnregistering}
-                sx={{ width: { xs: 1, sm: 'auto' } }}
-              >
-                {hackathon.isRegistered ? t('hackathons.unregister') : t('hackathons.register')}
-              </Button>
-            }
-          />
-        ) : (
-          <Skeleton variant="rounded" height={260} />
-        )}
-
+    <HackathonDetailLayout hackathon={hackathon} isLoading={isLoading} error={error}>
+      {hackathon ? (
         <Grid container spacing={3}>
-          <Grid size={{ xs: 12, md: 8 }}>
-            <Card background={1} sx={{ borderRadius: 3, outline: 'none' }}>
-              <CardContent sx={{ p: { xs: 3, md: 4 } }}>
-                {isLoading ? (
-                  <Skeleton variant="rounded" height={260} />
-                ) : (
-                  <Stack direction="column" spacing={3}>
-                    <Stack direction="column" spacing={1}>
-                      <Typography variant="h5" fontWeight={800}>
-                        {t('hackathons.details')}
-                      </Typography>
-                      <Typography variant="body2" color="text.secondary">
-                        {t('hackathons.projectsLead')}
-                      </Typography>
-                    </Stack>
-
-                    {hackathon?.description ? (
-                      <Typography
-                        variant="body1"
-                        color="text.secondary"
-                        component="div"
-                        sx={{ '& p': { m: 0 }, '& p + p': { mt: 2 } }}
-                        dangerouslySetInnerHTML={createSafeHtml(hackathon.description)}
-                      />
-                    ) : (
-                      <Typography variant="body1" color="text.secondary">
-                        {t('hackathons.emptySubtitle')}
-                      </Typography>
-                    )}
-                  </Stack>
-                )}
-              </CardContent>
-            </Card>
+          <Grid size={{ xs: 12, md: 8 }} sx={{ minWidth: 0 }}>
+            <HackathonOverviewContent
+              hackathon={hackathon}
+              projects={projects}
+              isProjectsLoading={isProjectsLoading}
+              projectsError={projectsError}
+              standings={standings}
+              isStandingsLoading={isStandingsLoading}
+              standingsError={standingsError}
+            />
           </Grid>
-
-          <Grid size={{ xs: 12, md: 4 }}>
-            <HackathonCountdownCard hackathon={hackathon} />
+          <Grid size={{ xs: 12, md: 4 }} sx={{ minWidth: 0 }}>
+            <HackathonOverviewAside
+              hackathon={hackathon}
+              totalPoints={projects?.reduce(
+                (sum, project) => sum + getHackathonProjectPoints(project),
+                0,
+              )}
+              isProjectsLoading={isProjectsLoading}
+              onRegistration={handleRegistration}
+              isMutating={isRegistering || isUnregistering}
+              registrationError={registrationError}
+            />
           </Grid>
         </Grid>
-      </Stack>
-    </Box>
+      ) : null}
+    </HackathonDetailLayout>
   );
 };
 

@@ -1,18 +1,8 @@
-import {
-  Accordion,
-  AccordionDetails,
-  AccordionSummary,
-  Box,
-  Chip,
-  Divider,
-  Stack,
-  Typography,
-} from '@mui/material';
 import { useTranslation } from 'react-i18next';
+import { Box, Divider, Stack, Typography } from '@mui/material';
 import { type HackathonProject } from 'modules/hackathons/domain';
-import { getHackathonProjectPoints, HackathonPointsBadge } from 'modules/hackathons/ui/shared';
-import IconifyIcon from 'shared/components/base/IconifyIcon';
-import { createSafeHtml } from 'shared/lib/safeHtml';
+import ProjectDetailsAccordion from 'modules/projects/ui/pages/ProjectDetailPage/components/ProjectDetailsAccordion';
+import ProjectDetailsSection from 'modules/projects/ui/pages/ProjectDetailPage/components/ProjectDetailsSection';
 
 interface HackathonProjectDescriptionProps {
   hackathonProject: HackathonProject;
@@ -26,98 +16,88 @@ const HackathonProjectDescription = ({ hackathonProject }: HackathonProjectDescr
   );
 
   return (
-    <Stack direction="column" spacing={3}>
-      <Stack direction={{ xs: 'column', sm: 'row' }} spacing={2} alignItems={{ xs: 'flex-start', sm: 'center' }}>
-        {project.logo ? (
-          <Box
-            component="img"
-            src={project.logo}
-            alt={project.title}
-            sx={{
-              width: 64,
-              height: 64,
-              objectFit: 'contain',
-              borderRadius: 3,
-              bgcolor: 'background.neutral',
-            }}
-          />
-        ) : null}
-
-        <Stack direction="column" spacing={1} flex={1}>
-          <Typography variant="h3" fontWeight={800}>
-            {project.title}
-          </Typography>
-
-          <Stack direction="row" spacing={1} flexWrap="wrap" rowGap={1} alignItems="center">
-            <Chip label={`${t('hackathons.projectSymbol')}: ${hackathonProject.symbol}`} size="small" variant="outlined" />
-            <HackathonPointsBadge value={getHackathonProjectPoints(hackathonProject)} color="primary" />
-            <Chip label={project.levelTitle} color="success" size="small" />
-          </Stack>
-        </Stack>
-      </Stack>
-
+    <Stack
+      direction="column"
+      spacing={3}
+      sx={{
+        '& .MuiAccordionSummary-root': { minHeight: 48, py: 1 },
+        '& .MuiAccordionSummary-root .MuiTypography-root': {
+          fontSize: 'subtitle1.fontSize',
+          fontWeight: 500,
+        },
+      }}
+    >
       {project.description ? (
-        <Typography
-          variant="body1"
-          component="div"
-          dangerouslySetInnerHTML={createSafeHtml(project.description)}
-        />
+        <Box sx={{ typography: 'body2', maxWidth: '85ch' }}>
+          <ProjectDetailsSection title={t('projects.overview')} description={project.description} />
+        </Box>
       ) : null}
 
-      <Divider />
-
-      <Stack direction="column" spacing={2}>
-        <Typography variant="h6" fontWeight={800}>
+      <Stack direction="column" spacing={1}>
+        <Typography component="h2" variant="subtitle1" fontWeight={700}>
           {t('projects.tasks')}
         </Typography>
 
-        <Stack direction="column" spacing={1.5}>
-          {project.tasks.map((task) => (
-            <Accordion key={task.number} disableGutters>
-              <AccordionSummary expandIcon={<IconifyIcon icon="mdi:chevron-down" />}>
-                <Stack direction="row" justifyContent="space-between" spacing={2} alignItems="center" width={1}>
-                  <Typography fontWeight={700}>
-                    {task.number}. {task.title}
-                  </Typography>
-                  <HackathonPointsBadge value={taskPointsByNumber.get(task.number) ?? 0} color="primary" />
-                </Stack>
-              </AccordionSummary>
-              <AccordionDetails>
-                <Typography
-                  component="div"
-                  variant="body2"
-                  color="text.secondary"
-                  dangerouslySetInnerHTML={createSafeHtml(task.description)}
-                />
-              </AccordionDetails>
-            </Accordion>
-          ))}
+        <Stack direction="column" divider={<Divider flexItem />}>
+          {project.tasks.length ? (
+            project.tasks.map((task) => (
+              <ProjectDetailsAccordion
+                key={task.number}
+                id={`hackathon-project-${hackathonProject.id}-task-${task.number}`}
+                title={
+                  <Stack
+                    component="span"
+                    direction="row"
+                    spacing={2}
+                    alignItems="center"
+                    justifyContent="space-between"
+                    sx={{ minWidth: 0, overflowWrap: 'anywhere' }}
+                  >
+                    <Box component="span" sx={{ fontSize: 'subtitle1.fontSize', fontWeight: 500 }}>
+                      {task.number}. {task.title}
+                    </Box>
+                    <Box
+                      component="span"
+                      sx={{
+                        color: 'text.secondary',
+                        fontSize: 'caption.fontSize',
+                        fontWeight: 400,
+                        flexShrink: 0,
+                        fontVariantNumeric: 'tabular-nums',
+                      }}
+                    >
+                      {taskPointsByNumber.get(task.number) ?? 0} {t('hackathons.pointsUnit')}
+                    </Box>
+                  </Stack>
+                }
+                description={task.description}
+              />
+            ))
+          ) : (
+            <Typography variant="body2" color="text.secondary" sx={{ py: 2 }}>
+              {t('projects.noTasks')}
+            </Typography>
+          )}
         </Stack>
       </Stack>
 
-      <Stack direction="column" spacing={2}>
-        <Typography variant="h6" fontWeight={800}>
-          {t('projects.technologies')}
-        </Typography>
-
-        <Stack direction="column" spacing={1.5}>
-          {project.availableTechnologies.map((technology) => (
-            <Accordion key={technology.technology} disableGutters>
-              <AccordionSummary expandIcon={<IconifyIcon icon="mdi:chevron-down" />}>
-                <Typography fontWeight={700}>{technology.technology}</Typography>
-              </AccordionSummary>
-              <AccordionDetails>
-                <Typography
-                  component="div"
-                  variant="body2"
-                  color="text.secondary"
-                  dangerouslySetInnerHTML={createSafeHtml(technology.info)}
-                />
-              </AccordionDetails>
-            </Accordion>
-          ))}
+      {project.availableTechnologies.length ? (
+        <Stack direction="column" spacing={1}>
+          <Typography component="h2" variant="subtitle1" fontWeight={700}>
+            {t('projects.technologies')}
+          </Typography>
+          <Stack direction="column" divider={<Divider flexItem />}>
+            {project.availableTechnologies.map((technology, index) => (
+              <ProjectDetailsAccordion
+                key={technology.technology}
+                id={`hackathon-project-${hackathonProject.id}-technology-${index}`}
+                title={technology.technology}
+                description={technology.info}
+              />
+            ))}
+          </Stack>
         </Stack>
-      </Stack>
+      ) : null}
     </Stack>
   );
 };

@@ -1,8 +1,8 @@
 import type { HackathonProject } from 'modules/hackathons/domain';
-import { formatCalendarDateTime } from 'shared/lib/dateTime';
+import { formatDateTime } from 'shared/lib/dateTime';
 
 export const formatHackathonDateTime = (value?: string | null) =>
-  formatCalendarDateTime(value);
+  formatDateTime(value, 'compactDateTimeNoComma');
 
 export const formatHackathonDuration = (value?: string | null) => {
   if (!value) return null;
@@ -21,6 +21,6 @@ export const formatHackathonDuration = (value?: string | null) => {
 };
 
 export const getHackathonProjectPoints = (hackathonProject?: HackathonProject | null) =>
-  hackathonProject?.maxPoints
-  ?? hackathonProject?.taskPoints?.reduce((sum, task) => sum + (task.points ?? 0), 0)
-  ?? 0;
+  hackathonProject?.maxPoints ??
+  hackathonProject?.taskPoints?.reduce((sum, task) => sum + (task.points ?? 0), 0) ??
+  0;
