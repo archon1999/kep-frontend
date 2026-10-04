@@ -1,10 +1,7 @@
 import { useTranslation } from 'react-i18next';
 import { Link as RouterLink } from 'react-router-dom';
-import { Box, Button, Divider, IconButton, Stack, Tooltip } from '@mui/material';
+import { Box, Button, Divider, IconButton, Stack, Tooltip, Typography } from '@mui/material';
 import AppbarActionItems from 'app/layouts/main-layout/common/AppbarActionItems';
-import LanguageMenu from 'app/layouts/main-layout/common/LanguageMenu';
-import ProfileMenu from 'app/layouts/main-layout/common/ProfileMenu';
-import ThemeToggler from 'app/layouts/main-layout/common/ThemeToggler';
 import { useAuth } from 'app/providers/AuthProvider';
 import { getResourceById, resources } from 'app/routes/resources';
 import { ProblemDetail } from 'modules/problems/domain/entities/problem.entity';
@@ -76,8 +73,9 @@ export const ProblemHeader = ({
       component="header"
       sx={{
         borderColor: 'divider',
-        px: { xs: 2, md: 3 },
-        py: { xs: 1, md: 1.5 },
+        px: { xs: 1, md: 3 },
+        py: { xs: 0.5, md: 1.5 },
+        pt: { xs: 'max(4px, env(safe-area-inset-top))', md: 1.5 },
         display: 'grid',
         gridTemplateColumns: { xs: '1fr', md: '1fr auto 1fr' },
         gridTemplateAreas: {
@@ -86,6 +84,7 @@ export const ProblemHeader = ({
         },
         alignItems: 'center',
         gap: { xs: 1, md: 2 },
+        bgcolor: { xs: 'background.paper', md: 'transparent' },
         backgroundImage:
           navColor === 'vibrant'
             ? 'linear-gradient(90deg, rgba(124,77,255,0.85), rgba(3,169,244,0.85))'
@@ -270,53 +269,38 @@ export const ProblemHeader = ({
           width: '100%',
         }}
       >
-        <Tooltip title={t('problems.title')}>
-          <IconButton component={RouterLink} to={resources.Problems} color="primary" size="small">
-            <IconifyIcon icon="mdi:format-list-bulleted" width={20} height={20} />
+        <Tooltip title={t('common.back')}>
+          <IconButton
+            component={RouterLink}
+            to={
+              studyPlanId ? getResourceById(resources.StudyPlan, studyPlanId) : resources.Problems
+            }
+            color="primary"
+            aria-label={t('common.back')}
+            sx={{ width: 44, height: 44, flexShrink: 0 }}
+          >
+            <IconifyIcon icon="mdi:arrow-left" width={24} height={24} />
           </IconButton>
         </Tooltip>
-
-        <Tooltip title={isRunning ? t('problems.detail.running') : t('problems.detail.runHotkey')}>
-          <span>
-            <IconButton
-              color="primary"
-              onClick={requireAuth(onRun)}
-              disabled={isRunning || !hasCode}
-              size="small"
-            >
-              <IconifyIcon icon="mdi:play-circle-outline" width={20} height={20} />
-            </IconButton>
-          </span>
-        </Tooltip>
-
-        <Tooltip title={t('problems.detail.submitHotkey')}>
-          <span>
-            <IconButton
-              color="primary"
-              onClick={requireAuth(onSubmit)}
-              disabled={isSubmitting || !hasCode}
-              size="small"
-              sx={{
-                borderRadius: 2,
-                bgcolor: 'primary.main',
-                color: 'primary.contrastText',
-                '&:hover': { bgcolor: 'primary.dark' },
-                '&.Mui-disabled': {
-                  bgcolor: 'action.disabledBackground',
-                  color: 'action.disabled',
-                },
-              }}
-            >
-              <IconifyIcon icon="mdi:send-outline" width={18} height={18} />
-            </IconButton>
-          </span>
-        </Tooltip>
-
-        <Box sx={{ ml: 'auto', display: 'flex', alignItems: 'center', gap: 0.25 }}>
-          <LanguageMenu type="slim" />
-          <ThemeToggler type="slim" />
-          <ProfileMenu type="slim" />
-        </Box>
+        <Typography variant="subtitle1" fontWeight={700} noWrap sx={{ flex: 1, minWidth: 0 }}>
+          {problem ? `#${problem.id}` : t('problems.title')}
+        </Typography>
+        <IconButton
+          onClick={onPrev}
+          disabled={!canNavigate}
+          aria-label={t('problems.detail.previousProblem')}
+          sx={{ width: 40, height: 44, flexShrink: 0 }}
+        >
+          <IconifyIcon icon="mdi:chevron-left" />
+        </IconButton>
+        <IconButton
+          onClick={onNext}
+          disabled={!canNavigate}
+          aria-label={t('problems.detail.nextProblem')}
+          sx={{ width: 40, height: 44, flexShrink: 0 }}
+        >
+          <IconifyIcon icon="mdi:chevron-right" />
+        </IconButton>
       </Stack>
     </Box>
   );

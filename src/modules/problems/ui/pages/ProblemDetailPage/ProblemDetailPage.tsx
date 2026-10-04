@@ -2,7 +2,19 @@ import { useEffect, useMemo, useRef, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { Panel, PanelGroup } from 'react-resizable-panels';
 import { useNavigate, useParams, useSearchParams } from 'react-router-dom';
-import { Box, Card, LinearProgress, useMediaQuery, useTheme } from '@mui/material';
+import {
+  Box,
+  Button,
+  Card,
+  IconButton,
+  LinearProgress,
+  Stack,
+  Tab,
+  Tabs,
+  Tooltip,
+  useMediaQuery,
+  useTheme,
+} from '@mui/material';
 import { useAuth } from 'app/providers/AuthProvider';
 import { useDocumentTitle } from 'app/providers/DocumentTitleProvider';
 import { getResourceById, resources } from 'app/routes/resources';
@@ -23,6 +35,8 @@ import ProblemDescriptionSkeleton from 'modules/problems/ui/shared/components/pr
 import { ProblemEditorPanel } from 'modules/problems/ui/shared/components/problem-detail/ProblemEditorPanel';
 import ProblemEditorSkeleton from 'modules/problems/ui/shared/components/problem-detail/ProblemEditorSkeleton';
 import { ProblemHeader } from 'modules/problems/ui/shared/components/problem-detail/ProblemHeader';
+import IconifyIcon from 'shared/components/base/IconifyIcon';
+import KepcoinSpendConfirm from 'shared/components/common/KepcoinSpendConfirm';
 import { VerdictKey } from 'shared/components/problems/attemptVerdict.utils';
 import useGridPagination from 'shared/hooks/useGridPagination';
 import useRouteQueryState from 'shared/hooks/useRouteQueryState';
@@ -65,7 +79,7 @@ const ProblemDetailPage = () => {
   const redirectToLogin = useLoginRedirect();
   const themeMode = useThemeMode();
   const theme = useTheme();
-  const isNarrowLayout = useMediaQuery(theme.breakpoints.down('md'));
+  const isMobileDetail = useMediaQuery(theme.breakpoints.down('md'));
   const permissions = useProblemPermissions(currentUser?.permissions);
   const [editorTheme, setEditorTheme] = useState<'vs' | 'vs-dark'>(
     themeMode.mode === 'dark' ? 'vs-dark' : 'vs',
@@ -84,14 +98,14 @@ const ProblemDetailPage = () => {
   const studyPlanId = Number.isNaN(studyPlanIdParam) ? null : studyPlanIdParam;
   const { state: routeState, setField: setRouteField } = useRouteQueryState({
     defaults: {
-      activeTab: 'description' as 'description' | 'attempts' | 'stats' | 'solvers',
+      activeTab: 'description' as 'description' | 'code' | 'attempts' | 'stats' | 'solvers',
       attemptsLang: '',
       attemptsVerdict: '',
       allAttempts: false,
     },
     schema: {
       activeTab: {
-        ...enumParam(['description', 'attempts', 'stats', 'solvers'] as const),
+        ...enumParam(['description', 'code', 'attempts', 'stats', 'solvers'] as const),
         param: 'tab',
       },
       attemptsLang: {
@@ -560,6 +574,71 @@ const ProblemDetailPage = () => {
     return <Page404 />;
   }
 
+  const descriptionContent =
+    problem && !showInitialSkeleton ? (
+      <ProblemDescription
+        problem={problem}
+        selectedDifficultyColor={selectedDifficultyColor}
+        activeTab={activeTab === 'code' ? 'description' : activeTab}
+        onTabChange={handleTabChange}
+        hideTabs={isMobileDetail}
+        myAttemptsOnly={myAttemptsOnly}
+        onToggleMyAttempts={() => {
+          setRouteField('allAttempts', myAttemptsOnly);
+          setAttemptsPagination((prev) => ({ ...prev, page: 0 }));
+        }}
+        attemptsLangFilter={attemptsLangFilter}
+        onAttemptsLangFilterChange={handleAttemptsLangFilterChange}
+        attemptsVerdictFilter={attemptsVerdictFilter}
+        onAttemptsVerdictFilterChange={handleAttemptsVerdictFilterChange}
+        attempts={attemptsPage?.data ?? []}
+        attemptsTotal={attemptsPage?.total ?? 0}
+        attemptsPagination={attemptsPagination}
+        onAttemptsPaginationChange={onAttemptsPaginationChange}
+        isAttemptsLoading={isAttemptsLoading}
+        onAttemptsRefresh={() => mutateAttempts()}
+        onFavoriteToggle={handleFavoriteToggle}
+        onLike={() => handleLikeDislike('like')}
+        onDislike={() => handleLikeDislike('dislike')}
+        selectedLanguage={selectedLanguage}
+      />
+    ) : (
+      <ProblemDescriptionSkeleton />
+    );
+
+  const editorContent =
+    problem && !showInitialSkeleton ? (
+      <ProblemEditorPanel
+        mobilePlain={isMobileDetail}
+        problem={problem}
+        initialCode={isMobileDetail ? codeRef.current : initialCode}
+        editorKey={editorKey}
+        onCodeChange={persistCode}
+        selectedLang={selectedLang}
+        onLangChange={setSelectedLang}
+        sampleTests={sampleTests}
+        selectedSampleIndex={selectedSampleIndex}
+        onSampleChange={setSelectedSampleIndex}
+        input={input}
+        onInputChange={setInput}
+        output={output}
+        answer={answer}
+        onRun={handleRun}
+        onSubmit={handleSubmit}
+        onCheckSamples={handleCheckSamples}
+        isRunning={isRunning}
+        isSubmitting={isSubmitting}
+        isCheckingSamples={isCheckingSamples}
+        checkSamplesResult={checkSamplesResult}
+        editorTab={editorTab}
+        onEditorTabChange={setEditorTab}
+        canUseCheckSamples={canUseCheckSamples}
+        editorTheme={editorTheme}
+      />
+    ) : (
+      <ProblemEditorSkeleton />
+    );
+
   return (
     <Box
       sx={{
@@ -600,6 +679,9 @@ const ProblemDetailPage = () => {
           flexDirection: 'column',
           position: 'relative',
           minHeight: 0,
+          border: { xs: 0, md: undefined },
+          borderRadius: { xs: 0, md: undefined },
+          boxShadow: { xs: 'none', md: undefined },
         }}
         aria-busy={isProblemLoading}
       >
@@ -607,77 +689,175 @@ const ProblemDetailPage = () => {
           <LinearProgress sx={{ position: 'absolute', top: 0, left: 0, right: 0, zIndex: 2 }} />
         ) : null}
 
-        <PanelGroup
-          direction={isNarrowLayout ? 'vertical' : 'horizontal'}
-          style={{ flex: 1, minHeight: 0 }}
-        >
-          <Panel defaultSize={isNarrowLayout ? 45 : 50} minSize={isNarrowLayout ? 25 : 35}>
-            {problem && !showInitialSkeleton ? (
-              <ProblemDescription
-                problem={problem}
-                selectedDifficultyColor={selectedDifficultyColor}
-                activeTab={activeTab}
-                onTabChange={handleTabChange}
-                myAttemptsOnly={myAttemptsOnly}
-                onToggleMyAttempts={() => {
-                  setRouteField('allAttempts', myAttemptsOnly);
-                  setAttemptsPagination((prev) => ({ ...prev, page: 0 }));
+        {isMobileDetail ? (
+          <>
+            <Tabs
+              value={activeTab}
+              onChange={(_, value) => setRouteField('activeTab', value)}
+              variant="fullWidth"
+              aria-label={t('problems.detail.problemTab')}
+              sx={{
+                flexShrink: 0,
+                bgcolor: 'background.paper',
+                '& .MuiTab-root': {
+                  minHeight: 58,
+                  minWidth: 0,
+                  px: 0.25,
+                  fontSize: { xs: 10, sm: 11 },
+                  fontWeight: 500,
+                  textTransform: 'none',
+                  whiteSpace: 'nowrap',
+                  '& .MuiTab-iconWrapper': { mb: 0.25 },
+                },
+                '& .MuiTab-root.Mui-selected': { fontWeight: 700 },
+              }}
+            >
+              <Tab
+                value="description"
+                label={t('problems.detail.problemTab')}
+                icon={<IconifyIcon icon="mdi:book-open-page-variant" sx={{ fontSize: 19 }} />}
+                iconPosition="top"
+              />
+              <Tab
+                value="code"
+                label={t('problems.studyPlans.solve')}
+                icon={<IconifyIcon icon="mdi:code-tags" sx={{ fontSize: 19 }} />}
+                iconPosition="top"
+              />
+              <Tab
+                value="attempts"
+                label={t('problems.detail.attemptsTab')}
+                icon={<IconifyIcon icon="mdi:history" sx={{ fontSize: 19 }} />}
+                iconPosition="top"
+              />
+              <Tab
+                value="stats"
+                label={t('problems.detail.stats')}
+                icon={<IconifyIcon icon="mdi:chart-bar" sx={{ fontSize: 19 }} />}
+                iconPosition="top"
+              />
+              <Tab
+                value="solvers"
+                label={t('problems.detail.solversTab')}
+                icon={<IconifyIcon icon="mdi:account-group" sx={{ fontSize: 19 }} />}
+                iconPosition="top"
+              />
+            </Tabs>
+            <Box sx={{ flex: 1, minHeight: 0, overflow: 'hidden' }}>
+              {activeTab === 'code' ? editorContent : descriptionContent}
+            </Box>
+            {activeTab === 'code' && problem ? (
+              <Stack
+                component="footer"
+                direction="row"
+                spacing={0.5}
+                sx={{
+                  flexShrink: 0,
+                  px: 1.5,
+                  pt: 1,
+                  pb: 'max(10px, env(safe-area-inset-bottom))',
+                  borderTop: '1px solid',
+                  borderColor: 'divider',
+                  bgcolor: 'background.paper',
                 }}
-                attemptsLangFilter={attemptsLangFilter}
-                onAttemptsLangFilterChange={handleAttemptsLangFilterChange}
-                attemptsVerdictFilter={attemptsVerdictFilter}
-                onAttemptsVerdictFilterChange={handleAttemptsVerdictFilterChange}
-                attempts={attemptsPage?.data ?? []}
-                attemptsTotal={attemptsPage?.total ?? 0}
-                attemptsPagination={attemptsPagination}
-                onAttemptsPaginationChange={onAttemptsPaginationChange}
-                isAttemptsLoading={isAttemptsLoading}
-                onAttemptsRefresh={() => mutateAttempts()}
-                onFavoriteToggle={handleFavoriteToggle}
-                onLike={() => handleLikeDislike('like')}
-                onDislike={() => handleLikeDislike('dislike')}
-                selectedLanguage={selectedLanguage}
-              />
-            ) : (
-              <ProblemDescriptionSkeleton />
-            )}
-          </Panel>
-
-          <PanelHandle orientation={isNarrowLayout ? 'vertical' : 'horizontal'} />
-
-          <Panel defaultSize={isNarrowLayout ? 55 : 50} minSize={isNarrowLayout ? 35 : 35}>
-            {problem && !showInitialSkeleton ? (
-              <ProblemEditorPanel
-                problem={problem}
-                initialCode={initialCode}
-                editorKey={editorKey}
-                onCodeChange={persistCode}
-                selectedLang={selectedLang}
-                onLangChange={setSelectedLang}
-                sampleTests={sampleTests}
-                selectedSampleIndex={selectedSampleIndex}
-                onSampleChange={setSelectedSampleIndex}
-                input={input}
-                onInputChange={setInput}
-                output={output}
-                answer={answer}
-                onRun={handleRun}
-                onSubmit={handleSubmit}
-                onCheckSamples={handleCheckSamples}
-                isRunning={isRunning}
-                isSubmitting={isSubmitting}
-                isCheckingSamples={isCheckingSamples}
-                checkSamplesResult={checkSamplesResult}
-                editorTab={editorTab}
-                onEditorTabChange={setEditorTab}
-                canUseCheckSamples={canUseCheckSamples}
-                editorTheme={editorTheme}
-              />
-            ) : (
-              <ProblemEditorSkeleton />
-            )}
-          </Panel>
-        </PanelGroup>
+              >
+                {canUseCheckSamples ? (
+                  <Tooltip title={t('problems.detail.checkSamplesHotkey')}>
+                    <span>
+                      <IconButton
+                        onClick={handleCheckSamples}
+                        disabled={!hasCode || isCheckingSamples}
+                        aria-label={t('problems.detail.checkSamplesHotkey')}
+                        sx={{ width: 44, height: 44 }}
+                      >
+                        <IconifyIcon icon="mdi:check-all" />
+                      </IconButton>
+                    </span>
+                  </Tooltip>
+                ) : (
+                  <KepcoinSpendConfirm
+                    value={100}
+                    purchaseUrl={`/api/problems/${problemId}/purchase-check-samples/`}
+                    onSuccess={() => {
+                      void mutateProblem();
+                    }}
+                  >
+                    <IconButton
+                      aria-label={t('problems.detail.checkSamplesHotkey')}
+                      sx={{ width: 44, height: 44 }}
+                    >
+                      <IconifyIcon icon="mdi:check-all" />
+                    </IconButton>
+                  </KepcoinSpendConfirm>
+                )}
+                <Button
+                  variant="soft"
+                  color="primary"
+                  startIcon={<IconifyIcon icon="mdi:play" />}
+                  onClick={handleRun}
+                  disabled={!hasCode || isRunning}
+                  sx={{
+                    flex: 1,
+                    minWidth: 0,
+                    minHeight: 44,
+                    px: 0.75,
+                    fontSize: '0.72rem',
+                    lineHeight: 1.1,
+                    whiteSpace: 'normal',
+                    '& .MuiButton-startIcon': { display: 'none' },
+                  }}
+                >
+                  {isRunning ? t('problems.detail.running') : t('problems.detail.run')}
+                </Button>
+                <Button
+                  variant="contained"
+                  color="primary"
+                  startIcon={<IconifyIcon icon="mdi:send-outline" />}
+                  onClick={handleSubmit}
+                  disabled={!hasCode || isSubmitting}
+                  sx={{
+                    flex: 1,
+                    minWidth: 0,
+                    minHeight: 44,
+                    px: 0.75,
+                    fontSize: '0.72rem',
+                    lineHeight: 1.1,
+                    whiteSpace: 'normal',
+                    '& .MuiButton-startIcon': { display: 'none' },
+                  }}
+                >
+                  {t('problems.detail.submit')}
+                </Button>
+                {showAnswerForInputAction ? (
+                  <KepcoinSpendConfirm
+                    value={1}
+                    purchaseUrl={`/api/problems/${problem.id}/answer-for-input/`}
+                    requestBody={{ input_data: input }}
+                    onSuccess={handleAnswerForInput}
+                  >
+                    <IconButton
+                      disabled={isAnswering}
+                      aria-label={t('problems.detail.answerForInputHotkey')}
+                      sx={{ width: 44, height: 44 }}
+                    >
+                      <IconifyIcon icon="mdi:chat-question-outline" />
+                    </IconButton>
+                  </KepcoinSpendConfirm>
+                ) : null}
+              </Stack>
+            ) : null}
+          </>
+        ) : (
+          <PanelGroup direction="horizontal" style={{ flex: 1, minHeight: 0 }}>
+            <Panel defaultSize={50} minSize={35}>
+              {descriptionContent}
+            </Panel>
+            <PanelHandle orientation="horizontal" />
+            <Panel defaultSize={50} minSize={35}>
+              {editorContent}
+            </Panel>
+          </PanelGroup>
+        )}
       </Card>
     </Box>
   );

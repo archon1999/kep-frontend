@@ -13,6 +13,8 @@ import {
   IconButton,
   LinearProgress,
   Stack,
+  Tab,
+  Tabs,
   Tooltip,
   Typography,
   useMediaQuery,
@@ -57,7 +59,7 @@ import { wsService } from 'shared/services/websocket';
 import { toast } from 'sonner';
 import ContestantResultsFooter from './components/ContestantResultsFooter.tsx';
 
-type ContestProblemTab = 'description' | 'attempts';
+type ContestProblemTab = 'description' | 'code' | 'attempts';
 
 const useProblemPermissions = (permissionsRaw: any) => {
   return useMemo(() => {
@@ -103,7 +105,7 @@ const ContestProblemPage = () => {
     },
     schema: {
       activeTab: {
-        ...enumParam(['description', 'attempts'] as const),
+        ...enumParam(['description', 'code', 'attempts'] as const),
         param: 'tab',
       },
     },
@@ -468,6 +470,184 @@ const ContestProblemPage = () => {
     return () => window.removeEventListener('keydown', handleHotkeys);
   }, []);
 
+  const descriptionContent =
+    problem && !showInitialSkeleton ? (
+      <Card
+        background={0}
+        sx={{
+          height: '100%',
+          minWidth: 0,
+          display: 'flex',
+          flexDirection: 'column',
+          overflow: 'hidden',
+          border: { xs: 0, md: undefined },
+          borderRadius: { xs: 0, md: undefined },
+          boxShadow: { xs: 'none', md: undefined },
+        }}
+      >
+        <CardContent sx={{ flex: 1, minHeight: 0, overflowY: 'auto', p: 0 }}>
+          {!isNarrowLayout ? (
+            <>
+              <ResponsiveTabs
+                value={state.activeTab === 'code' ? 'description' : state.activeTab}
+                onChange={(value) => setField('activeTab', value)}
+                ariaLabel="contest problem tabs"
+                items={[
+                  {
+                    value: 'description',
+                    label: t('contests.problem.description'),
+                    icon: <IconifyIcon icon="mdi:book-open-page-variant" width={18} height={18} />,
+                    tabProps: { iconPosition: 'start', sx: { fontWeight: 600 } },
+                  },
+                  {
+                    value: 'attempts',
+                    label: t('contests.problem.myAttempts'),
+                    icon: <IconifyIcon icon="mdi:history" width={18} height={18} />,
+                    tabProps: { iconPosition: 'start', sx: { fontWeight: 600 } },
+                  },
+                ]}
+                tabsProps={{
+                  variant: 'scrollable',
+                  scrollButtons: 'auto',
+                  textColor: 'primary',
+                  indicatorColor: 'primary',
+                  sx: { px: 2, pt: 1 },
+                }}
+              />
+              <Divider />
+            </>
+          ) : null}
+
+          <Box sx={{ p: { xs: 2, md: 3 }, minWidth: 0 }}>
+            {state.activeTab === 'description' ||
+            (!isNarrowLayout && state.activeTab === 'code') ? (
+              <Stack spacing={2}>
+                <Stack spacing={1}>
+                  <Typography variant="h5" fontWeight={700} sx={{ overflowWrap: 'anywhere' }}>
+                    {problemSymbol}. {problem.title}
+                  </Typography>
+                  <Stack direction="row" spacing={1} flexWrap="wrap" useFlexGap>
+                    <Chip
+                      label={`${isNarrowLayout ? `${t('problems.detail.timeLimitShort')}: ` : ''}${selectedLanguage?.timeLimit ?? problem.timeLimit ?? 0} ms`}
+                      variant={isNarrowLayout ? 'soft' : 'outlined'}
+                      size="small"
+                    />
+                    <Chip
+                      label={`${isNarrowLayout ? `${t('problems.detail.memoryLimitShort')}: ` : ''}${selectedLanguage?.memoryLimit ?? problem.memoryLimit ?? 0} MB`}
+                      variant={isNarrowLayout ? 'soft' : 'outlined'}
+                      size="small"
+                    />
+                  </Stack>
+                </Stack>
+
+                <ProblemBody problem={problem} />
+
+                {isNarrowLayout && canOpenOriginalProblem ? (
+                  <Button
+                    component={RouterLink}
+                    to={upsolveHref}
+                    variant="text"
+                    startIcon={<IconifyIcon icon="mdi:open-in-new" width={18} height={18} />}
+                    sx={{ alignSelf: 'flex-start' }}
+                  >
+                    {t('contests.problem.openOriginal')}
+                  </Button>
+                ) : null}
+
+                {isNarrowLayout ? (
+                  <Box
+                    sx={{
+                      pt: 1,
+                      '& .MuiCard-root': { border: 0, boxShadow: 'none', p: 0 },
+                      '& a': { borderColor: 'transparent' },
+                    }}
+                  >
+                    <ContestantResultsFooter
+                      contestant={contestant}
+                      contestProblems={sortedProblems}
+                      contestId={contest?.id ?? contestId}
+                      contestType={contest?.type}
+                      contestTypeInfo={contest?.typeInfo}
+                      isRated={contest?.isRated}
+                    />
+                  </Box>
+                ) : null}
+              </Stack>
+            ) : null}
+
+            {state.activeTab === 'attempts' ? (
+              <ProblemsAttemptsTable
+                mobileCards={isNarrowLayout}
+                attempts={attemptsPage?.data ?? []}
+                total={attemptsPage?.total ?? 0}
+                paginationModel={attemptsPagination}
+                onPaginationChange={onAttemptsPaginationChange}
+                isLoading={isAttemptsLoading}
+                onRerun={() => mutateAttempts()}
+                showProblemColumn={false}
+                showContestTimeSubmitted
+                getProblemLink={(attempt) =>
+                  getResourceByParams(resources.ContestProblem, {
+                    id: contest?.id ?? contestId ?? '',
+                    symbol: attempt.contestProblemSymbol ?? problemSymbol ?? '',
+                  })
+                }
+              />
+            ) : null}
+          </Box>
+        </CardContent>
+
+        {!isNarrowLayout ? (
+          <ContestantResultsFooter
+            contestant={contestant}
+            contestProblems={sortedProblems}
+            contestId={contest?.id ?? contestId}
+            contestType={contest?.type}
+            contestTypeInfo={contest?.typeInfo}
+            isRated={contest?.isRated}
+          />
+        ) : null}
+      </Card>
+    ) : (
+      <ProblemDescriptionSkeleton />
+    );
+
+  const editorContent =
+    problem && !showInitialSkeleton ? (
+      <ProblemEditorPanel
+        mobilePlain={isNarrowLayout}
+        problem={problem}
+        initialCode={isNarrowLayout ? codeRef.current : initialCode}
+        editorKey={editorKey}
+        onCodeChange={persistCode}
+        selectedLang={selectedLang}
+        onLangChange={setSelectedLang}
+        sampleTests={sampleTests}
+        selectedSampleIndex={selectedSampleIndex}
+        onSampleChange={setSelectedSampleIndex}
+        input={input}
+        onInputChange={setInput}
+        output={output}
+        answer={answer}
+        onRun={handleRun}
+        onSubmit={handleSubmit}
+        onCheckSamples={handleCheckSamples}
+        isRunning={isRunning}
+        isSubmitting={isSubmitting}
+        isCheckingSamples={isCheckingSamples}
+        checkSamplesResult={checkSamplesResult}
+        editorTab={editorTab}
+        onEditorTabChange={setEditorTab}
+        canUseCheckSamples={canUseCheckSamples}
+        editorTheme={editorTheme}
+        showSampleResultsTab={false}
+        isDisabled={false}
+        upsolveHref={upsolveHref}
+      />
+    ) : (
+      <ProblemEditorSkeleton />
+    );
+
   return (
     <Box
       sx={{
@@ -479,13 +659,88 @@ const ContestProblemPage = () => {
         overflow: 'hidden',
       }}
     >
+      <Stack
+        component="header"
+        direction="row"
+        spacing={0.5}
+        alignItems="center"
+        sx={{
+          display: { xs: 'flex', md: 'none' },
+          flexShrink: 0,
+          minWidth: 0,
+          px: 1,
+          py: 0.5,
+          pt: 'max(4px, env(safe-area-inset-top))',
+          bgcolor: 'background.paper',
+        }}
+      >
+        <Tooltip title={t('contests.tabs.problems')}>
+          <IconButton
+            component={RouterLink}
+            to={getResourceByParams(resources.ContestProblems, { id: contestId ?? '' })}
+            aria-label={t('contests.tabs.problems')}
+            color="primary"
+            sx={{ width: 44, height: 44, flexShrink: 0 }}
+          >
+            <IconifyIcon icon="mdi:arrow-left" width={24} height={24} />
+          </IconButton>
+        </Tooltip>
+        <Stack sx={{ flex: 1, minWidth: 0 }}>
+          <Typography
+            variant="subtitle1"
+            fontWeight={700}
+            noWrap
+            title={problem?.title}
+            sx={{ lineHeight: 1.25 }}
+          >
+            {problemSymbol
+              ? `${problemSymbol}. ${problem?.title ?? ''}`
+              : t('contests.tabs.problems')}
+          </Typography>
+          {timeLeft ? (
+            <Typography
+              variant="caption"
+              color="primary.main"
+              sx={{ display: 'inline-flex', alignItems: 'center', gap: 0.5, lineHeight: 1.25 }}
+            >
+              <IconifyIcon icon="mdi:timer-outline" width={14} height={14} />
+              {timeLeft}
+            </Typography>
+          ) : null}
+        </Stack>
+        <Tooltip title={t('contests.problem.prev')}>
+          <span>
+            <IconButton
+              onClick={handlePrev}
+              disabled={!prevSymbol}
+              aria-label={t('contests.problem.prev')}
+              sx={{ width: 40, height: 44, flexShrink: 0 }}
+            >
+              <IconifyIcon icon="mdi:chevron-left" width={22} height={22} />
+            </IconButton>
+          </span>
+        </Tooltip>
+        <Tooltip title={t('contests.problem.next')}>
+          <span>
+            <IconButton
+              onClick={handleNext}
+              disabled={!nextSymbol}
+              aria-label={t('contests.problem.next')}
+              sx={{ width: 40, height: 44, flexShrink: 0 }}
+            >
+              <IconifyIcon icon="mdi:chevron-right" width={22} height={22} />
+            </IconButton>
+          </span>
+        </Tooltip>
+      </Stack>
+
       <Box
         component="header"
         sx={{
           borderColor: 'divider',
           px: { xs: 2, md: 3 },
           py: 1.5,
-          display: 'grid',
+          display: { xs: 'none', md: 'grid' },
           gridTemplateColumns: { xs: '1fr auto', md: '1fr auto 1fr' },
           gridTemplateAreas: {
             xs: '"nav user" "actions actions"',
@@ -653,6 +908,10 @@ const ContestProblemPage = () => {
           flexDirection: 'column',
           position: 'relative',
           minHeight: 0,
+          minWidth: 0,
+          border: { xs: 0, md: undefined },
+          borderRadius: { xs: 0, md: undefined },
+          boxShadow: { xs: 'none', md: undefined },
         }}
         aria-busy={isProblemLoading}
       >
@@ -679,152 +938,99 @@ const ContestProblemPage = () => {
           </Box>
         ) : null}
 
-        <PanelGroup
-          direction={isNarrowLayout ? 'vertical' : 'horizontal'}
-          style={{ flex: 1, minHeight: 0 }}
-        >
-          <Panel defaultSize={isNarrowLayout ? 45 : 50} minSize={isNarrowLayout ? 25 : 35}>
-            {problem && !showInitialSkeleton ? (
-              <Card
-                background={0}
+        {isNarrowLayout ? (
+          <>
+            <Tabs
+              value={state.activeTab}
+              onChange={(_, value: ContestProblemTab) => setField('activeTab', value)}
+              variant="fullWidth"
+              aria-label="contest problem tabs"
+              sx={{
+                flexShrink: 0,
+                bgcolor: 'background.paper',
+                '& .MuiTab-root': {
+                  minHeight: 60,
+                  minWidth: 0,
+                  px: 0.5,
+                  py: 0.5,
+                  fontSize: { xs: 12, sm: 13 },
+                  fontWeight: 500,
+                  lineHeight: 1.15,
+                  whiteSpace: 'normal',
+                  overflowWrap: 'anywhere',
+                  textTransform: 'none',
+                },
+                '& .MuiTab-iconWrapper': { mb: 0.25 },
+                '& .MuiTab-root.Mui-selected': { fontWeight: 700 },
+              }}
+            >
+              <Tab
+                value="description"
+                label={t('contests.problem.description')}
+                icon={<IconifyIcon icon="mdi:book-open-page-variant" width={18} height={18} />}
+                iconPosition="top"
+              />
+              <Tab
+                value="code"
+                label={t('problems.studyPlans.solve')}
+                icon={<IconifyIcon icon="mdi:code-tags" width={18} height={18} />}
+                iconPosition="top"
+              />
+              <Tab
+                value="attempts"
+                label={t('contests.problem.myAttempts')}
+                icon={<IconifyIcon icon="mdi:history" width={18} height={18} />}
+                iconPosition="top"
+              />
+            </Tabs>
+            <Box sx={{ flex: 1, minHeight: 0, minWidth: 0, overflow: 'hidden' }}>
+              {state.activeTab === 'code' ? editorContent : descriptionContent}
+            </Box>
+            {state.activeTab === 'code' && problem ? (
+              <Stack
+                component="footer"
+                direction="row"
+                spacing={1}
                 sx={{
-                  height: '100%',
-                  display: 'flex',
-                  flexDirection: 'column',
-                  position: 'relative',
-                  overflow: 'hidden',
+                  flexShrink: 0,
+                  px: 1.5,
+                  pt: 1,
+                  pb: 'max(10px, env(safe-area-inset-bottom))',
+                  bgcolor: 'background.paper',
                 }}
               >
-                <CardContent sx={{ flex: 1, minHeight: 0, overflowY: 'auto', p: 0 }}>
-                  <ResponsiveTabs
-                    value={state.activeTab}
-                    onChange={(value) => setField('activeTab', value)}
-                    ariaLabel="contest problem tabs"
-                    items={[
-                      {
-                        value: 'description',
-                        label: t('contests.problem.description'),
-                        icon: (
-                          <IconifyIcon icon="mdi:book-open-page-variant" width={18} height={18} />
-                        ),
-                        tabProps: { iconPosition: 'start', sx: { fontWeight: 600 } },
-                      },
-                      {
-                        value: 'attempts',
-                        label: t('contests.problem.myAttempts'),
-                        icon: <IconifyIcon icon="mdi:history" width={18} height={18} />,
-                        tabProps: { iconPosition: 'start', sx: { fontWeight: 600 } },
-                      },
-                    ]}
-                    tabsProps={{
-                      variant: 'scrollable',
-                      scrollButtons: 'auto',
-                      textColor: 'primary',
-                      indicatorColor: 'primary',
-                      sx: { px: 2, pt: 1 },
-                    }}
-                  />
-                  <Divider />
-
-                  <Box sx={{ p: { xs: 2, md: 3 } }}>
-                    {state.activeTab === 'description' ? (
-                      <Stack direction="column" spacing={2}>
-                        <Stack direction="column" spacing={1} flexWrap="wrap">
-                          <Typography variant="h5" fontWeight={700}>
-                            {problemSymbol}. {problem.title}
-                          </Typography>
-
-                          <Stack direction="row" spacing={1} flexWrap="wrap" useFlexGap>
-                            <Chip
-                              label={`${selectedLanguage?.timeLimit ?? problem.timeLimit ?? 0} ms`}
-                              variant="outlined"
-                              size="small"
-                            />
-                            <Chip
-                              label={`${selectedLanguage?.memoryLimit ?? problem.memoryLimit ?? 0} MB`}
-                              variant="outlined"
-                              size="small"
-                            />
-                          </Stack>
-                        </Stack>
-
-                        <ProblemBody problem={problem} />
-                      </Stack>
-                    ) : null}
-
-                    {state.activeTab === 'attempts' ? (
-                      <ProblemsAttemptsTable
-                        attempts={attemptsPage?.data ?? []}
-                        total={attemptsPage?.total ?? 0}
-                        paginationModel={attemptsPagination}
-                        onPaginationChange={onAttemptsPaginationChange}
-                        isLoading={isAttemptsLoading}
-                        onRerun={() => mutateAttempts()}
-                        showProblemColumn={false}
-                        showContestTimeSubmitted
-                        getProblemLink={(attempt) =>
-                          getResourceByParams(resources.ContestProblem, {
-                            id: contest?.id ?? contestId ?? '',
-                            symbol: attempt.contestProblemSymbol ?? problemSymbol ?? '',
-                          })
-                        }
-                      />
-                    ) : null}
-                  </Box>
-                </CardContent>
-
-                <ContestantResultsFooter
-                  contestant={contestant}
-                  contestProblems={sortedProblems}
-                  contestId={contest?.id ?? contestId}
-                  contestType={contest?.type}
-                  contestTypeInfo={contest?.typeInfo}
-                  isRated={contest?.isRated}
-                />
-              </Card>
-            ) : (
-              <ProblemDescriptionSkeleton />
-            )}
-          </Panel>
-
-          <PanelHandle orientation={isNarrowLayout ? 'vertical' : 'horizontal'} />
-
-          <Panel defaultSize={isNarrowLayout ? 55 : 50} minSize={isNarrowLayout ? 35 : 35}>
-            {problem && !showInitialSkeleton ? (
-              <ProblemEditorPanel
-                problem={problem}
-                initialCode={initialCode}
-                editorKey={editorKey}
-                onCodeChange={persistCode}
-                selectedLang={selectedLang}
-                onLangChange={setSelectedLang}
-                sampleTests={sampleTests}
-                selectedSampleIndex={selectedSampleIndex}
-                onSampleChange={setSelectedSampleIndex}
-                input={input}
-                onInputChange={setInput}
-                output={output}
-                answer={answer}
-                onRun={handleRun}
-                onSubmit={handleSubmit}
-                onCheckSamples={handleCheckSamples}
-                isRunning={isRunning}
-                isSubmitting={isSubmitting}
-                isCheckingSamples={isCheckingSamples}
-                checkSamplesResult={checkSamplesResult}
-                editorTab={editorTab}
-                onEditorTabChange={setEditorTab}
-                canUseCheckSamples={canUseCheckSamples}
-                editorTheme={editorTheme}
-                showSampleResultsTab={false}
-                isDisabled={false}
-                upsolveHref={upsolveHref}
-              />
-            ) : (
-              <ProblemEditorSkeleton />
-            )}
-          </Panel>
-        </PanelGroup>
+                <Button
+                  variant="soft"
+                  color="primary"
+                  onClick={handleRun}
+                  disabled={!hasCode || isRunning || isContestLocked}
+                  sx={{ flex: 1, minWidth: 0, minHeight: 44 }}
+                >
+                  {isRunning ? t('problems.detail.running') : t('problems.detail.run')}
+                </Button>
+                <Button
+                  variant="contained"
+                  color="primary"
+                  onClick={handleSubmit}
+                  disabled={!hasCode || isSubmitting || isContestLocked}
+                  sx={{ flex: 1, minWidth: 0, minHeight: 44 }}
+                >
+                  {t('problems.detail.submit')}
+                </Button>
+              </Stack>
+            ) : null}
+          </>
+        ) : (
+          <PanelGroup direction="horizontal" style={{ flex: 1, minHeight: 0 }}>
+            <Panel defaultSize={50} minSize={35}>
+              {descriptionContent}
+            </Panel>
+            <PanelHandle orientation="horizontal" />
+            <Panel defaultSize={50} minSize={35}>
+              {editorContent}
+            </Panel>
+          </PanelGroup>
+        )}
       </Card>
     </Box>
   );

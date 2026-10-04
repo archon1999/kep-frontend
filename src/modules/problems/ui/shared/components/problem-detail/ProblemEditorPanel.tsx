@@ -79,6 +79,7 @@ interface ProblemEditorPanelProps {
   showSampleResultsTab?: boolean;
   isDisabled?: boolean;
   upsolveHref?: string;
+  mobilePlain?: boolean;
 }
 
 const fileAcceptTypes = Object.values(AttemptLangs)
@@ -107,6 +108,7 @@ export const ProblemEditorPanel = (props: ProblemEditorPanelProps) => {
     showSampleResultsTab = true,
     isDisabled = false,
     upsolveHref,
+    mobilePlain = false,
   } = props;
   const { currentUser } = useAuth();
   const { t } = useTranslation();
@@ -266,6 +268,11 @@ export const ProblemEditorPanel = (props: ProblemEditorPanelProps) => {
         flexDirection: 'column',
         overflow: 'hidden',
         position: 'relative',
+        ...(mobilePlain && {
+          border: { xs: 0, md: undefined },
+          borderRadius: { xs: 0, md: undefined },
+          boxShadow: { xs: 'none', md: undefined },
+        }),
       }}
     >
       {isDisabled ? (
@@ -397,9 +404,9 @@ export const ProblemEditorPanel = (props: ProblemEditorPanelProps) => {
             <Box
               sx={{
                 height: '100%',
-                border: '1px solid',
+                border: mobilePlain ? { xs: 0, md: '1px solid' } : '1px solid',
                 borderColor: 'divider',
-                borderRadius: 2,
+                borderRadius: mobilePlain ? { xs: 0, md: 2 } : 2,
                 overflow: 'hidden',
                 position: 'relative',
                 background: (theme) =>
@@ -412,7 +419,11 @@ export const ProblemEditorPanel = (props: ProblemEditorPanelProps) => {
                         theme.palette.background.paper,
                         0.06,
                       )})`,
-                boxShadow: (theme) => theme.shadows[2],
+                ...(mobilePlain && {
+                  backgroundImage: { xs: 'none', md: undefined },
+                  bgcolor: { xs: 'background.paper', md: undefined },
+                }),
+                boxShadow: mobilePlain ? { xs: 'none', md: 2 } : (theme) => theme.shadows[2],
                 '& .monaco-editor, & .monaco-editor-background, & .margin': {
                   backgroundColor: 'transparent !important',
                 },
@@ -473,14 +484,16 @@ export const ProblemEditorPanel = (props: ProblemEditorPanelProps) => {
                 height: '100%',
                 display: 'flex',
                 flexDirection: 'column',
-                border: '1px solid',
+                border: mobilePlain ? { xs: 0, md: '1px solid' } : '1px solid',
                 borderColor: 'divider',
-                borderRadius: 2,
-                bgcolor: (theme) => alpha(theme.palette.background.paper, 0.1),
-                boxShadow: (theme) => theme.shadows[1],
+                borderRadius: mobilePlain ? { xs: 0, md: 2 } : 2,
+                bgcolor: mobilePlain
+                  ? { xs: 'background.paper', md: 'transparent' }
+                  : (theme) => alpha(theme.palette.background.paper, 0.1),
+                boxShadow: mobilePlain ? { xs: 'none', md: 1 } : (theme) => theme.shadows[1],
               }}
             >
-              <Box sx={{ display: { xs: 'none', sm: 'block' } }}>
+              <Box sx={mobilePlain ? undefined : { display: { xs: 'none', sm: 'block' } }}>
                 <ResponsiveTabs
                   value={editorTab}
                   onChange={(value) => {
@@ -510,10 +523,10 @@ export const ProblemEditorPanel = (props: ProblemEditorPanelProps) => {
                     indicatorColor: 'primary',
                     sx: {
                       px: 1,
-                      borderBottom: '1px solid',
+                      borderBottom: mobilePlain ? { xs: 0, md: '1px solid' } : '1px solid',
                       borderColor: 'divider',
                       '& .MuiTab-root': {
-                        minHeight: 0,
+                        minHeight: mobilePlain ? { xs: 40, sm: 0 } : 0,
                         fontWeight: 600,
                       },
                     },

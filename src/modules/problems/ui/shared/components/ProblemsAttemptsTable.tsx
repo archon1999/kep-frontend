@@ -2,30 +2,35 @@ import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { Link as RouterLink } from 'react-router-dom';
 import {
+  Box,
   Button,
   Chip,
   IconButton,
+  Pagination,
   Paper,
+  Skeleton,
+  Stack,
   Tooltip,
   Typography,
   alpha,
+  useMediaQuery,
   useTheme,
 } from '@mui/material';
 import { DataGrid, GridColDef, GridPaginationModel } from '@mui/x-data-grid';
 import { useAuth } from 'app/providers/AuthProvider';
 import { getResourceById, resources } from 'app/routes/resources';
+import { problemsQueries } from 'modules/problems/application/queries';
+import { AttemptListItem, Verdicts } from 'modules/problems/domain/entities/problem.entity';
 import UserPopover from 'modules/users/ui/shared/components/UserPopover.tsx';
 import IconifyIcon from 'shared/components/base/IconifyIcon';
 import { getDataGridNoRowsOverlaySlotProps } from 'shared/components/common/DataGridNoRowsOverlay';
 import AttemptLanguage from 'shared/components/problems/AttemptLanguage';
 import AttemptVerdict from 'shared/components/problems/AttemptVerdict';
 import { VerdictKey } from 'shared/components/problems/attemptVerdict.utils';
-import { formatCalendarDateTime } from 'shared/lib/dateTime';
+import useStableGridRowCount from 'shared/hooks/useStableGridRowCount';
+import { formatCalendarDateTime, formatDateTime as formatUserDateTime } from 'shared/lib/dateTime';
 import { playSuccessSound } from 'shared/lib/soundSettings';
 import { wsService } from 'shared/services/websocket';
-import useStableGridRowCount from 'shared/hooks/useStableGridRowCount';
-import { problemsQueries } from 'modules/problems/application/queries';
-import { AttemptListItem, Verdicts } from 'modules/problems/domain/entities/problem.entity';
 import AttemptDetailDialog from './AttemptDetailDialog.tsx';
 import AttemptProtocolDialog from './AttemptProtocolDialog.tsx';
 
@@ -41,6 +46,7 @@ interface ProblemsAttemptsTableProps {
   disableLockedAttemptDetails?: boolean;
   getProblemLink?: (attempt: AttemptListItem) => string;
   isFiltered?: boolean;
+  mobileCards?: boolean;
 }
 
 interface AttemptUpdatePayload {
@@ -65,9 +71,11 @@ const ProblemsAttemptsTable = ({
   disableLockedAttemptDetails = false,
   getProblemLink,
   isFiltered,
+  mobileCards = false,
 }: ProblemsAttemptsTableProps) => {
   const { t, i18n } = useTranslation();
   const theme = useTheme();
+  const isPhone = useMediaQuery(theme.breakpoints.down('sm'));
   const { currentUser } = useAuth();
   const stableRowCount = useStableGridRowCount(total, Boolean(isLoading));
   const [rows, setRows] = useState<AttemptListItem[]>(attempts ?? []);
@@ -411,31 +419,228 @@ const ProblemsAttemptsTable = ({
 
   return (
     <>
-      <DataGrid
-        autoHeight
-        disableColumnMenu
-        disableColumnSelector
-        disableRowSelectionOnClick
-        rows={rows}
-        columns={columns}
-        localeText={{ noRowsLabel: t('common.dataGrid.noRows.problemAttempts') }}
-        slotProps={getDataGridNoRowsOverlaySlotProps({ filtered: isFiltered })}
-        loading={isLoading}
-        rowCount={stableRowCount}
-        pageSizeOptions={[10, 20, 50]}
-        paginationMode="server"
-        paginationModel={paginationModel}
-        onPaginationModelChange={onPaginationChange}
-        sortingMode="server"
-        disableColumnFilter
-        sx={{
-          mb: 2,
-          '& .MuiDataGrid-row--hovered': {
-            backgroundColor: alpha(theme.palette.primary.main, 0.04),
-          },
-        }}
-        getRowId={(row) => row.id}
-      />
+      {mobileCards && isPhone ? (
+        <Stack spacing={0.75} sx={{ mb: 2 }}>
+          {isLoading && rows.length === 0 ? (
+            Array.from({ length: 3 }).map((_, index) => (
+              <Skeleton key={index} variant="rounded" height={100} sx={{ borderRadius: 2.5 }} />
+            ))
+          ) : rows.length === 0 ? (
+            <Typography color="text.secondary" sx={{ py: 4, textAlign: 'center' }}>
+              {t('common.dataGrid.noRows.problemAttempts')}
+            </Typography>
+          ) : (
+            rows.map((row) => (
+              <Box
+                key={row.id}
+                component="article"
+                sx={{
+                  px: 1.5,
+                  py: 1.25,
+                  borderRadius: 2.5,
+                  bgcolor: alpha(
+                    theme.palette.text.primary,
+                    theme.palette.mode === 'dark' ? 0.08 : 0.035,
+                  ),
+                }}
+              >
+                <Stack spacing={0.75}>
+                  <Stack
+                    direction="row"
+                    alignItems="center"
+                    justifyContent="space-between"
+                    spacing={1}
+                  >
+                    <Stack direction="row" alignItems="center" spacing={1} minWidth={0}>
+                      {canOpenAttemptDetail(row) ? (
+                        <Button
+                          onClick={() => handleOpenDetail(row)}
+                          sx={{ minWidth: 0, p: 0, fontSize: 13, fontWeight: 800 }}
+                        >
+                          #{row.id}
+                        </Button>
+                      ) : (
+                        <Typography color="text.secondary" fontSize={13} fontWeight={800}>
+                          #{row.id}
+                        </Typography>
+                      )}
+                      <UserPopover username={row.user.username}>
+                        <Typography
+                          variant="caption"
+                          color="text.secondary"
+                          noWrap
+                          sx={{ minWidth: 0, maxWidth: 112, cursor: 'pointer' }}
+                        >
+                          {row.user.username}
+                        </Typography>
+                      </UserPopover>
+                    </Stack>
+                    <Typography
+                      variant="caption"
+                      color="text.secondary"
+                      sx={{ flexShrink: 0, fontSize: 11.5, whiteSpace: 'nowrap' }}
+                    >
+                      {showContestTimeSubmitted && row.contestTime
+                        ? row.contestTime
+                        : formatUserDateTime(
+                            row.created,
+                            'compactDateTimeNoComma',
+                            row.created ?? '--',
+                          )}
+                    </Typography>
+                  </Stack>
+                  {showProblemColumn ? (
+                    <Typography
+                      component={RouterLink}
+                      to={
+                        getProblemLink?.(row) ?? getResourceById(resources.Problem, row.problemId)
+                      }
+                      color="text.primary"
+                      fontSize={13}
+                      fontWeight={700}
+                      sx={{ textDecoration: 'none', lineHeight: 1.35 }}
+                    >
+                      {row.contestProblemSymbol
+                        ? `${row.contestProblemSymbol}. ${row.problemTitle}`
+                        : `${row.problemId}. ${row.problemTitle}`}
+                    </Typography>
+                  ) : null}
+                  <Stack direction="row" alignItems="center" justifyContent="space-between" gap={1}>
+                    <Button
+                      color="inherit"
+                      onClick={() => handleOpenProtocol(row)}
+                      sx={{
+                        minWidth: 0,
+                        maxWidth: '100%',
+                        p: 0,
+                        gap: 0.75,
+                        textTransform: 'none',
+                        justifyContent: 'flex-start',
+                      }}
+                    >
+                      <AttemptVerdict
+                        verdict={row.verdict as VerdictKey | undefined}
+                        title={row.verdictTitle || t('problems.attempts.unknownVerdict')}
+                        testCaseNumber={row.testCaseNumber}
+                        balls={row.balls}
+                        showBalls={['grader', 'ioi'].includes(row.judgeSummary?.mode ?? '')}
+                        variant="filled"
+                        size="small"
+                        sx={{
+                          height: 23,
+                          flexShrink: 0,
+                          border: 0,
+                          fontSize: 11,
+                          '& .MuiChip-label': { px: 0.9 },
+                          '&.MuiChip-colorDefault': {
+                            bgcolor: 'action.selected',
+                            color: 'text.secondary',
+                          },
+                          '&.MuiChip-colorSuccess': {
+                            bgcolor: alpha(theme.palette.success.main, 0.12),
+                            color: 'success.main',
+                          },
+                          '&.MuiChip-colorError': {
+                            bgcolor: alpha(theme.palette.error.main, 0.12),
+                            color: 'error.main',
+                          },
+                          '&.MuiChip-colorWarning': {
+                            bgcolor: alpha(theme.palette.warning.main, 0.13),
+                            color: 'warning.main',
+                          },
+                          '&.MuiChip-colorSecondary': {
+                            bgcolor: alpha(theme.palette.secondary.main, 0.12),
+                            color: 'secondary.main',
+                          },
+                        }}
+                      />
+                      <Typography
+                        component="span"
+                        sx={{
+                          minWidth: 0,
+                          overflow: 'hidden',
+                          textOverflow: 'ellipsis',
+                          whiteSpace: 'nowrap',
+                          color: 'text.primary',
+                          fontSize: 13,
+                          fontWeight: 700,
+                        }}
+                      >
+                        {row.verdictTitle || t('problems.attempts.unknownVerdict')}
+                      </Typography>
+                    </Button>
+                    {currentUser?.isSuperuser ? (
+                      <IconButton
+                        size="small"
+                        color="primary"
+                        onClick={() => handleRerun(row.id)}
+                        aria-label={t('problems.attempts.rerun')}
+                        sx={{ width: 28, height: 28, flexShrink: 0 }}
+                      >
+                        <IconifyIcon icon="mdi:refresh" fontSize={18} />
+                      </IconButton>
+                    ) : null}
+                  </Stack>
+                  <Stack direction="row" alignItems="center" justifyContent="space-between" gap={1}>
+                    <Stack direction="row" alignItems="center" spacing={0.75} minWidth={0}>
+                      <AttemptLanguage lang={row.lang} langFull={row.langFull} size={18} />
+                      <Typography variant="caption" color="text.secondary" noWrap fontWeight={600}>
+                        {row.langFull || row.lang?.toUpperCase() || '—'}
+                      </Typography>
+                    </Stack>
+                    <Stack direction="row" spacing={1.25} flexShrink={0}>
+                      <Typography variant="caption" color="text.secondary" whiteSpace="nowrap">
+                        {row.time ?? '—'} {t('problems.attempts.ms')}
+                      </Typography>
+                      <Typography variant="caption" color="text.secondary" whiteSpace="nowrap">
+                        {row.memory ?? '—'} {t('problems.attempts.kb')}
+                      </Typography>
+                    </Stack>
+                  </Stack>
+                </Stack>
+              </Box>
+            ))
+          )}
+          {stableRowCount > paginationModel.pageSize ? (
+            <Pagination
+              count={Math.ceil(stableRowCount / paginationModel.pageSize)}
+              page={paginationModel.page + 1}
+              onChange={(_, page) => onPaginationChange({ ...paginationModel, page: page - 1 })}
+              color="primary"
+              shape="rounded"
+              size="small"
+              siblingCount={0}
+              sx={{ display: 'flex', justifyContent: 'center', pt: 1.5 }}
+            />
+          ) : null}
+        </Stack>
+      ) : (
+        <DataGrid
+          autoHeight
+          disableColumnMenu
+          disableColumnSelector
+          disableRowSelectionOnClick
+          rows={rows}
+          columns={columns}
+          localeText={{ noRowsLabel: t('common.dataGrid.noRows.problemAttempts') }}
+          slotProps={getDataGridNoRowsOverlaySlotProps({ filtered: isFiltered })}
+          loading={isLoading}
+          rowCount={stableRowCount}
+          pageSizeOptions={[10, 20, 50]}
+          paginationMode="server"
+          paginationModel={paginationModel}
+          onPaginationModelChange={onPaginationChange}
+          sortingMode="server"
+          disableColumnFilter
+          sx={{
+            mb: 2,
+            '& .MuiDataGrid-row--hovered': {
+              backgroundColor: alpha(theme.palette.primary.main, 0.04),
+            },
+          }}
+          getRowId={(row) => row.id}
+        />
+      )}
 
       {lastUpdatedAttempt && (
         <Paper

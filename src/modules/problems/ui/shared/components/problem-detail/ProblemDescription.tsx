@@ -14,6 +14,7 @@ import {
   Chip,
   Divider,
   FormControl,
+  IconButton,
   InputLabel,
   LinearProgress,
   MenuItem,
@@ -27,17 +28,17 @@ import { useAuth } from 'app/providers/AuthProvider';
 import { getResourceById, resources } from 'app/routes/resources';
 import { useAttemptVerdicts, useProblemSolution } from 'modules/problems/application/queries.ts';
 import { DifficultyColor, getDifficultyColor } from 'modules/problems/config/difficulty';
-import IconifyIcon from 'shared/components/base/IconifyIcon';
-import OnlyMeSwitch from 'shared/components/common/OnlyMeSwitch';
-import ResponsiveTabs from 'shared/components/common/ResponsiveTabs';
-import { useThemeMode } from 'shared/hooks/useThemeMode.tsx';
 import {
   AttemptLangs,
   ProblemAvailableLanguage,
   ProblemDetail,
 } from 'modules/problems/domain/entities/problem.entity';
-import ProblemsAttemptsTable from '../ProblemsAttemptsTable';
+import IconifyIcon from 'shared/components/base/IconifyIcon';
 import MathJaxView from 'shared/components/base/MathJaxView.tsx';
+import OnlyMeSwitch from 'shared/components/common/OnlyMeSwitch';
+import ResponsiveTabs from 'shared/components/common/ResponsiveTabs';
+import { useThemeMode } from 'shared/hooks/useThemeMode.tsx';
+import ProblemsAttemptsTable from '../ProblemsAttemptsTable';
 import { ProblemBody } from './ProblemBody';
 import { ProblemFooter } from './ProblemFooter';
 import { ProblemSolversTab } from './ProblemSolversTab';
@@ -81,6 +82,7 @@ interface ProblemDescriptionProps {
   onLike: () => void;
   onDislike: () => void;
   selectedLanguage: ProblemAvailableLanguage | null;
+  hideTabs?: boolean;
 }
 
 export const ProblemDescription = ({
@@ -104,6 +106,7 @@ export const ProblemDescription = ({
   onLike,
   onDislike,
   selectedLanguage,
+  hideTabs = false,
 }: ProblemDescriptionProps) => {
   const { t, i18n } = useTranslation();
   const themeMode = useThemeMode();
@@ -119,7 +122,9 @@ export const ProblemDescription = ({
   const solutionLanguageOrder = useMemo(
     () =>
       new Map(
-        (problem.availableLanguages ?? []).map((language, index) => [language.lang, index] as const),
+        (problem.availableLanguages ?? []).map(
+          (language, index) => [language.lang, index] as const,
+        ),
       ),
     [problem.availableLanguages],
   );
@@ -143,7 +148,9 @@ export const ProblemDescription = ({
     [problem.availableLanguages],
   );
   const activeSolutionCode = useMemo(
-    () => orderedSolutionCodes.find((code) => code.lang === selectedSolutionLang) ?? orderedSolutionCodes[0],
+    () =>
+      orderedSolutionCodes.find((code) => code.lang === selectedSolutionLang) ??
+      orderedSolutionCodes[0],
     [orderedSolutionCodes, selectedSolutionLang],
   );
 
@@ -157,7 +164,8 @@ export const ProblemDescription = ({
 
     const fallbackLang = orderedSolutionCodes[0].lang;
     const nextLang =
-      selectedLanguage?.lang && orderedSolutionCodes.some((code) => code.lang === selectedLanguage.lang)
+      selectedLanguage?.lang &&
+      orderedSolutionCodes.some((code) => code.lang === selectedLanguage.lang)
         ? selectedLanguage.lang
         : fallbackLang;
 
@@ -175,54 +183,66 @@ export const ProblemDescription = ({
         flexDirection: 'column',
         position: 'relative',
         overflow: 'hidden',
+        border: { xs: 0, md: undefined },
+        borderRadius: { xs: 0, md: undefined },
+        boxShadow: { xs: 'none', md: undefined },
       }}
     >
-      <CardHeader
-        sx={{ py: 0 }}
-        title={
-          <ResponsiveTabs
-            value={activeTab}
-            onChange={onTabChange}
-            ariaLabel="problem detail tabs"
-            items={[
-              {
-                value: 'description',
-                label: t('problems.detail.problemTab'),
-                icon: <IconifyIcon icon="mdi:book-open-page-variant" />,
-                tabProps: { iconPosition: 'start', sx: { fontWeight: 500 } },
-              },
-              {
-                value: 'attempts',
-                label: t('problems.detail.attemptsTab'),
-                icon: <IconifyIcon icon="mdi:history" />,
-                tabProps: { iconPosition: 'start', sx: { fontWeight: 500 } },
-              },
-              {
-                value: 'stats',
-                label: t('problems.detail.stats'),
-                icon: <IconifyIcon icon="mdi:chart-bar" />,
-                tabProps: { iconPosition: 'start', sx: { fontWeight: 500 } },
-              },
-              {
-                value: 'solvers',
-                label: t('problems.detail.solversTab'),
-                icon: <IconifyIcon icon="mdi:account-group" />,
-                tabProps: { iconPosition: 'start', sx: { fontWeight: 500 } },
-              },
-            ]}
-            tabsProps={{
-              variant: 'scrollable',
-              scrollButtons: 'auto',
-              textColor: 'primary',
-              indicatorColor: 'primary',
-            }}
-          />
-        }
-      />
+      {!hideTabs ? (
+        <CardHeader
+          sx={{ py: 0 }}
+          title={
+            <ResponsiveTabs
+              value={activeTab}
+              onChange={onTabChange}
+              ariaLabel="problem detail tabs"
+              items={[
+                {
+                  value: 'description',
+                  label: t('problems.detail.problemTab'),
+                  icon: <IconifyIcon icon="mdi:book-open-page-variant" />,
+                  tabProps: { iconPosition: 'start', sx: { fontWeight: 500 } },
+                },
+                {
+                  value: 'attempts',
+                  label: t('problems.detail.attemptsTab'),
+                  icon: <IconifyIcon icon="mdi:history" />,
+                  tabProps: { iconPosition: 'start', sx: { fontWeight: 500 } },
+                },
+                {
+                  value: 'stats',
+                  label: t('problems.detail.stats'),
+                  icon: <IconifyIcon icon="mdi:chart-bar" />,
+                  tabProps: { iconPosition: 'start', sx: { fontWeight: 500 } },
+                },
+                {
+                  value: 'solvers',
+                  label: t('problems.detail.solversTab'),
+                  icon: <IconifyIcon icon="mdi:account-group" />,
+                  tabProps: { iconPosition: 'start', sx: { fontWeight: 500 } },
+                },
+              ]}
+              tabsProps={{
+                variant: 'scrollable',
+                scrollButtons: 'auto',
+                textColor: 'primary',
+                indicatorColor: 'primary',
+              }}
+            />
+          }
+        />
+      ) : null}
 
-      <Divider />
+      {!hideTabs ? <Divider /> : null}
 
-      <CardContent sx={{ flex: 1, minHeight: 0, overflowY: 'auto' }}>
+      <CardContent
+        sx={{
+          flex: 1,
+          minHeight: 0,
+          overflowY: 'auto',
+          px: { xs: activeTab === 'attempts' ? 3 : 2, sm: 3 },
+        }}
+      >
         {activeTab === 'description' ? (
           <Stack direction="column" spacing={2}>
             <Stack direction="column" spacing={1} flexWrap="wrap">
@@ -237,23 +257,43 @@ export const ProblemDescription = ({
                   size="medium"
                 />
                 <Chip
-                  label={`${t('problems.detail.timeLimit')}: ${
-                    selectedLanguage?.timeLimit ??
-                    problem.timeLimit ??
-                    problem.availableLanguages?.[0]?.timeLimit ??
-                    0
-                  } ms`}
+                  label={
+                    <>
+                      <Box component="span" sx={{ display: { xs: 'none', md: 'inline' } }}>
+                        {t('problems.detail.timeLimit')}
+                      </Box>
+                      <Box component="span" sx={{ display: { xs: 'inline', md: 'none' } }}>
+                        {t('problems.detail.timeLimitShort')}
+                      </Box>
+                      {`: ${
+                        selectedLanguage?.timeLimit ??
+                        problem.timeLimit ??
+                        problem.availableLanguages?.[0]?.timeLimit ??
+                        0
+                      } ms`}
+                    </>
+                  }
                   color="default"
                   variant="filled"
                   size="medium"
                 />
                 <Chip
-                  label={`${t('problems.detail.memoryLimit')}: ${
-                    selectedLanguage?.memoryLimit ??
-                    problem.memoryLimit ??
-                    problem.availableLanguages?.[0]?.memoryLimit ??
-                    0
-                  } MB`}
+                  label={
+                    <>
+                      <Box component="span" sx={{ display: { xs: 'none', md: 'inline' } }}>
+                        {t('problems.detail.memoryLimit')}
+                      </Box>
+                      <Box component="span" sx={{ display: { xs: 'inline', md: 'none' } }}>
+                        {t('problems.detail.memoryLimitShort')}
+                      </Box>
+                      {`: ${
+                        selectedLanguage?.memoryLimit ??
+                        problem.memoryLimit ??
+                        problem.availableLanguages?.[0]?.memoryLimit ??
+                        0
+                      } MB`}
+                    </>
+                  }
                   color="default"
                   variant="filled"
                   size="medium"
@@ -459,7 +499,138 @@ export const ProblemDescription = ({
 
         {activeTab === 'attempts' ? (
           <>
-            <Stack direction="row" justifyContent="space-between" alignItems="flex-start" mb={2}>
+            <Stack spacing={1} sx={{ display: { xs: 'flex', sm: 'none' }, mb: 2 }}>
+              <Stack
+                direction="row"
+                alignItems="center"
+                justifyContent="space-between"
+                minHeight={36}
+              >
+                {currentUser ? (
+                  <Button
+                    size="small"
+                    variant={myAttemptsOnly ? 'soft' : 'text'}
+                    color={myAttemptsOnly ? 'primary' : 'inherit'}
+                    startIcon={
+                      <IconifyIcon
+                        icon={myAttemptsOnly ? 'mdi:account-check-outline' : 'mdi:account-outline'}
+                      />
+                    }
+                    aria-pressed={myAttemptsOnly}
+                    onClick={onToggleMyAttempts}
+                    sx={{
+                      minHeight: 36,
+                      px: 1.25,
+                      borderRadius: 2,
+                      fontWeight: 700,
+                      textTransform: 'none',
+                      whiteSpace: 'nowrap',
+                    }}
+                  >
+                    {t('problems.detail.onlyMyAttempts')}
+                  </Button>
+                ) : (
+                  <Box />
+                )}
+                <Tooltip title={t('problems.detail.refresh')}>
+                  <IconButton
+                    onClick={onAttemptsRefresh}
+                    aria-label={t('problems.detail.refresh')}
+                    size="small"
+                    sx={{ width: 36, height: 36 }}
+                  >
+                    <IconifyIcon icon="mdi:reload" />
+                  </IconButton>
+                </Tooltip>
+              </Stack>
+              <Stack direction="row" spacing={1}>
+                <Select
+                  size="small"
+                  variant="standard"
+                  disableUnderline
+                  displayEmpty
+                  value={attemptsLangFilter}
+                  onChange={(event) => onAttemptsLangFilterChange(event.target.value)}
+                  renderValue={(value) =>
+                    value
+                      ? (problem.availableLanguages ?? []).find((lang) => lang.lang === value)
+                          ?.langFull || value
+                      : t('problems.attempts.language')
+                  }
+                  inputProps={{ 'aria-label': t('problems.attempts.language') }}
+                  sx={{
+                    flex: 1,
+                    minWidth: 0,
+                    height: 36,
+                    borderRadius: 2,
+                    bgcolor: 'action.hover',
+                    fontSize: 13,
+                    fontWeight: attemptsLangFilter ? 700 : 500,
+                    '& .MuiSelect-select': {
+                      pl: 1.5,
+                      pr: '28px !important',
+                      overflow: 'hidden',
+                      textOverflow: 'ellipsis',
+                      whiteSpace: 'nowrap',
+                    },
+                    '& .MuiSelect-icon': { right: 8 },
+                  }}
+                >
+                  <MenuItem value="">{t('problems.attempts.anyLanguage')}</MenuItem>
+                  {(problem.availableLanguages ?? []).map((lang) => (
+                    <MenuItem key={lang.lang} value={lang.lang}>
+                      {lang.langFull || lang.lang}
+                    </MenuItem>
+                  ))}
+                </Select>
+                <Select
+                  size="small"
+                  variant="standard"
+                  disableUnderline
+                  displayEmpty
+                  value={attemptsVerdictFilter}
+                  onChange={(event) => onAttemptsVerdictFilterChange(event.target.value)}
+                  renderValue={(value) =>
+                    value
+                      ? verdictOptions.find((option) => String(option.value) === value)?.label ||
+                        value
+                      : t('problems.attempts.verdict')
+                  }
+                  inputProps={{ 'aria-label': t('problems.attempts.verdict') }}
+                  sx={{
+                    flex: 1,
+                    minWidth: 0,
+                    height: 36,
+                    borderRadius: 2,
+                    bgcolor: 'action.hover',
+                    fontSize: 13,
+                    fontWeight: attemptsVerdictFilter ? 700 : 500,
+                    '& .MuiSelect-select': {
+                      pl: 1.5,
+                      pr: '28px !important',
+                      overflow: 'hidden',
+                      textOverflow: 'ellipsis',
+                      whiteSpace: 'nowrap',
+                    },
+                    '& .MuiSelect-icon': { right: 8 },
+                  }}
+                >
+                  <MenuItem value="">{t('problems.attempts.anyVerdict')}</MenuItem>
+                  {verdictOptions.map((option) => (
+                    <MenuItem key={option.value} value={String(option.value)}>
+                      {option.label}
+                    </MenuItem>
+                  ))}
+                </Select>
+              </Stack>
+            </Stack>
+            <Stack
+              direction="row"
+              justifyContent="space-between"
+              alignItems="flex-start"
+              mb={2}
+              sx={{ display: { xs: 'none', sm: 'flex' } }}
+            >
               <Stack
                 direction={{ xs: 'column', md: 'row' }}
                 spacing={2}
@@ -516,6 +687,7 @@ export const ProblemDescription = ({
               </Tooltip>
             </Stack>
             <ProblemsAttemptsTable
+              mobileCards={hideTabs}
               attempts={attempts}
               total={attemptsTotal}
               paginationModel={attemptsPagination}
@@ -539,8 +711,9 @@ export const ProblemDescription = ({
           component="footer"
           sx={{
             flexShrink: 0,
-            px: 3,
+            px: { xs: 2, sm: 3 },
             py: 1.75,
+            pb: { xs: 'max(12px, env(safe-area-inset-bottom))', sm: 1.75 },
             borderTop: '1px solid',
             borderColor: 'divider',
             bgcolor: 'background.paper',
