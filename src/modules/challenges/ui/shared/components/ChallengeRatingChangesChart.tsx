@@ -1,7 +1,8 @@
 import { useMemo } from 'react';
 import { useTranslation } from 'react-i18next';
 import { Skeleton, Typography, useMediaQuery } from '@mui/material';
-import { alpha, useTheme } from '@mui/material/styles';
+import { alpha, useColorScheme, useTheme } from '@mui/material/styles';
+import { normalizeSupportedLocale } from 'app/locales/locale';
 import { LineChart } from 'echarts/charts';
 import {
   GridComponent,
@@ -27,7 +28,6 @@ import {
   formatDateTimePattern,
   getDateTimeValue,
 } from 'shared/lib/dateTime';
-import { getColor } from 'shared/lib/echart-utils';
 import { createNumberFormatter } from 'shared/lib/numberFormat';
 
 echarts.use([
@@ -46,6 +46,13 @@ type ChallengeRatingChartChange = ChallengeRatingChange | ChallengeRatingHistory
 interface ChallengeRatingChangesChartProps {
   username?: string;
   height?: number;
+  history?: ChallengeRatingHistoryEntry[];
+  rankBandOpacity?: number;
+  markerSize?: number;
+  lineWidth?: number;
+  smooth?: boolean | number;
+  monochrome?: boolean;
+  tooltipTrigger?: 'item' | 'axis';
 }
 
 interface ChallengeRatingChartPoint {
@@ -98,11 +105,6 @@ const escapeHtml = (value: unknown) =>
     .replace(/>/g, '&gt;')
     .replace(/"/g, '&quot;')
     .replace(/'/g, '&#39;');
-
-const formatDelta = (delta?: number) => {
-  if (delta === undefined || delta === null) return '-';
-  return `${delta > 0 ? '+' : ''}${delta}`;
-};
 
 const getChallengeRatingBackgroundColor = (title: string, mode: 'light' | 'dark') =>
   CHALLENGES_RATING_BACKGROUND_COLORS[mode][title] ?? CHALLENGES_RATING_BACKGROUND_COLORS[mode].R4;
@@ -188,18 +190,41 @@ const normalizeChange = (change: ChallengeRatingChartChange) => {
 const ChallengeRatingChangesChart = ({
   username,
   height = 360,
+  history,
+  rankBandOpacity = 1,
+  markerSize = 10,
+  lineWidth = 3,
+  smooth = true,
+  monochrome = false,
+  tooltipTrigger = 'item',
 }: ChallengeRatingChangesChartProps) => {
   const { t, i18n } = useTranslation();
   const theme = useTheme();
+  const { mode, systemMode } = useColorScheme();
+  const colorScheme = (mode === 'system' ? systemMode : mode) ?? 'light';
   const isDownSm = useMediaQuery(theme.breakpoints.down('sm'));
-  const { data: changes, isLoading } = useChallengeRatingChanges(username);
+  const { data: fetchedChanges, isLoading } = useChallengeRatingChanges(
+    history ? undefined : username,
+  );
+  const changes = history ?? fetchedChanges;
 
   const numberFormatter = useMemo(
     () =>
-      createNumberFormatter({
-        maximumFractionDigits: 0,
-        useGrouping: false,
-      }, i18n.language),
+      createNumberFormatter(
+        {
+          maximumFractionDigits: 0,
+          useGrouping: false,
+        },
+        normalizeSupportedLocale(i18n.language),
+      ),
+    [i18n.language],
+  );
+  const deltaFormatter = useMemo(
+    () =>
+      createNumberFormatter(
+        { maximumFractionDigits: 1, signDisplay: 'exceptZero' },
+        normalizeSupportedLocale(i18n.language),
+      ),
     [i18n.language],
   );
 
@@ -226,16 +251,18 @@ const ChallengeRatingChangesChart = ({
     const ratings = chartData.map((change) => Number(change.rating));
     const axisMinRating = getAxisMinRating(ratings);
     const axisMaxRating = getAxisMaxRating(ratings);
-    const axisLabelColor = getColor(theme.vars.palette.text.secondary);
-    const axisTextColor = getColor(theme.vars.palette.text.primary);
-    const textColor = getColor(theme.vars.palette.text.primary);
-    const dividerColor = getColor(theme.vars.palette.divider);
-    const paperColor = getColor(theme.vars.palette.background.paper);
-    const shadowColor = getColor(theme.vars.palette.common.black);
-    const primaryColor = getColor(theme.vars.palette.primary.main);
+    const palette = theme.colorSchemes[colorScheme]?.palette ?? theme.palette;
+    const axisLabelColor = palette.text.secondary;
+    const axisTextColor = palette.text.secondary;
+    const textColor = palette.text.primary;
+    const dividerColor = palette.divider;
+    const paperColor = palette.background.paper;
+    const shadowColor = palette.common.black;
+    const primaryColor = palette.primary.main;
     const times = chartData.map((change) => getDateTimeValue(change.date));
     const minTime = Math.min(...times);
     const maxTime = Math.max(...times);
+    const sameTime = minTime === maxTime;
     const dateAxisConfig = isDownSm
       ? getYearDateAxisConfig(minTime, maxTime)
       : getDateAxisConfig(minTime, maxTime);
@@ -272,12 +299,24 @@ const ChallengeRatingChangesChart = ({
     });
 
     return {
-      grid: { left: 0, right: 0, top: 8, bottom: 24, containLabel: true },
+      grid: {
+        left: 0,
+        right: monochrome ? 4 : 0,
+        top: 8,
+        bottom: monochrome ? 0 : 24,
+        containLabel: true,
+      },
       tooltip: {
-        trigger: 'item',
-        confine: false,
+        trigger: tooltipTrigger,
+        confine: true,
         enterable: true,
-        triggerOn: 'click',
+        triggerOn: monochrome ? 'mousemove|click' : 'click',
+        ...(monochrome && {
+          axisPointer: {
+            type: 'line',
+            lineStyle: { color: dividerColor, type: 'dashed' },
+          },
+        }),
         hideDelay: 200,
         backgroundColor: paperColor,
         borderWidth: 1,
@@ -288,17 +327,15 @@ const ChallengeRatingChangesChart = ({
           fontFamily: theme.typography.fontFamily,
         },
         formatter: (params: any) => {
-          const point = params?.data as ChallengeRatingChartPoint | undefined;
+          const point = (Array.isArray(params) ? params[0]?.data : params?.data) as
+            | ChallengeRatingChartPoint
+            | undefined;
           if (!point) return '';
 
           const rating = point.value?.[1] ?? 0;
           const delta = point.delta ?? 0;
           const deltaColor =
-            delta > 0
-              ? getColor(theme.vars.palette.success.main)
-              : delta < 0
-                ? getColor(theme.vars.palette.error.main)
-                : axisLabelColor;
+            delta > 0 ? palette.success.main : delta < 0 ? palette.error.main : axisLabelColor;
           const score =
             point.userScore !== undefined && point.opponentScore !== undefined
               ? `${point.userScore}:${point.opponentScore}`
@@ -336,7 +373,7 @@ const ChallengeRatingChangesChart = ({
                     ? `<span style="color:${axisLabelColor};">${escapeHtml(
                         t('challenges.ratingChangesTooltip.delta', { defaultValue: 'Delta' }),
                       )}</span>
-                      <strong style="color:${deltaColor};">${formatDelta(point.delta)}</strong>`
+                      <strong style="color:${deltaColor};">${deltaFormatter.format(point.delta)}</strong>`
                     : ''
                 }
                 ${
@@ -372,7 +409,7 @@ const ChallengeRatingChangesChart = ({
         pieces: ratingRanges.map(({ level, visualTo }) => ({
           gte: level.min,
           lt: visualTo,
-          color: level.color,
+          color: monochrome ? primaryColor : level.color,
         })),
         outOfRange: {
           color: primaryColor,
@@ -380,22 +417,35 @@ const ChallengeRatingChangesChart = ({
       },
       xAxis: {
         type: 'time',
-        min: minTime,
-        max: maxTime,
+        min: monochrome && sameTime ? minTime - DAY_MS / 2 : minTime,
+        max: monochrome && sameTime ? maxTime + DAY_MS / 2 : maxTime,
         boundaryGap: false,
-        interval: dateAxisConfig.interval,
-        minInterval: dateAxisConfig.interval,
-        maxInterval: dateAxisConfig.interval,
-        splitNumber: dateAxisConfig.splitNumber,
+        ...(!monochrome && {
+          interval: dateAxisConfig.interval,
+          minInterval: dateAxisConfig.interval,
+          maxInterval: dateAxisConfig.interval,
+        }),
+        splitNumber: monochrome ? (isDownSm ? 3 : 5) : dateAxisConfig.splitNumber,
         axisLabel: {
           color: axisTextColor,
           hideOverlap: true,
           formatter: (value: number | string) =>
-            formatDateTimePattern(Number(value), dateAxisConfig.format),
+            formatDateTimePattern(
+              Number(value),
+              monochrome
+                ? maxTime - minTime < 3 * MONTH_MS
+                  ? 'DD MMM'
+                  : 'MMM YYYY'
+                : dateAxisConfig.format,
+            ),
+          ...(monochrome && { fontFamily: theme.typography.fontFamily, fontSize: 12 }),
         },
         axisLine: { lineStyle: { color: dividerColor } },
         axisTick: { show: false },
-        splitLine: { lineStyle: { color: dividerColor, opacity: 0.4 } },
+        splitLine: {
+          ...(monochrome && { show: false }),
+          lineStyle: { color: dividerColor, opacity: 0.4 },
+        },
       },
       yAxis: {
         type: 'value',
@@ -405,40 +455,49 @@ const ChallengeRatingChangesChart = ({
         axisLabel: {
           color: axisTextColor,
           formatter: (value: number | string) => String(Math.round(Number(value))),
+          ...(monochrome && { fontFamily: theme.typography.fontFamily, fontSize: 12 }),
         },
         axisLine: { lineStyle: { color: dividerColor } },
         axisTick: { show: false },
-        splitLine: { lineStyle: { color: dividerColor, opacity: 0.35 } },
+        splitLine: {
+          lineStyle: {
+            color: dividerColor,
+            opacity: monochrome ? 1 : 0.35,
+            ...(monochrome && { type: 'dashed' }),
+          },
+        },
       },
       series: [
         {
           type: 'line',
           clip: false,
-          smooth: true,
-          showSymbol: true,
-          symbolSize: 10,
+          smooth,
+          showSymbol: markerSize > 0 || sameTime,
+          ...(monochrome && { symbol: 'circle' }),
+          symbolSize: markerSize || 6,
           data: points,
-          lineStyle: { width: 3 },
+          lineStyle: { width: lineWidth, ...(monochrome && { color: primaryColor }) },
           itemStyle: {
-            borderWidth: 2,
+            borderWidth: markerSize > 2 ? 2 : 0,
             borderColor: paperColor,
+            ...(monochrome && { color: primaryColor }),
           },
           emphasis: {
             focus: 'series',
             itemStyle: {
-              borderWidth: 3,
-              shadowBlur: 10,
+              borderWidth: monochrome ? 2 : 3,
+              shadowBlur: monochrome ? 0 : 10,
               shadowColor: alpha(shadowColor, 0.35),
             },
           },
           markArea: {
             silent: true,
-            itemStyle: { opacity: 1 },
-            data: ratingRanges.map(({ level, from, to }) => [
+            itemStyle: { opacity: rankBandOpacity },
+            data: (rankBandOpacity > 0 ? ratingRanges : []).map(({ level, from, to }) => [
               {
                 yAxis: from,
                 itemStyle: {
-                  color: getChallengeRatingBackgroundColor(level.title, theme.palette.mode),
+                  color: getChallengeRatingBackgroundColor(level.title, colorScheme),
                 },
               },
               { yAxis: to },
@@ -451,17 +510,31 @@ const ChallengeRatingChangesChart = ({
             label: {
               show: false,
             },
-            data: CHALLENGES_RATING_LEVELS.filter(
-              (level) => level.min >= axisMinRating && level.min <= axisMaxRating,
-            ).map((level) => ({
-              yAxis: level.min,
-              lineStyle: { color: alpha(level.color, 0.1) },
-            })),
+            data: (rankBandOpacity > 0 ? CHALLENGES_RATING_LEVELS : [])
+              .filter((level) => level.min >= axisMinRating && level.min <= axisMaxRating)
+              .map((level) => ({
+                yAxis: level.min,
+                lineStyle: { color: alpha(level.color, 0.1) },
+              })),
           },
         },
       ],
     } satisfies EChartsCoreOption;
-  }, [chartData, isDownSm, numberFormatter, t, theme]);
+  }, [
+    chartData,
+    colorScheme,
+    deltaFormatter,
+    isDownSm,
+    lineWidth,
+    markerSize,
+    monochrome,
+    numberFormatter,
+    rankBandOpacity,
+    smooth,
+    t,
+    theme,
+    tooltipTrigger,
+  ]);
 
   if (isLoading) {
     return <Skeleton variant="rectangular" height={height} />;

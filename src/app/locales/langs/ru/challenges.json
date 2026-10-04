@@ -71,6 +71,183 @@
     "record": "{{wins}}В {{draws}}Н {{losses}}П",
     "statisticsTitle": "Моя статистика вызовов",
     "statisticsSubtitle": "Личные данные и последние игры.",
+    "statisticsPage": {
+      "tabs": {
+        "overview": "Обзор",
+        "activity": "Активность",
+        "knowledge": "Знания",
+        "opponents": "Соперники",
+        "records": "Рекорды"
+      },
+      "overview": {
+        "title": "Обзор вызовов",
+        "subtitle": "Ваш рейтинг и результаты",
+        "ratingPosition": "Место в рейтинге",
+        "results": "Результаты матчей",
+        "questions": "Результаты по вопросам",
+        "participation": "Состав вызовов",
+        "bestRating": "Личный рекорд",
+        "lowestRating": "Минимальный рейтинг",
+        "recentActivity": "Последние 30 дней",
+        "viewAll": "Посмотреть все",
+        "noChallenges": "Сыграйте первый вызов, чтобы здесь появились ваши результаты.",
+        "startChallenge": "Найти вызов"
+      },
+      "cards": {
+        "currentRating": "Текущий рейтинг",
+        "bestRating": "Лучший рейтинг",
+        "totalChallenges": "Всего вызовов",
+        "ratedSplit": "{{rated}} рейтинговых / {{unrated}} без рейтинга",
+        "solveRate": "Доля верных ответов",
+        "winRateSubtitle": "Доля побед {{value}}"
+      },
+      "ratingHistory": "История рейтинга",
+      "rating": {
+        "all": "Все вызовы",
+        "recent": "Последние 50 вызовов",
+        "range": "Период истории рейтинга",
+        "ratedCount": "{{count}} завершённых вызовов",
+        "lastChange": "Изменение рейтинга в последнем вызове",
+        "pointsUnit": "б."
+      },
+      "details": {
+        "title": "Подробная статистика",
+        "knowledge": "Вопросы и форматы",
+        "knowledgeDescription": "Точность ответов по сложности, теме и формату",
+        "opponents": "Соперники",
+        "opponentsDescription": "Личные встречи и частые соперники",
+        "records": "Личные рекорды",
+        "recordsDescription": "Лучшие результаты и серии побед"
+      },
+      "rankPlace": "Место №{{value}}",
+      "ratingSummary": "Сводка рейтинга",
+      "playersCount": "Игроков в рейтинге",
+      "lowestRating": "Минимальный рейтинг",
+      "botSplit": "{{human}} с игроками / {{bot}} с ботами",
+      "arenaChallenges": "{{count}} вызовов на арене",
+      "winRate": "Доля побед",
+      "challengesShort": "Вызовы",
+      "questionsSolved": "Верных ответов",
+      "averageSolved": "В среднем верных ответов за вызов",
+      "perfectChallenges": "Вызовы без ошибок",
+      "cleanSweepWins": "Победы всухую",
+      "avgOpponent": "Средний рейтинг соперника",
+      "noData": "Данных пока нет.",
+      "unknown": "Неизвестно",
+      "error": "Не удалось загрузить статистику.",
+      "retry": "Попробовать снова",
+      "results": {
+        "win": "Победы",
+        "draw": "Ничьи",
+        "loss": "Поражения"
+      },
+      "performance": {
+        "title": "Распределение результатов",
+        "solveSummary": "Результаты по вопросам",
+        "opponentBuckets": "Соперники по рейтингу"
+      },
+      "history": {
+        "error": "Не удалось загрузить последние вызовы.",
+        "format": "Формат",
+        "opponent": "Соперник",
+        "result": "Результат",
+        "score": "Счёт",
+        "ratingChange": "Изменение рейтинга",
+        "date": "Дата",
+        "view": "Открыть вызов",
+        "win": "Победа",
+        "draw": "Ничья",
+        "loss": "Поражение",
+        "pending": "В процессе"
+      },
+      "activity": {
+        "title": "Недавняя активность",
+        "patterns": "Распределение активности",
+        "heatmap": "Календарь активности",
+        "weekdays": "Активность по дням недели",
+        "hours": "Активность по часам",
+        "total": "{{count}} вызовов за последние 30 дней",
+        "activeDays": "{{count}} активных дней",
+        "year": "Год",
+        "less": "Меньше",
+        "more": "Больше"
+      },
+      "weekday": {
+        "mon": "Пн",
+        "tue": "Вт",
+        "wed": "Ср",
+        "thu": "Чт",
+        "fri": "Пт",
+        "sat": "Сб",
+        "sun": "Вс"
+      },
+      "formats": {
+        "timeControl": "По лимиту времени",
+        "timerMode": "По режиму таймера",
+        "questionCount": "По количеству вопросов",
+        "perQuestion": "На каждый вопрос",
+        "wholeChallenge": "На весь вызов",
+        "questionsCount": "{{count}} вопросов",
+        "seconds": "{{count}} с"
+      },
+      "knowledge": {
+        "difficulty": "По сложности",
+        "questionTypes": "Типы вопросов",
+        "questionType": "Тип вопроса",
+        "topChapters": "Самые частые разделы",
+        "solvedOf": "{{solved}} / {{seen}} верных ответов",
+        "solveRate": "Доля верных ответов",
+        "questionsSeen": "Встреченных вопросов"
+      },
+      "difficulty": {
+        "easy": "Лёгкие",
+        "medium": "Средние",
+        "hard": "Сложные"
+      },
+      "questionTypes": {
+        "singleChoice": "Один вариант",
+        "multipleChoice": "Несколько вариантов",
+        "textInput": "Текстовый ответ",
+        "conformity": "Соответствие",
+        "ordering": "Упорядочивание",
+        "classification": "Классификация",
+        "codeInput": "Специальная проверка",
+        "problem": "Задача по программированию"
+      },
+      "buckets": {
+        "higher": "Рейтинг выше",
+        "same": "Рейтинг равный",
+        "lower": "Рейтинг ниже"
+      },
+      "opponents": {
+        "summary": "Статистика соперников",
+        "mostPlayed": "Частые соперники",
+        "rivals": "Соперничества",
+        "bestVictories": "Лучшие победы",
+        "worstDefeats": "Самые тяжёлые поражения",
+        "matchCount": "{{count}} матчей",
+        "averageRating": "Средний рейтинг {{value}}",
+        "record": "Победы / ничьи / поражения"
+      },
+      "records": {
+        "title": "Рекорды",
+        "biggestGain": "Наибольший прирост рейтинга",
+        "biggestDrop": "Наибольшее падение рейтинга",
+        "bestVictory": "Лучшая победа",
+        "worstDefeat": "Самое тяжёлое поражение",
+        "mostDominantWin": "Самая уверенная победа",
+        "closestLoss": "Поражение с минимальным отрывом",
+        "streaks": "Серии",
+        "longestWinStreak": "Самая длинная серия побед",
+        "currentWinStreak": "Текущая серия побед",
+        "longestLossStreak": "Самая длинная серия поражений",
+        "currentLossStreak": "Текущая серия поражений",
+        "open": "Открыть вызов"
+      },
+      "streakCount": "{{count}} вызовов",
+      "streakCurrent": "Текущая",
+      "streakBest": "Лучшая"
+    },
     "authRequired": "Войдите, чтобы увидеть статистику вызовов.",
     "currentRank": "Текущий рейтинг",
     "delta": "Изменение: {{value}}",

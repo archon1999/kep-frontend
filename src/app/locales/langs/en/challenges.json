@@ -76,6 +76,183 @@
     "record": "{{wins}}W {{draws}}D {{losses}}L",
     "statisticsTitle": "My challenge statistics",
     "statisticsSubtitle": "Personal stats and recent games.",
+    "statisticsPage": {
+      "tabs": {
+        "overview": "Overview",
+        "activity": "Activity",
+        "knowledge": "Knowledge",
+        "opponents": "Opponents",
+        "records": "Records"
+      },
+      "overview": {
+        "title": "Challenge overview",
+        "subtitle": "Your rating and results at a glance",
+        "ratingPosition": "Rating position",
+        "results": "Match results",
+        "questions": "Question performance",
+        "participation": "Challenge breakdown",
+        "bestRating": "Personal best",
+        "lowestRating": "Lowest rating",
+        "recentActivity": "Last 30 days",
+        "viewAll": "View all",
+        "noChallenges": "Play your first challenge to start tracking your results.",
+        "startChallenge": "Find a challenge"
+      },
+      "cards": {
+        "currentRating": "Current rating",
+        "bestRating": "Best rating",
+        "totalChallenges": "Total challenges",
+        "ratedSplit": "{{rated}} rated / {{unrated}} unrated",
+        "solveRate": "Solve rate",
+        "winRateSubtitle": "Win rate {{value}}"
+      },
+      "ratingHistory": "Rating history",
+      "rating": {
+        "all": "All challenges",
+        "recent": "Last 50 challenges",
+        "range": "Rating history range",
+        "ratedCount": "{{count}} completed challenges",
+        "lastChange": "Rating change in latest challenge",
+        "pointsUnit": "pts"
+      },
+      "details": {
+        "title": "Detailed statistics",
+        "knowledge": "Questions and formats",
+        "knowledgeDescription": "Accuracy by difficulty, topic and challenge format",
+        "opponents": "Opponents",
+        "opponentsDescription": "Head-to-head results and frequent opponents",
+        "records": "Personal records",
+        "recordsDescription": "Best performances and winning streaks"
+      },
+      "rankPlace": "Rank #{{value}}",
+      "ratingSummary": "Rating summary",
+      "playersCount": "Players in rating",
+      "lowestRating": "Lowest rating",
+      "botSplit": "{{human}} human / {{bot}} bot",
+      "arenaChallenges": "{{count}} arena challenges",
+      "winRate": "Win rate",
+      "challengesShort": "Challenges",
+      "questionsSolved": "Solved questions",
+      "averageSolved": "Average solved per challenge",
+      "perfectChallenges": "Perfect challenges",
+      "cleanSweepWins": "Clean sweep wins",
+      "avgOpponent": "Average opponent rating",
+      "noData": "No data yet.",
+      "unknown": "Unknown",
+      "error": "Statistics could not be loaded.",
+      "retry": "Try again",
+      "results": {
+        "win": "Wins",
+        "draw": "Draws",
+        "loss": "Losses"
+      },
+      "performance": {
+        "title": "Result split",
+        "solveSummary": "Question performance",
+        "opponentBuckets": "Opponent buckets"
+      },
+      "history": {
+        "error": "Recent challenges could not be loaded.",
+        "format": "Format",
+        "opponent": "Opponent",
+        "result": "Result",
+        "score": "Score",
+        "ratingChange": "Rating change",
+        "date": "Date",
+        "view": "View challenge",
+        "win": "Win",
+        "draw": "Draw",
+        "loss": "Loss",
+        "pending": "In progress"
+      },
+      "activity": {
+        "title": "Recent activity",
+        "patterns": "Activity patterns",
+        "heatmap": "Activity heatmap",
+        "weekdays": "Weekday activity",
+        "hours": "Hour activity",
+        "total": "{{count}} challenges in the last 30 days",
+        "activeDays": "{{count}} active days",
+        "year": "Year",
+        "less": "Less",
+        "more": "More"
+      },
+      "weekday": {
+        "mon": "Mon",
+        "tue": "Tue",
+        "wed": "Wed",
+        "thu": "Thu",
+        "fri": "Fri",
+        "sat": "Sat",
+        "sun": "Sun"
+      },
+      "formats": {
+        "timeControl": "By time control",
+        "timerMode": "By timer mode",
+        "questionCount": "By question count",
+        "perQuestion": "Per question",
+        "wholeChallenge": "Whole challenge",
+        "questionsCount": "{{count}} questions",
+        "seconds": "{{count}}s"
+      },
+      "knowledge": {
+        "difficulty": "Difficulty breakdown",
+        "questionTypes": "Question types",
+        "questionType": "Question type",
+        "topChapters": "Most frequent chapters",
+        "solvedOf": "{{solved}} / {{seen}} solved",
+        "solveRate": "Solve rate",
+        "questionsSeen": "Questions seen"
+      },
+      "difficulty": {
+        "easy": "Easy",
+        "medium": "Medium",
+        "hard": "Hard"
+      },
+      "questionTypes": {
+        "singleChoice": "Single choice",
+        "multipleChoice": "Multiple choice",
+        "textInput": "Text input",
+        "conformity": "Conformity",
+        "ordering": "Ordering",
+        "classification": "Classification",
+        "codeInput": "Custom checker",
+        "problem": "Coding problem"
+      },
+      "buckets": {
+        "higher": "Higher rated",
+        "same": "Same rated",
+        "lower": "Lower rated"
+      },
+      "opponents": {
+        "summary": "Opponent summary",
+        "mostPlayed": "Most played opponents",
+        "rivals": "Rivals",
+        "bestVictories": "Best victories",
+        "worstDefeats": "Worst defeats",
+        "matchCount": "{{count}} matches",
+        "averageRating": "Average rating {{value}}",
+        "record": "Wins / draws / losses"
+      },
+      "records": {
+        "title": "Records",
+        "biggestGain": "Biggest gain",
+        "biggestDrop": "Biggest drop",
+        "bestVictory": "Best victory",
+        "worstDefeat": "Worst defeat",
+        "mostDominantWin": "Most dominant win",
+        "closestLoss": "Closest loss",
+        "streaks": "Streaks",
+        "longestWinStreak": "Longest win streak",
+        "currentWinStreak": "Current win streak",
+        "longestLossStreak": "Longest loss streak",
+        "currentLossStreak": "Current loss streak",
+        "open": "View challenge"
+      },
+      "streakCount": "{{count}} challenges",
+      "streakCurrent": "Current",
+      "streakBest": "Best"
+    },
     "authRequired": "Sign in to see your challenge statistics.",
     "currentRank": "Current rating",
     "delta": "Change: {{value}}",

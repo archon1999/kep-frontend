@@ -1,4 +1,4 @@
-﻿{
+{
   "challenges": {
     "title": "Bellashuvlar",
     "subtitle": "Tezkor bellashuv yarating yoki navbatga qoʻshiling.",
@@ -71,6 +71,183 @@
     "record": "{{wins}}G {{draws}}D {{losses}}M",
     "statisticsTitle": "Bellashuv statistikasi",
     "statisticsSubtitle": "Shaxsiy maʻlumotlar va oxirgi oʻyinlar.",
+    "statisticsPage": {
+      "tabs": {
+        "overview": "Umumiy",
+        "activity": "Faollik",
+        "knowledge": "Bilim",
+        "opponents": "Raqiblar",
+        "records": "Rekordlar"
+      },
+      "overview": {
+        "title": "Bellashuvlar sarhisobi",
+        "subtitle": "Reytingingiz va natijalaringiz",
+        "ratingPosition": "Reytingdagi oʻrin",
+        "results": "Bellashuv natijalari",
+        "questions": "Savollar boʻyicha natijalar",
+        "participation": "Bellashuvlar tarkibi",
+        "bestRating": "Shaxsiy rekord",
+        "lowestRating": "Eng past reyting",
+        "recentActivity": "Oxirgi 30 kun",
+        "viewAll": "Barchasini koʻrish",
+        "noChallenges": "Natijalaringizni kuzatish uchun birinchi bellashuvingizni oʻynang.",
+        "startChallenge": "Bellashuv topish"
+      },
+      "cards": {
+        "currentRating": "Joriy reyting",
+        "bestRating": "Eng yaxshi reyting",
+        "totalChallenges": "Jami bellashuvlar",
+        "ratedSplit": "{{rated}} reytingli / {{unrated}} reytingsiz",
+        "solveRate": "Toʻgʻri javoblar ulushi",
+        "winRateSubtitle": "Gʻalabalar ulushi {{value}}"
+      },
+      "ratingHistory": "Reyting tarixi",
+      "rating": {
+        "all": "Barcha bellashuvlar",
+        "recent": "Oxirgi 50 ta bellashuv",
+        "range": "Reyting tarixi oraligʻi",
+        "ratedCount": "{{count}} ta yakunlangan bellashuv",
+        "lastChange": "Oxirgi bellashuvdagi reyting oʻzgarishi",
+        "pointsUnit": "ball"
+      },
+      "details": {
+        "title": "Batafsil statistika",
+        "knowledge": "Savollar va formatlar",
+        "knowledgeDescription": "Qiyinlik, mavzu va format boʻyicha toʻgʻri javoblar",
+        "opponents": "Raqiblar",
+        "opponentsDescription": "Oʻzaro natijalar va doimiy raqiblar",
+        "records": "Shaxsiy rekordlar",
+        "recordsDescription": "Eng yaxshi natijalar va gʻalabalar ketma-ketligi"
+      },
+      "rankPlace": "{{value}}-oʻrin",
+      "ratingSummary": "Reyting sarhisobi",
+      "playersCount": "Reytingdagi oʻyinchilar",
+      "lowestRating": "Eng past reyting",
+      "botSplit": "{{human}} oʻyinchilar bilan / {{bot}} botlar bilan",
+      "arenaChallenges": "{{count}} ta arena bellashuvi",
+      "winRate": "Gʻalabalar ulushi",
+      "challengesShort": "Bellashuvlar",
+      "questionsSolved": "Toʻgʻri javoblar",
+      "averageSolved": "Bir bellashuvdagi oʻrtacha toʻgʻri javoblar",
+      "perfectChallenges": "Xatosiz bellashuvlar",
+      "cleanSweepWins": "Quruq hisobdagi gʻalabalar",
+      "avgOpponent": "Raqibning oʻrtacha reytingi",
+      "noData": "Hozircha maʼlumot yoʻq.",
+      "unknown": "Nomaʼlum",
+      "error": "Statistikani yuklab boʻlmadi.",
+      "retry": "Qayta urinish",
+      "results": {
+        "win": "Gʻalabalar",
+        "draw": "Durranglar",
+        "loss": "Magʻlubiyatlar"
+      },
+      "performance": {
+        "title": "Natijalar taqsimoti",
+        "solveSummary": "Savollar boʻyicha natijalar",
+        "opponentBuckets": "Raqiblar reytingi boʻyicha"
+      },
+      "history": {
+        "error": "Soʻnggi bellashuvlarni yuklab boʻlmadi.",
+        "format": "Format",
+        "opponent": "Raqib",
+        "result": "Natija",
+        "score": "Hisob",
+        "ratingChange": "Reyting oʻzgarishi",
+        "date": "Sana",
+        "view": "Bellashuvni koʻrish",
+        "win": "Gʻalaba",
+        "draw": "Durrang",
+        "loss": "Magʻlubiyat",
+        "pending": "Jarayonda"
+      },
+      "activity": {
+        "title": "Soʻnggi faollik",
+        "patterns": "Faollik taqsimoti",
+        "heatmap": "Faollik taqvimi",
+        "weekdays": "Hafta kunlari boʻyicha faollik",
+        "hours": "Soatlar boʻyicha faollik",
+        "total": "Oxirgi 30 kunda {{count}} ta bellashuv",
+        "activeDays": "{{count}} ta faol kun",
+        "year": "Yil",
+        "less": "Kam",
+        "more": "Koʻp"
+      },
+      "weekday": {
+        "mon": "Du",
+        "tue": "Se",
+        "wed": "Ch",
+        "thu": "Pa",
+        "fri": "Ju",
+        "sat": "Sh",
+        "sun": "Ya"
+      },
+      "formats": {
+        "timeControl": "Vaqt cheklovi boʻyicha",
+        "timerMode": "Taymer turi boʻyicha",
+        "questionCount": "Savollar soni boʻyicha",
+        "perQuestion": "Har bir savol uchun",
+        "wholeChallenge": "Butun bellashuv uchun",
+        "questionsCount": "{{count}} ta savol",
+        "seconds": "{{count}} s"
+      },
+      "knowledge": {
+        "difficulty": "Qiyinlik boʻyicha",
+        "questionTypes": "Savol turlari",
+        "questionType": "Savol turi",
+        "topChapters": "Eng koʻp uchragan boʻlimlar",
+        "solvedOf": "{{solved}} / {{seen}} ta toʻgʻri javob",
+        "solveRate": "Toʻgʻri javoblar ulushi",
+        "questionsSeen": "Uchragan savollar"
+      },
+      "difficulty": {
+        "easy": "Oson",
+        "medium": "Oʻrtacha",
+        "hard": "Qiyin"
+      },
+      "questionTypes": {
+        "singleChoice": "Bitta javobli",
+        "multipleChoice": "Koʻp javobli",
+        "textInput": "Matnli javob",
+        "conformity": "Moslashtirish",
+        "ordering": "Tartiblash",
+        "classification": "Guruhlarga ajratish",
+        "codeInput": "Maxsus tekshiruv",
+        "problem": "Dasturlash masalasi"
+      },
+      "buckets": {
+        "higher": "Reytingi yuqori",
+        "same": "Reytingi teng",
+        "lower": "Reytingi past"
+      },
+      "opponents": {
+        "summary": "Raqiblar statistikasi",
+        "mostPlayed": "Eng koʻp oʻynalgan raqiblar",
+        "rivals": "Raqobatdoshlar",
+        "bestVictories": "Eng yaxshi gʻalabalar",
+        "worstDefeats": "Eng ogʻir magʻlubiyatlar",
+        "matchCount": "{{count}} ta bellashuv",
+        "averageRating": "Oʻrtacha reyting {{value}}",
+        "record": "Gʻalabalar / durranglar / magʻlubiyatlar"
+      },
+      "records": {
+        "title": "Rekordlar",
+        "biggestGain": "Eng katta reyting oʻsishi",
+        "biggestDrop": "Eng katta reyting pasayishi",
+        "bestVictory": "Eng yaxshi gʻalaba",
+        "worstDefeat": "Eng ogʻir magʻlubiyat",
+        "mostDominantWin": "Eng katta farqli gʻalaba",
+        "closestLoss": "Eng kichik farqli magʻlubiyat",
+        "streaks": "Ketma-ket natijalar",
+        "longestWinStreak": "Eng uzun gʻalabalar ketma-ketligi",
+        "currentWinStreak": "Joriy gʻalabalar ketma-ketligi",
+        "longestLossStreak": "Eng uzun magʻlubiyatlar ketma-ketligi",
+        "currentLossStreak": "Joriy magʻlubiyatlar ketma-ketligi",
+        "open": "Bellashuvni koʻrish"
+      },
+      "streakCount": "{{count}} ta bellashuv",
+      "streakCurrent": "Joriy",
+      "streakBest": "Eng yaxshi"
+    },
     "authRequired": "Bellashuv statistikasini koʻrish uchun tizimga kiring.",
     "currentRank": "Joriy reyting",
     "delta": "Oʻzgarish: {{value}}",

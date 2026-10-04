@@ -20,6 +20,7 @@ export const extractList = <T = any>(payload: unknown): T[] => {
 
 const normalizePlayer = (payload: any): ChallengePlayer => ({
   username: payload?.username ?? '',
+  avatar: payload?.avatar ?? undefined,
   result: payload?.result ?? 0,
   results: payload?.results ?? [],
   rating: payload?.rating ?? 0,
