@@ -7,7 +7,12 @@ import {
   Test,
   TestPass,
 } from '../../domain';
-import { FinishTestResponse, PageResult, StartTestResponse, TestResultRow } from '../../domain/ports/testing.repository.ts';
+import {
+  FinishTestResponse,
+  PageResult,
+  StartTestResponse,
+  TestResultRow,
+} from '../../domain/ports/testing.repository.ts';
 
 const normalizeOption = (option: any): QuestionOption => ({
   id: option?.id ?? option?.optionId ?? option?.option_id,
@@ -23,7 +28,9 @@ const normalizeChessPuzzlePayload = (payload: any): ChessPuzzlePayload => ({
   initialMove: payload?.initialMove ?? payload?.initial_move ?? '',
   orientation: payload?.orientation === 'black' ? 'black' : 'white',
   rating: Number(payload?.rating ?? 0),
-  themes: Array.isArray(payload?.themes) ? payload.themes.map((theme: unknown) => String(theme)) : [],
+  themes: Array.isArray(payload?.themes)
+    ? payload.themes.map((theme: unknown) => String(theme))
+    : [],
   solutionBlob: payload?.solutionBlob ?? payload?.solution_blob ?? '',
   solutionCipher: payload?.solutionCipher ?? payload?.solution_cipher ?? '',
 });
@@ -69,6 +76,7 @@ export const mapTest = (payload: any): Test => ({
   difficulty: payload?.difficulty ?? 0,
   tags: payload?.tags ?? [],
   userBestResult: payload?.userBestResult ?? payload?.user_best_result,
+  userCompleted: payload?.userCompleted ?? payload?.user_completed,
   questionsCount: payload?.questionsCount ?? payload?.questions_count ?? payload?.questions?.length,
   passesCount: payload?.passesCount ?? payload?.passes_count,
   lastPassed: payload?.lastPassed ?? payload?.last_passed,

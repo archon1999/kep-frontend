@@ -1,7 +1,7 @@
-import { Box, ButtonBase, Stack, Typography } from '@mui/material';
-import type { Theme } from '@mui/material/styles';
-import QuestionHeader from './QuestionHeader';
+import { useTranslation } from 'react-i18next';
+import { FormControlLabel, Radio, RadioGroup, Stack, Typography } from '@mui/material';
 import { TestPassQuestion } from '../types';
+import QuestionHeader from './QuestionHeader';
 
 interface SingleChoiceQuestionProps {
   question: TestPassQuestion;
@@ -9,82 +9,67 @@ interface SingleChoiceQuestionProps {
   onChange: (index: number) => void;
 }
 
-const getSelectedBackground = (theme: Theme, chapterId?: number) => {
-  const colors = [
-    theme.vars.palette.primary.main,
-    theme.vars.palette.success.main,
-    theme.vars.palette.warning.main,
-    theme.vars.palette.info.main,
-    theme.vars.palette.error.main,
-    theme.vars.palette.secondary.main,
-  ];
-  const index = Math.abs((chapterId ?? 1) - 1) % colors.length;
-  return colors[index];
-};
-
-const SingleChoiceQuestion = ({ question, selectedOption, onChange }: SingleChoiceQuestionProps) => {
-  const options = question.options ?? [];
-  const columns = options.length === 3 ? 3 : 2;
+const SingleChoiceQuestion = ({
+  question,
+  selectedOption,
+  onChange,
+}: SingleChoiceQuestionProps) => {
+  const { t } = useTranslation();
 
   return (
-    <Stack direction="column" spacing={1}>
+    <Stack direction="column" spacing={3}>
       <QuestionHeader question={question} />
-      <Box
-        role="radiogroup"
-        sx={{
-          display: 'grid',
-          gap: 2,
-          gridTemplateColumns: `repeat(${columns}, minmax(0, 1fr))`,
-        }}
-      >
-        {options.map((option, index) => {
-          const isSelected = selectedOption === index;
-          const label = option.option ?? option.optionSecondary ?? '';
+      <Stack spacing={1.5}>
+        <Typography variant="body2" color="text.secondary">
+          {t('tests.singleChoiceHint')}
+        </Typography>
+        <RadioGroup
+          aria-labelledby={`test-question-${question.number}`}
+          value={selectedOption}
+          onChange={(_, value) => onChange(Number(value))}
+          sx={{ gap: 1.25 }}
+        >
+          {question.options?.map((option, index) => {
+            const isSelected = selectedOption === index;
 
-          return (
-            <ButtonBase
-              key={option.id ?? `${label}-${index}`}
-              role="radio"
-              aria-checked={isSelected}
-              onClick={() => onChange(index)}
-              sx={(theme) => ({
-                alignItems: 'center',
-                height: '100%',
-                justifyContent: 'center',
-                minHeight: 72,
-                p: 2,
-                textAlign: 'center',
-                width: '100%',
-                borderRadius: 1,
-                boxShadow: theme.shadows[3],
-                color: isSelected
-                  ? theme.vars.palette.common.white
-                  : theme.vars.palette.text.primary,
-                backgroundColor: isSelected
-                  ? getSelectedBackground(theme, question.chapter?.id)
-                  : theme.vars.palette.background.elevation1,
-                transition: theme.transitions.create(['background-color', 'color', 'transform']),
-                '&:hover': {
-                  transform: 'translateY(-1px)',
-                },
-                '&:focus-visible': {
-                  outline: `2px solid ${theme.vars.palette.primary.main}`,
-                  outlineOffset: 2,
-                },
-              })}
-            >
-              <Typography
-                variant="h6"
-                color="inherit"
-                fontWeight={500}
-                sx={{ overflowWrap: 'anywhere', width: '100%' }}
-              >
-                {label}
-              </Typography>
-            </ButtonBase>
-          );
-        })}
-      </Box>
+            return (
+              <FormControlLabel
+                key={option.id ?? index}
+                value={index}
+                control={
+                  <Radio size="small" sx={{ '& + .MuiFormControlLabel-label': { mt: 0 } }} />
+                }
+                label={option.option ?? option.optionSecondary ?? ''}
+                sx={{
+                  m: 0,
+                  py: 1.25,
+                  pr: 2,
+                  pl: 1,
+                  minHeight: 56,
+                  border: '1px solid',
+                  borderColor: isSelected ? 'primary.main' : 'divider',
+                  bgcolor: isSelected ? 'primary.lighter' : 'transparent',
+                  borderRadius: 2,
+                  transition: (theme) =>
+                    theme.transitions.create(['border-color', 'background-color']),
+                  '&:hover': { borderColor: isSelected ? 'primary.main' : 'text.secondary' },
+                  '&:focus-within': {
+                    outline: '2px solid',
+                    outlineColor: 'primary.main',
+                    outlineOffset: 2,
+                  },
+                  '& .MuiFormControlLabel-label': {
+                    mt: 0,
+                    fontSize: '1rem',
+                    lineHeight: 1.6,
+                    overflowWrap: 'anywhere',
+                  },
+                }}
+              />
+            );
+          })}
+        </RadioGroup>
+      </Stack>
     </Stack>
   );
 };

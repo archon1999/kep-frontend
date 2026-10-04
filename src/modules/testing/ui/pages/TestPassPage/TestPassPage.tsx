@@ -1,47 +1,59 @@
 import { useEffect, useMemo, useRef, useState } from 'react';
+import { useTranslation } from 'react-i18next';
 import { useNavigate, useParams } from 'react-router';
 import {
+  Alert,
   Box,
   Button,
-  Card,
-  CardContent,
   Chip,
-  CircularProgress,
-  Divider,
-  Grid,
+  Container,
   Dialog,
   DialogActions,
   DialogContent,
-  DialogContentText,
   DialogTitle,
+  Drawer,
+  Paper,
   Stack,
   Typography,
+  useMediaQuery,
+  useTheme,
 } from '@mui/material';
-import { useTranslation } from 'react-i18next';
-import { toast } from 'sonner';
-import { getResourceById, resources } from 'app/routes/resources';
+import { useNavContext } from 'app/layouts/main-layout/NavProvider';
 import { useDocumentTitle } from 'app/providers/DocumentTitleProvider';
-import { responsivePagePaddingSx } from 'shared/lib/styles';
-import { finishTest, submitAnswer, testingMutations } from 'modules/testing/application/mutations.ts';
+import { getResourceById, resources } from 'app/routes/resources';
+import {
+  finishTest,
+  submitAnswer,
+  testingMutations,
+} from 'modules/testing/application/mutations.ts';
 import { useTestPass } from 'modules/testing/application/queries.ts';
 import { QuestionType } from 'modules/testing/domain';
+import IconifyIcon from 'shared/components/base/IconifyIcon';
+import { toast } from 'sonner';
 import { buildAnswerResult } from './answers.ts';
-import { buildInitialState, formatRemainingTime } from './utils.ts';
-import { QuestionState, TestPassQuestion } from './types.ts';
-import SingleChoiceQuestion from './components/SingleChoiceQuestion.tsx';
-import MultipleChoiceQuestion from './components/MultipleChoiceQuestion.tsx';
-import TextInputQuestion from './components/TextInputQuestion.tsx';
+import ClassificationQuestion from './components/ClassificationQuestion.tsx';
 import CodeInputQuestion from './components/CodeInputQuestion.tsx';
 import ConformityQuestion from './components/ConformityQuestion.tsx';
+import MultipleChoiceQuestion from './components/MultipleChoiceQuestion.tsx';
 import OrderingQuestion from './components/OrderingQuestion.tsx';
-import ClassificationQuestion from './components/ClassificationQuestion.tsx';
+import SingleChoiceQuestion from './components/SingleChoiceQuestion.tsx';
+import TestPassActions from './components/TestPassActions.tsx';
+import TestPassMobileToolbar from './components/TestPassMobileToolbar.tsx';
+import TestPassSidebar from './components/TestPassSidebar.tsx';
+import TestPassSkeleton from './components/TestPassSkeleton.tsx';
+import TextInputQuestion from './components/TextInputQuestion.tsx';
+import { QuestionState, TestPassQuestion } from './types.ts';
+import { buildInitialState, formatRemainingTime } from './utils.ts';
 
 const TestPassPage = () => {
   const { id: testPassId } = useParams();
   const { t } = useTranslation();
   const navigate = useNavigate();
+  const theme = useTheme();
+  const isMobile = useMediaQuery(theme.breakpoints.down('md'));
+  const { topbarHeight } = useNavContext();
 
-  const { data: testPass, isLoading } = useTestPass(testPassId);
+  const { data: testPass, isLoading, error, mutate } = useTestPass(testPassId);
   useDocumentTitle(
     testPass?.test ? 'pageTitles.testPass' : undefined,
     testPass?.test
@@ -60,20 +72,23 @@ const TestPassPage = () => {
   const [isFinishing, setIsFinishing] = useState(false);
   const [isFinished, setIsFinished] = useState(false);
   const [finishResult, setFinishResult] = useState<number | null>(null);
+  const [questionsOpen, setQuestionsOpen] = useState(false);
   const autoFinishRef = useRef(false);
+  const questionAnchorRef = useRef<HTMLDivElement>(null);
+  const previousQuestionNumberRef = useRef<number | undefined>(undefined);
 
   const getQuestionKey = (question: TestPassQuestion) =>
     (question.id ?? question.number).toString();
 
-  const currentQuestion = useMemo(
-    () => questions[currentIndex],
-    [questions, currentIndex],
-  );
+  const currentQuestion = useMemo(() => questions[currentIndex], [questions, currentIndex]);
 
   const ensureState = (question: TestPassQuestion): QuestionState =>
     questionStates[getQuestionKey(question)] ?? buildInitialState(question);
 
-  const updateState = (question: TestPassQuestion, updater: (prev: QuestionState) => QuestionState) => {
+  const updateState = (
+    question: TestPassQuestion,
+    updater: (prev: QuestionState) => QuestionState,
+  ) => {
     const key = getQuestionKey(question);
     setQuestionStates((prev) => ({
       ...prev,
@@ -89,11 +104,20 @@ const TestPassPage = () => {
     setIsFinishing(true);
 
     try {
+      if (
+        !auto &&
+        currentQuestion &&
+        !buildAnswerResult(currentQuestion, ensureState(currentQuestion)).isEmpty
+      ) {
+        const saved = await handleSubmitAnswer({ autoAdvance: false, silent: true });
+        if (saved === false) return;
+      }
       const response = await finishTest(testPass.id);
 
       if (response.success) {
         setIsFinished(true);
         setFinishResult(response.result ?? null);
+        setQuestionsOpen(false);
       } else if (!auto) {
         toast.error(t('tests.finishError'));
       }
@@ -144,6 +168,10 @@ const TestPassPage = () => {
         const nextIndex = questions.findIndex((question) => question.number === nextQuestionNumber);
         setCurrentIndex(nextIndex === -1 ? (currentIndex + 1) % questions.length : nextIndex);
       }
+      return true;
+    } catch {
+      toast.error(t('tests.answerSaveError'));
+      return false;
     } finally {
       setIsSubmitting(false);
     }
@@ -154,17 +182,39 @@ const TestPassPage = () => {
       return;
     }
 
-    await handleSubmitAnswer({ autoAdvance: false, silent: true });
+    const saved = await handleSubmitAnswer({ autoAdvance: false, silent: true });
+    if (saved === false) {
+      return false;
+    }
     setCurrentIndex(index);
+    return true;
   };
+
+  useEffect(() => {
+    const previousNumber = previousQuestionNumberRef.current;
+    const nextNumber = currentQuestion?.number;
+    previousQuestionNumberRef.current = nextNumber;
+    if (
+      !isMobile ||
+      previousNumber === undefined ||
+      nextNumber === undefined ||
+      previousNumber === nextNumber
+    )
+      return;
+    const frame = requestAnimationFrame(() =>
+      questionAnchorRef.current?.scrollIntoView({ block: 'start' }),
+    );
+    return () => cancelAnimationFrame(frame);
+  }, [currentQuestion?.number, isMobile]);
 
   useEffect(() => {
     if (!testPass?.test?.questions?.length) {
       return;
     }
 
-    const hydrated = testPass.test.questions.map((question) =>
-      testingMutations.testingRepository.hydrateQuestion(question) as TestPassQuestion,
+    const hydrated = testPass.test.questions.map(
+      (question) =>
+        testingMutations.testingRepository.hydrateQuestion(question) as TestPassQuestion,
     );
 
     const initialStates = hydrated.reduce<Record<string, QuestionState>>((acc, question) => {
@@ -220,10 +270,7 @@ const TestPassPage = () => {
       return;
     }
 
-    const timer = setInterval(
-      () => setRemainingMs((prev) => Math.max(prev - 1000, 0)),
-      1000,
-    );
+    const timer = setInterval(() => setRemainingMs((prev) => Math.max(prev - 1000, 0)), 1000);
 
     return () => clearInterval(timer);
   }, [timerReady, remainingMs]);
@@ -254,8 +301,7 @@ const TestPassPage = () => {
 
     switch (currentQuestion.type) {
       case QuestionType.SingleChoice: {
-        const selected =
-          state.type === QuestionType.SingleChoice ? state.selectedOption : -1;
+        const selected = state.type === QuestionType.SingleChoice ? state.selectedOption : -1;
         return (
           <SingleChoiceQuestion
             question={currentQuestion}
@@ -375,181 +421,326 @@ const TestPassPage = () => {
   };
 
   const timeLeft = formatRemainingTime(remainingMs);
+  const hasFinishResult = finishResult !== null && Number.isFinite(finishResult);
 
-  if (isLoading || !currentQuestion) {
+  if (error || (!isLoading && !testPass)) {
     return (
-      <Box sx={{ ...responsivePagePaddingSx, display: 'flex', justifyContent: 'center' }}>
-        <CircularProgress />
-      </Box>
+      <Paper
+        elevation={0}
+        variant="elevation"
+        sx={{ minHeight: '100%', borderRadius: 0, border: 0, bgcolor: 'background.paper' }}
+      >
+        <Container maxWidth="lg" disableGutters sx={{ p: { xs: 3, md: 5 } }}>
+          <Alert
+            severity="error"
+            action={
+              <Button color="inherit" onClick={() => mutate()}>
+                {t('tests.retry')}
+              </Button>
+            }
+          >
+            {t('tests.passLoadError')}
+          </Alert>
+        </Container>
+      </Paper>
     );
   }
 
+  if (!isLoading && testPass && !testPass.test.questions?.length) {
+    return (
+      <Paper
+        elevation={0}
+        variant="elevation"
+        sx={{ minHeight: '100%', borderRadius: 0, border: 0, bgcolor: 'background.paper' }}
+      >
+        <Container maxWidth="lg" disableGutters sx={{ p: { xs: 3, md: 5 } }}>
+          <Alert severity="info">{t('tests.noQuestions')}</Alert>
+        </Container>
+      </Paper>
+    );
+  }
+
+  if (isLoading || !currentQuestion) {
+    return <TestPassSkeleton />;
+  }
+
   return (
-    <Box sx={responsivePagePaddingSx}>
-      <Stack direction="column" spacing={3}>
-        <Stack direction="row" justifyContent="space-between" alignItems="center">
-          <Typography variant="h4" fontWeight={800}>
-            {testPass?.test.title}
-          </Typography>
-          <Chip
-            color={remainingMs > 0 ? 'primary' : 'error'}
-            label={`${timeLeft.hours}:${timeLeft.minutes}:${timeLeft.seconds}`}
-          />
-        </Stack>
-
-        <Grid container spacing={3}>
-          <Grid size={{ xs: 12, lg: 9 }}>
-            <Card>
-              <CardContent>{renderQuestion()}</CardContent>
-
-              <Divider />
-
-              <Stack
-                direction={{ xs: 'column', sm: 'row' }}
-                spacing={2}
-                alignItems={{ xs: 'flex-start', sm: 'center' }}
-                justifyContent="space-between"
-                sx={{ p: 2 }}
+    <Paper
+      elevation={0}
+      variant="elevation"
+      sx={{ minHeight: '100%', borderRadius: 0, border: 0, bgcolor: 'background.paper' }}
+    >
+      <Container
+        maxWidth="lg"
+        disableGutters
+        sx={{
+          p: { xs: 2, sm: 3, md: 5 },
+          pb: { xs: 'calc(88px + env(safe-area-inset-bottom))', md: 5 },
+        }}
+      >
+        <Stack direction="column" spacing={{ xs: 2, md: 3 }}>
+          <Stack
+            direction={{ xs: 'column', sm: 'row' }}
+            spacing={2}
+            justifyContent="space-between"
+            alignItems={{ xs: 'flex-start', sm: 'center' }}
+            sx={{
+              pb: { xs: 0, md: 3 },
+              borderBottom: { xs: 0, md: '1px solid' },
+              borderColor: 'divider',
+            }}
+          >
+            <Stack spacing={0.75} sx={{ minWidth: 0 }}>
+              <Typography variant="body2" color="text.secondary">
+                {testPass?.test.chapter?.title || t('tests.passTitle')}
+              </Typography>
+              <Typography
+                component="h1"
+                variant="h5"
+                fontWeight={600}
+                sx={{
+                  overflowWrap: 'anywhere',
+                  fontSize: { xs: '1.125rem', sm: '1.25rem', md: '1.5rem' },
+                }}
               >
-                <Chip
-                  color={currentQuestion.answered ? 'success' : 'warning'}
-                  label={currentQuestion.answered ? t('tests.answered') : t('tests.notAnswered')}
-                />
-                <Button
-                  variant="contained"
-                  onClick={() => handleSubmitAnswer()}
-                  disabled={isSubmitting || isFinishing || isFinished}
-                  sx={{ minWidth: 180 }}
-                >
-                  {isSubmitting ? (
-                    <CircularProgress size={18} color="inherit" />
-                  ) : (
-                    t('tests.submitAnswer')
-                  )}
-                </Button>
-              </Stack>
-            </Card>
-          </Grid>
-
-          <Grid size={{ xs: 12, lg: 3 }}>
-            <Stack direction="column" spacing={2}>
-              <Card>
-                <CardContent>
-                  <Stack direction="column" spacing={2}>
-                    <Typography variant="subtitle2" color="text.secondary">
-                      {t('tests.timeLeft')}
-                    </Typography>
-                    <Stack direction="row" spacing={1.5} justifyContent="space-between">
-                      {[timeLeft.hours, timeLeft.minutes, timeLeft.seconds].map((value, index) => (
-                        <Stack
-                          key={`${value}-${index}`}
-                          direction="column"
-                          spacing={0.5}
-                          alignItems="center"
-                          sx={{
-                            px: 1.5,
-                            py: 1,
-                            borderRadius: 1,
-                            border: '1px solid',
-                            borderColor: 'divider',
-                            bgcolor: 'background.paper',
-                            minWidth: 72,
-                          }}
-                        >
-                          <Typography variant="h5" fontWeight={800}>
-                            {value}
-                          </Typography>
-                          <Typography variant="caption" color="text.secondary">
-                            {index === 0
-                              ? t('tests.hour')
-                              : index === 1
-                                ? t('tests.minute')
-                                : t('tests.second')}
-                          </Typography>
-                        </Stack>
-                      ))}
-                    </Stack>
-                    <Button
-                      variant="contained"
-                      color="primary"
-                      fullWidth
-                      onClick={() => handleFinish()}
-                      disabled={isFinishing || isFinished}
-                    >
-                      {isFinishing ? (
-                        <CircularProgress size={18} color="inherit" />
-                      ) : (
-                        t('tests.finishTest')
-                      )}
-                    </Button>
-                  </Stack>
-                </CardContent>
-              </Card>
-
-              <Card>
-                <CardContent>
-                  <Stack direction="column" spacing={1.5}>
-                    <Typography variant="subtitle1" fontWeight={700} textAlign="center">
-                      {t('tests.questions')}
-                    </Typography>
-                    <Stack direction="row" flexWrap="wrap" useFlexGap spacing={1}>
-                      {questions.map((question, index) => {
-                        const isCurrent = index === currentIndex;
-                        const isAnswered = question.answered;
-
-                        return (
-                          <Button
-                            key={`${getQuestionKey(question)}-nav`}
-                            variant={isCurrent ? 'contained' : 'outlined'}
-                            color={
-                              isCurrent ? 'primary' : isAnswered ? 'success' : 'inherit'
-                            }
-                            size="small"
-                            onClick={() => handleQuestionSelect(index)}
-                            disabled={isSubmitting || isFinishing || isFinished}
-                            sx={{ minWidth: 44, height: 36 }}
-                          >
-                            {question.number}
-                          </Button>
-                        );
-                      })}
-                    </Stack>
-                  </Stack>
-                </CardContent>
-              </Card>
+                {testPass?.test.title}
+              </Typography>
             </Stack>
-          </Grid>
-        </Grid>
+            {!isMobile && (
+              <Stack
+                direction="row"
+                spacing={1}
+                alignItems="center"
+                role="timer"
+                aria-label={t('tests.timeLeft')}
+                sx={{
+                  flexShrink: 0,
+                  px: 2,
+                  py: 1.25,
+                  borderRadius: 2,
+                  bgcolor: remainingMs < 60000 ? 'warning.lighter' : 'background.elevation1',
+                }}
+              >
+                <IconifyIcon
+                  icon="material-symbols:timer-outline-rounded"
+                  sx={{
+                    fontSize: 24,
+                    color: remainingMs < 60000 ? 'warning.main' : 'text.secondary',
+                  }}
+                />
+                <Stack spacing={0.25}>
+                  <Typography variant="caption" color="text.secondary">
+                    {t('tests.timeLeft')}
+                  </Typography>
+                  <Typography
+                    variant="subtitle1"
+                    color={remainingMs < 60000 ? 'warning.dark' : 'text.primary'}
+                    sx={{ fontVariantNumeric: 'tabular-nums', fontWeight: 600, lineHeight: 1.3 }}
+                  >
+                    {timeLeft.hours}:{timeLeft.minutes}:{timeLeft.seconds}
+                  </Typography>
+                </Stack>
+              </Stack>
+            )}
+          </Stack>
 
-        <Dialog
-          open={finishResult !== null}
-          onClose={() => {
-            setFinishResult(null);
-            handleNavigateToTest();
-          }}
-          fullWidth
-          maxWidth="xs"
-        >
-          <DialogTitle>{t('tests.finish')}</DialogTitle>
-          <DialogContent>
-            <DialogContentText>
-              {t('tests.finishSuccess', { result: finishResult ?? 0 })}
-            </DialogContentText>
-          </DialogContent>
-          <DialogActions>
-            <Button
-              variant="contained"
-              onClick={() => {
-                setFinishResult(null);
-                handleNavigateToTest();
+          {isMobile && (
+            <TestPassMobileToolbar
+              currentNumber={currentQuestion.number}
+              total={questions.length}
+              time={`${timeLeft.hours}:${timeLeft.minutes}:${timeLeft.seconds}`}
+              urgent={remainingMs < 60000}
+              disabled={isSubmitting || isFinishing || isFinished}
+              questionsOpen={questionsOpen}
+              onOpenQuestions={() => setQuestionsOpen(true)}
+            />
+          )}
+
+          <Stack
+            direction={{ xs: 'column', md: 'row' }}
+            spacing={{ xs: 3, md: 2, lg: 3 }}
+            alignItems="flex-start"
+          >
+            <Stack
+              ref={questionAnchorRef}
+              spacing={3}
+              sx={{
+                flex: 1,
+                minWidth: 0,
+                width: { xs: '100%', md: 'auto' },
+                scrollMarginTop: theme.mixins.topOffset(
+                  topbarHeight ?? theme.mixins.topbar.default,
+                  76,
+                ),
+                '& input, & textarea': {
+                  scrollMarginBottom: 'calc(88px + env(safe-area-inset-bottom))',
+                },
               }}
             >
-              {t('tests.finish')}
-            </Button>
-          </DialogActions>
-        </Dialog>
-      </Stack>
-    </Box>
+              <Stack
+                direction="row"
+                alignItems="center"
+                justifyContent={isMobile ? 'flex-end' : 'space-between'}
+                gap={1}
+                flexWrap="wrap"
+              >
+                {!isMobile && (
+                  <Chip
+                    size="small"
+                    variant="soft"
+                    color="neutral"
+                    label={t('tests.questionLabel', {
+                      index: currentQuestion.number,
+                      total: questions.length,
+                    })}
+                  />
+                )}
+                <Chip
+                  size="small"
+                  variant="soft"
+                  color={currentQuestion.answered ? 'success' : 'neutral'}
+                  icon={
+                    currentQuestion.answered ? (
+                      <IconifyIcon icon="material-symbols:check-rounded" />
+                    ) : undefined
+                  }
+                  label={currentQuestion.answered ? t('tests.answered') : t('tests.notAnswered')}
+                />
+              </Stack>
+
+              <Box>{renderQuestion()}</Box>
+
+              <TestPassActions
+                mobile={isMobile}
+                previousDisabled={currentIndex === 0}
+                disabled={isSubmitting || isFinishing || isFinished}
+                submitting={isSubmitting}
+                onPrevious={() => handleQuestionSelect(currentIndex - 1)}
+                onSubmit={() => handleSubmitAnswer()}
+              />
+            </Stack>
+
+            {!isMobile && (
+              <Box
+                sx={{
+                  width: { xs: '100%', md: 280, lg: 328 },
+                  flexShrink: 0,
+                  alignSelf: 'stretch',
+                }}
+              >
+                <TestPassSidebar
+                  questions={questions}
+                  currentIndex={currentIndex}
+                  disabled={isSubmitting || isFinishing || isFinished}
+                  isFinishing={isFinishing}
+                  onQuestionSelect={handleQuestionSelect}
+                  onFinish={() => handleFinish()}
+                />
+              </Box>
+            )}
+          </Stack>
+
+          <Drawer
+            anchor="bottom"
+            open={isMobile && questionsOpen}
+            onClose={() => setQuestionsOpen(false)}
+            slotProps={{
+              paper: {
+                id: 'test-mobile-questions',
+                role: 'dialog',
+                'aria-labelledby': 'test-mobile-questions-title',
+                sx: {
+                  borderRadius: '16px 16px 0 0',
+                  maxHeight: '80dvh',
+                  pb: 'env(safe-area-inset-bottom)',
+                },
+              },
+            }}
+          >
+            <TestPassSidebar
+              mobile
+              questions={questions}
+              currentIndex={currentIndex}
+              disabled={isSubmitting || isFinishing || isFinished}
+              isFinishing={isFinishing}
+              onClose={() => setQuestionsOpen(false)}
+              onQuestionSelect={async (index) => {
+                const selected = await handleQuestionSelect(index);
+                if (selected) setQuestionsOpen(false);
+              }}
+              onFinish={() => handleFinish()}
+            />
+          </Drawer>
+
+          <Dialog
+            open={isFinished}
+            onClose={() => {
+              setFinishResult(null);
+              handleNavigateToTest();
+            }}
+            fullWidth
+            maxWidth="xs"
+            aria-labelledby="test-finish-title"
+          >
+            <DialogTitle id="test-finish-title" sx={{ textAlign: 'center', pt: 3, pb: 1 }}>
+              <Box
+                sx={{
+                  display: 'flex',
+                  alignItems: 'center',
+                  justifyContent: 'center',
+                  width: 48,
+                  height: 48,
+                  borderRadius: '50%',
+                  bgcolor: 'success.lighter',
+                  color: 'success.main',
+                  mx: 'auto',
+                  mb: 2,
+                }}
+              >
+                <IconifyIcon icon="material-symbols:check-rounded" sx={{ fontSize: 28 }} />
+              </Box>
+              {t('tests.finishTitle')}
+            </DialogTitle>
+            <DialogContent sx={{ textAlign: 'center', pb: 2 }}>
+              {hasFinishResult ? (
+                <Stack spacing={0.5}>
+                  <Typography variant="body2" color="text.secondary">
+                    {t('tests.resultsColumns.score')}
+                  </Typography>
+                  <Typography variant="h3" sx={{ fontVariantNumeric: 'tabular-nums' }}>
+                    {finishResult}
+                    <Box
+                      component="span"
+                      sx={{ color: 'text.secondary', fontSize: '1.25rem', fontWeight: 400 }}
+                    >
+                      {' / '}
+                      {testPass?.test.questionsCount ?? questions.length}
+                    </Box>
+                  </Typography>
+                </Stack>
+              ) : (
+                <Typography variant="body2" color="text.secondary">
+                  {t('tests.finishNoResult')}
+                </Typography>
+              )}
+            </DialogContent>
+            <DialogActions sx={{ px: 3, pb: 3 }}>
+              <Button
+                variant="contained"
+                fullWidth
+                sx={{ minHeight: { xs: 44, md: 36 } }}
+                onClick={() => {
+                  setFinishResult(null);
+                  handleNavigateToTest();
+                }}
+              >
+                {t('tests.returnToTest')}
+              </Button>
+            </DialogActions>
+          </Dialog>
+        </Stack>
+      </Container>
+    </Paper>
   );
 };
 

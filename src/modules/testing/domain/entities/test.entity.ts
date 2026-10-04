@@ -17,6 +17,7 @@ export interface Test {
   difficulty: number;
   tags: TestTag[];
   userBestResult?: number;
+  userCompleted?: boolean;
   questionsCount?: number;
   passesCount?: number;
   lastPassed?: string;

@@ -1,20 +1,28 @@
 import { Box, Typography } from '@mui/material';
-import { TestPassQuestion } from '../types';
 import MathJaxView from 'shared/components/base/MathJaxView.tsx';
+import { TestPassQuestion } from '../types';
 
 interface QuestionHeaderProps {
   question: TestPassQuestion;
 }
 
 const QuestionHeader = ({ question }: QuestionHeaderProps) => (
-  <Box sx={{ mb: 2 }}>
-    {/*<Typography variant="subtitle2" color="text.secondary" sx={{ mb: 0.5 }}>*/}
-    {/*  {question.number}.*/}
-    {/*</Typography>*/}
+  <Box
+    id={`test-question-${question.number}`}
+    sx={{
+      minWidth: 0,
+      overflowWrap: 'anywhere',
+      '& p:first-of-type': { mt: 0 },
+      '& p:last-of-type': { mb: 0 },
+      '& img': { maxWidth: '100%', height: 'auto' },
+      '& pre': { overflowX: 'auto' },
+      '& table': { maxWidth: '100%' },
+    }}
+  >
     {question.body ? (
-      <MathJaxView rawHtml={question.body}/>
+      <MathJaxView rawHtml={question.body} sx={{ fontSize: '1rem', lineHeight: 1.8 }} />
     ) : (
-      <Typography variant="h6" fontWeight={700}>
+      <Typography variant="h6" fontWeight={500} lineHeight={1.6}>
         {question.text}
       </Typography>
     )}

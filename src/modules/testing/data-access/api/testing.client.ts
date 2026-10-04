@@ -9,7 +9,9 @@ export interface TestsListParams {
 
 export const testingApiClient = {
   list: async (params?: TestsListParams) => {
-    const response = await instance.get('/api/tests/', { params });
+    const response = await instance.get('/api/tests/', {
+      params: { page: params?.page, page_size: params?.pageSize },
+    });
     return response.data;
   },
   getTest: async (testId: string) => {
