@@ -1,22 +1,29 @@
-import { ChangeEvent, useMemo, useState } from 'react';
+import { useMemo, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import {
+  Alert,
   Box,
   Button,
   Card,
-  CardActions,
   CardContent,
   CardHeader,
+  Divider,
   MenuItem,
   Stack,
-  TextField,
   Typography,
 } from '@mui/material';
-import { toast } from 'sonner';
+import { useAuth } from 'app/providers/AuthProvider';
 import { projectsQueries } from 'modules/projects/application/queries';
 import { Project } from 'modules/projects/domain/entities/project.entity';
-import { formatProjectUploadHint, resolveProjectFileAccept } from 'modules/projects/ui/shared/lib/upload.ts';
-import ProjectInfoCard from './ProjectInfoCard.tsx';
+import {
+  isProjectFileAccepted,
+  resolveProjectFileAccept,
+} from 'modules/projects/ui/shared/lib/upload';
+import IconifyIcon from 'shared/components/base/IconifyIcon';
+import StyledTextField from 'shared/components/styled/StyledTextField';
+import { useLoginRedirect } from 'shared/lib/authRedirect';
+import { toast } from 'sonner';
+import ProjectFileUpload from './ProjectFileUpload';
 
 interface ProjectSidebarProps {
   project: Project;
@@ -25,7 +32,7 @@ interface ProjectSidebarProps {
   projectSymbol?: string;
 }
 
-const MAX_FILE_SIZE = 1024 * 1024; // 1 MB
+const MAX_FILE_SIZE = 1024 * 1024;
 
 const ProjectSidebar = ({
   project,
@@ -34,40 +41,51 @@ const ProjectSidebar = ({
   projectSymbol,
 }: ProjectSidebarProps) => {
   const { t } = useTranslation();
+  const { currentUser } = useAuth();
+  const redirectToLogin = useLoginRedirect();
   const [selectedTechnology, setSelectedTechnology] = useState(
     project.availableTechnologies[0]?.technology ?? '',
   );
   const [file, setFile] = useState<File | null>(null);
   const [isSubmitting, setIsSubmitting] = useState(false);
+  const [submitError, setSubmitError] = useState(false);
 
   const technologyOptions = useMemo(
-    () => project.availableTechnologies.map((tech) => tech.technology),
+    () => project.availableTechnologies.map((technology) => technology.technology),
     [project.availableTechnologies],
   );
-  const fileAccept = useMemo(() => resolveProjectFileAccept(project.fileAccept), [project.fileAccept]);
-  const fileLabel = useMemo(
-    () => (file?.name ?? `${t('projects.file')} ${formatProjectUploadHint(fileAccept)}`),
-    [file?.name, fileAccept, t],
-  );
+  const fileAccept = resolveProjectFileAccept(project.fileAccept);
 
-  const handleFileChange = (event: ChangeEvent<HTMLInputElement>) => {
-    const uploadedFile = event.target.files?.[0];
+  const clearFile = () => {
+    setFile(null);
+    setSubmitError(false);
+  };
 
-    if (!uploadedFile) return;
-
+  const handleFileSelect = (uploadedFile: File) => {
     if (uploadedFile.size > MAX_FILE_SIZE) {
       toast.error(t('projects.maxFileSize'));
       return;
     }
 
+    if (!isProjectFileAccepted(uploadedFile, fileAccept)) {
+      toast.error(t('projects.invalidFileType', { accept: fileAccept }));
+      return;
+    }
+
     setFile(uploadedFile);
+    setSubmitError(false);
   };
 
   const handleSubmit = async () => {
-    if (!file || !selectedTechnology) return;
+    if (!currentUser) {
+      redirectToLogin();
+      return;
+    }
+    if (!file || !selectedTechnology || isSubmitting) return;
 
+    setIsSubmitting(true);
+    setSubmitError(false);
     try {
-      setIsSubmitting(true);
       await projectsQueries.attemptsRepository.submitAttempt({
         slug: project.slug,
         technology: selectedTechnology,
@@ -75,68 +93,105 @@ const ProjectSidebar = ({
         hackathonId,
         projectSymbol,
       });
-      setFile(null);
+      clearFile();
       onSubmitted?.();
       toast.success(t('projects.submitSuccess'));
+    } catch {
+      setSubmitError(true);
     } finally {
       setIsSubmitting(false);
     }
   };
 
   return (
-    <Stack direction="column" spacing={3}>
-      <ProjectInfoCard project={project} />
-
-      <Card>
-        <CardHeader
-          title={
-            <Typography variant="subtitle1" fontWeight={800}>
-              {t('projects.submit')}
-            </Typography>
-          }
-        />
-        <CardContent>
-          <Stack direction="column" spacing={2}>
-            <TextField
-              select
-              fullWidth
-              label={t('projects.technology')}
-              value={selectedTechnology}
-              onChange={(event) => setSelectedTechnology(event.target.value)}
-            >
-              {technologyOptions.map((technology) => (
-                <MenuItem key={technology} value={technology}>
-                  {technology}
-                </MenuItem>
-              ))}
-            </TextField>
-
-            <Box>
-              <Typography variant="body2" fontWeight={700} sx={{ mb: 0.5 }}>
-                {t('projects.file')}
-              </Typography>
-              <Button variant="soft" component="label" fullWidth>
-                {fileLabel}
-                <input type="file" hidden accept={fileAccept} onChange={handleFileChange} />
-              </Button>
-              <Typography variant="caption" color="text.secondary" sx={{ mt: 0.75, display: 'block' }}>
-                {t('projects.maxFileSize')}
-              </Typography>
-            </Box>
+    <Card
+      background={0}
+      sx={{
+        height: 1,
+        display: 'flex',
+        flexDirection: 'column',
+        overflow: 'hidden',
+        border: { xs: 0, md: undefined },
+        borderRadius: { xs: 0, md: undefined },
+        boxShadow: { xs: 'none', md: undefined },
+      }}
+    >
+      <CardHeader
+        sx={{ py: 0 }}
+        title={
+          <Stack direction="row" spacing={1} alignItems="center" sx={{ minHeight: 36 }}>
+            <IconifyIcon icon="mdi:file-upload-outline" />
+            <Typography variant="subtitle2">{t('projects.solution')}</Typography>
           </Stack>
-        </CardContent>
-        <CardActions sx={{ px: 2, pb: 3, pt: 0 }}>
-          <Button
+        }
+      />
+      <Divider />
+      <CardContent sx={{ flex: 1, minHeight: 0, overflowY: 'auto', px: { xs: 2, sm: 3 } }}>
+        <Stack direction="column" gap={2}>
+          <StyledTextField
+            id="project-submission-technology"
+            select
             fullWidth
-            variant="contained"
-            onClick={handleSubmit}
-            disabled={!file || isSubmitting}
+            size="small"
+            label={t('projects.technology')}
+            value={selectedTechnology}
+            disabled={isSubmitting || !technologyOptions.length}
+            onChange={(event) => setSelectedTechnology(event.target.value)}
           >
-            {t('projects.submit')}
-          </Button>
-        </CardActions>
-      </Card>
-    </Stack>
+            {technologyOptions.map((technology) => (
+              <MenuItem key={technology} value={technology}>
+                {technology}
+              </MenuItem>
+            ))}
+          </StyledTextField>
+
+          <Stack direction="column" gap={1}>
+            <Typography variant="caption" fontWeight={500} sx={{ ml: 1.5 }}>
+              {t('projects.file')}
+            </Typography>
+            <ProjectFileUpload
+              file={file}
+              fileAccept={fileAccept}
+              disabled={isSubmitting}
+              onSelect={handleFileSelect}
+              onRemove={clearFile}
+            />
+            <Stack direction="row" spacing={1} alignItems="flex-start" sx={{ mt: 0.5 }}>
+              <IconifyIcon
+                icon="material-symbols:info-outline-rounded"
+                sx={{ fontSize: 16, color: 'info.main', flexShrink: 0, mt: 0.25 }}
+              />
+              <Typography variant="caption" color="info.main">
+                {t('projects.uploadRequirements', { accept: fileAccept })}
+              </Typography>
+            </Stack>
+          </Stack>
+
+          {submitError ? <Alert severity="error">{t('projects.submitError')}</Alert> : null}
+        </Stack>
+      </CardContent>
+      <Box
+        component="footer"
+        sx={{
+          p: 2,
+          pb: 'max(16px, env(safe-area-inset-bottom))',
+          borderTop: '1px solid',
+          borderColor: 'divider',
+          bgcolor: 'background.paper',
+        }}
+      >
+        <Button
+          fullWidth
+          variant="contained"
+          startIcon={<IconifyIcon icon="mdi:send-outline" />}
+          onClick={handleSubmit}
+          loading={isSubmitting}
+          disabled={!file || !selectedTechnology}
+        >
+          {t(isSubmitting ? 'projects.submitting' : 'projects.submit')}
+        </Button>
+      </Box>
+    </Card>
   );
 };
 

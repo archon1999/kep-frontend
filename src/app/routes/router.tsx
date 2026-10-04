@@ -386,14 +386,6 @@ export const routes: RouteObject[] = [
             handle: { titleKey: 'pageTitles.projects' },
           },
           {
-            path: resources.Project,
-            element: <ProjectDetailPage />,
-            handle: {
-              titleKey: 'pageTitles.project',
-              fallbackTitleKey: 'pageTitles.projects',
-            },
-          },
-          {
             path: resources.Tests,
             element: <TestsListPage />,
             handle: { titleKey: 'pageTitles.tests' },
@@ -701,6 +693,11 @@ export const routes: RouteObject[] = [
         ],
       },
 
+      {
+        path: resources.Project,
+        element: withSuspense(<ProjectDetailPage />),
+        handle: { titleKey: 'pageTitles.project', fallbackTitleKey: 'pageTitles.projects' },
+      },
       {
         path: resources.Problem,
         element: withSuspense(<ProblemDetailPage />),

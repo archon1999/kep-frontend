@@ -1,20 +1,26 @@
 import { useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { Link as RouterLink } from 'react-router-dom';
-import { Box, Button, Card, Chip, LinearProgress, Stack, Typography } from '@mui/material';
-import { SxProps, Theme, alpha, useTheme } from '@mui/material/styles';
+import Avatar from '@mui/material/Avatar';
+import Button from '@mui/material/Button';
+import Chip from '@mui/material/Chip';
+import Grid from '@mui/material/Grid';
+import Link from '@mui/material/Link';
+import Paper from '@mui/material/Paper';
+import Stack from '@mui/material/Stack';
+import Typography from '@mui/material/Typography';
+import { useAuth } from 'app/providers/AuthProvider';
 import { getResourceByParams, resources } from 'app/routes/resources';
 import { Project } from 'modules/projects/domain/entities/project.entity';
 import IconifyIcon from 'shared/components/base/IconifyIcon';
 import KepcoinSpendConfirm from 'shared/components/common/KepcoinSpendConfirm';
 import KepcoinValue from 'shared/components/common/KepcoinValue';
 import {
-  PROJECT_CATEGORY_META,
   ProjectCategoryKey,
   ProjectProgressSummary,
-  getProjectTaskCount,
   stripProjectDescription,
 } from '../project-listing';
+import ProjectProgress from './ProjectProgress';
 
 interface ProjectCardProps {
   project: Project;
@@ -24,35 +30,35 @@ interface ProjectCardProps {
   onPurchased?: (project: Project) => void;
 }
 
-const mergeSx = (base: SxProps<Theme>, extra?: SxProps<Theme>): SxProps<Theme> => {
-  if (extra == null) {
-    return base;
-  }
-
-  const baseEntries = Array.isArray(base) ? base : [base];
-  const extraEntries = Array.isArray(extra) ? extra : [extra];
-
-  return [...baseEntries, ...extraEntries] as SxProps<Theme>;
-};
-
 const ProjectCard = ({
   project,
-  category,
   progress,
   showTrackedProgress = false,
   onPurchased,
 }: ProjectCardProps) => {
   const { t } = useTranslation();
-  const theme = useTheme();
-  const [isPurchased, setIsPurchased] = useState(project.purchased);
+  const { currentUser } = useAuth();
+  const [purchasedProject, setPurchasedProject] = useState<{
+    slug: string;
+    username?: string;
+  } | null>(null);
 
-  const categoryMeta = PROJECT_CATEGORY_META[category];
+  const isPurchased =
+    project.purchased ||
+    (purchasedProject?.slug === project.slug &&
+      purchasedProject.username === currentUser?.username);
   const description = stripProjectDescription(project.descriptionShort);
-  const totalKepcoins = Number(progress?.totalKepcoins ?? project.kepcoins ?? 0);
-  const earnedKepcoins = Number(progress?.earnedKepcoins ?? 0);
-  const progressPercent = Number(progress?.progressPercent ?? 0);
-  const taskCount = getProjectTaskCount(project);
-  const isCompleted = Boolean(progress?.completed);
+  const technologies = [
+    ...new Set(
+      project.availableTechnologies.map(({ technology }) => technology.trim()).filter(Boolean),
+    ),
+  ];
+  const technologySummary = [
+    technologies.slice(0, 2).join(', '),
+    technologies.length > 2 ? `+${technologies.length - 2}` : '',
+  ]
+    .filter(Boolean)
+    .join(' ');
   const projectUrl = getResourceByParams(resources.Project, {
     id: project.slug,
     slug: project.slug,
@@ -61,254 +67,156 @@ const ProjectCard = ({
   const handlePurchaseSuccess = () => {
     if (isPurchased) return;
 
-    setIsPurchased(true);
+    setPurchasedProject({ slug: project.slug, username: currentUser?.username });
     onPurchased?.({ ...project, purchased: true });
   };
 
-  const renderLogo = () => (
-    <Box
-      sx={{
-        width: 56,
-        height: 56,
-        borderRadius: 2,
-        p: 0.75,
-        bgcolor:
-          theme.palette.mode === 'dark'
-            ? theme.palette.background.elevation2
-            : alpha(theme.palette.background.paper, 0.9),
-        border: `1px solid ${alpha(categoryMeta.accent, 0.18)}`,
-        boxShadow: `0 18px 30px -24px ${alpha(categoryMeta.accent, 0.7)}`,
-        display: 'grid',
-        placeItems: 'center',
-        flexShrink: 0,
-      }}
-    >
-      {project.logo ? (
-        <Box
-          component="img"
-          src={project.logo}
-          alt={project.title}
-          sx={{ width: '100%', height: '100%', objectFit: 'contain' }}
-        />
-      ) : (
-        <IconifyIcon icon={categoryMeta.icon} width={28} color={categoryMeta.accent} />
-      )}
-    </Box>
-  );
-
-  const renderActionButton = (sx?: SxProps<Theme>) => {
-    const sharedSx: SxProps<Theme> = mergeSx(
-      {
-        py: 1,
-        px: 2,
-        borderRadius: 2,
-        fontWeight: 900,
-        whiteSpace: 'nowrap',
-        flexShrink: 0,
-      },
-      sx,
-    );
-
-    if (isPurchased) {
-      return (
-        <Button
-          component={RouterLink}
-          to={projectUrl}
-          endIcon={<IconifyIcon icon="mdi:arrow-top-right" />}
-          sx={mergeSx(
-            {
-              color: theme.palette.common.white,
-              background: `linear-gradient(135deg, ${categoryMeta.accent} 0%, ${alpha(categoryMeta.accent, 0.72)} 100%)`,
-              boxShadow: `0 18px 34px -20px ${alpha(categoryMeta.accent, 0.85)}`,
-            },
-            sharedSx,
-          )}
-        >
-          {t('projects.view')}
-        </Button>
-      );
-    }
-
-    return (
-      <KepcoinSpendConfirm
-        value={project.purchaseKepcoinValue}
-        purchaseUrl={`/api/projects/${project.slug}/purchase/`}
-        onSuccess={handlePurchaseSuccess}
-      >
-        <Button
-          startIcon={<IconifyIcon icon="mdi:cart-plus" />}
-          sx={mergeSx(
-            {
-              color: theme.palette.text.primary,
-              bgcolor: alpha(theme.palette.background.paper, 0.88),
-              border: `1px solid ${alpha(categoryMeta.accent, 0.2)}`,
-              '&:hover': {
-                bgcolor: theme.palette.background.paper,
-              },
-            },
-            sharedSx,
-          )}
-        >
-          {t('projects.purchase')}
-          <KepcoinValue value={project.purchaseKepcoinValue} iconSize={16} sx={{ ml: 1 }} />
-        </Button>
-      </KepcoinSpendConfirm>
-    );
-  };
-
-  const renderProgressStatus = () => (
-    <Typography variant="subtitle2" fontWeight={900}>
-      {showTrackedProgress
-        ? isCompleted
-          ? t('projects.progressCompleted')
-          : `${earnedKepcoins}/${totalKepcoins || project.kepcoins || 0} ${t('projects.progressRewardUnit')}`
-        : t('projects.progressHint')}
-    </Typography>
-  );
-
-  const renderProgressPanel = () => (
-    <Box
-      sx={{
-        p: 1.5,
-        borderRadius: 2,
-        bgcolor:
-          theme.palette.mode === 'dark'
-            ? theme.palette.background.default
-            : alpha(theme.palette.background.paper, 0.72),
-        border: `1px solid ${alpha(categoryMeta.accent, 0.12)}`,
-      }}
-    >
-      <Stack direction="row" justifyContent="space-between" alignItems="center" spacing={1}>
-        <Box minWidth={0}>
-          <Typography variant="caption" color="text.secondary">
-            {showTrackedProgress ? t('projects.progressTitle') : t('projects.progressPrompt')}
-          </Typography>
-          {renderProgressStatus()}
-        </Box>
-
-        <Box
-          sx={{
-            minWidth: 56,
-            px: 1.25,
-            py: 0.75,
-            borderRadius: 2,
-            textAlign: 'center',
-            bgcolor: isCompleted
-              ? alpha(theme.palette.success.main, 0.12)
-              : alpha(categoryMeta.accent, 0.12),
-            color: isCompleted ? theme.palette.success.main : categoryMeta.accent,
-          }}
-        >
-          <Typography variant="subtitle2" fontWeight={900}>
-            {showTrackedProgress ? `${progressPercent}%` : '--'}
-          </Typography>
-        </Box>
-      </Stack>
-
-      <LinearProgress
-        variant="determinate"
-        value={showTrackedProgress ? progressPercent : 0}
-        sx={{
-          mt: 1.5,
-          height: 8,
-          borderRadius: 999,
-          bgcolor: alpha(theme.palette.text.primary, 0.08),
-          '& .MuiLinearProgress-bar': {
-            borderRadius: 999,
-            background: `linear-gradient(90deg, ${categoryMeta.accent} 0%, ${categoryMeta.softAccent} 100%)`,
-          },
-        }}
-      />
-    </Box>
-  );
-
-  const titleSx: SxProps<Theme> = {
-    lineHeight: 1.08,
-    overflowWrap: 'anywhere',
-  };
-
   return (
-    <Card
+    <Paper
+      background={1}
       sx={{
-        height: 1,
+        outline: 0,
         p: { xs: 2, sm: 3 },
-        borderRadius: 2,
-        border: `1px solid ${alpha(categoryMeta.accent, 0.16)}`,
-        background:
-          theme.palette.mode === 'dark'
-            ? `linear-gradient(145deg, ${theme.palette.background.elevation1} 0%, ${theme.palette.background.paper} 100%)`
-            : alpha(theme.palette.background.paper, 0.98),
-        boxShadow: 'none',
-        transition: 'background-color 180ms ease, border-color 180ms ease, transform 180ms ease',
-        '&:hover': {
-          transform: 'translateY(-4px)',
-          bgcolor:
-            theme.palette.mode === 'dark'
-              ? theme.palette.background.elevation1
-              : alpha(categoryMeta.accent, 0.04),
-          borderColor: alpha(categoryMeta.accent, 0.28),
-        },
+        borderRadius: 6,
+        '&:hover': { bgcolor: 'background.elevation2' },
       }}
     >
-      <Stack direction={{ xs: 'column', sm: 'row' }} spacing={2} sx={{ height: 1 }}>
-        {renderLogo()}
-
-        <Stack spacing={1.5} flex={1} minWidth={0}>
-          <Stack spacing={0.75}>
-            <Typography variant="h6" fontWeight={900} sx={titleSx}>
-              {project.title}
-            </Typography>
-            <Stack direction="row" spacing={1.25} flexWrap="wrap" useFlexGap>
-              <Typography variant="subtitle2" fontWeight={700} color="text.secondary">
-                {t(categoryMeta.labelKey)}
-              </Typography>
-              <Typography variant="subtitle2" color="text.secondary">
-                {project.levelTitle}
-              </Typography>
-              <Typography variant="subtitle2" color="text.secondary">
-                {taskCount} {t('projects.tasks').toLowerCase()}
-              </Typography>
-            </Stack>
-          </Stack>
-
-          <Typography
-            variant="body2"
-            color="text.secondary"
+      <Grid container spacing={{ xs: 1, sm: 2 }}>
+        <Grid size="auto">
+          <Avatar
+            variant="rounded"
+            src={project.logo}
+            alt={project.title}
             sx={{
-              display: '-webkit-box',
-              WebkitLineClamp: 2,
-              WebkitBoxOrient: 'vertical',
-              overflow: 'hidden',
+              height: 54,
+              width: 54,
+              flex: '1 0 auto',
+              borderRadius: 2.5,
+              bgcolor: 'transparent',
             }}
           >
-            {description || t('projects.cardFallback')}
-          </Typography>
-
-          <Box sx={{ mt: 'auto' }}>{renderProgressPanel()}</Box>
-        </Stack>
-
-        <Stack
-          spacing={1.5}
-          alignItems={{ xs: 'stretch', sm: 'flex-end' }}
-          justifyContent="space-between"
-          minWidth={{ sm: 150 }}
-        >
-          <Chip
-            label={project.fileAccept.toUpperCase()}
-            size="small"
-            variant="outlined"
-            sx={{ borderRadius: 2, borderColor: alpha(categoryMeta.accent, 0.24) }}
-          />
-          <KepcoinValue
-            value={project.kepcoins}
-            iconSize={18}
-            textVariant="subtitle1"
-            fontWeight={900}
-          />
-          {renderActionButton()}
-        </Stack>
-      </Stack>
-    </Card>
+            {project.title.charAt(0)}
+          </Avatar>
+        </Grid>
+        <Grid size={{ xs: 12, sm: 'grow' }} order={{ xs: 1, sm: 0 }}>
+          <Stack direction="column" gap={2} flex={1}>
+            <Stack direction="column" gap={0.5}>
+              <Typography component="h2" variant="h6" lineHeight={1.5}>
+                {isPurchased ? (
+                  <Link component={RouterLink} to={projectUrl} color="inherit" underline="none">
+                    {project.title}
+                  </Link>
+                ) : (
+                  project.title
+                )}
+              </Typography>
+              <Stack direction="row" gap={{ xs: 1, sm: 2 }} flexWrap="wrap" alignItems="center">
+                <Stack
+                  direction="row"
+                  gap={{ xs: 1, sm: 2 }}
+                  flexWrap={{ xs: 'wrap', sm: 'nowrap' }}
+                  alignItems="center"
+                >
+                  <Typography variant="subtitle2" fontWeight={600} title={technologies.join(', ')}>
+                    {technologySummary}
+                  </Typography>
+                  <Chip
+                    variant="soft"
+                    color={
+                      project.level <= 1
+                        ? 'info'
+                        : project.level === 2
+                          ? 'primary'
+                          : project.level === 3
+                            ? 'warning'
+                            : 'error'
+                    }
+                    label={project.levelTitle}
+                    size="small"
+                    aria-label={`${t('projects.level')}: ${project.levelTitle}`}
+                  />
+                </Stack>
+                <KepcoinValue
+                  value={project.kepcoins ?? 0}
+                  textVariant="subtitle2"
+                  fontWeight={500}
+                  iconSize={16}
+                  title={t('projects.kepcoinReward')}
+                />
+              </Stack>
+            </Stack>
+            <Stack
+              direction="row"
+              gap={1.5}
+              alignItems="center"
+              justifyContent="space-between"
+              flexWrap="wrap"
+            >
+              <Typography
+                variant="caption"
+                color="text.secondary"
+                fontWeight={500}
+                sx={{ flex: '1 1 200px' }}
+              >
+                {description || t('projects.cardFallback')}
+              </Typography>
+              {showTrackedProgress && currentUser && progress && (
+                <ProjectProgress progress={progress} />
+              )}
+            </Stack>
+          </Stack>
+        </Grid>
+        <Grid size="auto" flexGrow={{ xs: 1, sm: 0 }}>
+          <Stack
+            direction="row"
+            gap={1}
+            alignSelf="flex-start"
+            justifyContent="flex-end"
+            minWidth={0}
+          >
+            {isPurchased ? (
+              <Button
+                component={RouterLink}
+                to={projectUrl}
+                shape="square"
+                color="neutral"
+                aria-label={t('projects.view')}
+                title={t('projects.view')}
+              >
+                <IconifyIcon icon="material-symbols:arrow-forward" sx={{ fontSize: 20 }} />
+              </Button>
+            ) : (
+              <>
+                <KepcoinSpendConfirm
+                  value={project.purchaseKepcoinValue}
+                  purchaseUrl={`/api/projects/${project.slug}/purchase/`}
+                  onSuccess={handlePurchaseSuccess}
+                >
+                  <Button
+                    shape="square"
+                    color="neutral"
+                    aria-label={t('projects.purchase')}
+                    title={t('projects.purchase')}
+                  >
+                    <IconifyIcon
+                      icon="material-symbols:shopping-cart-outline"
+                      sx={{ fontSize: 20 }}
+                    />
+                  </Button>
+                </KepcoinSpendConfirm>
+                <KepcoinValue
+                  value={project.purchaseKepcoinValue}
+                  iconSize={16}
+                  textVariant="caption"
+                  fontWeight={500}
+                  title={t('projects.purchase')}
+                />
+              </>
+            )}
+          </Stack>
+        </Grid>
+      </Grid>
+    </Paper>
   );
 };
 

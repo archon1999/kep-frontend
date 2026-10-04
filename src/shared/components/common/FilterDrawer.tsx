@@ -185,7 +185,6 @@ const FilterDrawer = ({
             disableEnforceFocus: true,
             disableRestoreFocus: true,
           }}
-          disablePortal
           sx={(theme) => ({
             display: temporary ? 'block' : { xs: 'block', xl: 'none' },
             [`& .${drawerClasses.paper}`]: {

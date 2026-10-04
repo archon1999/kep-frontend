@@ -3,6 +3,19 @@ import { decodeHtmlEntities } from 'shared/lib/html';
 
 export type ProjectCategoryKey = 'frontend' | 'backend' | 'python' | 'devops';
 
+export const PROJECT_PAGE_SIZE = 10;
+
+export const PROJECT_SORT_OPTIONS = ['default', 'level', 'reward', 'title'] as const;
+export const PROJECT_STATUS_OPTIONS = ['all', 'notStarted', 'started', 'completed'] as const;
+
+export interface ProjectListFilters {
+  search: string;
+  category: 'all' | ProjectCategoryKey;
+  level: number;
+  status: (typeof PROJECT_STATUS_OPTIONS)[number];
+  sort: (typeof PROJECT_SORT_OPTIONS)[number];
+}
+
 export interface ProjectProgressSummary {
   attemptCount: number;
   earnedKepcoins: number;
@@ -21,47 +34,31 @@ export const PROJECT_CATEGORY_ORDER: ProjectCategoryKey[] = [
 export const PROJECT_CATEGORY_META: Record<
   ProjectCategoryKey,
   {
-    accent: string;
-    softAccent: string;
     icon: string;
     labelKey: string;
     subtitleKey: string;
   }
 > = {
   frontend: {
-    accent: '#ff8a00',
-    softAccent: '#ffd5a3',
     icon: 'mdi:monitor-cellphone-star',
     labelKey: 'projects.categories.frontend.title',
     subtitleKey: 'projects.categories.frontend.subtitle',
   },
   backend: {
-    accent: '#00a7b5',
-    softAccent: '#9af1ef',
     icon: 'mdi:server-security',
     labelKey: 'projects.categories.backend.title',
     subtitleKey: 'projects.categories.backend.subtitle',
   },
   python: {
-    accent: '#2f9e44',
-    softAccent: '#c3f1b2',
     icon: 'mdi:language-python',
     labelKey: 'projects.categories.python.title',
     subtitleKey: 'projects.categories.python.subtitle',
   },
   devops: {
-    accent: '#d9480f',
-    softAccent: '#ffd0a8',
     icon: 'mdi:console-network-outline',
     labelKey: 'projects.categories.devops.title',
     subtitleKey: 'projects.categories.devops.subtitle',
   },
-};
-
-const LEVEL_TASK_COUNTS: Record<number, number> = {
-  1: 3,
-  2: 4,
-  3: 5,
 };
 
 const FRONTEND_TECHNOLOGIES = new Set(['Frontend', 'Angular']);
@@ -70,7 +67,11 @@ const BACKEND_TECHNOLOGIES = new Set(['Django', 'FastAPI', 'NodeJS']);
 export const getProjectCategory = (project: Project): ProjectCategoryKey => {
   const technologies = project.availableTechnologies.map((technology) => technology.technology);
 
-  if (project.fileAccept === '.json' || technologies.includes('Text') || project.slug.startsWith('devops-')) {
+  if (
+    project.fileAccept === '.json' ||
+    technologies.includes('Text') ||
+    project.slug.startsWith('devops-')
+  ) {
     return 'devops';
   }
 
@@ -89,14 +90,53 @@ export const getProjectCategory = (project: Project): ProjectCategoryKey => {
   return 'backend';
 };
 
-export const getProjectTaskCount = (project: Project) =>
-  project.tasks.length || LEVEL_TASK_COUNTS[project.level] || 0;
+export const stripProjectDescription = (value?: string) => {
+  const stripped = decodeHtmlEntities(value ?? '').replace(/<[^>]+>/g, ' ');
+  const text =
+    typeof DOMParser === 'undefined'
+      ? stripped
+      : (new DOMParser().parseFromString(stripped, 'text/html').body.textContent ?? '');
+  return text.replace(/\s+/g, ' ').trim();
+};
 
-export const stripProjectDescription = (value?: string) =>
-  decodeHtmlEntities(value ?? '')
-    .replace(/<[^>]+>/g, ' ')
-    .replace(/\s+/g, ' ')
-    .trim();
+export const filterAndSortProjects = (
+  projects: Project[],
+  filters: ProjectListFilters,
+  progressLookup: Record<number, ProjectProgressSummary>,
+) => {
+  const search = filters.search.trim().toLocaleLowerCase();
+  const filtered = projects.filter((project) => {
+    if (filters.category !== 'all' && getProjectCategory(project) !== filters.category)
+      return false;
+    if (filters.level && project.level !== filters.level) return false;
+
+    const progress = progressLookup[project.id];
+    if (filters.status === 'notStarted' && progress?.attemptCount) return false;
+    if (filters.status === 'started' && (!progress?.attemptCount || progress.completed))
+      return false;
+    if (filters.status === 'completed' && !progress?.completed) return false;
+
+    return (
+      !search ||
+      [
+        project.title,
+        stripProjectDescription(project.descriptionShort),
+        ...(project.tags ?? []),
+        ...project.availableTechnologies.map((technology) => technology.technology),
+      ]
+        .join(' ')
+        .toLocaleLowerCase()
+        .includes(search)
+    );
+  });
+
+  return filtered.sort((left, right) => {
+    if (filters.sort === 'level') return left.level - right.level;
+    if (filters.sort === 'reward') return (right.kepcoins ?? 0) - (left.kepcoins ?? 0);
+    if (filters.sort === 'title') return left.title.localeCompare(right.title);
+    return 0;
+  });
+};
 
 export const buildProjectProgressLookup = (
   projects: Project[],
@@ -109,12 +149,15 @@ export const buildProjectProgressLookup = (
   const summaries: Record<number, ProjectProgressSummary> = {};
 
   for (const attempt of attempts ?? []) {
-    const totalKepcoins = Number(attempt.projectKepcoins ?? totalsByProjectId[attempt.projectId] ?? 0);
+    const totalKepcoins = Number(
+      attempt.projectKepcoins ?? totalsByProjectId[attempt.projectId] ?? 0,
+    );
     const earnedKepcoins = Number(attempt.kepcoins ?? 0);
     const current = summaries[attempt.projectId];
     const currentBest = current?.earnedKepcoins ?? -1;
     const nextBest = Math.max(currentBest, earnedKepcoins);
-    const progressPercent = totalKepcoins > 0 ? Math.min(100, Math.round((nextBest / totalKepcoins) * 100)) : 0;
+    const progressPercent =
+      totalKepcoins > 0 ? Math.min(100, Math.round((nextBest / totalKepcoins) * 100)) : 0;
 
     summaries[attempt.projectId] = {
       attemptCount: (current?.attemptCount ?? 0) + 1,

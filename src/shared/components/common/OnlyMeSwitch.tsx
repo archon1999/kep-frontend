@@ -40,7 +40,13 @@ const OnlyMeSwitch = ({
       </Typography>
       <FormControlLabel
         control={
-          <Switch size={switchSize} checked={checked} onChange={onChange} color={switchColor} />
+          <Switch
+            size={switchSize}
+            checked={checked}
+            onChange={onChange}
+            color={switchColor}
+            slotProps={{ input: { 'aria-label': label } }}
+          />
         }
         label=""
         disabled={disabled}
