@@ -69,21 +69,24 @@ const DocumentTitleProvider = ({ children }: PropsWithChildren) => {
   const handleParams = useMemo(() => getTitleParams(handle, match), [handle, match]);
 
   const resolvedTitle = useMemo(() => {
+    // document.title is plain text, so interpolation must not HTML-escape values.
+    const interpolation = { escapeValue: false };
+
     if (override?.key) {
-      const translated = t(override.key, override.params);
+      const translated = t(override.key, { ...override.params, interpolation });
       if (!hasInterpolationPlaceholders(translated)) {
         return translated;
       }
     }
 
     if (handle?.titleKey) {
-      const translated = t(handle.titleKey, handleParams);
+      const translated = t(handle.titleKey, { ...handleParams, interpolation });
       if (!hasInterpolationPlaceholders(translated)) {
         return translated;
       }
 
       if (handle.fallbackTitleKey) {
-        const fallbackTranslated = t(handle.fallbackTitleKey);
+        const fallbackTranslated = t(handle.fallbackTitleKey, { interpolation });
         if (!hasInterpolationPlaceholders(fallbackTranslated)) {
           return fallbackTranslated;
         }
