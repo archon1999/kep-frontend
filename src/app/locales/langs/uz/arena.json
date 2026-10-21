@@ -47,8 +47,9 @@
       "rating": "Reyting",
       "results": "Natijalar",
       "points": "Ochko",
-      "buchholz": "Buxgols",
-      "buchholzDescription": "Raqiblaringiz to'plagan ochkolar yig'indisi. Buxgols yuqoriroq bo'lsa, kuchliroq raqiblarga qarshi o'ynagansiz."
+      "performance": "Performance",
+      "performanceDescription": "Raqiblaringizning arena boshidagi reytinglari va ularga qarshi natijangiz asosida hisoblanadi. Saralash: ochko → performance → raqiblarning o'rtacha reytingi.",
+      "averageOpponentRating": "Raqiblarning o'rtacha reytingi: {{rating}}"
     },
     "challenges": "Yakunlangan bellashuvlar",
     "liveChallenges": "Jonli bellashuvlar",

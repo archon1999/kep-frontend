@@ -47,8 +47,9 @@
       "rating": "Rating",
       "results": "Results",
       "points": "Points",
-      "buchholz": "Buchholz",
-      "buchholzDescription": "Sum of the points scored by your opponents. Higher Buchholz means you played stronger opponents."
+      "performance": "Performance",
+      "performanceDescription": "Based on your results and your opponents' ratings at the start of the arena. Ranking: points → performance → average opponent rating.",
+      "averageOpponentRating": "Average opponent rating: {{rating}}"
     },
     "challenges": "Finished challenges",
     "liveChallenges": "Live challenges",

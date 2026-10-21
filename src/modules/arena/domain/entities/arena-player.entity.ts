@@ -5,7 +5,8 @@ export interface ArenaPlayer {
   rating: number;
   rank?: number | null;
   points: number;
-  buchholzCoefficient: number;
+  performance: number | null;
+  averageOpponentRating: number;
   streak: boolean;
   results: number[];
   isBot: boolean;

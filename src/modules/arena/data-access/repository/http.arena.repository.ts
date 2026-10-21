@@ -1,16 +1,13 @@
-import { arenaApiClient } from '../api/arena.client.ts';
-import { mapArenaPlayerStatistics } from '../mappers/arena.mapper.ts';
-import { mapPageResult } from '../mappers/page.mapper.ts';
-import { Arena, ArenaStatus } from '../../domain/entities/arena.entity.ts';
-import { ArenaPlayer } from '../../domain/entities/arena-player.entity.ts';
-import { ArenaPlayerStatistics } from '../../domain/entities/arena-player-statistics.entity.ts';
-import { ArenaStatistics } from '../../domain/entities/arena-statistics.entity.ts';
 import { ArenaChallenge } from '../../domain/entities/arena-challenge.entity.ts';
 import {
   ArenaHighlight,
   ArenaHighlightKind,
   ArenaHighlightTone,
 } from '../../domain/entities/arena-highlight.entity.ts';
+import { ArenaPlayerStatistics } from '../../domain/entities/arena-player-statistics.entity.ts';
+import { ArenaPlayer } from '../../domain/entities/arena-player.entity.ts';
+import { ArenaStatistics } from '../../domain/entities/arena-statistics.entity.ts';
+import { Arena, ArenaStatus } from '../../domain/entities/arena.entity.ts';
 import {
   ArenaChallengesFilters,
   ArenaListFilters,
@@ -18,6 +15,10 @@ import {
   ArenaRepository,
   PageResult,
 } from '../../domain/ports/arena.repository.ts';
+import { arenaApiClient } from '../api/arena.client.ts';
+import { mapArenaPlayer } from '../mappers/arena-player.mapper.ts';
+import { mapArenaPlayerStatistics } from '../mappers/arena.mapper.ts';
+import { mapPageResult } from '../mappers/page.mapper.ts';
 
 const mapArena = (data: any): Arena => ({
   id: data?.id ?? 0,
@@ -34,19 +35,6 @@ const mapArena = (data: any): Arena => ({
   pause: data?.pause ?? null,
   winner: data?.winner ?? null,
   chapters: data?.chapters ?? [],
-});
-
-const mapArenaPlayer = (data: any): ArenaPlayer => ({
-  username: data?.username ?? '',
-  avatar: data?.avatar ?? undefined,
-  rankTitle: data?.rankTitle ?? data?.rank_title ?? '',
-  rating: data?.rating ?? 0,
-  rank: data?.rank ?? null,
-  points: data?.points ?? 0,
-  buchholzCoefficient: data?.buchholzCoefficient ?? data?.buchholz_coefficient ?? 0,
-  streak: Boolean(data?.streak),
-  results: data?.results ?? [],
-  isBot: Boolean(data?.isBot ?? data?.is_bot),
 });
 
 const mapArenaChallenge = (data: any): ArenaChallenge => {
@@ -129,7 +117,10 @@ export class HttpArenaRepository implements ArenaRepository {
     return arenaApiClient.nextChallenge(arenaId);
   }
 
-  async listPlayers(arenaId: number | string, filters?: ArenaPlayersFilters): Promise<PageResult<ArenaPlayer>> {
+  async listPlayers(
+    arenaId: number | string,
+    filters?: ArenaPlayersFilters,
+  ): Promise<PageResult<ArenaPlayer>> {
     const data = await arenaApiClient.listPlayers(arenaId, {
       ...filters,
       pin_current_user: filters?.pinCurrentUser ? 'true' : undefined,
@@ -153,7 +144,10 @@ export class HttpArenaRepository implements ArenaRepository {
     return mapPageResult(data, mapArenaChallenge);
   }
 
-  async getPlayerStatistics(arenaId: number | string, username: string): Promise<ArenaPlayerStatistics> {
+  async getPlayerStatistics(
+    arenaId: number | string,
+    username: string,
+  ): Promise<ArenaPlayerStatistics> {
     const data = await arenaApiClient.playerStatistics(arenaId, username);
     return mapArenaPlayerStatistics(data);
   }

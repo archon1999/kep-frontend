@@ -16,12 +16,12 @@ import {
   Typography,
 } from '@mui/material';
 import { useArenaPlayerStatistics } from 'modules/arena/application/queries.ts';
-import UserPopover from 'modules/users/ui/shared/components/UserPopover';
-import ChallengesRatingChip from 'shared/components/rating/ChallengesRatingChip.tsx';
-import { mergePinnedRows } from 'shared/lib/pinnedRows';
 import { ArenaPlayer } from 'modules/arena/domain/entities/arena-player.entity.ts';
 import { ArenaStatus } from 'modules/arena/domain/entities/arena.entity.ts';
 import { PageResult } from 'modules/arena/domain/ports/arena.repository.ts';
+import UserPopover from 'modules/users/ui/shared/components/UserPopover';
+import ChallengesRatingChip from 'shared/components/rating/ChallengesRatingChip.tsx';
+import { mergePinnedRows } from 'shared/lib/pinnedRows';
 import ArenaPlayerStatisticsDialog from '../dialogs/ArenaPlayerStatisticsDialog.tsx';
 
 interface PlayersTableProps {
@@ -91,11 +91,7 @@ const ArenaPlayersTable = ({
     arenaId,
     selectedUsername,
   );
-  const rows = mergePinnedRows(
-    data?.data ?? [],
-    data?.pinnedRows,
-    (player) => player.username,
-  );
+  const rows = mergePinnedRows(data?.data ?? [], data?.pinnedRows, (player) => player.username);
 
   const handleSelect = (player: ArenaPlayer) => {
     if (isUpcoming) return;
@@ -127,7 +123,7 @@ const ArenaPlayersTable = ({
               ) : null}
               {!isUpcoming ? (
                 <TableCell align="right">
-                  <Tooltip arrow title={t('arena.columns.buchholzDescription')}>
+                  <Tooltip arrow title={t('arena.columns.performanceDescription')}>
                     <Box
                       component="span"
                       sx={{
@@ -136,7 +132,7 @@ const ArenaPlayersTable = ({
                         cursor: 'help',
                       }}
                     >
-                      {t('arena.columns.buchholz')}
+                      {t('arena.columns.performance')}
                     </Box>
                   </Tooltip>
                 </TableCell>
@@ -164,26 +160,27 @@ const ArenaPlayersTable = ({
                       onClick={() => handleSelect(player)}
                       sx={{
                         cursor: !isUpcoming ? 'pointer' : 'default',
-                        backgroundColor:
-                          isCurrentUser ? 'primary.lighter' : highlight?.backgroundColor,
+                        backgroundColor: isCurrentUser
+                          ? 'primary.lighter'
+                          : highlight?.backgroundColor,
                         '&:hover': isCurrentUser
                           ? {
                               backgroundColor: 'primary.light',
                             }
                           : highlight
-                          ? {
-                              backgroundColor: highlight.hoverBackgroundColor,
-                            }
-                          : undefined,
+                            ? {
+                                backgroundColor: highlight.hoverBackgroundColor,
+                              }
+                            : undefined,
                         '&.MuiTableRow-hover:hover': isCurrentUser
                           ? {
                               backgroundColor: 'primary.light',
                             }
                           : highlight
-                          ? {
-                              backgroundColor: highlight.hoverBackgroundColor,
-                            }
-                          : undefined,
+                            ? {
+                                backgroundColor: highlight.hoverBackgroundColor,
+                              }
+                            : undefined,
                         '& td': {
                           borderColor: isSelected ? 'warning.light' : highlight?.borderColor,
                         },
@@ -267,9 +264,21 @@ const ArenaPlayersTable = ({
                       ) : null}
                       {!isUpcoming ? (
                         <TableCell align="right">
-                          <Typography fontFamily="monospace" fontWeight={700} color="info.dark">
-                            {player.buchholzCoefficient}
-                          </Typography>
+                          <Tooltip
+                            arrow
+                            title={t('arena.columns.averageOpponentRating', {
+                              rating: player.averageOpponentRating.toFixed(1),
+                            })}
+                          >
+                            <Typography
+                              component="span"
+                              fontFamily="monospace"
+                              fontWeight={700}
+                              color="info.dark"
+                            >
+                              {player.performance?.toFixed(1) ?? '—'}
+                            </Typography>
+                          </Tooltip>
                         </TableCell>
                       ) : null}
                     </TableRow>
