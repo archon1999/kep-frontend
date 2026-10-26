@@ -1,3 +1,28 @@
+![KEP.uz — practice, compete, grow](assets/banner.svg)
+
+**The web experience for a programming community.**
+
+[Live platform](https://kep.uz/) · [Local setup](#local-setup) · [Project structure](#project-structure) · [Quality gates](#quality-gates)
+
+KEP.uz connects problem solving, contests, structured learning and community. This repository is its production React client, built around typed API contracts, reusable product modules and authenticated real-time experiences.
+
+| Registered users | Visible problems | Contests | Submissions |
+| ---: | ---: | ---: | ---: |
+| 9,564 | 2,101 | 374 | 436,057 |
+
+[Public platform snapshot](https://kep.uz/api/landing-page-statistics), **26 October 2026**. Registered users and total submissions; these are not activity or acceptance metrics.
+
+### Engineering at a glance
+
+- **Product breadth:** problems, submissions, contests, learning, duels, arena and community.
+- **Defined boundaries:** application bootstrap, product modules and shared infrastructure.
+- **Typed integration:** generated API clients, cookie/CSRF authentication and real-time updates.
+- **Delivery:** automated checks, immutable frontend artifacts and deployment health checks.
+
+Founded and built by [Nazarbek Baltabaev](https://github.com/archon1999).
+
+---
+
 # KEP.uz Frontend
 
 Production web client for [KEP.uz](https://kep.uz), an Uzbek competitive-programming and learning platform. The application covers problems and submissions, contests, courses, tests, projects, duels, arena, challenges, tournaments, hackathons, community content, profiles, and KEPcoin features.
@@ -86,3 +111,4 @@ npm run preview
 Pushes to `production` run lint, typecheck, unit tests, dependency audit, and a production build in GitHub Actions. A successful build is uploaded as an immutable artifact, copied to the server, packaged in the Nginx image, health-checked, and rolled back automatically if deployment fails.
 
 Production configuration should be copied from `.env.production.example`; only public endpoint values belong in that file.
+
