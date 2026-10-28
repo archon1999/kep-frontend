@@ -1,3 +1,4 @@
+import seo from './seo.json';
 import admin from './admin.json';
 import arena from './arena.json';
 import auth from './auth.json';
@@ -35,6 +36,7 @@ export const ruTranslation = {
   ...gamesMinis,
   ...admin,
   ...common,
+  ...seo,
   ...menu,
   ...pageTitles,
   ...settings,

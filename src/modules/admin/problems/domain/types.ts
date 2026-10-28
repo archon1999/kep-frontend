@@ -1,4 +1,4 @@
-﻿import { AdminChoiceOption, AdminIdNameOption } from 'modules/admin/shared/helpers/types.ts';
+﻿import { AdminChoiceOption, AdminIdNameOption } from 'modules/admin/shared/domain/types.ts';
 
 export interface AdminProblemSampleTest {
   id?: number;

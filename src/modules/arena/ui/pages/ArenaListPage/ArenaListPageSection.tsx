@@ -1,52 +1,69 @@
-import { Pagination, Skeleton, Stack } from '@mui/material';
-import { useArenasList } from 'modules/arena/application/queries.ts';
-import useRouteQueryState from 'shared/hooks/useRouteQueryState';
-import { numberParam } from 'shared/lib/queryParams';
-import ArenaListCard from './components/ArenaListCard.tsx';
+import { useTranslation } from 'react-i18next';
+import { InputAdornment, Typography } from '@mui/material';
+import { useArenaListPage } from 'modules/arena/application/hooks/useArenaListPage';
+import KepIcon from 'shared/components/base/KepIcon';
+import DebouncedTextField from 'shared/components/common/DebouncedTextField';
+import { EventListSkeletons } from 'shared/components/sections/common/EventListCard';
+import {
+  ListFeedback,
+  ListToolbar,
+  RouteListPagination,
+} from 'shared/components/sections/common/FramedListPage';
+import ArenaListCard from './components/ArenaListCard';
 
 const ArenaListPageSection = () => {
-  const { state, setField } = useRouteQueryState<{
-    page: number;
-  }>({
-    defaults: {
-      page: 1,
-    },
-    schema: {
-      page: {
-        ...numberParam({ min: 1 }),
-        param: 'page',
-      },
-    },
-    historyByKey: {
-      page: 'push',
-    },
-  });
+  const { state, setField, data, isLoading, error, mutate, arenas } = useArenaListPage();
 
-  const { data, isLoading } = useArenasList({
-    page: state.page,
-    pageSize: 7,
-  });
-
+  const { t } = useTranslation();
   return (
     <>
-      {isLoading
-        ? Array.from({ length: 6 }).map((_, index) => (
-            <Skeleton key={index} variant="rounded" height={108} />
-          ))
-        : data?.data?.map((arena) => <ArenaListCard key={arena.id} arena={arena} />)}
-
-      {(data?.pagesCount ?? 0) > 1 ? (
-        <Stack direction="column" alignItems="center">
-          <Pagination
-            color="warning"
-            count={data?.pagesCount ?? 0}
-            page={state.page}
-            onChange={(_, value) => setField('page', value)}
-          />
-        </Stack>
-      ) : null}
+      <ListToolbar>
+        <Typography variant="label" color="text.secondary">
+          {data && !error ? t('arena.countLabel', { count: data.total }) : t('arena.title')}
+        </Typography>
+        <DebouncedTextField
+          type="search"
+          size="small"
+          value={state.title}
+          onValueChange={(value) => setField('title', value)}
+          placeholder={t('arena.searchPlaceholder')}
+          slotProps={{
+            input: {
+              startAdornment: (
+                <InputAdornment position="start">
+                  <KepIcon name="search" fontSize={20} />
+                </InputAdornment>
+              ),
+            },
+            htmlInput: { 'aria-label': t('arena.searchPlaceholder') },
+          }}
+          sx={{ width: { xs: '100%', sm: 340 } }}
+        />
+      </ListToolbar>
+      <ListFeedback
+        loadingContent={
+          <EventListSkeletons detailCount={2} metricCount={2} badgeCount={1} firstDetailIsDate />
+        }
+        kind="battles"
+        onRetry={() => void mutate()}
+        loading={isLoading}
+        error={error}
+        empty={!arenas.length}
+        emptyTitle={t('arena.emptyTitle')}
+        emptyMessage={t('arena.listEmptySubtitle')}
+        errorMessage={t('arena.loadError')}
+      />
+      {!isLoading &&
+        !error &&
+        arenas.map((arena) => <ArenaListCard key={arena.id} arena={arena} />)}
+      {!error && (
+        <RouteListPagination
+          page={state.page}
+          count={data?.pagesCount ?? 0}
+          onChange={(page) => setField('page', page)}
+        />
+      )}
     </>
   );
 };
-
 export default ArenaListPageSection;

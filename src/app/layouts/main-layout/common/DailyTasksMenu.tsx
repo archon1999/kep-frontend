@@ -1,10 +1,8 @@
 import { MouseEvent, useMemo, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import {
-  Avatar,
   Box,
   Button,
-  Chip,
   Divider,
   LinearProgress,
   Popover,
@@ -13,14 +11,15 @@ import {
   Typography,
   paperClasses,
 } from '@mui/material';
-import { alpha } from '@mui/material/styles';
 import { useAuth } from 'app/providers/AuthProvider';
 import IconifyIcon from 'shared/components/base/IconifyIcon';
+import EmptyState from 'shared/components/common/EmptyState';
 import KepcoinValue from 'shared/components/common/KepcoinValue';
-import Kepper from 'shared/components/common/Kepper';
 import Streak from 'shared/components/rating/Streak';
+import { cssVarRgba } from 'shared/lib/utils';
 import axiosFetcher from 'shared/services/axios/axiosFetcher';
 import useSWR from 'swr';
+import ActivityMenuHeader from './ActivityMenuHeader';
 
 enum DailyTaskType {
   Problem = 1,
@@ -59,7 +58,7 @@ const DailyTasksMenu = ({ type = 'default', label }: DailyTasksMenuProps) => {
   const [anchorEl, setAnchorEl] = useState<HTMLElement | null>(null);
   const { currentUser } = useAuth();
 
-  const { data, isLoading, mutate } = useSWR<DailyTasksResponse>(
+  const { data, error, isLoading, mutate } = useSWR<DailyTasksResponse>(
     currentUser ? ['/api/daily-tasks', { method: 'get' }] : null,
     axiosFetcher,
     {
@@ -93,55 +92,41 @@ const DailyTasksMenu = ({ type = 'default', label }: DailyTasksMenuProps) => {
   const renderTasks = () => {
     if (isLoading) {
       return (
-        <Stack direction="column" component="ul" spacing={1} sx={{ px: 1.5, py: 1.5, m: 0 }}>
-          {[...Array(3)].map((_, index) => (
-            <Stack
-              component="li"
-              key={index}
-              direction="row"
-              spacing={1.5}
-              alignItems="flex-start"
-              sx={{ p: 1.25, borderRadius: 2, bgcolor: 'background.level1' }}
-            >
-              <Skeleton variant="circular" width={44} height={44} />
-
-              <Stack direction="column" spacing={1} flex={1} minWidth={0}>
-                <Stack direction="row" spacing={0.75}>
-                  <Skeleton variant="text" width="80%" />
-                  <Skeleton variant="text" width={80} />
-                </Stack>
-
-                <Skeleton variant="rounded" width={80} height={24} />
-              </Stack>
+        <Stack direction="column" spacing={2.5} sx={{ p: 2.5 }}>
+          {Array.from({ length: 3 }, (_, index) => (
+            <Stack key={index} direction="row" spacing={1.5}>
+              <Skeleton variant="rectangular" width={32} height={32} />
+              <Box sx={{ flex: 1 }}>
+                <Skeleton width="85%" />
+                <Skeleton width="60%" />
+              </Box>
             </Stack>
           ))}
         </Stack>
       );
     }
 
-    if (!dailyTasks.length) {
+    if (error) {
       return (
-        <Stack
-          direction="row"
-          alignItems="center"
-          justifyContent="center"
-          spacing={1.25}
-          sx={{ py: 4 }}
-        >
-          <Avatar
-            sx={{ bgcolor: 'background.level1', color: 'text.secondary', width: 48, height: 48 }}
-          >
-            <IconifyIcon icon="material-symbols:checklist-rounded" />
-          </Avatar>
-          <Typography variant="body2" color="text.secondary">
-            {t('common.dailyTasks.empty')}
-          </Typography>
-        </Stack>
+        <EmptyState
+          compact
+          kind="error"
+          title={t('common.loadFailed')}
+          action={
+            <Button onClick={() => void mutate()} size="small" variant="outlined">
+              {t('common.retry')}
+            </Button>
+          }
+        />
       );
     }
 
+    if (!dailyTasks.length) {
+      return <EmptyState compact kind="daily-tasks" title={t('common.dailyTasks.empty')} />;
+    }
+
     return (
-      <Stack direction="column" component="ul" spacing={1} sx={{ px: 1.5, py: 1.5, m: 0 }}>
+      <Stack direction="column" component="ul" sx={{ px: 2.5, py: 0, m: 0, listStyle: 'none' }}>
         {dailyTasks.map((task, index) => (
           <Stack
             component="li"
@@ -149,57 +134,75 @@ const DailyTasksMenu = ({ type = 'default', label }: DailyTasksMenuProps) => {
             direction="row"
             spacing={1.5}
             alignItems="flex-start"
-            sx={{ p: 1.25, borderRadius: 2, bgcolor: 'background.level1' }}
+            sx={{
+              py: 2.25,
+              borderBottom: 1,
+              borderColor: 'divider',
+              '&:last-child': { borderBottom: 0 },
+            }}
           >
-            <Avatar
-              variant="circular"
-              sx={{ bgcolor: 'primary.lighter', color: 'primary.main', width: 44, height: 44 }}
+            <Box
+              sx={{
+                width: 32,
+                height: 32,
+                flexShrink: 0,
+                display: 'grid',
+                placeItems: 'center',
+                border: 1,
+                borderColor: 'divider',
+                color: task.completed ? 'success.main' : 'primary.main',
+              }}
             >
-              <IconifyIcon icon={taskIconMap[task.type]} sx={{ fontSize: 22 }} />
-            </Avatar>
-
-            <Stack direction="column" spacing={1}>
-              <Stack direction="row" spacing={0.75} flex={1} minWidth={0}>
-                <Typography variant="subtitle2" title={task.description}>
+              <IconifyIcon
+                icon={task.completed ? 'material-symbols:check-rounded' : taskIconMap[task.type]}
+                sx={{ fontSize: 19 }}
+              />
+            </Box>
+            <Box sx={{ minWidth: 0, flex: 1 }}>
+              <Stack
+                direction="row"
+                spacing={1.5}
+                alignItems="flex-start"
+                justifyContent="space-between"
+              >
+                <Typography
+                  variant="body2"
+                  sx={{ flex: 1, fontWeight: 500, lineHeight: 1.55, overflowWrap: 'anywhere' }}
+                >
                   {task.description}
                 </Typography>
-
-                <Stack direction="row" spacing={1} alignItems="center" flexWrap="wrap">
-                  <KepcoinValue
-                    value={task.kepcoin}
-                    iconSize={16}
-                    spacing={0.5}
-                    textVariant="caption"
-                    fontWeight={700}
-                    color="text.primary"
-                  />
-                </Stack>
+                <KepcoinValue
+                  value={task.kepcoin}
+                  iconSize={17}
+                  textVariant="pixel"
+                  sx={{ flexShrink: 0, pt: 0.25, '& .MuiTypography-root': { fontSize: 17 } }}
+                />
               </Stack>
-
-              <Box>
-                {task.completed ? (
-                  <Chip
-                    size="small"
-                    color="success"
-                    variant="soft"
-                    label={t('common.dailyTasks.completed')}
-                    icon={
-                      <IconifyIcon
-                        icon="material-symbols:check-circle-rounded"
-                        sx={{ fontSize: 16 }}
-                      />
-                    }
-                  />
-                ) : (
-                  <Chip
-                    size="small"
-                    color="primary"
-                    variant="soft"
-                    label={`${task.progress}/${task.total}`}
-                  />
-                )}
-              </Box>
-            </Stack>
+              <Stack direction="row" spacing={1.5} alignItems="center" sx={{ mt: 1.5 }}>
+                <LinearProgress
+                  aria-label={task.description}
+                  variant="determinate"
+                  value={
+                    task.completed
+                      ? 100
+                      : task.total > 0
+                        ? Math.min(100, Math.max(0, (task.progress / task.total) * 100))
+                        : 0
+                  }
+                  color={task.completed ? 'success' : 'primary'}
+                  sx={{ flex: 1, height: 3, borderRadius: 0, bgcolor: 'divider' }}
+                />
+                <Typography
+                  variant={task.completed ? 'caption' : 'pixel'}
+                  color={task.completed ? 'success.main' : 'text.secondary'}
+                  sx={{ flexShrink: 0, fontSize: task.completed ? 12 : 15, lineHeight: 1 }}
+                >
+                  {task.completed
+                    ? t('common.dailyTasks.completed')
+                    : `${task.progress} / ${task.total}`}
+                </Typography>
+              </Stack>
+            </Box>
           </Stack>
         ))}
       </Stack>
@@ -209,7 +212,11 @@ const DailyTasksMenu = ({ type = 'default', label }: DailyTasksMenuProps) => {
   return (
     <>
       <Button
+        className="daily-tasks-menu-trigger"
         aria-label={t('common.dailyTasks.title')}
+        aria-expanded={open}
+        aria-controls={open ? 'daily-tasks-menu' : undefined}
+        aria-haspopup="dialog"
         title={t('common.dailyTasks.title')}
         color={type === 'action' ? 'primary' : 'neutral'}
         variant={type === 'default' ? 'soft' : type === 'action' ? 'outlined' : 'text'}
@@ -223,8 +230,8 @@ const DailyTasksMenu = ({ type = 'default', label }: DailyTasksMenuProps) => {
                 borderRadius: 999,
                 textTransform: 'none',
                 fontWeight: 700,
-                borderColor: (theme) => alpha(theme.palette.primary.main, 0.24),
-                bgcolor: (theme) => alpha(theme.palette.primary.main, 0.04),
+                borderColor: (theme) => cssVarRgba(theme.vars.palette.primary.mainChannel, 0.24),
+                bgcolor: (theme) => cssVarRgba(theme.vars.palette.primary.mainChannel, 0.04),
               }
             : { px: 1.5 }
         }
@@ -239,6 +246,8 @@ const DailyTasksMenu = ({ type = 'default', label }: DailyTasksMenuProps) => {
         ) : (
           <Streak
             streak={streakValue}
+            animateValue
+            color="inherit"
             maxStreak={maxStreak}
             iconSize={type === 'slim' ? 18 : 22}
             spacing={0.75}
@@ -249,6 +258,7 @@ const DailyTasksMenu = ({ type = 'default', label }: DailyTasksMenuProps) => {
       <Popover
         anchorEl={anchorEl}
         id="daily-tasks-menu"
+        slotProps={{ paper: { role: 'dialog', 'aria-label': t('common.dailyTasks.title') } }}
         open={open}
         onClose={handleClose}
         transformOrigin={{
@@ -261,62 +271,55 @@ const DailyTasksMenu = ({ type = 'default', label }: DailyTasksMenuProps) => {
         }}
         sx={{
           [`& .${paperClasses.root}`]: {
-            width: 'min(380px, calc(100vw - 32px))',
+            width: 'min(420px, calc(100vw - 32px))',
+            maxHeight: 'calc(100dvh - 96px)',
             display: 'flex',
             flexDirection: 'column',
             p: 0,
           },
         }}
       >
-        <Stack
-          direction="row"
-          alignItems="center"
-          justifyContent="space-between"
-          sx={{ px: 2, pt: 2, pb: 1 }}
-        >
-          <Kepper
-            pose={
-              dailyTasks.length > 0 && completedTasks === dailyTasks.length ? 'celebrate' : 'coding'
-            }
-            motion="loop"
-            size={68}
-          />
-          <Box sx={{ flex: 1 }}>
-            <Typography variant="h6">{t('common.dailyTasks.title')}</Typography>
-            <Typography variant="caption" color="text.secondary">
-              {t('common.dailyTasks.subtitle')}
-            </Typography>
+        <ActivityMenuHeader
+          title={t('common.dailyTasks.title')}
+          subtitle={t('common.dailyTasks.subtitle')}
+          illustration="daily-tasks"
+          onClose={handleClose}
+        />
+        <Divider />
+        <Box sx={{ flex: 1, minHeight: 0, overflowY: 'auto', overscrollBehavior: 'contain' }}>
+          {renderTasks()}
+        </Box>
+        {!isLoading && !error && dailyTasks.length > 0 && (
+          <Box
+            sx={{
+              px: 2.5,
+              py: 2,
+              borderTop: 1,
+              borderColor: 'divider',
+              flexShrink: 0,
+              bgcolor: 'background.level1',
+            }}
+          >
+            <Stack
+              direction="row"
+              alignItems="center"
+              justifyContent="space-between"
+              sx={{ mb: 1.25 }}
+            >
+              <Typography variant="caption" color="text.secondary">
+                {t('common.dailyTasks.completed')}
+              </Typography>
+              <Typography variant="pixel" sx={{ fontSize: 19 }}>
+                {completedTasks} / {dailyTasks.length}
+              </Typography>
+            </Stack>
+            <LinearProgress
+              aria-label={t('common.dailyTasks.completed')}
+              variant="determinate"
+              value={progress}
+              sx={{ height: 3, borderRadius: 0, bgcolor: 'divider' }}
+            />
           </Box>
-          <Chip
-            color="secondary"
-            size="small"
-            label={t('common.dailyTasks.tasksCount', { count: dailyTasks.length })}
-            sx={{ borderRadius: 1 }}
-          />
-        </Stack>
-
-        <Divider />
-
-        <Box sx={{ flex: 1, overflow: 'hidden' }}>{renderTasks()}</Box>
-
-        <Divider />
-
-        <Stack direction="row" spacing={1} sx={{ px: 2, py: 1.5 }}>
-          <Stack direction="row" spacing={1} justifyContent="space-between" alignItems="center">
-            <Typography variant="body2" color="text.secondary">
-              {t('common.dailyTasks.completed')}
-            </Typography>
-            <Typography variant="body2" fontWeight={700} color="text.primary">
-              {dailyTasks.length ? `${completedTasks}/${dailyTasks.length}` : '--'}
-            </Typography>
-          </Stack>
-        </Stack>
-        {progress > 0 && (
-          <LinearProgress
-            variant="determinate"
-            value={progress}
-            sx={{ height: 20, borderRadius: 999, mx: 2, mb: 2 }}
-          />
         )}
       </Popover>
     </>

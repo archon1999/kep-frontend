@@ -1,14 +1,14 @@
 {
   "tournaments": {
-    "subtitle": "Compete in knockout brackets and follow live results.",
+    "subtitle": "Win programming duels to advance through the knockout bracket.",
     "countLabel": "{{count}} tournaments",
     "emptyTitle": "No tournaments yet",
-    "emptySubtitle": "Stay tuned for upcoming tournaments.",
+    "emptySubtitle": "No tournaments to display.",
     "startsOn": "Starts {{date}}",
     "players": "{{count}} players",
     "type": "Type: {{type}}",
     "bracketTitle": "Knockout bracket",
-    "bracketSubtitle": "{{count}}-player elimination bracket with live duel results.",
+    "bracketSubtitle": "{{count}} participants. Winners advance to the next round.",
     "awaitingOpponent": "Awaiting opponent",
     "awaitingWinner": "Winner of previous duel",
     "matchNumber": "Match #{{number}}",
@@ -24,6 +24,14 @@
       "quarter": "Quarterfinals",
       "generic": "1/{{value}} finals"
     },
-    "emptyDescription": "Tournament details will appear soon."
+    "emptyDescription": "No tournament announcement has been added.",
+    "heroBadge": "Play to advance",
+    "viewTournament": "View tournament",
+    "formatLabel": "Format",
+    "startsLabel": "Starts",
+    "playersLabel": "Players",
+    "loadError": "Could not load tournaments. Please try again.",
+    "countLabel_one": "{{count}} tournament",
+    "countLabel_other": "{{count}} tournaments"
   }
 }

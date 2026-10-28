@@ -1,13 +1,16 @@
 import { useTranslation } from 'react-i18next';
-import { Box, Pagination, Skeleton, Stack, Typography } from '@mui/material';
+import { Button, FormControlLabel, Skeleton, Stack, Switch, Typography } from '@mui/material';
 import { Challenge } from 'modules/challenges/domain';
-import { PageResult } from 'modules/challenges/domain/ports/challenges.repository.ts';
-import OnlyMeSwitch from 'shared/components/common/OnlyMeSwitch.tsx';
+import { PageResult } from 'modules/challenges/domain/contracts/challenges.repository.ts';
 import ChallengeCard from 'modules/challenges/ui/shared/components/ChallengeCard.tsx';
+import EmptyState from 'shared/components/common/EmptyState';
+import { ListPagination } from 'shared/components/sections/common/FramedListPage';
 
 type ChallengesListPageHistoryTabProps = {
   challengesPage?: PageResult<Challenge>;
   isLoading: boolean;
+  error?: unknown;
+  onRetry: () => void;
   page: number;
   onPageChange: (page: number) => void;
   showOnlyMine: boolean;
@@ -19,6 +22,8 @@ type ChallengesListPageHistoryTabProps = {
 const ChallengesListPageHistoryTab = ({
   challengesPage,
   isLoading,
+  error,
+  onRetry,
   page,
   onPageChange,
   showOnlyMine,
@@ -39,43 +44,54 @@ const ChallengesListPageHistoryTab = ({
         flexWrap="wrap"
         gap={1}
       >
-        <Typography variant="h6">{t('challenges.recent')}</Typography>
+        <Typography component="h2" variant="h6">
+          {t('challenges.recent')}
+        </Typography>
         {isAuthenticated ? (
-          <OnlyMeSwitch
+          <FormControlLabel
             label={t('challenges.onlyMe')}
-            checked={showOnlyMine}
-            onChange={(_, checked) => onToggleOnlyMine(checked)}
-            sx={{ minWidth: { xs: '100%', sm: 'auto' } }}
+            labelPlacement="start"
+            sx={{ m: 0, gap: 1, '& .MuiFormControlLabel-label': { fontSize: 14 } }}
+            control={
+              <Switch
+                size="small"
+                checked={showOnlyMine}
+                onChange={(_, checked) => onToggleOnlyMine(checked)}
+              />
+            }
           />
         ) : null}
       </Stack>
 
-      <Stack spacing={1.5} direction="column">
+      <Stack spacing={0} direction="column">
         {showSkeleton
           ? Array.from({ length: 3 }).map((_, index) => (
-              <Skeleton key={index} variant="rectangular" height={140} sx={{ borderRadius: 2 }} />
+              <Skeleton key={index} variant="rectangular" height={140} />
             ))
           : challenges.map((challenge) => (
-              <ChallengeCard key={challenge.id} challenge={challenge} currentUsername={currentUsername} />
+              <ChallengeCard
+                key={challenge.id}
+                challenge={challenge}
+                currentUsername={currentUsername}
+              />
             ))}
 
         {!isLoading && !challenges.length && (
-          <Typography variant="body2" color="text.secondary">
-            {t('challenges.noChallenges')}
-          </Typography>
+          <EmptyState
+            compact
+            kind={error ? 'error' : 'battles'}
+            title={t(error ? 'common.loadFailed' : 'challenges.noChallenges')}
+            action={error ? <Button onClick={onRetry}>{t('common.retry')}</Button> : undefined}
+          />
         )}
       </Stack>
 
       {(challengesPage?.pagesCount ?? 0) > 1 && (
-        <Box display="flex" justifyContent="flex-end">
-          <Pagination
-            color="primary"
-            shape="rounded"
-            page={page}
-            count={challengesPage?.pagesCount ?? 0}
-            onChange={(_, value) => onPageChange(value)}
-          />
-        </Box>
+        <ListPagination
+          page={page}
+          count={challengesPage?.pagesCount ?? 0}
+          onChange={(value) => onPageChange(value)}
+        />
       )}
     </Stack>
   );

@@ -1,8 +1,8 @@
 import { useTranslation } from 'react-i18next';
 import { Card, CardContent, Skeleton, Stack, Typography } from '@mui/material';
-import CountryFlagIcon from 'shared/components/common/CountryFlagIcon';
 import { useUserAbout } from 'modules/users/application/queries';
 import KepIcon from 'shared/components/base/KepIcon';
+import CountryFlagIcon from 'shared/components/common/CountryFlagIcon';
 import { KepIconName } from 'shared/config/icons';
 import { formatDateTime } from 'shared/lib/dateTime';
 
@@ -62,7 +62,7 @@ const UserPersonalInfoCard = ({ username }: UserPersonalInfoCardProps) => {
 
   if (isLoading) {
     return (
-      <Card variant="outlined">
+      <Card variant="section">
         <CardContent>
           <Stack direction="column" spacing={1.5}>
             <Skeleton variant="text" width="60%" />
@@ -80,7 +80,7 @@ const UserPersonalInfoCard = ({ username }: UserPersonalInfoCardProps) => {
   }
 
   return (
-    <Card variant="outlined">
+    <Card variant="section">
       <CardContent>
         <Stack direction="column" spacing={2}>
           <Typography variant="h6" fontWeight={700}>
@@ -90,9 +90,7 @@ const UserPersonalInfoCard = ({ username }: UserPersonalInfoCardProps) => {
           <Stack direction="column" spacing={1.5}>
             {rows.map((row) => (
               <Stack key={row.label} direction="row" spacing={1} alignItems="center">
-                {row.icon ? (
-                  <KepIcon name={row.icon} fontSize={16} color="text.secondary" />
-                ) : null}
+                {row.icon ? <KepIcon name={row.icon} fontSize={16} color="text.secondary" /> : null}
                 <Typography variant="body2" color="text.secondary">
                   {row.label}:
                 </Typography>

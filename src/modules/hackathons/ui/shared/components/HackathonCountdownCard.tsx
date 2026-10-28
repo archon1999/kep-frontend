@@ -1,10 +1,9 @@
 import { useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
-import { Box, Card, CardContent, Chip, Stack, Typography } from '@mui/material';
+import { Box, Stack, Typography } from '@mui/material';
 import { type Hackathon, HackathonStatus } from 'modules/hackathons/domain';
 import KepIcon from 'shared/components/base/KepIcon';
 import { diffDateTime, formatDateTime, getCountdownParts } from 'shared/lib/dateTime';
-import { cssVarRgba } from 'shared/lib/utils';
 
 const HackathonCountdownCard = ({ hackathon }: { hackathon?: Hackathon }) => {
   const { t } = useTranslation();
@@ -17,7 +16,6 @@ const HackathonCountdownCard = ({ hackathon }: { hackathon?: Hackathon }) => {
   const upcoming = !finished && untilStart > 0;
   const remaining = finished ? 0 : Math.max(0, upcoming ? untilStart : untilFinish);
   const { hours, minutes, seconds } = getCountdownParts(remaining);
-  const color = finished ? 'default' : upcoming ? 'warning' : 'success';
 
   useEffect(() => {
     if (!hasSchedule || finished) return;
@@ -28,47 +26,22 @@ const HackathonCountdownCard = ({ hackathon }: { hackathon?: Hackathon }) => {
   if (!hackathon) return null;
 
   return (
-    <Card
-      variant="outlined"
-      sx={(theme) => ({
-        position: 'relative',
-        overflow: 'hidden',
-        borderRadius: 3,
-        color: 'text.primary',
-        background: `linear-gradient(135deg, ${cssVarRgba(theme.vars.palette.primary.lightChannel, 0.12)}, ${cssVarRgba(theme.vars.palette.primary.mainChannel, 0.08)} 58%, ${cssVarRgba(theme.vars.palette.primary.mainChannel, 0.04)})`,
-        borderColor: cssVarRgba(theme.vars.palette.primary.mainChannel, 0.12),
-      })}
-    >
-      <Box
-        sx={(theme) => ({
-          position: 'absolute',
-          inset: 0,
-          pointerEvents: 'none',
-          background: `radial-gradient(circle at 14% 18%, ${cssVarRgba(theme.vars.palette.primary.lightChannel, 0.16)}, transparent 34%), radial-gradient(circle at 85% 14%, ${cssVarRgba(theme.vars.palette.primary.mainChannel, 0.12)}, transparent 28%)`,
-        })}
-      />
-      <CardContent sx={{ position: 'relative', zIndex: 1 }}>
-        {hasSchedule ? (
-          <Stack direction="column" spacing={2}>
-            <Stack direction="row" justifyContent="center">
-              <Chip
-                icon={<KepIcon name="timer" fontSize={16} />}
-                label={t(
-                  finished
-                    ? 'hackathons.finished'
-                    : upcoming
-                      ? 'hackathons.startsIn'
-                      : 'hackathons.endsIn',
-                )}
-                color={color}
-                variant="filled"
-                sx={{
-                  color: finished ? 'text.primary' : 'primary.contrastText',
-                  bgcolor: finished ? 'background.paper' : undefined,
-                  fontWeight: 700,
-                }}
-              />
-            </Stack>
+    <Box component="section" sx={{ p: 3 }}>
+      {hasSchedule ? (
+        <Stack direction="column" spacing={2}>
+          <Stack direction="row" gap={1} alignItems="center">
+            <KepIcon name="timer" fontSize={18} color="primary.main" />
+            <Typography variant="label" color="text.secondary">
+              {t(
+                finished
+                  ? 'hackathons.finished'
+                  : upcoming
+                    ? 'hackathons.startsIn'
+                    : 'hackathons.endsIn',
+              )}
+            </Typography>
+          </Stack>
+          {!finished && (
             <Stack direction="row" spacing={1.5} justifyContent="center" flexWrap="wrap" useFlexGap>
               {[
                 { value: hours, label: t('contests.timeLabels.hour') },
@@ -80,19 +53,17 @@ const HackathonCountdownCard = ({ hackathon }: { hackathon?: Hackathon }) => {
                   direction="column"
                   spacing={0.5}
                   alignItems="center"
-                  sx={(theme) => ({
-                    px: 2,
+                  sx={{
+                    px: 1,
                     py: 1.5,
-                    minWidth: 72,
-                    borderRadius: 2,
-                    background: theme.vars.palette.background.paper,
-                    boxShadow: `0 10px 40px ${theme.palette.common.black}0a`,
-                    color: theme.vars.palette.text.primary,
-                  })}
+                    minWidth: 60,
+                    flex: 1,
+                    bgcolor: 'background.level1',
+                  }}
                 >
                   <Typography
-                    variant="h4"
-                    fontWeight={800}
+                    variant="metric"
+                    fontSize={32}
                     sx={{ fontVariantNumeric: 'tabular-nums' }}
                   >
                     {String(item.value).padStart(2, '0')}
@@ -106,29 +77,29 @@ const HackathonCountdownCard = ({ hackathon }: { hackathon?: Hackathon }) => {
                 </Stack>
               ))}
             </Stack>
-            <Typography align="center" variant="caption" fontWeight={500}>
-              {t(
-                upcoming
-                  ? 'contests.startsLabel'
-                  : finished
-                    ? 'contests.countdownCard.finishedAt'
-                    : 'contests.endsLabel',
-                {
-                  date: formatDateTime(
-                    upcoming ? hackathon.startTime : hackathon.finishTime,
-                    'compactDateTime',
-                  ),
-                },
-              )}
-            </Typography>
-          </Stack>
-        ) : (
+          )}
           <Typography variant="body2" color="text.secondary">
-            {t('hackathons.noSchedule')}
+            {t(
+              upcoming
+                ? 'contests.startsLabel'
+                : finished
+                  ? 'contests.countdownCard.finishedAt'
+                  : 'contests.endsLabel',
+              {
+                date: formatDateTime(
+                  upcoming ? hackathon.startTime : hackathon.finishTime,
+                  'compactDateTime',
+                ),
+              },
+            )}
           </Typography>
-        )}
-      </CardContent>
-    </Card>
+        </Stack>
+      ) : (
+        <Typography variant="body2" color="text.secondary">
+          {t('hackathons.noSchedule')}
+        </Typography>
+      )}
+    </Box>
   );
 };
 

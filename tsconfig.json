@@ -28,7 +28,7 @@
       "*": ["./src/*"]
     }
   },
-  "include": ["src", "types"],
+  "include": ["src", "types", "scripts/performance/*.tsx"],
 
   "references": [{ "path": "./tsconfig.node.json" }]
 }

@@ -3,8 +3,9 @@ import { useTranslation } from 'react-i18next';
 import {
   Avatar,
   Box,
-  Pagination,
+  IconButton,
   Paper,
+  Skeleton,
   Stack,
   Table,
   TableBody,
@@ -16,11 +17,16 @@ import {
   Typography,
 } from '@mui/material';
 import { useArenaPlayerStatistics } from 'modules/arena/application/queries.ts';
+import { PageResult } from 'modules/arena/domain/contracts/arena.repository.ts';
 import { ArenaPlayer } from 'modules/arena/domain/entities/arena-player.entity.ts';
 import { ArenaStatus } from 'modules/arena/domain/entities/arena.entity.ts';
-import { PageResult } from 'modules/arena/domain/ports/arena.repository.ts';
 import UserPopover from 'modules/users/ui/shared/components/UserPopover';
+import IconifyIcon from 'shared/components/base/IconifyIcon';
+import EmptyState from 'shared/components/common/EmptyState';
+import PatternArtwork from 'shared/components/common/PatternArtwork';
 import ChallengesRatingChip from 'shared/components/rating/ChallengesRatingChip.tsx';
+import { ListPagination } from 'shared/components/sections/common/FramedListPage';
+import SectionHeader from 'shared/components/sections/common/SectionHeader';
 import { mergePinnedRows } from 'shared/lib/pinnedRows';
 import ArenaPlayerStatisticsDialog from '../dialogs/ArenaPlayerStatisticsDialog.tsx';
 
@@ -42,35 +48,11 @@ const resultColor = (value: number) => {
   return 'error.main';
 };
 
-const topPlayerHighlight = (rank?: number | null) => {
-  if (rank === 1) {
-    return {
-      backgroundColor: 'rgba(255, 193, 7, 0.18)',
-      hoverBackgroundColor: 'rgba(255, 193, 7, 0.26)',
-      borderColor: 'rgba(255, 193, 7, 0.58)',
-      rankColor: 'warning.dark',
-    };
-  }
-
-  if (rank === 2) {
-    return {
-      backgroundColor: 'rgba(158, 158, 158, 0.16)',
-      hoverBackgroundColor: 'rgba(158, 158, 158, 0.24)',
-      borderColor: 'rgba(158, 158, 158, 0.48)',
-      rankColor: 'text.secondary',
-    };
-  }
-
-  if (rank === 3) {
-    return {
-      backgroundColor: 'rgba(205, 127, 50, 0.16)',
-      hoverBackgroundColor: 'rgba(205, 127, 50, 0.24)',
-      borderColor: 'rgba(205, 127, 50, 0.48)',
-      rankColor: '#A46122',
-    };
-  }
-
-  return undefined;
+const rankColor = (rank?: number | null) => {
+  if (rank === 1) return 'var(--kep-gold)';
+  if (rank === 2) return 'var(--kep-silver)';
+  if (rank === 3) return 'var(--kep-bronze)';
+  return 'text.secondary';
 };
 
 const ArenaPlayersTable = ({
@@ -101,15 +83,21 @@ const ArenaPlayersTable = ({
   };
 
   return (
-    <Stack direction="column" spacing={2}>
-      <Stack direction="row" alignItems="center" justifyContent="space-between">
-        <Typography variant="h6" fontWeight={800}>
-          {isUpcoming ? t('arena.participantsTitle') : t('arena.players')}
-        </Typography>
-      </Stack>
-
-      <TableContainer background={1} component={Paper} sx={{ outline: 'none', borderRadius: 3 }}>
-        <Table>
+    <Paper component="section" variant="section" className="kep-arena-standings">
+      <SectionHeader
+        title={isUpcoming ? t('arena.participantsTitle') : t('arena.players')}
+        action={<PatternArtwork kind="activity" sx={{ width: 64 }} />}
+      />
+      <TableContainer sx={{ maxWidth: '100%', overflowX: 'auto' }}>
+        <Table
+          size="small"
+          aria-label={isUpcoming ? t('arena.participantsTitle') : t('arena.players')}
+          sx={{
+            minWidth: isUpcoming ? 360 : 680,
+            '& th': { whiteSpace: 'nowrap' },
+            '& td, & th': { px: { xs: 2, md: 2.5 } },
+          }}
+        >
           <TableHead>
             <TableRow>
               {!isUpcoming ? <TableCell width={72}>{t('arena.columns.rank')}</TableCell> : null}
@@ -137,83 +125,110 @@ const ArenaPlayersTable = ({
                   </Tooltip>
                 </TableCell>
               ) : null}
+              {!isUpcoming && (
+                <TableCell sx={{ width: 52 }}>
+                  <Box
+                    component="span"
+                    sx={{
+                      position: 'absolute',
+                      width: '1px',
+                      height: '1px',
+                      overflow: 'hidden',
+                      clipPath: 'inset(50%)',
+                    }}
+                  >
+                    {t('arena.playerStatistics')}
+                  </Box>
+                </TableCell>
+              )}
             </TableRow>
           </TableHead>
           <TableBody>
             {loading
               ? Array.from({ length: pageSize }).map((_, idx) => (
-                  <TableRow key={idx}>
-                    <TableCell colSpan={isUpcoming ? 2 : 5}>
-                      <Box sx={{ height: 52, bgcolor: 'background.default', borderRadius: 2 }} />
+                  <TableRow key={idx} sx={{ height: 76 }}>
+                    {!isUpcoming && (
+                      <TableCell>
+                        <Skeleton width={24} />
+                      </TableCell>
+                    )}
+                    <TableCell>
+                      <Stack direction="row" alignItems="center" gap={1.5}>
+                        <Skeleton variant="circular" width={32} height={32} />
+                        <Box>
+                          <Skeleton width={110} />
+                          <Skeleton width={75} height={18} />
+                        </Box>
+                      </Stack>
                     </TableCell>
+                    {Array.from({ length: isUpcoming ? 1 : 4 }, (_, index) => (
+                      <TableCell align="right" key={index}>
+                        <Skeleton width={index === 0 ? 72 : 40} sx={{ ml: 'auto' }} />
+                      </TableCell>
+                    ))}
                   </TableRow>
                 ))
               : rows.map((player) => {
                   const isCurrentUser = player.username === currentUsername;
                   const isSelected = player.username === selectedUsername;
-                  const highlight = !isUpcoming ? topPlayerHighlight(player.rank) : undefined;
 
                   return (
                     <TableRow
                       key={player.username}
                       hover={!isUpcoming}
                       onClick={() => handleSelect(player)}
+                      tabIndex={isUpcoming ? undefined : 0}
+                      onKeyDown={(event) => {
+                        if (
+                          event.target === event.currentTarget &&
+                          (event.key === 'Enter' || event.key === ' ')
+                        ) {
+                          event.preventDefault();
+                          handleSelect(player);
+                        }
+                      }}
                       sx={{
+                        height: 76,
                         cursor: !isUpcoming ? 'pointer' : 'default',
-                        backgroundColor: isCurrentUser
-                          ? 'primary.lighter'
-                          : highlight?.backgroundColor,
-                        '&:hover': isCurrentUser
-                          ? {
-                              backgroundColor: 'primary.light',
-                            }
-                          : highlight
-                            ? {
-                                backgroundColor: highlight.hoverBackgroundColor,
-                              }
-                            : undefined,
-                        '&.MuiTableRow-hover:hover': isCurrentUser
-                          ? {
-                              backgroundColor: 'primary.light',
-                            }
-                          : highlight
-                            ? {
-                                backgroundColor: highlight.hoverBackgroundColor,
-                              }
-                            : undefined,
-                        '& td': {
-                          borderColor: isSelected ? 'warning.light' : highlight?.borderColor,
-                        },
-                        '& td:first-of-type': {
-                          borderLeft: highlight ? '4px solid' : undefined,
-                          borderLeftColor: highlight?.borderColor,
+                        backgroundColor: isCurrentUser ? 'action.selected' : 'transparent',
+                        '&.MuiTableRow-hover:hover': { backgroundColor: 'action.hover' },
+                        '& td': { borderColor: isSelected ? 'primary.main' : 'divider' },
+                        '&:focus-visible': {
+                          outline: '2px solid',
+                          outlineColor: 'primary.main',
+                          outlineOffset: -2,
                         },
                       }}
                     >
                       {!isUpcoming && (
                         <TableCell align="center">
                           <Typography
-                            fontWeight={700}
+                            fontWeight={600}
                             fontSize={20}
-                            color={highlight?.rankColor ?? 'primary'}
+                            variant="metric"
+                            color={rankColor(player.rank)}
                           >
-                            {player.rank}
+                            {player.rank ? String(player.rank).padStart(2, '0') : '—'}
                           </Typography>
                         </TableCell>
                       )}
                       <TableCell>
                         <UserPopover username={player.username} avatar={player.avatar}>
                           <Stack direction="row" spacing={1.5} alignItems="center">
-                            <Avatar src={player.avatar} alt={player.username}>
+                            <Avatar src={player.avatar} alt="" sx={{ width: 32, height: 32 }}>
                               {player.username[0]?.toUpperCase()}
                             </Avatar>
                             <Stack direction="column" spacing={0.25} minWidth={0}>
-                              <Typography fontWeight={700} noWrap>
+                              <Typography variant="body2" fontWeight={600} noWrap>
                                 {player.username}
                               </Typography>
                               <Stack direction="row" spacing={0.75} alignItems="center">
                                 <ChallengesRatingChip title={player.rankTitle} size="small" />
-                                <Typography variant="caption" color="text.secondary">
+                                <Typography
+                                  variant="metric"
+                                  color="text.secondary"
+                                  sx={{ fontSize: 12 }}
+                                >
                                   {player.rating}
                                 </Typography>
                               </Stack>
@@ -223,7 +238,7 @@ const ArenaPlayersTable = ({
                       </TableCell>
                       {isUpcoming ? (
                         <TableCell align="right">
-                          <Typography fontFamily="monospace" fontWeight={700}>
+                          <Typography variant="metric" sx={{ fontSize: 18 }}>
                             {player.rating}
                           </Typography>
                         </TableCell>
@@ -240,8 +255,9 @@ const ArenaPlayersTable = ({
                               {player.results.map((result, idx) => (
                                 <Typography
                                   key={`${player.username}-result-${idx}`}
-                                  fontFamily="monospace"
-                                  fontWeight={700}
+                                  variant="metric"
+                                  sx={{ fontSize: 14 }}
+                                  fontWeight={600}
                                   color={resultColor(result)}
                                 >
                                   {result}
@@ -257,7 +273,12 @@ const ArenaPlayersTable = ({
                       ) : null}
                       {!isUpcoming ? (
                         <TableCell align="right">
-                          <Typography fontFamily="monospace" fontWeight={800} color="warning.dark">
+                          <Typography
+                            variant="metric"
+                            sx={{ fontSize: 20 }}
+                            fontWeight={600}
+                            color="primary.main"
+                          >
                             {player.points}
                           </Typography>
                         </TableCell>
@@ -272,32 +293,45 @@ const ArenaPlayersTable = ({
                           >
                             <Typography
                               component="span"
-                              fontFamily="monospace"
-                              fontWeight={700}
-                              color="info.dark"
+                              variant="metric"
+                              sx={{ fontSize: 16 }}
+                              fontWeight={600}
+                              color="text.primary"
                             >
                               {player.performance?.toFixed(1) ?? '—'}
                             </Typography>
                           </Tooltip>
                         </TableCell>
                       ) : null}
+                      {!isUpcoming && (
+                        <TableCell align="right">
+                          <IconButton
+                            size="small"
+                            aria-label={`${t('arena.playerStatistics')}: ${player.username}`}
+                            onClick={(event) => {
+                              event.stopPropagation();
+                              handleSelect(player);
+                            }}
+                          >
+                            <IconifyIcon icon="mdi:chart-box-outline" fontSize={18} />
+                          </IconButton>
+                        </TableCell>
+                      )}
                     </TableRow>
                   );
                 })}
+            {!loading && !rows.length && (
+              <TableRow>
+                <TableCell colSpan={isUpcoming ? 2 : 6}>
+                  <EmptyState compact kind="battles" title={t('arena.noParticipants')} />
+                </TableCell>
+              </TableRow>
+            )}
           </TableBody>
         </Table>
       </TableContainer>
 
-      {data?.pagesCount && data.pagesCount > 1 ? (
-        <Stack direction="column" alignItems="center">
-          <Pagination
-            color="warning"
-            count={data.pagesCount}
-            page={page}
-            onChange={(_, value) => onPageChange(value)}
-          />
-        </Stack>
-      ) : null}
+      <ListPagination count={data?.pagesCount ?? 0} page={page} onChange={onPageChange} />
 
       <ArenaPlayerStatisticsDialog
         open={isStatsModalOpen}
@@ -309,7 +343,7 @@ const ArenaPlayersTable = ({
         loading={isStatisticsLoading}
         username={selectedUsername}
       />
-    </Stack>
+    </Paper>
   );
 };
 

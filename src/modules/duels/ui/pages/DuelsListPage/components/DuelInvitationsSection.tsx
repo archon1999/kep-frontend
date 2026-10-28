@@ -47,7 +47,7 @@ const DuelInvitationsSection = ({
         >
           <Stack spacing={0.4}>
             {title ? (
-              <Typography variant="h6" fontWeight={800}>
+              <Typography variant="h6" fontWeight={600}>
                 {title}
                 {invitations.length > 0 ? (
                   <Typography component="span" variant="subtitle2" color="text.secondary" ml={1}>
@@ -72,7 +72,7 @@ const DuelInvitationsSection = ({
         : null}
 
       {!loading && !invitations.length ? (
-        <Card variant="outlined">
+        <Card variant="section">
           <CardContent>
             <Typography variant="body2" color="text.secondary">
               {emptyText}

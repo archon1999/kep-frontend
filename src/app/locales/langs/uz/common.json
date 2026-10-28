@@ -6,6 +6,21 @@
       "skipToContent": "Asosiy kontentga o'tish"
     },
     "back": "Orqaga",
+    "backTo": "{{destination}}ga qaytish",
+    "backToList": "Roʻyxatga qaytish",
+    "statistics": {
+      "byWeekday": "Hafta kunlari",
+      "byMonth": "Oylar boʻyicha",
+      "byTime": "Kun vaqti boʻyicha",
+      "period": "Faollik davri",
+      "days": "{{count}} kun",
+      "noData": "Bu davr uchun maʼlumot yoʻq.",
+      "error": "Statistikani yuklab boʻlmadi.",
+      "retry": "Qayta urinish",
+      "total": "Jami",
+      "days_one": "{{count}} kun",
+      "days_other": "{{count}} kun"
+    },
     "loading": "Yuklanmoqda...",
     "wins": "G'alabalar",
     "draws": "Duranglar",
@@ -15,8 +30,9 @@
     "searchPlaceholder": "Qidirish",
     "dataGrid": {
       "emptyState": {
-        "description": "Ma'lumotlar mavjud bo'lishi bilan shu yerda ko'rinadi.",
-        "filteredDescription": "Joriy filterlarga mos ma'lumot topilmadi. Filterlarni o'zgartirib yoki tozalab ko'ring."
+        "filteredTitle": "Mos natijalar topilmadi",
+        "description": "Ko‘rsatish uchun ma’lumot yo‘q.",
+        "filteredDescription": "Filtrlarga mos ma’lumot topilmadi. Filtrlarni o‘zgartiring yoki tozalang."
       },
       "noRows": {
         "default": "Ma'lumot topilmadi.",
@@ -38,12 +54,11 @@
     },
     "pagination": {
       "previous": "Oldingi",
-      "next": "Keyingi",
-      "displayedRows": "<total>{{count}}</total> tadan <range>{{from}}-{{to}}</range> tasi ko'rsatilmoqda"
+      "next": "Keyingi"
     },
     "dailyTasks": {
       "title": "Kunlik vazifalar",
-      "subtitle": "Seriyani davom ettiring",
+      "subtitle": "Bugungi barcha topshiriqlarni bajarib Kepcoin oling va seriyani davom ettiring.",
       "tasksCount": "{{count}} ta vazifa",
       "completed": "Bajarilgan",
       "empty": "Hozircha kunlik vazifalar yo'q"
@@ -52,17 +67,40 @@
       "name": "KEPPER",
       "companion": "KEP.uz’dagi dasturlash hamrohingiz",
       "loading": "Yuklanmoqda",
-      "notFound": "KEPPER bu sahifani topa olmadi. Keling, ortga qaytamiz."
+      "notFound": "Bu sahifa topilmadi. Manzilni tekshiring yoki bosh sahifaga qayting."
+    },
+    "retry": "Qayta urinish",
+    "loadFailed": "Ma’lumotlarni yuklab bo‘lmadi. Qayta urinib ko‘ring.",
+    "preview": "Rasmni ko‘rish",
+    "accountMenu": {
+      "title": "{{username}} — hisob menyusi",
+      "profile": "Profil",
+      "settings": "Sozlamalar",
+      "logout": "Chiqish",
+      "signIn": "Kirish"
+    },
+    "kepcoinMenu": {
+      "title": "Kepcoin balansi",
+      "view": "Hamyonni ochish",
+      "earned": "Bugun topilgan",
+      "spent": "Bugun sarflangan"
+    },
+    "done": "Tayyor",
+    "cancel": "Bekor qilish",
+    "confirm": "Tasdiqlash",
+    "confirmTitle": "Amalni tasdiqlash",
+    "invalidFormula": "Formula yozilishini tekshirib, qayta urinib ko‘ring.",
+    "languageMenu": {
+      "title": "Til"
     }
   },
   "notifications": {
-    "systemInfoTitle": "Ma'lumot",
+    "unread": "O‘qilmagan",
+    "all": "Barchasi",
     "systemNotificationTitle": "Tizim bildirishi",
     "systemNotificationOk": "OK",
     "systemNotificationFallback": "Bildirishnoma",
     "title": "Xabarnomalar",
-    "subtitleUnread": "O'qilmagan xabarnomalar",
-    "subtitleAll": "Barcha xabarnomalar",
     "countUnread": "{{count}} o'qilmagan",
     "countTotal": "{{count}} ta",
     "markAllAsRead": "Hammasini o'qilgan deb belgilash",
@@ -71,8 +109,8 @@
     "empty": "Xabarnoma yo'q",
     "markAsRead": "O'qilgan deb belgilash",
     "contestFinished": "Kontest yakunlandi | Natijalar",
-    "challengeFinished": "Bellashuv yakunlandi | Natijalar",
-    "challengeCallAccepted": "Bellashuv so'rovi qabul qilindi | Boshlash",
+    "challengeFinished": "Bellashuv yakunlandi",
+    "challengeCallAccepted": "Bellashuv taklifi qabul qilindi",
     "arenaFinished": "Arena yakunlandi | Natijalar",
     "duelStarts": "Duel boshlanadi",
     "duelReminder": "Duel eslatmasi",
@@ -91,6 +129,11 @@
     "kepcoinReasonBonusFromAdmin": "Admindan bonus",
     "kepcoinReasonDaily": "Kunlik masalalar reytingi g'olibi",
     "kepcoinReasonWeekly": "Haftalik masalalar reytingi g'olibi",
-    "kepcoinReasonMonthly": "Oylik masalalar reytingi g'olibi"
+    "kepcoinReasonMonthly": "Oylik masalalar reytingi g'olibi",
+    "actions": "Bildirishnoma amallari",
+    "remove": "Bildirishnomani olib tashlash",
+    "reportIssue": "Muammo haqida xabar berish",
+    "challengeCallAcceptedDescription": "Sozlamalarni tekshirish va tayyorlanish uchun bellashuvni oching.",
+    "challengeFinishedDescription": "Yakuniy hisob va savollar natijalarini ko‘ring."
   }
 }

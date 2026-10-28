@@ -37,7 +37,7 @@ const TestPassMobileToolbar = ({
         top: topbarHeight ?? theme.mixins.topbar.default,
         zIndex: theme.zIndex.appBar - 1,
         py: 1,
-        bgcolor: 'background.paper',
+        bgcolor: 'background.default',
         borderBottom: '1px solid',
         borderColor: 'divider',
       })}
@@ -55,7 +55,7 @@ const TestPassMobileToolbar = ({
         sx={{ minHeight: 44, px: 1.25, gap: 0.75, fontSize: '0.875rem', whiteSpace: 'nowrap' }}
       >
         {t('tests.questions')}
-        <Typography component="span" variant="caption" sx={{ fontVariantNumeric: 'tabular-nums' }}>
+        <Typography component="span" variant="caption">
           {currentNumber}/{total}
         </Typography>
       </Button>
@@ -68,7 +68,7 @@ const TestPassMobileToolbar = ({
         sx={{ flexShrink: 0, color: urgent ? 'warning.dark' : 'text.primary' }}
       >
         <IconifyIcon icon="material-symbols:timer-outline-rounded" fontSize={20} />
-        <Typography variant="body2" fontWeight={600} sx={{ fontVariantNumeric: 'tabular-nums' }}>
+        <Typography variant="metric" sx={{ fontSize: 20 }}>
           {time}
         </Typography>
       </Stack>

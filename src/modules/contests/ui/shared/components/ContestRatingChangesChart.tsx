@@ -1,6 +1,6 @@
 import { useMemo } from 'react';
 import { useTranslation } from 'react-i18next';
-import { Skeleton, Typography, useMediaQuery } from '@mui/material';
+import { useMediaQuery } from '@mui/material';
 import { alpha, useTheme } from '@mui/material/styles';
 import { getResourceByParams, resources } from 'app/routes/resources';
 import { LineChart } from 'echarts/charts';
@@ -17,11 +17,14 @@ import { LegacyGridContainLabel } from 'echarts/features';
 import { CanvasRenderer } from 'echarts/renderers';
 import { useContestRatingChanges } from 'modules/contests/application/queries';
 import ReactEchart from 'shared/components/base/ReactEchart';
+import EmptyState from 'shared/components/common/EmptyState';
 import {
   CONTESTS_RATING_LEVELS,
   getContestsRatingImageSrc,
   getContestsRatingLevelByRating,
 } from 'shared/components/rating/contestsRating';
+import { StatisticsChartSkeleton } from 'shared/components/statistics/StatisticsSkeleton';
+import useChartPalette from 'shared/hooks/useChartPalette';
 import {
   diffDateTime,
   formatDateTime,
@@ -178,14 +181,18 @@ const getStandingsParticipantPath = (contestId?: number, username?: string) => {
 const ContestRatingChangesChart = ({ username, height = 360 }: ContestRatingChangesChartProps) => {
   const { t, i18n } = useTranslation();
   const theme = useTheme();
+  const palette = useChartPalette();
   const isDownSm = useMediaQuery(theme.breakpoints.down('sm'));
   const { data: changes, isLoading } = useContestRatingChanges(username);
   const numberFormatter = useMemo(
     () =>
-      createNumberFormatter({
-        maximumFractionDigits: 0,
-        useGrouping: false,
-      }, i18n.language),
+      createNumberFormatter(
+        {
+          maximumFractionDigits: 0,
+          useGrouping: false,
+        },
+        i18n.language,
+      ),
     [i18n.language],
   );
 
@@ -193,7 +200,9 @@ const ContestRatingChangesChart = ({ username, height = 360 }: ContestRatingChan
     () =>
       [...(changes ?? [])]
         .filter((change) => change.newRating !== undefined && change.contestStartDate)
-        .sort((a, b) => getDateTimeValue(a.contestStartDate) - getDateTimeValue(b.contestStartDate)),
+        .sort(
+          (a, b) => getDateTimeValue(a.contestStartDate) - getDateTimeValue(b.contestStartDate),
+        ),
     [changes],
   );
 
@@ -202,16 +211,17 @@ const ContestRatingChangesChart = ({ username, height = 360 }: ContestRatingChan
       return null;
     }
 
+    const reference = theme.preset === 'default';
     const ratings = chartData.map((change) => change.newRating ?? AXIS_MIN_RATING);
     const axisMinRating = getAxisMinRating(ratings);
     const axisMaxRating = getAxisMaxRating(ratings);
-    const axisLabelColor = getColor(theme.vars.palette.text.secondary);
-    const axisTextColor = getColor(theme.vars.palette.text.primary);
-    const textColor = getColor(theme.vars.palette.text.primary);
-    const dividerColor = getColor(theme.vars.palette.divider);
-    const paperColor = getColor(theme.vars.palette.background.paper);
-    const shadowColor = getColor(theme.vars.palette.common.black);
-    const primaryColor = getColor(theme.vars.palette.primary.main);
+    const axisLabelColor = getColor(palette.text.secondary);
+    const axisTextColor = getColor(palette.text.primary);
+    const textColor = getColor(palette.text.primary);
+    const dividerColor = getColor(palette.divider);
+    const paperColor = getColor(palette.background.paper);
+    const shadowColor = getColor(palette.common.black);
+    const primaryColor = getColor(palette.primary.main);
     const times = chartData.map((change) => getDateTimeValue(change.contestStartDate));
     const minTime = Math.min(...times);
     const maxTime = Math.max(...times);
@@ -248,17 +258,17 @@ const ContestRatingChangesChart = ({ username, height = 360 }: ContestRatingChan
     });
 
     return {
-      grid: { left: 0, right: 0, top: 8, bottom: 24, containLabel: true },
+      grid: { left: 0, right: 8, top: 8, bottom: 24, containLabel: true },
       tooltip: {
         trigger: 'item',
-        confine: false,
+        confine: true,
         enterable: true,
-        triggerOn: 'click',
+        triggerOn: 'mousemove|click',
         hideDelay: 200,
         backgroundColor: paperColor,
         borderWidth: 1,
         borderColor: dividerColor,
-        extraCssText: `box-shadow: 0 14px 36px -20px ${alpha(shadowColor, 0.45)}; border-radius: 8px;`,
+        extraCssText: `box-shadow: 0 14px 36px -20px ${alpha(shadowColor, 0.45)}; border-radius: 0;`,
         textStyle: {
           color: textColor,
           fontFamily: theme.typography.fontFamily,
@@ -274,13 +284,13 @@ const ContestRatingChangesChart = ({ username, height = 360 }: ContestRatingChan
           const delta = point.delta ?? 0;
           const deltaColor =
             delta > 0
-              ? getColor(theme.vars.palette.success.main)
+              ? getColor(palette.success.main)
               : delta < 0
-                ? getColor(theme.vars.palette.error.main)
+                ? getColor(palette.error.main)
                 : axisLabelColor;
 
           return `
-            <div style="min-width:220px; color:${textColor};">
+            <div style="width:220px;max-width:calc(100vw - 80px);white-space:normal;overflow-wrap:anywhere;color:${textColor};">
               <div style="font-weight:800; font-size:13px; margin-bottom:8px;">${escapeHtml(
                 point.contestTitle,
               )}</div>
@@ -294,7 +304,7 @@ const ContestRatingChangesChart = ({ username, height = 360 }: ContestRatingChan
                   <div style="font-size:11px;color:${axisLabelColor};">${escapeHtml(
                     titleLabel,
                   )}</div>
-                  <div style="font-weight:800;color:${point.color};">${numberFormatter.format(
+                  <div style="font-weight:800;color:${reference ? textColor : point.color};">${numberFormatter.format(
                     rating,
                   )}</div>
                 </div>
@@ -318,9 +328,9 @@ const ContestRatingChangesChart = ({ username, height = 360 }: ContestRatingChan
                   ? `<a href="${escapeHtml(
                       standingsPath,
                     )}" style="display:flex;align-items:center;justify-content:center;gap:6px;width:100%;box-sizing:border-box;margin-top:11px;padding:7px 10px;border-radius:6px;background:${getColor(
-                      theme.vars.palette.primary.main,
+                      palette.primary.main,
                     )};color:${getColor(
-                      theme.vars.palette.primary.contrastText,
+                      palette.primary.contrastText,
                     )};font-size:12px;font-weight:800;text-decoration:none;">
                       <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.3" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false">
                         <path d="M10 13a5 5 0 0 0 7.07 0l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"></path>
@@ -340,7 +350,7 @@ const ContestRatingChangesChart = ({ username, height = 360 }: ContestRatingChan
         pieces: ratingRanges.map(({ level, visualTo }) => ({
           gte: level.min,
           lt: visualTo,
-          color: level.color,
+          color: reference ? primaryColor : level.color,
         })),
         outOfRange: {
           color: primaryColor,
@@ -348,8 +358,8 @@ const ContestRatingChangesChart = ({ username, height = 360 }: ContestRatingChan
       },
       xAxis: {
         type: 'time',
-        min: minTime,
-        max: maxTime,
+        min: minTime === maxTime ? minTime - DAY_MS / 2 : minTime,
+        max: minTime === maxTime ? maxTime + DAY_MS / 2 : maxTime,
         boundaryGap: false,
         interval: dateAxisConfig.interval,
         minInterval: dateAxisConfig.interval,
@@ -382,12 +392,12 @@ const ContestRatingChangesChart = ({ username, height = 360 }: ContestRatingChan
         {
           type: 'line',
           clip: false,
-          smooth: true,
+          smooth: !reference,
           showSymbol: true,
-          symbolSize: 10,
+          symbolSize: reference ? 6 : 10,
           cursor: username ? 'pointer' : 'default',
           data: points,
-          lineStyle: { width: 3 },
+          lineStyle: { width: reference ? 2 : 3 },
           itemStyle: {
             borderWidth: 2,
             borderColor: paperColor,
@@ -396,18 +406,18 @@ const ContestRatingChangesChart = ({ username, height = 360 }: ContestRatingChan
             focus: 'series',
             itemStyle: {
               borderWidth: 3,
-              shadowBlur: 10,
+              shadowBlur: reference ? 0 : 10,
               shadowColor: alpha(shadowColor, 0.35),
             },
           },
           markArea: {
             silent: true,
-            itemStyle: { opacity: 1 },
+            itemStyle: { opacity: reference ? 0.12 : 1 },
             data: ratingRanges.map(({ level, from, to }) => [
               {
                 yAxis: from,
                 itemStyle: {
-                  color: getContestRatingBackgroundColor(level.title, theme.palette.mode),
+                  color: getContestRatingBackgroundColor(level.title, palette.mode),
                 },
               },
               { yAxis: to },
@@ -430,18 +440,14 @@ const ContestRatingChangesChart = ({ username, height = 360 }: ContestRatingChan
         },
       ],
     } satisfies EChartsCoreOption;
-  }, [chartData, isDownSm, numberFormatter, t, theme, username]);
+  }, [chartData, isDownSm, numberFormatter, t, theme, palette, username]);
 
   if (isLoading) {
-    return <Skeleton variant="rectangular" height={height} />;
+    return <StatisticsChartSkeleton height={height} />;
   }
 
   if (!option) {
-    return (
-      <Typography variant="body2" color="text.secondary">
-        {t('contests.statistics.noData')}
-      </Typography>
-    );
+    return <EmptyState compact title={t('contests.statistics.noData')} />;
   }
 
   return (

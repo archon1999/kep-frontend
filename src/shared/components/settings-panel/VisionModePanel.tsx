@@ -1,7 +1,6 @@
 import { ChangeEvent } from 'react';
 import { useTranslation } from 'react-i18next';
 import { Box, FormControlLabel, Radio, RadioGroup, Stack, Typography } from '@mui/material';
-import { alpha } from '@mui/material/styles';
 import { VisionMode, useVisionMode } from 'app/providers/VisionModeProvider';
 import IconifyIcon from 'shared/components/base/IconifyIcon';
 import useResolvedThemeMode from 'shared/hooks/useResolvedThemeMode';
@@ -110,36 +109,19 @@ const VisionModePanel = () => {
             sx={{
               margin: 0,
               width: '100%',
-              p: 1,
-              borderRadius: 2,
+              p: 1.25,
+              borderRadius: 0,
               alignItems: 'flex-start',
-              border: (theme) =>
-                `1px solid ${alpha(
-                  mode === option.value ? theme.palette.primary.main : theme.palette.divider,
-                  mode === option.value ? (isDark ? 0.4 : 0.22) : isDark ? 0.36 : 0.72,
-                )}`,
-              bgcolor: (theme) =>
-                mode === option.value
-                  ? alpha(theme.palette.primary.main, isDark ? 0.16 : 0.08)
-                  : theme.vars.palette.background.menuElevation1,
-              backgroundImage: (theme) =>
-                isDark
-                  ? `linear-gradient(180deg, ${alpha(theme.palette.common.white, 0.045)} 0%, transparent 100%)`
-                  : `linear-gradient(180deg, ${alpha(theme.palette.common.white, 0.82)} 0%, transparent 100%)`,
-              boxShadow: (theme) =>
-                mode === option.value
-                  ? `0 14px 28px -24px ${alpha(theme.palette.primary.main, isDark ? 0.82 : 0.45)}, inset 0 1px 0 ${alpha(theme.palette.common.white, isDark ? 0.06 : 0.72)}`
-                  : isDark
-                    ? `inset 0 1px 0 ${alpha(theme.palette.common.white, 0.04)}`
-                    : `inset 0 1px 0 ${alpha(theme.palette.common.white, 0.72)}`,
-              '&:hover': {
-                bgcolor: (theme) => alpha(theme.palette.primary.main, isDark ? 0.12 : 0.05),
+              border: '1px solid',
+              borderColor: mode === option.value ? 'primary.main' : 'divider',
+              bgcolor: mode === option.value ? 'action.selected' : 'transparent',
+              '&:hover': { bgcolor: 'action.hover' },
+              '&:focus-within': {
+                outline: '2px solid',
+                outlineColor: 'primary.main',
+                outlineOffset: 2,
               },
-              '& .MuiFormControlLabel-label': {
-                flex: 1,
-                ml: 1,
-                width: '100%',
-              },
+              '& .MuiFormControlLabel-label': { flex: 1, ml: 1, minWidth: 0 },
             }}
           />
         ))}

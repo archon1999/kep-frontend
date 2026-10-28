@@ -1,7 +1,10 @@
+import { useTranslation } from 'react-i18next';
 import { useParams } from 'react-router';
-import { Card, CardContent, Stack } from '@mui/material';
+import { Alert, Box, Button } from '@mui/material';
+import { contentInsetSx } from 'app/theme/styles/content';
 import { useUserActivityHistory } from 'modules/home/application/queries';
 import HomeActivityHistory from 'modules/home/ui/pages/HomePage/components/HomeActivityHistory';
+import SectionHeader from 'shared/components/sections/common/SectionHeader';
 
 interface UserProfileActivityHistoryTabProps {
   showTitle?: boolean;
@@ -10,29 +13,37 @@ interface UserProfileActivityHistoryTabProps {
 const UserProfileActivityHistoryTab = ({
   showTitle = true,
 }: UserProfileActivityHistoryTabProps) => {
+  const { t } = useTranslation();
   const { username = '' } = useParams();
-  const { data, isLoading, isLoadingMore, hasMore, loadMore } = useUserActivityHistory(
-    username,
-    20,
-  );
+  const { data, error, mutate, isLoading, isLoadingMore, hasMore, loadMore } =
+    useUserActivityHistory(username, 20);
 
   return (
-    <Card variant="outlined">
-      <CardContent>
-        <Stack direction="column" spacing={2}>
+    <Box>
+      {showTitle && <SectionHeader title={t('homePage.activityHistory.title')} />}
+      <Box sx={contentInsetSx}>
+        {error ? (
+          <Alert
+            severity="error"
+            action={<Button onClick={() => mutate()}>{t('common.retry')}</Button>}
+          >
+            {t('common.loadFailed')}
+          </Alert>
+        ) : (
           <HomeActivityHistory
-            maxHeight={500}
+            maxHeight={720}
             username={username}
             history={data ?? undefined}
             isLoading={isLoading}
             isLoadingMore={isLoadingMore}
             hasMore={hasMore}
             onLoadMore={loadMore}
-            showTitle={showTitle}
+            showTitle={false}
+            compact
           />
-        </Stack>
-      </CardContent>
-    </Card>
+        )}
+      </Box>
+    </Box>
   );
 };
 

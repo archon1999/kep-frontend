@@ -88,7 +88,7 @@ const SortableList = ({ items, onChange, dragScope }: SortableListProps) => {
             display: 'flex',
             gap: 1,
             alignItems: 'center',
-            borderRadius: 2,
+            borderRadius: 0,
             bgcolor: 'transparent',
             cursor: canDrag ? 'grab' : 'default',
             '&:active': { cursor: canDrag ? 'grabbing' : 'default' },

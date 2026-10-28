@@ -11,17 +11,17 @@
       "finished": "Yakunlangan"
     },
     "hero": {
-      "subtitle": "Kontest oralig'ida cover photo almashtirgan foydalanuvchilar avtomatik qo'shiladi. Eng kuchli coverlarga ovoz bering va live reytingni kuzating.",
+      "subtitle": "Musobaqa davrida muqovani almashtirish uni avtomatik qatnashtiradi. Ovoz bering va natijalarni kuzating.",
       "entries": "{{count}} ishtirokchi",
       "remainingVotes": "{{total}} tadan {{count}} ta ovoz qoldi",
       "signInToVote": "Ovoz berish uchun tizimga kiring",
       "endsAt": "Ovoz berish {{date}} da yopiladi",
       "finishedAt": "{{date}} da yakunlangan",
-      "readOnly": "Ovoz berish yopilgan. Natijalar faqat ko'rish rejimida."
+      "readOnly": "Ovoz berish tugagan. Yakuniy natijalarni ko‘rish mumkin."
     },
     "home": {
       "live": "KEP Cover live",
-      "subtitle": "Cover kontesti hozir faol. Barcha coverlarni ko'rish, ovoz berish va top yangilanishini kuzatish uchun to'liq sahifani oching.",
+      "subtitle": "KEP Cover ovoz berishi ochiq. Muqovalar va joriy natijalarni ko‘ring.",
       "entries": "{{count}} ishtirokchi",
       "remainingVotes": "{{total}} tadan {{count}} ta ovoz qoldi",
       "signInToVote": "Ovoz berish uchun tizimga kiring",
@@ -38,8 +38,9 @@
     },
     "empty": {
       "title": "Hali KEP Cover kontesti yaratilmagan",
-      "subtitle": "Kontest yaratilgach, shu yerda live natijalar va barcha qatnashayotgan coverlar chiqadi.",
-      "entries": "Hozircha bu kontestda coverlar yo'q."
+      "subtitle": "Hozircha KEP Cover tanlovi e’lon qilinmagan.",
+      "entries": "Bu tanlovda hali muqovalar qatnashmayapti.",
+      "topEntries": "Yetakchi muqovalar hozircha mavjud emas."
     }
   }
 }

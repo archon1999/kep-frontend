@@ -1,5 +1,6 @@
 import { FormEvent, ReactNode, useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
+import { Link } from 'react-router';
 import {
   Box,
   Button,
@@ -13,9 +14,11 @@ import {
 } from '@mui/material';
 import { useNavContext } from 'app/layouts/main-layout/NavProvider';
 import { useBreakpoints } from 'app/providers/BreakpointsProvider';
-import { Link } from 'react-router';
+import { overlayFormStyles } from 'app/theme/styles/overlays';
 import IconifyIcon from 'shared/components/base/IconifyIcon';
 import SimpleBar from 'shared/components/base/SimpleBar';
+import MixedText from 'shared/components/common/MixedText';
+import FramedPage from 'shared/components/sections/common/FramedPage';
 import BackToListButton, { BackToListButtonProvider } from './BackToListButton';
 
 interface AdminFormPageLayoutProps {
@@ -56,11 +59,12 @@ const AdminFormAside = ({
 
   return (
     <Paper
-      background={1}
+      variant="section"
       sx={(theme) => ({
+        ...(theme.preset === 'default' ? overlayFormStyles(theme) : {}),
         position: 'sticky',
-        top: { xs: 0, md: topbarHeight.md },
-        width: { md: 336, lg: 404 },
+        top: 0,
+        width: { md: 280, lg: 320 },
         height: { xs: 1, md: theme.mixins.contentHeight(topbarHeight).md },
         overflow: 'hidden',
         display: 'flex',
@@ -70,10 +74,29 @@ const AdminFormAside = ({
       <SimpleBar sx={{ flex: 1, maxHeight: 1, overflowY: 'auto' }}>
         <Stack direction="column" divider={<Divider flexItem orientation="horizontal" />}>
           <Box sx={{ p: { xs: 3, md: 5 } }}>
-            <Stack direction="row" justifyContent="space-between" alignItems="center" mb={3}>
-              {title ? <Typography variant="h6">{title}</Typography> : <span />}
+            <Stack
+              direction="row"
+              justifyContent="space-between"
+              alignItems="center"
+              gap={1}
+              mb={3}
+              sx={{ pb: 2, borderBottom: '1px solid', borderColor: 'divider' }}
+            >
+              {title ? (
+                <Typography component="h2" variant="h6">
+                  <MixedText>{title}</MixedText>
+                </Typography>
+              ) : (
+                <span />
+              )}
               {handleClose ? (
-                <Button shape="circle" variant="soft" color="neutral" onClick={handleClose}>
+                <Button
+                  shape="circle"
+                  variant="soft"
+                  color="neutral"
+                  onClick={handleClose}
+                  aria-label={t('common.close')}
+                >
                   <IconifyIcon icon="material-symbols:close-rounded" sx={{ fontSize: 20 }} />
                 </Button>
               ) : null}
@@ -94,7 +117,7 @@ const AdminFormAside = ({
           flexWrap: 'wrap',
           position: 'sticky',
           bottom: 0,
-          bgcolor: 'background.elevation1',
+          bgcolor: 'background.default',
           borderTop: 1,
           borderColor: 'divider',
         }}
@@ -153,7 +176,9 @@ const AdminFormPageLayout = ({
     };
 
     const frame = window.requestAnimationFrame(scrollMainToTop);
-    const timeouts = [0, 150, 500, 1000].map((timeout) => window.setTimeout(scrollMainToTop, timeout));
+    const timeouts = [0, 150, 500, 1000].map((timeout) =>
+      window.setTimeout(scrollMainToTop, timeout),
+    );
 
     return () => {
       window.cancelAnimationFrame(frame);
@@ -167,128 +192,147 @@ const AdminFormPageLayout = ({
   };
 
   return (
-    <BackToListButtonProvider listPath={listPath}>
-      <Stack
-        component="form"
-        id={formId}
-        direction="row"
-        onSubmit={handleSubmit}
-        sx={{
-          alignItems: 'stretch',
-          minHeight: 1,
-          '& .MuiInputBase-root:not(.MuiInputBase-multiline)': {
-            minHeight: 48,
-          },
-          '& .MuiFormControlLabel-root': {
-            mx: 0,
-            gap: 1,
-            minHeight: 40,
-            alignItems: 'center',
-          },
-          '& .MuiFormControlLabel-root .MuiSwitch-root, & .MuiFormControlLabel-root .MuiRadio-root, & .MuiFormControlLabel-root .MuiCheckbox-root': {
-            ml: 0,
-          },
-        }}
-      >
-        <Paper sx={{ p: { xs: 3, md: 5 }, flex: 1, minWidth: 0 }}>
-          <Box sx={{ mb: 3 }}>
-            <Stack
-              direction={{ xs: 'column', sm: 'row' }}
-              alignItems={{ sm: 'center' }}
-              justifyContent="space-between"
-              gap={2}
-            >
-              <Typography
-                variant="h5"
-                sx={{
-                  fontWeight: 700,
-                  overflowWrap: 'anywhere',
-                }}
+    <FramedPage>
+      <BackToListButtonProvider listPath={listPath}>
+        <Stack
+          component="form"
+          id={formId}
+          direction="row"
+          onSubmit={handleSubmit}
+          sx={{
+            alignItems: 'stretch',
+            minHeight: 1,
+            '& .MuiInputBase-root:not(.MuiInputBase-multiline)': {
+              minHeight: 48,
+            },
+            '& .MuiFormControlLabel-root': {
+              mx: 0,
+              gap: 1,
+              minHeight: 40,
+              alignItems: 'center',
+            },
+            '& .MuiFormControlLabel-root .MuiSwitch-root, & .MuiFormControlLabel-root .MuiRadio-root, & .MuiFormControlLabel-root .MuiCheckbox-root':
+              {
+                ml: 0,
+              },
+          }}
+        >
+          <Paper variant="section" sx={{ p: 'var(--kep-content-inset)', flex: 1, minWidth: 0 }}>
+            <Box sx={{ mb: 3 }}>
+              <Stack
+                direction={{ xs: 'column', sm: 'row' }}
+                alignItems={{ sm: 'center' }}
+                justifyContent="space-between"
+                gap={2}
               >
-                {title}
-              </Typography>
-              <BackToListButton />
-            </Stack>
-          </Box>
+                <Typography
+                  component="h1"
+                  variant="h5"
+                  sx={{
+                    fontFamily: 'var(--kep-display-font)',
+                    fontWeight: 500,
+                    overflowWrap: 'anywhere',
+                  }}
+                >
+                  <MixedText>{title}</MixedText>
+                </Typography>
+                <BackToListButton />
+              </Stack>
+            </Box>
 
-          <Container maxWidth={false} sx={{ px: { xs: 0 } }}>
-            <Stack direction="column" sx={{ rowGap: 4, mb: 4 }}>
-              {children}
-            </Stack>
-          </Container>
-        </Paper>
+            <Container maxWidth={false} sx={{ px: { xs: 0 } }}>
+              <Stack direction="column" sx={{ rowGap: 4, mb: 4 }}>
+                {children}
+              </Stack>
+            </Container>
+          </Paper>
 
-        {upMd ? (
-          <AdminFormAside
-            title={sidebarTitle}
-            listPath={listPath}
-            isSaving={isSaving}
-            isEdit={isEdit}
-            onDelete={onDelete}
-          >
-            {sidebar}
-          </AdminFormAside>
-        ) : (
-          <Drawer
-            anchor="right"
-            variant="temporary"
-            open={isAsideOpen}
-            onClose={() => setIsAsideOpen(false)}
-            sx={{
-              [`& .${drawerClasses.paper}`]: { width: 1, maxWidth: 404 },
-            }}
-          >
+          {upMd ? (
             <AdminFormAside
               title={sidebarTitle}
               listPath={listPath}
               isSaving={isSaving}
               isEdit={isEdit}
               onDelete={onDelete}
-              handleClose={() => setIsAsideOpen(false)}
             >
               {sidebar}
             </AdminFormAside>
-          </Drawer>
-        )}
-      </Stack>
-
-      {!upMd && (
-        <Box sx={{ position: 'sticky', zIndex: 999, width: 1, bottom: 0 }}>
-          <Paper
-            component={Stack}
-            direction="row"
-            sx={(theme) => ({
-              px: { xs: 3, md: 5 },
-              bgcolor: 'background.menu',
-              height: theme.mixins.footer.sm,
-            })}
-          >
-            <Stack direction="row" flex={1} gap={1} alignItems="center" justifyContent="space-between">
-              <Stack direction="row" gap={0.5} alignItems="center">
-                <IconifyIcon
-                  icon="material-symbols:info-outline-rounded"
-                  color="info.main"
-                  fontSize={18}
-                />
-                <Typography variant="subtitle2" color="info.main" fontWeight={400}>
-                  {sidebarTitle}
-                </Typography>
-              </Stack>
-
-              <Button
-                type="button"
-                variant="soft"
-                color="neutral"
-                onClick={() => setIsAsideOpen(true)}
-                endIcon={<IconifyIcon icon="material-symbols:chevron-right-rounded" />}
+          ) : (
+            <Drawer
+              anchor="right"
+              variant="temporary"
+              open={isAsideOpen}
+              onClose={() => setIsAsideOpen(false)}
+              slotProps={{ paper: { role: 'dialog', 'aria-label': sidebarTitle ?? title } }}
+              sx={{
+                [`& .${drawerClasses.paper}`]: { width: 1, maxWidth: 404 },
+              }}
+            >
+              <AdminFormAside
+                title={sidebarTitle}
+                listPath={listPath}
+                isSaving={isSaving}
+                isEdit={isEdit}
+                onDelete={onDelete}
+                handleClose={() => setIsAsideOpen(false)}
               >
-                {t('admin.actions.edit')}
-              </Button>
-            </Stack>
-          </Paper>
-        </Box>
-      )}
-    </BackToListButtonProvider>
+                {sidebar}
+              </AdminFormAside>
+            </Drawer>
+          )}
+        </Stack>
+
+        {!upMd && (
+          <Box sx={{ position: 'sticky', zIndex: 999, width: 1, bottom: 0 }}>
+            <Paper
+              component={Stack}
+              direction="row"
+              sx={(theme) => ({
+                px: { xs: 2, md: 5 },
+                bgcolor: 'background.menu',
+                minHeight: theme.mixins.footer.sm,
+                py: 1,
+              })}
+            >
+              <Stack
+                direction="row"
+                flex={1}
+                gap={1}
+                alignItems="center"
+                justifyContent="space-between"
+              >
+                <Stack direction="row" gap={0.5} alignItems="center" sx={{ minWidth: 0 }}>
+                  <IconifyIcon
+                    icon="material-symbols:info-outline-rounded"
+                    color="info.main"
+                    fontSize={18}
+                  />
+                  <Typography
+                    variant="subtitle2"
+                    color="info.main"
+                    fontWeight={400}
+                    sx={{ overflowWrap: 'anywhere' }}
+                  >
+                    {sidebarTitle}
+                  </Typography>
+                </Stack>
+
+                <Button
+                  type="button"
+                  variant="soft"
+                  color="neutral"
+                  onClick={() => setIsAsideOpen(true)}
+                  sx={{ flexShrink: 0 }}
+                  endIcon={<IconifyIcon icon="material-symbols:chevron-right-rounded" />}
+                >
+                  {t('admin.actions.edit')}
+                </Button>
+              </Stack>
+            </Paper>
+          </Box>
+        )}
+      </BackToListButtonProvider>
+    </FramedPage>
   );
 };
 

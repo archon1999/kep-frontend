@@ -1,9 +1,13 @@
-import { Card, CardContent, Grid, Pagination, Skeleton, Stack, Typography } from '@mui/material';
 import { useTranslation } from 'react-i18next';
-import ChallengeCard from 'modules/challenges/ui/shared/components/ChallengeCard.tsx';
-import { Challenge, ChallengePlayer, ChallengeQuestionTimeType, ChallengeStatus } from 'modules/challenges/domain';
-import { ArenaChallenge } from 'modules/arena/domain/entities/arena-challenge.entity.ts';
-import { PageResult } from 'modules/arena/domain/ports/arena.repository.ts';
+import { Box, Paper, Skeleton, Stack } from '@mui/material';
+import { mapArenaChallengeToChallenge } from 'modules/arena/application/arena-challenge-preview';
+import { PageResult } from 'modules/arena/domain/contracts/arena.repository';
+import { ArenaChallenge } from 'modules/arena/domain/entities/arena-challenge.entity';
+import ChallengeCard from 'modules/challenges/ui/shared/components/ChallengeCard';
+import EmptyState from 'shared/components/common/EmptyState';
+import PatternArtwork from 'shared/components/common/PatternArtwork';
+import { ListPagination } from 'shared/components/sections/common/FramedListPage';
+import SectionHeader from 'shared/components/sections/common/SectionHeader';
 
 interface ChallengesListProps {
   data?: PageResult<ArenaChallenge>;
@@ -15,34 +19,6 @@ interface ChallengesListProps {
   currentUsername?: string;
   showPagination?: boolean;
 }
-
-const mapArenaChallengeToChallenge = (challenge: ArenaChallenge): Challenge => {
-  const mapPlayer = (player?: ArenaChallenge['playerFirst']): ChallengePlayer => ({
-    username: player?.username ?? '-',
-    avatar: player?.avatar,
-    result: player?.result ?? 0,
-    results: player?.results ?? [],
-    rating: player?.rating ?? 0,
-    newRating: player?.rating ?? 0,
-    rankTitle: player?.rankTitle ?? '',
-    newRankTitle: player?.rankTitle ?? '',
-    delta: 0,
-  });
-
-  return {
-    id: challenge.id,
-    playerFirst: mapPlayer(challenge.playerFirst),
-    playerSecond: mapPlayer(challenge.playerSecond),
-    finished: challenge.finished,
-    questionsCount: challenge.questionsCount,
-    timeSeconds: challenge.timeSeconds,
-    remainingTimeSeconds: challenge.timeSeconds,
-    rated: Boolean(challenge.rated),
-    questionTimeType: challenge.questionTimeType ?? ChallengeQuestionTimeType.TimeToAll,
-    status: challenge.finished ? ChallengeStatus.Finished : ChallengeStatus.Already,
-  };
-};
-
 const ArenaChallengesList = ({
   data,
   loading,
@@ -54,48 +30,51 @@ const ArenaChallengesList = ({
   showPagination = true,
 }: ChallengesListProps) => {
   const { t } = useTranslation();
-
   const challenges = data?.data?.map(mapArenaChallengeToChallenge) ?? [];
-
   return (
-    <Stack direction="column" spacing={2}>
-      <Typography variant="h6" fontWeight={800}>
-        {t(titleKey)}
-      </Typography>
-      <Grid container spacing={2}>
-        {loading
-          ? Array.from({ length: 4 }).map((_, idx) => (
-              <Grid key={idx} size={{ xs: 12, md: 6 }}>
-                <Skeleton variant="rounded" height={160} />
-              </Grid>
-            ))
-          : challenges.map((challenge) => (
-              <Grid key={challenge.id} size={{ xs: 12, md: 6 }}>
-                <ChallengeCard challenge={challenge} currentUsername={currentUsername} />
-              </Grid>
-            ))}
-      </Grid>
-      {!loading && challenges.length === 0 ? (
-        <Card sx={{ outline: 'none', borderRadius: 3 }} background={1}>
-          <CardContent>
-            <Typography variant="body2" color="text.secondary">
-              {t(emptyKey)}
-            </Typography>
-          </CardContent>
-        </Card>
-      ) : null}
-      {showPagination && data?.pagesCount && data.pagesCount > 1 ? (
-        <Stack direction="column" alignItems="center">
-          <Pagination
-            color="warning"
-            count={data.pagesCount}
-            page={page}
-            onChange={(_, value) => onPageChange(value)}
-          />
-        </Stack>
-      ) : null}
-    </Stack>
+    <Paper component="section" variant="section">
+      <SectionHeader
+        title={t(titleKey)}
+        action={<PatternArtwork kind="battles" sx={{ width: 64 }} />}
+      />
+      <Box sx={{ px: 'var(--kep-content-inset)' }}>
+        {loading ? (
+          Array.from({ length: 10 }, (_, index) => (
+            <Stack
+              key={index}
+              direction="row"
+              alignItems="center"
+              gap={2}
+              sx={{ height: 72, borderBottom: 1, borderColor: 'divider' }}
+            >
+              <Box sx={{ flex: 1, minWidth: 0 }}>
+                <Skeleton width="70%" sx={{ ml: 'auto' }} />
+                <Skeleton width="45%" sx={{ ml: 'auto' }} />
+              </Box>
+              <Skeleton width={60} height={32} />
+              <Box sx={{ flex: 1, minWidth: 0 }}>
+                <Skeleton width="70%" />
+                <Skeleton width="45%" />
+              </Box>
+              <Skeleton variant="circular" width={32} height={32} />
+            </Stack>
+          ))
+        ) : challenges.length ? (
+          challenges.map((challenge) => (
+            <ChallengeCard
+              key={challenge.id}
+              challenge={challenge}
+              currentUsername={currentUsername}
+            />
+          ))
+        ) : (
+          <EmptyState compact kind="battles" title={t(emptyKey)} />
+        )}
+      </Box>
+      {showPagination && Boolean(data?.pagesCount && data.pagesCount > 1) && (
+        <ListPagination count={data!.pagesCount} page={page} onChange={onPageChange} />
+      )}
+    </Paper>
   );
 };
-
 export default ArenaChallengesList;

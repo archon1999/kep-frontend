@@ -1,20 +1,10 @@
 import { useTranslation } from 'react-i18next';
-import { Link as RouterLink } from 'react-router-dom';
-import {
-  Box,
-  Card,
-  Chip,
-  Divider,
-  Stack,
-  Tooltip,
-  Typography,
-  alpha,
-  useTheme,
-} from '@mui/material';
+import { Box, Chip, Divider, Stack, Tooltip, Typography, alpha, useTheme } from '@mui/material';
 import { getResourceById, resources } from 'app/routes/resources.ts';
 import { getDifficultyColor, getDifficultyLabelKey } from 'modules/problems/config/difficulty';
 import { ProblemListItem } from 'modules/problems/domain/entities/problem.entity.ts';
 import IconifyIcon from 'shared/components/base/IconifyIcon.tsx';
+import ProblemListRow from './ProblemListRow';
 
 interface ProblemListCardProps {
   problem: ProblemListItem;
@@ -23,30 +13,6 @@ interface ProblemListCardProps {
 const ProblemListCard = ({ problem }: ProblemListCardProps) => {
   const { t } = useTranslation();
   const theme = useTheme();
-
-  const getStatusColor = () => {
-    if (problem.userInfo?.hasSolved) {
-      return theme.palette.success.main;
-    }
-
-    if (problem.userInfo?.hasAttempted) {
-      return theme.palette.error.main;
-    }
-
-    return theme.palette.primary.main;
-  };
-
-  const getRowBackground = () => {
-    if (problem.userInfo?.hasSolved) {
-      return alpha(theme.palette.success.main, 0.12);
-    }
-
-    if (problem.userInfo?.hasAttempted) {
-      return alpha(theme.palette.error.main, 0.06);
-    }
-
-    return undefined;
-  };
 
   const renderStatusIcon = () => {
     if (problem.userInfo?.hasSolved) {
@@ -151,133 +117,15 @@ const ProblemListCard = ({ problem }: ProblemListCardProps) => {
     </>
   );
 
-  const statusColor = getStatusColor();
-
   return (
-    <Card
-      component={RouterLink}
-      to={getResourceById(resources.Problem, problem.id)}
-      sx={{
-        display: 'block',
-        textDecoration: 'none',
-        color: 'inherit',
-        p: { xs: 1.25, sm: 2 },
-        borderRadius: 2,
-        border: 0,
-        borderLeft: '6px solid',
-        borderLeftColor: statusColor,
-        bgcolor: getRowBackground() ?? 'background.paper',
-        transition: 'transform 0.2s ease, box-shadow 0.2s ease, border-color 0.2s ease',
-        '&:hover': {
-          transform: 'translateY(-2px)',
-          boxShadow: theme.shadows[4],
-          borderLeftColor: statusColor,
-        },
-      }}
-    >
-      <Box
-        sx={{
-          display: { xs: 'grid', sm: 'flex' },
-          position: 'relative',
-          gridTemplateColumns: { xs: 'minmax(0, 1fr) auto' },
-          gridTemplateRows: { xs: 'auto auto' },
-          columnGap: { xs: 1, sm: 1.5 },
-          rowGap: { xs: 0.5, sm: 1.5 },
-          alignItems: { xs: 'center', sm: 'center' },
-          justifyContent: 'space-between',
-        }}
-      >
-        <Stack
-          direction="row"
-          spacing={1.25}
-          alignItems={{ xs: 'center', sm: 'flex-start' }}
-          minWidth={0}
-          sx={{ gridColumn: { xs: 1, sm: 'auto' }, gridRow: { xs: 1, sm: 'auto' }, flex: 1 }}
-        >
-          <Box
-            sx={{
-              position: { xs: 'absolute', sm: 'static' },
-              left: { xs: 0, sm: 'auto' },
-              top: { xs: '50%', sm: 'auto' },
-              transform: { xs: 'translateY(-50%)', sm: 'none' },
-              flexShrink: 0,
-              display: 'inline-flex',
-              alignItems: 'center',
-              justifyContent: 'center',
-            }}
-          >
-            {renderStatusIcon()}
-          </Box>
-
-          <Stack
-            direction="column"
-            spacing={0.5}
-            minWidth={0}
-            flex={1}
-            sx={{ pl: { xs: 4, sm: 0 } }}
-          >
-            <Typography
-              variant="subtitle1"
-              fontWeight={600}
-              color="text.primary"
-              sx={{ lineHeight: 1.25, overflowWrap: 'anywhere' }}
-            >
-              {problem.id}. {problem.title}
-            </Typography>
-            <Box sx={{ display: { xs: 'none', sm: 'block' } }}>{renderSolvedBadges()}</Box>
-          </Stack>
-        </Stack>
-
-        <Box
-          sx={{
-            display: { xs: 'block', sm: 'none' },
-            gridColumn: { xs: 2, sm: 'auto' },
-            gridRow: { xs: 1, sm: 'auto' },
-            justifySelf: 'end',
-            alignSelf: 'start',
-          }}
-        >
-          {renderDifficultyBadge()}
-        </Box>
-
-        <Stack
-          direction="row"
-          spacing={1}
-          alignItems="center"
-          justifyContent="flex-end"
-          flexShrink={0}
-          sx={{ display: { xs: 'none', sm: 'flex' } }}
-        >
-          {renderDifficultyBadge()}
-          {renderProblemRatingBadge()}
-        </Stack>
-
-        <Box
-          sx={{
-            display: { xs: 'block', sm: 'none' },
-            gridColumn: 1,
-            gridRow: 2,
-            pl: 4,
-            minWidth: 0,
-            mt: -0.25,
-          }}
-        >
-          {renderSolvedBadges()}
-        </Box>
-
-        <Box
-          sx={{
-            display: { xs: 'block', sm: 'none' },
-            gridColumn: { xs: 2, sm: 'auto' },
-            gridRow: { xs: 2, sm: 'auto' },
-            justifySelf: 'end',
-            alignSelf: 'end',
-          }}
-        >
-          {renderProblemRatingBadge()}
-        </Box>
-      </Box>
-    </Card>
+    <ProblemListRow
+      href={getResourceById(resources.Problem, problem.id)}
+      title={problem.id + '. ' + problem.title}
+      status={renderStatusIcon()}
+      counts={renderSolvedBadges()}
+      difficulty={renderDifficultyBadge()}
+      rating={renderProblemRatingBadge()}
+    />
   );
 };
 

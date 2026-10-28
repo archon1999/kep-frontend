@@ -1,34 +1,16 @@
+import { normalizeBlogHtml } from 'modules/blog/application/blog-content';
+
 export interface BlogArticleHeading {
   id: string;
   text: string;
   level: 1 | 2 | 3;
 }
 
-const EMPTY_PARAGRAPH = '<p><br></p>';
-
-export const normalizeBlogHtml = (html?: string | null) => {
-  const normalized = (html ?? '').trim();
-
-  if (!normalized || normalized === EMPTY_PARAGRAPH) {
-    return '';
-  }
-
-  return normalized;
-};
-
-export const stripBlogHtml = (html?: string | null) =>
-  normalizeBlogHtml(html)
-    .replace(/<[^>]+>/g, ' ')
-    .replace(/\s+/g, ' ')
-    .trim();
-
-export const estimateBlogReadTime = (html?: string | null) => {
-  const wordCount = stripBlogHtml(html)
-    .split(' ')
-    .filter(Boolean).length;
-
-  return Math.max(1, Math.ceil(wordCount / 200));
-};
+export {
+  normalizeBlogHtml,
+  stripBlogHtml,
+  estimateBlogReadTime,
+} from 'modules/blog/application/blog-content';
 
 const slugify = (value: string) =>
   value
@@ -67,6 +49,7 @@ const collectHeadings = (document: Document) => {
 export const prepareBlogArticle = (
   html?: string | null,
   tableOfContents: BlogArticleHeading[] = [],
+  title?: string,
 ) => {
   const normalizedHtml = normalizeBlogHtml(html);
 
@@ -79,13 +62,20 @@ export const prepareBlogArticle = (
 
   const parser = new DOMParser();
   const document = parser.parseFromString(normalizedHtml, 'text/html');
+  const firstElement = document.body.firstElementChild;
+  if (
+    title &&
+    firstElement?.tagName === 'H1' &&
+    firstElement.textContent?.trim() === title.trim()
+  ) {
+    firstElement.remove();
+  }
   const headingNodes = Array.from(document.body.querySelectorAll('h1, h2, h3'));
   const canReuseBackendHeadings =
     tableOfContents.length > 0 &&
     headingNodes.length === tableOfContents.length &&
     headingNodes.every(
-      (node, index) =>
-        Number(node.tagName.slice(1)) === tableOfContents[index]?.level,
+      (node, index) => Number(node.tagName.slice(1)) === tableOfContents[index]?.level,
     );
 
   if (canReuseBackendHeadings) {

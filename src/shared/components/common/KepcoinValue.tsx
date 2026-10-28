@@ -1,5 +1,6 @@
 import { Box, Stack, StackProps, Typography, TypographyProps } from '@mui/material';
-import kepcoinImage from 'shared/assets/images/icons/kepcoin.png';
+import kepcoinImage from 'shared/assets/images/icons/kepcoin-icon.webp';
+import { ScrambleText } from 'shared/components/motion/InteractionEffects';
 
 interface KepcoinValueProps extends StackProps {
   value?: number | string | null;
@@ -8,6 +9,7 @@ interface KepcoinValueProps extends StackProps {
   textVariant?: TypographyProps['variant'];
   fontWeight?: TypographyProps['fontWeight'];
   color?: TypographyProps['color'];
+  animateValue?: boolean;
 }
 
 const KepcoinValue = ({
@@ -17,18 +19,27 @@ const KepcoinValue = ({
   textVariant = 'body2',
   fontWeight = 700,
   color = 'text.primary',
+  animateValue = false,
   direction = 'row',
   spacing = 0.75,
   alignItems = 'center',
   ...stackProps
 }: KepcoinValueProps) => {
-  const displayValue = label ?? (value ?? '--');
+  const displayValue = label ?? value ?? '--';
 
   return (
     <Stack direction={direction} spacing={spacing} alignItems={alignItems} {...stackProps}>
-      <Box component="img" src={kepcoinImage} alt="Kepcoin" sx={{ width: iconSize, height: iconSize }} />
+      <Box
+        component="img"
+        src={kepcoinImage}
+        alt="Kepcoin"
+        width={iconSize}
+        height={iconSize}
+        decoding="async"
+        sx={{ width: iconSize, height: iconSize }}
+      />
       <Typography variant={textVariant} fontWeight={fontWeight} color={color}>
-        {displayValue}
+        {animateValue ? <ScrambleText>{String(displayValue)}</ScrambleText> : displayValue}
       </Typography>
     </Stack>
   );

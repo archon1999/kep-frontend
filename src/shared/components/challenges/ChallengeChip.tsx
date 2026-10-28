@@ -11,7 +11,12 @@ const toneStyles: Record<
   { label: string; color: string; background: string; borderColor?: string }
 > = {
   win: { label: 'W', color: 'white', background: 'success.main' },
-  draw: { label: 'D', color: 'text.secondary', background: 'background.main', borderColor: 'divider' },
+  draw: {
+    label: 'D',
+    color: 'text.secondary',
+    background: 'background.main',
+    borderColor: 'divider',
+  },
   loss: { label: 'L', color: 'white', background: 'error.main' },
 };
 
@@ -22,9 +27,7 @@ const ChallengeChip = ({ tone, label, sx, ...chipProps }: ChallengeChipProps) =>
     <Chip
       size="small"
       variant="soft"
-      label={
-        <Typography variant="body2" fontFamily="monospace">{label ?? style.label}</Typography>
-      }
+      label={<Typography variant="body2">{label ?? style.label}</Typography>}
       sx={{
         color: style.color,
         bgcolor: style.background,

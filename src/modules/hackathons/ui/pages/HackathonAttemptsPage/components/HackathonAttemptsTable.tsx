@@ -7,7 +7,6 @@ import {
   Chip,
   Dialog,
   DialogContent,
-  DialogTitle,
   IconButton,
   Stack,
   Table,
@@ -28,6 +27,7 @@ import type {
 } from 'modules/projects/domain/entities/project.entity';
 import { canViewAttemptLog } from 'modules/projects/ui/shared/lib/attemptPermissions';
 import IconifyIcon from 'shared/components/base/IconifyIcon';
+import DialogHeader from 'shared/components/common/DialogHeader';
 import { createSafeHtml } from 'shared/lib/safeHtml';
 import { toast } from 'sonner';
 
@@ -90,7 +90,7 @@ const HackathonAttemptsTable = ({ attempts, onRerun }: HackathonAttemptsTablePro
         m: 0,
         bgcolor: 'background.elevation1',
         overflow: 'auto',
-        borderRadius: 1,
+        borderRadius: 0,
         fontFamily: 'monospace',
         whiteSpace: 'pre-wrap',
         overflowWrap: 'anywhere',
@@ -269,15 +269,11 @@ const HackathonAttemptsTable = ({ attempts, onRerun }: HackathonAttemptsTablePro
         maxWidth="md"
         aria-labelledby="hackathon-attempt-log-title"
       >
-        <DialogTitle
+        <DialogHeader
           id="hackathon-attempt-log-title"
-          sx={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', gap: 2 }}
-        >
-          {t('projects.attemptLog')}
-          <IconButton aria-label={t('common.close')} onClick={handleCloseLog} size="small">
-            <IconifyIcon icon="mdi:close" />
-          </IconButton>
-        </DialogTitle>
+          title={t('projects.attemptLog')}
+          onClose={handleCloseLog}
+        />
         <DialogContent dividers>
           {isFetchingLog ? (
             <Typography variant="body2" role="status">

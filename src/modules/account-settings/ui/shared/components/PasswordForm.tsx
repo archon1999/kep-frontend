@@ -1,10 +1,11 @@
 import { useMemo, useState } from 'react';
-import { Button, Card, CardContent, CardHeader, Grid, IconButton, InputAdornment, TextField } from '@mui/material';
 import { useTranslation } from 'react-i18next';
-import { toast } from 'sonner';
+import { Button, Grid, IconButton, InputAdornment, TextField } from '@mui/material';
 import { useAuth } from 'app/providers/AuthProvider.tsx';
 import { useChangePassword } from 'modules/account-settings/application';
 import IconifyIcon from 'shared/components/base/IconifyIcon.tsx';
+import { toast } from 'sonner';
+import SettingsSection from './SettingsSection';
 
 const PasswordForm = () => {
   const { t } = useTranslation();
@@ -19,7 +20,10 @@ const PasswordForm = () => {
   const [submitted, setSubmitted] = useState(false);
   const [showFields, setShowFields] = useState({ old: false, neu: false, confirm: false });
 
-  const passwordsMismatch = useMemo(() => newPassword !== confirmPassword, [newPassword, confirmPassword]);
+  const passwordsMismatch = useMemo(
+    () => newPassword !== confirmPassword,
+    [newPassword, confirmPassword],
+  );
 
   const handleSave = async () => {
     setSubmitted(true);
@@ -65,8 +69,18 @@ const PasswordForm = () => {
         InputProps={{
           endAdornment: (
             <InputAdornment position="end">
-              <IconButton onClick={() => setShowFields((prev) => ({ ...prev, [visibleKey]: !prev[visibleKey] }))}>
-                <IconifyIcon icon={showFields[visibleKey] ? 'material-symbols:visibility-off' : 'material-symbols:visibility'} />
+              <IconButton
+                onClick={() =>
+                  setShowFields((prev) => ({ ...prev, [visibleKey]: !prev[visibleKey] }))
+                }
+              >
+                <IconifyIcon
+                  icon={
+                    showFields[visibleKey]
+                      ? 'material-symbols:visibility-off'
+                      : 'material-symbols:visibility'
+                  }
+                />
               </IconButton>
             </InputAdornment>
           ),
@@ -76,30 +90,32 @@ const PasswordForm = () => {
   };
 
   return (
-    <Card sx={{ outline: 'none', borderRadius: 3 }} background={1}>
-      <CardHeader title={t('settings.changePassword')} />
-      <CardContent>
-        <Grid container spacing={2}>
-          <Grid size={{ xs: 12, md: 6 }}>
-            {renderPasswordField(t('settings.oldPassword'), oldPassword, setOldPassword, 'old')}
-          </Grid>
-          <Grid size={{ xs: 12, md: 6 }}>
-            {renderPasswordField(t('settings.newPassword'), newPassword, setNewPassword, 'neu')}
-          </Grid>
-          <Grid size={{ xs: 12, md: 6 }}>
-            {renderPasswordField(t('settings.retypeNewPassword'), confirmPassword, setConfirmPassword, 'confirm')}
-          </Grid>
+    <SettingsSection title={t('settings.changePassword')}>
+      <Grid container spacing={2}>
+        <Grid size={{ xs: 12, md: 6 }}>
+          {renderPasswordField(t('settings.oldPassword'), oldPassword, setOldPassword, 'old')}
         </Grid>
-        <Button
-          sx={{ mt: 3 }}
-          variant="contained"
-          onClick={handleSave}
-          disabled={!username || isMutating}
-        >
-          {t('settings.change')}
-        </Button>
-      </CardContent>
-    </Card>
+        <Grid size={{ xs: 12, md: 6 }}>
+          {renderPasswordField(t('settings.newPassword'), newPassword, setNewPassword, 'neu')}
+        </Grid>
+        <Grid size={{ xs: 12, md: 6 }}>
+          {renderPasswordField(
+            t('settings.retypeNewPassword'),
+            confirmPassword,
+            setConfirmPassword,
+            'confirm',
+          )}
+        </Grid>
+      </Grid>
+      <Button
+        sx={{ mt: 3 }}
+        variant="contained"
+        onClick={handleSave}
+        disabled={!username || isMutating}
+      >
+        {t('settings.change')}
+      </Button>
+    </SettingsSection>
   );
 };
 

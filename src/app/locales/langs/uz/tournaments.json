@@ -1,14 +1,14 @@
 {
   "tournaments": {
-    "subtitle": "Knockout turnirlarida bellashing va natijalarni kuzating.",
+    "subtitle": "Dasturlash duellarida g‘alaba qozonib turnirning keyingi bosqichiga o‘ting.",
     "countLabel": "{{count}} ta turnir",
     "emptyTitle": "Hozircha turnirlar yoʻq",
-    "emptySubtitle": "Yaqinlashayotgan turnirlar shu yerda paydo boʻladi.",
+    "emptySubtitle": "Ko‘rsatish uchun turnir yo‘q.",
     "startsOn": "Boshlanishi {{date}}",
     "players": "{{count}} ta ishtirokchi",
     "type": "Turi: {{type}}",
     "bracketTitle": "Knockout braket",
-    "bracketSubtitle": "{{count}} ishtirokchi uchun yakuniy bosqichlarga oʻtuvchi setka.",
+    "bracketSubtitle": "{{count}} ishtirokchi. G‘oliblar keyingi bosqichga o‘tadi.",
     "awaitingOpponent": "Raqib kutilmoqda",
     "awaitingWinner": "Oldingi duel gʻolibi",
     "matchNumber": "{{number}}-duel",
@@ -24,6 +24,14 @@
       "quarter": "Chorak final",
       "generic": "1/{{value}} final"
     },
-    "emptyDescription": "Turnir tafsilotlari tez orada paydo boʻladi."
+    "emptyDescription": "Turnir haqida e’lon matni kiritilmagan.",
+    "heroBadge": "G‘alaba sari",
+    "viewTournament": "Turnirni ko‘rish",
+    "formatLabel": "Format",
+    "startsLabel": "Boshlanishi",
+    "playersLabel": "Ishtirokchilar",
+    "loadError": "Turnirlarni yuklab bo‘lmadi. Qayta urinib ko‘ring.",
+    "countLabel_one": "{{count}} ta turnir",
+    "countLabel_other": "{{count}} ta turnir"
   }
 }

@@ -101,10 +101,10 @@ const TestsDataGrid = ({
             />
           )}
           <Typography
-            variant={compact ? 'caption' : 'body2'}
+            variant="metric"
             fontWeight={500}
             color="text.primary"
-            sx={{ fontVariantNumeric: 'tabular-nums' }}
+            sx={{ fontSize: compact ? 15 : 20 }}
           >
             {result}
             <Box component="span" sx={{ color: 'text.disabled', fontWeight: 400 }}>
@@ -154,7 +154,13 @@ const TestsDataGrid = ({
                 underline="hover"
                 variant="body1"
                 data-test-title
-                sx={{ fontWeight: 500, lineHeight: 1.5, overflowWrap: 'anywhere' }}
+                sx={{
+                  fontFamily: 'var(--kep-display-font)',
+                  fontWeight: 500,
+                  fontSize: 17,
+                  lineHeight: 1.5,
+                  overflowWrap: 'anywhere',
+                }}
               >
                 {row.title}
               </Link>
@@ -253,6 +259,7 @@ const TestsDataGrid = ({
 
   return (
     <DataGrid
+      className="kep-data-grid-section"
       autoHeight
       rows={tests}
       columns={columns}

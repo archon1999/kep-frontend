@@ -1,4 +1,5 @@
 import { useMemo } from 'react';
+import { useTranslation } from 'react-i18next';
 import {
   Box,
   Card,
@@ -9,8 +10,6 @@ import {
   useMediaQuery,
   useTheme,
 } from '@mui/material';
-import { alpha } from '@mui/material/styles';
-import { useTranslation } from 'react-i18next';
 import type {
   TournamentDetailEntity,
   TournamentPlayerProfile,
@@ -18,6 +17,7 @@ import type {
   TournamentStageMatch,
 } from 'modules/tournaments/domain';
 import ContestsRatingChip from 'shared/components/rating/ContestsRatingChip';
+import { cssVarRgba } from 'shared/lib/utils';
 
 interface TournamentBracketProps {
   tournament: TournamentDetailEntity;
@@ -157,7 +157,9 @@ const getBracketMetrics = (size: SupportedBracketSize | null, isMobile: boolean)
   return isMobile ? MOBILE_METRICS : DESKTOP_METRICS;
 };
 
-const getSupportedBracketSize = (tournament: TournamentDetailEntity): SupportedBracketSize | null => {
+const getSupportedBracketSize = (
+  tournament: TournamentDetailEntity,
+): SupportedBracketSize | null => {
   const stageCapacity = (tournament.stages ?? [])
     .map((stage) => (stage.duels?.length ?? 0) * 2)
     .find((capacity) => capacity === 16 || capacity === 32);
@@ -222,7 +224,9 @@ const normalizeDuelsOrder = (duels: TournamentStageMatch[] | undefined, expected
   const ordered: Array<TournamentStageMatch | undefined> = Array(expectedCount).fill(undefined);
   if (!duels?.length) return ordered;
 
-  const sortedDuels = [...duels].sort((first, second) => (first.number ?? 0) - (second.number ?? 0));
+  const sortedDuels = [...duels].sort(
+    (first, second) => (first.number ?? 0) - (second.number ?? 0),
+  );
   let cursor = 0;
 
   sortedDuels.forEach((duel, index) => {
@@ -250,7 +254,9 @@ const normalizeStages = (stages?: TournamentStageInfo[]) =>
     .reduce((accumulator, stage) => {
       accumulator.set(stage.number, {
         ...stage,
-        duels: [...(stage.duels ?? [])].sort((first, second) => (first.number ?? 0) - (second.number ?? 0)),
+        duels: [...(stage.duels ?? [])].sort(
+          (first, second) => (first.number ?? 0) - (second.number ?? 0),
+        ),
       });
       return accumulator;
     }, new Map<number, TournamentStageInfo>());
@@ -296,7 +302,10 @@ const resolveRoundSlot = (
   return { player: null, placeholder: 'winner' };
 };
 
-const buildBracketRounds = (tournament: TournamentDetailEntity, size: SupportedBracketSize): BracketMatch[][] => {
+const buildBracketRounds = (
+  tournament: TournamentDetailEntity,
+  size: SupportedBracketSize,
+): BracketMatch[][] => {
   const rounds = getRounds(size);
   const seedPairs = buildSeedPairs(size);
   const stageMap = normalizeStages(tournament.stages);
@@ -357,7 +366,9 @@ const positionRounds = (rounds: BracketMatch[][], metrics: BracketMetrics) => {
 
   centers[0] = rounds[0].map(
     (_, matchIndex) =>
-      metrics.headerHeight + metrics.connectorOffset + matchIndex * (metrics.matchHeight + metrics.rowGap),
+      metrics.headerHeight +
+      metrics.connectorOffset +
+      matchIndex * (metrics.matchHeight + metrics.rowGap),
   );
 
   for (let roundIndex = 1; roundIndex < rounds.length; roundIndex += 1) {
@@ -387,7 +398,9 @@ const positionRounds = (rounds: BracketMatch[][], metrics: BracketMetrics) => {
   );
 
   const height =
-    (centers[0][centers[0].length - 1] ?? 0) + (metrics.matchHeight - metrics.connectorOffset) + metrics.rowGap;
+    (centers[0][centers[0].length - 1] ?? 0) +
+    (metrics.matchHeight - metrics.connectorOffset) +
+    metrics.rowGap;
   const width = columnLeft[columnLeft.length - 1] + metrics.matchWidth + metrics.trailingSpace;
 
   return {
@@ -412,7 +425,9 @@ const PlayerRow = ({
 
   const title =
     slot.player?.username ??
-    (slot.placeholder === 'winner' ? t('tournaments.awaitingWinner') : t('tournaments.awaitingOpponent'));
+    (slot.placeholder === 'winner'
+      ? t('tournaments.awaitingWinner')
+      : t('tournaments.awaitingOpponent'));
 
   return (
     <Stack
@@ -425,15 +440,17 @@ const PlayerRow = ({
         boxSizing: 'border-box',
         px: 1.5,
         py: 1,
-        borderRadius: 1.75,
+        borderRadius: 0,
         border: '1px solid',
         borderStyle: slot.player ? 'solid' : 'dashed',
-        borderColor: isWinner ? alpha(theme.palette.primary.main, 0.42) : alpha(theme.palette.divider, 0.85),
+        borderColor: isWinner
+          ? cssVarRgba(theme.vars.palette.primary.mainChannel, 0.42)
+          : theme.vars.palette.divider,
         bgcolor: isWinner
-          ? alpha(theme.palette.primary.main, 0.12)
+          ? cssVarRgba(theme.vars.palette.primary.mainChannel, 0.12)
           : slot.player
-            ? alpha(theme.palette.background.default, 0.52)
-            : alpha(theme.palette.background.default, 0.28),
+            ? theme.vars.palette.background.default
+            : theme.vars.palette.background.default,
         color: isWinner ? 'text.primary' : slot.player ? 'text.primary' : 'text.secondary',
         transition: 'background-color 0.2s ease, border-color 0.2s ease, transform 0.2s ease',
       }}
@@ -464,13 +481,15 @@ const PlayerRow = ({
             minWidth: 32,
             px: 1,
             py: 0.35,
-            borderRadius: 99,
+            borderRadius: 0,
             textAlign: 'center',
-            bgcolor: isWinner ? 'primary.main' : alpha(theme.palette.text.primary, 0.08),
+            bgcolor: isWinner
+              ? 'primary.main'
+              : cssVarRgba(theme.vars.palette.text.primaryChannel, 0.08),
             color: isWinner ? 'primary.contrastText' : 'text.secondary',
           }}
         >
-          <Typography variant="subtitle2" fontWeight={800}>
+          <Typography variant="subtitle2" fontWeight={600}>
             {slot.player.balls}
           </Typography>
         </Box>
@@ -499,11 +518,13 @@ const BracketMatchCard = ({
         width: match.width,
         height: match.height,
         p: `${metrics.cardPadding}px`,
-        borderRadius: 3,
+        borderRadius: 0,
         border: '1px solid',
-        borderColor: match.isFinal ? alpha(theme.palette.primary.main, 0.42) : alpha(theme.palette.divider, 0.9),
-        bgcolor: alpha(theme.palette.background.paper, 0.94),
-        boxShadow: match.isFinal ? theme.shadows[6] : theme.shadows[2],
+        borderColor: match.isFinal
+          ? cssVarRgba(theme.vars.palette.primary.mainChannel, 0.42)
+          : theme.vars.palette.divider,
+        bgcolor: theme.vars.palette.background.paper,
+        boxShadow: 'none',
         backdropFilter: 'blur(8px)',
         display: 'flex',
         flexDirection: 'column',
@@ -517,14 +538,22 @@ const BracketMatchCard = ({
         justifyContent="flex-start"
         sx={{ minHeight: metrics.cardHeaderHeight, boxSizing: 'border-box' }}
       >
-        <Typography variant="caption" fontWeight={800} color="text.secondary">
+        <Typography variant="caption" fontWeight={600} color="text.secondary">
           {match.matchIndex + 1}-duel
         </Typography>
       </Stack>
 
       <Stack direction="column" sx={{ gap: `${metrics.playerRowsGap}px` }}>
-        <PlayerRow slot={match.first} isWinner={firstIsWinner} rowHeight={metrics.playerRowHeight} />
-        <PlayerRow slot={match.second} isWinner={secondIsWinner} rowHeight={metrics.playerRowHeight} />
+        <PlayerRow
+          slot={match.first}
+          isWinner={firstIsWinner}
+          rowHeight={metrics.playerRowHeight}
+        />
+        <PlayerRow
+          slot={match.second}
+          isWinner={secondIsWinner}
+          rowHeight={metrics.playerRowHeight}
+        />
       </Stack>
     </Box>
   );
@@ -547,9 +576,7 @@ const TournamentBracket = ({ tournament }: TournamentBracketProps) => {
 
   const roundTitles = useMemo(
     () =>
-      bracketSize
-        ? getRounds(bracketSize).map((round) => t(`tournaments.round.${round.key}`))
-        : [],
+      bracketSize ? getRounds(bracketSize).map((round) => t(`tournaments.round.${round.key}`)) : [],
     [bracketSize, t],
   );
 
@@ -577,11 +604,11 @@ const TournamentBracket = ({ tournament }: TournamentBracketProps) => {
   }, [layout.rounds]);
 
   return (
-    <Card background={1} sx={{ borderRadius: 3, overflow: 'hidden' }}>
+    <Card variant="section" sx={{ overflow: 'hidden' }}>
       <CardContent>
         <Stack direction="column" spacing={3}>
           <Stack direction="column" spacing={0.75}>
-            <Typography variant="h6" fontWeight={800}>
+            <Typography variant="h6" fontWeight={600}>
               {t('tournaments.bracketTitle')}
             </Typography>
             <Typography variant="body2" color="text.secondary" sx={{ maxWidth: 680 }}>
@@ -596,17 +623,17 @@ const TournamentBracket = ({ tournament }: TournamentBracketProps) => {
           {!bracketSize ? (
             <Box
               sx={{
-                borderRadius: 3,
+                borderRadius: 0,
                 border: '1px dashed',
-                borderColor: alpha(theme.palette.divider, 0.9),
-                bgcolor: alpha(theme.palette.background.default, 0.34),
+                borderColor: theme.vars.palette.divider,
+                bgcolor: theme.vars.palette.background.default,
                 px: { xs: 2.5, md: 4 },
                 py: { xs: 4, md: 5 },
                 textAlign: 'center',
               }}
             >
               <Stack direction="column" spacing={1} alignItems="center">
-                <Typography variant="subtitle1" fontWeight={800}>
+                <Typography variant="subtitle1" fontWeight={600}>
                   {t('tournaments.unsupportedMessage')}
                 </Typography>
                 <Typography variant="body2" color="text.secondary" sx={{ maxWidth: 520 }}>
@@ -630,11 +657,8 @@ const TournamentBracket = ({ tournament }: TournamentBracketProps) => {
                   position: 'relative',
                   minWidth: layout.width,
                   minHeight: layout.height,
-                  borderRadius: 3,
-                  background: `linear-gradient(180deg, ${alpha(theme.palette.primary.main, 0.05)} 0%, ${alpha(
-                    theme.palette.background.default,
-                    0.08,
-                  )} 100%)`,
+                  borderRadius: 0,
+                  bgcolor: 'background.default',
                 }}
               >
                 <Box
@@ -654,7 +678,7 @@ const TournamentBracket = ({ tournament }: TournamentBracketProps) => {
                       <path
                         key={`${line.fromX}-${line.fromY}-${index}`}
                         d={`M ${line.fromX} ${line.fromY} L ${midX} ${line.fromY} L ${midX} ${line.toY} L ${line.toX} ${line.toY}`}
-                        stroke={alpha(theme.palette.primary.main, 0.2)}
+                        stroke={cssVarRgba(theme.vars.palette.primary.mainChannel, 0.2)}
                         strokeWidth={2}
                         fill="none"
                         strokeLinecap="round"
@@ -679,16 +703,16 @@ const TournamentBracket = ({ tournament }: TournamentBracketProps) => {
                       sx={{
                         px: 1.5,
                         py: 0.65,
-                        borderRadius: 99,
+                        borderRadius: 0,
                         border: '1px solid',
-                        borderColor: alpha(theme.palette.primary.main, 0.16),
-                        bgcolor: alpha(theme.palette.primary.main, 0.08),
+                        borderColor: cssVarRgba(theme.vars.palette.primary.mainChannel, 0.16),
+                        bgcolor: cssVarRgba(theme.vars.palette.primary.mainChannel, 0.08),
                         backdropFilter: 'blur(6px)',
                       }}
                     >
                       <Typography
                         variant="subtitle2"
-                        fontWeight={800}
+                        fontWeight={600}
                         color="text.secondary"
                         sx={{ textAlign: 'center', whiteSpace: 'nowrap' }}
                       >
@@ -699,7 +723,9 @@ const TournamentBracket = ({ tournament }: TournamentBracketProps) => {
                 ))}
 
                 {layout.rounds.map((round) =>
-                  round.map((match) => <BracketMatchCard key={match.id} match={match} metrics={metrics} />),
+                  round.map((match) => (
+                    <BracketMatchCard key={match.id} match={match} metrics={metrics} />
+                  )),
                 )}
               </Box>
             </Box>

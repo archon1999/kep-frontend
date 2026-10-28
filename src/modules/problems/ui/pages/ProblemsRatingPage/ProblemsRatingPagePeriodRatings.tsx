@@ -1,11 +1,11 @@
+import { useTranslation } from 'react-i18next';
 import { Box, Card, CardContent, Chip, Skeleton, Stack, Typography, useTheme } from '@mui/material';
 import Grid from '@mui/material/Grid';
-import { useTranslation } from 'react-i18next';
-import UserPopover from 'modules/users/ui/shared/components/UserPopover';
-import ContestsRatingChip from 'shared/components/rating/ContestsRatingChip';
-import IconifyIcon from 'shared/components/base/IconifyIcon';
-import { cssVarRgba } from 'shared/lib/utils';
 import { useProblemsPeriodRating } from 'modules/problems/application/queries';
+import UserPopover from 'modules/users/ui/shared/components/UserPopover';
+import IconifyIcon from 'shared/components/base/IconifyIcon';
+import ContestsRatingChip from 'shared/components/rating/ContestsRatingChip';
+import { cssVarRgba } from 'shared/lib/utils';
 
 type PeriodColor = 'success' | 'info' | 'primary';
 
@@ -35,7 +35,7 @@ const ProblemsRatingPagePeriodRatings = () => {
 
   return (
     <Stack direction="column" spacing={2}>
-      <Typography variant="h6" fontWeight={800}>
+      <Typography variant="h6" fontWeight={600}>
         {t('problems.rating.periodTitle')}
       </Typography>
 
@@ -47,13 +47,8 @@ const ProblemsRatingPagePeriodRatings = () => {
           return (
             <Grid key={period} size={{ xs: 12, lg: 4 }}>
               <Card
-                variant="outlined"
+                variant="section"
                 sx={{
-                  borderColor: `var(--mui-palette-${color}-main)`,
-                  background: `linear-gradient(135deg, ${cssVarRgba(
-                    theme.vars.palette[color].mainChannel,
-                    0.12,
-                  )}, ${cssVarRgba(theme.vars.palette[color].mainChannel, 0.05)})`,
                   width: '100%',
                 }}
               >
@@ -79,17 +74,17 @@ const ProblemsRatingPagePeriodRatings = () => {
                           icon={icon}
                           width={20}
                           height={20}
-                          color={`var(--mui-palette-${color}-main)`}
+                          color={theme.vars.palette[color].main}
                         />
                       </Box>
-                      <Typography variant="subtitle1" fontWeight={800}>
+                      <Typography variant="subtitle1" fontWeight={600}>
                         {t(`problems.rating.period.${period}`)}
                       </Typography>
                     </Stack>
                     <Typography
                       variant="caption"
                       fontWeight={700}
-                      color={`var(--mui-palette-${color}-main)`}
+                      color={theme.vars.palette[color].main}
                     >
                       {t('problems.rating.ordering.solved')}
                     </Typography>
@@ -111,16 +106,12 @@ const ProblemsRatingPagePeriodRatings = () => {
                           justifyContent="space-between"
                           sx={{
                             p: 1,
-                            borderRadius: 1,
-                            backgroundColor: cssVarRgba(
-                              theme.vars.palette.background.elevation1Channel,
-                              0.8,
-                            ),
-                            border: `1px solid ${cssVarRgba(theme.vars.palette[color].mainChannel, 0.18)}`,
+                            borderBottom: 1,
+                            borderColor: 'divider',
                           }}
                         >
                           <Stack direction="row" spacing={1.5} alignItems="center">
-                            <Typography variant="body2" fontWeight={800} color="text.primary">
+                            <Typography variant="body2" fontWeight={600} color="text.primary">
                               #{index + 1}
                             </Typography>
                             <UserPopover username={item.username}>
@@ -128,7 +119,12 @@ const ProblemsRatingPagePeriodRatings = () => {
                                 {item.ratingTitle ? (
                                   <ContestsRatingChip title={item.ratingTitle} imgSize={24} />
                                 ) : null}
-                                <Typography variant="body2" fontWeight={700} color="text.primary" noWrap>
+                                <Typography
+                                  variant="body2"
+                                  fontWeight={700}
+                                  color="text.primary"
+                                  noWrap
+                                >
                                   {item.username}
                                 </Typography>
                               </Stack>

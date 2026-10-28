@@ -1,6 +1,15 @@
-import { Dispatch, PropsWithChildren, createContext, use, useEffect, useReducer, useRef } from 'react';
+import {
+  Dispatch,
+  PropsWithChildren,
+  createContext,
+  use,
+  useEffect,
+  useReducer,
+  useRef,
+} from 'react';
 import { useTranslation } from 'react-i18next';
-import { useSWRConfig } from 'swr';
+import { Config, initialConfig } from 'app/config.ts';
+import { toBackendLanguage, toI18nLanguage } from 'app/locales/locale';
 import {
   ACTIONTYPE,
   COLLAPSE_NAVBAR,
@@ -8,11 +17,13 @@ import {
   SET_CONFIG,
   settingsReducer,
 } from 'app/reducers/SettingsReducer';
-import { Config, initialConfig } from 'app/config.ts';
-import { toBackendLanguage, toI18nLanguage } from 'app/locales/locale';
+import { loadReadingFont } from 'app/theme/fontLoading';
+import { normalizeFontFamily } from 'app/theme/fonts';
+import { normalizeThemePreset, resolveInitialMode } from 'app/theme/presets';
 import { COLOR_GROUPS } from 'app/theme/primaryColorOverride';
-import { getItemFromStore } from 'shared/lib/utils';
 import { preferencesApiClient } from 'shared/api/preferences.client';
+import { getItemFromStore, setItemToStore } from 'shared/lib/utils';
+import { useSWRConfig } from 'swr';
 
 interface SettingsContextInterFace {
   config: Config;
@@ -30,8 +41,7 @@ const SettingsProvider = ({ children }: PropsWithChildren) => {
     typeof storedPrimaryColor === 'string' ? storedPrimaryColor : null;
 
   const storedThemePreset = getItemFromStore('themePreset', initialConfig.themePreset);
-  const themePreset =
-    typeof storedThemePreset === 'string' ? storedThemePreset : initialConfig.themePreset;
+  const themePreset = normalizeThemePreset(storedThemePreset);
 
   if (!primaryColor && themePreset) {
     const colorGroup = COLOR_GROUPS.find((group) => group.key === themePreset);
@@ -48,9 +58,9 @@ const SettingsProvider = ({ children }: PropsWithChildren) => {
     navigationMenuType: getItemFromStore('navigationMenuType', initialConfig.navigationMenuType),
     navColor: getItemFromStore('navColor', initialConfig.navColor),
     locale: getItemFromStore('locale', initialConfig.locale),
-    themePreset: themePreset as Config['themePreset'],
+    themePreset,
     primaryColor,
-    fontFamily: getItemFromStore('fontFamily', initialConfig.fontFamily) as Config['fontFamily'],
+    fontFamily: normalizeFontFamily(getItemFromStore('fontFamily', initialConfig.fontFamily)),
     fontSize: Number(getItemFromStore('fontSize', initialConfig.fontSize)),
     backgroundPattern: getItemFromStore(
       'backgroundPattern',
@@ -63,6 +73,23 @@ const SettingsProvider = ({ children }: PropsWithChildren) => {
     ) as Config['cardBackground'],
   };
   const [config, configDispatch] = useReducer(settingsReducer, configState);
+  useEffect(() => {
+    loadReadingFont(config.fontFamily, document);
+  }, [config.fontFamily]);
+  useEffect(() => {
+    // Migrate storage once. Subsequent user selections are persisted by the settings reducer.
+    const savedFont = getItemFromStore('fontFamily', initialConfig.fontFamily);
+    const readingFont = normalizeFontFamily(savedFont);
+    if (savedFont !== readingFont) setItemToStore('fontFamily', readingFont);
+    const savedPreset = getItemFromStore('themePreset', initialConfig.themePreset);
+    if (getItemFromStore('kep-mode', null) === null) {
+      setItemToStore('kep-mode', resolveInitialMode(savedPreset, null));
+    }
+    const canonicalPreset = normalizeThemePreset(savedPreset);
+    if (savedPreset !== canonicalPreset) {
+      setItemToStore('themePreset', canonicalPreset);
+    }
+  }, []);
   const { i18n } = useTranslation();
   const { mutate } = useSWRConfig();
 

@@ -10,7 +10,7 @@ export const ListItemButton: Components<Omit<Theme, 'components'>>['MuiListItemB
   styleOverrides: {
     root: ({ theme }) => ({
       padding: '12px 16px',
-      borderRadius: 8,
+      borderRadius: theme.preset === 'default' ? 0 : 8,
       color: theme.vars.palette.text.secondary,
       '&:hover': {
         backgroundColor: theme.vars.palette.action.hover,

@@ -1,3 +1,4 @@
+import { useTranslation } from 'react-i18next';
 import {
   Box,
   Button,
@@ -16,44 +17,21 @@ import {
   listItemTextClasses,
 } from '@mui/material';
 import Grid from '@mui/material/Grid';
-import { useMemo } from 'react';
-import { useTranslation } from 'react-i18next';
 import { HashLinkBehavior } from 'app/theme/components/Link';
-import { useSystemUpdates } from 'modules/home/application/queries';
+import { UpdateGroup, useUpdatesPage } from 'modules/home/application/hooks/useUpdatesPage';
 import type { HomeSystemUpdate } from 'modules/home/domain/entities/home.entity';
 import SystemUpdateImage from 'modules/home/ui/shared/components/SystemUpdateImage';
 import SystemUpdateLikeButton from 'modules/home/ui/shared/components/SystemUpdateLikeButton';
 import IconifyIcon from 'shared/components/base/IconifyIcon';
-import Logo from 'shared/components/common/Logo';
 import ScrollSpy from 'shared/components/scroll-spy';
 import ScrollSpyContent from 'shared/components/scroll-spy/ScrollSpyContent';
 import ScrollSpyNavItem from 'shared/components/scroll-spy/ScrollSpyNavItem';
+import FramedPage from 'shared/components/sections/common/FramedPage';
+import PageHeader from 'shared/components/sections/common/PageHeader';
 import useHashScrollIntoView from 'shared/hooks/useHashScrollIntoView';
-import { formatDateTime, formatMachineDateTime } from 'shared/lib/dateTime';
 import { createSafeHtml } from 'shared/lib/safeHtml';
 
-type UpdateGroup = {
-  date: string;
-  dateLabel: string;
-  items: HomeSystemUpdate[];
-};
-
 const getUpdateAnchorId = (date: string) => `system-updates-${date}`;
-
-const groupUpdatesByDate = (updates: HomeSystemUpdate[]): UpdateGroup[] => {
-  const groups = new Map<string, HomeSystemUpdate[]>();
-
-  updates.forEach((update) => {
-    const date = formatMachineDateTime(update.date, 'isoDate');
-    groups.set(date, [...(groups.get(date) ?? []), update]);
-  });
-
-  return Array.from(groups.entries()).map(([date, items]) => ({
-    date,
-    dateLabel: formatDateTime(date, 'fullDate'),
-    items,
-  }));
-};
 
 const groupItemsByType = (items: HomeSystemUpdate[]) => {
   return {
@@ -65,62 +43,7 @@ const groupItemsByType = (items: HomeSystemUpdate[]) => {
 const UpdatesPageHeader = () => {
   const { t } = useTranslation();
 
-  return (
-    <Paper
-      sx={{
-        p: { xs: 3, md: 5 },
-        position: 'relative',
-        overflow: 'hidden',
-        zIndex: 1,
-        borderBottom: 1,
-        borderColor: 'divider',
-        outline: 0,
-      }}
-    >
-      <Box
-        sx={{
-          position: 'absolute',
-          display: { xs: 'none', sm: 'block' },
-          inset: 0,
-          pointerEvents: 'none',
-          zIndex: -1,
-          overflow: 'hidden',
-        }}
-      >
-        <Box
-          sx={(theme) => ({
-            position: 'absolute',
-            right: { sm: 40, md: 72 },
-            top: '50%',
-            width: 260,
-            height: 260,
-            borderRadius: '50%',
-            transform: 'translateY(-50%)',
-            background: `radial-gradient(circle, ${theme.vars.palette.primary.main} 0%, transparent 68%)`,
-            opacity: 0.12,
-          })}
-        />
-        <Logo
-          showName={false}
-          sx={{
-            position: 'absolute',
-            right: { sm: 56, md: 96 },
-            top: '50%',
-            width: 150,
-            height: 150,
-            opacity: 0.18,
-            transform: 'translateY(-50%) rotate(18deg)',
-          }}
-        />
-      </Box>
-
-      <Grid container>
-        <Grid size={{ xs: 12, md: 8, lg: 9 }}>
-          <Typography variant="h3">{t('homePage.updates.pageTitle')}</Typography>
-        </Grid>
-      </Grid>
-    </Paper>
-  );
+  return <PageHeader variant="detail" title={t('homePage.updates.pageTitle')} />;
 };
 
 interface UpdateLogItemProps {
@@ -171,7 +94,7 @@ const UpdateLogItem = ({ update, onChanged }: UpdateLogItemProps) => {
                     maxWidth: 1,
                     width: 'auto',
                     objectFit: 'contain',
-                    borderRadius: 4,
+                    borderRadius: 0,
                   }}
                 />
               </Box>
@@ -197,7 +120,7 @@ const UpdateLogCard = ({ group, onChanged }: UpdateLogCardProps) => {
   const groupedItems = groupItemsByType(group.items);
 
   return (
-    <Paper variant="outlined" background={1} sx={{ borderRadius: 6, p: { xs: 3, md: 5 } }}>
+    <Box>
       {Object.entries(groupedItems).map(([category, items]) => {
         if (!items.length) return null;
 
@@ -214,7 +137,7 @@ const UpdateLogCard = ({ group, onChanged }: UpdateLogCardProps) => {
           </Box>
         );
       })}
-    </Paper>
+    </Box>
   );
 };
 
@@ -227,7 +150,7 @@ const UpdateSection = ({ group, onChanged }: UpdateSectionProps) => {
   const anchorId = getUpdateAnchorId(group.date);
 
   return (
-    <Paper sx={{ p: { xs: 3, md: 5 } }}>
+    <Paper variant="section" sx={{ p: { xs: 3, md: 5 } }}>
       <Container maxWidth="md" disableGutters>
         <Box sx={{ mb: 2 }}>
           <ScrollSpyContent id={anchorId}>
@@ -258,7 +181,7 @@ const UpdatesSideNav = ({ groups }: UpdatesSideNavProps) => {
   const { t } = useTranslation();
 
   return (
-    <Paper background={1} sx={{ height: 1, width: 1, p: { xs: 3, md: 5 } }}>
+    <Paper variant="section" background={1} sx={{ height: 1, width: 1, p: { xs: 3, md: 5 } }}>
       <List
         dense
         sx={{
@@ -342,15 +265,14 @@ const UpdatesSideNav = ({ groups }: UpdatesSideNavProps) => {
 };
 
 const UpdatesPage = () => {
+  const { isLoading, isLoadingMore, hasMore, loadMore, mutate, groups } = useUpdatesPage();
+
   const { t } = useTranslation();
-  const { data, isLoading, isLoadingMore, hasMore, loadMore, mutate } = useSystemUpdates();
-  const updates = data?.data ?? [];
-  const groups = useMemo(() => groupUpdatesByDate(updates), [updates]);
 
   useHashScrollIntoView({ block: 'start', behavior: 'smooth' });
 
   return (
-    <Box sx={{ display: 'flex', flexDirection: 'column', height: '100%' }}>
+    <FramedPage>
       <ScrollSpy offset={400}>
         <UpdatesPageHeader />
 
@@ -367,7 +289,11 @@ const UpdatesPage = () => {
             }}
           >
             {isLoading ? (
-              <Paper background={1} sx={{ height: 1, width: 1, p: { xs: 3, md: 5 } }}>
+              <Paper
+                variant="section"
+                background={1}
+                sx={{ height: 1, width: 1, p: { xs: 3, md: 5 } }}
+              >
                 <Skeleton variant="text" width={120} sx={{ mb: 2 }} />
                 <Stack spacing={1.5}>
                   {Array.from({ length: 8 }).map((_, index) => (
@@ -390,10 +316,10 @@ const UpdatesPage = () => {
           >
             {isLoading ? (
               Array.from({ length: 4 }).map((_, index) => (
-                <Paper key={index} sx={{ p: { xs: 3, md: 5 } }}>
+                <Paper variant="section" key={index} sx={{ p: { xs: 3, md: 5 } }}>
                   <Container maxWidth="md" disableGutters>
                     <Skeleton variant="text" width="55%" height={38} sx={{ mb: 2 }} />
-                    <Skeleton variant="rounded" height={180} sx={{ borderRadius: 6 }} />
+                    <Skeleton variant="rounded" height={180} sx={{ borderRadius: 0 }} />
                   </Container>
                 </Paper>
               ))
@@ -404,7 +330,7 @@ const UpdatesPage = () => {
                 ))}
 
                 {hasMore && (
-                  <Paper sx={{ p: { xs: 3, md: 5 } }}>
+                  <Paper variant="section" sx={{ p: { xs: 3, md: 5 } }}>
                     <Container maxWidth="md" disableGutters>
                       <Button variant="outlined" onClick={loadMore} disabled={isLoadingMore}>
                         {t('homePage.updates.loadMore')}
@@ -414,7 +340,7 @@ const UpdatesPage = () => {
                 )}
               </>
             ) : (
-              <Paper sx={{ p: { xs: 3, md: 5 } }}>
+              <Paper variant="section" sx={{ p: { xs: 3, md: 5 } }}>
                 <Typography variant="body2" color="text.secondary">
                   {t('homePage.updates.empty')}
                 </Typography>
@@ -423,7 +349,7 @@ const UpdatesPage = () => {
           </Grid>
         </Grid>
       </ScrollSpy>
-    </Box>
+    </FramedPage>
   );
 };
 

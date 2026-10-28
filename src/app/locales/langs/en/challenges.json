@@ -1,9 +1,9 @@
 {
   "challenges": {
     "title": "Challenges",
-    "subtitle": "Create quick challenges or join others in the queue.",
+    "subtitle": "Answer timed questions against another participant.",
     "quickStartTitle": "Quick start",
-    "quickStartSubtitle": "Pick a preset to instantly search for an opponent.",
+    "quickStartSubtitle": "Choose a preset to find an opponent.",
     "quickStartButton": "{{questionsCount}} questions -> {{timeSeconds}}s",
     "customChallenge": "Custom challenge",
     "questions": "Questions",
@@ -19,7 +19,7 @@
     "viewRating": "View rating",
     "noChallenges": "No challenges yet.",
     "ratingPreview": "Top challengers",
-    "ratingPreviewSubtitle": "Best players by rating right now.",
+    "ratingPreviewSubtitle": "Participants with the highest challenge ratings.",
     "openRating": "Open rating",
     "noRating": "Rating is empty.",
     "callCreated": "Created {{time}}",
@@ -40,20 +40,15 @@
     "timeExpired": "Time is over.",
     "answerPending": "Pending",
     "answerNotPlayed": "Not played / ended early",
-    "detailTitle": "Challenge details",
-    "detailSubtitle": "Last update {{time}}",
     "startDialogTitle": "Ready to start?",
-    "startDialogSubtitle": "Check the matchup and hit start when you're ready.",
+    "startDialogSubtitle": "Review the opponent and challenge settings, then press Start.",
     "finishDialogTitle": "Challenge finished",
     "statusFinished": "Finished",
     "start": "Start challenge",
     "backToList": "Back to list",
     "finishedDescription": "The challenge has finished. Check the final results above.",
     "waitingForStart": "The challenge will start as soon as both players are ready.",
-    "blurError": "During a challenge, it is forbidden to change the browser focus to something else.",
-    "questionNumber": "Question #{{number}}",
-    "activeQuestion": "Question #{{number}} is active",
-    "yourAnswer": "Your answer",
+    "blurError": "Keep this challenge in focus until it ends.",
     "labels": "Labels",
     "pool": "Options",
     "myRating": "My challenge rating",
@@ -61,8 +56,6 @@
     "submitAnswerError": "The answer could not be submitted. Please try again.",
     "notFound": "Challenge not found.",
     "ratingTitle": "Challenge rating",
-    "ratingSubtitle": "Track the strongest head-to-head players.",
-    "perQuestionResults": "Per-question results",
     "newRating": "New rating",
     "totalPlayers": "{{count}} players",
     "table": {
@@ -75,7 +68,6 @@
     },
     "record": "{{wins}}W {{draws}}D {{losses}}L",
     "statisticsTitle": "My challenge statistics",
-    "statisticsSubtitle": "Personal stats and recent games.",
     "statisticsPage": {
       "tabs": {
         "overview": "Overview",
@@ -86,7 +78,7 @@
       },
       "overview": {
         "title": "Challenge overview",
-        "subtitle": "Your rating and results at a glance",
+        "subtitle": "Your challenge rating and match results.",
         "ratingPosition": "Rating position",
         "results": "Match results",
         "questions": "Question performance",
@@ -111,18 +103,19 @@
         "all": "All challenges",
         "recent": "Last 50 challenges",
         "range": "Rating history range",
-        "ratedCount": "{{count}} completed challenges",
         "lastChange": "Rating change in latest challenge",
-        "pointsUnit": "pts"
+        "pointsUnit": "pts",
+        "ratedCount_one": "{{count}} rated challenge",
+        "ratedCount_other": "{{count}} rated challenges"
       },
       "details": {
         "title": "Detailed statistics",
         "knowledge": "Questions and formats",
-        "knowledgeDescription": "Accuracy by difficulty, topic and challenge format",
+        "knowledgeDescription": "Question accuracy by topic, difficulty, and format.",
         "opponents": "Opponents",
-        "opponentsDescription": "Head-to-head results and frequent opponents",
+        "opponentsDescription": "Your results against each opponent.",
         "records": "Personal records",
-        "recordsDescription": "Best performances and winning streaks"
+        "recordsDescription": "Your highest results and longest winning streaks."
       },
       "rankPlace": "Rank #{{value}}",
       "ratingSummary": "Rating summary",
@@ -172,10 +165,11 @@
         "weekdays": "Weekday activity",
         "hours": "Hour activity",
         "total": "{{count}} challenges in the last 30 days",
-        "activeDays": "{{count}} active days",
         "year": "Year",
         "less": "Less",
-        "more": "More"
+        "more": "More",
+        "activeDays_one": "{{count}} active day",
+        "activeDays_other": "{{count}} active days"
       },
       "weekday": {
         "mon": "Mon",
@@ -193,7 +187,9 @@
         "perQuestion": "Per question",
         "wholeChallenge": "Whole challenge",
         "questionsCount": "{{count}} questions",
-        "seconds": "{{count}}s"
+        "seconds": "{{count}}s",
+        "questionsCount_one": "{{count}} question",
+        "questionsCount_other": "{{count}} questions"
       },
       "knowledge": {
         "difficulty": "Difficulty breakdown",
@@ -202,7 +198,10 @@
         "topChapters": "Most frequent chapters",
         "solvedOf": "{{solved}} / {{seen}} solved",
         "solveRate": "Solve rate",
-        "questionsSeen": "Questions seen"
+        "questionsSeen": "Questions seen",
+        "seenShort": "Seen",
+        "solvedShort": "Solved",
+        "rateShort": "Rate"
       },
       "difficulty": {
         "easy": "Easy",
@@ -213,11 +212,12 @@
         "singleChoice": "Single choice",
         "multipleChoice": "Multiple choice",
         "textInput": "Text input",
-        "conformity": "Conformity",
+        "conformity": "Matching",
         "ordering": "Ordering",
         "classification": "Classification",
         "codeInput": "Custom checker",
-        "problem": "Coding problem"
+        "problem": "Coding problem",
+        "chessPuzzle": "Chess puzzle"
       },
       "buckets": {
         "higher": "Higher rated",
@@ -230,9 +230,10 @@
         "rivals": "Rivals",
         "bestVictories": "Best victories",
         "worstDefeats": "Worst defeats",
-        "matchCount": "{{count}} matches",
         "averageRating": "Average rating {{value}}",
-        "record": "Wins / draws / losses"
+        "record": "Wins / draws / losses",
+        "matchCount_one": "{{count}} match",
+        "matchCount_other": "{{count}} matches"
       },
       "records": {
         "title": "Records",
@@ -249,9 +250,12 @@
         "currentLossStreak": "Current loss streak",
         "open": "View challenge"
       },
-      "streakCount": "{{count}} challenges",
       "streakCurrent": "Current",
-      "streakBest": "Best"
+      "streakBest": "Best",
+      "streakCount_one": "{{count}} challenge",
+      "streakCount_other": "{{count}} challenges",
+      "arenaChallenges_one": "{{count}} arena challenge",
+      "arenaChallenges_other": "{{count}} arena challenges"
     },
     "authRequired": "Sign in to see your challenge statistics.",
     "currentRank": "Current rating",
@@ -274,7 +278,7 @@
       "wholeChallengeShort": "Total"
     },
     "arenaWinners": "Arena winners",
-    "arenaWinnersSubtitle": "See who topped recent arenas.",
+    "arenaWinnersSubtitle": "Winners of recent arenas.",
     "viewArena": "Go to arena",
     "noArenas": "No arena history yet.",
     "chessPuzzle": {
@@ -288,6 +292,20 @@
         "b": "Bishop",
         "n": "Knight"
       }
-    }
+    },
+    "secondsShort": "{{seconds}}s",
+    "presetLabel": "{{questionsCount}} questions, {{timeSeconds}} seconds",
+    "customDescription": "Set the question count, time limit, and topics for your call.",
+    "allChapters": "All topics",
+    "ratingSubtitle": "Challenge ratings and match records.",
+    "questionProgress": "Question {{current}} of {{total}}",
+    "recordLabels": {
+      "win": "W",
+      "draw": "D",
+      "loss": "L"
+    },
+    "matchScore": "Match score",
+    "waitingForOpponent": "Waiting for your opponent",
+    "waitingForOpponentDescription": "Your answers are in. The result will appear when the challenge ends."
   }
 }

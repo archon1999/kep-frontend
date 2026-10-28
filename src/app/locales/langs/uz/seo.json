@@ -1,0 +1,70 @@
+{
+  "seo": {
+    "home": {
+      "description": "KEP.uz orqali algoritmlarni o‘rganing, dasturlash masalalarini yeching, loyihalar yarating hamda kontest, duel va hakatonlarda qatnashing."
+    },
+    "problems": {
+      "description": "KEP.uz’da dasturlash masalalarini mavzu va qiyinlik bo‘yicha tanlang, kodingizni yuboring va tekshiruv natijalarini ko‘ring."
+    },
+    "studyPlans": {
+      "description": "KEP.uz’dagi mavzulashtirilgan o‘quv rejalari va ketma-ket masalalar orqali algoritmlarni o‘rganing."
+    },
+    "projects": {
+      "description": "KEP.uz’da amaliy loyihalar yarating, loyiha fayllarini yuboring va avtomatik tekshiruv natijalarini ko‘ring."
+    },
+    "tests": {
+      "description": "KEP.uz’da mavzular bo‘yicha testlarni ishlab, dasturlash bilimingizni tekshiring va natijalaringizni ko‘ring."
+    },
+    "contests": {
+      "description": "KEP.uz dasturlash kontestlari, musobaqa jadvali, masalalar, natijalar va reyting o‘zgarishlarini kuzating."
+    },
+    "challenges": {
+      "description": "KEP.uz’da savollarga asoslangan yakkama-yakka bellashuvlarda qatnashing va challenge reytingingizni kuzating."
+    },
+    "duels": {
+      "description": "KEP.uz duelida boshqa ishtirokchi bilan bir xil dasturlash masalalarini yechishda bellashing."
+    },
+    "arena": {
+      "description": "KEP.uz’da savollarga asoslangan vaqtli arenalarda qatnashing, ishtirokchilar va natijalarni kuzating."
+    },
+    "tournaments": {
+      "description": "KEP.uz turnirlari, bellashuvlar to‘ri va musobaqa natijalari bilan tanishing."
+    },
+    "hackathons": {
+      "description": "KEP.uz hakatonlari, loyiha talablari, yuborilgan ishlar va natijalar jadvali bilan tanishing."
+    },
+    "blog": {
+      "description": "KEP.uz blogida dasturlash haqidagi maqolalar, masala tahlillari va hamjamiyat yozuvlarini o‘qing."
+    },
+    "users": {
+      "description": "KEP.uz ishtirokchilarining profillari, dasturlash faoliyati, yutuqlari va musobaqa reytinglarini ko‘ring."
+    },
+    "calendar": {
+      "description": "KEP.uz taqvimida yaqinlashayotgan dasturlash kontestlari, arenalar va turnirlarni kuzating."
+    },
+    "games": {
+      "description": "KEP.uz’da mantiq, xotira va sonlarga oid o‘yinlarni o‘ynang hamda Keppy World bilan tanishing."
+    },
+    "kepcoin": {
+      "description": "KEP.uz’da Kepcoin mukofotlari qanday ishlashi va platformadagi faoliyat orqali ularni topish yo‘llarini bilib oling."
+    },
+    "shop": {
+      "description": "KEP.uz do‘konida Kepcoin evaziga olish mumkin bo‘lgan mukofotlar va buyumlarni ko‘ring."
+    },
+    "problemsRating": {
+      "description": "KEP.uz ishtirokchilarining masala yechish reytingini solishtiring va ularning ochiq dasturlash profillari bilan tanishing."
+    },
+    "contestsRating": {
+      "description": "KEP.uz kontestlar reytingi jadvalini va ishtirokchilarning reytingli dasturlash musobaqalaridagi natijalarini ko‘ring."
+    },
+    "challengesRating": {
+      "description": "KEP.uz challenge reytingi jadvalida ishtirokchilarning savollarga asoslangan bellashuvlardagi reytinglarini solishtiring."
+    },
+    "duelsRating": {
+      "description": "KEP.uz duellar reytingi jadvalida ishtirokchilarning yakkama-yakka dasturlash musobaqalaridagi reytinglarini solishtiring."
+    },
+    "projectsRating": {
+      "description": "KEP.uz loyihalari reytingi: ishtirokchilarning tekshirilgan natijalari, tugallangan loyihalari va bajarilgan vazifalarini solishtiring."
+    }
+  }
+}

@@ -1,13 +1,7 @@
 import { useTranslation } from 'react-i18next';
-import {
-  Dialog,
-  DialogContent,
-  DialogTitle,
-  IconButton,
-  Stack,
-} from '@mui/material';
-import IconifyIcon from 'shared/components/base/IconifyIcon.tsx';
+import { Dialog, DialogContent } from '@mui/material';
 import { ArenaPlayerStatistics } from 'modules/arena/domain/entities/arena-player-statistics.entity.ts';
+import DialogHeader from 'shared/components/common/DialogHeader';
 import ArenaPlayerStatisticsCard from '../components/ArenaPlayerStatisticsCard.tsx';
 
 interface PlayerStatisticsDialogProps {
@@ -29,27 +23,20 @@ const ArenaPlayerStatisticsDialog = ({
 
   return (
     <Dialog
+      aria-labelledby="arena-player-stats-title"
       open={open}
       onClose={onClose}
       maxWidth="md"
       fullWidth
     >
-      <DialogTitle>
-        <Stack direction="row" alignItems="center" justifyContent="end">
-          <IconButton
-            aria-label={t('common.close')}
-            onClick={onClose}
-          >
-            <IconifyIcon icon="mdi:close" />
-          </IconButton>
-        </Stack>
-      </DialogTitle>
+      <DialogHeader
+        id="arena-player-stats-title"
+        title={t('arena.playerStatistics')}
+        subtitle={username}
+        onClose={onClose}
+      />
       <DialogContent>
-        <ArenaPlayerStatisticsCard
-          statistics={statistics}
-          loading={loading}
-          username={username}
-        />
+        <ArenaPlayerStatisticsCard statistics={statistics} loading={loading} username={username} />
       </DialogContent>
     </Dialog>
   );

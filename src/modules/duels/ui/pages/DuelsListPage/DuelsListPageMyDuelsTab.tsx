@@ -1,9 +1,9 @@
 import { useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useNavigate } from 'react-router';
-import { Card, CardContent, Stack, Typography } from '@mui/material';
-import Grid from '@mui/material/Grid';
+import { Box, Button, Stack } from '@mui/material';
 import { getResourceById, resources } from 'app/routes/resources.ts';
+import { contentGridSx } from 'app/theme/styles/content';
 import {
   useAcceptDuelCall,
   useCancelDuelCall,
@@ -14,23 +14,21 @@ import {
 import { isDuelsCollectionCacheKey, useDuelCalls } from 'modules/duels/application/queries.ts';
 import { DuelInvitation } from 'modules/duels/domain/index.ts';
 import { getDuelErrorMessage } from 'modules/duels/ui/shared/helpers/getDuelErrorMessage.ts';
+import EmptyState from 'shared/components/common/EmptyState';
+import PatternArtwork from 'shared/components/common/PatternArtwork';
+import SectionHeader from 'shared/components/sections/common/SectionHeader';
 import { toast } from 'sonner';
 import { useSWRConfig } from 'swr';
 import DuelInvitationCard, {
   DuelInvitationCardSkeleton,
 } from './components/DuelInvitationCard.tsx';
+import DuelListSection from './components/DuelListSection.tsx';
 import DuelWaitingRoomCard, {
   DuelWaitingRoomCardSkeleton,
 } from './components/DuelWaitingRoomCard.tsx';
-import DuelListSection from './components/DuelListSection.tsx';
 import DuelScheduleDialog from './dialogs/DuelScheduleDialog.tsx';
 
-type DuelsListPageCallsSectionProps = {
-  title: string;
-  description: string;
-  invitations: DuelInvitation[];
-  loading?: boolean;
-  emptyText: string;
+type CallActions = {
   actionLoadingKey?: string | null;
   onAccept: (invitation: DuelInvitation) => void;
   onConfirm: (invitation: DuelInvitation) => void;
@@ -39,174 +37,102 @@ type DuelsListPageCallsSectionProps = {
   onCounter: (invitation: DuelInvitation) => void;
   onOpen: (invitation: DuelInvitation) => void;
 };
-
+const InvitationRow = ({
+  invitation,
+  ...actions
+}: CallActions & { invitation: DuelInvitation }) => (
+  <DuelInvitationCard
+    invitation={invitation}
+    actionLoadingKey={actions.actionLoadingKey}
+    onAccept={() => actions.onAccept(invitation)}
+    onConfirm={() => actions.onConfirm(invitation)}
+    onReject={() => actions.onReject(invitation)}
+    onCancel={() => actions.onCancel(invitation)}
+    onCounter={() => actions.onCounter(invitation)}
+    onOpen={() => actions.onOpen(invitation)}
+  />
+);
 const DuelsListPageCallsSection = ({
   title,
   description,
   invitations,
   loading,
   emptyText,
-  actionLoadingKey,
-  onAccept,
-  onConfirm,
-  onReject,
-  onCancel,
-  onCounter,
-  onOpen,
-}: DuelsListPageCallsSectionProps) => (
-  <Stack spacing={2}>
-    <Stack
-      direction="row"
-      justifyContent="space-between"
-      alignItems={{ xs: 'flex-start', sm: 'center' }}
-      spacing={2}
-      flexWrap="wrap"
-      useFlexGap
-    >
-      <Stack spacing={0.4}>
-        <Typography variant="h6" fontWeight={800}>
-          {title}
-          {invitations.length > 0 ? (
-            <Typography component="span" variant="subtitle2" color="text.secondary" ml={1}>
-              ({invitations.length})
-            </Typography>
-          ) : null}
-        </Typography>
-        <Typography variant="body2" color="text.secondary">
-          {description}
-        </Typography>
-      </Stack>
-    </Stack>
-
-    {loading
-      ? Array.from({ length: 2 }).map((_, index) => <DuelInvitationCardSkeleton key={index} />)
-      : null}
-
-    {!loading && !invitations.length ? (
-      <Card variant="outlined">
-        <CardContent>
-          <Typography variant="body2" color="text.secondary">
-            {emptyText}
-          </Typography>
-        </CardContent>
-      </Card>
-    ) : null}
-
-    {!loading &&
-      invitations.map((invitation) => (
-        <DuelInvitationCard
-          key={invitation.id}
-          invitation={invitation}
-          actionLoadingKey={actionLoadingKey}
-          onAccept={() => onAccept(invitation)}
-          onConfirm={() => onConfirm(invitation)}
-          onReject={() => onReject(invitation)}
-          onCancel={() => onCancel(invitation)}
-          onCounter={() => onCounter(invitation)}
-          onOpen={() => onOpen(invitation)}
-        />
-      ))}
-  </Stack>
-);
-
-type DuelsListPageMyCallsSectionProps = {
-  createdInvitations: DuelInvitation[];
-  activeInvitations: DuelInvitation[];
+  ...actions
+}: CallActions & {
+  title: string;
+  description: string;
+  invitations: DuelInvitation[];
   loading?: boolean;
-  actionLoadingKey?: string | null;
-  onAccept: (invitation: DuelInvitation) => void;
-  onConfirm: (invitation: DuelInvitation) => void;
-  onReject: (invitation: DuelInvitation) => void;
-  onCancel: (invitation: DuelInvitation) => void;
-  onCounter: (invitation: DuelInvitation) => void;
-  onOpen: (invitation: DuelInvitation) => void;
-};
+  emptyText: string;
+}) => (
+  <Box component="section">
+    <SectionHeader
+      title={title}
+      description={description}
+      action={<PatternArtwork kind="notifications" sx={{ width: 100, opacity: 0.4 }} />}
+    />
+    {loading ? (
+      Array.from({ length: 2 }, (_, i) => <DuelInvitationCardSkeleton key={i} />)
+    ) : invitations.length ? (
+      invitations.map((invitation) => (
+        <InvitationRow key={invitation.id} invitation={invitation} {...actions} />
+      ))
+    ) : (
+      <EmptyState kind="battles" compact title={emptyText} />
+    )}
+  </Box>
+);
 
 const DuelsListPageMyCallsSection = ({
   createdInvitations,
   activeInvitations,
   loading,
-  actionLoadingKey,
-  onAccept,
-  onConfirm,
-  onReject,
-  onCancel,
-  onCounter,
-  onOpen,
-}: DuelsListPageMyCallsSectionProps) => {
+  ...actions
+}: CallActions & {
+  createdInvitations: DuelInvitation[];
+  activeInvitations: DuelInvitation[];
+  loading?: boolean;
+}) => {
   const { t } = useTranslation();
-  const invitationsCount = createdInvitations.length + activeInvitations.length;
-
   return (
-    <Stack spacing={2}>
-      <Stack spacing={0.4}>
-        <Typography variant="h6" fontWeight={800}>
-          {t('duels.myCallsTitle')}
-          {invitationsCount > 0 ? (
-            <Typography component="span" variant="subtitle2" color="text.secondary" ml={1}>
-              ({invitationsCount})
-            </Typography>
-          ) : null}
-        </Typography>
-        <Typography variant="body2" color="text.secondary">
-          {t('duels.myCallsSubtitle')}
-        </Typography>
-      </Stack>
-
-      {loading ? (
-        <Grid container spacing={2}>
-          {Array.from({ length: 4 }).map((_, index) => (
-            <Grid key={index} size={{ xs: 12, sm: 6, lg: 3 }} sx={{ display: 'flex' }}>
-              <DuelWaitingRoomCardSkeleton />
-            </Grid>
-          ))}
-        </Grid>
+    <Box component="section">
+      <SectionHeader
+        title={t('duels.myCallsTitle')}
+        description={t('duels.myCallsSubtitle')}
+        action={<PatternArtwork kind="battles" sx={{ width: 100, opacity: 0.4 }} />}
+      />
+      {loading || createdInvitations.length > 0 ? (
+        <Box
+          sx={{
+            ...contentGridSx,
+            gridTemplateColumns: {
+              xs: '1fr',
+              sm: 'repeat(2,minmax(0,1fr))',
+              lg: 'repeat(4,minmax(0,1fr))',
+            },
+          }}
+        >
+          {loading
+            ? Array.from({ length: 4 }, (_, i) => <DuelWaitingRoomCardSkeleton key={i} />)
+            : createdInvitations.map((invitation) => (
+                <DuelWaitingRoomCard
+                  key={invitation.id}
+                  invitation={invitation}
+                  actionLoadingKey={actions.actionLoadingKey}
+                  onCancel={() => actions.onCancel(invitation)}
+                />
+              ))}
+        </Box>
       ) : null}
-
-      {!loading && !invitationsCount ? (
-        <Card variant="outlined">
-          <CardContent>
-            <Typography variant="body2" color="text.secondary">
-              {t('duels.noMyCalls')}
-            </Typography>
-          </CardContent>
-        </Card>
-      ) : null}
-
-      {!loading && createdInvitations.length > 0 ? (
-        <Grid container spacing={2}>
-          {createdInvitations.map((invitation) => (
-            <Grid
-              key={invitation.id}
-              size={{ xs: 12, sm: 6, lg: 3 }}
-              sx={{ display: 'flex' }}
-            >
-              <DuelWaitingRoomCard
-                invitation={invitation}
-                actionLoadingKey={actionLoadingKey}
-                onCancel={() => onCancel(invitation)}
-              />
-            </Grid>
-          ))}
-        </Grid>
-      ) : null}
-
-      {!loading
-        ? activeInvitations.map((invitation) => (
-            <DuelInvitationCard
-              key={invitation.id}
-              invitation={invitation}
-              actionLoadingKey={actionLoadingKey}
-              onAccept={() => onAccept(invitation)}
-              onConfirm={() => onConfirm(invitation)}
-              onReject={() => onReject(invitation)}
-              onCancel={() => onCancel(invitation)}
-              onCounter={() => onCounter(invitation)}
-              onOpen={() => onOpen(invitation)}
-            />
-          ))
-        : null}
-    </Stack>
+      {!loading &&
+        activeInvitations.map((invitation) => (
+          <InvitationRow key={invitation.id} invitation={invitation} {...actions} />
+        ))}
+      {!loading && !createdInvitations.length && !activeInvitations.length && (
+        <EmptyState kind="battles" compact title={t('duels.noMyCalls')} />
+      )}
+    </Box>
   );
 };
 
@@ -349,15 +275,18 @@ const DuelsListPageMyDuelsTab = () => {
 
   return (
     <>
-      <Stack spacing={4}>
+      <Stack spacing={0}>
         {callsError ? (
-          <Card variant="outlined">
-            <CardContent>
-              <Typography variant="body2" color="error.main">
-                {t('duels.error')}
-              </Typography>
-            </CardContent>
-          </Card>
+          <EmptyState
+            kind="error"
+            compact
+            title={t('duels.error')}
+            action={
+              <Button variant="outlined" onClick={() => void refreshAll()}>
+                {t('common.retry')}
+              </Button>
+            }
+          />
         ) : null}
 
         {!callsError && (isNeedsResponseLoading || needsResponseCalls.length > 0) ? (

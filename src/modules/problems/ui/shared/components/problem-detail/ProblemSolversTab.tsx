@@ -65,7 +65,7 @@ const SummaryCard = ({
       transition: 'transform 120ms ease, box-shadow 120ms ease',
       '&:hover': {
         transform: 'translateY(-2px)',
-        boxShadow: '0 18px 36px rgba(15, 23, 42, 0.08)',
+        boxShadow: 2,
       },
     }}
   >

@@ -1,5 +1,6 @@
 {
   "menu": {
+    "more": "More",
     "home": "Home",
     "practice": "Practice",
     "battles": "Battles",
@@ -21,6 +22,20 @@
     "games": "Games",
     "shop": "Shop",
     "account": "Account",
-    "kepperGame": "KEPPER Game"
+    "kepperGame": "KEPPER Game",
+    "descriptions": {
+      "practice": "Problems, practical projects, and knowledge tests.",
+      "battles": "Question challenges and programming duels.",
+      "competitions": "Contests, arenas, tournaments, and hackathons.",
+      "practice-problems": "Solve problems and check your code against tests.",
+      "practice-projects": "Build to a specification and submit your project files.",
+      "practice-tests": "Answer questions and review your result.",
+      "battles-challenges": "Answer timed questions against an opponent.",
+      "battles-duels": "Solve a problem set against another programmer.",
+      "competitions-contests": "Timed programming contests with shared standings.",
+      "competitions-arena": "Play successive question challenges and earn arena points.",
+      "competitions-tournaments": "Win duels to advance through the knockout bracket.",
+      "competitions-hackathons": "Complete project tasks before the deadline."
+    }
   }
 }

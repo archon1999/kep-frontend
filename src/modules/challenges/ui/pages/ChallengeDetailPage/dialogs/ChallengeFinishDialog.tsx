@@ -1,16 +1,8 @@
 import { useTranslation } from 'react-i18next';
-import {
-  Button,
-  Dialog,
-  DialogActions,
-  DialogContent,
-  DialogTitle,
-  Stack,
-  Typography,
-} from '@mui/material';
+import { Button, Dialog, DialogActions, DialogContent, Stack } from '@mui/material';
 import { Challenge } from 'modules/challenges/domain';
-import KepIcon from 'shared/components/base/KepIcon.tsx';
-import Kepper from 'shared/components/common/Kepper';
+import DialogHeader from 'shared/components/common/DialogHeader';
+import PatternArtwork from 'shared/components/common/PatternArtwork';
 import ChallengeResultsCard from '../components/ChallengeResultsCard.tsx';
 
 type FinishDialogProps = {
@@ -24,16 +16,21 @@ const ChallengeFinishDialog = ({ open, challenge, onClose, onBackToList }: Finis
   const { t } = useTranslation();
 
   return (
-    <Dialog open={open} onClose={onClose} fullWidth maxWidth="sm">
-      <DialogTitle>
-        <Stack direction="row" spacing={1} alignItems="center">
-          <KepIcon name="challenge" fontSize={20} color="success.main" />
-          <Typography variant="h6">{t('challenges.finishDialogTitle')}</Typography>
-        </Stack>
-      </DialogTitle>
+    <Dialog
+      open={open}
+      onClose={onClose}
+      fullWidth
+      maxWidth="sm"
+      aria-labelledby="challenge-finish-title"
+    >
+      <DialogHeader
+        id="challenge-finish-title"
+        title={t('challenges.finishDialogTitle')}
+        onClose={onClose}
+      />
       <DialogContent dividers>
         <Stack alignItems="center" sx={{ mb: 2 }}>
-          <Kepper pose="gg" motion="loop" size={100} />
+          <PatternArtwork kind="competitions" sx={{ width: { xs: 96, sm: 180 } }} />
         </Stack>
         <ChallengeResultsCard challenge={challenge} />
       </DialogContent>

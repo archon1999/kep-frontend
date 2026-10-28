@@ -7,7 +7,6 @@ import {
   Button,
   Chip,
   IconButton,
-  Pagination,
   Skeleton,
   Stack,
   Table,
@@ -21,6 +20,8 @@ import {
 } from '@mui/material';
 import { normalizeSupportedLocale } from 'app/locales/locale';
 import { getResourceById, resources } from 'app/routes/resources';
+import { statisticsHeadingSx } from 'app/theme/styles/statistics';
+import { statisticsInset } from 'app/theme/styles/statistics';
 import { coreSurfacePaperClassName } from 'app/theme/styles/surfaceTreatments';
 import {
   type Challenge,
@@ -30,9 +31,9 @@ import {
 import UserPopover from 'modules/users/ui/shared/components/UserPopover';
 import IconifyIcon from 'shared/components/base/IconifyIcon';
 import ChallengesRatingChip from 'shared/components/rating/ChallengesRatingChip';
+import { ListPagination } from 'shared/components/sections/common/FramedListPage';
 import { formatDateTime } from 'shared/lib/dateTime';
 import { createNumberFormatter } from 'shared/lib/numberFormat';
-import { statisticsInset } from './statisticsStyles';
 
 interface StatisticsHistoryProps {
   username: string;
@@ -73,7 +74,7 @@ const StatisticsHistory = ({
         gap={2}
         sx={{ px: statisticsInset, pt: statisticsInset, pb: 3 }}
       >
-        <Typography component="h2" variant="h6">
+        <Typography component="h2" variant="h6" sx={statisticsHeadingSx}>
           {t('challenges.lastChallenges')}
         </Typography>
       </Stack>
@@ -113,10 +114,10 @@ const StatisticsHistory = ({
               '& td': { py: 1.5 },
               '& th': {
                 borderRadius: 0,
-                bgcolor: 'action.hover',
-                fontSize: 14,
+                bgcolor: 'transparent',
+                fontSize: 11,
                 color: 'text.secondary',
-                fontWeight: 500,
+                fontWeight: 600,
               },
               '& th:first-of-type, & td:first-of-type': { pl: statisticsInset, borderRadius: 0 },
               '& th:last-child, & td:last-child': { pr: statisticsInset, borderRadius: 0 },
@@ -297,20 +298,16 @@ const StatisticsHistory = ({
         <Box
           sx={{
             display: 'flex',
-            justifyContent: 'flex-end',
+            justifyContent: 'center',
             p: 3,
             borderTop: 1,
             borderColor: 'divider',
           }}
         >
-          <Pagination
-            color="primary"
-            shape="rounded"
+          <ListPagination
             page={page}
             count={pagesCount}
-            onChange={(_, value) => onPageChange(value)}
-            size="small"
-            siblingCount={0}
+            onChange={(value) => onPageChange(value)}
           />
         </Box>
       )}

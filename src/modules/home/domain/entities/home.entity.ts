@@ -3,9 +3,6 @@ import type {
   ApiNewsListResult,
   ApiUserActivityHistoryReadResult,
   ApiUsersChartStatResult,
-  ApiUsersNextBirthdaysResult,
-  ApiUsersOnlineResult,
-  ApiUsersRatingsResult,
   ApiUsersTopRatingResult,
 } from 'shared/api/orval/generated/endpoints';
 
@@ -33,10 +30,35 @@ export type HomeLandingPageStatistics = Record<HomeStatisticKey, HomeStatisticEn
 export type HomeNewsList = ApiNewsListResult;
 export type HomePostsList = ApiBlogListResult;
 export type HomeTopUsers = ApiUsersTopRatingResult;
-export type HomeNextBirthdays = ApiUsersNextBirthdaysResult;
-export type HomeOnlineUsers = ApiUsersOnlineResult;
+export interface HomeCommunityUser {
+  username: string;
+  avatar?: string;
+  firstName?: string;
+  lastName?: string;
+}
+export interface HomeNextBirthday extends HomeCommunityUser {
+  date?: string;
+  dateOfBirth?: string;
+}
+export interface HomeNextBirthdays {
+  data: HomeNextBirthday[];
+}
+export interface HomeOnlineUsers {
+  data: HomeCommunityUser[];
+}
 export type HomeUsersChart = ApiUsersChartStatResult;
-export type HomeUserRatings = ApiUsersRatingsResult;
+export interface HomeRatingEntry {
+  value?: number;
+  rank?: number;
+  percentile?: number;
+  title?: string;
+}
+export interface HomeUserRatings {
+  skillsRating: HomeRatingEntry;
+  activityRating: HomeRatingEntry;
+  contestsRating: HomeRatingEntry;
+  challengesRating: HomeRatingEntry;
+}
 export type HomeUserActivityHistory = ApiUserActivityHistoryReadResult;
 export type HomeUserActivityHistoryItem = HomeUserActivityHistory['data'][number];
 

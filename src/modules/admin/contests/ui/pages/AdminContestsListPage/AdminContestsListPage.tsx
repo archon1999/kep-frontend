@@ -1,120 +1,70 @@
-﻿import { useEffect, useMemo, useState } from 'react';
+import { useMemo } from 'react';
 import { useTranslation } from 'react-i18next';
-import { Checkbox, Chip, Link, Stack, Typography } from '@mui/material';
-import { DataGrid, GridColDef, GridRowSelectionModel, GridSortModel } from '@mui/x-data-grid';
 import { Link as RouterLink } from 'react-router';
-import AdminDataGridSkeletonLoadingOverlay from 'modules/admin/shared/ui/AdminDataGridSkeletonLoadingOverlay';
+import { Checkbox, Chip, Link, Stack, Typography } from '@mui/material';
+import { DataGrid, GridColDef } from '@mui/x-data-grid';
 import { getResourceById, resources } from 'app/routes/resources';
-import UserPopover from 'modules/users/ui/shared/components/UserPopover';
+import { useAdminContestsListPage } from 'modules/admin/contests/application/hooks/useAdminContestsListPage';
+import { AdminContest } from 'modules/admin/contests/domain/types';
 import AdminBatchActionsToolbar from 'modules/admin/shared/ui/AdminBatchActionsToolbar';
 import { AdminChoiceSelect } from 'modules/admin/shared/ui/AdminChoiceSelects';
-import AdminFiltersToolbar, { AdminActiveFilter } from 'modules/admin/shared/ui/AdminFiltersToolbar';
-import AdminListPageLayout from 'modules/admin/shared/ui/AdminListPageLayout';
-import { AdminAutocompleteOption, UsersAutocomplete } from 'modules/admin/shared/ui/AdminResourceAutocomplete';
+import AdminDataGridSkeletonLoadingOverlay from 'modules/admin/shared/ui/AdminDataGridSkeletonLoadingOverlay';
 import AdminDateTimeDisplay from 'modules/admin/shared/ui/AdminDateTimeDisplay';
+import AdminFiltersToolbar, {
+  AdminActiveFilter,
+} from 'modules/admin/shared/ui/AdminFiltersToolbar';
+import AdminListPageLayout from 'modules/admin/shared/ui/AdminListPageLayout';
+import { UsersAutocomplete } from 'modules/admin/shared/ui/AdminResourceAutocomplete';
 import AdminRowActions from 'modules/admin/shared/ui/AdminRowActions';
-import { getOrderingFromSortModel } from 'modules/admin/shared/utils/gridSorting';
+import UserPopover from 'modules/users/ui/shared/components/UserPopover';
+import DataGridNoRowsOverlay, {
+  getDataGridNoRowsOverlaySlotProps,
+} from 'shared/components/common/DataGridNoRowsOverlay';
 import FilterDrawer, {
   DEFAULT_FILTER_DRAWER_WIDTH,
   useFilterDrawer,
 } from 'shared/components/common/FilterDrawer';
-import DataGridNoRowsOverlay, {
-  getDataGridNoRowsOverlaySlotProps,
-} from 'shared/components/common/DataGridNoRowsOverlay';
-import useGridPagination from 'shared/hooks/useGridPagination';
-import useStableGridRowCount from 'shared/hooks/useStableGridRowCount';
-import { useAdminContestMeta, useAdminContests } from 'modules/admin/contests/application/queries';
-import { contestsAdminClient } from 'modules/admin/contests/data-access/contestsAdminClient';
-import { AdminContest } from 'modules/admin/contests/domain/types';
+import { useConfirmationDialog } from 'shared/hooks/useConfirmationDialog';
 
 const AdminContestsListPage = () => {
-  const { t } = useTranslation();
-  const [search, setSearch] = useState('');
-  const [typeFilter, setTypeFilter] = useState('');
-  const [categoryFilter, setCategoryFilter] = useState<number | ''>('');
-  const [participationTypeFilter, setParticipationTypeFilter] = useState<number | ''>('');
-  const [ratedFilter, setRatedFilter] = useState('');
-  const [privateFilter, setPrivateFilter] = useState('');
-  const [creatorFilter, setCreatorFilter] = useState<AdminAutocompleteOption | null>(null);
-  const filterDrawer = useFilterDrawer();
-  const [rowSelectionModel, setRowSelectionModel] = useState<GridRowSelectionModel>({
-    type: 'include',
-    ids: new Set(),
-  });
-  const [isBatching, setIsBatching] = useState(false);
-  const [sortModel, setSortModel] = useState<GridSortModel>([{ field: 'startTime', sort: 'desc' }]);
-  const { paginationModel, onPaginationModelChange, pageParams, setPaginationModel } =
-    useGridPagination({
-      initialPageSize: 20,
-      querySync: {
-        pageKey: 'page',
-        pageSizeKey: 'pageSize',
-      },
-    });
-
-  useEffect(() => {
-    setPaginationModel((prev) => ({ ...prev, page: 0 }));
-  }, [
+  const { confirm, confirmationDialog } = useConfirmationDialog();
+  const {
+    paginationModel,
+    onPaginationModelChange,
+    data,
+    meta,
+    rowCount,
+    handleDelete,
+    handlePrivateChange,
+    handleBatchAction,
+    handleContestAction,
+    isGridLoading,
+    selectedIds,
+    isBatching,
+    resetRowSelection,
     search,
     typeFilter,
+    setTypeFilter,
     categoryFilter,
+    setCategoryFilter,
     participationTypeFilter,
+    setParticipationTypeFilter,
     ratedFilter,
+    setRatedFilter,
     privateFilter,
-    creatorFilter?.id,
+    setPrivateFilter,
+    creatorFilter,
+    setCreatorFilter,
     sortModel,
-    setPaginationModel,
-  ]);
+    setSortModel,
+    handleSearchChange,
+    rowSelectionModel,
+    setRowSelectionModel,
+    handleClearFilters,
+  } = useAdminContestsListPage(confirm);
 
-  const queryParams = useMemo(
-    () => ({
-      page: pageParams.page,
-      pageSize: pageParams.pageSize,
-      ordering: getOrderingFromSortModel(sortModel),
-      search,
-      type: typeFilter || undefined,
-      category: categoryFilter || undefined,
-      participationType: participationTypeFilter || undefined,
-      isRated: ratedFilter ? ratedFilter === 'true' : undefined,
-      private: privateFilter ? privateFilter === 'true' : undefined,
-      creator: creatorFilter?.id,
-    }),
-    [
-      pageParams.page,
-      pageParams.pageSize,
-      sortModel,
-      search,
-      typeFilter,
-      categoryFilter,
-      participationTypeFilter,
-      ratedFilter,
-      privateFilter,
-      creatorFilter?.id,
-    ],
-  );
-
-  const { data, isLoading, isValidating, mutate } = useAdminContests(queryParams);
-  const { data: meta } = useAdminContestMeta();
-  const isGridLoading = isLoading || (isValidating && !data?.data);
-  const rowCount = useStableGridRowCount(data?.total, isGridLoading);
-
-  const handleSearchChange = (value: string) => setSearch(value);
-
-  const selectedIds = useMemo(
-    () => Array.from(rowSelectionModel.ids).map((id) => Number(id)).filter(Number.isFinite),
-    [rowSelectionModel],
-  );
-
-  const resetRowSelection = () => setRowSelectionModel({ type: 'include', ids: new Set() });
-
-  const handleClearFilters = () => {
-    setTypeFilter('');
-    setCategoryFilter('');
-    setParticipationTypeFilter('');
-    setRatedFilter('');
-    setPrivateFilter('');
-    setCreatorFilter(null);
-  };
+  const { t } = useTranslation();
+  const filterDrawer = useFilterDrawer();
 
   const activeFilters = useMemo<AdminActiveFilter[]>(() => {
     const items: AdminActiveFilter[] = [];
@@ -133,7 +83,8 @@ const AdminContestsListPage = () => {
       items.push({
         key: 'category',
         label: `${t('admin.form.fields.category')}: ${
-          meta?.categories.find((category) => category.value === categoryFilter)?.label ?? categoryFilter
+          meta?.categories.find((category) => category.value === categoryFilter)?.label ??
+          categoryFilter
         }`,
         onRemove: () => setCategoryFilter(''),
       });
@@ -143,8 +94,9 @@ const AdminContestsListPage = () => {
       items.push({
         key: 'participation',
         label: `${t('admin.form.fields.participation')}: ${
-          meta?.participationTypes.find((participationType) => participationType.value === participationTypeFilter)
-            ?.label ?? participationTypeFilter
+          meta?.participationTypes.find(
+            (participationType) => participationType.value === participationTypeFilter,
+          )?.label ?? participationTypeFilter
         }`,
         onRemove: () => setParticipationTypeFilter(''),
       });
@@ -179,64 +131,16 @@ const AdminContestsListPage = () => {
     }
 
     return items;
-  }, [categoryFilter, creatorFilter, meta, participationTypeFilter, privateFilter, ratedFilter, t, typeFilter]);
-
-  const handleDelete = async (contest: AdminContest) => {
-    if (!window.confirm(t('admin.contests.confirmDelete', { id: contest.id }))) {
-      return;
-    }
-
-    await contestsAdminClient.remove(contest.id);
-    await mutate();
-  };
-
-  const handlePrivateChange = async (contest: AdminContest, isPrivate: boolean) => {
-    await contestsAdminClient.update(contest.id, { private: isPrivate });
-    await mutate();
-  };
-
-  const handleBatchAction = async (
-    action: 'delete' | 'showProblems' | 'hideProblems' | 'updatePerformance',
-  ) => {
-    if (selectedIds.length === 0) {
-      return;
-    }
-
-    const confirmKey =
-      action === 'delete'
-        ? 'admin.contests.confirmBatchDelete'
-        : action === 'updatePerformance'
-          ? 'admin.contests.confirmBatchUpdatePerformance'
-          : null;
-
-    if (confirmKey && !window.confirm(t(confirmKey, { count: selectedIds.length }))) {
-      return;
-    }
-
-    setIsBatching(true);
-    try {
-      await contestsAdminClient.batch({ ids: selectedIds, action });
-      resetRowSelection();
-      await mutate();
-    } finally {
-      setIsBatching(false);
-    }
-  };
-
-  const handleContestAction = async (
-    contest: AdminContest,
-    action: 'showProblems' | 'hideProblems' | 'updatePerformance',
-  ) => {
-    if (
-      action === 'updatePerformance' &&
-      !window.confirm(t('admin.contests.confirmUpdatePerformance', { id: contest.id }))
-    ) {
-      return;
-    }
-
-    await contestsAdminClient.batch({ ids: [contest.id], action });
-    await mutate();
-  };
+  }, [
+    categoryFilter,
+    creatorFilter,
+    meta,
+    participationTypeFilter,
+    privateFilter,
+    ratedFilter,
+    t,
+    typeFilter,
+  ]);
 
   const columns: GridColDef<AdminContest>[] = [
     {
@@ -432,99 +336,105 @@ const AdminContestsListPage = () => {
   );
 
   return (
-    <AdminListPageLayout
-      title={t('admin.contests.title')}
-      createPath={resources.AdminContestCreate}
-      createLabel={t('admin.contests.createButton')}
-      search={search}
-      onSearchChange={handleSearchChange}
-      searchPlaceholder={t('admin.contests.searchPlaceholder')}
-      filterDrawerOpen={filterDrawer.open}
-      filterDrawerWidth={DEFAULT_FILTER_DRAWER_WIDTH}
-      filterDrawer={
-        <FilterDrawer
-          id="admin-contests-filters-drawer"
-          open={filterDrawer.open}
-          onClose={filterDrawer.close}
-          drawerWidth={DEFAULT_FILTER_DRAWER_WIDTH}
-          hasActiveFilters={activeFilters.length > 0}
-          clearLabel={t('problems.clear')}
-          onClear={handleClearFilters}
-        >
-          {filterControls}
-        </FilterDrawer>
-      }
-      toolbar={
-        <AdminFiltersToolbar
-          id="admin-contests"
+    <>
+      {confirmationDialog}
+      {
+        <AdminListPageLayout
+          title={t('admin.contests.title')}
+          createPath={resources.AdminContestCreate}
+          createLabel={t('admin.contests.createButton')}
           search={search}
           onSearchChange={handleSearchChange}
           searchPlaceholder={t('admin.contests.searchPlaceholder')}
-          activeFilters={activeFilters}
-          onClearFilters={handleClearFilters}
-          filters={filterControls}
-          filtersOpen={filterDrawer.open}
-          onToggleFilters={filterDrawer.toggle}
-        />
+          filterDrawerOpen={filterDrawer.open}
+          filterAnchorEl={filterDrawer.anchorEl}
+          filterDrawerWidth={DEFAULT_FILTER_DRAWER_WIDTH}
+          filterDrawer={
+            <FilterDrawer
+              id="admin-contests-filters-drawer"
+              open={filterDrawer.open}
+              onClose={filterDrawer.close}
+              drawerWidth={DEFAULT_FILTER_DRAWER_WIDTH}
+              hasActiveFilters={activeFilters.length > 0}
+              clearLabel={t('problems.clear')}
+              onClear={handleClearFilters}
+            >
+              {filterControls}
+            </FilterDrawer>
+          }
+          toolbar={
+            <AdminFiltersToolbar
+              id="admin-contests"
+              search={search}
+              onSearchChange={handleSearchChange}
+              searchPlaceholder={t('admin.contests.searchPlaceholder')}
+              activeFilters={activeFilters}
+              onClearFilters={handleClearFilters}
+              filters={filterControls}
+              filtersOpen={filterDrawer.open}
+              onToggleFilters={filterDrawer.toggle}
+            />
+          }
+        >
+          <AdminBatchActionsToolbar
+            selectedCount={selectedIds.length}
+            selectedLabel={t('admin.selectedContests')}
+            disabled={isBatching}
+            onClear={resetRowSelection}
+            actions={[
+              {
+                label: t('admin.actions.showProblems'),
+                icon: 'mdi:eye-outline',
+                onClick: () => handleBatchAction('showProblems'),
+              },
+              {
+                label: t('admin.actions.hideProblems'),
+                icon: 'mdi:eye-off-outline',
+                onClick: () => handleBatchAction('hideProblems'),
+              },
+              {
+                label: t('admin.actions.updatePerformance'),
+                icon: 'mdi:speedometer',
+                onClick: () => handleBatchAction('updatePerformance'),
+              },
+              {
+                label: t('admin.actions.delete'),
+                icon: 'mdi:delete-outline',
+                color: 'error',
+                onClick: () => handleBatchAction('delete'),
+              },
+            ]}
+          />
+          <DataGrid
+            autoHeight
+            rows={data?.data ?? []}
+            rowCount={rowCount}
+            loading={isGridLoading}
+            slots={{
+              loadingOverlay: AdminDataGridSkeletonLoadingOverlay,
+              noRowsOverlay: DataGridNoRowsOverlay,
+            }}
+            localeText={{ noRowsLabel: t('common.dataGrid.noRows.adminContests') }}
+            slotProps={getDataGridNoRowsOverlaySlotProps({
+              filtered: Boolean(search || activeFilters.length),
+            })}
+            columns={columns}
+            paginationModel={paginationModel}
+            onPaginationModelChange={onPaginationModelChange}
+            pageSizeOptions={[10, 20, 50]}
+            paginationMode="server"
+            sortModel={sortModel}
+            onSortModelChange={setSortModel}
+            sortingMode="server"
+            checkboxSelection
+            rowSelectionModel={rowSelectionModel}
+            onRowSelectionModelChange={setRowSelectionModel}
+            disableRowSelectionExcludeModel
+            disableRowSelectionOnClick
+          />
+        </AdminListPageLayout>
       }
-    >
-      <AdminBatchActionsToolbar
-        selectedCount={selectedIds.length}
-        selectedLabel={t('admin.selectedContests')}
-        disabled={isBatching}
-        onClear={resetRowSelection}
-        actions={[
-          {
-            label: t('admin.actions.showProblems'),
-            icon: 'mdi:eye-outline',
-            onClick: () => handleBatchAction('showProblems'),
-          },
-          {
-            label: t('admin.actions.hideProblems'),
-            icon: 'mdi:eye-off-outline',
-            onClick: () => handleBatchAction('hideProblems'),
-          },
-          {
-            label: t('admin.actions.updatePerformance'),
-            icon: 'mdi:speedometer',
-            onClick: () => handleBatchAction('updatePerformance'),
-          },
-          {
-            label: t('admin.actions.delete'),
-            icon: 'mdi:delete-outline',
-            color: 'error',
-            onClick: () => handleBatchAction('delete'),
-          },
-        ]}
-      />
-      <DataGrid
-        autoHeight
-        rows={data?.data ?? []}
-        rowCount={rowCount}
-        loading={isGridLoading}
-        slots={{
-          loadingOverlay: AdminDataGridSkeletonLoadingOverlay,
-          noRowsOverlay: DataGridNoRowsOverlay,
-        }}
-        localeText={{ noRowsLabel: t('common.dataGrid.noRows.adminContests') }}
-        slotProps={getDataGridNoRowsOverlaySlotProps({
-          filtered: Boolean(search || activeFilters.length),
-        })}
-        columns={columns}
-        paginationModel={paginationModel}
-        onPaginationModelChange={onPaginationModelChange}
-        pageSizeOptions={[10, 20, 50]}
-        paginationMode="server"
-        sortModel={sortModel}
-        onSortModelChange={setSortModel}
-        sortingMode="server"
-        checkboxSelection
-        rowSelectionModel={rowSelectionModel}
-        onRowSelectionModelChange={setRowSelectionModel}
-        disableRowSelectionExcludeModel
-        disableRowSelectionOnClick
-      />
-    </AdminListPageLayout>
+    </>
   );
 };
 

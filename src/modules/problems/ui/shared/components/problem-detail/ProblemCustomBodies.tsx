@@ -14,7 +14,7 @@ import { Box, Button, Card, Chip, Stack, TextField, Tooltip, Typography } from '
 import { useAuth } from 'app/providers/AuthProvider';
 import type { ProblemDetail } from 'modules/problems/domain/entities/problem.entity';
 import Swiper from 'shared/components/base/Swiper';
-import { useThemeMode } from 'shared/hooks/useThemeMode.tsx';
+import { useMonacoTheme } from 'shared/hooks/useMonacoTheme';
 import { toast } from 'sonner';
 import 'swiper/css';
 import { SwiperSlide } from 'swiper/react';
@@ -161,7 +161,8 @@ const HtmlEditorPreview = ({
   frameHeight = 300,
   overlayColor,
 }: HtmlEditorPreviewProps) => {
-  const { mode } = useThemeMode();
+  const { t } = useTranslation();
+  const codeTheme = useMonacoTheme();
   const [html, setHtml] = useState('');
   const [outputHtml, setOutputHtml] = useState('');
   const [isHovering, setIsHovering] = useState(false);
@@ -205,7 +206,8 @@ const HtmlEditorPreview = ({
       <Editor
         height="400px"
         defaultLanguage="html"
-        theme={mode === 'dark' ? 'vs-dark' : 'vs'}
+        theme={codeTheme.theme}
+        beforeMount={codeTheme.beforeMount}
         value={html}
         onChange={(value) => setHtml(value ?? '')}
         options={{
@@ -253,7 +255,7 @@ const HtmlEditorPreview = ({
               <Box
                 component="iframe"
                 srcDoc={outputHtml}
-                title="Preview"
+                title={t('problems.detail.previewLabel')}
                 sandbox="allow-same-origin"
                 sx={{
                   border: 0,
@@ -267,7 +269,7 @@ const HtmlEditorPreview = ({
               <Box
                 component="img"
                 src={problem.image}
-                alt="Target"
+                alt={t('problems.detail.targetLabel')}
                 sx={{
                   position: 'absolute',
                   inset: 0,
@@ -289,7 +291,7 @@ const HtmlEditorPreview = ({
                 }}
               >
                 <Typography variant="body2" color="text.secondary">
-                  No target image available
+                  {t('problems.detail.targetImageUnavailable')}
                 </Typography>
               </Stack>
             )}
@@ -298,13 +300,13 @@ const HtmlEditorPreview = ({
 
         <Stack direction="column" spacing={1} flex={1}>
           <Typography variant="subtitle1" fontWeight={600}>
-            Target
+            {t('problems.detail.targetLabel')}
           </Typography>
           {problem.image ? (
             <Box
               component="img"
               src={problem.image}
-              alt="Target reference"
+              alt={t('problems.detail.targetLabel')}
               sx={{
                 width: previewWidth,
                 height: previewHeight,
@@ -314,7 +316,7 @@ const HtmlEditorPreview = ({
             />
           ) : (
             <Typography variant="body2" color="text.secondary">
-              No target image provided.
+              {t('problems.detail.targetImageMissing')}
             </Typography>
           )}
         </Stack>
@@ -506,7 +508,7 @@ const Problem1623Body: FC<CustomProblemBodyProps> = () => {
         component="img"
         alt="ugly"
         src="https://www.slashfilm.com/img/gallery/the-good-the-bad-and-the-ugly-ending-explained/intro-1645045469.jpg"
-        sx={{ width: 300, borderRadius: 1 }}
+        sx={{ width: 300, maxWidth: '100%', height: 'auto', borderRadius: 1 }}
       />
       <audio ref={audioRef} src="/assets/audio/the-ugly.weba" />
     </Stack>
@@ -519,7 +521,7 @@ const Problem1624Body: FC<CustomProblemBodyProps> = () => {
       component="img"
       alt="ugly"
       src="https://images.news18.com/ibnlive/uploads/2021/12/spiderman-meme-16401651614x3.png"
-      sx={{ width: 300, borderRadius: 1 }}
+      sx={{ width: 300, maxWidth: '100%', height: 'auto', borderRadius: 1 }}
     />
   );
 };
@@ -599,7 +601,11 @@ const Problem1633Body: FC<CustomProblemBodyProps> = () => {
 
 const Problem1634Body: FC<CustomProblemBodyProps> = () => {
   return (
-    <Box component="video" controls sx={{ width: 350, borderRadius: 1 }}>
+    <Box
+      component="video"
+      controls
+      sx={{ width: 350, maxWidth: '100%', height: 'auto', borderRadius: 1 }}
+    >
       <source src="/assets/video/1634.mp4" type="video/mp4" />
     </Box>
   );
@@ -628,7 +634,8 @@ const Problem1635Body: FC<CustomProblemBodyProps> = () => {
 };
 
 const Problem1637Body: FC<CustomProblemBodyProps> = () => {
-  return <Typography>Masalani sharti yo&apos;qolib qolgan, uni toping.</Typography>;
+  const { t } = useTranslation();
+  return <Typography>{t('problems.detail.missingStatementTask')}</Typography>;
 };
 
 const Problem1638Body: FC<CustomProblemBodyProps> = () => {
@@ -1080,7 +1087,10 @@ const Problem2286Body: FC<CustomProblemBodyProps> = () => {
   const getRowState = (rowIndex: number) => {
     const normalized = values[rowIndex].join('');
     if (!normalized) return 'idle';
-    if (normalized.length === rows[rowIndex].length && hashAnswer(normalized) === rows[rowIndex].hash) {
+    if (
+      normalized.length === rows[rowIndex].length &&
+      hashAnswer(normalized) === rows[rowIndex].hash
+    ) {
       return 'correct';
     }
     return 'wrong';
@@ -1091,7 +1101,10 @@ const Problem2286Body: FC<CustomProblemBodyProps> = () => {
   };
 
   const handleChange = (rowIndex: number, cellIndex: number, rawValue: string) => {
-    const nextChar = rawValue.slice(-1).toUpperCase().replace(/[^A-Z]/g, '');
+    const nextChar = rawValue
+      .slice(-1)
+      .toUpperCase()
+      .replace(/[^A-Z]/g, '');
     setValues((current) => {
       const next = current.map((row) => [...row]);
       next[rowIndex][cellIndex] = nextChar;
@@ -1102,7 +1115,11 @@ const Problem2286Body: FC<CustomProblemBodyProps> = () => {
     }
   };
 
-  const handleKeyDown = (rowIndex: number, cellIndex: number, event: KeyboardEvent<HTMLInputElement>) => {
+  const handleKeyDown = (
+    rowIndex: number,
+    cellIndex: number,
+    event: KeyboardEvent<HTMLInputElement>,
+  ) => {
     if (event.key === 'Backspace' && !values[rowIndex][cellIndex] && cellIndex > 0) {
       window.requestAnimationFrame(() => focusCell(rowIndex, cellIndex - 1));
     }
@@ -1229,7 +1246,7 @@ const Problem2293Body: FC<CustomProblemBodyProps> = ({ problem }) => {
       return;
     }
 
-    const nextIndex = ((currentIndex + 1) % formula.length + formula.length) % formula.length;
+    const nextIndex = (((currentIndex + 1) % formula.length) + formula.length) % formula.length;
     localStorage.setItem(storageKey, String(nextIndex));
     sessionStorage.setItem(loadKey, loadMarker);
     setVisibleChar(formula[nextIndex]);

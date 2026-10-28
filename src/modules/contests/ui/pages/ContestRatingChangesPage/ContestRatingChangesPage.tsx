@@ -1,46 +1,33 @@
-import { useMemo, useState } from 'react';
+import { useMemo } from 'react';
 import { useTranslation } from 'react-i18next';
-import { useParams } from 'react-router-dom';
 import { Box, Stack, Tooltip, Typography } from '@mui/material';
-import { DataGrid, GridColDef, GridSortModel } from '@mui/x-data-grid';
-import { useDocumentTitle } from 'app/providers/DocumentTitleProvider';
-import { useContest, useContestContestants } from 'modules/contests/application/queries';
+import { DataGrid, GridColDef } from '@mui/x-data-grid';
+import { getRankColor } from 'app/theme/colors/medals';
+import { useContestRatingChangesPage } from 'modules/contests/application/hooks/useContestRatingChangesPage';
 import { ContestantEntity } from 'modules/contests/domain/entities/contestant.entity';
-import { ContestContestantsParams } from 'modules/contests/domain/ports/contests.repository';
 import ContestPageHeader from 'modules/contests/ui/shared/components/ContestPageHeader';
+import ContestPageLayout from 'modules/contests/ui/shared/components/ContestPageLayout';
 import ContestantView from 'modules/contests/ui/shared/components/ContestantView';
 import IconifyIcon from 'shared/components/base/IconifyIcon';
+import DataGridListPagination from 'shared/components/pagination/DataGridListPagination';
 import ContestsRatingChip from 'shared/components/rating/ContestsRatingChip';
-import useGridPagination from 'shared/hooks/useGridPagination';
-import { responsivePagePaddingSx } from 'shared/lib/styles';
-
-const getContestantsOrdering = (sortModel: GridSortModel): ContestContestantsParams['ordering'] => {
-  const sort = sortModel[0];
-  if (!sort?.sort || (sort.field !== 'rank' && sort.field !== 'delta')) {
-    return undefined;
-  }
-
-  return sort.sort === 'desc' ? `-${sort.field}` : sort.field;
-};
 
 const ContestRatingChangesPage = () => {
-  const { id } = useParams<{ id: string }>();
-  const contestId = id ? Number(id) : undefined;
+  const {
+    contest,
+    isContestLoading,
+    contestError,
+    contestants,
+    isLoading,
+    sectionError,
+    paginationModel,
+    onPaginationModelChange,
+    contestId,
+    sortModel,
+    setSortModel,
+  } = useContestRatingChangesPage();
+
   const { t } = useTranslation();
-  const [sortModel, setSortModel] = useState<GridSortModel>([{ field: 'rank', sort: 'asc' }]);
-  const ordering = getContestantsOrdering(sortModel);
-
-  const { data: contest, isLoading: isContestLoading } = useContest(contestId);
-  const { data: contestants = [], isLoading } = useContestContestants(contestId, { ordering });
-  useDocumentTitle(contest?.title, { contestTitle: contest?.title });
-
-  const { paginationModel, onPaginationModelChange } = useGridPagination({
-    initialPageSize: 20,
-    querySync: {
-      pageKey: 'page',
-      pageSizeKey: 'pageSize',
-    },
-  });
 
   const columns: GridColDef<ContestantEntity>[] = useMemo(
     () => [
@@ -51,7 +38,7 @@ const ContestRatingChangesPage = () => {
         flex: 0.3,
         sortable: true,
         renderCell: ({ row }) => (
-          <Typography variant="body2" fontWeight={700}>
+          <Typography variant="body2" fontWeight={700} color={getRankColor(row.rank)}>
             {row.rank ?? '—'}
           </Typography>
         ),
@@ -166,15 +153,21 @@ const ContestRatingChangesPage = () => {
   );
 
   return (
-    <Stack spacing={3} sx={responsivePagePaddingSx}>
-      <ContestPageHeader
-        title={contest?.title ?? t('contests.ratingChanges.title')}
-        contest={contest as any}
-        contestId={contestId}
-        isLoading={isContestLoading}
-      />
-
+    <ContestPageLayout
+      flush
+      error={contestError || sectionError}
+      header={
+        <ContestPageHeader
+          title={contest?.title ?? t('contests.ratingChanges.title')}
+          contest={contest}
+          contestId={contestId}
+          isLoading={isContestLoading}
+        />
+      }
+    >
       <DataGrid
+        className="kep-data-grid-section"
+        slots={{ pagination: DataGridListPagination }}
         autoHeight
         disableColumnMenu
         disableColumnFilter
@@ -193,7 +186,7 @@ const ContestRatingChangesPage = () => {
         pageSizeOptions={[20, 50, 100]}
         getRowId={(row) => row.username}
       />
-    </Stack>
+    </ContestPageLayout>
   );
 };
 

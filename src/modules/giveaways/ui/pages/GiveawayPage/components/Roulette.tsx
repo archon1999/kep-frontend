@@ -5,7 +5,14 @@ import gsap from 'gsap';
 import type { Giveaway } from '../../../../domain/entities/giveaway.types';
 import { buildWheel } from '../../../../domain/utils/roulette';
 
-const COLORS = ['#7655bc', '#315c8e', '#307b83', '#8e4d83', '#5555a0', '#936345'];
+const COLORS = [
+  'color-mix(in srgb, var(--kep-logo-ice) 20%, var(--kep-bg))',
+  'color-mix(in srgb, var(--kep-logo-sand) 24%, var(--kep-bg))',
+  'color-mix(in srgb, var(--kep-logo-ice) 12%, var(--kep-bg))',
+  'color-mix(in srgb, var(--kep-logo-sand) 14%, var(--kep-bg))',
+  'color-mix(in srgb, var(--kep-logo-ice) 28%, var(--kep-bg))',
+  'color-mix(in srgb, var(--kep-logo-sand) 20%, var(--kep-bg))',
+];
 const CENTER = 250;
 const RADIUS = 226;
 
@@ -57,14 +64,14 @@ export default function Roulette({
     >
       <Box className="giveaway-wheel">
         <svg className="giveaway-wheel-rim" viewBox="0 0 500 500" aria-hidden="true">
-          <circle cx="250" cy="250" r="239" fill="none" stroke="#a78bfa45" />
+          <circle cx="250" cy="250" r="239" fill="none" stroke="var(--kep-line)" />
           {Array.from({ length: 48 }, (_, index) => (
             <circle
               key={index}
               cx={250 + 239 * Math.cos((index * Math.PI) / 24)}
               cy={250 + 239 * Math.sin((index * Math.PI) / 24)}
               r="2.3"
-              fill={index % 4 === 0 ? '#e3d7ff' : '#8b74b6'}
+              fill={index % 4 === 0 ? 'var(--kep-logo-sand)' : 'var(--kep-logo-ice)'}
             />
           ))}
         </svg>
@@ -85,7 +92,7 @@ export default function Roulette({
                         <path
                           d={`M250 250 L${point(startAngle)} A${RADIUS} ${RADIUS} 0 ${endAngle - startAngle > 180 ? 1 : 0} 1 ${point(endAngle)} Z`}
                           fill={COLORS[index % COLORS.length]}
-                          stroke="#ffffff35"
+                          stroke="var(--kep-line)"
                           strokeWidth="1"
                         />
                       )}
@@ -95,7 +102,7 @@ export default function Roulette({
                           y="250"
                           dominantBaseline="central"
                           textAnchor={flipped ? 'start' : 'end'}
-                          fill="#fff"
+                          fill="var(--kep-text)"
                           fontSize={fontSize}
                           fontWeight="700"
                           textLength={label.length * fontSize * 0.62 > 146 ? 146 : undefined}

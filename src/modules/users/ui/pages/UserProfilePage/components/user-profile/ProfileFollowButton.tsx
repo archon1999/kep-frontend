@@ -1,67 +1,62 @@
-import { useEffect, useMemo, useState } from 'react';
 import { useTranslation } from 'react-i18next';
-import { CircularProgress, IconButton, Tooltip } from '@mui/material';
-import { usersApiClient } from 'modules/users/data-access/api/users.client';
+import { Link as RouterLink } from 'react-router';
+import { IconButton, Tooltip } from '@mui/material';
 import { useAuth } from 'app/providers/AuthProvider';
+import { getResourceByUsername, resources } from 'app/routes/resources';
+import { useSetUserFollowing } from 'modules/users/application/mutations';
 import KepIcon from 'shared/components/base/KepIcon';
+import { toast } from 'sonner';
 
-type ProfileFollowButtonProps = {
+const ProfileFollowButton = ({
+  username,
+  isFollowing = false,
+}: {
   username: string;
   isFollowing?: boolean;
-};
-
-const ProfileFollowButton = ({ username, isFollowing: isFollowingProp }: ProfileFollowButtonProps) => {
+}) => {
   const { t } = useTranslation();
-  const { currentUser } = useAuth();
-  const [isFollowing, setIsFollowing] = useState<boolean>(Boolean(isFollowingProp));
-  const [loading, setLoading] = useState(false);
-
-  useEffect(() => {
-    setIsFollowing(Boolean(isFollowingProp));
-  }, [isFollowingProp]);
-
-  const canFollow = useMemo(
-    () => Boolean(username) && currentUser?.username !== username,
-    [currentUser?.username, username],
+  const { currentUser, isAuthLoading } = useAuth();
+  const { trigger, isMutating } = useSetUserFollowing(username);
+  if (currentUser?.username === username || isAuthLoading) return null;
+  const label = t(
+    isFollowing ? 'users.profile.actions.unfollowTooltip' : 'users.profile.actions.followTooltip',
   );
-
-  const handleToggle = async () => {
-    if (!canFollow || loading) return;
-    setLoading(true);
-    try {
-      if (isFollowing) {
-        await usersApiClient.unfollow(username);
-        setIsFollowing(false);
-      } else {
-        await usersApiClient.follow(username);
-        setIsFollowing(true);
-      }
-    } finally {
-      setLoading(false);
-    }
+  const icon = <KepIcon name={isFollowing ? 'star' : 'star-outline'} fontSize={25} />;
+  const sx = {
+    flexShrink: 0,
+    bgcolor: 'transparent',
+    color: isFollowing ? 'warning.main' : 'text.secondary',
   };
-
-  if (!canFollow) {
-    return null;
-  }
-
+  if (!currentUser)
+    return (
+      <Tooltip title={label}>
+        <IconButton
+          component={RouterLink}
+          aria-label={label}
+          to={`${resources.Login}?${new URLSearchParams({ returnUrl: getResourceByUsername(resources.UserProfile, username) })}`}
+          sx={sx}
+        >
+          {icon}
+        </IconButton>
+      </Tooltip>
+    );
   return (
-    <Tooltip
-      title={
-        isFollowing ? t('users.profile.actions.unfollowTooltip') : t('users.profile.actions.followTooltip')
-      }
-    >
+    <Tooltip title={label}>
       <span>
-        <IconButton size="small" color="primary" onClick={handleToggle} disabled={loading}>
-          {loading ? (
-            <CircularProgress size={18} />
-          ) : (
-            <KepIcon
-              name={isFollowing ? 'star' : 'star-outline'}
-              fontSize={20}
-              color={isFollowing ? 'primary.main' : 'text.secondary'}
-            />
-          )}
+        <IconButton
+          aria-label={label}
+          aria-pressed={isFollowing}
+          disabled={isMutating}
+          sx={sx}
+          onClick={async () => {
+            try {
+              await trigger(!isFollowing);
+            } catch {
+              toast.error(t('settings.error'));
+            }
+          }}
+        >
+          {icon}
         </IconButton>
       </span>
     </Tooltip>

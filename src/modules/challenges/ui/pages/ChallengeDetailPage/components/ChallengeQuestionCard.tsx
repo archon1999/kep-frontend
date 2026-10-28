@@ -1,8 +1,18 @@
-import { forwardRef, useEffect, useImperativeHandle, useMemo, useRef, useState } from 'react';
+import {
+  ReactNode,
+  forwardRef,
+  useEffect,
+  useImperativeHandle,
+  useMemo,
+  useRef,
+  useState,
+} from 'react';
 import { useTranslation } from 'react-i18next';
 import { Box, Button, Card, CardContent, Divider, Stack, Typography } from '@mui/material';
 import { Question, QuestionType } from 'modules/testing/domain';
-import { buildAnswerResult } from 'modules/testing/ui/pages/TestPassPage/answers.ts';
+import { QuestionState, TestPassQuestion } from 'modules/testing/domain/entities/test-pass.types';
+import { buildAnswerResult } from 'modules/testing/domain/utils/test-pass-answer';
+import { buildInitialState } from 'modules/testing/domain/utils/test-pass-state';
 import ClassificationQuestion from 'modules/testing/ui/pages/TestPassPage/components/ClassificationQuestion.tsx';
 import CodeInputQuestion from 'modules/testing/ui/pages/TestPassPage/components/CodeInputQuestion.tsx';
 import ConformityQuestion from 'modules/testing/ui/pages/TestPassPage/components/ConformityQuestion.tsx';
@@ -10,8 +20,7 @@ import MultipleChoiceQuestion from 'modules/testing/ui/pages/TestPassPage/compon
 import OrderingQuestion from 'modules/testing/ui/pages/TestPassPage/components/OrderingQuestion.tsx';
 import SingleChoiceQuestion from 'modules/testing/ui/pages/TestPassPage/components/SingleChoiceQuestion.tsx';
 import TextInputQuestion from 'modules/testing/ui/pages/TestPassPage/components/TextInputQuestion.tsx';
-import { QuestionState, TestPassQuestion } from 'modules/testing/ui/pages/TestPassPage/types.ts';
-import { buildInitialState } from 'modules/testing/ui/pages/TestPassPage/utils.ts';
+import ChapterLogo from 'shared/components/common/ChapterLogo';
 import ChallengeChessPuzzleQuestion, {
   ChessPuzzleQuestionHandle,
 } from './ChallengeChessPuzzleQuestion.tsx';
@@ -20,6 +29,7 @@ interface QuestionCardProps {
   challengeId?: number;
   questionNumber?: number;
   question?: Question;
+  toolbar?: ReactNode;
   disabled?: boolean;
   isSubmitting?: boolean;
   onSubmit?: (payload: {
@@ -61,7 +71,7 @@ const buildChallengeAnswer = (
 };
 
 const ChallengeQuestionCard = forwardRef<QuestionCardHandle, QuestionCardProps>(
-  ({ challengeId, questionNumber, question, onSubmit, disabled, isSubmitting }, ref) => {
+  ({ challengeId, questionNumber, question, toolbar, onSubmit, disabled, isSubmitting }, ref) => {
     const { t } = useTranslation();
     const [questionStates, setQuestionStates] = useState<Record<string, QuestionState>>({});
     const chessQuestionRef = useRef<ChessPuzzleQuestionHandle>(null);
@@ -277,23 +287,28 @@ const ChallengeQuestionCard = forwardRef<QuestionCardHandle, QuestionCardProps>(
     if (!question) return null;
 
     return (
-      <Card variant="outlined">
-        <CardContent>
+      <Card variant="section">
+        {toolbar && (
+          <Box
+            sx={{
+              px: 'var(--kep-content-inset)',
+              py: 1.5,
+              borderBottom: 1,
+              borderColor: 'divider',
+            }}
+          >
+            {toolbar}
+          </Box>
+        )}
+        <CardContent sx={{ p: 'var(--kep-content-inset)' }}>
           <Stack direction="column" spacing={2}>
             <Stack direction="row" alignItems="center" spacing={1} justifyContent="space-between">
-              <Typography variant="body1" fontWeight={500}>
-                #{question.number}
-              </Typography>
-              {question.chapter ? (
-                <Stack direction="row" spacing={1} alignItems="center">
-                  {question.chapter.icon ? (
-                    <img src={question.chapter.icon} alt={question.chapter.title} width={32} />
-                  ) : null}
-                  <Typography variant="body2" color="text.secondary">
-                    {question.chapter.title}
-                  </Typography>
-                </Stack>
-              ) : null}
+              {!toolbar && (
+                <Typography variant="metric" sx={{ fontSize: 24 }}>
+                  #{questionNumber ?? question.number}
+                </Typography>
+              )}
+              {question.chapter ? <ChapterLogo chapter={question.chapter} size={28} /> : null}
             </Stack>
 
             {question.audio ? (
@@ -307,15 +322,26 @@ const ChallengeQuestionCard = forwardRef<QuestionCardHandle, QuestionCardProps>(
 
             <Divider />
 
-            {renderQuestion()}
+            <Box
+              component="fieldset"
+              disabled={disabled || isSubmitting}
+              sx={{ border: 0, p: 0, m: 0, minWidth: 0 }}
+            >
+              {renderQuestion()}
+            </Box>
 
             {question.type !== QuestionType.ChessPuzzle ? (
               <Box display="flex" justifyContent="flex-end">
                 <Button
                   variant="contained"
                   onClick={() => handleSubmit()}
-                  disabled={disabled || isSubmitting}
-                  sx={{ minWidth: 160 }}
+                  disabled={
+                    disabled ||
+                    isSubmitting ||
+                    buildChallengeAnswer(question, currentQuestionState).isEmpty
+                  }
+                  loading={isSubmitting}
+                  sx={{ minWidth: 160, width: { xs: '100%', sm: 'auto' } }}
                 >
                   {isSubmitting ? t('common.loading') : t('challenges.submitAnswer')}
                 </Button>

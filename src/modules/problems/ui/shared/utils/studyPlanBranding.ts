@@ -1,11 +1,11 @@
 import { alpha } from '@mui/material/styles';
 import kepLogo from 'shared/assets/logo/logo.svg';
 import algorithmsLogo from 'shared/assets/study-plans/algorithms.svg';
-import programmingBasicsLogo from 'shared/assets/study-plans/programming-basics.svg';
-import mathLogo from 'shared/assets/study-plans/math-cp.svg';
-import implementationLogo from 'shared/assets/study-plans/implementation.svg';
 import contestLogo from 'shared/assets/study-plans/contest.svg';
+import implementationLogo from 'shared/assets/study-plans/implementation.svg';
+import mathLogo from 'shared/assets/study-plans/math-cp.svg';
 import olympiadLogo from 'shared/assets/study-plans/olympiad.svg';
+import programmingBasicsLogo from 'shared/assets/study-plans/programming-basics.svg';
 
 type StudyPlanBrandingInput = {
   code?: string;
@@ -16,6 +16,7 @@ type StudyPlanBrandingInput = {
 
 type StudyPlanBranding = {
   iconSrc?: string | null;
+  iconFilter?: string;
   lightColor: string;
   darkColor: string;
   accentColor: string;
@@ -41,18 +42,23 @@ const defaultIcons: Record<string, string> = {
   'olympiad-prep-ii': olympiadLogo,
 };
 
-export const getStudyPlanBranding = ({
-  code,
-  icon,
-  themeColor,
-  themeColorSecondary,
-}: StudyPlanBrandingInput, mode: StudyPlanBrandingMode = 'light'): StudyPlanBranding => {
+export const getStudyPlanBranding = (
+  { code, icon, themeColor, themeColorSecondary }: StudyPlanBrandingInput,
+  mode: StudyPlanBrandingMode = 'light',
+): StudyPlanBranding => {
   const lightColor = themeColor || themeColorSecondary || '#0F766E';
   const darkColor = themeColorSecondary || themeColor || '#38BDF8';
   const accentColor = mode === 'dark' ? darkColor : lightColor;
 
   return {
     iconSrc: defaultIcons[code ?? ''] ?? icon ?? null,
+    iconFilter:
+      mode === 'light' &&
+      Boolean(defaultIcons[code ?? '']) &&
+      code !== 'kep-intro' &&
+      code !== 'best-of-kep'
+        ? 'brightness(0) opacity(0.6)'
+        : undefined,
     lightColor,
     darkColor,
     accentColor,

@@ -1,12 +1,22 @@
 import { useTranslation } from 'react-i18next';
-import { Avatar, Box, Button, ButtonBase, Paper, Skeleton, Stack, Typography } from '@mui/material';
+import {
+  Avatar,
+  Box,
+  Button,
+  ButtonBase,
+  Card,
+  Chip,
+  Skeleton,
+  Stack,
+  Typography,
+} from '@mui/material';
 import { useGamesLeaderboard } from 'modules/games/application';
 import type { LeaderboardId, LeaderboardPlayer } from 'modules/games/domain';
 import LeaderboardScore from 'modules/games/ui/shared/components/LeaderboardScore';
 import UserPopover from 'modules/users/ui/shared/components/UserPopover';
 import IconifyIcon from 'shared/components/base/IconifyIcon';
 
-const podiumColors = ['#D99214', '#8396A9', '#B5744D'] as const;
+const podiumColors = ['var(--kep-gold)', 'var(--kep-silver)', 'var(--kep-bronze)'] as const;
 
 const PlayerRow = ({ player }: { player: LeaderboardPlayer }) => (
   <Stack
@@ -18,7 +28,7 @@ const PlayerRow = ({ player }: { player: LeaderboardPlayer }) => (
       minWidth: 0,
       minHeight: 45,
       px: 1,
-      borderRadius: 1.25,
+      borderRadius: 0,
       bgcolor: player.isCurrentUser ? 'action.selected' : undefined,
     }}
   >
@@ -103,14 +113,10 @@ const LeaderboardCard = ({ id, embedded = false, compact = false }: Props) => {
   }
 
   return (
-    <Paper
+    <Card
       component="section"
-      background={embedded ? 0 : 5}
+      variant={embedded ? 'section' : 'panel'}
       sx={{
-        border: 0,
-        outline: 0,
-        boxShadow: 'none',
-        borderRadius: 2.5,
         p: { xs: 2, md: 2.5 },
         minWidth: 0,
         ...(isStrip && {
@@ -140,9 +146,9 @@ const LeaderboardCard = ({ id, embedded = false, compact = false }: Props) => {
               flex: '0 0 auto',
               display: 'grid',
               placeItems: 'center',
-              borderRadius: 2,
+              borderRadius: 0,
               bgcolor: 'warning.lighter',
-              color: 'warning.dark',
+              color: 'warning.main',
             }}
           >
             <IconifyIcon icon="mdi:trophy-outline" width={21} />
@@ -161,27 +167,13 @@ const LeaderboardCard = ({ id, embedded = false, compact = false }: Props) => {
           </Typography>
         </Stack>
         {data && (
-          <Stack
-            direction="row"
-            alignItems="center"
-            spacing={0.75}
-            sx={{
-              px: 1.25,
-              py: 0.625,
-              borderRadius: 5,
-              bgcolor: 'background.elevation1',
-              color: 'primary.dark',
-              whiteSpace: 'nowrap',
-            }}
-          >
-            <IconifyIcon icon="mdi:account-group-outline" width={16} aria-hidden="true" />
-            <Typography
-              variant="caption"
-              sx={{ fontWeight: 700, fontVariantNumeric: 'tabular-nums' }}
-            >
-              {t('games.players', { count: data.totalPlayers })}
-            </Typography>
-          </Stack>
+          <Chip
+            size="small"
+            variant="soft"
+            color="neutral"
+            icon={<IconifyIcon icon="mdi:account-group-outline" width={16} />}
+            label={t('games.players', { count: data.totalPlayers })}
+          />
         )}
       </Stack>
       {isLoading ? (
@@ -240,7 +232,7 @@ const LeaderboardCard = ({ id, embedded = false, compact = false }: Props) => {
           <PlayerRow player={data.currentUser} />
         </Box>
       )}
-    </Paper>
+    </Card>
   );
 };
 

@@ -1,21 +1,14 @@
 import { useTranslation } from 'react-i18next';
-import {
-  Chip,
-  FilledInput,
-  FormControl,
-  InputLabel,
-  MenuItem,
-  Select,
-  Stack,
-  Typography,
-} from '@mui/material';
+import { Box, FormControl, InputLabel, MenuItem, Select, Stack, Typography } from '@mui/material';
 import {
   DuelPreset,
   DuelTypeInfo,
   formatDuelDuration,
   getDuelPresetCategoryTitle,
-} from 'modules/duels/domain/index.ts';
-import IconifyIcon from 'shared/components/base/IconifyIcon.tsx';
+} from 'modules/duels/domain';
+import IconifyIcon from 'shared/components/base/IconifyIcon';
+import MixedText from 'shared/components/common/MixedText';
+import PatternArtwork from 'shared/components/common/PatternArtwork';
 
 type Props = {
   presets: DuelPreset[];
@@ -25,124 +18,6 @@ type Props = {
   onPresetChange: (value: string) => void;
   onTypeChange: (value: string) => void;
 };
-
-const DifficultyStars = ({ difficulty = 0 }: { difficulty?: number }) => (
-  <Stack direction="row" spacing={0.1} alignItems="center" justifyContent="flex-end">
-    {Array.from({ length: 5 }).map((_, index) => {
-      const filled = index < difficulty;
-      return (
-        <IconifyIcon
-          key={index}
-          icon={filled ? 'mdi:star' : 'mdi:star-outline'}
-          sx={{
-            fontSize: 17,
-            color: filled ? 'warning.main' : 'text.disabled',
-          }}
-        />
-      );
-    })}
-  </Stack>
-);
-
-const PresetOptionContent = ({
-  preset,
-  compact = false,
-}: {
-  preset: DuelPreset;
-  compact?: boolean;
-}) => {
-  const categoryTitle = getDuelPresetCategoryTitle(preset);
-
-  return (
-    <Stack
-      direction="row"
-      alignItems="center"
-      justifyContent="space-between"
-      spacing={2}
-      width="100%"
-      sx={{ minWidth: 0 }}
-    >
-      <Stack spacing={compact ? 0.25 : 0.45} sx={{ minWidth: 0, flex: 1 }}>
-        <Typography variant={compact ? 'subtitle2' : 'subtitle1'} fontWeight={800} noWrap>
-          {preset.title}
-        </Typography>
-        <Stack direction="row" spacing={0.75} alignItems="center" flexWrap="wrap" rowGap={0.5}>
-          {categoryTitle ? (
-            <Chip size="small" color="secondary" label={categoryTitle} sx={{ fontWeight: 700 }} />
-          ) : null}
-          {preset.duration ? (
-            <Chip
-              size="small"
-              variant="outlined"
-              color="primary"
-              label={formatDuelDuration(preset.duration)}
-              sx={{ fontWeight: 700 }}
-            />
-          ) : null}
-          {typeof preset.problemsCount === 'number' ? (
-            <Chip
-              size="small"
-              variant="outlined"
-              label={`${preset.problemsCount}P`}
-              sx={{ fontWeight: 700 }}
-            />
-          ) : null}
-        </Stack>
-        {!compact && preset.description ? (
-          <Typography
-            variant="body2"
-            color="text.secondary"
-            sx={{
-              display: '-webkit-box',
-              WebkitLineClamp: 2,
-              WebkitBoxOrient: 'vertical',
-              overflow: 'hidden',
-            }}
-          >
-            {preset.description}
-          </Typography>
-        ) : null}
-      </Stack>
-
-      <Stack spacing={0.35} minWidth={compact ? 84 : 110} alignItems="flex-end">
-        <DifficultyStars difficulty={preset.difficulty} />
-      </Stack>
-    </Stack>
-  );
-};
-
-const DuelTypeOptionContent = ({
-  duelType,
-  compact = false,
-}: {
-  duelType: DuelTypeInfo;
-  compact?: boolean;
-}) => (
-  <Stack spacing={compact ? 0.25 : 0.5} sx={{ minWidth: 0 }}>
-    <Typography variant={compact ? 'subtitle2' : 'subtitle1'} fontWeight={800} noWrap>
-      {duelType.title}
-    </Typography>
-    {duelType.description ? (
-      <Typography
-        variant="body2"
-        color="text.secondary"
-        sx={
-          compact
-            ? undefined
-            : {
-                display: '-webkit-box',
-                WebkitLineClamp: 2,
-                WebkitBoxOrient: 'vertical',
-                overflow: 'hidden',
-              }
-        }
-      >
-        {duelType.description}
-      </Typography>
-    ) : null}
-  </Stack>
-);
-
 const DuelCallComposerForm = ({
   presets,
   duelTypes,
@@ -152,70 +27,134 @@ const DuelCallComposerForm = ({
   onTypeChange,
 }: Props) => {
   const { t } = useTranslation();
-
+  const preset = presets.find((item) => String(item.id) === selectedPresetId);
+  const type = duelTypes.find((item) => String(item.id) === selectedTypeId);
   return (
-    <Stack spacing={2.5}>
-      <FormControl fullWidth variant="filled">
+    <Stack gap={2.5}>
+      <FormControl fullWidth>
         <InputLabel id="duel-preset-select-label">{t('duels.preset')}</InputLabel>
         <Select
           labelId="duel-preset-select-label"
-          value={selectedPresetId}
-          onChange={(event) => onPresetChange(String(event.target.value))}
-          input={<FilledInput disableUnderline />}
-          renderValue={(value) => {
-            const preset = presets.find((item) => String(item.id ?? '') === String(value));
-            if (!preset) {
-              return <Typography color="text.secondary">{t('duels.selectPreset')}</Typography>;
-            }
-            return <PresetOptionContent preset={preset} compact />;
-          }}
-          sx={{
-            borderRadius: 2,
-            '& .MuiSelect-select': {
-              pt: 3,
-              pb: 1.25,
-            },
-          }}
+          label={t('duels.preset')}
+          value={preset ? selectedPresetId : ''}
+          onChange={(e) => onPresetChange(String(e.target.value))}
+          renderValue={() => preset?.title ?? t('duels.selectPreset')}
+          MenuProps={{ PaperProps: { sx: { maxHeight: 420 } } }}
         >
-          {presets.map((preset) => (
-            <MenuItem key={preset.id} value={String(preset.id ?? '')} sx={{ py: 1.25 }}>
-              <PresetOptionContent preset={preset} />
+          {presets.map((item) => (
+            <MenuItem
+              key={item.id}
+              value={String(item.id ?? '')}
+              sx={{ py: 1.5, whiteSpace: 'normal' }}
+            >
+              <Stack gap={0.5} sx={{ minWidth: 0 }}>
+                <Typography variant="body2" fontWeight={600}>
+                  {item.title}
+                </Typography>
+                <Typography variant="caption" color="text.secondary">
+                  {[
+                    getDuelPresetCategoryTitle(item),
+                    item.duration && formatDuelDuration(item.duration),
+                    typeof item.problemsCount === 'number' &&
+                      t('duels.presetProblemsCount', { count: item.problemsCount }),
+                  ]
+                    .filter(Boolean)
+                    .join(' · ')}
+                </Typography>
+              </Stack>
             </MenuItem>
           ))}
         </Select>
       </FormControl>
-
-      <FormControl fullWidth variant="filled">
+      <FormControl fullWidth>
         <InputLabel id="duel-type-select-label">{t('duels.duelType')}</InputLabel>
         <Select
           labelId="duel-type-select-label"
-          value={selectedTypeId}
-          onChange={(event) => onTypeChange(String(event.target.value))}
-          input={<FilledInput disableUnderline />}
-          renderValue={(value) => {
-            const duelType = duelTypes.find((item) => String(item.id ?? '') === String(value));
-            if (!duelType) {
-              return <Typography color="text.secondary">{t('duels.selectDuelType')}</Typography>;
-            }
-            return <DuelTypeOptionContent duelType={duelType} compact />;
-          }}
-          sx={{
-            borderRadius: 2,
-            '& .MuiSelect-select': {
-              pt: 3,
-              pb: 1.25,
-            },
-          }}
+          label={t('duels.duelType')}
+          value={type ? selectedTypeId : ''}
+          onChange={(e) => onTypeChange(String(e.target.value))}
+          renderValue={() => type?.title ?? t('duels.selectDuelType')}
         >
-          {duelTypes.map((duelType) => (
-            <MenuItem key={duelType.id} value={String(duelType.id ?? '')} sx={{ py: 1.25 }}>
-              <DuelTypeOptionContent duelType={duelType} />
+          {duelTypes.map((item) => (
+            <MenuItem
+              key={item.id}
+              value={String(item.id ?? '')}
+              sx={{ py: 1.5, whiteSpace: 'normal' }}
+            >
+              <Stack gap={0.5} sx={{ minWidth: 0 }}>
+                <Typography variant="body2" fontWeight={600}>
+                  {item.title}
+                </Typography>
+                {item.description && (
+                  <Typography variant="caption" color="text.secondary">
+                    {item.description}
+                  </Typography>
+                )}
+              </Stack>
             </MenuItem>
           ))}
         </Select>
       </FormControl>
+      {preset && (
+        <Box sx={{ pt: 2.5, borderTop: '1px solid var(--kep-line)' }}>
+          <Stack direction="row" gap={2} justifyContent="space-between" alignItems="center">
+            <Stack gap={0.75} sx={{ minWidth: 0 }}>
+              <Typography variant="label" color="text.secondary">
+                {t('duels.presetDetails')}
+              </Typography>
+              <Typography
+                component="h3"
+                sx={{
+                  fontFamily: 'var(--kep-display-font)',
+                  fontSize: 22,
+                  fontWeight: 500,
+                  overflowWrap: 'anywhere',
+                }}
+              >
+                <MixedText>{preset.title ?? ''}</MixedText>
+              </Typography>
+            </Stack>
+            <PatternArtwork
+              kind="battles"
+              sx={{ width: 88, opacity: 0.45, display: { xs: 'none', sm: 'block' } }}
+            />
+          </Stack>
+          <Stack direction="row" gap={2.5} alignItems="center" flexWrap="wrap" sx={{ my: 1.5 }}>
+            {preset.duration && (
+              <Stack direction="row" gap={0.75} alignItems="center">
+                <IconifyIcon
+                  icon="mdi:clock-outline"
+                  sx={{ fontSize: 18, color: 'primary.main' }}
+                />
+                <Typography variant="metric" sx={{ fontSize: 18 }}>
+                  {formatDuelDuration(preset.duration)}
+                </Typography>
+              </Stack>
+            )}
+            {typeof preset.problemsCount === 'number' && (
+              <Typography variant="body2" color="text.secondary">
+                {t('duels.presetProblemsCount', { count: preset.problemsCount })}
+              </Typography>
+            )}
+            {preset.difficultyDisplay && (
+              <Typography variant="caption" color="text.secondary">
+                {preset.difficultyDisplay}
+              </Typography>
+            )}
+          </Stack>
+          {preset.description && (
+            <Typography variant="body2" color="text.secondary" sx={{ lineHeight: 1.7 }}>
+              {preset.description}
+            </Typography>
+          )}
+          {type?.description && (
+            <Typography variant="body2" color="text.secondary" sx={{ mt: 1.5, lineHeight: 1.7 }}>
+              {type.description}
+            </Typography>
+          )}
+        </Box>
+      )}
     </Stack>
   );
 };
-
 export default DuelCallComposerForm;

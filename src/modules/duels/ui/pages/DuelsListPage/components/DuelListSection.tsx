@@ -1,14 +1,17 @@
 import { ReactNode } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useNavigate } from 'react-router';
-import { Card, CardContent, Pagination, Stack, Typography } from '@mui/material';
-import Grid from '@mui/material/Grid';
-import { getResourceById, resources } from 'app/routes/resources.ts';
-import { useDuelsList } from 'modules/duels/application/queries.ts';
-import { Duel } from 'modules/duels/domain/index.ts';
+import { Box } from '@mui/material';
+import { getResourceById, resources } from 'app/routes/resources';
+import { contentGridSx } from 'app/theme/styles/content';
+import { useDuelsList } from 'modules/duels/application/queries';
+import { Duel } from 'modules/duels/domain';
+import PatternArtwork from 'shared/components/common/PatternArtwork';
+import { ListFeedback, ListPagination } from 'shared/components/sections/common/FramedListPage';
+import SectionHeader from 'shared/components/sections/common/SectionHeader';
 import useRouteQueryState from 'shared/hooks/useRouteQueryState';
 import { numberParam } from 'shared/lib/queryParams';
-import DuelListCard, { DuelListCardSkeleton } from './DuelListCard.tsx';
+import DuelListCard, { DuelListCardSkeleton } from './DuelListCard';
 
 type Props = {
   scope?: 'recent' | 'my';
@@ -22,7 +25,10 @@ type Props = {
   loading?: boolean;
   onPageChange?: (page: number) => void;
 };
-
+const duelGridSx = {
+  ...contentGridSx,
+  gridTemplateColumns: { xs: '1fr', lg: 'repeat(2,minmax(0,1fr))' },
+};
 const DuelListSection = ({
   scope = 'recent',
   title,
@@ -37,135 +43,68 @@ const DuelListSection = ({
 }: Props) => {
   const { t } = useTranslation();
   const navigate = useNavigate();
-  const pageParam = scope === 'my' ? 'myPage' : 'recentPage';
-
   const { state, setField } = useRouteQueryState<{ page: number }>({
-    defaults: {
-      page: 1,
-    },
+    defaults: { page: 1 },
     schema: {
-      page: {
-        ...numberParam({ min: 1 }),
-        param: pageParam,
-      },
+      page: { ...numberParam({ min: 1 }), param: scope === 'my' ? 'myPage' : 'recentPage' },
     },
-    historyByKey: {
-      page: 'push',
-    },
+    historyByKey: { page: 'push' },
   });
-
   const resolvedPage = page ?? state.page;
   const shouldFetch = duels === undefined || total === undefined || loading === undefined;
   const {
     data: fetchedPage,
     error,
     isLoading,
-  } = useDuelsList(
-    shouldFetch
-      ? {
-          my: scope === 'my',
-          page: resolvedPage,
-          pageSize,
-        }
-      : undefined,
-  );
-
-  const resolvedDuels = duels ?? fetchedPage?.data ?? [];
-  const resolvedTotal = total ?? fetchedPage?.total ?? 0;
-  const resolvedLoading = loading ?? (isLoading && !fetchedPage);
-  const resolvedTitle =
-    title ?? (scope === 'my' ? t('duels.myDuelsSection') : t('duels.recentDuelsSection'));
-  const resolvedDescription = description;
-  const pageCount = Math.max(1, Math.ceil((resolvedTotal || 0) / pageSize));
-
-  const handlePageChange = (value: number) => {
-    if (onPageChange) {
-      onPageChange(value);
-      return;
-    }
-    setField('page', value);
-  };
-
+    mutate,
+  } = useDuelsList(shouldFetch ? { my: scope === 'my', page: resolvedPage, pageSize } : undefined);
+  const items = duels ?? fetchedPage?.data ?? [];
+  const count = total ?? fetchedPage?.total ?? 0;
+  const busy = loading ?? (isLoading && !fetchedPage);
   return (
-    <Stack spacing={3}>
-      <Stack
-        direction="row"
-        justifyContent="space-between"
-        alignItems={{ xs: 'flex-start', sm: 'center' }}
-        spacing={2}
-        flexWrap="wrap"
-        useFlexGap
-      >
-        <Stack spacing={0.4}>
-          <Typography variant="h6" fontWeight={800}>
-            {resolvedTitle}
-            {resolvedTotal ? (
-              <Typography component="span" variant="subtitle2" color="text.secondary" ml={1}>
-                ({resolvedTotal})
-              </Typography>
-            ) : null}
-          </Typography>
-          {resolvedDescription ? (
-            <Typography variant="body2" color="text.secondary">
-              {resolvedDescription}
-            </Typography>
-          ) : null}
-        </Stack>
-
-        {actionSlot}
-      </Stack>
-
-      <Stack spacing={2}>
-        {resolvedLoading
-          ? Array.from({ length: pageSize }).map((_, index) => (
-              <DuelListCardSkeleton key={index} />
-            ))
-          : null}
-
-        {!resolvedLoading && error ? (
-          <Card variant="outlined">
-            <CardContent>
-              <Typography variant="body2" color="error.main">
-                {t('duels.error')}
-              </Typography>
-            </CardContent>
-          </Card>
-        ) : null}
-
-        {!resolvedLoading && !error && !resolvedDuels.length ? (
-          <Card variant="outlined">
-            <CardContent>
-              <Typography variant="body2" color="text.secondary">
-                {t('duels.noDuels')}
-              </Typography>
-            </CardContent>
-          </Card>
-        ) : null}
-
-        {!resolvedLoading &&
-          !error &&
-          resolvedDuels.map((duel) => (
+    <Box component="section" className="kep-duel-list-section" sx={{ minWidth: 0 }}>
+      <SectionHeader
+        title={title ?? t(scope === 'my' ? 'duels.myDuelsSection' : 'duels.recentDuelsSection')}
+        description={description}
+        action={actionSlot ?? <PatternArtwork kind="battles" sx={{ width: 100, opacity: 0.4 }} />}
+      />
+      <ListFeedback
+        loading={busy}
+        error={error}
+        empty={!items.length}
+        emptyTitle={t('duels.noDuels')}
+        emptyMessage=""
+        errorMessage={t('duels.error')}
+        kind="battles"
+        onRetry={() => void mutate()}
+        loadingContent={
+          <Box sx={duelGridSx}>
+            {Array.from({ length: pageSize }, (_, i) => (
+              <DuelListCardSkeleton key={i} />
+            ))}
+          </Box>
+        }
+      />
+      {!busy && !error && items.length > 0 && (
+        <Box sx={duelGridSx}>
+          {items.map((duel) => (
             <DuelListCard
               key={duel.id}
               duel={duel}
               onView={() => navigate(getResourceById(resources.Duel, duel.id))}
             />
           ))}
-      </Stack>
-
-      {pageCount > 1 ? (
-        <Grid container justifyContent="flex-end">
-          <Pagination
-            count={pageCount}
-            page={resolvedPage}
-            onChange={(_, value) => handlePageChange(value)}
-            color="primary"
-            shape="rounded"
-          />
-        </Grid>
-      ) : null}
-    </Stack>
+        </Box>
+      )}
+      <Box sx={{ borderBottom: '1px solid var(--kep-line)' }}>
+        <ListPagination
+          page={resolvedPage}
+          count={Math.ceil(count / pageSize)}
+          disabled={busy}
+          onChange={(value) => (onPageChange ? onPageChange(value) : setField('page', value))}
+        />
+      </Box>
+    </Box>
   );
 };
-
 export default DuelListSection;

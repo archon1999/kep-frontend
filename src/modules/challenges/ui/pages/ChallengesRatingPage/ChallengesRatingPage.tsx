@@ -1,62 +1,30 @@
 import { useMemo } from 'react';
 import { useTranslation } from 'react-i18next';
-import { Box, Stack } from '@mui/material';
-import { GridSortModel } from '@mui/x-data-grid';
-import { useAuth } from 'app/providers/AuthProvider';
+import { Alert, Box, Button } from '@mui/material';
 import { resources } from 'app/routes/resources';
-import { useChallengesRating } from 'modules/challenges/application/queries.ts';
+import { useChallengesRatingPage } from 'modules/challenges/application/hooks/useChallengesRatingPage';
 import { ChallengeRatingRow } from 'modules/challenges/domain';
+import FramedPage from 'shared/components/sections/common/FramedPage';
 import PageHeader from 'shared/components/sections/common/PageHeader';
-import useGridPagination from 'shared/hooks/useGridPagination';
 import { mergePinnedRows } from 'shared/lib/pinnedRows';
-import useRouteQueryState from 'shared/hooks/useRouteQueryState';
-import { stringParam } from 'shared/lib/queryParams';
-import { responsivePagePaddingSx } from 'shared/lib/styles';
 import ChallengesRatingPageTable, {
   ChallengesRatingPageRow,
 } from './ChallengesRatingPageTable.tsx';
 
 const ChallengesRatingPage = () => {
-  const { t } = useTranslation();
-  const { currentUser } = useAuth();
   const {
+    currentUser,
     paginationModel,
     onPaginationModelChange,
-    pageParams: { page, pageSize },
-  } = useGridPagination({
-    initialPageSize: 10,
-    querySync: {
-      pageKey: 'page',
-      pageSizeKey: 'pageSize',
-    },
-  });
-  const { state, setField } = useRouteQueryState({
-    defaults: {
-      ordering: '-rating',
-    },
-    schema: {
-      ordering: {
-        ...stringParam(),
-        param: 'ordering',
-      },
-    },
-  });
+    handleSortModelChange,
+    ratingPage,
+    isLoading,
+    error,
+    retry,
+    sortModel,
+  } = useChallengesRatingPage();
 
-  const sortModel = useMemo<GridSortModel>(() => {
-    const ordering = state.ordering || '-rating';
-    const isDescending = ordering.startsWith('-');
-    const field = isDescending ? ordering.slice(1) : ordering;
-
-    return [{ field, sort: isDescending ? 'desc' : 'asc' }];
-  }, [state.ordering]);
-
-  const ordering = state.ordering || '-rating';
-  const { data: ratingPage, isLoading } = useChallengesRating({
-    page,
-    pageSize,
-    ordering,
-    pinCurrentUser: Boolean(currentUser?.username),
-  });
+  const { t } = useTranslation();
 
   const rows: ChallengesRatingPageRow[] = useMemo(
     () =>
@@ -75,16 +43,27 @@ const ChallengesRatingPage = () => {
   );
 
   return (
-    <Stack direction="column">
+    <FramedPage>
       <PageHeader
         title={t('challenges.ratingTitle')}
-        breadcrumb={[
-          { label: t('challenges.title'), url: resources.Challenges },
-          { label: t('problems.rating.ordering.rating'), active: true },
-        ]}
+        subtitle={t('challenges.ratingSubtitle')}
+        backTo={resources.Challenges}
       />
 
-      <Box sx={responsivePagePaddingSx}>
+      {error && (
+        <Alert
+          severity="error"
+          sx={{ m: 'var(--kep-content-inset)' }}
+          action={
+            <Button onClick={retry} color="inherit">
+              {t('common.retry')}
+            </Button>
+          }
+        >
+          {t('common.loadFailed')}
+        </Alert>
+      )}
+      <Box sx={{ minWidth: 0 }}>
         <ChallengesRatingPageTable
           rows={rows}
           rowCount={ratingPage?.total ?? 0}
@@ -93,20 +72,10 @@ const ChallengesRatingPage = () => {
           loading={isLoading}
           onPaginationModelChange={onPaginationModelChange}
           currentUsername={currentUser?.username}
-          onSortModelChange={(model) => {
-            const currentSort = model[0];
-
-            if (!currentSort) {
-              setField('ordering', '-rating');
-              return;
-            }
-
-            const prefix = currentSort.sort === 'asc' ? '' : '-';
-            setField('ordering', `${prefix}${currentSort.field}`);
-          }}
+          onSortModelChange={handleSortModelChange}
         />
       </Box>
-    </Stack>
+    </FramedPage>
   );
 };
 

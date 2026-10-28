@@ -1,6 +1,5 @@
 import useSWR from 'swr';
-import { HttpUserProfileRepository } from '../data-access/repository/http.user-profile.repository';
-import { HttpUsersRepository } from '../data-access/repository/http.users.repository';
+import { profileRepository, repository } from '../data-access';
 import {
   UserAchievement,
   UserCompetitionPrize,
@@ -16,14 +15,15 @@ import {
   UsersListResponse,
 } from '../domain/entities/user.entity';
 
-const repository = new HttpUsersRepository();
-const profileRepository = new HttpUserProfileRepository();
-
-export const useUsersList = (params: UsersListRequest) =>
-  useSWR<UsersListResponse>(['users-list', params], () => repository.getUsers(params), {
-    keepPreviousData: true,
-    revalidateOnFocus: false,
-  });
+export const useUsersList = (params: UsersListRequest | null) =>
+  useSWR<UsersListResponse>(
+    params ? ['users-list', params] : null,
+    () => repository.getUsers(params!),
+    {
+      keepPreviousData: true,
+      revalidateOnFocus: false,
+    },
+  );
 
 export const useUsersCountries = () =>
   useSWR<string[]>(['users-countries'], () => repository.getCountries(), {
@@ -94,3 +94,17 @@ export const useUserFollowers = (
     () => profileRepository.getFollowers(username!, params),
     { keepPreviousData: true, revalidateOnFocus: false },
   );
+
+export const useUserSuggestions = (search: string) =>
+  useSWR(['attempts-user-options', search], async () => {
+    const result = await repository.getUsers({
+      page: 1,
+      pageSize: 10,
+      search: search.trim() || undefined,
+    });
+    return result.data.map(({ username, firstName, lastName, avatar }) => ({
+      username,
+      fullName: `${firstName ?? ''} ${lastName ?? ''}`.trim(),
+      avatar,
+    }));
+  });

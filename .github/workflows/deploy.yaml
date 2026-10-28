@@ -56,6 +56,14 @@ jobs:
       - name: Build
         run: npm run build
 
+      - name: Verify bundle budgets and lazy loading
+        run: |
+          npm run check:bundle
+          npm run test:lazy-loading
+
+      - name: Verify SEO documents
+        run: npm run check:seo
+
       - name: Verify production Nginx routes and static assets
         run: |
           docker build --tag kep-frontend-ci .

@@ -1,18 +1,19 @@
 import { useState } from 'react';
 import { useTranslation } from 'react-i18next';
-import { Button, Card, CardContent, Stack, Typography } from '@mui/material';
-import Grid from '@mui/material/Grid';
-import { useAcceptDuelCall, useCancelDuelCall } from 'modules/duels/application/mutations.ts';
-import { isDuelsCollectionCacheKey, useDuelCalls } from 'modules/duels/application/queries.ts';
-import { DuelInvitation } from 'modules/duels/domain/index.ts';
-import { getDuelErrorMessage } from 'modules/duels/ui/shared/helpers/getDuelErrorMessage.ts';
-import IconifyIcon from 'shared/components/base/IconifyIcon.tsx';
+import { Box, Button, Stack } from '@mui/material';
+import { contentGridSx } from 'app/theme/styles/content';
+import { useAcceptDuelCall, useCancelDuelCall } from 'modules/duels/application/mutations';
+import { isDuelsCollectionCacheKey, useDuelCalls } from 'modules/duels/application/queries';
+import { DuelInvitation } from 'modules/duels/domain';
+import { getDuelErrorMessage } from 'modules/duels/ui/shared/helpers/getDuelErrorMessage';
+import IconifyIcon from 'shared/components/base/IconifyIcon';
+import PatternArtwork from 'shared/components/common/PatternArtwork';
+import { ListFeedback } from 'shared/components/sections/common/FramedListPage';
+import SectionHeader from 'shared/components/sections/common/SectionHeader';
 import { toast } from 'sonner';
 import { useSWRConfig } from 'swr';
-import DuelWaitingRoomCard, {
-  DuelWaitingRoomCardSkeleton,
-} from './components/DuelWaitingRoomCard.tsx';
-import DuelScheduleDialog from './dialogs/DuelScheduleDialog.tsx';
+import DuelWaitingRoomCard, { DuelWaitingRoomCardSkeleton } from './components/DuelWaitingRoomCard';
+import DuelScheduleDialog from './dialogs/DuelScheduleDialog';
 
 const DuelsListPageWaitingRoomTab = () => {
   const { t } = useTranslation();
@@ -24,28 +25,16 @@ const DuelsListPageWaitingRoomTab = () => {
     error,
     isLoading,
     mutate: mutateQueueCalls,
-  } = useDuelCalls({
-    scope: 'queue',
-    page: 1,
-    pageSize: 20,
-  });
+  } = useDuelCalls({ scope: 'queue', page: 1, pageSize: 20 });
   const { trigger: acceptDuelCall, isMutating: isAccepting } = useAcceptDuelCall();
   const { trigger: cancelDuelCall } = useCancelDuelCall();
-
   const invitations = queueCallsPage?.data ?? [];
   const loading = isLoading && !queueCallsPage;
-
-  const refreshAll = async () => {
-    await mutateCache(isDuelsCollectionCacheKey, undefined, { revalidate: true });
-  };
-
+  const refreshAll = () => mutateCache(isDuelsCollectionCacheKey, undefined, { revalidate: true });
   const handleAccept = async (invitation: DuelInvitation, proposedStartTime: string) => {
     try {
       setActionLoadingKey(`accept-${invitation.id}`);
-      await acceptDuelCall({
-        id: invitation.id,
-        payload: { proposedStartTime },
-      });
+      await acceptDuelCall({ id: invitation.id, payload: { proposedStartTime } });
       toast.success(t('duels.acceptedToast'));
       await refreshAll();
     } catch (error) {
@@ -54,7 +43,6 @@ const DuelsListPageWaitingRoomTab = () => {
       setActionLoadingKey(null);
     }
   };
-
   const handleCancel = async (invitation: DuelInvitation) => {
     try {
       setActionLoadingKey(`cancel-${invitation.id}`);
@@ -67,88 +55,77 @@ const DuelsListPageWaitingRoomTab = () => {
       setActionLoadingKey(null);
     }
   };
-
   return (
     <>
-      <Stack spacing={2.5}>
-        <Stack
-          direction="row"
-          justifyContent="space-between"
-          alignItems={{ xs: 'flex-start', sm: 'center' }}
-          spacing={2}
-          flexWrap="wrap"
-          useFlexGap
-        >
-          <Stack spacing={0.4}>
-            <Typography variant="h6" fontWeight={800}>
-              {t('duels.waitingRoom')}
-              {invitations.length > 0 ? (
-                <Typography component="span" variant="subtitle2" color="text.secondary" ml={1}>
-                  ({invitations.length})
-                </Typography>
-              ) : null}
-            </Typography>
-          </Stack>
-
-          <Button
-            variant="outlined"
-            size="small"
-            onClick={() => mutateQueueCalls()}
-            startIcon={<IconifyIcon icon="mdi:refresh" width={16} height={16} />}
-            sx={{ borderRadius: 999 }}
+      <Box component="section" className="kep-duel-waiting-room">
+        <SectionHeader
+          title={t('duels.waitingRoom')}
+          action={
+            <Stack direction="row" gap={2} alignItems="center">
+              <PatternArtwork
+                kind="battles"
+                sx={{ width: 100, opacity: 0.4, display: { xs: 'none', sm: 'block' } }}
+              />
+              <Button
+                variant="outlined"
+                size="small"
+                onClick={() => void mutateQueueCalls()}
+                startIcon={<IconifyIcon icon="mdi:refresh" />}
+              >
+                {t('duels.refresh')}
+              </Button>
+            </Stack>
+          }
+        />
+        <ListFeedback
+          loading={loading}
+          error={error}
+          empty={!invitations.length}
+          emptyTitle={t('duels.noQueueCalls')}
+          emptyMessage=""
+          kind="battles"
+          errorMessage={t('duels.error')}
+          onRetry={() => void mutateQueueCalls()}
+          loadingContent={
+            <Box
+              sx={{
+                ...contentGridSx,
+                gridTemplateColumns: {
+                  xs: '1fr',
+                  sm: 'repeat(2,minmax(0,1fr))',
+                  lg: 'repeat(4,minmax(0,1fr))',
+                },
+              }}
+            >
+              {Array.from({ length: 8 }, (_, i) => (
+                <DuelWaitingRoomCardSkeleton key={i} />
+              ))}
+            </Box>
+          }
+        />
+        {!loading && !error && invitations.length > 0 && (
+          <Box
+            sx={{
+              ...contentGridSx,
+              gridTemplateColumns: {
+                xs: '1fr',
+                sm: 'repeat(2,minmax(0,1fr))',
+                lg: 'repeat(4,minmax(0,1fr))',
+              },
+            }}
           >
-            {t('duels.refresh')}
-          </Button>
-        </Stack>
-
-        <Grid container spacing={2}>
-          {loading
-            ? Array.from({ length: 8 }).map((_, index) => (
-                <Grid key={index} size={{ xs: 12, sm: 6, lg: 3 }} sx={{ display: 'flex' }}>
-                  <DuelWaitingRoomCardSkeleton />
-                </Grid>
-              ))
-            : null}
-
-          {!loading && error ? (
-            <Grid size={12}>
-              <Card variant="outlined" sx={{ borderRadius: 2 }}>
-                <CardContent>
-                  <Typography variant="body2" color="error.main">
-                    {t('duels.error')}
-                  </Typography>
-                </CardContent>
-              </Card>
-            </Grid>
-          ) : null}
-
-          {!loading && !error && !invitations.length ? (
-            <Grid size={12}>
-              <Card variant="outlined" sx={{ borderRadius: 3 }}>
-                <CardContent>
-                  <Typography variant="body2" color="text.secondary">
-                    {t('duels.noQueueCalls')}
-                  </Typography>
-                </CardContent>
-              </Card>
-            </Grid>
-          ) : null}
-
-          {!loading &&
-            !error &&
-            invitations.map((invitation) => (
-              <Grid key={invitation.id} size={{ xs: 12, sm: 6, lg: 3 }} sx={{ display: 'flex' }}>
-                <DuelWaitingRoomCard
-                  invitation={invitation}
-                  actionLoadingKey={actionLoadingKey}
-                  onAccept={() => setSelectedInvitation(invitation)}
-                  onCancel={() => handleCancel(invitation)}
-                />
-              </Grid>
+            {invitations.map((invitation) => (
+              <DuelWaitingRoomCard
+                key={invitation.id}
+                invitation={invitation}
+                actionLoadingKey={actionLoadingKey}
+                onAccept={() => setSelectedInvitation(invitation)}
+                onCancel={() => void handleCancel(invitation)}
+              />
             ))}
-        </Grid>
-      </Stack>
-
+          </Box>
+        )}
+      </Box>
       <DuelScheduleDialog
         open={Boolean(selectedInvitation)}
         mode="accept"
@@ -157,12 +134,11 @@ const DuelsListPageWaitingRoomTab = () => {
         onClose={() => setSelectedInvitation(null)}
         onSubmit={(value) => {
           if (!selectedInvitation) return;
-          handleAccept(selectedInvitation, value);
+          void handleAccept(selectedInvitation, value);
           setSelectedInvitation(null);
         }}
       />
     </>
   );
 };
-
 export default DuelsListPageWaitingRoomTab;

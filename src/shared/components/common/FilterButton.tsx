@@ -19,7 +19,7 @@ const FilterButton = ({
   return (
     <Badge
       color="secondary"
-      badgeContent={badgeContent}
+      badgeContent={badgeInvisible ? undefined : badgeContent}
       invisible={badgeInvisible}
       overlap="rectangular"
       anchorOrigin={{ vertical: 'top', horizontal: 'right' }}
@@ -36,7 +36,7 @@ const FilterButton = ({
       ]}
     >
       <Button
-        variant="soft"
+        variant="outlined"
         color="neutral"
         startIcon={<IconifyIcon icon="mdi:filter-variant" sx={{ fontSize: 20 }} />}
         sx={[

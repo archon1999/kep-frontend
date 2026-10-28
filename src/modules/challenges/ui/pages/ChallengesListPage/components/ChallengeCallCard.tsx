@@ -1,24 +1,18 @@
 import { useMemo } from 'react';
 import { useTranslation } from 'react-i18next';
-import {
-  Button,
-  Card,
-  CardContent,
-  Chip,
-  Divider,
-  Stack,
-  Tooltip,
-  Typography,
-} from '@mui/material';
+import { Button, Card, CardContent, Stack, Typography } from '@mui/material';
 import { useAuth } from 'app/providers/AuthProvider.tsx';
-import { useLoginRedirect } from 'shared/lib/authRedirect';
+import { contentEntranceStyles } from 'app/theme/styles/transitions';
 import {
   useAcceptChallengeCall,
   useDeleteChallengeCall,
 } from 'modules/challenges/application/mutations.ts';
 import { ChallengeCall, ChallengeQuestionTimeType } from 'modules/challenges/domain';
 import UserPopover from 'modules/users/ui/shared/components/UserPopover.tsx';
+import KepIcon from 'shared/components/base/KepIcon';
+import { ChapterLogos } from 'shared/components/common/ChapterLogo';
 import ChallengesRatingChip from 'shared/components/rating/ChallengesRatingChip.tsx';
+import { useLoginRedirect } from 'shared/lib/authRedirect';
 
 interface CallCardProps {
   challengeCall: ChallengeCall;
@@ -26,15 +20,7 @@ interface CallCardProps {
   onRemoved?: () => void;
 }
 
-const formatDuration = (seconds: number) => {
-  return `${seconds}s`;
-};
-
-const ChallengeCallCard = ({
-  challengeCall,
-  onAccepted,
-  onRemoved,
-}: CallCardProps) => {
+const ChallengeCallCard = ({ challengeCall, onAccepted, onRemoved }: CallCardProps) => {
   const { t } = useTranslation();
   const { currentUser } = useAuth();
   const redirectToLogin = useLoginRedirect();
@@ -49,10 +35,6 @@ const ChallengeCallCard = ({
     challengeCall.questionTimeType === ChallengeQuestionTimeType.TimeToAll
       ? t('challenges.timer.wholeChallenge')
       : t('challenges.timer.perQuestion');
-  const timerModeLabel =
-    challengeCall.questionTimeType === ChallengeQuestionTimeType.TimeToAll
-      ? t('challenges.timer.wholeChallengeShort')
-      : t('challenges.timer.perQuestionShort');
 
   const handleAccept = async () => {
     if (!currentUser) {
@@ -70,48 +52,58 @@ const ChallengeCallCard = ({
   };
 
   return (
-    <Card background={0} variant="outlined">
-      <CardContent>
-        <Stack spacing={1.5} direction="column">
+    <Card variant="outlined" sx={{ ...contentEntranceStyles, height: '100%' }}>
+      <CardContent sx={{ height: '100%', p: 2.5, '&:last-child': { pb: 2.5 } }}>
+        <Stack spacing={1.5} direction="column" sx={{ height: '100%' }}>
           <Stack direction="row" justifyContent="space-between" alignItems="center">
-            <Stack spacing={1} direction="row">
+            <Stack spacing={1} direction="row" alignItems="center" sx={{ minWidth: 0 }}>
               <ChallengesRatingChip
                 title={challengeCall.rankTitle || t('challenges.rankUnknown')}
               />
 
               <UserPopover username={challengeCall.username}>
-                <Typography variant="subtitle1" fontWeight={700}>
+                <Typography
+                  component="span"
+                  variant="subtitle1"
+                  fontWeight={600}
+                  sx={{ overflowWrap: 'anywhere' }}
+                >
                   {challengeCall.username}
                 </Typography>
               </UserPopover>
             </Stack>
           </Stack>
 
-          <Stack direction="row" spacing={1} divider={<Divider flexItem orientation="vertical" />}>
-            <Stack spacing={0.5} direction="column">
-              <Typography variant="subtitle2">{challengeCall.questionsCount}</Typography>
-            </Stack>
-            <Stack spacing={0.5} direction="column">
-              <Typography variant="subtitle2">
-                {formatDuration(challengeCall.timeSeconds)}
+          <Stack direction="row" gap={4} sx={{ py: 0.5 }}>
+            <Stack gap={0.25}>
+              <Typography variant="caption" color="text.secondary">
+                {t('challenges.questions')}
+              </Typography>
+              <Typography variant="metric" sx={{ fontSize: 26 }}>
+                {challengeCall.questionsCount}
               </Typography>
             </Stack>
-            <Tooltip title={timerModeTooltip} arrow>
-              <Chip size="small" label={timerModeLabel} variant="outlined" />
-            </Tooltip>
-            {challengeCall.chapters?.length ? (
-              <Stack spacing={0.5} direction="column">
-                <Stack direction="row" spacing={0.5} flexWrap="wrap" useFlexGap>
-                  {challengeCall.chapters.map((chapter) => (
-                    <Chip key={chapter.id} size="small" label={chapter.title} variant="soft" />
-                  ))}
-                </Stack>
-              </Stack>
-            ) : null}
+            <Stack gap={0.25}>
+              <Typography variant="caption" color="text.secondary">
+                {timerModeTooltip}
+              </Typography>
+              <Typography variant="metric" sx={{ fontSize: 26 }}>
+                {t('challenges.secondsShort', { seconds: challengeCall.timeSeconds })}
+              </Typography>
+            </Stack>
           </Stack>
+          {challengeCall.chapters?.length ? (
+            <ChapterLogos chapters={challengeCall.chapters} label={t('challenges.chapters')} />
+          ) : null}
 
-          <Stack direction="row" spacing={1} justifyContent="space-between">
-            <Typography variant="body2" color="textSecondary">
+          <Stack
+            direction="row"
+            spacing={1}
+            alignItems="center"
+            justifyContent="space-between"
+            sx={{ mt: 'auto !important', pt: 2, flexWrap: 'wrap', rowGap: 1 }}
+          >
+            <Typography variant="caption" color="text.secondary">
               {challengeCall.created}
             </Typography>
 
@@ -131,6 +123,7 @@ const ChallengeCallCard = ({
                 variant="contained"
                 size="small"
                 onClick={handleAccept}
+                endIcon={<KepIcon name="challenge" fontSize={16} />}
                 disabled={isAccepting}
               >
                 {t('challenges.acceptCall')}

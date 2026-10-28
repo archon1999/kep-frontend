@@ -1,7 +1,7 @@
 import { useTranslation } from 'react-i18next';
 import { Chip, LinearProgress, Stack, Typography } from '@mui/material';
+import { ProjectProgressSummary } from 'modules/projects/application/project-listing';
 import IconifyIcon from 'shared/components/base/IconifyIcon';
-import { ProjectProgressSummary } from '../project-listing';
 
 const ProjectProgress = ({ progress }: { progress: ProjectProgressSummary }) => {
   const { t } = useTranslation();

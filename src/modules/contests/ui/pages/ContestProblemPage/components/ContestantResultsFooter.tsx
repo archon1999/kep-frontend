@@ -1,5 +1,5 @@
 import { Link as RouterLink } from 'react-router-dom';
-import { Card, Chip, Stack, Typography } from '@mui/material';
+import { Box, Stack, Typography } from '@mui/material';
 import { alpha } from '@mui/material/styles';
 import { getResourceByParams, resources } from 'app/routes/resources';
 import {
@@ -8,13 +8,13 @@ import {
 } from 'modules/contests/domain/entities/contest-problem.entity';
 import { ContestTypeInfo } from 'modules/contests/domain/entities/contest.entity';
 import { ContestantEntity } from 'modules/contests/domain/entities/contestant.entity';
+import ContestantView from 'modules/contests/ui/shared/components/ContestantView';
 import {
   contestHasBalls,
   contestHasPenalties,
   contestUsesRating,
   formatContestPoints,
 } from 'modules/contests/ui/shared/utils/contestType.ts';
-import ContestantView from 'modules/contests/ui/shared/components/ContestantView';
 
 interface ContestantResultsFooterProps {
   contestant?: ContestantEntity | null;
@@ -67,15 +67,23 @@ const ContestantResultsFooter = ({
   const deltaLabel = delta ? `${delta > 0 ? '+' : ''}${delta}` : '0';
 
   return (
-    <Card
+    <Box
       sx={{
         px: 2.5,
         py: 2,
+        flexShrink: 0,
+        borderTop: 1,
+        borderColor: 'divider',
+        bgcolor: 'background.default',
       }}
     >
       <Stack spacing={1.25}>
         <Stack direction="row" spacing={1.5} alignItems="center" flexWrap="wrap" useFlexGap>
-          {hasRank ? <Typography fontWeight={600}>#{contestant.rank}</Typography> : null}
+          {hasRank ? (
+            <Typography variant="metric" fontSize={20}>
+              #{contestant.rank}
+            </Typography>
+          ) : null}
           <ContestantView
             contestant={contestant}
             imgSize={28}
@@ -84,7 +92,7 @@ const ContestantResultsFooter = ({
             isOfficial={contestant.isOfficial}
           />
           <Stack direction="row" spacing={0.5} alignItems="center">
-            <Typography variant="body2" fontWeight={800} color="primary.main">
+            <Typography variant="metric" fontSize={20} color="primary.main">
               {hasPoints ? formatContestPoints(contestant.points) : '-'}
             </Typography>
             {showPenalties ? (
@@ -94,12 +102,12 @@ const ContestantResultsFooter = ({
             ) : null}
           </Stack>
           {showDelta ? (
-            <Chip
-              label={deltaLabel}
-              color={deltaColor === 'default' ? 'default' : deltaColor}
-              size="small"
-              variant="outlined"
-            />
+            <Typography
+              variant="metric"
+              color={deltaColor === 'default' ? 'text.secondary' : `${deltaColor}.main`}
+            >
+              {deltaLabel}
+            </Typography>
           ) : null}
           {contestUsesRating(contestType as any, isRated) && contestant.isVirtual ? (
             <Typography variant="body2" color="text.secondary">
@@ -131,7 +139,7 @@ const ContestantResultsFooter = ({
                 sx={(theme) => ({
                   textDecoration: 'none',
                   color: 'inherit',
-                  borderRadius: 1.5,
+                  borderRadius: 0,
                   px: 1.25,
                   py: 0.75,
                   border: '1px solid',
@@ -159,12 +167,11 @@ const ContestantResultsFooter = ({
                     : undefined,
                 })}
               >
-                <Typography variant="caption" fontWeight={700} color="text.secondary">
+                <Typography variant="label" color="text.secondary">
                   {problem.symbol}
                 </Typography>
                 <Typography
-                  variant="body2"
-                  fontWeight={700}
+                  variant="metric"
                   color={result.color === 'default' ? 'text.primary' : `${result.color}.main`}
                   sx={{ lineHeight: 1.2 }}
                 >
@@ -175,7 +182,7 @@ const ContestantResultsFooter = ({
           })}
         </Stack>
       </Stack>
-    </Card>
+    </Box>
   );
 };
 

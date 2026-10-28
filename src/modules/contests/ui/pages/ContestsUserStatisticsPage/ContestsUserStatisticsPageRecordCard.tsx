@@ -1,6 +1,8 @@
 import { Link as RouterLink } from 'react-router-dom';
-import { Button, Card, CardContent, Stack, Typography } from '@mui/material';
+import { Link, Stack, Typography } from '@mui/material';
+import { getRankColor } from 'app/theme/colors/medals';
 import KepIcon from 'shared/components/base/KepIcon';
+import StatisticsSection from 'shared/components/statistics/StatisticsSection';
 import type { KepIconName } from 'shared/config/icons';
 
 export interface ContestsUserStatisticsPageRecordItem {
@@ -11,6 +13,7 @@ export interface ContestsUserStatisticsPageRecordItem {
   contestTitle?: string;
   contestLink?: string;
   valueColor?: string;
+  rank?: number;
 }
 
 interface ContestsUserStatisticsPageRecordCardProps {
@@ -24,58 +27,56 @@ const ContestsUserStatisticsPageRecordCard = ({
   items,
   emptyText,
 }: ContestsUserStatisticsPageRecordCardProps) => (
-  <Card variant="outlined" sx={{ height: '100%', borderRadius: 3 }}>
-    <CardContent>
+  <StatisticsSection title={title}>
+    <Stack direction="column" spacing={2}>
       <Stack direction="column" spacing={2}>
-        <Typography variant="subtitle1" fontWeight={700}>
-          {title}
-        </Typography>
-        <Stack direction="column" spacing={1.5}>
-          {items.map((item) => (
-            <Stack
-              key={item.label}
-              direction="row"
-              spacing={2}
-              alignItems="flex-start"
-              justifyContent="space-between"
-            >
-              <KepIcon name={item.icon} fontSize={22} />
-              <Stack direction="column" spacing={0.5} flex={1}>
-                <Typography variant="subtitle2" color="text.secondary">
-                  {item.label}
-                </Typography>
-                <Typography variant="h6" fontWeight={800} color={item.valueColor}>
-                  {item.value ?? emptyText}
-                </Typography>
-                {item.contestTitle ? (
-                  item.contestLink ? (
-                    <Button
-                      component={RouterLink}
-                      to={item.contestLink}
-                      size="small"
-                      variant="text"
-                      sx={{ px: 0, justifyContent: 'flex-start' }}
-                    >
-                      {item.contestTitle}
-                    </Button>
-                  ) : (
-                    <Typography variant="body2" color="text.secondary">
-                      {item.contestTitle}
-                    </Typography>
-                  )
-                ) : null}
-                {item.subtitle ? (
+        {items.map((item) => (
+          <Stack
+            key={item.label}
+            direction="row"
+            spacing={2}
+            alignItems="flex-start"
+            justifyContent="space-between"
+          >
+            <KepIcon name={item.icon} fontSize={22} />
+            <Stack direction="column" spacing={0.5} flex={1} minWidth={0}>
+              <Typography variant="label" color="text.secondary">
+                {item.label}
+              </Typography>
+              <Typography
+                variant="metric"
+                fontSize={26}
+                color={getRankColor(item.rank, item.valueColor ?? 'text.primary')}
+              >
+                {item.value ?? emptyText}
+              </Typography>
+              {item.contestTitle ? (
+                item.contestLink ? (
+                  <Link
+                    component={RouterLink}
+                    to={item.contestLink}
+                    underline="hover"
+                    sx={{ fontSize: 13, overflowWrap: 'anywhere' }}
+                  >
+                    {item.contestTitle}
+                  </Link>
+                ) : (
                   <Typography variant="body2" color="text.secondary">
-                    {item.subtitle}
+                    {item.contestTitle}
                   </Typography>
-                ) : null}
-              </Stack>
+                )
+              ) : null}
+              {item.subtitle ? (
+                <Typography variant="body2" color="text.secondary">
+                  {item.subtitle}
+                </Typography>
+              ) : null}
             </Stack>
-          ))}
-        </Stack>
+          </Stack>
+        ))}
       </Stack>
-    </CardContent>
-  </Card>
+    </Stack>
+  </StatisticsSection>
 );
 
 export default ContestsUserStatisticsPageRecordCard;

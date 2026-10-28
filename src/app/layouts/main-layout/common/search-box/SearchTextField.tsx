@@ -1,9 +1,9 @@
-import { InputAdornment, TextFieldProps } from '@mui/material';
 import { useTranslation } from 'react-i18next';
+import { InputAdornment, TextFieldProps } from '@mui/material';
 import IconifyIcon from 'shared/components/base/IconifyIcon';
 import StyledTextField from 'shared/components/styled/StyledTextField';
 
-const SearchTextField = ({ slotProps, ...rest }: TextFieldProps) => {
+const SearchTextField = ({ slotProps, sx, ...rest }: TextFieldProps) => {
   const { t } = useTranslation();
   const { input: inputSlotProps } = slotProps || {};
 
@@ -13,20 +13,21 @@ const SearchTextField = ({ slotProps, ...rest }: TextFieldProps) => {
       type="search"
       variant="filled"
       placeholder={t('common.searchPlaceholder')}
-      sx={{
-        minWidth: 348,
-      }}
+      sx={[
+        { minWidth: 0, '& input::-webkit-search-cancel-button': { WebkitAppearance: 'none' } },
+        ...(Array.isArray(sx) ? sx : [sx]),
+      ]}
       slotProps={{
         ...slotProps,
-        input: {
+        input: (ownerState) => ({
           className: 'search-box-input',
           startAdornment: (
             <InputAdornment position="start">
               <IconifyIcon icon="material-symbols:search-rounded" />
             </InputAdornment>
           ),
-          ...inputSlotProps,
-        },
+          ...(typeof inputSlotProps === 'function' ? inputSlotProps(ownerState) : inputSlotProps),
+        }),
       }}
       {...rest}
     />

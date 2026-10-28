@@ -1,25 +1,24 @@
 import { useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { Link as RouterLink } from 'react-router-dom';
-import Avatar from '@mui/material/Avatar';
-import Button from '@mui/material/Button';
-import Chip from '@mui/material/Chip';
-import Grid from '@mui/material/Grid';
-import Link from '@mui/material/Link';
-import Paper from '@mui/material/Paper';
-import Stack from '@mui/material/Stack';
-import Typography from '@mui/material/Typography';
+import { Avatar, Box, Button, Chip, Link, Skeleton, Stack, Typography } from '@mui/material';
 import { useAuth } from 'app/providers/AuthProvider';
 import { getResourceByParams, resources } from 'app/routes/resources';
-import { Project } from 'modules/projects/domain/entities/project.entity';
-import IconifyIcon from 'shared/components/base/IconifyIcon';
-import KepcoinSpendConfirm from 'shared/components/common/KepcoinSpendConfirm';
-import KepcoinValue from 'shared/components/common/KepcoinValue';
+import { interactiveContentSx } from 'app/theme/styles/content';
+import { contentEntranceStyles } from 'app/theme/styles/transitions';
 import {
   ProjectCategoryKey,
   ProjectProgressSummary,
   stripProjectDescription,
-} from '../project-listing';
+} from 'modules/projects/application/project-listing';
+import { Project } from 'modules/projects/domain/entities/project.entity';
+import ProjectTechnologyLogo from 'modules/projects/ui/shared/components/ProjectTechnologyLogo';
+import IconifyIcon from 'shared/components/base/IconifyIcon';
+import KepcoinSpendConfirm from 'shared/components/common/KepcoinSpendConfirm';
+import KepcoinValue from 'shared/components/common/KepcoinValue';
+import MixedText from 'shared/components/common/MixedText';
+import PatternArtwork from 'shared/components/common/PatternArtwork';
+import { ScrambleText } from 'shared/components/motion/InteractionEffects';
 import ProjectProgress from './ProjectProgress';
 
 interface ProjectCardProps {
@@ -29,6 +28,32 @@ interface ProjectCardProps {
   showTrackedProgress?: boolean;
   onPurchased?: (project: Project) => void;
 }
+
+const projectRowSx = {
+  ...contentEntranceStyles,
+  ...interactiveContentSx,
+  px: 'var(--kep-content-inset)',
+  py: 3,
+  borderBottom: '1px solid var(--kep-line)',
+};
+
+export const ProjectCardSkeleton = () => (
+  <Box sx={projectRowSx}>
+    <Stack direction="row" gap={2} alignItems="center" mb={2}>
+      <Skeleton variant="rectangular" width={44} height={44} />
+      <Stack sx={{ flex: 1 }}>
+        <Skeleton width="55%" height={30} />
+        <Skeleton width="30%" height={24} />
+      </Stack>
+    </Stack>
+    <Skeleton width="90%" height={22} />
+    <Skeleton width="65%" height={22} />
+    <Stack direction="row" justifyContent="space-between" alignItems="center" mt={2}>
+      <Skeleton width={110} height={24} />
+      <Skeleton width={130} height={42} />
+    </Stack>
+  </Box>
+);
 
 const ProjectCard = ({
   project,
@@ -42,7 +67,6 @@ const ProjectCard = ({
     slug: string;
     username?: string;
   } | null>(null);
-
   const isPurchased =
     project.purchased ||
     (purchasedProject?.slug === project.slug &&
@@ -53,12 +77,6 @@ const ProjectCard = ({
       project.availableTechnologies.map(({ technology }) => technology.trim()).filter(Boolean),
     ),
   ];
-  const technologySummary = [
-    technologies.slice(0, 2).join(', '),
-    technologies.length > 2 ? `+${technologies.length - 2}` : '',
-  ]
-    .filter(Boolean)
-    .join(' ');
   const projectUrl = getResourceByParams(resources.Project, {
     id: project.slug,
     slug: project.slug,
@@ -66,157 +84,130 @@ const ProjectCard = ({
 
   const handlePurchaseSuccess = () => {
     if (isPurchased) return;
-
     setPurchasedProject({ slug: project.slug, username: currentUser?.username });
     onPurchased?.({ ...project, purchased: true });
   };
 
   return (
-    <Paper
-      background={1}
-      sx={{
-        outline: 0,
-        p: { xs: 2, sm: 3 },
-        borderRadius: 6,
-        '&:hover': { bgcolor: 'background.elevation2' },
-      }}
-    >
-      <Grid container spacing={{ xs: 1, sm: 2 }}>
-        <Grid size="auto">
-          <Avatar
-            variant="rounded"
-            src={project.logo}
-            alt={project.title}
-            sx={{
-              height: 54,
-              width: 54,
-              flex: '1 0 auto',
-              borderRadius: 2.5,
-              bgcolor: 'transparent',
-            }}
-          >
-            {project.title.charAt(0)}
-          </Avatar>
-        </Grid>
-        <Grid size={{ xs: 12, sm: 'grow' }} order={{ xs: 1, sm: 0 }}>
-          <Stack direction="column" gap={2} flex={1}>
-            <Stack direction="column" gap={0.5}>
-              <Typography component="h2" variant="h6" lineHeight={1.5}>
-                {isPurchased ? (
-                  <Link component={RouterLink} to={projectUrl} color="inherit" underline="none">
-                    {project.title}
-                  </Link>
-                ) : (
-                  project.title
-                )}
-              </Typography>
-              <Stack direction="row" gap={{ xs: 1, sm: 2 }} flexWrap="wrap" alignItems="center">
-                <Stack
-                  direction="row"
-                  gap={{ xs: 1, sm: 2 }}
-                  flexWrap={{ xs: 'wrap', sm: 'nowrap' }}
-                  alignItems="center"
-                >
-                  <Typography variant="subtitle2" fontWeight={600} title={technologies.join(', ')}>
-                    {technologySummary}
-                  </Typography>
-                  <Chip
-                    variant="soft"
-                    color={
-                      project.level <= 1
-                        ? 'info'
-                        : project.level === 2
-                          ? 'primary'
-                          : project.level === 3
-                            ? 'warning'
-                            : 'error'
-                    }
-                    label={project.levelTitle}
-                    size="small"
-                    aria-label={`${t('projects.level')}: ${project.levelTitle}`}
-                  />
-                </Stack>
-                <KepcoinValue
-                  value={project.kepcoins ?? 0}
-                  textVariant="subtitle2"
-                  fontWeight={500}
-                  iconSize={16}
-                  title={t('projects.kepcoinReward')}
-                />
-              </Stack>
-            </Stack>
-            <Stack
-              direction="row"
-              gap={1.5}
-              alignItems="center"
-              justifyContent="space-between"
-              flexWrap="wrap"
-            >
-              <Typography
-                variant="caption"
-                color="text.secondary"
-                fontWeight={500}
-                sx={{ flex: '1 1 200px' }}
-              >
-                {description || t('projects.cardFallback')}
-              </Typography>
-              {showTrackedProgress && currentUser && progress && (
-                <ProjectProgress progress={progress} />
-              )}
-            </Stack>
-          </Stack>
-        </Grid>
-        <Grid size="auto" flexGrow={{ xs: 1, sm: 0 }}>
-          <Stack
-            direction="row"
-            gap={1}
-            alignSelf="flex-start"
-            justifyContent="flex-end"
-            minWidth={0}
-          >
+    <Box component="article" sx={projectRowSx}>
+      <Stack direction="row" gap={2} alignItems="center" mb={2}>
+        <Avatar
+          variant="square"
+          src={project.logo}
+          alt=""
+          sx={{
+            width: 44,
+            height: 44,
+            bgcolor: 'transparent',
+            flexShrink: 0,
+            '& img': { objectFit: 'contain' },
+          }}
+        >
+          {project.title.charAt(0)}
+        </Avatar>
+        <Stack gap={0.75} sx={{ minWidth: 0, flex: 1 }}>
+          <Typography component="h2" variant="h6" sx={{ overflowWrap: 'anywhere' }}>
             {isPurchased ? (
-              <Button
-                component={RouterLink}
-                to={projectUrl}
-                shape="square"
-                color="neutral"
-                aria-label={t('projects.view')}
-                title={t('projects.view')}
-              >
-                <IconifyIcon icon="material-symbols:arrow-forward" sx={{ fontSize: 20 }} />
-              </Button>
+              <Link component={RouterLink} to={projectUrl} color="inherit" underline="none">
+                <ScrambleText mixed>{project.title}</ScrambleText>
+              </Link>
             ) : (
-              <>
-                <KepcoinSpendConfirm
-                  value={project.purchaseKepcoinValue}
-                  purchaseUrl={`/api/projects/${project.slug}/purchase/`}
-                  onSuccess={handlePurchaseSuccess}
-                >
-                  <Button
-                    shape="square"
-                    color="neutral"
-                    aria-label={t('projects.purchase')}
-                    title={t('projects.purchase')}
-                  >
-                    <IconifyIcon
-                      icon="material-symbols:shopping-cart-outline"
-                      sx={{ fontSize: 20 }}
-                    />
-                  </Button>
-                </KepcoinSpendConfirm>
-                <KepcoinValue
-                  value={project.purchaseKepcoinValue}
-                  iconSize={16}
-                  textVariant="caption"
-                  fontWeight={500}
-                  title={t('projects.purchase')}
-                />
-              </>
+              <MixedText>{project.title}</MixedText>
+            )}
+          </Typography>
+          <Stack direction="row" gap={1.5} alignItems="center" flexWrap="wrap">
+            <Chip
+              variant="soft"
+              color={
+                project.level <= 1
+                  ? 'info'
+                  : project.level === 2
+                    ? 'primary'
+                    : project.level === 3
+                      ? 'warning'
+                      : 'error'
+              }
+              size="small"
+              label={project.levelTitle}
+              aria-label={`${t('projects.level')}: ${project.levelTitle}`}
+            />
+            {project.tasks.length > 0 && (
+              <Typography variant="body2" color="text.secondary">
+                {t('projects.taskSummary', { count: project.tasks.length })}
+              </Typography>
             )}
           </Stack>
-        </Grid>
-      </Grid>
-    </Paper>
+        </Stack>
+        <PatternArtwork
+          kind="hackathon"
+          sx={{ width: 92, display: { xs: 'none', sm: 'block' }, opacity: 0.55 }}
+        />
+      </Stack>
+      <Typography variant="body2" color="text.secondary" sx={{ lineHeight: 1.8, maxWidth: 920 }}>
+        {description || t('projects.cardFallback')}
+      </Typography>
+      <Stack
+        direction="row"
+        gap={2}
+        alignItems="center"
+        justifyContent="space-between"
+        flexWrap="wrap"
+        mt={2.5}
+      >
+        <Stack direction="row" alignItems="center" gap={2} flexWrap="wrap">
+          <Stack direction="row" alignItems="center" gap={0.75} title={technologies.join(', ')}>
+            {technologies.slice(0, 3).map((technology) => (
+              <ProjectTechnologyLogo key={technology} technology={technology} size={22} />
+            ))}
+            {technologies.length > 3 && (
+              <Typography variant="caption">+{technologies.length - 3}</Typography>
+            )}
+          </Stack>
+          {project.kepcoins !== undefined && (
+            <KepcoinValue
+              value={project.kepcoins}
+              textVariant="metric"
+              iconSize={18}
+              title={t('projects.kepcoinReward')}
+            />
+          )}
+          {showTrackedProgress && currentUser && progress && (
+            <ProjectProgress progress={progress} />
+          )}
+        </Stack>
+        {isPurchased ? (
+          <Button
+            component={RouterLink}
+            to={projectUrl}
+            variant="contained"
+            endIcon={<IconifyIcon icon="material-symbols:arrow-forward" />}
+          >
+            {t('projects.view')}
+          </Button>
+        ) : (
+          <Stack direction="row" alignItems="center" gap={1.5}>
+            <KepcoinValue
+              value={project.purchaseKepcoinValue}
+              iconSize={18}
+              textVariant="metric"
+              title={t('projects.purchase')}
+            />
+            <KepcoinSpendConfirm
+              value={project.purchaseKepcoinValue}
+              purchaseUrl={`/api/projects/${project.slug}/purchase/`}
+              onSuccess={handlePurchaseSuccess}
+            >
+              <Button
+                variant="outlined"
+                startIcon={<IconifyIcon icon="material-symbols:lock-open-outline" />}
+              >
+                {t('projects.purchase')}
+              </Button>
+            </KepcoinSpendConfirm>
+          </Stack>
+        )}
+      </Stack>
+    </Box>
   );
 };
 

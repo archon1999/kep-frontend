@@ -1,6 +1,6 @@
 import { useTranslation } from 'react-i18next';
 import { Stack, TextField } from '@mui/material';
-import { TestPassQuestion } from '../types';
+import { TestPassQuestion } from 'modules/testing/domain/entities/test-pass.types';
 import QuestionHeader from './QuestionHeader';
 
 interface TextInputQuestionProps {

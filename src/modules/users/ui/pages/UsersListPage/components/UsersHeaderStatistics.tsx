@@ -1,9 +1,9 @@
 import { useMemo } from 'react';
 import { useTranslation } from 'react-i18next';
-import { alpha, useTheme } from '@mui/material/styles';
 import { Box, Skeleton, Stack, Typography } from '@mui/material';
-import { numberFormat } from 'shared/lib/utils';
+import { useTheme } from '@mui/material/styles';
 import { useUsersChartStatistics } from 'modules/users/application/queries.ts';
+import { numberFormat } from 'shared/lib/utils';
 
 const CHART_WIDTH = 200;
 const CHART_HEIGHT = 56;
@@ -17,7 +17,8 @@ const buildPolylinePoints = (series: number[]) => {
   const maxValue = Math.max(...series);
   const minValue = Math.min(...series);
   const verticalRange = maxValue - minValue || 1;
-  const horizontalStep = series.length > 1 ? (CHART_WIDTH - CHART_PADDING * 2) / (series.length - 1) : 0;
+  const horizontalStep =
+    series.length > 1 ? (CHART_WIDTH - CHART_PADDING * 2) / (series.length - 1) : 0;
 
   return series
     .map((value, index) => {
@@ -45,11 +46,17 @@ const UsersSparkline = ({ series }: { series: number[] }) => {
       sx={{
         px: 2,
         py: 1,
-        borderRadius: 2,
-        bgcolor: alpha(theme.palette.primary.main, 0.08),
+        borderRadius: 0,
+        borderLeft: 1,
+        borderColor: 'divider',
       }}
     >
-      <Box component="svg" width={CHART_WIDTH} height={CHART_HEIGHT} viewBox={`0 0 ${CHART_WIDTH} ${CHART_HEIGHT}`}>
+      <Box
+        component="svg"
+        width={CHART_WIDTH}
+        height={CHART_HEIGHT}
+        viewBox={`0 0 ${CHART_WIDTH} ${CHART_HEIGHT}`}
+      >
         <polyline
           points={points}
           fill="none"
@@ -92,7 +99,7 @@ const UsersHeaderStatistics = () => {
         <Typography variant="caption" color="text.secondary">
           {t('users.statistics.totalUsers')}
         </Typography>
-        <Typography variant="h4" component="p">
+        <Typography variant="metric" fontSize={32} component="p">
           {numberFormat(data.total)}
         </Typography>
       </Stack>

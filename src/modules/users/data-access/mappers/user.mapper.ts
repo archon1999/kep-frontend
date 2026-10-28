@@ -1,4 +1,7 @@
-import type { ApiUsersCountriesResult, ApiUsersListResult } from 'shared/api/orval/generated/endpoints';
+import type {
+  ApiUsersCountriesResult,
+  ApiUsersListResult,
+} from 'shared/api/orval/generated/endpoints';
 import type { UserDetail } from 'shared/api/orval/generated/endpoints/index.schemas';
 import {
   RatingValue,
@@ -16,7 +19,9 @@ const normalizeRating = (rating?: unknown): RatingValue | undefined => {
   if (typeof rating === 'object') {
     const ratingData = rating as Record<string, unknown>;
     return {
-      value: (ratingData.value as number | string | undefined) ?? (ratingData.rating as number | string | undefined),
+      value:
+        (ratingData.value as number | string | undefined) ??
+        (ratingData.rating as number | string | undefined),
       title:
         (ratingData.title as string | undefined) ??
         (ratingData.ratingTitle as string | undefined) ??
@@ -33,7 +38,7 @@ export const mapApiUserToDomain = (user: any): UsersListItem => ({
   username: user.username,
   firstName: user.firstName ?? user.first_name,
   lastName: user.lastName ?? user.last_name,
-  avatar: user.avatar,
+  avatar: user.avatar ?? user.photo,
   country: user.country,
   streak: user.streak,
   maxStreak: user.maxStreak ?? user.max_streak,

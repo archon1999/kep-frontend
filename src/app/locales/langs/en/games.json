@@ -5,7 +5,7 @@
     "overallScore": "Overall score",
     "scoreSplit": "Score by game",
     "played": "Games played",
-    "subtitle": "Pick a game and improve your personal best.",
+    "subtitle": "Programming, logic, memory, and arithmetic games.",
     "allGames": "Game library",
     "overall": "Overall ranking",
     "leaderboard": "Leaderboard",
@@ -18,7 +18,6 @@
     "continue": "Continue playing",
     "back": "All games",
     "howToPlay": "How to play",
-    "signInToRank": "Sign in to save your score on the leaderboard.",
     "emptyRanking": "No scores yet.",
     "rankingError": "The leaderboard is temporarily unavailable.",
     "overviewError": "Game records are unavailable.",
@@ -27,68 +26,57 @@
     "notRanked": "No ranked score yet",
     "featured": "Explore in 3D",
     "quickGames": "Quick games",
-    "rankTitle": "All games, one leaderboard",
-    "rankDescription": "Your best run in each game adds to your overall score.",
+    "rankDescription": "Your overall score is the sum of your best score in each ranked game.",
     "catalog": {
       "code-islands": {
         "title": "Code Islands",
-        "description": "Program KEPPER across 10 increasingly difficult islands, from simple moves to integrated puzzles.",
-        "type": "Programming puzzle",
-        "rules": "Create a sequence of commands that passes every map in a level. Earn up to three stars per island."
+        "description": "Write commands to guide KEPPER through ten puzzle levels.",
+        "type": "Programming puzzle"
       },
       "keppy-world": {
         "title": "Keppy World",
-        "description": "Explore the 3D island, restore relays, clear jump trials and race timed routes.",
-        "type": "Open-world adventure",
-        "rules": "Complete every shard, relay, station, jump beacon and timed route. Press Space to jump. A fast, flawless run earns 1000 points."
+        "description": "Explore two islands, collect shards, restore relays, and finish timed routes.",
+        "type": "Open-world adventure"
       },
       "bug-hunt": {
         "title": "Bug Hunt",
-        "description": "Trace 10 increasingly difficult programs and identify the faulty line in each.",
-        "type": "Debugging",
-        "rules": "Select the faulty line in each code sample. Earn 100 points per correct answer; your streak is tracked separately."
+        "description": "Find the faulty line, choose a fix, and work out the output in later stages.",
+        "type": "Debugging"
       },
       "logic-circuit": {
         "title": "Logic Circuit",
-        "description": "Connect the right conditions to make the output match the target.",
-        "type": "Logic puzzle",
-        "rules": "Solve 10 increasingly difficult logic puzzles. Fewer checks mean a higher score."
+        "description": "Build a logic circuit that matches the target output.",
+        "type": "Logic puzzle"
       },
       "memory-grid": {
         "title": "Memory Grid",
-        "description": "Watch a path light up, then reproduce its order from memory.",
-        "type": "Memory challenge",
-        "rules": "Repeat 10 increasingly long sequences. Two mistakes end the run, but a wrong tap never subtracts points."
+        "description": "Memorise the highlighted sequence and repeat it in order.",
+        "type": "Memory challenge"
       },
       "math-compare": {
         "title": "Compare Expressions",
-        "description": "Compare the values of two expressions.",
-        "type": "Mental arithmetic",
-        "rules": "Choose <, = or >. Complete 10 levels as the expressions become harder and time gets shorter."
+        "description": "Calculate both expressions and choose which value is larger, or whether they are equal.",
+        "type": "Mental arithmetic"
       },
       "quick-math": {
         "title": "Quick Math",
-        "description": "Calculate the result and enter your answer.",
-        "type": "Calculation",
-        "rules": "Solve every round before time runs out. Each of the 10 levels earns 100 points."
+        "description": "Calculate each expression before the time runs out.",
+        "type": "Calculation"
       },
       "number-sequence": {
         "title": "Next Number",
-        "description": "Find the pattern and continue the sequence.",
-        "type": "Patterns",
-        "rules": "Enter the next number. Differences, alternating patterns and recurrences grow harder over 10 levels."
+        "description": "Find the rule and enter the next number.",
+        "type": "Patterns"
       },
       "number-hunt": {
         "title": "Number Hunt",
-        "description": "Find and tap the numbers in order.",
-        "type": "Attention",
-        "rules": "Start at 1. Complete increasingly dense grids before time runs out across 10 levels."
+        "description": "Find and select the numbers in ascending order.",
+        "type": "Attention"
       },
       "memory-matrix": {
         "title": "Memory Matrix",
-        "description": "Remember the highlighted cells.",
-        "type": "Visual memory",
-        "rules": "Watch the pattern, then select the same cells. Grids grow and viewing time shrinks over 10 levels."
+        "description": "Memorise the highlighted cells, then select them after they disappear.",
+        "type": "Visual memory"
       }
     },
     "world": {
@@ -112,7 +100,6 @@
       "routes": "Map & destinations",
       "stationNearHint": "Stay in the cyan ring for 1.4 seconds.",
       "station": "Pulse station {{number}}",
-      "stationHint": "Enter a station's ring while it glows cyan and stay for 1.4 seconds. If it fades, try the next pulse.",
       "hits": "Sentry hits",
       "hitsShort": "Sentry",
       "recordShort": "Best",
@@ -133,7 +120,6 @@
       "nearby": "Relay nearby. Press Enter or choose Interact.",
       "interact": "Interact with relay",
       "walkHint": "WASD / arrow keys to walk · Space to jump · press Enter near a relay",
-      "touchHint": "Use the direction pad to walk · tap Jump · choose Interact near a relay",
       "moveForward": "Move forward",
       "moveBackward": "Move backward",
       "moveLeft": "Move left",

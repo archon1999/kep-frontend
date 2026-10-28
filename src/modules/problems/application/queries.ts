@@ -1,5 +1,6 @@
 import useSWR from 'swr';
-import { HttpProblemsRepository } from '../data-access/repository/http.problems.repository.ts';
+import { problemsRepository } from '../data-access';
+import type { ProblemsRepository } from '../domain/contracts/problems.repository';
 import {
   AttemptsListParams,
   ProblemSolversParams,
@@ -8,12 +9,10 @@ import {
   ProblemsRatingParams,
   ProblemsStatisticsParams,
   RecommendationResolveParams,
-} from '../domain/ports/problems.repository.ts';
+} from '../domain/contracts/problems.repository.ts';
 
-const problemsRepository = new HttpProblemsRepository();
-
-export const useProblemsList = (params: ProblemsListParams) =>
-  useSWR(['problems-list', params], () => problemsRepository.list(params));
+export const useProblemsList = (params: ProblemsListParams | null) =>
+  useSWR(params ? ['problems-list', params] : null, () => problemsRepository.list(params!));
 
 export const useProblemLanguages = () =>
   useSWR(['problems-languages'], () => problemsRepository.listLanguages());
@@ -138,6 +137,32 @@ export const useProblemTags = (enabled = false) =>
 export const useProblemTopics = (enabled = false) =>
   useSWR(enabled ? ['problem-topics'] : null, () => problemsRepository.listTopics());
 
-export const problemsQueries = {
-  problemsRepository,
-};
+export const getPreviousProblemId = (...args: Parameters<ProblemsRepository['getProblemPrev']>) =>
+  problemsRepository.getProblemPrev(...args);
+
+export const getNextProblemId = (...args: Parameters<ProblemsRepository['getProblemNext']>) =>
+  problemsRepository.getProblemNext(...args);
+
+export const getAttemptDetails = (...args: Parameters<ProblemsRepository['getAttempt']>) =>
+  problemsRepository.getAttempt(...args);
+
+export const getStudyPlanDetails = (...args: Parameters<ProblemsRepository['getStudyPlan']>) =>
+  problemsRepository.getStudyPlan(...args);
+
+export const useProblemSuggestions = (search: string) =>
+  useSWR(['attempts-problem-options', search], async () => {
+    const result = await problemsRepository.list({
+      search: search.trim() || undefined,
+      page: 1,
+      pageSize: 10,
+      ordering: 'id',
+    });
+    return result.data.map(({ id, title }) => ({ id, title }));
+  });
+
+export const useDuelWorkspaceAttempts = (params: AttemptsListParams | null) =>
+  useSWR(
+    params ? ['duel-workspace-attempts', params] : null,
+    () => problemsRepository.listAttempts(params!),
+    { keepPreviousData: true, revalidateOnFocus: false },
+  );

@@ -1,4 +1,5 @@
 import { useMemo } from 'react';
+import { useTranslation } from 'react-i18next';
 import { IconButton } from '@mui/material';
 import Box from '@mui/material/Box';
 import List from '@mui/material/List';
@@ -6,8 +7,8 @@ import Toolbar from '@mui/material/Toolbar';
 import { useSettingsContext } from 'app/providers/SettingsProvider';
 import IconifyIcon from 'shared/components/base/IconifyIcon';
 import Logo from 'shared/components/common/Logo';
-import NavLogoLabel from '../common/NavLogoLabel';
 import { useNavContext } from '../NavProvider';
+import NavLogoLabel from '../common/NavLogoLabel';
 import NavItem from './NavItem';
 import SidenavSimpleBar from './SidenavSimpleBar';
 
@@ -16,6 +17,7 @@ interface SidenavDrawerContentProps {
 }
 
 const SidenavDrawerContent = ({ variant = 'permanent' }: SidenavDrawerContentProps) => {
+  const { t } = useTranslation();
   const {
     config: { sidenavCollapsed, openNavbarDrawer, navigationMenuType },
     setConfig,
@@ -62,7 +64,11 @@ const SidenavDrawerContent = ({ variant = 'permanent' }: SidenavDrawerContentPro
                 <Logo showName={expanded} />
                 {expanded && <NavLogoLabel />}
               </Box>
-              <IconButton sx={{ mt: 1, display: { md: 'none' } }} onClick={toggleNavbarDrawer}>
+              <IconButton
+                aria-label={t('common.close')}
+                sx={{ mt: 1, display: { md: 'none' } }}
+                onClick={toggleNavbarDrawer}
+              >
                 <IconifyIcon icon="material-symbols:left-panel-close-outline" fontSize={20} />
               </IconButton>
             </>

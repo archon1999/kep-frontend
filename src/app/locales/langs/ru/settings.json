@@ -1,5 +1,9 @@
 {
   "settings": {
+    "pageSubtitle": "Управляйте профилем, подключёнными аккаунтами и настройками.",
+    "account": "Аккаунт",
+    "navigation": "Разделы настроек",
+    "coverSizeError": "Размер обложки не должен превышать 4 МБ.",
     "general": "Общее",
     "changePassword": "Изменить пароль",
     "information": "Информация",
@@ -9,10 +13,10 @@
     "teams": "Команды",
     "system": "Система",
     "generalSettings": "Общие настройки",
-    "generalSettingsSubtitle": "Обновите основные данные профиля и обложку.",
+    "generalSettingsSubtitle": "Обновите имя, аватар и обложку профиля.",
     "upload": "Загрузить",
     "coverImage": "Изображение обложки",
-    "coverPlaceholder": "Загрузите обложку, чтобы персонализировать профиль.",
+    "coverPlaceholder": "Добавьте обложку профиля.",
     "coverChangeAction": "Купить",
     "coverChangeNote": "Обновление обложки стоит {{value}} Kepcoin.",
     "username": "Имя пользователя",
@@ -38,7 +42,7 @@
     "telegram": "Телеграм",
     "publicTelegram": "Public Telegram",
     "connectedAccounts": "Connected accounts",
-    "connectedAccountsSubtitle": "Link external accounts for Kepcoin tasks.",
+    "connectedAccountsSubtitle": "Подключите поддерживаемые сервисы к аккаунту KEP.uz.",
     "connectedAccountsLinked": "Linked",
     "connectedAccountsNotLinked": "Not linked",
     "connectedAccountsOpened": "Connection flow opened",
@@ -47,10 +51,9 @@
     "reconnect": "Reconnect",
     "codeforcesHandle": "Ник на Codeforces",
     "technologies": "Технологии",
-    "technologiesSubtitle": "Добавьте любимые стеки и цвета бейджей.",
+    "technologiesSubtitle": "Выберите технологии, которые будут видны в профиле.",
     "text": "Текст",
     "devIconClass": "Dev icon class",
-    "devIconHelper": "Используйте любой класс иконок с devicon.io",
     "badgeColor": "Цвет бейджа",
     "preview": "Превью",
     "addNew": "Добавить новый",
@@ -66,13 +69,11 @@
     "linkToJoin": "Ссылка для присоединения",
     "refreshLink": "Обновить ссылку",
     "teamCode": "Код команды: {{code}}",
-    "teamsEmpty": "Создайте команду или присоединитесь к существующей.",
     "sounds": "Звуки",
     "successSound": "Успешный",
     "homeSound": "Домашний",
     "themeToggleEffect": "Эффект переключения темы",
     "openNavigation": "Открыть навигацию",
-    "loginRequired": "Войдите, чтобы управлять настройками аккаунта.",
     "linkCopied": "Ссылка скопирована",
     "teamCodeLabel": "Код команды",
     "teamName": "Название",
@@ -103,10 +104,10 @@
       "algorithms": "Алгоритмы",
       "dataScience": "Data science"
     },
-    "enabled": "\u0412\u043a\u043b\u044e\u0447\u0435\u043d\u043e",
-    "disabled": "\u0412\u044b\u043a\u043b\u044e\u0447\u0435\u043d\u043e",
-    "botNotifications": "\u0423\u0432\u0435\u0434\u043e\u043c\u043b\u0435\u043d\u0438\u044f \u0432 \u0431\u043e\u0442\u0435",
-    "botNotificationsSubtitle": "\u0412\u043a\u043b\u044e\u0447\u0430\u0439\u0442\u0435 \u0438\u043b\u0438 \u043e\u0442\u043a\u043b\u044e\u0447\u0430\u0439\u0442\u0435 \u0443\u0432\u0435\u0434\u043e\u043c\u043b\u0435\u043d\u0438\u044f \u0438\u0437 Telegram-\u0431\u043e\u0442\u0430.",
+    "enabled": "Включено",
+    "disabled": "Выключено",
+    "botNotifications": "Уведомления в боте",
+    "botNotificationsSubtitle": "Выберите, какие уведомления присылает Telegram-бот.",
     "sound": {
       "none": "Без звука",
       "soft": "Мягкий звон",
@@ -127,7 +128,6 @@
       "toggle": "Настроить",
       "title": "Настроить",
       "reset": "Сбросить",
-      "new": "новое",
       "notAvailableInLayout": "Недоступно для этого макета.",
       "sections": {
         "theme": "Тема",
@@ -139,7 +139,8 @@
         "cardStyle": "Стиль карточек",
         "cardBackground": "Фон карточек",
         "font": "Шрифт",
-        "visionMode": "Режим зрения"
+        "visionMode": "Режим зрения",
+        "layout": "Макет"
       },
       "labels": {
         "default": "Стандарт",
@@ -175,28 +176,29 @@
         "nature": "Природа",
         "ember": "Тлеющий",
         "dracula": "Дракула",
-        "midnight": "Полночь"
+        "midnight": "Полночь",
+        "cobalt": "Cobalt"
       },
       "visionModes": {
         "normal": {
           "label": "Обычный",
-          "description": "Все цвета отображаются как обычно"
+          "description": "Стандартная цветовая палитра."
         },
         "protanopia": {
           "label": "Протанопия",
-          "description": "Труднее различать красные оттенки"
+          "description": "Применяет цветовой фильтр протанопии."
         },
         "deuteranopia": {
           "label": "Дейтеранопия",
-          "description": "Труднее различать зелёные оттенки"
+          "description": "Применяет цветовой фильтр дейтеранопии."
         },
         "tritanopia": {
           "label": "Тританопия",
-          "description": "Труднее различать синие оттенки"
+          "description": "Применяет цветовой фильтр тританопии."
         },
         "achromatopsia": {
           "label": "Ахроматопсия",
-          "description": "Отображает только чёрный и белый"
+          "description": "Палитра в оттенках серого."
         }
       }
     }

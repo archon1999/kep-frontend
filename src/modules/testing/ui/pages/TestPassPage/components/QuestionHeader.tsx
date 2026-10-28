@@ -1,6 +1,6 @@
 import { Box, Typography } from '@mui/material';
+import { TestPassQuestion } from 'modules/testing/domain/entities/test-pass.types';
 import MathJaxView from 'shared/components/base/MathJaxView.tsx';
-import { TestPassQuestion } from '../types';
 
 interface QuestionHeaderProps {
   question: TestPassQuestion;

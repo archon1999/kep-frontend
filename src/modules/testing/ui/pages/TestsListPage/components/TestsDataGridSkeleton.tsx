@@ -8,24 +8,14 @@ interface TestsDataGridSkeletonProps {
   showChapter?: boolean;
 }
 
-const rows = Array.from({ length: 8 }, (_, id) => ({ id }));
+const rows = Array.from({ length: 20 }, (_, id) => ({ id }));
 
 const GridSkeletonFooter = () => (
-  <GridFooterContainer sx={{ minHeight: 64, px: { xs: 2, sm: 3 }, py: 1.5 }}>
-    <Stack
-      direction="row"
-      alignItems="center"
-      justifyContent="flex-end"
-      gap={2}
-      sx={{ width: 1, flexWrap: 'wrap' }}
-    >
-      <Skeleton width={120} height={20} sx={{ display: { xs: 'none', sm: 'block' } }} />
-      <Skeleton variant="rounded" width={46} height={32} />
-      <Skeleton width={84} height={20} sx={{ display: { xs: 'none', sm: 'block' } }} />
-      <Stack direction="row" gap={1}>
-        <Skeleton variant="rounded" width={32} height={32} />
-        <Skeleton variant="rounded" width={32} height={32} />
-      </Stack>
+  <GridFooterContainer sx={{ width: 1, py: 3 }}>
+    <Stack direction="row" alignItems="center" justifyContent="center" gap={1} sx={{ width: 1 }}>
+      {Array.from({ length: 5 }, (_, index) => (
+        <Skeleton key={index} variant="rectangular" width={40} height={40} />
+      ))}
     </Stack>
   </GridFooterContainer>
 );
@@ -119,6 +109,7 @@ const TestsDataGridSkeleton = ({ showChapter = false }: TestsDataGridSkeletonPro
 
   return (
     <DataGrid
+      className="kep-data-grid-section"
       autoHeight
       aria-hidden="true"
       rows={rows}

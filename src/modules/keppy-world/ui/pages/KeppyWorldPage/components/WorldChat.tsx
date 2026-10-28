@@ -74,12 +74,12 @@ const WorldChat = ({ messages, error, connected, hidden, onSend, onFocusChange }
     >
       {open ? (
         <Paper
+          variant="framed"
           sx={{
             width: { xs: 290, sm: 320 },
             maxWidth: '100%',
-            borderRadius: 2,
+            borderRadius: 0,
             overflow: 'hidden',
-            boxShadow: '0 6px 30px rgba(20,47,65,.12)',
           }}
         >
           <Stack
@@ -231,8 +231,7 @@ const WorldChat = ({ messages, error, connected, hidden, onSend, onFocusChange }
           onClick={() => setOpen(true)}
           sx={{
             bgcolor: 'background.paper',
-            borderRadius: 2,
-            boxShadow: '0 3px 16px rgba(20,47,65,.1)',
+            borderRadius: 0,
           }}
         >
           <Badge color="primary" variant="dot" invisible={!last || seen === last}>
@@ -244,4 +243,3 @@ const WorldChat = ({ messages, error, connected, hidden, onSend, onFocusChange }
   );
 };
 export default WorldChat;
-

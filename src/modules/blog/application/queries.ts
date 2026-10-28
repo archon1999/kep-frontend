@@ -1,10 +1,15 @@
-import useSWR from 'swr';
-import useSWRMutation from 'swr/mutation';
 import { createKeyFactory } from 'shared/api';
 import { ApiBlogListParams } from 'shared/api/orval/generated/endpoints/index.schemas';
+import useSWR from 'swr';
+import useSWRMutation from 'swr/mutation';
 import { blogRepository } from '../data-access/repository/http.blog.repository';
-import { BlogComment, BlogPost, BlogTopic, BlogUpsertPayload } from '../domain/entities/blog.entity';
-import { PageResult } from '../domain/ports/blog.repository';
+import { PageResult } from '../domain/contracts/blog.repository';
+import {
+  BlogComment,
+  BlogPost,
+  BlogTopic,
+  BlogUpsertPayload,
+} from '../domain/entities/blog.entity';
 
 export const blogKeys = createKeyFactory('blog');
 
@@ -23,13 +28,19 @@ export const useMyBlogPosts = (params?: Partial<ApiBlogListParams> | null) =>
   );
 
 export const useBlogPost = (id?: string) =>
-  useSWR<BlogPost>(id ? blogKeys.detail(id) : null, () => blogRepository.getById(id!), { suspense: false });
+  useSWR<BlogPost>(id ? blogKeys.detail(id) : null, () => blogRepository.getById(id!), {
+    suspense: false,
+  });
 
 export const useBlogAuthors = () =>
-  useSWR<string[]>(blogKeys.detail('authors'), () => blogRepository.getAuthors(), { suspense: false });
+  useSWR<string[]>(blogKeys.detail('authors'), () => blogRepository.getAuthors(), {
+    suspense: false,
+  });
 
 export const useBlogTopics = () =>
-  useSWR<BlogTopic[]>(blogKeys.detail('topics'), () => blogRepository.getTopics(), { suspense: false });
+  useSWR<BlogTopic[]>(blogKeys.detail('topics'), () => blogRepository.getTopics(), {
+    suspense: false,
+  });
 
 export const useBlogCreate = () =>
   useSWRMutation(blogKeys.detail('create'), (_, { arg }: { arg: BlogUpsertPayload }) =>
@@ -49,9 +60,13 @@ export const useBlogSubmitForReview = (id?: string) =>
   );
 
 export const useBlogComments = (id?: string) =>
-  useSWR<BlogComment[]>(id ? blogKeys.detail(`comments-${id}`) : null, () => blogRepository.getComments(id!), {
-    suspense: false,
-  });
+  useSWR<BlogComment[]>(
+    id ? blogKeys.detail(`comments-${id}`) : null,
+    () => blogRepository.getComments(id!),
+    {
+      suspense: false,
+    },
+  );
 
 export const useBlogCommentCreate = (id?: string) =>
   useSWRMutation(
@@ -63,9 +78,8 @@ export const useBlogPostLike = (id?: string) =>
   useSWRMutation(id ? blogKeys.detail(`like-${id}`) : null, () => blogRepository.likePost(id!));
 
 export const useBlogCommentLike = (id?: string) =>
-  useSWRMutation(
-    id ? blogKeys.detail(`like-comment-${id}`) : null,
-    (_, { arg }: { arg: number }) => blogRepository.likeComment(arg),
+  useSWRMutation(id ? blogKeys.detail(`like-comment-${id}`) : null, (_, { arg }: { arg: number }) =>
+    blogRepository.likeComment(arg),
   );
 
 export const useBlogCommentDelete = (id?: string) =>

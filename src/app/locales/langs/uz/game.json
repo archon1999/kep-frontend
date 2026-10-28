@@ -2,13 +2,12 @@
   "game": {
     "chapter": "KOD OROLLARI · 10 TA SINOV",
     "title": "KEPPER: Kod orollari",
-    "subtitle": "Dastur tuzing va KEPPER uni suzuvchi orollarda qanday bajarishini ko‘ring.",
+    "subtitle": "Buyruq, sikl va shartlar bilan KEPPERni bosqichlardan o‘tkazing.",
     "worldLabel": "KEPPER ishtirokidagi interaktiv 3D orol",
     "levelSelector": "Orolni tanlang",
     "scrollLevelsBack": "Oldingi orollar",
     "scrollLevelsForward": "Keyingi orollar",
     "islandsCleared": "orol yakunlandi",
-    "stageTitle": "Simulyatsiya",
     "stageReady": "Tayyor",
     "stageRunning": "Bajarilmoqda",
     "stageCleared": "O‘tildi",
@@ -87,8 +86,10 @@
     "testCases": "Xaritalar",
     "viewFailedMap": "{{scenario}}-xaritani ko‘rish",
     "editorTitle": "KEPPER dasturi",
-    "editorCaption": "Buyruqlar tartib bilan bajariladi",
-    "modes": { "blocks": "Bloklar", "code": "Kod" },
+    "modes": {
+      "blocks": "Bloklar",
+      "code": "Kod"
+    },
     "commands": {
       "move": "Qadam",
       "left": "Chapga buril",
@@ -122,7 +123,6 @@
     "allTestsPassed": "{{count}} ta xarita sinovidan o‘tdi.",
     "nextLevel": "Keyingi orol →",
     "running": "KEPPER buyruqlarni bajaryapti…",
-    "runTip": "Barcha xaritalarni tekshirish uchun ishga tushiring. Ctrl+Enter ham ishlaydi.",
     "syntaxError": "{{line}}-qatordagi buyruqni tekshiring. Tahrirlagich ostidagi o‘yin buyruqlaridan foydalaning.",
     "unavailable": "Bu buyruq keyingi orolda ochiladi.",
     "failures": {
@@ -131,8 +131,6 @@
       "unfinished": "{{scenario}}-xarita: KEPPER portalga yetmasdan to‘xtadi.",
       "limit": "{{scenario}}-xarita: dastur juda uzoq ishladi. Takrorlashni qisqartiring."
     },
-    "rotateHint": "Aylantirish uchun torting · yaqinlashtirish uchun skroll qiling",
-    "keyboardHint": "Ishga tushirish: Ctrl+Enter",
     "localSave": "Natija shu qurilmada saqlanadi",
     "canvasFallback": "Bu brauzerda 3D ko‘rinish ishlamaydi.",
     "tiles": {

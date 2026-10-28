@@ -1,183 +1,136 @@
 import { useTranslation } from 'react-i18next';
-import {
-  Button,
-  Card,
-  CardContent,
-  Chip,
-  Divider,
-  Skeleton,
-  Stack,
-  Tooltip,
-  Typography,
-} from '@mui/material';
-import { DuelInvitation, formatDuelDuration } from 'modules/duels/domain/index.ts';
-import UserPopover from 'modules/users/ui/shared/components/UserPopover.tsx';
-import IconifyIcon from 'shared/components/base/IconifyIcon.tsx';
-import ContestsRatingChip from 'shared/components/rating/ContestsRatingChip.tsx';
+import { Box, Button, Skeleton, Stack, Tooltip, Typography } from '@mui/material';
+import { contentInsetSx, interactiveContentSx } from 'app/theme/styles/content';
+import { DuelInvitation, formatDuelDuration } from 'modules/duels/domain';
+import DuelParticipant from 'modules/duels/ui/shared/components/DuelParticipant';
+import IconifyIcon from 'shared/components/base/IconifyIcon';
+import MixedText from 'shared/components/common/MixedText';
 import { formatRelativeTime } from 'shared/lib/dateTime';
 
 type Props = {
-  invitation: DuelInvitation;
+  invitation?: DuelInvitation;
+  loading?: boolean;
   actionLoadingKey?: string | null;
   onAccept?: () => void;
   onCancel?: () => void;
 };
-
-export const DuelWaitingRoomCardSkeleton = () => (
-  <Card background={0} sx={{ width: 1, height: 1, minHeight: 220, display: 'flex' }}>
-    <CardContent sx={{ display: 'flex', flex: 1 }}>
-      <Stack spacing={2} sx={{ width: 1, flex: 1 }}>
-        <Stack direction="row" spacing={0.75} alignItems="center">
-          <Skeleton variant="circular" width={22} height={22} />
-          <Skeleton variant="text" width={92} />
-          <Skeleton variant="rounded" width={42} height={24} sx={{ borderRadius: 999 }} />
-        </Stack>
-
-        <Stack spacing={0.25}>
-          <Skeleton variant="text" width="88%" height={28} />
-          <Skeleton variant="text" width="62%" height={28} />
-        </Stack>
-
-        <Stack direction="row" spacing={0.75} alignItems="center">
-          <Skeleton variant="rounded" width={92} height={24} sx={{ borderRadius: 999 }} />
-          <Divider flexItem orientation="vertical" />
-          <Skeleton variant="rounded" width={46} height={24} sx={{ borderRadius: 999 }} />
-          <Divider flexItem orientation="vertical" />
-          <Skeleton variant="rounded" width={42} height={24} sx={{ borderRadius: 999 }} />
-        </Stack>
-
-        <Stack
-          direction="row"
-          alignItems="center"
-          justifyContent="space-between"
-          spacing={1}
-          sx={{ mt: 'auto' }}
-        >
-          <Skeleton variant="text" width={88} />
-          <Skeleton variant="rounded" width={92} height={32} sx={{ borderRadius: 999 }} />
-        </Stack>
-      </Stack>
-    </CardContent>
-  </Card>
-);
-
-const DuelWaitingRoomCard = ({ invitation, actionLoadingKey, onAccept, onCancel }: Props) => {
+const DuelWaitingRoomCard = ({
+  invitation,
+  loading = false,
+  actionLoadingKey,
+  onAccept,
+  onCancel,
+}: Props) => {
   const { t } = useTranslation();
-  const creator = invitation.challenger;
-  const createdRelative = formatRelativeTime(invitation.created, '');
-  const isLoading =
-    actionLoadingKey === `accept-${invitation.id}` ||
-    actionLoadingKey === `cancel-${invitation.id}`;
-  const actionTitle = invitation.canCancel ? t('duels.deleteCall') : t('duels.accept');
-  const actionDisabled = invitation.canCancel ? false : !invitation.canAccept;
-  const actionReason = invitation.canCancel ? '' : invitation.acceptDisabledReason || '';
-
-  const action = invitation.canCancel ? onCancel : onAccept;
-
+  const busy =
+    loading ||
+    actionLoadingKey === `accept-${invitation?.id}` ||
+    actionLoadingKey === `cancel-${invitation?.id}`;
+  const disabled = loading || (!invitation?.canCancel && !invitation?.canAccept);
+  const created = invitation?.created ? formatRelativeTime(invitation.created, '') : '';
   return (
-    <Card background={0} sx={{ width: 1, height: 1, display: 'flex' }}>
-      <CardContent sx={{ display: 'flex', flex: 1 }}>
-        <Stack spacing={2} sx={{ width: 1, flex: 1 }}>
-          <Stack direction="row" justifyContent="space-between" spacing={1} alignItems="flex-start">
-            <Stack spacing={0.75} sx={{ minWidth: 0 }}>
-              <Stack direction="row" spacing={0.75} alignItems="center" flexWrap="wrap" useFlexGap>
-                <ContestsRatingChip title={creator.contestsRatingTitle} imgSize={22} />
-                <UserPopover username={creator.username} avatar={creator.avatar ?? undefined}>
-                  <Typography variant="subtitle2" fontWeight={800} noWrap>
-                    {creator.username}
-                  </Typography>
-                </UserPopover>
-                {invitation.isBot ? (
-                  <Chip label="BOT" size="small" color="secondary" variant="outlined" />
-                ) : null}
+    <Box
+      component="article"
+      className="kep-duel-call"
+      aria-busy={loading}
+      sx={{
+        ...contentInsetSx,
+        ...interactiveContentSx,
+        display: 'flex',
+        flexDirection: 'column',
+        gap: 2,
+        height: '100%',
+      }}
+    >
+      <Box sx={{ minHeight: 46, minWidth: 0 }}>
+        {loading ? (
+          <Skeleton width="65%" height={42} />
+        ) : (
+          invitation && <DuelParticipant player={invitation.challenger} />
+        )}
+      </Box>
+      <Typography
+        component="h3"
+        sx={{
+          fontFamily: 'var(--kep-display-font)',
+          fontSize: 20,
+          fontWeight: 500,
+          lineHeight: 1.35,
+          minHeight: 54,
+          display: '-webkit-box',
+          WebkitLineClamp: 2,
+          WebkitBoxOrient: 'vertical',
+          overflow: 'hidden',
+        }}
+      >
+        {loading ? (
+          <>
+            <Skeleton width="90%" />
+            <Skeleton width="60%" />
+          </>
+        ) : (
+          <MixedText>{invitation?.preset?.title ?? t('duels.createDuel')}</MixedText>
+        )}
+      </Typography>
+      <Stack direction="row" gap={1.5} alignItems="center" flexWrap="wrap" sx={{ minHeight: 24 }}>
+        {loading ? (
+          <Skeleton width="85%" height={24} />
+        ) : (
+          <>
+            {invitation?.preset?.duration && (
+              <Stack direction="row" gap={0.5} alignItems="center">
+                <IconifyIcon
+                  icon="mdi:clock-outline"
+                  sx={{ fontSize: 16, color: 'primary.main' }}
+                />
+                <Typography variant="metric" sx={{ fontSize: 14 }}>
+                  {formatDuelDuration(invitation.preset.duration)}
+                </Typography>
               </Stack>
-            </Stack>
-          </Stack>
-
-          <Typography
-            variant="subtitle1"
-            fontWeight={800}
-            sx={{
-              display: '-webkit-box',
-              WebkitLineClamp: 2,
-              WebkitBoxOrient: 'vertical',
-              overflow: 'hidden',
-            }}
-          >
-            {invitation.preset?.title ?? t('duels.createDuel')}
-          </Typography>
-
-          <Stack
-            direction="row"
-            spacing={0.75}
-            alignItems="center"
-            flexWrap="wrap"
-            useFlexGap
-            divider={<Divider flexItem orientation="vertical" />}
-          >
-            {invitation.duelType?.title ? (
-              <Chip
-                size="small"
-                label={invitation.duelType.title}
-                variant="outlined"
-                color="primary"
-              />
-            ) : null}
-            {invitation.preset?.duration ? (
-              <Chip
-                size="small"
-                label={formatDuelDuration(invitation.preset.duration)}
-                variant="outlined"
-              />
-            ) : null}
-            {typeof invitation.preset?.problemsCount === 'number' ? (
-              <Chip
-                size="small"
-                label={t('duels.presetProblemsCountShort', {
-                  count: invitation.preset.problemsCount,
-                })}
-                variant="outlined"
-              />
-            ) : null}
-          </Stack>
-
-          <Stack
-            direction="row"
-            alignItems="center"
-            justifyContent="space-between"
-            spacing={1}
-            sx={{ mt: 'auto' }}
-          >
-            {createdRelative ? (
-              <Typography variant="caption" color="text.secondary" noWrap>
-                {createdRelative}
-              </Typography>
-            ) : null}
-
-            <Tooltip title={actionDisabled ? actionReason : ''}>
-              <span>
-                <Button
-                  variant={invitation.canCancel ? 'outlined' : 'contained'}
-                  color={invitation.canCancel ? 'error' : 'primary'}
-                  size="small"
-                  fullWidth
-                  disabled={actionDisabled || isLoading}
-                  onClick={action}
-                  startIcon={
-                    invitation.canCancel ? (
-                      <IconifyIcon icon="mdi:trash-can-outline" width={16} />
-                    ) : undefined
-                  }
-                >
-                  {actionTitle}
-                </Button>
-              </span>
-            </Tooltip>
-          </Stack>
-        </Stack>
-      </CardContent>
-    </Card>
+            )}
+            {typeof invitation?.preset?.problemsCount === 'number' && (
+              <Stack direction="row" gap={0.5} alignItems="center">
+                <IconifyIcon icon="mdi:code-tags" sx={{ fontSize: 16, color: 'primary.main' }} />
+                <Typography variant="metric" sx={{ fontSize: 14 }}>
+                  {invitation.preset.problemsCount}
+                </Typography>
+              </Stack>
+            )}
+          </>
+        )}
+      </Stack>
+      <Typography variant="caption" color="text.secondary" sx={{ minHeight: 18 }}>
+        {loading ? <Skeleton width="50%" /> : invitation?.duelType?.title}
+      </Typography>
+      <Stack
+        direction="row"
+        gap={1.5}
+        justifyContent="space-between"
+        alignItems="center"
+        sx={{ mt: 'auto', pt: 2, borderTop: '1px solid var(--kep-line)' }}
+      >
+        <Typography variant="caption" color="text.secondary">
+          {loading ? <Skeleton width={80} /> : created}
+        </Typography>
+        <Tooltip title={disabled && !loading ? invitation?.acceptDisabledReason || '' : ''}>
+          <span>
+            <Button
+              variant={invitation?.canCancel ? 'outlined' : 'contained'}
+              color={invitation?.canCancel ? 'inherit' : 'primary'}
+              size="small"
+              disabled={disabled || busy}
+              onClick={invitation?.canCancel ? onCancel : onAccept}
+              endIcon={
+                <IconifyIcon icon={invitation?.canCancel ? 'mdi:close' : 'mdi:arrow-right'} />
+              }
+            >
+              {t(invitation?.canCancel ? 'duels.deleteCall' : 'duels.accept')}
+            </Button>
+          </span>
+        </Tooltip>
+      </Stack>
+    </Box>
   );
 };
-
+export const DuelWaitingRoomCardSkeleton = () => <DuelWaitingRoomCard loading />;
 export default DuelWaitingRoomCard;

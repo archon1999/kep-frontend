@@ -1,10 +1,10 @@
 import { ReactNode, useState } from 'react';
 import { useTranslation } from 'react-i18next';
-import { Button, Chip, Stack, Typography } from '@mui/material';
+import { Button, Chip, Stack } from '@mui/material';
 import SearchTextField from 'app/layouts/main-layout/common/search-box/SearchTextField';
-import FilterButton from 'shared/components/common/FilterButton';
 import DebouncedTextField from 'shared/components/common/DebouncedTextField';
-import FilterDrawer, { DEFAULT_FILTER_DRAWER_WIDTH } from 'shared/components/common/FilterDrawer';
+import FilterButton from 'shared/components/common/FilterButton';
+import FilterPopover from 'shared/components/common/FilterPopover';
 
 export interface AdminActiveFilter {
   key: string;
@@ -38,11 +38,12 @@ const AdminFiltersToolbar = ({
   onToggleFilters,
 }: AdminFiltersToolbarProps) => {
   const { t } = useTranslation();
-  const [localFiltersOpen, setLocalFiltersOpen] = useState(false);
+  const [anchorEl, setAnchorEl] = useState<HTMLElement | null>(null);
   const resolvedFilterLabel = filterLabel ?? t('problems.filters');
-  const resolvedFiltersOpen = onToggleFilters ? filtersOpen : localFiltersOpen;
-  const handleFiltersToggle = onToggleFilters ?? (() => setLocalFiltersOpen((current) => !current));
-  const handleFiltersClose = () => setLocalFiltersOpen(false);
+  const resolvedFiltersOpen = onToggleFilters ? filtersOpen : Boolean(anchorEl);
+  const handleFiltersToggle =
+    onToggleFilters ?? ((event: React.MouseEvent<HTMLElement>) => setAnchorEl(event.currentTarget));
+  const handleFiltersClose = () => setAnchorEl(null);
 
   return (
     <Stack direction="column" spacing={2}>
@@ -77,9 +78,6 @@ const AdminFiltersToolbar = ({
 
       {activeFilters.length > 0 ? (
         <Stack direction="row" spacing={1} flexWrap="wrap" useFlexGap alignItems="center">
-          <Typography variant="body2" color="text.secondary">
-            {t('problems.appliedFilters', { count: activeFilters.length })}
-          </Typography>
           {activeFilters.map((item) => (
             <Chip
               key={item.key}
@@ -99,18 +97,18 @@ const AdminFiltersToolbar = ({
       ) : null}
 
       {filters && !onToggleFilters ? (
-        <FilterDrawer
+        <FilterPopover
+          title={resolvedFilterLabel}
+          anchorEl={anchorEl}
           id={`${id}-filters-drawer`}
-          open={resolvedFiltersOpen}
           onClose={handleFiltersClose}
-          drawerWidth={DEFAULT_FILTER_DRAWER_WIDTH}
-          temporary
           hasActiveFilters={activeFilters.length > 0}
-          clearLabel={t('problems.clear')}
-          onClear={onClearFilters}
+          resetLabel={t('problems.clear')}
+          doneLabel={t('contests.filters.done')}
+          onReset={onClearFilters ?? (() => undefined)}
         >
           {filters}
-        </FilterDrawer>
+        </FilterPopover>
       ) : null}
     </Stack>
   );

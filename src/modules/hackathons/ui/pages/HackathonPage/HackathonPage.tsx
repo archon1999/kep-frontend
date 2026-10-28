@@ -1,74 +1,61 @@
-import { useState } from 'react';
-import { useParams } from 'react-router';
-import { Grid } from '@mui/material';
-import { useDocumentTitle } from 'app/providers/DocumentTitleProvider';
-import {
-  useHackathon,
-  useHackathonProjects,
-  useHackathonStandings,
-  useRegisterHackathon,
-  useUnregisterHackathon,
-} from 'modules/hackathons/application';
-import { HackathonStatus } from 'modules/hackathons/domain';
+import { Box } from '@mui/material';
+import { useHackathonPage } from 'modules/hackathons/application/hooks/useHackathonPage';
 import { HackathonDetailLayout, getHackathonProjectPoints } from 'modules/hackathons/ui/shared';
 import HackathonOverviewAside from './components/HackathonOverviewAside';
 import HackathonOverviewContent from './components/HackathonOverviewContent';
 
 const HackathonPage = () => {
-  const { id } = useParams();
-  const [registrationError, setRegistrationError] = useState(false);
-  const { data: hackathon, isLoading, error, mutate } = useHackathon(id);
   const {
-    data: projects,
-    isLoading: isProjectsLoading,
-    error: projectsError,
-  } = useHackathonProjects(id);
-  const {
-    data: standings,
-    isLoading: isStandingsLoading,
-    error: standingsError,
-  } = useHackathonStandings(
-    hackathon && hackathon.status !== HackathonStatus.NOT_STARTED ? id : undefined,
-    { refreshInterval: hackathon?.status === HackathonStatus.FINISHED ? 0 : 30000 },
-  );
-  const { trigger: registerHackathon, isMutating: isRegistering } = useRegisterHackathon();
-  const { trigger: unregisterHackathon, isMutating: isUnregistering } = useUnregisterHackathon();
-  const canChangeRegistration = hackathon?.status === HackathonStatus.ALREADY;
-  useDocumentTitle(
-    hackathon?.title ? 'pageTitles.hackathon' : undefined,
-    hackathon?.title ? { hackathonTitle: hackathon.title } : undefined,
-  );
-
-  const handleRegistration = async () => {
-    if (!id || !canChangeRegistration) return;
-    setRegistrationError(false);
-    try {
-      if (hackathon?.isRegistered) await unregisterHackathon(id);
-      else await registerHackathon(id);
-      await mutate();
-    } catch {
-      setRegistrationError(true);
-    }
-  };
+    hackathon,
+    isLoading,
+    error,
+    projects,
+    isProjectsLoading,
+    projectsError,
+    standings,
+    isStandingsLoading,
+    standingsError,
+    isRegistering,
+    isUnregistering,
+    handleRegistration,
+    registrationError,
+  } = useHackathonPage();
 
   return (
     <HackathonDetailLayout hackathon={hackathon} isLoading={isLoading} error={error}>
       {hackathon ? (
-        <Grid container spacing={3}>
-          <Grid size={{ xs: 12, md: 8 }} sx={{ minWidth: 0 }}>
+        <Box
+          sx={{
+            display: 'grid',
+            gridTemplateColumns: {
+              xs: '1fr',
+              md: 'minmax(0, 1fr) 320px',
+              xl: 'minmax(0, 1fr) 360px',
+            },
+          }}
+        >
+          <Box sx={{ minWidth: 0 }}>
             <HackathonOverviewContent
               hackathon={hackathon}
               projects={projects}
               isProjectsLoading={isProjectsLoading}
               projectsError={projectsError}
+            />
+          </Box>
+          <Box
+            component="aside"
+            sx={{
+              minWidth: 0,
+              borderLeft: { md: 1 },
+              borderTop: { xs: 1, md: 0 },
+              borderColor: { xs: 'divider', md: 'divider' },
+            }}
+          >
+            <HackathonOverviewAside
+              hackathon={hackathon}
               standings={standings}
               isStandingsLoading={isStandingsLoading}
               standingsError={standingsError}
-            />
-          </Grid>
-          <Grid size={{ xs: 12, md: 4 }} sx={{ minWidth: 0 }}>
-            <HackathonOverviewAside
-              hackathon={hackathon}
               totalPoints={projects?.reduce(
                 (sum, project) => sum + getHackathonProjectPoints(project),
                 0,
@@ -78,8 +65,8 @@ const HackathonPage = () => {
               isMutating={isRegistering || isUnregistering}
               registrationError={registrationError}
             />
-          </Grid>
-        </Grid>
+          </Box>
+        </Box>
       ) : null}
     </HackathonDetailLayout>
   );

@@ -114,8 +114,6 @@ const ContestTabs = ({ contestId, status, isRated }: ContestTabsProps) => {
   return (
     <Box
       sx={{
-        borderBottom: '1px solid',
-        borderColor: 'divider',
         width: { xs: '100%', md: 'auto' },
         minWidth: 0,
         flex: 1,
@@ -137,10 +135,15 @@ const ContestTabs = ({ contestId, status, isRated }: ContestTabsProps) => {
             iconPosition: 'start',
             component: RouterLink,
             to: tab.to,
-            sx: { textTransform: 'none', fontWeight: 500 },
+            sx: {
+              textTransform: 'none',
+              fontWeight: 500,
+              minHeight: 58,
+              fontFamily: 'var(--kep-reading-font)',
+            },
           },
         }))}
-        ariaLabel="contest tabs"
+        ariaLabel={t('contests.detail.navigation')}
         tabsProps={{
           variant: 'scrollable',
           scrollButtons: 'auto',
@@ -151,7 +154,9 @@ const ContestTabs = ({ contestId, status, isRated }: ContestTabsProps) => {
           },
         }}
         selectProps={{
+          MenuProps: { slotProps: { paper: { variant: 'framed' } } },
           sx: {
+            borderRadius: 0,
             minHeight: { xs: 38, sm: undefined },
             '& .MuiSelect-select': {
               py: { xs: 0.8, sm: undefined },

@@ -17,7 +17,6 @@ import { ContestDetail } from 'modules/contests/domain/entities/contest-detail.e
 import { ContestProblemEntity } from 'modules/contests/domain/entities/contest-problem.entity';
 import IconifyIcon from 'shared/components/base/IconifyIcon';
 import KepIcon from 'shared/components/base/KepIcon';
-import { cssVarRgba } from 'shared/lib/utils';
 
 interface ContestPageProblemsPreviewCardProps {
   contest?: ContestDetail;
@@ -53,20 +52,12 @@ const Shell = ({
   const { t } = useTranslation();
 
   return (
-    <Card
-      variant="outlined"
-      sx={(theme) => ({
-        borderRadius: 3,
-        overflow: 'hidden',
-        background: `linear-gradient(135deg, ${cssVarRgba(theme.vars.palette.primary.lightChannel, 0.1)}, ${cssVarRgba(theme.vars.palette.primary.mainChannel, 0.05)} 60%, ${theme.vars.palette.background.paper})`,
-        borderColor: cssVarRgba(theme.vars.palette.primary.mainChannel, 0.16),
-      })}
-    >
+    <Card variant="section">
       <CardContent>
         <Stack spacing={1.75}>
           <Stack direction="row" spacing={1} alignItems="center" minWidth={0}>
             <KepIcon name="problem" fontSize={20} />
-            <Typography variant="subtitle2" fontWeight={800} noWrap>
+            <Typography component="h2" variant="label">
               {t('contests.problemsPreview')}
             </Typography>
           </Stack>
@@ -134,14 +125,13 @@ const SolvedRatioBar = ({
   return (
     <Tooltip title={tooltip} arrow>
       <Box
-        sx={(theme) => ({
-          height: 10,
+        sx={{
+          height: 4,
           overflow: 'hidden',
-          borderRadius: 999,
+          borderRadius: 0,
           bgcolor: 'background.neutral',
-          boxShadow: `inset 0 1px 3px ${cssVarRgba(theme.vars.palette.grey['500Channel'], 0.28)}`,
           cursor: 'help',
-        })}
+        }}
       >
         <Stack direction="row" sx={{ height: 1 }}>
           <Box sx={{ width: `${solvedPercent}%`, bgcolor: 'success.main' }} />

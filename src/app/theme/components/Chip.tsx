@@ -7,6 +7,8 @@ import { cssVarRgba } from 'shared/lib/utils';
 declare module '@mui/material/Chip' {
   interface ChipPropsVariantOverrides {
     soft: true;
+    category: true;
+    status: true;
   }
   interface ChipPropsColorOverrides {
     neutral: true;
@@ -80,6 +82,53 @@ chipSoftVariants.push({
 
 const Chip: Components<Omit<Theme, 'components'>>['MuiChip'] = {
   variants: [
+    {
+      props: { variant: 'category' },
+      style: ({ theme }) => ({
+        height: 'auto',
+        minHeight: 32,
+        border: '1px solid transparent',
+        borderRadius: 999,
+        background: `linear-gradient(${theme.vars.palette.background.default}, ${theme.vars.palette.background.default}) padding-box, linear-gradient(100deg, var(--kep-logo-sand), var(--kep-logo-ice)) border-box`,
+        color: theme.vars.palette.text.primary,
+        fontSize: 11,
+        fontWeight: 600,
+        letterSpacing: '.025em',
+        textTransform: 'uppercase',
+        [`& .${chipClasses.label}`]: { padding: '6px 12px', lineHeight: 1.4 },
+        [`& .${chipClasses.icon}`]: {
+          color: theme.vars.palette.primary.main,
+          width: 14,
+          height: 14,
+          marginLeft: 12,
+          marginRight: -4,
+        },
+      }),
+    },
+    {
+      props: { variant: 'status' },
+      style: ({ theme }) => {
+        const color = 'var(--kep-status-color)';
+        return {
+          '--kep-status-color': theme.vars.palette.text.secondary,
+          ...Object.fromEntries(
+            chipColors.map((name) => [
+              `&.MuiChip-color${name[0].toUpperCase()}${name.slice(1)}`,
+              { '--kep-status-color': theme.vars.palette[name].main },
+            ]),
+          ),
+          height: 30,
+          fontSize: 11,
+          fontWeight: 500,
+          borderRadius: 6,
+          color,
+          border: `1px solid color-mix(in srgb, ${color} 30%, ${theme.vars.palette.divider})`,
+          background: `color-mix(in srgb, ${color} 6%, transparent)`,
+          [`& .${chipClasses.label}`]: { paddingInline: 8 },
+          [`& .${chipClasses.icon}`]: { color: 'inherit', fontSize: 15, marginLeft: 8 },
+        };
+      },
+    },
     ...chipSoftVariants,
     {
       props: { variant: 'outlined', color: 'neutral' },
@@ -149,6 +198,9 @@ const Chip: Components<Omit<Theme, 'components'>>['MuiChip'] = {
   },
   styleOverrides: {
     root: ({ theme }) => ({
+      maxWidth: '100%',
+      '& .MuiChip-icon, & .MuiChip-deleteIcon': { flexShrink: 0 },
+      ...(theme.preset === 'default' && { borderRadius: 999, fontWeight: 500 }),
       '&.MuiChip-sizeLarge': {
         padding: theme.spacing(0.5),
         height: 32,
@@ -196,7 +248,8 @@ const Chip: Components<Omit<Theme, 'components'>>['MuiChip'] = {
       ...theme.typography.subtitle2,
       fontWeight: 600,
       lineHeight: 1,
-      overflow: 'unset',
+      overflow: 'hidden',
+      textOverflow: 'ellipsis',
     }),
     avatar: {
       height: 16,

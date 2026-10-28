@@ -8,16 +8,16 @@ import {
   Collapse,
   Divider,
   InputAdornment,
-  Menu,
+  Popover,
   Stack,
   Typography,
-  alpha,
   formLabelClasses,
   useTheme,
 } from '@mui/material';
 import { ProblemGroup } from 'modules/problems/domain/entities/problem.entity.ts';
 import IconifyIcon from 'shared/components/base/IconifyIcon.tsx';
 import StyledTextField from 'shared/components/styled/StyledTextField.tsx';
+import { cssVarRgba } from 'shared/lib/utils';
 
 interface CatalogFilterProps {
   groups: ProblemGroup[];
@@ -47,8 +47,7 @@ const buildCatalogTreeIndex = (groups: ProblemGroup[]): CatalogTreeIndex => {
     byId.set(group.id, group);
 
     const children = group.children ?? [];
-    const leafIds =
-      children.length === 0 ? [group.id] : children.flatMap((child) => visit(child));
+    const leafIds = children.length === 0 ? [group.id] : children.flatMap((child) => visit(child));
 
     leafIdsByGroup.set(group.id, leafIds);
     return leafIds;
@@ -203,7 +202,7 @@ const CatalogFilter = ({ groups, value = [], onChange }: CatalogFilterProps) => 
               <InputAdornment position="end">
                 <IconifyIcon
                   icon={open ? 'mdi:chevron-up' : 'mdi:chevron-down'}
-                  color={theme.palette.text.secondary}
+                  color={theme.vars.palette.text.secondary}
                 />
               </InputAdornment>
             ),
@@ -219,21 +218,24 @@ const CatalogFilter = ({ groups, value = [], onChange }: CatalogFilterProps) => 
         }}
       />
 
-      <Menu
+      <Popover
         id="problems-catalog-menu"
         anchorEl={anchor}
         open={open}
         onClose={handleClose}
         anchorOrigin={{ vertical: 'bottom', horizontal: 'left' }}
         transformOrigin={{ vertical: 'top', horizontal: 'left' }}
-        MenuListProps={{ disablePadding: true }}
-        PaperProps={{
-          sx: {
-            mt: 1,
-            width: { xs: 280, sm: 420 },
-            maxHeight: 520,
-            p: 1,
-            overflow: 'hidden',
+        slotProps={{
+          paper: {
+            role: 'dialog',
+            'aria-label': t('problems.groups'),
+            sx: {
+              mt: 1,
+              width: { xs: 280, sm: 420 },
+              maxHeight: 'min(520px, calc(100dvh - 32px))',
+              p: 2,
+              overflowY: 'auto',
+            },
           },
         }}
       >
@@ -262,7 +264,7 @@ const CatalogFilter = ({ groups, value = [], onChange }: CatalogFilterProps) => 
                 </Button>
               ) : null}
               <Button size="small" variant="text" color="secondary" onClick={handleClose}>
-                OK
+                {t('common.done')}
               </Button>
             </Stack>
           </Stack>
@@ -280,7 +282,7 @@ const CatalogFilter = ({ groups, value = [], onChange }: CatalogFilterProps) => 
             />
           </Box>
         </Stack>
-      </Menu>
+      </Popover>
     </>
   );
 };
@@ -305,11 +307,12 @@ const CatalogTree = ({
   onExpandToggle,
 }: CatalogTreeProps) => {
   const theme = useTheme();
+  const { t } = useTranslation();
 
   if (groups.length === 0 && depth === 0) {
     return (
       <Typography variant="body2" color="text.secondary" sx={{ px: 1, py: 1.5 }}>
-        No catalog items
+        {t('problems.emptyCatalog')}
       </Typography>
     );
   }
@@ -335,16 +338,16 @@ const CatalogTree = ({
                 minHeight: 40,
                 pl: 0.5 + depth * 2,
                 pr: 0.75,
-                borderRadius: 1,
+                borderRadius: 0,
                 bgcolor:
                   isSelected || isIndeterminate
-                    ? alpha(theme.palette.primary.main, 0.08)
+                    ? cssVarRgba(theme.vars.palette.primary.mainChannel, 0.08)
                     : 'transparent',
                 '&:hover': {
                   bgcolor:
                     isSelected || isIndeterminate
-                      ? alpha(theme.palette.primary.main, 0.12)
-                      : alpha(theme.palette.text.primary, 0.04),
+                      ? cssVarRgba(theme.vars.palette.primary.mainChannel, 0.12)
+                      : cssVarRgba(theme.vars.palette.text.primaryChannel, 0.04),
                 },
               }}
             >
@@ -352,6 +355,8 @@ const CatalogTree = ({
                 variant="text"
                 color="secondary"
                 size="small"
+                aria-label={group.name}
+                aria-expanded={hasChildren ? isExpanded : undefined}
                 disabled={!hasChildren}
                 onClick={() => onExpandToggle(group.id)}
                 sx={{
@@ -371,6 +376,7 @@ const CatalogTree = ({
 
               <Checkbox
                 size="small"
+                slotProps={{ input: { 'aria-label': group.name } }}
                 checked={isSelected}
                 indeterminate={isIndeterminate}
                 onChange={() => onToggle(group.id)}
@@ -390,8 +396,8 @@ const CatalogTree = ({
                   height={18}
                   color={
                     isSelected || isIndeterminate
-                      ? theme.palette.primary.main
-                      : theme.palette.text.secondary
+                      ? theme.vars.palette.primary.main
+                      : theme.vars.palette.text.secondary
                   }
                 />
                 <Typography

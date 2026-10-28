@@ -5,7 +5,7 @@
     "overallScore": "Umumiy ball",
     "scoreSplit": "O‘yinlar bo‘yicha ball",
     "played": "O‘ynalgan o‘yinlar",
-    "subtitle": "O‘yinni tanlang va shaxsiy rekordingizni yangilang.",
+    "subtitle": "Dasturlash, mantiq, xotira va hisoblash o‘yinlari.",
     "allGames": "O‘yinlar to‘plami",
     "overall": "Umumiy reyting",
     "leaderboard": "Reyting jadvali",
@@ -18,7 +18,6 @@
     "continue": "Davom ettirish",
     "back": "Barcha o‘yinlar",
     "howToPlay": "Qanday o‘ynaladi",
-    "signInToRank": "Natijangizni reytingda saqlash uchun tizimga kiring.",
     "emptyRanking": "Hozircha natija yo‘q.",
     "rankingError": "Reyting jadvali vaqtincha ishlamayapti.",
     "overviewError": "O‘yin natijalari hozircha mavjud emas.",
@@ -27,68 +26,57 @@
     "notRanked": "Hali reyting natijasi yo‘q",
     "featured": "3D dunyoni kashf eting",
     "quickGames": "Tezkor o‘yinlar",
-    "rankTitle": "Barcha o‘yinlar — bitta reyting",
-    "rankDescription": "Har bir o‘yindagi eng yaxshi natijangiz umumiy ballga qo‘shiladi.",
+    "rankDescription": "Umumiy ball reytingdagi har bir o‘yinning eng yaxshi saqlangan natijasi yig‘indisi.",
     "catalog": {
       "code-islands": {
         "title": "Kod orollari",
-        "description": "KEPPERni 10 ta tobora qiyinlashadigan oroldan dastur yordamida o‘tkazing.",
-        "type": "Dasturlash boshqotirmasi",
-        "rules": "Har bir bosqichdagi barcha xaritalardan o‘tadigan buyruqlar ketma-ketligini tuzing. Har bir orolda uch yulduzgacha to‘plang."
+        "description": "Buyruqlar yordamida KEPPERni o‘nta boshqotirma bosqichidan o‘tkazing.",
+        "type": "Dasturlash boshqotirmasi"
       },
       "keppy-world": {
         "title": "Keppy dunyosi",
-        "description": "3D orolda uzatkichlarni tiklang, sakrash sinovlari va vaqtli yo‘nalishlardan o‘ting.",
-        "type": "Erkin sarguzasht",
-        "rules": "Bo‘laklar, uzatkichlar, bekatlar, sakrash nishonlari va vaqtli yo‘nalishlarning barchasini bajaring. Space bilan sakrang. 1000 ball uchun xatosiz va tez yakunlang."
+        "description": "Ikki orolda parchalarni yig‘ing, relaylarni tiklang va vaqtli yo‘llardan o‘ting.",
+        "type": "Erkin sarguzasht"
       },
       "bug-hunt": {
         "title": "Xatoni top",
-        "description": "Murakkablashib boradigan 10 ta dasturda xato satrni toping.",
-        "type": "Xatolarni tuzatish",
-        "rules": "Har bir kod parchasi ichidagi xato satrni tanlang. To‘g‘ri javob 100 ball beradi; seriya alohida qayd etiladi."
+        "description": "Xato qatorni toping, tuzatishni tanlang va keyingi bosqichlarda natijani hisoblang.",
+        "type": "Xatolarni tuzatish"
       },
       "logic-circuit": {
         "title": "Mantiqiy zanjir",
-        "description": "To‘g‘ri shartlarni ulang va chiqishni berilgan natijaga moslang.",
-        "type": "Mantiqiy boshqotirma",
-        "rules": "Qiyinlashib boradigan 10 ta mantiqiy jumboqni yeching. Kamroq tekshiruv yuqoriroq ball beradi."
+        "description": "Natijasi berilgan jadvalga mos mantiqiy sxema tuzing.",
+        "type": "Mantiqiy boshqotirma"
       },
       "memory-grid": {
         "title": "Xotira maydoni",
-        "description": "Yorishgan yo‘lni kuzating va tartibini xotiradan qaytaring.",
-        "type": "Xotira sinovi",
-        "rules": "Uzayib boradigan 10 ta ketma-ketlikni takrorlang. Ikki xato o‘yinni tugatadi, ammo noto‘g‘ri bosish balldan ayirmaydi."
+        "description": "Yongan kataklar ketma-ketligini eslab, shu tartibda qaytaring.",
+        "type": "Xotira sinovi"
       },
       "math-compare": {
         "title": "Ifodalarni taqqoslash",
-        "description": "Ikki ifodaning qiymatini taqqoslang.",
-        "type": "Tez hisoblash",
-        "rules": "<, = yoki > ni tanlang. 10 bosqichda ifodalar murakkablashadi va vaqt qisqaradi."
+        "description": "Ikki ifoda qiymatini solishtiring: kichik, teng yoki katta.",
+        "type": "Tez hisoblash"
       },
       "quick-math": {
         "title": "Tez hisob",
-        "description": "Ifodani hisoblab, javobni kiriting.",
-        "type": "Hisoblash",
-        "rules": "Vaqt tugaguncha barcha misollarni yeching. 10 bosqichning har biri 100 ball beradi."
+        "description": "Vaqt tugashidan oldin ifoda natijasini hisoblang.",
+        "type": "Hisoblash"
       },
       "number-sequence": {
         "title": "Keyingi son",
-        "description": "Qonuniyatni topib, qatorni davom ettiring.",
-        "type": "Qonuniyatlar",
-        "rules": "Keyingi sonni kiriting. Ayirmalar, almashinuvchi qatorlar va rekurrent bog‘lanishlar 10 bosqichda murakkablashadi."
+        "description": "Qoidani topib keyingi sonni kiriting.",
+        "type": "Qonuniyatlar"
       },
       "number-hunt": {
         "title": "Raqamlar izidan",
-        "description": "Raqamlarni tartib bilan topib bosing.",
-        "type": "Diqqat sinovi",
-        "rules": "1 dan boshlang. 10 bosqichda kataklar ko‘payadi; vaqt tugaguncha barcha raqamlarni toping."
+        "description": "Sonlarni kichikdan kattaga qarab tanlang.",
+        "type": "Diqqat sinovi"
       },
       "memory-matrix": {
         "title": "Xotira matritsasi",
-        "description": "Yongan kataklar joyini eslab qoling.",
-        "type": "Ko‘rish xotirasi",
-        "rules": "Namunani kuzating, keyin o‘sha kataklarni belgilang. 10 bosqichda maydon kattalashadi, kuzatish vaqti qisqaradi."
+        "description": "Yongan kataklarni eslab, ular o‘chgach qayta tanlang.",
+        "type": "Ko‘rish xotirasi"
       }
     },
     "world": {
@@ -112,7 +100,6 @@
       "routes": "Xarita va manzillar",
       "stationNearHint": "Moviy halqada 1,4 soniya turing.",
       "station": "{{number}}-impuls bekati",
-      "stationHint": "Bekat halqasi moviy yonganida ichiga kiring va 1,4 soniya turing. Chiroq o‘chsa, keyingi impulsni kuting.",
       "hits": "Patrulga urilishlar",
       "hitsShort": "Patrul",
       "recordShort": "Rekord",
@@ -133,7 +120,6 @@
       "nearby": "Uzatkich yaqinda. Enter ni bosing yoki Muloqotni tanlang.",
       "interact": "Uzatkich bilan muloqot",
       "walkHint": "WASD / strelkalar bilan yuring · Space bilan sakrang · uzatkich yonida Enter ni bosing",
-      "touchHint": "Yo‘nalish tugmalari bilan yuring · Sakrash tugmasidan foydalaning · uzatkich yonida Muloqotni bosing",
       "moveForward": "Oldinga yurish",
       "moveBackward": "Orqaga yurish",
       "moveLeft": "Chapga yurish",

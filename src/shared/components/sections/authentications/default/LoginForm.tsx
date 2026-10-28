@@ -6,6 +6,7 @@ import { Alert, Box, Button, Divider, Link, Stack, TextField, Typography } from 
 import Grid from '@mui/material/Grid';
 import type { LoginPayload } from 'modules/authentication/domain';
 import IconifyIcon from 'shared/components/base/IconifyIcon';
+import MixedText from 'shared/components/common/MixedText';
 import PasswordTextField from 'shared/components/common/PasswordTextField';
 import * as yup from 'yup';
 import DefaultCredentialAlert from '../common/DefaultCredentialAlert';
@@ -76,42 +77,28 @@ const LoginForm = ({
     <Stack
       direction="column"
       sx={{
-        height: 1,
         alignItems: 'center',
-        justifyContent: 'space-between',
-        pt: { md: 10 },
-        pb: 10,
         width: '100%',
-        maxWidth: {
-          md: 720,
-          lg: 920,
-        },
-        maxHeight: {
-          xs: '40vh',
-          sm: '45vh',
-          md: '55vh',
-          lg: '60vh',
-        },
+        minWidth: 0,
       }}
     >
-      <div />
-
       <Grid
         container
         sx={{
           maxWidth: '35rem',
-          rowGap: 4,
+          rowGap: 2.5,
           p: { xs: 3, sm: 5 },
-          mb: 5,
         }}
       >
         <Grid size={12}>
-          <Stack
-            direction="column"
-            spacing={1}
-            sx={{ alignItems: { xs: 'flex-start', sm: 'center' } }}
-          >
-            <Typography variant="h4">{t('auth.welcomeTitle')}</Typography>
+          <Stack direction="column" spacing={1} sx={{ alignItems: 'flex-start', mb: 1 }}>
+            <Typography
+              component="h1"
+              variant="h3"
+              sx={{ fontFamily: 'var(--kep-display-font)', fontWeight: 500 }}
+            >
+              <MixedText>{t('auth.welcomeTitle')}</MixedText>
+            </Typography>
             <Typography variant="body1" color="text.secondary">
               {t('auth.loginSubtitle')}
             </Typography>

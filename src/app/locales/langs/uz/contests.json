@@ -1,7 +1,21 @@
 {
   "contests": {
+    "card": {
+      "readMore": "E’lonni o‘qish",
+      "showLess": "Yopish",
+      "starts": "Boshlanishi",
+      "ends": "Tugashi",
+      "open": "Kontestni ochish",
+      "leaderboard": "KONTEST REYTINGI",
+      "ratingError": "Reytingni yuklab bo‘lmadi.",
+      "leadersError": "Kontest natijalarini yuklab bo‘lmadi.",
+      "problems": "Masalalar",
+      "registrations": "Ro‘yxatdan o‘tganlar",
+      "contestants": "Ishtirokchilar"
+    },
+    "heroBadge": "BELLASHING VA O‘SING",
     "title": "Kontestlar",
-    "subtitle": "Dasturlash kontestlarida ishtirok eting va natijalarni jonli kuzating.",
+    "subtitle": "Yaqinlashayotgan musobaqalar, arxiv masalalari va natijalar.",
     "searchLabel": "Kontestlarni qidirish",
     "searchPlaceholder": "Sarlavha yoki muallif boʻyicha qidirish",
     "typeLabel": "Turi",
@@ -9,7 +23,10 @@
     "categoriesLabel": "Kategoriyalar",
     "allCategories": "Barcha kategoriyalar",
     "filters": {
-      "toggle": "Filtrlar"
+      "toggle": "Filtrlar",
+      "close": "Filtrlarni yopish",
+      "done": "Tayyor",
+      "remove": "{{label}} filtrini olib tashlash"
     },
     "participation": {
       "all": "Hammasi",
@@ -30,7 +47,7 @@
     "topContestants": {
       "title": "Top-3 ishtirokchilar",
       "loading": "Natijalar yuklanmoqda...",
-      "empty": "Gʻoliblar kontest tugagach koʻrsatiladi."
+      "empty": "Yakuniy o‘rinlar musobaqa tugagach ko‘rinadi."
     },
     "topRating": {
       "title": "Top-10",
@@ -59,9 +76,11 @@
     },
     "contestants": "{{count}} ta ishtirokchi",
     "rated": "Reytingli",
-    "noDescription": "Tavsif qoʻshilmagan.",
+    "noDescription": "Tashkilotchi hali e’lon matnini qo‘shmagan.",
+    "filteredEmptyTitle": "Mos kontestlar topilmadi",
+    "filteredEmptySubtitle": "Boshqa nom bilan qidiring yoki barcha kontestlarni ko‘rish uchun filtrlarni tozalang.",
     "emptyTitle": "Kontestlar topilmadi",
-    "emptySubtitle": "Yangi kontestlar tez orada qoʻshiladi.",
+    "emptySubtitle": "Ko‘rsatish uchun musobaqa yo‘q.",
     "viewRating": "Kontestlar reytingi",
     "viewMyStats": "Mening statistikam",
     "register": "Roʻyxatdan oʻtish",
@@ -70,7 +89,7 @@
     "startVirtualContest": "Virtual kontestni boshlash",
     "statistics": {
       "title": "Kontestlar statistikasi",
-      "subtitle": "{{username}} uchun reytingli kontest natijalari.",
+      "subtitle": "{{username}}ning contest natijalari va reyting tarixi.",
       "authRequired": "Kontestlar statistikasini koʻrish uchun tizimga kiring.",
       "loginCta": "Kirish",
       "loading": "Statistika yuklanmoqda...",
@@ -100,7 +119,7 @@
       "tags": "Teglar",
       "symbols": "Masala belgilar",
       "unsolvedProblems": "Yechilmagan masalalar",
-      "noUnsolvedProblems": "Kontest masalalarining barchasi yechilgan",
+      "noUnsolvedProblems": "Ko‘rsatish uchun yechilmagan masala yo‘q.",
       "topAttempts": "Eng koʻp urinishlar",
       "solved": "Yechilgan",
       "unsolved": "Yechilmagan",
@@ -108,7 +127,16 @@
       "attemptsCount": "{{count}} urinish",
       "worthyOpponents": "Kuchli raqiblar",
       "sharedContests": "{{count}} ta umumiy kontest",
-      "noData": "Maʻlumotlar yoʻq"
+      "noData": "Maʻlumotlar yoʻq",
+      "noContestHistory": "Bu hisobda hali musobaqa natijalari yo‘q.",
+      "headToHead": "O‘zaro natija",
+      "versus": "vs",
+      "attemptsCount_one": "{{count}} ta urinish",
+      "attemptsCount_other": "{{count}} ta urinish",
+      "sharedContests_one": "{{count}} ta umumiy contest",
+      "sharedContests_other": "{{count}} ta umumiy contest",
+      "participants_one": "{{total}} nafar ishtirokchi",
+      "participants_other": "{{total}} nafar ishtirokchi"
     },
     "verdicts": {
       "AC": "Qabul qilindi",
@@ -118,7 +146,6 @@
     },
     "rating": {
       "title": "Kontestlar reytingi",
-      "subtitle": "Reytingli kontestlardagi eng kuchli ishtirokchilarni kuzating.",
       "ordering": {
         "rating": "Reyting",
         "maxRating": "Maksimal reyting",
@@ -199,7 +226,6 @@
     },
     "problemsTable": {
       "symbol": "#",
-      "title": "Sarlavha",
       "limits": "Chegaralar",
       "ball": "Ball",
       "stats": "Statistika"
@@ -292,7 +318,6 @@
     "problem": {
       "description": "Tavsif",
       "myAttempts": "Mening urinishlarim",
-      "footerTitle": "Sizning natijalaringiz",
       "prev": "Oldingi",
       "next": "Keyingi",
       "openOriginal": "Masalaga o'tish",
@@ -307,7 +332,7 @@
       "loading": "Replay tayyorlanmoqda…",
       "retry": "Qayta urinish",
       "error": "Replayni yuklab bo‘lmadi.",
-      "unavailable": "Ushbu contestning yakuniy natijalarini tiklash uchun yetarli ishonchli tarix mavjud emas.",
+      "unavailable": "Bu musobaqani qayta ko‘rsatish uchun tarix yetarli emas.",
       "empty": "Replay uchun ishtirokchilar yo‘q.",
       "play": "Boshlash",
       "pause": "Pauza",
@@ -321,6 +346,15 @@
       "participant": "Ishtirokchi",
       "points": "Ball",
       "penalty": "Jarima"
+    },
+    "detail": {
+      "announcement": "E’lon",
+      "navigation": "Musobaqa bo‘limlari",
+      "loadError": "Musobaqani yuklab bo‘lmadi. Qayta urinib ko‘ring.",
+      "dataError": "Bo‘limni yuklab bo‘lmadi. Qayta urinib ko‘ring.",
+      "problemSet": "Masalalar to‘plami",
+      "solve": "Masalani yechish",
+      "lockedProblems": "Masalalar musobaqa boshlanganda ochiladi."
     }
   }
 }

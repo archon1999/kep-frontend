@@ -3,6 +3,7 @@ import { ThemePreset } from 'app/config.ts';
 import { darkPalette } from 'app/theme/palette/darkPalette';
 import { lightPalette } from 'app/theme/palette/lightPalette';
 import { arcticPalette } from './arctic';
+import { defaultDarkPalette, defaultLightPalette } from './default';
 import { draculaPalette } from './dracula';
 import { emberPalette } from './ember';
 import { luxuryPalette } from './luxury';
@@ -11,8 +12,8 @@ import { naturePalette } from './nature';
 import { retroPalette } from './retro';
 
 export const THEME_DISPLAY_NAMES: Partial<Record<ThemePreset, string>> = {
-  'default-light': 'Light',
-  'default-dark': 'Dark',
+  default: 'Default',
+  cobalt: 'Cobalt',
   luxury: 'Luxury',
   retro: 'Retro',
   arctic: 'Arctic',
@@ -23,7 +24,8 @@ export const THEME_DISPLAY_NAMES: Partial<Record<ThemePreset, string>> = {
 };
 
 export const lightPalettes: Partial<Record<ThemePreset, PaletteOptions>> = {
-  'default-light': lightPalette,
+  default: defaultLightPalette,
+  cobalt: lightPalette,
   luxury: luxuryPalette,
   retro: retroPalette,
   arctic: arcticPalette,
@@ -31,7 +33,8 @@ export const lightPalettes: Partial<Record<ThemePreset, PaletteOptions>> = {
 };
 
 export const darkPalettes: Partial<Record<ThemePreset, PaletteOptions>> = {
-  'default-dark': darkPalette,
+  default: defaultDarkPalette,
+  cobalt: darkPalette,
   ember: emberPalette,
   dracula: draculaPalette,
   midnight: midnightPalette,

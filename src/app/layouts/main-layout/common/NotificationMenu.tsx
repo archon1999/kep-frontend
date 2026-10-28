@@ -1,8 +1,7 @@
 import { ReactNode, useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import { useTranslation } from 'react-i18next';
-import { Link as RouterLink } from 'react-router-dom';
+import { Link as RouterLink } from 'react-router';
 import {
-  Avatar,
   Box,
   Button,
   Chip,
@@ -10,16 +9,14 @@ import {
   DialogActions,
   DialogContent,
   DialogContentText,
-  DialogTitle,
-  Divider,
+  IconButton,
   List,
-  ListItem,
-  ListItemAvatar,
-  ListItemText,
-  Pagination,
   Popover,
   Skeleton,
   Stack,
+  Tab,
+  Tabs,
+  Tooltip,
   Typography,
   badgeClasses,
   paperClasses,
@@ -33,12 +30,15 @@ import {
 } from 'shared/api/orval/generated/endpoints/index.schemas';
 import IconifyIcon from 'shared/components/base/IconifyIcon';
 import KepIcon from 'shared/components/base/KepIcon';
-import SimpleBar from 'shared/components/base/SimpleBar';
+import DialogHeader from 'shared/components/common/DialogHeader';
+import EmptyState from 'shared/components/common/EmptyState';
 import KepcoinValue from 'shared/components/common/KepcoinValue.tsx';
+import { ListPagination } from 'shared/components/sections/common/FramedListPage';
 import OutlinedBadge from 'shared/components/styled/OutlinedBadge';
 import { KepIconName } from 'shared/config/icons';
 import { formatRelativeTime } from 'shared/lib/dateTime';
 import { wsService } from 'shared/services/websocket';
+import ActivityMenuHeader from './ActivityMenuHeader';
 
 const NOTIFICATIONS_PAGE_SIZE = 5;
 type NotificationsResponse =
@@ -173,6 +173,8 @@ const NotificationMenu = ({ type = 'default' }: NotificationMenuProps) => {
   const [pagesCount, setPagesCount] = useState(0);
   const [total, setTotal] = useState(0);
   const [isLoading, setIsLoading] = useState(false);
+  const [loadFailed, setLoadFailed] = useState(false);
+  const [retryCount, setRetryCount] = useState(0);
   const [showAll, setShowAll] = useState(false);
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
   const { currentUser } = useAuth();
@@ -210,6 +212,7 @@ const NotificationMenu = ({ type = 'default' }: NotificationMenuProps) => {
 
     const fetchNotifications = async () => {
       setIsLoading(true);
+      setLoadFailed(false);
 
       try {
         const response = await loadNotifications(pageNumber, showAll);
@@ -227,6 +230,7 @@ const NotificationMenu = ({ type = 'default' }: NotificationMenuProps) => {
           return;
         }
 
+        setLoadFailed(true);
         setNotifications([]);
         setPagesCount(0);
         setTotal(0);
@@ -242,7 +246,7 @@ const NotificationMenu = ({ type = 'default' }: NotificationMenuProps) => {
     return () => {
       isActive = false;
     };
-  }, [currentUsername, pageNumber, showAll]);
+  }, [currentUsername, pageNumber, showAll, retryCount]);
 
   useEffect(() => {
     showAllRef.current = showAll;
@@ -402,7 +406,7 @@ const NotificationMenu = ({ type = 'default' }: NotificationMenuProps) => {
         }
         case 4: {
           title = t('notifications.challengeCallAccepted');
-          description = t('notifications.challengeCallAccepted');
+          description = t('notifications.challengeCallAcceptedDescription');
 
           if (parsedContent.challengeId) {
             action = {
@@ -414,7 +418,7 @@ const NotificationMenu = ({ type = 'default' }: NotificationMenuProps) => {
         }
         case 5: {
           title = t('notifications.challengeFinished');
-          description = t('notifications.challengeFinished');
+          description = t('notifications.challengeFinishedDescription');
 
           if (parsedContent.challengeId) {
             action = {
@@ -440,18 +444,12 @@ const NotificationMenu = ({ type = 'default' }: NotificationMenuProps) => {
         case 11:
         case 13: {
           title =
-            notification.message ||
-            (notificationType === 13
-              ? t('notifications.duelReminder')
-              : notificationType === 11
-                ? t('notifications.duelAccepted')
-                : t('notifications.duelStarts'));
-          description =
             notificationType === 13
               ? t('notifications.duelReminder')
               : notificationType === 11
                 ? t('notifications.duelAccepted')
                 : t('notifications.duelStarts');
+          description = notification.message ?? undefined;
 
           if (parsedContent.duel?.id) {
             action = {
@@ -464,8 +462,8 @@ const NotificationMenu = ({ type = 'default' }: NotificationMenuProps) => {
         case 9:
         case 10:
         case 12: {
-          title = notification.message || t('notifications.duelInvitationUpdate');
-          description = t('notifications.duelInvitationUpdate');
+          title = t('notifications.duelInvitationUpdate');
+          description = notification.message ?? undefined;
           action = {
             label: t('notifications.openDuels'),
             to: resources.Duels,
@@ -484,11 +482,9 @@ const NotificationMenu = ({ type = 'default' }: NotificationMenuProps) => {
           break;
         }
         default: {
-          if (notification.message) {
-            title = notification.message;
-          } else if (typeof notification.content === 'string' && notification.content.trim()) {
-            title = notification.content;
-          }
+          // Free-form messages belong in the body, not in a multi-line bold heading.
+          description = title;
+          title = t('notifications.systemNotificationFallback');
         }
       }
 
@@ -533,7 +529,7 @@ const NotificationMenu = ({ type = 'default' }: NotificationMenuProps) => {
   };
 
   const handleReadAll = async () => {
-    if (showAll || !total) return;
+    if (showAll || !total || isLoading || loadFailed) return;
 
     setNotifications([]);
     setTotal(0);
@@ -547,143 +543,162 @@ const NotificationMenu = ({ type = 'default' }: NotificationMenuProps) => {
     }
   };
 
-  const handleToggleView = () => {
-    setShowAll((prev) => !prev);
+  const handleToggleView = (all: boolean) => {
+    setShowAll(all);
     setPageNumber(1);
   };
 
-  const handlePageChange = (_event: React.ChangeEvent<unknown>, value: number) => {
+  const handlePageChange = (value: number) => {
     setPageNumber(value);
   };
 
   const renderList = () => {
     if (isLoading) {
       return (
-        <List disablePadding sx={{ px: 2 }}>
-          {[...Array(5)].map((_, index) => (
-            <Box key={`notification-skeleton-${index}`} component="li">
-              <ListItem alignItems="flex-start" sx={{ py: 1.25, px: 0 }}>
-                <ListItemAvatar>
-                  <Skeleton variant="rounded" width={44} height={44} />
-                </ListItemAvatar>
-                <ListItemText
-                  primary={<Skeleton variant="text" width="80%" />}
-                  secondary={<Skeleton variant="text" width="60%" />}
-                />
-              </ListItem>
-              <Divider component="div" />
-            </Box>
+        <Stack direction="column" spacing={2.5} sx={{ p: 2.5 }}>
+          {Array.from({ length: NOTIFICATIONS_PAGE_SIZE }, (_, index) => (
+            <Stack key={index} direction="row" spacing={1.5}>
+              <Skeleton variant="rectangular" width={32} height={32} />
+              <Box sx={{ flex: 1 }}>
+                <Skeleton width="85%" />
+                <Skeleton width="60%" />
+              </Box>
+            </Stack>
           ))}
-        </List>
-      );
-    }
-
-    if (!notifications.length) {
-      return (
-        <Stack
-          direction="column"
-          alignItems="center"
-          justifyContent="center"
-          spacing={1.5}
-          sx={{ py: 6, height: '100%' }}
-        >
-          <Avatar
-            sx={{ bgcolor: 'background.level1', color: 'text.neutral', width: 56, height: 56 }}
-          >
-            <IconifyIcon icon="material-symbols:notifications-off-outline" sx={{ fontSize: 28 }} />
-          </Avatar>
-          <Typography variant="body2" color="text.secondary">
-            {t('notifications.empty')}
-          </Typography>
         </Stack>
       );
     }
 
-    return (
-      <SimpleBar disableHorizontal>
-        <List disablePadding>
-          {notifications.map((notification, index) => {
-            const itemKey =
-              notification.id || notification.created || `${notification.type}-${index}`;
-            const view = buildNotificationView(notification);
-            const meta = getNotificationMeta(notification);
+    if (loadFailed) {
+      return (
+        <EmptyState
+          compact
+          kind="error"
+          title={t('common.loadFailed')}
+          action={
+            <Button
+              size="small"
+              variant="outlined"
+              onClick={() => setRetryCount((value) => value + 1)}
+            >
+              {t('common.retry')}
+            </Button>
+          }
+        />
+      );
+    }
 
-            return (
-              <Box key={itemKey} component="li">
-                <ListItem alignItems="flex-start" sx={{ py: 1.5, px: 2 }}>
-                  <ListItemAvatar>
-                    <Avatar
-                      variant="rounded"
+    if (!notifications.length) {
+      return <EmptyState compact kind="notifications" title={t('notifications.empty')} />;
+    }
+
+    return (
+      <List disablePadding sx={{ px: 2.5 }}>
+        {notifications.map((notification, index) => {
+          const itemKey =
+            notification.id || notification.created || `${notification.type}-${index}`;
+          const view = buildNotificationView(notification);
+          const description = view.description?.trim();
+
+          return (
+            <Box
+              component="li"
+              key={itemKey}
+              sx={{
+                py: 2,
+                borderBottom: 1,
+                borderColor: 'divider',
+                '&:last-child': { borderBottom: 0 },
+              }}
+            >
+              <Stack direction="row" spacing={1.5} alignItems="flex-start">
+                <Box
+                  sx={{
+                    width: 32,
+                    height: 32,
+                    flexShrink: 0,
+                    display: 'grid',
+                    placeItems: 'center',
+                    border: 1,
+                    borderColor: 'divider',
+                    color: 'primary.main',
+                  }}
+                >
+                  <KepIcon name={view.icon} fontSize={19} />
+                </Box>
+                <Box sx={{ flex: 1, minWidth: 0 }}>
+                  <Typography
+                    variant="body2"
+                    sx={{ fontWeight: 600, lineHeight: 1.55, overflowWrap: 'anywhere' }}
+                  >
+                    {view.title}
+                  </Typography>
+                  {description && description !== view.title.trim() && (
+                    <Typography
+                      variant="body2"
+                      color="text.secondary"
+                      sx={{ mt: 0.5, lineHeight: 1.6, overflowWrap: 'anywhere' }}
+                    >
+                      {description}
+                    </Typography>
+                  )}
+                  {!!view.chips?.length && (
+                    <Stack direction="row" flexWrap="wrap" gap={0.75} sx={{ mt: 1 }}>
+                      {view.chips.map((chip, chipIndex) => (
+                        <Box key={`${itemKey}-chip-${chipIndex}`}>{chip}</Box>
+                      ))}
+                    </Stack>
+                  )}
+                  <Typography
+                    variant="caption"
+                    color="text.secondary"
+                    sx={{ display: 'block', mt: 0.75, fontSize: 11 }}
+                  >
+                    {getNotificationMeta(notification)}
+                  </Typography>
+                  {view.action && (
+                    <Button
+                      component={RouterLink}
+                      to={view.action.to}
+                      size="small"
+                      variant="text"
+                      onClick={() => handleActionClick(notification.id)}
+                      endIcon={
+                        <IconifyIcon
+                          icon="material-symbols:arrow-forward-rounded"
+                          sx={{ fontSize: 15 }}
+                        />
+                      }
                       sx={{
-                        bgcolor: 'primary.lighter',
-                        color: 'primary.main',
-                        width: 44,
-                        height: 44,
+                        mt: 0.5,
+                        px: 0,
+                        minHeight: 28,
+                        fontSize: 12,
+                        justifyContent: 'flex-start',
+                        textAlign: 'left',
                       }}
                     >
-                      <KepIcon name={view.icon} fontSize={22} color="primary.main" />
-                    </Avatar>
-                  </ListItemAvatar>
-                  <ListItemText
-                    primary={
-                      <Stack spacing={0.75} alignItems="flex-start">
-                        <Typography variant="subtitle2" color="text.primary">
-                          {view.title}
-                        </Typography>
-                        {view.description && (
-                          <Typography variant="body2" color="text.secondary">
-                            {view.description}
-                          </Typography>
-                        )}
-                        {!!view.chips?.length && (
-                          <Stack direction="row" spacing={0.75} flexWrap="wrap">
-                            {view.chips.map((chip, chipIndex) => (
-                              <Box key={`${itemKey}-chip-${chipIndex}`} sx={{ mb: 0.5, mr: 0.5 }}>
-                                {chip}
-                              </Box>
-                            ))}
-                          </Stack>
-                        )}
-                        {(view.action || (!showAll && notification.id)) && (
-                          <Stack direction="row" spacing={1} alignItems="center" flexWrap="wrap">
-                            {view.action && (
-                              <Button
-                                component={RouterLink}
-                                to={view.action.to}
-                                size="small"
-                                variant="outlined"
-                                color="primary"
-                                onClick={() => handleActionClick(notification.id)}
-                              >
-                                {view.action.label}
-                              </Button>
-                            )}
-                            {!showAll && notification.id && (
-                              <Button
-                                size="small"
-                                variant="text"
-                                color="primary"
-                                onClick={() => handleMarkRead(notification.id)}
-                                startIcon={<KepIcon name="check" fontSize={16} />}
-                              >
-                                {t('notifications.markAsRead')}
-                              </Button>
-                            )}
-                          </Stack>
-                        )}
-                        <Typography variant="caption" color="text.secondary">
-                          {meta}
-                        </Typography>
-                      </Stack>
-                    }
-                  />
-                </ListItem>
-                <Divider component="div" />
-              </Box>
-            );
-          })}
-        </List>
-      </SimpleBar>
+                      {view.action.label}
+                    </Button>
+                  )}
+                </Box>
+                {!showAll && notification.id && (
+                  <Tooltip title={t('notifications.markAsRead')}>
+                    <IconButton
+                      size="small"
+                      aria-label={`${t('notifications.markAsRead')}: ${view.title}`}
+                      onClick={() => handleMarkRead(notification.id)}
+                      sx={{ color: 'text.secondary', p: 0.75, mr: -0.75 }}
+                    >
+                      <KepIcon name="check" fontSize={18} />
+                    </IconButton>
+                  </Tooltip>
+                )}
+              </Stack>
+            </Box>
+          );
+        })}
+      </List>
     );
   };
 
@@ -691,6 +706,9 @@ const NotificationMenu = ({ type = 'default' }: NotificationMenuProps) => {
     <>
       <Button
         aria-label={t('notifications.title')}
+        aria-haspopup="dialog"
+        aria-expanded={open}
+        aria-controls={open ? 'notification-menu' : undefined}
         title={t('notifications.title')}
         color="neutral"
         variant={type === 'default' ? 'soft' : 'text'}
@@ -725,6 +743,7 @@ const NotificationMenu = ({ type = 'default' }: NotificationMenuProps) => {
       <Popover
         anchorEl={anchorEl}
         id="notification-menu"
+        slotProps={{ paper: { role: 'dialog', 'aria-label': t('notifications.title') } }}
         open={open}
         onClose={handleClose}
         transformOrigin={{
@@ -737,73 +756,105 @@ const NotificationMenu = ({ type = 'default' }: NotificationMenuProps) => {
         }}
         sx={{
           [`& .${paperClasses.root}`]: {
-            width: 420,
-            height: 640,
+            width: 'min(420px, calc(100vw - 32px))',
+            height:
+              !isLoading && !notifications.length ? 'auto' : 'min(660px, calc(100dvh - 96px))',
+            maxHeight: 'calc(100dvh - 96px)',
+            p: 0,
             display: 'flex',
             flexDirection: 'column',
           },
         }}
       >
+        <ActivityMenuHeader
+          title={t('notifications.title')}
+          subtitle={
+            isLoading
+              ? t('common.loading')
+              : t(showAll ? 'notifications.countTotal' : 'notifications.countUnread', {
+                  count: total,
+                })
+          }
+          illustration="notifications"
+          onClose={handleClose}
+        />
         <Stack
           direction="row"
           alignItems="center"
           justifyContent="space-between"
-          sx={{ px: 2, pt: 2, pb: 1 }}
+          sx={{
+            px: 2.5,
+            gap: 1,
+            flexWrap: 'wrap',
+            borderTop: 1,
+            borderBottom: 1,
+            borderColor: 'divider',
+            flexShrink: 0,
+          }}
         >
-          <Box>
-            <Typography variant="h6">{t('notifications.title')}</Typography>
-            <Typography variant="caption" color="text.secondary">
-              {showAll ? t('notifications.subtitleAll') : t('notifications.subtitleUnread')}
-            </Typography>
-          </Box>
-          <Chip
-            color="primary"
-            size="small"
-            label={t(showAll ? 'notifications.countTotal' : 'notifications.countUnread', {
-              count: total,
-            })}
-            sx={{ borderRadius: 1 }}
-          />
+          <Tabs
+            value={showAll ? 'all' : 'unread'}
+            onChange={(_, value) => handleToggleView(value === 'all')}
+            aria-label={t('notifications.title')}
+            sx={{
+              minHeight: 44,
+              '& .MuiTab-root': { minHeight: 44, minWidth: 0, px: 1.25, fontSize: 12 },
+            }}
+          >
+            <Tab value="unread" label={t('notifications.unread')} />
+            <Tab value="all" label={t('notifications.all')} />
+          </Tabs>
+          {!showAll && total > 0 && !isLoading && !loadFailed && (
+            <Tooltip title={t('notifications.markAllAsRead')}>
+              <IconButton
+                size="small"
+                aria-label={t('notifications.markAllAsRead')}
+                onClick={handleReadAll}
+                sx={{ color: 'primary.main' }}
+              >
+                <IconifyIcon icon="material-symbols:done-all-rounded" sx={{ fontSize: 20 }} />
+              </IconButton>
+            </Tooltip>
+          )}
         </Stack>
-
-        {!showAll && total > 0 && (
-          <Box sx={{ px: 2, pb: 1 }}>
-            <Button size="small" color="primary" variant="text" onClick={handleReadAll}>
-              {t('notifications.markAllAsRead')}
-            </Button>
-          </Box>
-        )}
-
-        <Divider />
-
-        <Box sx={{ pt: 1, flex: 1, overflow: 'hidden' }}>{renderList()}</Box>
-
+        <Box
+          key={`${showAll}-${pageNumber}`}
+          aria-busy={isLoading}
+          sx={{ flex: 1, minHeight: 0, overflowY: 'auto', overscrollBehavior: 'contain' }}
+        >
+          {renderList()}
+        </Box>
         {pagesCount > 1 && (
-          <Stack direction="row" alignItems="center" justifyContent="center" sx={{ py: 1 }}>
-            <Pagination
+          <Box
+            sx={{
+              flexShrink: 0,
+              borderTop: 1,
+              borderColor: 'divider',
+              bgcolor: 'background.level1',
+              '& > .MuiStack-root': { py: 1.5 },
+            }}
+          >
+            <ListPagination
               count={pagesCount}
               page={pageNumber}
               onChange={handlePageChange}
-              size="medium"
+              disabled={isLoading}
             />
-          </Stack>
+          </Box>
         )}
-
-        <Divider />
-
-        <Stack direction="row" spacing={1} sx={{ px: 2, py: 1 }}>
-          <Button fullWidth variant="contained" color="primary" onClick={handleToggleView}>
-            {showAll ? t('notifications.showUnread') : t('notifications.showAll')}
-          </Button>
-        </Stack>
       </Popover>
       <Dialog
+        aria-labelledby="system-notification-title"
         open={isSystemDialogOpen}
         onClose={() => setIsSystemDialogOpen(false)}
         maxWidth="xs"
         fullWidth
       >
-        <DialogTitle>{t('notifications.systemNotificationTitle')}</DialogTitle>
+        <DialogHeader
+          id="system-notification-title"
+          title={t('notifications.systemNotificationTitle')}
+          onClose={() => setIsSystemDialogOpen(false)}
+        />
         <DialogContent>
           <DialogContentText>{systemNotificationMessage}</DialogContentText>
         </DialogContent>
@@ -822,7 +873,11 @@ const NotificationMenu = ({ type = 'default' }: NotificationMenuProps) => {
               {systemNotificationAction.label}
             </Button>
           ) : null}
-          <Button variant="contained" fullWidth onClick={() => setIsSystemDialogOpen(false)}>
+          <Button
+            variant={systemNotificationAction ? 'text' : 'contained'}
+            fullWidth
+            onClick={() => setIsSystemDialogOpen(false)}
+          >
             {t('notifications.systemNotificationOk')}
           </Button>
         </DialogActions>

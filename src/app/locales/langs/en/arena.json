@@ -1,8 +1,7 @@
 {
   "arena": {
     "title": "Arena",
-    "listSubtitle": "{{count}} arena events are open for you.",
-    "listEmptySubtitle": "No arena events found yet.",
+    "listEmptySubtitle": "No arenas to display.",
     "searchPlaceholder": "Search arena",
     "status": {
       "upcoming": "Upcoming",
@@ -22,8 +21,8 @@
     "duration": "Time per challenge",
     "questionTimeType": {
       "label": "Question timing",
-      "one": "Time to one",
-      "all": "Time to all"
+      "one": "Per question",
+      "all": "Whole challenge"
     },
     "actions": {
       "register": "Join arena",
@@ -41,6 +40,7 @@
     "players": "Standings",
     "participants": "participants",
     "participantsTitle": "Participants",
+    "noParticipants": "No participants yet",
     "columns": {
       "rank": "Rank",
       "user": "Player",
@@ -71,6 +71,7 @@
     },
     "opponents": "Opponents",
     "winners": "Arena winners",
+    "noWinners": "No winners yet",
     "winnerStats": {
       "wins": "Wins: {{count}}",
       "draws": "Draws: {{count}}",
@@ -83,9 +84,9 @@
     "finishedLabel": "Arena final",
     "chaptersLabel": "Chapters",
     "stateDescriptions": {
-      "upcoming": "Register now and get ready for the arena start. You can cancel registration until the start time.",
-      "ongoing": "The arena is running. Join the queue, get paired automatically, and keep your streak alive.",
-      "finished": "The arena is over. Explore the final standings, winners, and latest battles."
+      "upcoming": "Register before the arena starts. You can cancel until the start time.",
+      "ongoing": "Join the queue to be paired with an opponent for the next challenge.",
+      "finished": "View the final standings and completed challenges."
     },
     "insights": {
       "upcomingTitle": "Arena preview",
@@ -107,6 +108,15 @@
       "paused": "Queue is paused. Start it when you're ready for the next pairing.",
       "active": "Queue is running. New arena challenges will open here automatically.",
       "finishingSoon": "Less than two minutes remain. Finish your current arena challenge if you have one."
-    }
+    },
+    "heroBadge": "Speed & skill",
+    "listHeroSubtitle": "Join timed question challenges and earn points throughout the arena.",
+    "countLabel": "{{count}} arenas",
+    "countLabel_one": "{{count}} arena",
+    "countLabel_other": "{{count}} arenas",
+    "emptyTitle": "No arenas yet",
+    "loadError": "Could not load arenas. Please try again.",
+    "viewArena": "View arena",
+    "secondsShort": "{{count}} s"
   }
 }

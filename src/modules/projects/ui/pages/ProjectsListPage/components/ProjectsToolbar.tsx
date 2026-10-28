@@ -1,15 +1,15 @@
 import { useTranslation } from 'react-i18next';
-import { Stack, Typography } from '@mui/material';
+import { Stack } from '@mui/material';
 import SearchTextField from 'app/layouts/main-layout/common/search-box/SearchTextField';
-import AppliedFilters, { AppliedFilterItem } from 'shared/components/common/AppliedFilters';
-import FilterButton from 'shared/components/common/FilterButton';
-import DebouncedTextField from 'shared/components/common/DebouncedTextField';
-import ResponsiveTabs from 'shared/components/common/ResponsiveTabs';
 import {
   PROJECT_CATEGORY_META,
   PROJECT_SORT_OPTIONS,
   ProjectListFilters,
-} from '../project-listing';
+} from 'modules/projects/application/project-listing';
+import AppliedFilters, { AppliedFilterItem } from 'shared/components/common/AppliedFilters';
+import DebouncedTextField from 'shared/components/common/DebouncedTextField';
+import FilterButton from 'shared/components/common/FilterButton';
+import ResponsiveTabs from 'shared/components/common/ResponsiveTabs';
 
 interface ProjectsToolbarProps {
   filters: ProjectListFilters;
@@ -61,21 +61,22 @@ const ProjectsToolbar = ({
     });
 
   return (
-    <Stack direction="column" spacing={3} mb={3}>
+    <Stack
+      direction="column"
+      spacing={2}
+      sx={{ px: 'var(--kep-content-inset)', py: 2.5, borderBottom: 1, borderColor: 'divider' }}
+    >
       <Stack
         direction={{ xs: 'column', md: 'row' }}
         alignItems={{ md: 'center' }}
         justifyContent="space-between"
         spacing={2}
       >
-        <Typography component="h1" variant="h4">
-          {t('projects.title')}
-        </Typography>
         <Stack
           direction={{ xs: 'column', sm: 'row' }}
           spacing={{ xs: 1, sm: 1.25 }}
           alignItems={{ sm: 'center' }}
-          sx={{ width: { xs: 1, md: 'auto' } }}
+          sx={{ width: 1, justifyContent: 'space-between' }}
         >
           <FilterButton
             id="projects-filters-button"

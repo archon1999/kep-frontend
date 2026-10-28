@@ -1,9 +1,9 @@
 {
   "challenges": {
     "title": "Вызовы",
-    "subtitle": "Создавайте быстрые вызовы или присоединяйтесь к очереди.",
+    "subtitle": "Соревнуйтесь с другим участником, отвечая на вопросы за ограниченное время.",
     "quickStartTitle": "Быстрый старт",
-    "quickStartSubtitle": "Выберите пресет, чтобы сразу найти соперника.",
+    "quickStartSubtitle": "Выберите готовый формат, чтобы найти соперника.",
     "quickStartButton": "{{questionsCount}} вопросов -> {{timeSeconds}}с",
     "customChallenge": "Свой вызов",
     "questions": "Вопросы",
@@ -19,7 +19,7 @@
     "viewRating": "Открыть рейтинг",
     "noChallenges": "Вызовов пока нет.",
     "ratingPreview": "Топ игроков",
-    "ratingPreviewSubtitle": "Лучшие игроки по рейтингу прямо сейчас.",
+    "ratingPreviewSubtitle": "Участники с самым высоким рейтингом поединков.",
     "openRating": "Открыть рейтинг",
     "noRating": "Рейтинг пуст.",
     "callCreated": "Создано {{time}}",
@@ -40,17 +40,12 @@
     "timeExpired": "Время вышло.",
     "answerPending": "Ожидание",
     "answerNotPlayed": "Не сыграно / закончено раньше",
-    "detailTitle": "Детали вызова",
-    "detailSubtitle": "Последнее обновление {{time}}",
     "statusFinished": "Завершён",
     "start": "Начать вызов",
     "backToList": "Вернуться к списку",
     "finishedDescription": "Вызов завершён. Итоги выше.",
     "waitingForStart": "Вызов начнётся, когда оба игрока будут готовы.",
-    "blurError": "Во время вызова запрещается менять фокус браузера на что-либо другое.",
-    "questionNumber": "Вопрос #{{number}}",
-    "activeQuestion": "Активный вопрос #{{number}}",
-    "yourAnswer": "Ваш ответ",
+    "blurError": "Не переключайтесь на другую вкладку или окно до конца поединка.",
     "labels": "Метки",
     "pool": "Варианты",
     "myRating": "Мой рейтинг вызовов",
@@ -58,7 +53,6 @@
     "submitAnswerError": "Не удалось отправить ответ. Попробуйте ещё раз.",
     "notFound": "Вызов не найден.",
     "ratingTitle": "Рейтинг вызовов",
-    "ratingSubtitle": "Следите за сильнейшими игроками в дуэлях.",
     "totalPlayers": "{{count}} игроков",
     "table": {
       "place": "Ранг",
@@ -70,7 +64,6 @@
     },
     "record": "{{wins}}В {{draws}}Н {{losses}}П",
     "statisticsTitle": "Моя статистика вызовов",
-    "statisticsSubtitle": "Личные данные и последние игры.",
     "statisticsPage": {
       "tabs": {
         "overview": "Обзор",
@@ -81,7 +74,7 @@
       },
       "overview": {
         "title": "Обзор вызовов",
-        "subtitle": "Ваш рейтинг и результаты",
+        "subtitle": "Ваш рейтинг и результаты поединков.",
         "ratingPosition": "Место в рейтинге",
         "results": "Результаты матчей",
         "questions": "Результаты по вопросам",
@@ -106,18 +99,21 @@
         "all": "Все вызовы",
         "recent": "Последние 50 вызовов",
         "range": "Период истории рейтинга",
-        "ratedCount": "{{count}} завершённых вызовов",
         "lastChange": "Изменение рейтинга в последнем вызове",
-        "pointsUnit": "б."
+        "pointsUnit": "б.",
+        "ratedCount_one": "{{count}} рейтинговый вызов",
+        "ratedCount_few": "{{count}} рейтинговых вызова",
+        "ratedCount_many": "{{count}} рейтинговых вызовов",
+        "ratedCount_other": "{{count}} рейтингового вызова"
       },
       "details": {
         "title": "Подробная статистика",
         "knowledge": "Вопросы и форматы",
-        "knowledgeDescription": "Точность ответов по сложности, теме и формату",
+        "knowledgeDescription": "Точность ответов по темам, сложности и типам вопросов.",
         "opponents": "Соперники",
-        "opponentsDescription": "Личные встречи и частые соперники",
+        "opponentsDescription": "Ваши результаты против каждого соперника.",
         "records": "Личные рекорды",
-        "recordsDescription": "Лучшие результаты и серии побед"
+        "recordsDescription": "Ваши лучшие результаты и самые длинные серии побед."
       },
       "rankPlace": "Место №{{value}}",
       "ratingSummary": "Сводка рейтинга",
@@ -167,10 +163,13 @@
         "weekdays": "Активность по дням недели",
         "hours": "Активность по часам",
         "total": "{{count}} вызовов за последние 30 дней",
-        "activeDays": "{{count}} активных дней",
         "year": "Год",
         "less": "Меньше",
-        "more": "Больше"
+        "more": "Больше",
+        "activeDays_one": "{{count}} активный день",
+        "activeDays_few": "{{count}} активных дня",
+        "activeDays_many": "{{count}} активных дней",
+        "activeDays_other": "{{count}} активных дней"
       },
       "weekday": {
         "mon": "Пн",
@@ -188,7 +187,11 @@
         "perQuestion": "На каждый вопрос",
         "wholeChallenge": "На весь вызов",
         "questionsCount": "{{count}} вопросов",
-        "seconds": "{{count}} с"
+        "seconds": "{{count}} с",
+        "questionsCount_one": "{{count}} вопрос",
+        "questionsCount_few": "{{count}} вопроса",
+        "questionsCount_many": "{{count}} вопросов",
+        "questionsCount_other": "{{count}} вопроса"
       },
       "knowledge": {
         "difficulty": "По сложности",
@@ -197,7 +200,10 @@
         "topChapters": "Самые частые разделы",
         "solvedOf": "{{solved}} / {{seen}} верных ответов",
         "solveRate": "Доля верных ответов",
-        "questionsSeen": "Встреченных вопросов"
+        "questionsSeen": "Встреченных вопросов",
+        "seenShort": "Всего",
+        "solvedShort": "Решено",
+        "rateShort": "Доля"
       },
       "difficulty": {
         "easy": "Лёгкие",
@@ -208,11 +214,12 @@
         "singleChoice": "Один вариант",
         "multipleChoice": "Несколько вариантов",
         "textInput": "Текстовый ответ",
-        "conformity": "Соответствие",
+        "conformity": "Сопоставление",
         "ordering": "Упорядочивание",
         "classification": "Классификация",
         "codeInput": "Специальная проверка",
-        "problem": "Задача по программированию"
+        "problem": "Задача по программированию",
+        "chessPuzzle": "Шахматная задача"
       },
       "buckets": {
         "higher": "Рейтинг выше",
@@ -225,9 +232,12 @@
         "rivals": "Соперничества",
         "bestVictories": "Лучшие победы",
         "worstDefeats": "Самые тяжёлые поражения",
-        "matchCount": "{{count}} матчей",
         "averageRating": "Средний рейтинг {{value}}",
-        "record": "Победы / ничьи / поражения"
+        "record": "Победы / ничьи / поражения",
+        "matchCount_one": "{{count}} матч",
+        "matchCount_few": "{{count}} матча",
+        "matchCount_many": "{{count}} матчей",
+        "matchCount_other": "{{count}} матча"
       },
       "records": {
         "title": "Рекорды",
@@ -244,9 +254,16 @@
         "currentLossStreak": "Текущая серия поражений",
         "open": "Открыть вызов"
       },
-      "streakCount": "{{count}} вызовов",
       "streakCurrent": "Текущая",
-      "streakBest": "Лучшая"
+      "streakBest": "Лучшая",
+      "streakCount_one": "{{count}} поединок",
+      "streakCount_few": "{{count}} поединка",
+      "streakCount_many": "{{count}} поединков",
+      "streakCount_other": "{{count}} поединков",
+      "arenaChallenges_one": "{{count}} соревнование на арене",
+      "arenaChallenges_few": "{{count}} соревнования на арене",
+      "arenaChallenges_many": "{{count}} соревнований на арене",
+      "arenaChallenges_other": "{{count}} соревнования на арене"
     },
     "authRequired": "Войдите, чтобы увидеть статистику вызовов.",
     "currentRank": "Текущий рейтинг",
@@ -269,7 +286,7 @@
       "wholeChallengeShort": "Общий"
     },
     "arenaWinners": "Победители арены",
-    "arenaWinnersSubtitle": "Лучшие игроки последних арен.",
+    "arenaWinnersSubtitle": "Победители последних арен.",
     "viewArena": "Перейти к арене",
     "noArenas": "Истории арен пока нет.",
     "chessPuzzle": {
@@ -284,10 +301,23 @@
         "n": "Конь"
       }
     },
-    "perQuestionResults": "Результаты по вопросам",
-    "startDialogSubtitle": "Проверьте соперников и нажмите старт, когда будете готовы.",
+    "startDialogSubtitle": "Проверьте соперника и настройки поединка, затем нажмите «Начать».",
     "startDialogTitle": "Готовы начать?",
     "finishDialogTitle": "Вызов завершён",
-    "newRating": "Новый рейтинг"
+    "newRating": "Новый рейтинг",
+    "secondsShort": "{{seconds}}с",
+    "presetLabel": "{{questionsCount}} вопросов, {{timeSeconds}} секунд",
+    "customDescription": "Выберите количество вопросов, время и темы для вызова.",
+    "allChapters": "Все темы",
+    "ratingSubtitle": "Рейтинги и результаты челленджей.",
+    "questionProgress": "Вопрос {{current}} из {{total}}",
+    "recordLabels": {
+      "win": "В",
+      "draw": "Н",
+      "loss": "П"
+    },
+    "matchScore": "Счёт",
+    "waitingForOpponent": "Ожидаем соперника",
+    "waitingForOpponentDescription": "Ваши ответы приняты. Результат появится после завершения челленджа."
   }
 }

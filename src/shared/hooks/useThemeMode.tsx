@@ -4,7 +4,7 @@ import { useColorScheme } from '@mui/material';
 import { ThemeMode, ThemePreset } from 'app/config.ts';
 import { useSettingsContext } from 'app/providers/SettingsProvider';
 import { SET_PRIMARY_COLOR, SET_THEME_PRESET } from 'app/reducers/SettingsReducer';
-import { darkPalettes } from 'app/theme/palettes';
+import { darkPalettes, lightPalettes } from 'app/theme/palettes';
 import { COLOR_GROUPS } from 'app/theme/primaryColorOverride';
 import {
   applyThemeToggleEffectStyle,
@@ -57,7 +57,7 @@ export const useThemeMode = () => {
           type: SET_PRIMARY_COLOR,
           payload: COLOR_GROUPS.find((group) => group.key === presetName)?.main ?? null,
         });
-        if (shouldUpdateMode) {
+        if (shouldUpdateMode && !(presetName in darkPalettes && presetName in lightPalettes)) {
           setMode(presetName in darkPalettes ? 'dark' : 'light');
         }
       });
@@ -67,7 +67,7 @@ export const useThemeMode = () => {
 
   const resetTheme = useCallback(() => {
     runWithThemeTransition(() => {
-      setMode(null);
+      setMode('dark');
     });
   }, [runWithThemeTransition, setMode]);
 

@@ -10,6 +10,7 @@ import {
   TextField,
   Typography,
 } from '@mui/material';
+import { getRankColor } from 'app/theme/colors/medals';
 import { useContestContestants } from 'modules/contests/application/queries';
 import { ContestantEntity } from 'modules/contests/domain/entities/contestant.entity';
 import ContestantView from 'modules/contests/ui/shared/components/ContestantView';
@@ -66,7 +67,7 @@ const ContestantOptionContent = ({
     <Typography
       variant="body2"
       fontWeight={800}
-      color="text.secondary"
+      color={getRankColor(contestant.rank)}
       sx={{ width: 42, flexShrink: 0 }}
     >
       {contestant.rank ? `#${contestant.rank}` : '-'}
@@ -127,18 +128,24 @@ const ContestantAutocomplete = ({
       onChange={(_, nextValue) => onChange(nextValue)}
       options={options}
       value={value}
-      size="large"
+      size="small"
+      slotProps={{ paper: { variant: 'framed' } }}
       renderOption={(props, option) => (
         <li {...props} key={option.id}>
           <ContestantOptionContent contestant={option} />
         </li>
       )}
       renderValue={(selected) =>
-        selected ? <Box pt={1}><ContestantOptionContent contestant={selected} compact /></Box> : null
+        selected ? (
+          <Box pt={1}>
+            <ContestantOptionContent contestant={selected} compact />
+          </Box>
+        ) : null
       }
       renderInput={(params) => (
         <TextField
           {...params}
+          variant="outlined"
           label={t('contests.standings.compareWith')}
           InputProps={{
             ...params.InputProps,

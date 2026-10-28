@@ -1,103 +1,105 @@
-import { Box, Card, Stack, Typography } from '@mui/material';
-import { Challenge } from 'modules/challenges/domain';
-import UserPopover from 'modules/users/ui/shared/components/UserPopover.tsx';
-import ChallengeUserChip from './ChallengeUserChip.tsx';
+import { useTranslation } from 'react-i18next';
+import { Link as RouterLink } from 'react-router';
+import { Box, IconButton, Stack, Tooltip, Typography } from '@mui/material';
+import { getResourceById, resources } from 'app/routes/resources';
+import { Challenge, ChallengeStatus } from 'modules/challenges/domain';
+import UserPopover from 'modules/users/ui/shared/components/UserPopover';
+import IconifyIcon from 'shared/components/base/IconifyIcon';
+import ChallengeUserChip from './ChallengeUserChip';
 
 interface ChallengeCardProps {
   challenge: Challenge;
   currentUsername?: string;
 }
-
 const ChallengeCard = ({ challenge, currentUsername }: ChallengeCardProps) => {
-  const currentUsernameLower = currentUsername?.toLowerCase();
-  const isPlayerFirstCurrent = Boolean(
-    currentUsernameLower && challenge.playerFirst.username.toLowerCase() === currentUsernameLower,
-  );
-  const isPlayerSecondCurrent = Boolean(
-    currentUsernameLower && challenge.playerSecond.username.toLowerCase() === currentUsernameLower,
-  );
-
-  const getResultColor = (score: number, opponentScore: number) => {
-    if (score > opponentScore) return 'success.main';
-    if (score < opponentScore) return 'error.main';
-    return 'text.secondary';
-  };
-
-  const getPlayerPanelSx = (isCurrentUser: boolean, align: 'left' | 'right') => ({
-    flex: '1 1 0',
-    minWidth: 0,
-    px: 2,
-    py: 1.25,
-    display: 'flex',
-    alignItems: 'center',
-    justifyContent: align === 'left' ? 'flex-start' : 'flex-end',
-    bgcolor: isCurrentUser ? 'primary.lighter' : 'transparent',
-  });
-
+  const { t } = useTranslation();
+  const finished = challenge.status === ChallengeStatus.Finished;
+  const players = [challenge.playerFirst, challenge.playerSecond];
   return (
-    <Card variant="outlined" sx={{ overflow: 'hidden' }}>
-      <Stack direction="row" alignItems="stretch" sx={{ minHeight: 64 }}>
-        <Box sx={getPlayerPanelSx(isPlayerFirstCurrent, 'left')}>
-          <UserPopover
-            sx={{ width: 1 }}
-            username={challenge.playerFirst.username}
-            avatar={challenge.playerFirst.avatar}
+    <Box
+      component="article"
+      sx={{
+        py: 2,
+        borderBottom: 1,
+        borderColor: 'divider',
+        display: 'grid',
+        gridTemplateColumns: 'minmax(0, 1fr) 36px',
+        columnGap: { xs: 1, sm: 2 },
+        alignItems: 'center',
+        minHeight: 72,
+      }}
+    >
+      <Box
+        sx={{
+          minWidth: 0,
+          display: 'grid',
+          gridTemplateColumns: 'minmax(0, 1fr) auto minmax(0, 1fr)',
+          gap: { xs: 1, sm: 2 },
+          alignItems: 'center',
+        }}
+      >
+        {players.map((player, index) => (
+          <Box
+            key={index}
+            sx={{
+              minWidth: 0,
+              gridColumn: index === 0 ? 1 : 3,
+              gridRow: 1,
+              color:
+                player.username.toLowerCase() === currentUsername?.toLowerCase()
+                  ? 'primary.main'
+                  : 'text.primary',
+            }}
           >
-            <ChallengeUserChip
-              player={challenge.playerFirst}
-              highlight={challenge.playerFirst.result > challenge.playerSecond.result}
-            />
-          </UserPopover>
-        </Box>
-        <Box
-          textAlign="center"
-          px={1.5}
-          sx={{
-            flex: '0 0 auto',
-            display: 'flex',
-            alignItems: 'center',
-            justifyContent: 'center',
-          }}
-        >
-          <Stack direction="row" spacing={1} alignItems="center" justifyContent="center">
-            <Typography
-              variant="h5"
-              fontWeight={800}
-              color={getResultColor(challenge.playerFirst.result, challenge.playerSecond.result)}
+            <UserPopover
+              sx={{
+                width: '100%',
+                display: 'flex',
+                justifyContent: index === 0 ? 'flex-end' : 'flex-start',
+              }}
+              username={player.username}
+              avatar={player.avatar}
             >
-              {challenge.playerFirst.result}
-            </Typography>
-            <Typography variant="h5" fontWeight={700} color="text.secondary">
-              :
-            </Typography>
-
-            <Typography
-              variant="h5"
-              fontWeight={800}
-              color={getResultColor(challenge.playerSecond.result, challenge.playerFirst.result)}
-            >
-              {challenge.playerSecond.result}
-            </Typography>
-          </Stack>
-        </Box>
-        <Box sx={getPlayerPanelSx(isPlayerSecondCurrent, 'right')}>
-          <UserPopover
-            sx={{ width: 1 }}
-            username={challenge.playerSecond.username}
-            avatar={challenge.playerSecond.avatar}
-          >
-            <Stack width={1} justifyContent="flex-end">
-              <ChallengeUserChip
-                player={challenge.playerSecond}
-                align="right"
-                highlight={challenge.playerSecond.result > challenge.playerFirst.result}
-              />
+              <ChallengeUserChip player={player} align={index === 0 ? 'right' : 'left'} />
+            </UserPopover>
+          </Box>
+        ))}
+        <Stack direction="row" gap={0.75} alignItems="center" sx={{ gridColumn: 2, gridRow: 1 }}>
+          {players.map((player, index) => (
+            <Stack key={index} direction="row" gap={0.75} alignItems="center">
+              {index === 1 && (
+                <Typography variant="body2" color="text.disabled">
+                  :
+                </Typography>
+              )}
+              <Typography
+                variant="metric"
+                sx={{ fontSize: { xs: 23, sm: 28 } }}
+                color={
+                  finished && player.result > players[1 - index].result
+                    ? 'success.main'
+                    : 'text.primary'
+                }
+              >
+                {player.result}
+              </Typography>
             </Stack>
-          </UserPopover>
-        </Box>
-      </Stack>
-    </Card>
+          ))}
+        </Stack>
+      </Box>
+      <Tooltip title={t('challenges.statisticsPage.history.view')}>
+        <IconButton
+          component={RouterLink}
+          to={getResourceById(resources.Challenge, challenge.id)}
+          aria-label={`${t('challenges.statisticsPage.history.view')} #${challenge.id}`}
+          color="primary"
+          size="small"
+          sx={{ width: 36, height: 36, border: 1, borderColor: 'divider' }}
+        >
+          <IconifyIcon icon="solar:arrow-right-up-linear" fontSize={18} />
+        </IconButton>
+      </Tooltip>
+    </Box>
   );
 };
-
 export default ChallengeCard;

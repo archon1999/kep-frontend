@@ -5,7 +5,6 @@ import {
   Avatar,
   Button,
   ButtonBase,
-  Pagination,
   Skeleton,
   Stack,
   Table,
@@ -21,11 +20,12 @@ import {
 import { useAuth } from 'app/providers/AuthProvider';
 import UserPopover from 'modules/users/ui/shared/components/UserPopover';
 import IconifyIcon from 'shared/components/base/IconifyIcon';
+import { ListPagination } from 'shared/components/sections/common/FramedListPage';
 import { formatDateTime } from 'shared/lib/dateTime';
 import { useWorldLeaderboard } from '../../../../application';
 import WorldLevelBadge from './WorldLevelBadge';
 
-const podiumColors = ['#D99214', '#8396A9', '#B5744D'] as const;
+const podiumColors = ['var(--kep-gold)', 'var(--kep-silver)', 'var(--kep-bronze)'] as const;
 
 const WorldRanking = () => {
   const { t } = useTranslation();
@@ -222,24 +222,7 @@ const WorldRanking = () => {
       )}
       {data && data.totalPlayers > 0 && !error && (
         <Stack gap={0.5} alignItems="center">
-          <Typography variant="caption" color="text.secondary" fontSize={11} role="status">
-            {t('keppyWorld.rankingRange', {
-              from: (data.page - 1) * data.pageSize + 1,
-              to: Math.min(data.page * data.pageSize, data.totalPlayers),
-              total: data.totalPlayers,
-            })}
-          </Typography>
-          {data.totalPages > 1 && (
-            <Pagination
-              page={data.page}
-              count={data.totalPages}
-              onChange={(_event, value) => setPage(value)}
-              size="small"
-              color="primary"
-              siblingCount={0}
-              boundaryCount={1}
-            />
-          )}
+          <ListPagination page={data.page} count={data.totalPages} onChange={setPage} />
           {data.currentUser && !players.some((player) => player.isCurrentUser) && (
             <Button
               size="small"

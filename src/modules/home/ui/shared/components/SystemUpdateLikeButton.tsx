@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react';
-import { Button, Tooltip } from '@mui/material';
 import { useTranslation } from 'react-i18next';
+import { Button, Tooltip } from '@mui/material';
 import { useAuth } from 'app/providers/AuthProvider';
 import { homeQueries } from 'modules/home/application/queries';
 import type { HomeSystemUpdate } from 'modules/home/domain/entities/home.entity';
@@ -9,9 +9,14 @@ import IconifyIcon from 'shared/components/base/IconifyIcon';
 interface SystemUpdateLikeButtonProps {
   update: Pick<HomeSystemUpdate, 'id' | 'likesCount' | 'isLiked'>;
   onChanged?: () => void;
+  compact?: boolean;
 }
 
-const SystemUpdateLikeButton = ({ update, onChanged }: SystemUpdateLikeButtonProps) => {
+const SystemUpdateLikeButton = ({
+  update,
+  onChanged,
+  compact = false,
+}: SystemUpdateLikeButtonProps) => {
   const { t } = useTranslation();
   const { currentUser } = useAuth();
   const [likesCount, setLikesCount] = useState(update.likesCount);
@@ -42,19 +47,33 @@ const SystemUpdateLikeButton = ({ update, onChanged }: SystemUpdateLikeButtonPro
       <span>
         <Button
           size="small"
-          variant="outlined"
-          color="primary"
+          variant={compact ? 'text' : 'outlined'}
+          color={compact ? (isLiked ? 'error' : 'neutral') : 'primary'}
+          aria-label={t('homePage.updates.likes', { count: likesCount })}
           onClick={handleLike}
           disabled={!currentUser || isSubmitting}
-          startIcon={<IconifyIcon icon={isLiked ? 'mdi:heart' : 'mdi:heart-outline'} sx={{ fontSize: 18 }} />}
+          startIcon={
+            <IconifyIcon icon={isLiked ? 'mdi:heart' : 'mdi:heart-outline'} sx={{ fontSize: 18 }} />
+          }
           sx={{
             minWidth: 0,
             px: 1.25,
             fontWeight: 800,
             whiteSpace: 'nowrap',
+            ...(compact
+              ? {
+                  px: 0.75,
+                  minHeight: 32,
+                  color: isLiked ? 'error.main' : 'text.secondary',
+                  fontFamily: 'var(--kep-display-font)',
+                  fontFeatureSettings: '"ss01" 1',
+                  fontWeight: 500,
+                  fontSize: 15,
+                }
+              : {}),
           }}
         >
-          {t('homePage.updates.likes', { count: likesCount })}
+          {compact ? likesCount : t('homePage.updates.likes', { count: likesCount })}
         </Button>
       </span>
     </Tooltip>

@@ -1,6 +1,7 @@
 import { Link as RouterLink } from 'react-router-dom';
-import { Button, Card, CardContent, Stack, Typography } from '@mui/material';
+import { Link, Stack, Typography } from '@mui/material';
 import KepIcon from 'shared/components/base/KepIcon';
+import StatisticsSection from 'shared/components/statistics/StatisticsSection';
 import type { KepIconName } from 'shared/config/icons';
 
 export interface ContestsUserStatisticsPageHighlightCardProps {
@@ -20,43 +21,40 @@ const ContestsUserStatisticsPageHighlightCard = ({
   contestTitle,
   contestLink,
 }: ContestsUserStatisticsPageHighlightCardProps) => (
-  <Card variant="outlined" sx={{ height: '100%', borderRadius: 3 }}>
-    <CardContent>
-      <Stack direction="row" spacing={2} alignItems="flex-start">
-        <KepIcon name={icon} fontSize={26} className="text-primary" />
-        <Stack direction="column" spacing={0.5} flex={1} minWidth={0}>
-          <Typography variant="subtitle2" color="text.secondary">
-            {label}
-          </Typography>
-          <Typography variant="h6" fontWeight={800}>
-            {valueLabel ?? '--'}
-          </Typography>
-          {contestTitle ? (
-            contestLink ? (
-              <Button
-                component={RouterLink}
-                to={contestLink}
-                size="small"
-                variant="text"
-                sx={{ px: 0, justifyContent: 'flex-start' }}
-              >
-                {contestTitle}
-              </Button>
-            ) : (
-              <Typography variant="body2" color="text.secondary">
-                {contestTitle}
-              </Typography>
-            )
-          ) : null}
-          {meta ? (
+  <StatisticsSection>
+    <Stack direction="row" spacing={2} alignItems="flex-start">
+      <KepIcon name={icon} fontSize={22} sx={{ color: 'primary.main' }} />
+      <Stack direction="column" spacing={0.5} flex={1} minWidth={0}>
+        <Typography variant="label" color="text.secondary">
+          {label}
+        </Typography>
+        <Typography variant="metric" fontSize={26}>
+          {valueLabel ?? '--'}
+        </Typography>
+        {contestTitle ? (
+          contestLink ? (
+            <Link
+              component={RouterLink}
+              to={contestLink}
+              underline="hover"
+              sx={{ fontSize: 13, overflowWrap: 'anywhere' }}
+            >
+              {contestTitle}
+            </Link>
+          ) : (
             <Typography variant="body2" color="text.secondary">
-              {meta}
+              {contestTitle}
             </Typography>
-          ) : null}
-        </Stack>
+          )
+        ) : null}
+        {meta ? (
+          <Typography variant="body2" color="text.secondary">
+            {meta}
+          </Typography>
+        ) : null}
       </Stack>
-    </CardContent>
-  </Card>
+    </Stack>
+  </StatisticsSection>
 );
 
 export default ContestsUserStatisticsPageHighlightCard;

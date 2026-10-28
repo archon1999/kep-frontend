@@ -1,6 +1,6 @@
 import { useTranslation } from 'react-i18next';
-import { LinearProgress, Stack } from '@mui/material';
-import Kepper from 'shared/components/common/Kepper';
+import { LinearProgress, Stack, Typography } from '@mui/material';
+import PatternArtwork from 'shared/components/common/PatternArtwork';
 
 const DefaultLoader = () => {
   const { t } = useTranslation();
@@ -14,10 +14,13 @@ const DefaultLoader = () => {
         width: 1,
       }}
     >
-      <Kepper pose="loading" motion="loop" size={112} />
+      <PatternArtwork kind="loading" sx={{ width: 210 }} />
+      <Typography variant="label" color="text.secondary">
+        {t('common.mascot.loading')}
+      </Typography>
       <LinearProgress
         aria-label={t('common.mascot.loading')}
-        sx={{ width: 100, height: 3, borderRadius: 2, mt: 1 }}
+        sx={{ width: 112, height: 2, borderRadius: 0, mt: 2 }}
       />
     </Stack>
   );

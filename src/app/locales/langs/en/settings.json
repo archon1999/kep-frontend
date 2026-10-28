@@ -1,5 +1,9 @@
 {
   "settings": {
+    "pageSubtitle": "Manage your profile, connected accounts, and preferences.",
+    "account": "Account",
+    "navigation": "Settings sections",
+    "coverSizeError": "Cover photo size must be 4 MB or less.",
     "general": "General",
     "changePassword": "Change Password",
     "information": "Information",
@@ -9,10 +13,10 @@
     "teams": "Teams",
     "system": "System",
     "generalSettings": "General Settings",
-    "generalSettingsSubtitle": "Update your profile basics and cover.",
+    "generalSettingsSubtitle": "Update your name, avatar, and profile cover.",
     "upload": "Upload",
     "coverImage": "Cover image",
-    "coverPlaceholder": "Upload a cover photo to personalize your profile.",
+    "coverPlaceholder": "Add a profile cover image.",
     "coverChangeAction": "Buy",
     "coverChangeNote": "Cover photo updates cost {{value}} Kepcoin.",
     "username": "Username",
@@ -40,7 +44,7 @@
     "telegram": "Telegram",
     "publicTelegram": "Public Telegram",
     "connectedAccounts": "Connected accounts",
-    "connectedAccountsSubtitle": "Link external accounts for Kepcoin tasks.",
+    "connectedAccountsSubtitle": "Connect supported services to your KEP.uz account.",
     "connectedAccountsLinked": "Linked",
     "connectedAccountsNotLinked": "Not linked",
     "connectedAccountsOpened": "Connection flow opened",
@@ -49,10 +53,9 @@
     "reconnect": "Reconnect",
     "codeforcesHandle": "Codeforces Handle",
     "technologies": "Technologies",
-    "technologiesSubtitle": "List your favourite stacks and badge colors.",
+    "technologiesSubtitle": "Choose the technologies shown on your profile.",
     "text": "Text",
     "devIconClass": "Dev Icon Class",
-    "devIconHelper": "Use any icon class from devicon.io",
     "badgeColor": "Badge Color",
     "preview": "Preview",
     "addNew": "Add New",
@@ -68,15 +71,13 @@
     "linkToJoin": "Link to join",
     "refreshLink": "Refresh link",
     "teamCode": "Team code: {{code}}",
-    "teamsEmpty": "Create a team or join an existing one to get started.",
     "sounds": "Sounds",
     "botNotifications": "Bot notifications",
-    "botNotificationsSubtitle": "Turn Telegram bot notifications on or off.",
+    "botNotificationsSubtitle": "Choose which notifications the Telegram bot sends you.",
     "successSound": "Success",
     "homeSound": "Home",
     "themeToggleEffect": "Theme Toggle Effect",
     "openNavigation": "Open navigation",
-    "loginRequired": "Please sign in to manage your account settings.",
     "linkCopied": "Link copied",
     "teamCodeLabel": "Team code",
     "teamName": "Name",
@@ -127,7 +128,6 @@
       "toggle": "Customize",
       "title": "Customize",
       "reset": "Reset",
-      "new": "new",
       "notAvailableInLayout": "Not available in this layout.",
       "sections": {
         "theme": "Theme",
@@ -139,7 +139,8 @@
         "cardStyle": "Card Style",
         "cardBackground": "Card Background",
         "font": "Font",
-        "visionMode": "Vision Mode"
+        "visionMode": "Vision Mode",
+        "layout": "Layout"
       },
       "labels": {
         "default": "Default",
@@ -175,28 +176,29 @@
         "nature": "Nature",
         "ember": "Ember",
         "dracula": "Dracula",
-        "midnight": "Midnight"
+        "midnight": "Midnight",
+        "cobalt": "Cobalt"
       },
       "visionModes": {
         "normal": {
           "label": "Normal",
-          "description": "Shows all colors normally"
+          "description": "Default colour palette."
         },
         "protanopia": {
           "label": "Protanopia",
-          "description": "Hard to see red shades"
+          "description": "Applies the protanopia colour filter."
         },
         "deuteranopia": {
           "label": "Deuteranopia",
-          "description": "Hard to see green shades"
+          "description": "Applies the deuteranopia colour filter."
         },
         "tritanopia": {
           "label": "Tritanopia",
-          "description": "Hard to see blue shades"
+          "description": "Applies the tritanopia colour filter."
         },
         "achromatopsia": {
           "label": "Achromatopsia",
-          "description": "Shows only black and white"
+          "description": "Monochrome palette."
         }
       }
     }

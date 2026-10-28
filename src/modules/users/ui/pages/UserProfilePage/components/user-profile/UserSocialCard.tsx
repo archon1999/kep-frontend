@@ -13,7 +13,7 @@ const UserSocialCard = ({ username }: UserSocialCardProps) => {
 
   if (isLoading) {
     return (
-      <Card variant="outlined">
+      <Card variant="section">
         <CardContent>
           <Skeleton variant="text" width="60%" />
           <Skeleton variant="text" width="80%" />
@@ -27,7 +27,7 @@ const UserSocialCard = ({ username }: UserSocialCardProps) => {
   }
 
   return (
-    <Card variant="outlined">
+    <Card variant="section">
       <CardContent>
         <Stack direction="column" spacing={1.5}>
           <Typography variant="h6" fontWeight={700}>
@@ -40,7 +40,12 @@ const UserSocialCard = ({ username }: UserSocialCardProps) => {
               <Typography variant="body2" color="text.secondary">
                 Telegram:
               </Typography>
-              <Link href={`https://t.me/${data.telegram}`} underline="hover" target="_blank" rel="noreferrer">
+              <Link
+                href={`https://t.me/${data.telegram}`}
+                underline="hover"
+                target="_blank"
+                rel="noreferrer"
+              >
                 {data.telegram}
               </Link>
             </Stack>
@@ -48,8 +53,11 @@ const UserSocialCard = ({ username }: UserSocialCardProps) => {
 
           {data.codeforcesHandle ? (
             <Stack direction="row" spacing={1} alignItems="center" flexWrap="wrap">
-              <img width="16" height="16"
-                   src="https://cdn-1.webcatalog.io/catalog/codeforces/codeforces-icon-filled.png" />
+              <img
+                width="16"
+                height="16"
+                src="https://cdn-1.webcatalog.io/catalog/codeforces/codeforces-icon-filled.png"
+              />
               <Typography variant="body2" color="text.secondary">
                 Codeforces:
               </Typography>
@@ -61,7 +69,7 @@ const UserSocialCard = ({ username }: UserSocialCardProps) => {
               >
                 {data.codeforcesHandle}
               </Link>
-              <img className="ms-1" src={data.codeforcesBadge}/>
+              <img className="ms-1" src={data.codeforcesBadge} />
             </Stack>
           ) : null}
         </Stack>

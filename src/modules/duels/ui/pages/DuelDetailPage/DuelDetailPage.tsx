@@ -1,40 +1,20 @@
-import { useParams } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
-import { Box, CircularProgress, Typography } from '@mui/material';
-import { useAuth } from 'app/providers/AuthProvider';
-import { useDocumentTitle } from 'app/providers/DocumentTitleProvider';
-import { useDuelDetail } from 'modules/duels/application/queries.ts';
+import { Button } from '@mui/material';
+import { useDuelDetailPage } from 'modules/duels/application/hooks/useDuelDetailPage';
 import { Page404 } from 'modules/errors/ui/pages';
+import EmptyState from 'shared/components/common/EmptyState';
+import { WorkspaceRoot } from 'shared/components/sections/common/Workspace';
 import { isNotFoundError } from 'shared/lib/detailRouteNotFound';
-import DuelDetailPageHeader, {
-  useDuelDetailPageHeaderState,
-} from './DuelDetailPageHeader.tsx';
+import DuelDetailPageHeader, { useDuelDetailPageHeaderState } from './DuelDetailPageHeader.tsx';
 import DuelDetailPageWorkspace, {
   useDuelDetailPageWorkspaceState,
 } from './DuelDetailPageWorkspace.tsx';
+import DuelWorkspaceSkeleton from './components/DuelWorkspaceSkeleton';
 
 const DuelDetailPage = () => {
-  const { t } = useTranslation();
-  const { id } = useParams<{ id: string }>();
-  const { currentUser } = useAuth();
-  const duelId = Number(id);
-  const {
-    data: duel,
-    error: duelError,
-    isLoading,
-    isValidating,
-    mutate: mutateDuel,
-  } = useDuelDetail(Number.isNaN(duelId) ? undefined : duelId);
+  const { currentUser, duel, duelError, isLoading, isValidating, mutateDuel } = useDuelDetailPage();
 
-  useDocumentTitle(
-    duel?.playerFirst?.username ? 'pageTitles.duel' : undefined,
-    duel
-      ? {
-          playerFirstUsername: duel.playerFirst.username,
-          playerSecondUsername: duel.playerSecond?.username ?? '',
-        }
-      : undefined,
-  );
+  const { t } = useTranslation();
 
   const workspaceState = useDuelDetailPageWorkspaceState({
     duel,
@@ -52,34 +32,20 @@ const DuelDetailPage = () => {
     return <Page404 />;
   }
 
-  if (isLoading) {
-    return (
-      <Box
-        sx={{ height: '100vh', display: 'flex', alignItems: 'center', justifyContent: 'center' }}
-      >
-        <CircularProgress />
-      </Box>
-    );
-  }
+  if (isLoading) return <DuelWorkspaceSkeleton />;
 
   if (!duel || !headerState || !workspaceState.workspaceProps) {
     return (
-      <Box sx={{ p: 3 }}>
-        <Typography color="text.secondary">{t('duels.error')}</Typography>
-      </Box>
+      <EmptyState
+        kind="error"
+        title={t('duels.error')}
+        action={<Button onClick={() => void mutateDuel()}>{t('common.retry')}</Button>}
+      />
     );
   }
 
   return (
-    <Box
-      sx={{
-        height: '100vh',
-        display: 'flex',
-        flexDirection: 'column',
-        minWidth: 1000,
-        bgcolor: 'background.elevation1',
-      }}
-    >
+    <WorkspaceRoot>
       <DuelDetailPageHeader
         {...headerState}
         hasCurrentUser={Boolean(currentUser)}
@@ -92,7 +58,7 @@ const DuelDetailPage = () => {
         onSubmit={workspaceState.onSubmit}
       />
       <DuelDetailPageWorkspace {...workspaceState.workspaceProps} />
-    </Box>
+    </WorkspaceRoot>
   );
 };
 

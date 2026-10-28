@@ -22,7 +22,7 @@ const Description = ({ html }: { html?: string | null }) =>
       variant="body2"
       color="text.secondary"
       dangerouslySetInnerHTML={createSafeHtml(html)}
-      sx={{ '& p': { m: 0 } }}
+      sx={{ lineHeight: 1.75, '& p': { m: 0 } }}
     />
   ) : null;
 
@@ -38,7 +38,7 @@ const DetailRow = ({
   <Stack direction="row" spacing={1.25} alignItems="center">
     <KepIcon name={icon} fontSize={18} />
     <Stack direction="column" spacing={0.25} minWidth={0}>
-      <Typography variant="caption" fontWeight={500}>
+      <Typography variant="label" color="text.secondary">
         {title}
       </Typography>
       <Typography variant="body2" fontWeight={700}>
@@ -61,17 +61,17 @@ const ContestTypeInfoCard = ({ contest }: ContestTypeInfoCardProps) => {
     : t('contests.typeInfo.penaltyDisabled');
 
   return (
-    <Card variant="outlined" sx={{ borderRadius: 3 }}>
+    <Card variant="section">
       <CardContent>
         <Stack spacing={1.5}>
           <DetailRow icon="competition" title={t('contests.typeInfo.title')} value={typeTitle} />
-          <Divider sx={{ borderStyle: 'dashed' }} />
+          <Divider sx={{ borderStyle: 'solid' }} />
           <DetailRow
             icon="problems"
             title={t('contests.typeInfo.scoringTitle')}
             value={scoringLabel}
           />
-          <Divider sx={{ borderStyle: 'dashed' }} />
+          <Divider sx={{ borderStyle: 'solid' }} />
           <DetailRow
             icon="rating"
             title={t('contests.typeInfo.penaltyTitle')}

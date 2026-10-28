@@ -1,12 +1,24 @@
 import { toBackendLanguage } from 'app/locales/locale';
 import { useSettingsContext } from 'app/providers/SettingsProvider';
 import useSWR from 'swr';
-import { HttpProjectAttemptsRepository } from '../data-access/repository/http.project-attempts.repository.ts';
-import { HttpProjectsRepository } from '../data-access/repository/http.projects.repository.ts';
+import { attemptsRepository, projectsRatingRepository, projectsRepository } from '../data-access';
+import type { ProjectAttemptsRepository } from '../domain/contracts/project-attempts.repository';
 import { Project, ProjectAttempt, ProjectAttemptLog } from '../domain/entities/project.entity';
+import type { ProjectsRatingParams } from '../domain/entities/projects-rating.types';
+import { projectsRatingKeys } from './keys';
 
-const projectsRepository = new HttpProjectsRepository();
-const attemptsRepository = new HttpProjectAttemptsRepository();
+export const useProjectsRating = (params: ProjectsRatingParams) =>
+  useSWR(projectsRatingKeys.list(params), () => projectsRatingRepository.list(params), {
+    suspense: false,
+    keepPreviousData: true,
+  });
+
+export const useProjectUserRating = (username?: string) =>
+  useSWR(
+    username ? projectsRatingKeys.user(username) : null,
+    () => projectsRatingRepository.getUserRating(username!),
+    { suspense: false },
+  );
 
 const useProjectLanguage = () => {
   const { config } = useSettingsContext();
@@ -97,7 +109,5 @@ export const useProjectAttemptLog = (attemptId: number | null, username?: string
   );
 };
 
-export const projectsQueries = {
-  projectsRepository,
-  attemptsRepository,
-};
+export const getProjectAttemptLog = (...args: Parameters<ProjectAttemptsRepository['getLog']>) =>
+  attemptsRepository.getLog(...args);

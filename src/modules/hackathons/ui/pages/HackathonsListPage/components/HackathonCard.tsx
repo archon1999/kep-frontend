@@ -1,77 +1,96 @@
 import { useTranslation } from 'react-i18next';
-import { Link as RouterLink } from 'react-router';
-import { Box, Card, CardActionArea, Divider, Stack, Typography } from '@mui/material';
+import { Box, Typography } from '@mui/material';
 import { getResourceById, resources } from 'app/routes/resources';
 import { type Hackathon } from 'modules/hackathons/domain';
 import { HackathonStatusChip } from 'modules/hackathons/ui/shared';
-import IconifyIcon from 'shared/components/base/IconifyIcon';
-import { formatDateTime } from 'shared/lib/dateTime';
+import { stripProjectDescription } from 'modules/projects/application/project-listing';
+import PatternArtwork from 'shared/components/common/PatternArtwork';
+import EventListCard, { EventDate } from 'shared/components/sections/common/EventListCard';
 
-interface HackathonCardProps {
-  hackathon: Hackathon;
-}
-
-const HackathonCard = ({ hackathon }: HackathonCardProps) => {
+const HackathonCard = ({ hackathon }: { hackathon: Hackathon }) => {
   const { t } = useTranslation();
   return (
-    <Card
-      sx={{ height: '100%', borderRadius: 4, outline: 'none', bgcolor: 'background.elevation1' }}
-    >
-      <CardActionArea
-        component={RouterLink}
-        to={getResourceById(resources.Hackathon, hackathon.id)}
-        sx={{ height: '100%', display: 'flex', flexDirection: 'column', alignItems: 'stretch' }}
-      >
-        <Box
-          sx={{
-            height: 220,
-            display: 'grid',
-            placeItems: 'center',
-            position: 'relative',
-            bgcolor: 'common.white',
-          }}
-        >
-          {hackathon.logo ? (
+    <EventListCard
+      id={hackathon.id}
+      title={hackathon.title}
+      titleMinLines={2}
+      href={getResourceById(resources.Hackathon, hackathon.id)}
+      category={t('hackathons.formatValue')}
+      icon="mdi:code-braces-box"
+      badges={<HackathonStatusChip hackathon={hackathon} variant="status" />}
+      media={
+        hackathon.logo ? (
+          <Box
+            sx={{
+              width: 80,
+              height: 64,
+              flexShrink: 0,
+              display: 'grid',
+              placeItems: 'center',
+              bgcolor: 'common.white',
+              border: 1,
+              borderColor: 'divider',
+              p: 1,
+            }}
+          >
             <Box
               component="img"
               src={hackathon.logo}
               alt=""
               loading="lazy"
-              sx={{ width: '70%', height: 156, objectFit: 'contain' }}
+              sx={{ maxWidth: '100%', maxHeight: 48, objectFit: 'contain' }}
             />
-          ) : (
-            <Typography variant="h2" sx={{ color: 'grey.600' }}>
-              {hackathon.title.charAt(0)}
-            </Typography>
-          )}
-          <Box sx={{ position: 'absolute', top: 16, right: 16 }}>
-            <HackathonStatusChip hackathon={hackathon} />
           </Box>
-        </Box>
-        <Stack direction="column" spacing={2} sx={{ p: 3, flex: 1 }}>
-          <Typography component="h2" variant="h6" sx={{ minHeight: 52, overflowWrap: 'anywhere' }}>
-            {hackathon.title}
-          </Typography>
-          <Stack direction="row" spacing={1} alignItems="center">
-            <IconifyIcon icon="mdi:calendar-blank-outline" width={18} color="text.secondary" />
-            <Typography variant="body2">
-              {hackathon.startTime
-                ? formatDateTime(hackathon.startTime, 'fullDate')
-                : t('hackathons.noSchedule')}
-            </Typography>
-          </Stack>
-          <Divider />
-          <Stack direction="row" spacing={1} justifyContent="space-between" alignItems="center">
-            <Typography variant="caption" color="text.secondary">
-              {t('hackathons.projectsCount', { count: hackathon.projectsCount ?? 0 })}
-              {' · '}
-              {t('hackathons.participantsCount', { count: hackathon.participantsCount ?? 0 })}
-            </Typography>
-            <IconifyIcon icon="mdi:arrow-right" width={19} color="text.secondary" />
-          </Stack>
-        </Stack>
-      </CardActionArea>
-    </Card>
+        ) : (
+          <PatternArtwork
+            kind="hackathon"
+            sx={{ width: 100, display: { xs: 'none', sm: 'block' } }}
+          />
+        )
+      }
+      details={[
+        {
+          label: t('hackathons.startsAt'),
+          icon: 'mdi:calendar-outline',
+          value: <EventDate value={hackathon.startTime} fallback={t('hackathons.noSchedule')} />,
+        },
+        {
+          label: t('hackathons.endsAt'),
+          icon: 'mdi:clock-outline',
+          value: <EventDate value={hackathon.finishTime} fallback={t('hackathons.noSchedule')} />,
+        },
+      ]}
+      metrics={[
+        {
+          label: t('hackathons.projects'),
+          icon: 'mdi:code-tags',
+          value: hackathon.projectsCount ?? 0,
+        },
+        {
+          label: t('hackathons.participants'),
+          icon: 'mdi:account-group-outline',
+          value: hackathon.participantsCount ?? 0,
+        },
+      ]}
+      actionLabel={t('hackathons.viewHackathon')}
+    >
+      <Typography
+        variant="body2"
+        color="text.secondary"
+        sx={{
+          lineHeight: 1.8,
+          display: '-webkit-box',
+          WebkitLineClamp: 3,
+          WebkitBoxOrient: 'vertical',
+          overflow: 'hidden',
+          overflowWrap: 'anywhere',
+        }}
+      >
+        {hackathon.description
+          ? stripProjectDescription(hackathon.description)
+          : t('hackathons.scoringDescription')}
+      </Typography>
+    </EventListCard>
   );
 };
 export default HackathonCard;

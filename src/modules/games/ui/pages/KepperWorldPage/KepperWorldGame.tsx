@@ -15,7 +15,6 @@ import {
   Dialog,
   DialogActions,
   DialogContent,
-  DialogTitle,
   IconButton,
   LinearProgress,
   Stack,
@@ -41,6 +40,7 @@ import {
   worldTerminals,
 } from 'modules/games/domain/world/world';
 import IconifyIcon from 'shared/components/base/IconifyIcon';
+import DialogHeader from 'shared/components/common/DialogHeader';
 import MiniGameIntro from '../GamePlayPage/components/MiniGameIntro';
 import KepperWorldScene, { type MoveControls } from './components/KepperWorldScene';
 
@@ -782,11 +782,11 @@ const KepperWorldGame = ({ onScore, best, player }: Props) => {
                     minHeight: 38,
                     px: { xs: 1, sm: 1.25 },
                     borderRadius: 1.5,
-                    bgcolor: '#163557e8',
-                    color: 'common.white',
+                    bgcolor: 'background.paper',
+                    color: 'text.primary',
                     textTransform: 'none',
                     '& .MuiButton-startIcon': { mx: { xs: 0, sm: 0.5 } },
-                    '&:hover': { bgcolor: '#163557' },
+                    '&:hover': { bgcolor: 'background.elevation2' },
                   }}
                 >
                   <Box component="span" sx={{ display: { xs: 'none', sm: 'inline' } }}>
@@ -804,7 +804,7 @@ const KepperWorldGame = ({ onScore, best, player }: Props) => {
                     display: 'grid',
                     placeItems: 'center',
                     p: 2,
-                    bgcolor: '#102b45bf',
+                    bgcolor: 'color-mix(in srgb, var(--kep-bg) 75%, transparent)',
                   }}
                 >
                   <Box
@@ -813,10 +813,10 @@ const KepperWorldGame = ({ onScore, best, player }: Props) => {
                       p: { xs: 2.5, sm: 3 },
                       borderRadius: 2.5,
                       bgcolor: 'background.paper',
-                      boxShadow: '0 18px 50px #0d243c50',
+                      boxShadow: '0 18px 50px #0003',
                     }}
                   >
-                    <IconifyIcon icon="mdi:terrain" width={34} color="#e58e3b" />
+                    <IconifyIcon icon="mdi:terrain" width={34} sx={{ color: 'warning.main' }} />
                     <Typography variant="h5" fontWeight={750} sx={{ mt: 1.5 }}>
                       {t('games.world.fallTitle')}
                     </Typography>
@@ -869,13 +869,17 @@ const KepperWorldGame = ({ onScore, best, player }: Props) => {
                   px: 1.4,
                   py: 0.55,
                   borderRadius: 1.5,
-                  bgcolor: '#102e47e8',
-                  color: 'common.white',
-                  boxShadow: '0 6px 20px #09273a30',
+                  bgcolor: 'background.paper',
+                  color: 'text.primary',
+                  boxShadow: '0 6px 20px #0002',
                   pointerEvents: 'none',
                 }}
               >
-                <IconifyIcon icon="mdi:star-four-points" width={15} color="#f6c662" />
+                <IconifyIcon
+                  icon="mdi:star-four-points"
+                  width={15}
+                  sx={{ color: 'secondary.main' }}
+                />
                 <Typography
                   variant="h6"
                   fontWeight={700}
@@ -883,7 +887,7 @@ const KepperWorldGame = ({ onScore, best, player }: Props) => {
                 >
                   {session.score}
                 </Typography>
-                <Typography variant="caption" sx={{ color: '#bbd1dc', fontSize: 11 }}>
+                <Typography variant="caption" sx={{ color: 'text.secondary', fontSize: 11 }}>
                   / 1000
                 </Typography>
               </Stack>
@@ -899,9 +903,9 @@ const KepperWorldGame = ({ onScore, best, player }: Props) => {
                     zIndex: 3,
                     p: 1,
                     borderRadius: 1.5,
-                    bgcolor: session.lastHit ? '#91293ae8' : '#8a5623e8',
-                    color: 'common.white',
-                    boxShadow: '0 5px 15px #153a4a33',
+                    bgcolor: session.lastHit ? 'error.lighter' : 'warning.lighter',
+                    color: 'text.primary',
+                    boxShadow: '0 5px 15px #0002',
                     pointerEvents: 'none',
                   }}
                 >
@@ -943,15 +947,15 @@ const KepperWorldGame = ({ onScore, best, player }: Props) => {
                       gridRow: direction.row,
                       gridColumn: direction.col,
                       border: 0,
-                      bgcolor: '#102e47ce',
+                      bgcolor: 'background.paper',
                       borderRadius: '50%',
-                      color: 'common.white',
-                      boxShadow: '0 5px 16px #09273a35',
+                      color: 'text.primary',
+                      boxShadow: '0 5px 16px #0002',
                       display: 'grid',
                       placeItems: 'center',
                       touchAction: 'none',
                       cursor: 'pointer',
-                      '&:active': { bgcolor: '#1c6081', transform: 'scale(0.96)' },
+                      '&:active': { bgcolor: 'action.selected', transform: 'scale(0.96)' },
                       '&:disabled': { opacity: 0.5 },
                     }}
                   >
@@ -987,12 +991,12 @@ const KepperWorldGame = ({ onScore, best, player }: Props) => {
                   height: 44,
                   border: 0,
                   borderRadius: 1.5,
-                  bgcolor: '#102e47ce',
-                  color: 'common.white',
-                  boxShadow: '0 5px 16px #09273a35',
+                  bgcolor: 'background.paper',
+                  color: 'text.primary',
+                  boxShadow: '0 5px 16px #0002',
                   touchAction: 'none',
                   cursor: 'pointer',
-                  '&:active': { bgcolor: '#1c6081', transform: 'scale(0.96)' },
+                  '&:active': { bgcolor: 'action.selected', transform: 'scale(0.96)' },
                   '&:disabled': { opacity: 0.5 },
                 }}
               >
@@ -1013,8 +1017,8 @@ const KepperWorldGame = ({ onScore, best, player }: Props) => {
                   px: 1.25,
                   py: 0.5,
                   borderRadius: 1.5,
-                  bgcolor: '#163557d9',
-                  color: 'common.white',
+                  bgcolor: 'background.paper',
+                  color: 'text.primary',
                   pointerEvents: 'none',
                 }}
               >
@@ -1040,9 +1044,9 @@ const KepperWorldGame = ({ onScore, best, player }: Props) => {
                 mt: immersive ? 0 : { xs: 1.5, lg: 0 },
                 ml: statsCollapsed && !immersive ? 'auto' : undefined,
                 borderRadius: 1.5,
-                bgcolor: '#102e47ef',
-                color: '#f1f8fa',
-                boxShadow: '0 12px 34px #09273a42',
+                bgcolor: 'background.paper',
+                color: 'text.primary',
+                boxShadow: '0 12px 34px #0003',
                 backdropFilter: 'blur(12px)',
                 p: statsCollapsed ? 0.5 : 1.75,
                 display: 'flex',
@@ -1058,7 +1062,7 @@ const KepperWorldGame = ({ onScore, best, player }: Props) => {
                     fontSize: statsCollapsed ? 14 : 13,
                     fontWeight: 700,
                     letterSpacing: statsCollapsed ? 0 : 0.2,
-                    color: '#f1f8fa',
+                    color: 'text.primary',
                     fontVariantNumeric: 'tabular-nums',
                   }}
                 >
@@ -1067,7 +1071,11 @@ const KepperWorldGame = ({ onScore, best, player }: Props) => {
                 {!statsCollapsed && (
                   <Typography
                     variant="subtitle2"
-                    sx={{ color: '#f6c662', fontWeight: 700, fontVariantNumeric: 'tabular-nums' }}
+                    sx={{
+                      color: 'secondary.main',
+                      fontWeight: 700,
+                      fontVariantNumeric: 'tabular-nums',
+                    }}
                   >
                     {Math.round(progress)}%
                   </Typography>
@@ -1087,8 +1095,8 @@ const KepperWorldGame = ({ onScore, best, player }: Props) => {
                     width: 30,
                     height: 30,
                     ml: statsCollapsed ? 0.5 : 0,
-                    color: '#d3e7ef',
-                    '&:hover': { bgcolor: '#ffffff1d' },
+                    color: 'text.secondary',
+                    '&:hover': { bgcolor: 'action.hover' },
                   }}
                 >
                   <IconifyIcon
@@ -1112,8 +1120,8 @@ const KepperWorldGame = ({ onScore, best, player }: Props) => {
                   sx={{
                     height: 3,
                     borderRadius: 0,
-                    bgcolor: '#ffffff30',
-                    '& .MuiLinearProgress-bar': { bgcolor: '#f6c662' },
+                    bgcolor: 'action.selected',
+                    '& .MuiLinearProgress-bar': { bgcolor: 'secondary.main' },
                   }}
                 />
                 <Stack spacing={0.55} sx={{ pt: 0.25 }}>
@@ -1123,35 +1131,35 @@ const KepperWorldGame = ({ onScore, best, player }: Props) => {
                       value: session.collected.length,
                       total: worldShards.length,
                       icon: 'mdi:diamond-stone',
-                      color: '#f6c662',
+                      color: 'secondary.main',
                     },
                     {
                       label: t('games.world.relayShort'),
                       value: session.solved.length,
                       total: worldTerminals.length,
                       icon: 'mdi:radio-tower',
-                      color: '#8bd4f3',
+                      color: 'primary.main',
                     },
                     {
                       label: t('games.world.stationShort'),
                       value: session.charged.length,
                       total: worldStations.length,
                       icon: 'mdi:lightning-bolt-circle',
-                      color: '#caa4f7',
+                      color: 'info.main',
                     },
                     {
                       label: t('games.world.beaconShort'),
                       value: session.beacons.length,
                       total: worldBeacons.length,
                       icon: 'mdi:arrow-up-bold-circle-outline',
-                      color: '#86ead1',
+                      color: 'success.main',
                     },
                     {
                       label: t('games.world.routeShort'),
                       value: session.routes.length,
                       total: worldRoutes.length,
                       icon: 'mdi:map-marker-path',
-                      color: '#a5d9f5',
+                      color: 'primary.main',
                     },
                   ].map((metric) => (
                     <Stack
@@ -1164,7 +1172,7 @@ const KepperWorldGame = ({ onScore, best, player }: Props) => {
                       <Box
                         sx={{
                           display: 'flex',
-                          color: metric.value === metric.total ? '#69dfa8' : metric.color,
+                          color: metric.value === metric.total ? 'success.main' : metric.color,
                           flex: '0 0 auto',
                         }}
                       >
@@ -1177,7 +1185,7 @@ const KepperWorldGame = ({ onScore, best, player }: Props) => {
                           minWidth: 0,
                           fontSize: 13,
                           fontWeight: 500,
-                          color: '#d4e5ec',
+                          color: 'text.secondary',
                         }}
                       >
                         {metric.label}
@@ -1188,14 +1196,14 @@ const KepperWorldGame = ({ onScore, best, player }: Props) => {
                         sx={{
                           fontSize: 13,
                           fontVariantNumeric: 'tabular-nums',
-                          color: metric.value === metric.total ? '#69dfa8' : '#f1f8fa',
+                          color: metric.value === metric.total ? 'success.main' : 'text.primary',
                         }}
                       >
                         {metric.value}
                         <Box
                           component="span"
                           sx={{
-                            color: metric.value === metric.total ? 'inherit' : '#9cb6c4',
+                            color: metric.value === metric.total ? 'inherit' : 'text.secondary',
                             fontWeight: 500,
                           }}
                         >
@@ -1211,7 +1219,7 @@ const KepperWorldGame = ({ onScore, best, player }: Props) => {
                     gridTemplateColumns: 'repeat(3, minmax(0, 1fr))',
                     gap: 0.75,
                     pt: 1,
-                    borderTop: '1px solid #ffffff24',
+                    borderTop: '1px solid var(--kep-line)',
                   }}
                 >
                   {[
@@ -1219,19 +1227,19 @@ const KepperWorldGame = ({ onScore, best, player }: Props) => {
                       label: t('games.world.elapsed'),
                       value: timeLabel(session.elapsed),
                       icon: 'mdi:timer-outline',
-                      color: '#8bd4f3',
+                      color: 'primary.main',
                     },
                     {
                       label: t('games.world.hitsShort'),
                       value: session.hits,
                       icon: 'mdi:shield-alert-outline',
-                      color: '#f6c662',
+                      color: 'secondary.main',
                     },
                     {
                       label: t('games.world.recordShort'),
                       value: best,
                       icon: 'mdi:trophy-outline',
-                      color: '#caa4f7',
+                      color: 'info.main',
                     },
                   ].map((metric) => (
                     <Box key={metric.label} sx={{ minWidth: 0 }}>
@@ -1242,7 +1250,7 @@ const KepperWorldGame = ({ onScore, best, player }: Props) => {
                         <Typography
                           variant="caption"
                           sx={{
-                            color: '#abc1cc',
+                            color: 'text.secondary',
                             fontSize: 10,
                             overflow: 'hidden',
                             textOverflow: 'ellipsis',
@@ -1254,7 +1262,7 @@ const KepperWorldGame = ({ onScore, best, player }: Props) => {
                       <Typography
                         variant="body2"
                         sx={{
-                          color: '#f1f8fa',
+                          color: 'text.primary',
                           fontWeight: 700,
                           fontVariantNumeric: 'tabular-nums',
                         }}
@@ -1265,11 +1273,13 @@ const KepperWorldGame = ({ onScore, best, player }: Props) => {
                   ))}
                 </Box>
                 {session.completed ? (
-                  <Box sx={{ mt: 1, px: 1.25, py: 1.5, borderRadius: 1, bgcolor: '#1c5b4b' }}>
-                    <Typography variant="subtitle1" fontWeight={700} sx={{ color: '#adf3ce' }}>
+                  <Box
+                    sx={{ mt: 1, px: 1.25, py: 1.5, borderRadius: 1, bgcolor: 'success.lighter' }}
+                  >
+                    <Typography variant="subtitle1" fontWeight={700} sx={{ color: 'success.main' }}>
                       {t('games.world.complete')}
                     </Typography>
-                    <Typography variant="body2" sx={{ mt: 0.5, mb: 1.5, color: '#e4f6ee' }}>
+                    <Typography variant="body2" sx={{ mt: 0.5, mb: 1.5, color: 'text.secondary' }}>
                       {t('games.world.completeDescription')}
                     </Typography>
                     <Button
@@ -1303,8 +1313,8 @@ const KepperWorldGame = ({ onScore, best, player }: Props) => {
                         justifyContent: 'space-between',
                         textTransform: 'none',
                         fontSize: 12,
-                        color: '#d3e7ef',
-                        '&:hover': { bgcolor: '#ffffff16' },
+                        color: 'text.secondary',
+                        '&:hover': { bgcolor: 'action.hover' },
                       }}
                     >
                       {t('games.world.map')}
@@ -1326,7 +1336,7 @@ const KepperWorldGame = ({ onScore, best, player }: Props) => {
                     direction="row"
                     alignItems="center"
                     gap={0.5}
-                    sx={{ mt: 'auto', pt: 1, borderTop: '1px solid #ffffff24' }}
+                    sx={{ mt: 'auto', pt: 1, borderTop: '1px solid var(--kep-line)' }}
                   >
                     <Button
                       size="small"
@@ -1342,7 +1352,7 @@ const KepperWorldGame = ({ onScore, best, player }: Props) => {
                         py: 0.75,
                         borderRadius: 2,
                         bgcolor: '#ffffff10',
-                        color: '#d3e7ef',
+                        color: 'text.secondary',
                         textAlign: 'left',
                         fontSize: 12,
                         '&:hover': { bgcolor: '#ffffff24' },
@@ -1363,7 +1373,7 @@ const KepperWorldGame = ({ onScore, best, player }: Props) => {
                         flex: '0 0 auto',
                         borderRadius: 2,
                         bgcolor: '#ffffff10',
-                        color: music.muted ? '#9db5c2' : '#d3e7ef',
+                        color: music.muted ? '#9db5c2' : 'text.secondary',
                         '&:hover': { bgcolor: '#ffffff24' },
                       }}
                     >
@@ -1379,13 +1389,18 @@ const KepperWorldGame = ({ onScore, best, player }: Props) => {
           </Box>
 
           <Dialog
+            aria-labelledby="world-reset-title"
             open={resetOpen}
             onClose={() => setResetOpen(false)}
             container={() => fullscreenRootRef.current}
             maxWidth="xs"
             fullWidth
           >
-            <DialogTitle>{t('games.world.resetConfirmTitle')}</DialogTitle>
+            <DialogHeader
+              id="world-reset-title"
+              title={t('games.world.resetConfirmTitle')}
+              onClose={() => setResetOpen(false)}
+            />
             <DialogContent>
               <Typography variant="body2" color="text.secondary">
                 {t('games.world.resetConfirmBody')}
@@ -1421,6 +1436,7 @@ const KepperWorldGame = ({ onScore, best, player }: Props) => {
           </Dialog>
 
           <Dialog
+            aria-labelledby="world-terminal-title"
             open={Boolean(terminal)}
             onClose={(_, reason) => {
               if (reason === 'escapeKeyDown') terminalEscapeAt.current = performance.now();
@@ -1432,20 +1448,19 @@ const KepperWorldGame = ({ onScore, best, player }: Props) => {
             fullWidth
             sx={{
               position: 'absolute',
-              '& .MuiBackdrop-root': { position: 'absolute', bgcolor: '#102e47ad' },
+              '& .MuiBackdrop-root': { position: 'absolute' },
               '& .MuiDialog-container': { p: { xs: 1.5, sm: 2.5 } },
               '& .MuiDialog-paper': {
                 m: 0,
                 maxHeight: '100%',
-                borderRadius: 2,
-                bgcolor: '#f7fbfc',
-                boxShadow: '0 24px 72px #071f35a6',
               },
             }}
           >
-            <DialogTitle sx={{ pb: 1, fontSize: { xs: 20, sm: 22 }, fontWeight: 700 }}>
-              {t('games.world.puzzleTitle', { number: terminalNumber })}
-            </DialogTitle>
+            <DialogHeader
+              id="world-terminal-title"
+              title={t('games.world.puzzleTitle', { number: terminalNumber })}
+              onClose={closeTerminal}
+            />
             <DialogContent sx={{ pt: '8px !important' }}>
               {terminal && (
                 <Stack spacing={1.75} sx={{ mb: 2.5 }}>
@@ -1458,7 +1473,7 @@ const KepperWorldGame = ({ onScore, best, player }: Props) => {
                       m: 0,
                       px: { xs: 1.5, sm: 2 },
                       py: 1.5,
-                      borderRadius: 2,
+                      borderRadius: 0,
                       bgcolor: 'background.elevation2',
                       color: 'text.primary',
                       fontFamily: 'monospace',
@@ -1493,7 +1508,7 @@ const KepperWorldGame = ({ onScore, best, player }: Props) => {
                         py: 1.2,
                         px: 2,
                         bgcolor: 'background.elevation1',
-                        borderRadius: 1.5,
+                        borderRadius: 0,
                       }}
                     >
                       {t(`games.world.terminals.${terminal.id}.options.${index}`)}

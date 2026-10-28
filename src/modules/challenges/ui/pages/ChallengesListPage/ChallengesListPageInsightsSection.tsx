@@ -1,10 +1,10 @@
-import Grid from '@mui/material/Grid';
-import { Arena } from 'modules/arena/domain/entities/arena.entity.ts';
-import { PageResult as ArenaPageResult } from 'modules/arena/domain/ports/arena.repository.ts';
+import { Box } from '@mui/material';
+import { PageResult as ArenaPageResult } from 'modules/arena/domain/contracts/arena.repository';
+import { Arena } from 'modules/arena/domain/entities/arena.entity';
 import { ChallengeRatingRow } from 'modules/challenges/domain';
-import { PageResult } from 'modules/challenges/domain/ports/challenges.repository.ts';
-import ArenaWinnersCard from './components/ArenaWinnersCard.tsx';
-import ChallengeRatingPreviewCard from './components/ChallengeRatingPreviewCard.tsx';
+import { PageResult } from 'modules/challenges/domain/contracts/challenges.repository';
+import ArenaWinnersCard from './components/ArenaWinnersCard';
+import ChallengeRatingPreviewCard from './components/ChallengeRatingPreviewCard';
 
 type ChallengesListPageInsightsSectionProps = {
   ratingPreview?: PageResult<ChallengeRatingRow>;
@@ -12,25 +12,25 @@ type ChallengesListPageInsightsSectionProps = {
   arenas?: ArenaPageResult<Arena>;
   isArenasLoading: boolean;
 };
-
 const ChallengesListPageInsightsSection = ({
   ratingPreview,
   isRatingLoading,
   arenas,
   isArenasLoading,
 }: ChallengesListPageInsightsSectionProps) => (
-  <Grid container spacing={3}>
-    <Grid size={{ xs: 12, md: 6 }}>
-      <ChallengeRatingPreviewCard
-        ratingPreview={ratingPreview}
-        isLoading={isRatingLoading}
-      />
-    </Grid>
-
-    <Grid size={{ xs: 12, md: 6 }}>
-      <ArenaWinnersCard arenas={arenas} isLoading={isArenasLoading} />
-    </Grid>
-  </Grid>
+  <Box
+    component="aside"
+    sx={{
+      minWidth: 0,
+      borderLeftStyle: 'solid',
+      borderLeftWidth: { xs: 0, lg: 1 },
+      borderTopStyle: 'solid',
+      borderTopWidth: { xs: 1, lg: 0 },
+      borderColor: 'divider',
+    }}
+  >
+    <ChallengeRatingPreviewCard ratingPreview={ratingPreview} isLoading={isRatingLoading} />
+    <ArenaWinnersCard arenas={arenas} isLoading={isArenasLoading} />
+  </Box>
 );
-
 export default ChallengesListPageInsightsSection;

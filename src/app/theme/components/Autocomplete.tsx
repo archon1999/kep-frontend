@@ -7,6 +7,7 @@ import {
   outlinedInputClasses,
 } from '@mui/material';
 import { Components } from '@mui/material/styles';
+import { overlayOptionStyles, overlayPaperStyles } from 'app/theme/styles/overlays';
 import IconifyIcon from 'shared/components/base/IconifyIcon';
 
 declare module '@mui/material' {
@@ -30,6 +31,14 @@ const Autocomplete: Components<Omit<Theme, 'components'>>['MuiAutocomplete'] = {
     },
   },
   styleOverrides: {
+    paper: ({ theme }) => (theme.preset === 'default' ? overlayPaperStyles(theme) : {}),
+    listbox: ({ theme }) =>
+      theme.preset === 'default'
+        ? {
+            paddingBlock: 6,
+            '& .MuiAutocomplete-option': overlayOptionStyles(theme),
+          }
+        : {},
     root: {
       [`& .${inputLabelClasses.root}`]: {
         left: 0,
@@ -96,11 +105,11 @@ const Autocomplete: Components<Omit<Theme, 'components'>>['MuiAutocomplete'] = {
         lineHeight: 1.2,
       },
     },
-    option: {
+    option: ({ theme }) => ({
       padding: '8px 16px',
       fontSize: 14,
-      minHeight: '0px !important',
-    },
+      minHeight: theme.preset === 'default' ? 40 : 0,
+    }),
   },
 };
 

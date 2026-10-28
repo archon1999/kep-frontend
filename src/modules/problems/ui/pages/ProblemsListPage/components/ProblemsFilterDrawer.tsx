@@ -9,21 +9,20 @@ import {
   Chip,
   Divider,
   InputAdornment,
-  Menu,
   MenuItem,
+  Popover,
   Stack,
   Typography,
-  alpha,
   formLabelClasses,
   useTheme,
 } from '@mui/material';
 import { difficultyOptions } from 'modules/problems/config/difficulty';
+import { ProblemsListParams } from 'modules/problems/domain/contracts/problems.repository.ts';
 import {
   ProblemCategory,
   ProblemGroup,
   ProblemLanguageOption,
 } from 'modules/problems/domain/entities/problem.entity.ts';
-import { ProblemsListParams } from 'modules/problems/domain/ports/problems.repository.ts';
 import CatalogFilter from 'modules/problems/ui/pages/ProblemsListPage/components/CatalogFilter.tsx';
 import IconifyIcon from 'shared/components/base/IconifyIcon.tsx';
 import FilterDrawer, {
@@ -31,6 +30,7 @@ import FilterDrawer, {
   FilterRangeField,
 } from 'shared/components/common/FilterDrawer.tsx';
 import StyledTextField from 'shared/components/styled/StyledTextField.tsx';
+import { cssVarRgba } from 'shared/lib/utils';
 
 export const problemStatusOptions = [
   { label: 'problems.statusUnknown', value: 3, icon: 'mdi:minus', color: 'warning.main' },
@@ -316,7 +316,7 @@ const ProblemsFilterDrawerContent = ({
                 <InputAdornment position="end">
                   <IconifyIcon
                     icon={tagsOpen ? 'mdi:chevron-up' : 'mdi:chevron-down'}
-                    color={theme.palette.text.secondary}
+                    color={theme.vars.palette.text.secondary}
                   />
                 </InputAdornment>
               ),
@@ -413,21 +413,24 @@ const ProblemsFilterDrawerContent = ({
         />
       </Stack>
 
-      <Menu
+      <Popover
         id="problems-tags-menu"
         anchorEl={tagsAnchor}
         open={tagsOpen}
         onClose={handleTagsClose}
         anchorOrigin={{ vertical: 'bottom', horizontal: 'left' }}
         transformOrigin={{ vertical: 'top', horizontal: 'left' }}
-        MenuListProps={{ disablePadding: true }}
-        PaperProps={{
-          sx: {
-            mt: 1,
-            width: { xs: 280, sm: 420 },
-            maxHeight: 520,
-            p: 1,
-            overflow: 'hidden',
+        slotProps={{
+          paper: {
+            role: 'dialog',
+            'aria-label': t('problems.tags'),
+            sx: {
+              mt: 1,
+              width: { xs: 280, sm: 420 },
+              maxHeight: 'min(520px, calc(100dvh - 32px))',
+              p: 2,
+              overflowY: 'auto',
+            },
           },
         }}
       >
@@ -445,7 +448,7 @@ const ProblemsFilterDrawerContent = ({
               <Typography variant="caption" color="text.secondary">
                 {filter.tags && filter.tags.length > 0
                   ? t('problems.appliedFilters', { count: filter.tags.length })
-                  : `${groupedTags.length} categories, ${tags.length} tags`}
+                  : t('problems.tagSummary', { categories: groupedTags.length, tags: tags.length })}
               </Typography>
             </Stack>
 
@@ -461,7 +464,7 @@ const ProblemsFilterDrawerContent = ({
                 </Button>
               ) : null}
               <Button size="small" variant="text" color="secondary" onClick={handleTagsClose}>
-                OK
+                {t('common.done')}
               </Button>
             </Stack>
           </Stack>
@@ -483,13 +486,14 @@ const ProblemsFilterDrawerContent = ({
                     expanded={isExpanded}
                     onChange={handleTagCategoryToggle(categoryId)}
                     sx={{
-                      border: '1px solid',
+                      borderBottom: '1px solid',
+                      boxShadow: 'none',
                       borderColor: category.isFocused
-                        ? alpha(theme.palette.primary.main, 0.4)
+                        ? cssVarRgba(theme.vars.palette.primary.mainChannel, 0.4)
                         : 'divider',
                       bgcolor: category.isFocused
-                        ? alpha(theme.palette.primary.main, 0.04)
-                        : alpha(theme.palette.background.default, 0.18),
+                        ? cssVarRgba(theme.vars.palette.primary.mainChannel, 0.04)
+                        : 'transparent',
                     }}
                   >
                     <AccordionSummary>
@@ -536,14 +540,22 @@ const ProblemsFilterDrawerContent = ({
                                 isActive
                                   ? {
                                       fontWeight: 600,
-                                      boxShadow: `0 8px 20px ${alpha(theme.palette.primary.main, 0.18)}`,
                                     }
                                   : {
-                                      bgcolor: alpha(theme.palette.background.paper, 0.82),
-                                      borderColor: alpha(theme.palette.text.primary, 0.12),
+                                      bgcolor: 'transparent',
+                                      borderColor: cssVarRgba(
+                                        theme.vars.palette.text.primaryChannel,
+                                        0.12,
+                                      ),
                                       '&:hover': {
-                                        borderColor: alpha(theme.palette.primary.main, 0.32),
-                                        bgcolor: alpha(theme.palette.primary.main, 0.04),
+                                        borderColor: cssVarRgba(
+                                          theme.vars.palette.primary.mainChannel,
+                                          0.32,
+                                        ),
+                                        bgcolor: cssVarRgba(
+                                          theme.vars.palette.primary.mainChannel,
+                                          0.04,
+                                        ),
                                       },
                                     }
                               }
@@ -558,7 +570,7 @@ const ProblemsFilterDrawerContent = ({
             </Stack>
           </Box>
         </Stack>
-      </Menu>
+      </Popover>
     </FilterDrawer>
   );
 };

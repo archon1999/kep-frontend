@@ -1,29 +1,23 @@
-![KEP.uz — practice, compete, grow](assets/banner.svg)
+<picture><source media="(prefers-color-scheme: dark)" srcset="assets/banner.svg"><img src="assets/banner-light.svg" alt="KEP.uz — programming platform" width="100%"></picture>
 
-**The web experience for a programming community.**
+# KEP.uz · programming workspace
 
-[Live platform](https://kep.uz/) · [Local setup](#local-setup) · [Project structure](#project-structure) · [Quality gates](#quality-gates)
+Problems, code, submissions, contests and learning in a connected platform.
 
-KEP.uz connects problem solving, contests, structured learning and community. This repository is its production React client, built around typed API contracts, reusable product modules and authenticated real-time experiences.
+[Website](https://kep.uz/) · [Architecture & platform data](https://github.com/archon1999/engineering-portfolio/blob/main/projects/kep.md) · [Local setup](#local-setup) · [Quality gates](#quality-gates)
 
-| Registered users | Visible problems | Contests | Submissions |
-| ---: | ---: | ---: | ---: |
-| 9,564 | 2,101 | 374 | 436,057 |
+[![CI](https://github.com/archon1999/kep-frontend/actions/workflows/deploy.yaml/badge.svg?branch=production)](https://github.com/archon1999/kep-frontend/actions/workflows/deploy.yaml)
 
-[Public platform snapshot](https://kep.uz/api/landing-page-statistics), **26 October 2026**. Registered users and total submissions; these are not activity or acceptance metrics.
+Founded and built by [Nazarbek Baltabaev](https://github.com/archon1999). This repository is the public React client; Django services and the online-judge runtime are separate parts of the platform.
 
-### Engineering at a glance
+## Engineering boundaries
 
-- **Product breadth:** problems, submissions, contests, learning, duels, arena and community.
-- **Defined boundaries:** application bootstrap, product modules and shared infrastructure.
-- **Typed integration:** generated API clients, cookie/CSRF authentication and real-time updates.
-- **Delivery:** automated checks, immutable frontend artifacts and deployment health checks.
-
-Founded and built by [Nazarbek Baltabaev](https://github.com/archon1999).
-
----
-
-# KEP.uz Frontend
+| Layer | Responsibility |
+| --- | --- |
+| `app` | Routes, providers, layouts and application composition |
+| `modules` | Product features, application hooks and domain contracts |
+| `shared` | UI primitives, transport, localization and shared infrastructure |
+| API integration | Generated OpenAPI clients, repository implementations and DTO mapping |
 
 Production web client for [KEP.uz](https://kep.uz), an Uzbek competitive-programming and learning platform. The application covers problems and submissions, contests, courses, tests, projects, duels, arena, challenges, tournaments, hackathons, community content, profiles, and KEPcoin features.
 
@@ -31,7 +25,7 @@ Production web client for [KEP.uz](https://kep.uz), an Uzbek competitive-program
 
 - React 19, TypeScript 5, and Vite 7
 - Material UI 7 for the component system
-- React Router 7 for routing
+- React Router 8 for routing
 - TanStack Query and SWR for server state
 - Axios with cookie-based authentication and CSRF protection
 - Orval-generated API clients from the backend OpenAPI schema
@@ -111,4 +105,3 @@ npm run preview
 Pushes to `production` run lint, typecheck, unit tests, dependency audit, and a production build in GitHub Actions. A successful build is uploaded as an immutable artifact, copied to the server, packaged in the Nginx image, health-checked, and rolled back automatically if deployment fails.
 
 Production configuration should be copied from `.env.production.example`; only public endpoint values belong in that file.
-

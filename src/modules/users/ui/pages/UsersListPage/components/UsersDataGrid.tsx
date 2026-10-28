@@ -7,16 +7,18 @@ import {
   GridSortModel,
   GridValidRowModel,
 } from '@mui/x-data-grid';
+import { getRankColor } from 'app/theme/colors/medals';
 import { UsersListItem } from 'modules/users/domain/entities/user.entity';
 import UserPopover from 'modules/users/ui/shared/components/UserPopover';
 import CountryFlagIcon from 'shared/components/common/CountryFlagIcon';
 import { getDataGridNoRowsOverlaySlotProps } from 'shared/components/common/DataGridNoRowsOverlay';
 import KepcoinValue from 'shared/components/common/KepcoinValue';
-import { rowMatchesUsername } from 'shared/lib/pinnedRows';
+import { RouteDataGridListPagination } from 'shared/components/pagination/DataGridListPagination';
 import ChallengesRatingChip from 'shared/components/rating/ChallengesRatingChip';
 import ContestsRatingChip from 'shared/components/rating/ContestsRatingChip';
 import Streak from 'shared/components/rating/Streak';
 import useStableGridRowCount from 'shared/hooks/useStableGridRowCount';
+import { rowMatchesUsername } from 'shared/lib/pinnedRows';
 
 export interface UsersDataGridLabels {
   user: string;
@@ -79,7 +81,7 @@ const UsersDataGrid = ({
           <Stack direction="row" spacing={2} alignItems="center" sx={{ minWidth: 0 }}>
             {user.rowIndex !== undefined && (
               <Typography
-                color="primary"
+                color={getRankColor(user.rowIndex)}
                 fontWeight={800}
                 sx={{
                   minWidth: 34,
@@ -247,6 +249,7 @@ const UsersDataGrid = ({
 
   return (
     <DataGrid
+      className="kep-data-grid-section"
       autoHeight
       sortingOrder={['desc', 'asc', null]}
       rowHeight={72}
@@ -257,6 +260,7 @@ const UsersDataGrid = ({
       onPaginationModelChange={onPaginationModelChange}
       pageSizeOptions={[10, 20, 50]}
       paginationMode="server"
+      slots={{ pagination: RouteDataGridListPagination }}
       sortModel={sortModel}
       onSortModelChange={onSortModelChange}
       sortingMode="server"

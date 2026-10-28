@@ -15,9 +15,11 @@ import {
   Typography,
 } from '@mui/material';
 import { normalizeSupportedLocale } from 'app/locales/locale';
+import { statisticsHeadingSx, statisticsTableSx } from 'app/theme/styles/statistics';
+import { statisticsInset, statisticsPanelSx } from 'app/theme/styles/statistics';
 import { ChallengeQuestionTimeType, type ChallengeUserStatistics } from 'modules/challenges/domain';
+import { QuestionType } from 'modules/testing/domain/enums/question-type.enum';
 import { createNumberFormatter } from 'shared/lib/numberFormat';
-import { statisticsInset, statisticsPanelSx } from './statisticsStyles';
 
 interface StatisticsKnowledgeProps {
   statistics: ChallengeUserStatistics;
@@ -34,22 +36,18 @@ const percent = (solved: number, seen: number) =>
   seen > 0 ? Math.min(100, Math.max(0, (solved / seen) * 100)) : 0;
 
 const questionTypeKeys: Record<number, string> = {
-  1: 'singleChoice',
-  2: 'multipleChoice',
-  3: 'textInput',
-  4: 'conformity',
-  5: 'ordering',
-  6: 'classification',
-  7: 'codeInput',
-  8: 'problem',
-};
+  [QuestionType.SingleChoice]: 'singleChoice',
+  [QuestionType.MultipleChoice]: 'multipleChoice',
+  [QuestionType.TextInput]: 'textInput',
+  [QuestionType.Conformity]: 'conformity',
+  [QuestionType.Ordering]: 'ordering',
+  [QuestionType.Classification]: 'classification',
+  [QuestionType.CodeInput]: 'codeInput',
+  [QuestionType.Problem]: 'problem',
+  [QuestionType.ChessPuzzle]: 'chessPuzzle',
+} satisfies Record<QuestionType, string>;
 
-const tableSx = {
-  '& td, & th': { fontSize: 14, px: 1.25 },
-  '& td': { py: 1.5 },
-  '& tbody tr:last-child td': { borderBottom: 0 },
-  fontVariantNumeric: 'tabular-nums',
-};
+const tableSx = statisticsTableSx;
 
 const KnowledgeTable = ({
   label,
@@ -75,22 +73,19 @@ const KnowledgeTable = ({
   }
 
   return (
-    <TableContainer sx={{ borderRadius: 0 }}>
-      <Table
-        size="small"
-        className="disable-edge-padding"
-        aria-label={label}
-        sx={{ ...tableSx, minWidth: 420 }}
-      >
+    <TableContainer role="region" tabIndex={0} aria-label={label} sx={{ borderRadius: 0 }}>
+      <Table size="small" className="disable-edge-padding" aria-label={label} sx={tableSx}>
         <TableHead>
           <TableRow>
             <TableCell>{firstColumnLabel}</TableCell>
             <TableCell align="right">
-              {t('challenges.statisticsPage.knowledge.questionsSeen')}
+              {t('challenges.statisticsPage.knowledge.seenShort')}
             </TableCell>
-            <TableCell align="right">{t('challenges.statisticsPage.questionsSolved')}</TableCell>
             <TableCell align="right">
-              {t('challenges.statisticsPage.knowledge.solveRate')}
+              {t('challenges.statisticsPage.knowledge.solvedShort')}
+            </TableCell>
+            <TableCell align="right">
+              {t('challenges.statisticsPage.knowledge.rateShort')}
             </TableCell>
           </TableRow>
         </TableHead>
@@ -193,9 +188,9 @@ const StatisticsKnowledge = ({ statistics }: StatisticsKnowledgeProps) => {
           aria-label={format.title}
           sx={{
             ...tableSx,
-            '& td, & th': { fontSize: 14, px: 0.75, overflowWrap: 'normal' },
-            '& th': { whiteSpace: 'nowrap' },
-            '& td': { py: 1, height: 40 },
+            '& td, & th': { fontSize: 12, px: 0.75, overflowWrap: 'normal' },
+            '& th': { fontSize: 11, whiteSpace: 'normal' },
+            '& td': { py: 0.75, height: 34 },
           }}
         >
           <TableHead>
@@ -237,11 +232,11 @@ const StatisticsKnowledge = ({ statistics }: StatisticsKnowledgeProps) => {
     <Grid container>
       <Grid size={{ xs: 12, lg: 5 }}>
         <Paper component="section" sx={[statisticsPanelSx, { p: statisticsInset, height: 1 }]}>
-          <Typography component="h2" variant="h6" sx={{ mb: 4 }}>
+          <Typography component="h2" variant="h6" sx={[statisticsHeadingSx, { mb: 2 }]}>
             {t('challenges.statisticsPage.knowledge.difficulty')}
           </Typography>
           {difficultyRows.length ? (
-            <Stack direction="column" spacing={3}>
+            <Stack direction="column" spacing={2}>
               {difficultyRows.map((row) => {
                 const difficultyKey =
                   row.difficulty === 1
@@ -285,7 +280,7 @@ const StatisticsKnowledge = ({ statistics }: StatisticsKnowledgeProps) => {
             </Typography>
           )}
 
-          <Divider sx={{ my: 4 }} />
+          <Divider sx={{ my: 2 }} />
           <Typography component="h3" variant="subtitle1" sx={{ mb: 3 }}>
             {t('challenges.statisticsPage.performance.solveSummary')}
           </Typography>
@@ -310,7 +305,8 @@ const StatisticsKnowledge = ({ statistics }: StatisticsKnowledgeProps) => {
                     {t('challenges.statisticsPage.' + fact.label)}
                   </Typography>
                   <Typography
-                    variant="h4"
+                    variant="metric"
+                    fontSize={26}
                     fontWeight={400}
                     sx={{ flexShrink: 0, fontVariantNumeric: 'tabular-nums' }}
                   >
@@ -329,7 +325,7 @@ const StatisticsKnowledge = ({ statistics }: StatisticsKnowledgeProps) => {
 
       <Grid size={{ xs: 12, lg: 7 }}>
         <Paper component="section" sx={[statisticsPanelSx, { p: statisticsInset, height: 1 }]}>
-          <Typography component="h2" variant="h6" sx={{ mb: 4 }}>
+          <Typography component="h2" variant="h6" sx={[statisticsHeadingSx, { mb: 2 }]}>
             {t('challenges.statisticsPage.knowledge.questionTypes')}
           </Typography>
           <KnowledgeTable
@@ -342,7 +338,7 @@ const StatisticsKnowledge = ({ statistics }: StatisticsKnowledgeProps) => {
 
       <Grid size={{ xs: 12, lg: 7 }}>
         <Paper component="section" sx={[statisticsPanelSx, { p: statisticsInset, height: 1 }]}>
-          <Typography component="h2" variant="h6" sx={{ mb: 4 }}>
+          <Typography component="h2" variant="h6" sx={[statisticsHeadingSx, { mb: 2 }]}>
             {t('challenges.statisticsPage.knowledge.topChapters')}
           </Typography>
           <KnowledgeTable
@@ -355,17 +351,10 @@ const StatisticsKnowledge = ({ statistics }: StatisticsKnowledgeProps) => {
 
       <Grid size={{ xs: 12, lg: 5 }}>
         <Paper component="section" sx={[statisticsPanelSx, { p: statisticsInset, height: 1 }]}>
-          <Typography component="h2" variant="h6" sx={{ mb: 4 }}>
+          <Typography component="h2" variant="h6" sx={[statisticsHeadingSx, { mb: 2 }]}>
             {t('challenges.statisticsPage.history.format')}
           </Typography>
-          <Grid container columnSpacing={3} rowSpacing={3}>
-            <Grid size={{ xs: 12, sm: 6 }}>{renderFormatTable(formats[0])}</Grid>
-            <Grid size={{ xs: 12, sm: 6 }}>
-              <Stack direction="column" spacing={3}>
-                {formats.slice(1).map(renderFormatTable)}
-              </Stack>
-            </Grid>
-          </Grid>
+          <Stack spacing={2.5}>{formats.map(renderFormatTable)}</Stack>
         </Paper>
       </Grid>
     </Grid>

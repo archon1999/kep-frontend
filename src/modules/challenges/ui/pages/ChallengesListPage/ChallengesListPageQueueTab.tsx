@@ -1,12 +1,15 @@
 import { useTranslation } from 'react-i18next';
-import { Button, Card, CardContent, Grid, Skeleton, Stack, Typography } from '@mui/material';
+import { Button, Grid, Skeleton, Stack, Typography } from '@mui/material';
 import { ChallengeCall } from 'modules/challenges/domain';
-import Kepper from 'shared/components/common/Kepper';
+import IconifyIcon from 'shared/components/base/IconifyIcon';
+import EmptyState from 'shared/components/common/EmptyState';
 import ChallengeCallCard from './components/ChallengeCallCard.tsx';
 
 type ChallengesListPageQueueTabProps = {
   calls?: ChallengeCall[];
   isLoading: boolean;
+  error?: unknown;
+  onOpenQuickStart: () => void;
   onRefresh: () => void;
   onAccepted: (challengeId?: number) => void;
   onRemoved: () => void;
@@ -15,6 +18,8 @@ type ChallengesListPageQueueTabProps = {
 const ChallengesListPageQueueTab = ({
   calls,
   isLoading,
+  error,
+  onOpenQuickStart,
   onRefresh,
   onAccepted,
   onRemoved,
@@ -31,8 +36,15 @@ const ChallengesListPageQueueTab = ({
         flexWrap="wrap"
         gap={1}
       >
-        <Typography variant="h6">{t('challenges.waitingRoom')}</Typography>
-        <Button variant="outlined" size="small" onClick={onRefresh}>
+        <Typography component="h2" variant="h6">
+          {t('challenges.waitingRoom')}
+        </Typography>
+        <Button
+          variant="text"
+          size="small"
+          onClick={onRefresh}
+          startIcon={<IconifyIcon icon="solar:refresh-linear" fontSize={16} />}
+        >
           {t('challenges.refresh')}
         </Button>
       </Stack>
@@ -40,12 +52,12 @@ const ChallengesListPageQueueTab = ({
       <Grid container spacing={2}>
         {isLoading
           ? Array.from({ length: 4 }).map((_, index) => (
-              <Grid key={index} size={{ xs: 12, sm: 6, lg: 3 }}>
-                <Skeleton variant="rectangular" height={180} sx={{ borderRadius: 2 }} />
+              <Grid key={index} size={{ xs: 12, sm: 6, lg: 6 }}>
+                <Skeleton variant="rectangular" height={215} />
               </Grid>
             ))
           : safeCalls.map((call) => (
-              <Grid key={call.id} size={{ xs: 12, sm: 6, lg: 3 }}>
+              <Grid key={call.id} size={{ xs: 12, sm: 6, lg: 6 }}>
                 <ChallengeCallCard
                   challengeCall={call}
                   onAccepted={onAccepted}
@@ -55,16 +67,17 @@ const ChallengesListPageQueueTab = ({
             ))}
         {!isLoading && !safeCalls.length && (
           <Grid size={{ xs: 12 }}>
-            <Card variant="outlined">
-              <CardContent>
-                <Stack alignItems="center" spacing={1.5} sx={{ py: 2 }}>
-                  <Kepper pose="coffee" motion="loop" size={128} />
-                  <Typography variant="body2" color="text.secondary">
-                    {t('challenges.noCalls')}
-                  </Typography>
-                </Stack>
-              </CardContent>
-            </Card>
+            <EmptyState
+              compact
+              kind={error ? 'error' : 'battles'}
+              title={t(error ? 'common.loadFailed' : 'challenges.noCalls')}
+              description={error ? undefined : t('challenges.quickStartSubtitle')}
+              action={
+                <Button variant="contained" onClick={error ? onRefresh : onOpenQuickStart}>
+                  {t(error ? 'common.retry' : 'challenges.quickStartTitle')}
+                </Button>
+              }
+            />
           </Grid>
         )}
       </Grid>

@@ -1,20 +1,11 @@
 import { useCallback, useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
-import {
-  Alert,
-  Dialog,
-  DialogContent,
-  DialogTitle,
-  IconButton,
-  LinearProgress,
-  Stack,
-  Typography,
-} from '@mui/material';
-import IconifyIcon from 'shared/components/base/IconifyIcon';
+import { Alert, Dialog, DialogContent, LinearProgress } from '@mui/material';
+import { getAttemptDetails } from 'modules/problems/application/queries';
+import { AttemptDetail, AttemptListItem } from 'modules/problems/domain/entities/problem.entity';
+import DialogHeader from 'shared/components/common/DialogHeader';
 import { toast } from 'sonner';
 import AttemptJudgeSummaryCard from './AttemptJudgeSummaryCard';
-import { problemsQueries } from 'modules/problems/application/queries';
-import { AttemptDetail, AttemptListItem } from 'modules/problems/domain/entities/problem.entity';
 
 interface AttemptProtocolDialogProps {
   open: boolean;
@@ -22,11 +13,7 @@ interface AttemptProtocolDialogProps {
   onClose: () => void;
 }
 
-const AttemptProtocolDialog = ({
-  open,
-  attempt,
-  onClose,
-}: AttemptProtocolDialogProps) => {
+const AttemptProtocolDialog = ({ open, attempt, onClose }: AttemptProtocolDialogProps) => {
   const { t } = useTranslation();
   const [detail, setDetail] = useState<AttemptDetail | null>(null);
   const [isLoading, setIsLoading] = useState(false);
@@ -41,7 +28,7 @@ const AttemptProtocolDialog = ({
 
     setIsLoading(true);
     try {
-      const data = await problemsQueries.problemsRepository.getAttempt(attempt.id);
+      const data = await getAttemptDetails(attempt.id);
       setDetail(data);
     } catch (error: any) {
       const fallbackMessage = t('problems.attempts.modal.loadError');
@@ -64,30 +51,25 @@ const AttemptProtocolDialog = ({
   if (!attempt) return null;
 
   return (
-    <Dialog open={open} onClose={onClose} maxWidth="sm" fullWidth>
-      <DialogTitle>
-        <Stack direction="row" alignItems="center" justifyContent="space-between" spacing={2}>
-          <Stack spacing={0.25}>
-            <Typography variant="h6" fontWeight={700}>
-              {t('problems.attempts.modal.testingProtocol')}
-            </Typography>
-            <Typography variant="body2" color="text.secondary">
-              #{baseAttempt?.id} {baseAttempt?.problemTitle ?? ''}
-            </Typography>
-          </Stack>
-          <IconButton aria-label={t('common.close')} onClick={onClose} size="small">
-            <IconifyIcon icon="mdi:close" width={20} height={20} />
-          </IconButton>
-        </Stack>
-      </DialogTitle>
+    <Dialog
+      open={open}
+      onClose={onClose}
+      maxWidth="sm"
+      fullWidth
+      aria-labelledby="attempt-protocol-title"
+    >
+      <DialogHeader
+        id="attempt-protocol-title"
+        title={t('problems.attempts.modal.testingProtocol')}
+        subtitle={`#${baseAttempt?.id} ${baseAttempt?.problemTitle ?? ''}`}
+        onClose={onClose}
+      />
       <DialogContent dividers>
         {isLoading ? <LinearProgress sx={{ mb: 2 }} /> : null}
         {baseAttempt?.judgeSummary ? (
           <AttemptJudgeSummaryCard summary={baseAttempt.judgeSummary} balls={baseAttempt.balls} />
         ) : (
-          !isLoading && (
-            <Alert severity="info">{t('problems.attempts.modal.noJudgeSummary')}</Alert>
-          )
+          !isLoading && <Alert severity="info">{t('problems.attempts.modal.noJudgeSummary')}</Alert>
         )}
       </DialogContent>
     </Dialog>

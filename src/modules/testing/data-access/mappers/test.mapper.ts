@@ -12,7 +12,7 @@ import {
   PageResult,
   StartTestResponse,
   TestResultRow,
-} from '../../domain/ports/testing.repository.ts';
+} from '../../domain/contracts/testing.repository.ts';
 
 const normalizeOption = (option: any): QuestionOption => ({
   id: option?.id ?? option?.optionId ?? option?.option_id,
@@ -114,17 +114,3 @@ export const mapFinishTestResponse = (payload: any): FinishTestResponse => ({
   success: Boolean(payload?.success ?? payload?.ok ?? payload?.result),
   result: payload?.result,
 });
-
-export const hydrateQuestion = (question: Question): Question => {
-  if (question.type === QuestionType.Ordering && question.options?.length) {
-    return {
-      ...question,
-      options: question.options.map((option, index) => ({
-        ...option,
-        option: option.option || option.optionSecondary || option.optionMain || `#${index + 1}`,
-      })),
-    };
-  }
-
-  return question;
-};

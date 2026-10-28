@@ -1,6 +1,13 @@
 import { ApiContestsListParams } from 'shared/api/orval/generated/endpoints/index.schemas';
 import useSWR, { SWRConfiguration } from 'swr';
-import { HttpContestsRepository } from '../data-access/repository/http.contests.repository';
+import { contestsRepository } from '../data-access';
+import {
+  ContestContestantsParams,
+  ContestRegistrantsParams,
+  ContestStandingsParams,
+  ContestsRatingParams,
+  PageResult,
+} from '../domain/contracts/contests.repository';
 import { ContestDetail } from '../domain/entities/contest-detail.entity';
 import { ContestProblemEntity } from '../domain/entities/contest-problem.entity';
 import { ContestQuestion } from '../domain/entities/contest-question.entity';
@@ -24,21 +31,16 @@ import {
   ContestantEntity,
   ContestantTimeline,
 } from '../domain/entities/contestant.entity';
-import {
-  ContestContestantsParams,
-  ContestRegistrantsParams,
-  ContestsRatingParams,
-  ContestStandingsParams,
-  PageResult,
-} from '../domain/ports/contests.repository';
-
-const contestsRepository = new HttpContestsRepository();
 
 export const useContestReplay = (contestId?: number | string) =>
-  useSWR(contestId ? ['contest-replay', contestId] : null, () => contestsRepository.replay(contestId!), {
-    revalidateOnFocus: false,
-    revalidateOnReconnect: false,
-  });
+  useSWR(
+    contestId ? ['contest-replay', contestId] : null,
+    () => contestsRepository.replay(contestId!),
+    {
+      revalidateOnFocus: false,
+      revalidateOnReconnect: false,
+    },
+  );
 
 const listKey = (params?: ApiContestsListParams) => [
   'contests-list',
@@ -53,8 +55,10 @@ const listKey = (params?: ApiContestsListParams) => [
   params?.is_rated,
 ];
 
-export const useContestsList = (params?: ApiContestsListParams) =>
-  useSWR<PageResult<ContestListItem>>(listKey(params), () => contestsRepository.list(params));
+export const useContestsList = (params?: ApiContestsListParams | null) =>
+  useSWR<PageResult<ContestListItem>>(params === null ? null : listKey(params), () =>
+    contestsRepository.list(params ?? undefined),
+  );
 
 export const useContestCategories = () =>
   useSWR<ContestCategoryEntity[]>('contests-categories', () => contestsRepository.categories());
@@ -187,7 +191,3 @@ export const useContestContestants = (
     contestId ? ['contest-contestants', contestId, params?.ordering] : null,
     () => contestsRepository.contestants(contestId!, params),
   );
-
-export const contestsQueries = {
-  contestsRepository,
-};

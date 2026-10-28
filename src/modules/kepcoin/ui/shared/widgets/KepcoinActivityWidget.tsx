@@ -1,28 +1,17 @@
 import { useTranslation } from 'react-i18next';
-import {
-  Alert,
-  Box,
-  Button,
-  Card,
-  CardContent,
-  Chip,
-  Pagination,
-  Skeleton,
-  Stack,
-  ToggleButton,
-  ToggleButtonGroup,
-  Typography,
-} from '@mui/material';
-import { alpha } from '@mui/material/styles';
+import { Alert, Box, Button, Skeleton, Stack, Typography } from '@mui/material';
+import { HistoryView } from 'modules/kepcoin/domain/entities/history.types';
 import {
   KepcoinEarnHistoryItem,
   KepcoinEarnType,
   KepcoinSpendHistoryItem,
   KepcoinSpendType,
 } from 'modules/kepcoin/domain/entities/kepcoin.entity';
-import { HistoryView } from 'modules/kepcoin/ui/types';
-import IconifyIcon from 'shared/components/base/IconifyIcon';
+import EmptyState from 'shared/components/common/EmptyState';
 import KepcoinValue from 'shared/components/common/KepcoinValue';
+import ResponsiveTabs from 'shared/components/common/ResponsiveTabs';
+import { ListPagination } from 'shared/components/sections/common/FramedListPage';
+import SectionHeader from 'shared/components/sections/common/SectionHeader';
 import { formatDateTime } from 'shared/lib/dateTime';
 import { createSafeHtml } from 'shared/lib/safeHtml';
 
@@ -174,246 +163,101 @@ const KepcoinActivityWidget = ({
   const { t } = useTranslation();
 
   return (
-    <Card
-      sx={{
-        borderRadius: 2,
-        border: (theme) => `1px solid ${alpha(theme.palette.primary.main, 0.08)}`,
-        boxShadow: 'none',
-      }}
-    >
-      <CardContent sx={{ p: { xs: 2, md: 3 } }}>
-        <Stack spacing={3}>
-          <Stack direction={{ xs: 'column', sm: 'row' }} justifyContent="space-between" gap={2}>
-            <Typography variant="h5" fontWeight={700}>
-              {t('kepcoinPage.history.title')}
-            </Typography>
-
-            <ToggleButtonGroup
-              value={view}
-              exclusive
-              onChange={onViewChange}
-              size="small"
-              sx={{
-                alignSelf: { xs: 'flex-start', sm: 'center' },
-                '& .MuiToggleButton-root': {
-                  px: 1.75,
-                  borderRadius: 999,
-                  border: 0,
-                  color: 'text.secondary',
-                  textTransform: 'none',
-                  fontWeight: 700,
-                },
-                '& .Mui-selected': {
-                  bgcolor: (theme) => alpha(theme.palette.primary.main, 0.12),
-                  color: 'primary.main',
-                },
-              }}
-            >
-              <ToggleButton value="earns">{t('kepcoinPage.history.tabs.earns')}</ToggleButton>
-              <ToggleButton value="spends">{t('kepcoinPage.history.tabs.spends')}</ToggleButton>
-            </ToggleButtonGroup>
+    <Box component="section">
+      <Box>
+        <SectionHeader title={t('kepcoinPage.history.title')} />
+        <ResponsiveTabs
+          value={view}
+          tabsProps={{
+            sx: { px: 'var(--kep-content-inset)', borderBottom: 1, borderColor: 'divider' },
+          }}
+          onChange={(value) => onViewChange(null, value)}
+          ariaLabel={t('kepcoinPage.history.title')}
+          items={(['earns', 'spends'] as const).map((value) => ({
+            value,
+            label: t('kepcoinPage.history.tabs.' + value),
+          }))}
+        />
+        {isLoading ? (
+          <Stack direction="column" gap={1}>
+            {Array.from({ length: 5 }, (_, i) => (
+              <Skeleton key={i} variant="rectangular" height={88} />
+            ))}
           </Stack>
-
-          {isLoading ? (
-            <Stack spacing={2}>
-              {Array.from({ length: 5 }).map((_, index) => (
-                <Stack key={index} direction="row" spacing={2} alignItems="stretch">
-                  <Stack alignItems="center" sx={{ minWidth: 18 }}>
-                    <Skeleton variant="circular" width={12} height={12} />
-                    <Skeleton variant="rounded" width={2} height={92} />
-                  </Stack>
-                  <Skeleton variant="rounded" width="100%" height={112} sx={{ borderRadius: 4 }} />
-                </Stack>
-              ))}
-            </Stack>
-          ) : error ? (
-            <Alert
-              severity="error"
-              action={
-                <Button color="inherit" size="small" onClick={onRetry}>
-                  {t('kepcoinPage.history.retry')}
-                </Button>
-              }
-            >
-              {t('kepcoinPage.history.error')}
-            </Alert>
-          ) : historyItems.length === 0 ? (
-            <Box
-              sx={{
-                p: { xs: 3, md: 4 },
-                textAlign: 'center',
-                borderRadius: 2,
-                border: (theme) => `1px dashed ${alpha(theme.palette.primary.main, 0.16)}`,
-                bgcolor: (theme) => alpha(theme.palette.primary.main, 0.03),
-              }}
-            >
-              <Typography variant="h6" fontWeight={700}>
-                {t('kepcoinPage.history.emptyTitle')}
-              </Typography>
-              <Typography variant="body2" color="text.secondary" mt={1}>
-                {t('kepcoinPage.history.emptySubtitle')}
-              </Typography>
-            </Box>
-          ) : (
-            <Stack spacing={2}>
-              {historyItems.map((item, index) => {
-                const isEarn = view === 'earns';
-                const happenedAt = item.happenedAt
-                  ? formatDateTime(item.happenedAt, 'compactDateTimeNoComma')
-                  : null;
-
-                return (
-                  <Stack key={item.id} direction="row" spacing={2} alignItems="stretch">
-                    <Stack alignItems="center" sx={{ minWidth: 18 }}>
-                      <Box
-                        sx={{
-                          width: 12,
-                          height: 12,
-                          borderRadius: '50%',
-                          mt: 2.25,
-                          bgcolor: isEarn ? 'success.main' : 'warning.main',
-                          boxShadow: (theme) =>
-                            `0 0 0 6px ${alpha(
-                              isEarn ? theme.palette.success.main : theme.palette.warning.main,
-                              0.14,
-                            )}`,
-                        }}
-                      />
-                      {index < historyItems.length - 1 && (
-                        <Box
-                          sx={{
-                            mt: 1,
-                            width: 2,
-                            flex: 1,
-                            borderRadius: 99,
-                            bgcolor: (theme) => alpha(theme.palette.primary.main, 0.12),
-                          }}
-                        />
+        ) : error ? (
+          <Alert
+            severity="error"
+            action={<Button onClick={onRetry}>{t('kepcoinPage.history.retry')}</Button>}
+          >
+            {t('kepcoinPage.history.error')}
+          </Alert>
+        ) : !historyItems.length ? (
+          <EmptyState
+            compact
+            title={t('kepcoinPage.history.emptyTitle')}
+            description={t('kepcoinPage.history.emptySubtitle')}
+          />
+        ) : (
+          <Box component="ul" sx={{ listStyle: 'none', m: 0, p: 0 }}>
+            {historyItems.map((item) => (
+              <Stack
+                component="li"
+                key={item.id}
+                direction="row"
+                gap={2}
+                sx={{
+                  py: 2,
+                  px: 'var(--kep-content-inset)',
+                  borderBottom: 1,
+                  borderColor: 'divider',
+                  justifyContent: 'space-between',
+                  alignItems: 'center',
+                }}
+              >
+                <Stack gap={0.75} sx={{ minWidth: 0 }}>
+                  <Typography
+                    component="div"
+                    variant="body2"
+                    fontWeight={600}
+                    sx={{ overflowWrap: 'anywhere' }}
+                    dangerouslySetInnerHTML={createSafeHtml(getHistoryMarkup(view, item, t))}
+                  />
+                  {item.note && (
+                    <Typography
+                      component="div"
+                      variant="body2"
+                      color="text.secondary"
+                      dangerouslySetInnerHTML={createSafeHtml(
+                        t('kepcoinPage.history.notePrefix') + ': ' + item.note,
                       )}
-                    </Stack>
-
-                    <Box
-                      sx={{
-                        flex: 1,
-                        p: { xs: 2, sm: 2.5 },
-                        borderRadius: 2,
-                        border: (theme) =>
-                          `1px solid ${alpha(
-                            isEarn ? theme.palette.success.main : theme.palette.warning.main,
-                            0.16,
-                          )}`,
-                        bgcolor: (theme) =>
-                          alpha(
-                            isEarn ? theme.palette.success.main : theme.palette.warning.main,
-                            0.05,
-                          ),
-                      }}
-                    >
-                      <Stack
-                        direction={{ xs: 'column', sm: 'row' }}
-                        justifyContent="space-between"
-                        gap={2}
-                      >
-                        <Stack spacing={1}>
-                          <Stack
-                            direction="row"
-                            spacing={1}
-                            alignItems="center"
-                            flexWrap="wrap"
-                            useFlexGap
-                          >
-                            <KepcoinValue
-                              label={`${isEarn ? '+' : '-'}${item.amount}`}
-                              iconSize={24}
-                              textVariant="h6"
-                              fontWeight={800}
-                              color={isEarn ? 'success.main' : 'warning.dark'}
-                            />
-                            {happenedAt ? (
-                              <Chip
-                                size="small"
-                                label={happenedAt}
-                                sx={{
-                                  borderRadius: 999,
-                                  bgcolor: (theme) => alpha(theme.palette.common.black, 0.04),
-                                  color: 'text.secondary',
-                                }}
-                              />
-                            ) : null}
-                          </Stack>
-
-                          <Typography
-                            variant="subtitle1"
-                            fontWeight={700}
-                            component="div"
-                            dangerouslySetInnerHTML={createSafeHtml(
-                              getHistoryMarkup(view, item, t),
-                            )}
-                          />
-
-                          {item.note ? (
-                            <Typography
-                              variant="body2"
-                              color="text.secondary"
-                              component="div"
-                              dangerouslySetInnerHTML={createSafeHtml(
-                                `${t('kepcoinPage.history.notePrefix')}: ${item.note}`,
-                              )}
-                            />
-                          ) : null}
-                        </Stack>
-
-                        <Stack
-                          direction="row"
-                          spacing={1}
-                          alignItems="center"
-                          sx={{
-                            alignSelf: { xs: 'flex-start', sm: 'center' },
-                            px: 1.25,
-                            py: 0.75,
-                            borderRadius: 999,
-                            bgcolor: (theme) =>
-                              alpha(
-                                isEarn ? theme.palette.success.main : theme.palette.warning.main,
-                                0.12,
-                              ),
-                          }}
-                        >
-                          <IconifyIcon
-                            icon={
-                              isEarn
-                                ? 'solar:arrow-down-line-duotone'
-                                : 'solar:arrow-up-line-duotone'
-                            }
-                            fontSize={18}
-                            color={isEarn ? '#1f8f5f' : '#b45309'}
-                          />
-                          <Typography
-                            variant="caption"
-                            fontWeight={700}
-                            color={isEarn ? 'success.main' : 'warning.dark'}
-                          >
-                            {isEarn
-                              ? t('kepcoinPage.history.tabs.earns')
-                              : t('kepcoinPage.history.tabs.spends')}
-                          </Typography>
-                        </Stack>
-                      </Stack>
-                    </Box>
-                  </Stack>
-                );
-              })}
-            </Stack>
-          )}
-
-          {pagesCount > 1 && (
-            <Box display="flex" justifyContent="center">
-              <Pagination count={pagesCount} page={page} onChange={onPageChange} color="primary" />
-            </Box>
-          )}
-        </Stack>
-      </CardContent>
-    </Card>
+                    />
+                  )}
+                  {item.happenedAt && (
+                    <Typography component="time" variant="caption" color="text.secondary">
+                      {formatDateTime(item.happenedAt, 'compactDateTimeNoComma')}
+                    </Typography>
+                  )}
+                </Stack>
+                <Box sx={{ flexShrink: 0 }}>
+                  <KepcoinValue
+                    label={(view === 'earns' ? '+' : '-') + item.amount}
+                    iconSize={22}
+                    textVariant="metric"
+                    sx={{ whiteSpace: 'nowrap' }}
+                    color={view === 'earns' ? 'success.main' : 'warning.main'}
+                  />
+                </Box>
+              </Stack>
+            ))}
+          </Box>
+        )}
+        <ListPagination
+          count={pagesCount}
+          page={page}
+          onChange={(next) => onPageChange(null, next)}
+        />
+      </Box>
+    </Box>
   );
 };
 

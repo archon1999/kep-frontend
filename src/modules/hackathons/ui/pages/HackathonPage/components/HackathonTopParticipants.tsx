@@ -1,5 +1,5 @@
 import { useTranslation } from 'react-i18next';
-import { Avatar, Box, Skeleton, Stack, Typography } from '@mui/material';
+import { Box, Skeleton, Stack, Typography } from '@mui/material';
 import { type HackathonStanding } from 'modules/hackathons/domain';
 import UserPopover from 'modules/users/ui/shared/components/UserPopover';
 
@@ -21,15 +21,14 @@ const HackathonTopParticipants = ({
   return (
     <Box
       sx={{
-        p: 2.5,
-        borderRadius: 2.5,
-        bgcolor: 'background.neutral',
-        minWidth: { lg: 260 },
-        flexShrink: 0,
+        p: 3,
+        borderTop: 1,
+        borderColor: 'divider',
+        minWidth: 0,
       }}
     >
       <Stack direction="column" spacing={1.5}>
-        <Typography component="h3" variant="subtitle2" fontWeight={800} textTransform="uppercase">
+        <Typography component="h3" variant="label">
           {t('contests.topContestants.title')}
         </Typography>
         {isLoading ? (
@@ -55,19 +54,22 @@ const HackathonTopParticipants = ({
               if (index > 0 && participant.points !== leaders[index - 1].points) rank = index + 1;
               return (
                 <Stack key={participant.username} direction="row" spacing={1.5} alignItems="center">
-                  <Avatar
+                  <Typography
+                    variant="metric"
                     sx={{
-                      bgcolor: 'background.paper',
-                      border: '2px solid',
-                      borderColor: 'divider',
-                      width: 40,
-                      height: 40,
-                      fontSize: 20,
+                      width: 36,
+                      flexShrink: 0,
+                      color:
+                        rank === 1
+                          ? 'var(--kep-gold)'
+                          : rank === 2
+                            ? 'var(--kep-silver)'
+                            : 'var(--kep-bronze)',
                     }}
                   >
-                    {['🥇', '🥈', '🥉'][rank - 1]}
-                  </Avatar>
-                  <Stack direction="column" spacing={0.25} minWidth={0}>
+                    {String(rank).padStart(2, '0')}
+                  </Typography>
+                  <Stack direction="column" spacing={0.25} minWidth={0} sx={{ flex: 1 }}>
                     <UserPopover
                       username={participant.username}
                       fullName={participant.userFullName}
