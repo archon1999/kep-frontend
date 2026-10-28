@@ -8,10 +8,11 @@ import { ProblemDetail } from 'modules/problems/domain/entities/problem.entity';
 import IconifyIcon from 'shared/components/base/IconifyIcon';
 import KepcoinSpendConfirm from 'shared/components/common/KepcoinSpendConfirm';
 import Logo from 'shared/components/common/Logo';
+import MixedText from 'shared/components/common/MixedText';
+import { ScrambleText } from 'shared/components/motion/InteractionEffects';
 import { useLoginRedirect } from 'shared/lib/authRedirect';
 
 interface ProblemHeaderProps {
-  navColor?: string;
   studyPlanId?: number | null;
   onPrev: () => void;
   onNext: () => void;
@@ -34,7 +35,6 @@ interface ProblemHeaderProps {
 }
 
 export const ProblemHeader = ({
-  navColor,
   studyPlanId,
   onPrev,
   onNext,
@@ -72,24 +72,22 @@ export const ProblemHeader = ({
     <Box
       component="header"
       sx={{
+        flexShrink: 0,
+        borderBottom: 1,
         borderColor: 'divider',
         px: { xs: 1, md: 3 },
-        py: { xs: 0.5, md: 1.5 },
-        pt: { xs: 'max(4px, env(safe-area-inset-top))', md: 1.5 },
+        py: 0.5,
+        pt: { xs: 'max(4px, env(safe-area-inset-top))', md: 0.5 },
+        minHeight: 52,
         display: 'grid',
-        gridTemplateColumns: { xs: '1fr', md: '1fr auto 1fr' },
+        gridTemplateColumns: { xs: '1fr', md: 'minmax(0, 1fr) auto auto' },
         gridTemplateAreas: {
           xs: '"mobile"',
           md: '"nav actions user"',
         },
         alignItems: 'center',
         gap: { xs: 1, md: 2 },
-        bgcolor: { xs: 'background.paper', md: 'transparent' },
-        backgroundImage:
-          navColor === 'vibrant'
-            ? 'linear-gradient(90deg, rgba(124,77,255,0.85), rgba(3,169,244,0.85))'
-            : undefined,
-        color: navColor === 'vibrant' ? 'common.white' : undefined,
+        bgcolor: 'background.default',
       }}
     >
       <Stack
@@ -148,14 +146,26 @@ export const ProblemHeader = ({
           </Button>
           <Tooltip title={t('problems.detail.previousProblem')}>
             <span>
-              <IconButton onClick={onPrev} color="primary" disabled={!canNavigate} size="small">
+              <IconButton
+                onClick={onPrev}
+                color="primary"
+                disabled={!canNavigate}
+                size="small"
+                aria-label={t('problems.detail.previousProblem')}
+              >
                 <IconifyIcon icon="mdi:chevron-left" />
               </IconButton>
             </span>
           </Tooltip>
           <Tooltip title={t('problems.detail.nextProblem')}>
             <span>
-              <IconButton onClick={onNext} color="primary" disabled={!canNavigate} size="small">
+              <IconButton
+                onClick={onNext}
+                color="primary"
+                disabled={!canNavigate}
+                size="small"
+                aria-label={t('problems.detail.nextProblem')}
+              >
                 <IconifyIcon icon="mdi:chevron-right" />
               </IconButton>
             </span>
@@ -172,14 +182,16 @@ export const ProblemHeader = ({
       >
         <Tooltip title={isRunning ? t('problems.detail.running') : t('problems.detail.runHotkey')}>
           <span>
-            <IconButton
-              color="primary"
+            <Button
+              variant="outlined"
               onClick={requireAuth(onRun)}
+              aria-label={t('problems.detail.runHotkey')}
               disabled={isRunning || !hasCode}
-              size="large"
+              loading={isRunning}
+              startIcon={<IconifyIcon icon="mdi:play-outline" />}
             >
-              <IconifyIcon icon="mdi:play-circle-outline" width={22} height={22} />
-            </IconButton>
+              {t('problems.detail.run')}
+            </Button>
           </span>
         </Tooltip>
 
@@ -189,6 +201,7 @@ export const ProblemHeader = ({
               <IconButton
                 color="secondary"
                 onClick={requireAuth(onCheckSamples)}
+                aria-label={t('problems.detail.checkSamplesHotkey')}
                 disabled={isCheckingSamples || !hasCode}
                 size="large"
               >
@@ -204,7 +217,11 @@ export const ProblemHeader = ({
                 purchaseUrl={`/api/problems/${problemId}/purchase-check-samples/`}
                 onSuccess={onRefreshProblem}
               >
-                <IconButton color="secondary" size="large">
+                <IconButton
+                  color="secondary"
+                  size="large"
+                  aria-label={t('problems.detail.checkSamplesHotkey')}
+                >
                   <IconifyIcon icon="mdi:check-all" width={22} height={22} />
                 </IconButton>
               </KepcoinSpendConfirm>
@@ -225,7 +242,12 @@ export const ProblemHeader = ({
                 requestBody={{ input_data: inputValue }}
                 onSuccess={onAnswerForInput}
               >
-                <IconButton color="info" disabled={isAnswering} size="large">
+                <IconButton
+                  color="info"
+                  disabled={isAnswering}
+                  size="large"
+                  aria-label={t('problems.detail.answerForInputHotkey')}
+                >
                   <IconifyIcon icon="mdi:chat-question-outline" width={22} height={22} />
                 </IconButton>
               </KepcoinSpendConfirm>
@@ -239,10 +261,12 @@ export const ProblemHeader = ({
               variant="contained"
               color="primary"
               onClick={requireAuth(onSubmit)}
+              aria-label={t('problems.detail.submitHotkey')}
               disabled={isSubmitting || !hasCode}
-              sx={{ minWidth: 44, px: 1 }}
+              loading={isSubmitting}
+              endIcon={<IconifyIcon icon="mdi:arrow-top-right" />}
             >
-              <IconifyIcon icon="mdi:send-outline" width={18} height={18} />
+              <ScrambleText>{t('problems.detail.submit')}</ScrambleText>
             </Button>
           </span>
         </Tooltip>
@@ -282,8 +306,11 @@ export const ProblemHeader = ({
             <IconifyIcon icon="mdi:arrow-left" width={24} height={24} />
           </IconButton>
         </Tooltip>
-        <Typography variant="subtitle1" fontWeight={700} noWrap sx={{ flex: 1, minWidth: 0 }}>
-          {problem ? `#${problem.id}` : t('problems.title')}
+        <Typography
+          noWrap
+          sx={{ flex: 1, minWidth: 0, fontFamily: 'var(--kep-display-font)', fontSize: 18 }}
+        >
+          <MixedText>{problem?.title ?? t('problems.title')}</MixedText>
         </Typography>
         <IconButton
           onClick={onPrev}

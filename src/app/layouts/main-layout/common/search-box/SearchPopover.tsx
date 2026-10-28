@@ -1,8 +1,11 @@
-import { ReactElement } from 'react';
+import { ReactElement, Suspense, lazy } from 'react';
+import { useTranslation } from 'react-i18next';
 import { Fade, Popover } from '@mui/material';
 import { TransitionProps } from '@mui/material/transitions';
 import { useSettingsContext } from 'app/providers/SettingsProvider';
-import SearchResult from './SearchResult';
+import ContentLoading from 'shared/components/loading/ContentLoading';
+
+const SearchResult = lazy(() => import('./SearchResult'));
 
 interface TransitionComponentProps extends TransitionProps {
   children: ReactElement<any>;
@@ -17,6 +20,7 @@ interface SearchPopoverProps {
 }
 
 const SearchPopover = ({ anchorEl, handleClose }: SearchPopoverProps) => {
+  const { t } = useTranslation();
   const open = Boolean(anchorEl);
   const {
     config: { navigationMenuType },
@@ -31,24 +35,24 @@ const SearchPopover = ({ anchorEl, handleClose }: SearchPopoverProps) => {
         vertical: 'top',
         horizontal: 'left',
       }}
-      marginThreshold={0}
+      marginThreshold={16}
       elevation={3}
       transitionDuration={150}
       slots={{ transition: Transition }}
       slotProps={{
         paper: {
+          role: 'dialog',
+          'aria-label': t('common.searchPlaceholder'),
           sx: [
             {
-              width: 1,
-              maxWidth: { sm: 420 },
+              width: 420,
+              maxWidth: 'calc(100vw - 32px)',
               overflow: 'hidden',
               display: 'flex',
               flexDirection: 'column',
-              borderWidth: '0 !important',
-              boxShadow: (theme) => `0 0 0 1px ${theme.vars.palette.menuDivider}`,
             },
             navigationMenuType === 'topnav' && {
-              maxWidth: { sm: 480 },
+              width: 480,
             },
           ],
         },
@@ -61,7 +65,11 @@ const SearchPopover = ({ anchorEl, handleClose }: SearchPopoverProps) => {
         },
       }}
     >
-      <SearchResult handleClose={handleClose} />
+      {open && (
+        <Suspense fallback={<ContentLoading />}>
+          <SearchResult handleClose={handleClose} />
+        </Suspense>
+      )}
     </Popover>
   );
 };

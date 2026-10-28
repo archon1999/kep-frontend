@@ -6,6 +6,18 @@
       "skipToContent": "Перейти к основному содержимому"
     },
     "back": "Назад",
+    "backTo": "Назад: {{destination}}",
+    "backToList": "К списку",
+    "statistics": {
+      "byWeekday": "По дням недели",
+      "byMonth": "По месяцам",
+      "byTime": "По времени суток",
+      "period": "Период активности",
+      "days": "{{count}} дн.",
+      "noData": "Нет данных за этот период.",
+      "error": "Не удалось загрузить статистику.",
+      "retry": "Повторить"
+    },
     "loading": "Загрузка...",
     "wins": "Победы",
     "draws": "Ничьи",
@@ -15,8 +27,9 @@
     "searchPlaceholder": "Поиск",
     "dataGrid": {
       "emptyState": {
-        "description": "Данные появятся здесь, когда станут доступны.",
-        "filteredDescription": "Под текущие фильтры ничего не найдено. Попробуйте изменить или сбросить их."
+        "filteredTitle": "Ничего не найдено",
+        "description": "Нет данных для отображения.",
+        "filteredDescription": "Нет данных по выбранным фильтрам. Измените или сбросьте их."
       },
       "noRows": {
         "default": "Данные не найдены.",
@@ -38,12 +51,11 @@
     },
     "pagination": {
       "previous": "Назад",
-      "next": "Далее",
-      "displayedRows": "Показано <range>{{from}}-{{to}}</range> из <total>{{count}}</total>"
+      "next": "Далее"
     },
     "dailyTasks": {
       "title": "Ежедневные задачи",
-      "subtitle": "Поддерживайте свою серию",
+      "subtitle": "Выполните все задания на сегодня, чтобы получить Kepcoin и продолжить серию.",
       "tasksCount": "{{count}} задач",
       "completed": "Выполнено",
       "empty": "Ежедневных задач нет"
@@ -52,17 +64,40 @@
       "name": "KEPPER",
       "companion": "Ваш спутник в программировании на KEP.uz",
       "loading": "Загрузка",
-      "notFound": "KEPPER не нашёл эту страницу. Давайте вернёмся назад."
+      "notFound": "Страница не найдена. Проверьте адрес или вернитесь на главную."
+    },
+    "retry": "Повторить",
+    "loadFailed": "Не удалось загрузить данные. Попробуйте ещё раз.",
+    "preview": "Просмотр изображения",
+    "accountMenu": {
+      "title": "{{username}} — меню аккаунта",
+      "profile": "Профиль",
+      "settings": "Настройки",
+      "logout": "Выйти",
+      "signIn": "Войти"
+    },
+    "kepcoinMenu": {
+      "title": "Баланс Kepcoin",
+      "view": "Открыть кошелёк",
+      "earned": "Заработано сегодня",
+      "spent": "Потрачено сегодня"
+    },
+    "done": "Готово",
+    "cancel": "Отмена",
+    "confirm": "Подтвердить",
+    "confirmTitle": "Подтвердите действие",
+    "invalidFormula": "Проверьте синтаксис формулы и попробуйте ещё раз.",
+    "languageMenu": {
+      "title": "Язык"
     }
   },
   "notifications": {
-    "systemInfoTitle": "Информация",
+    "unread": "Непрочитанные",
+    "all": "Все",
     "systemNotificationTitle": "Системное уведомление",
     "systemNotificationOk": "OK",
     "systemNotificationFallback": "Уведомление",
     "title": "Уведомления",
-    "subtitleUnread": "Непрочитанные уведомления",
-    "subtitleAll": "Все уведомления",
     "countUnread": "{{count}} непрочитанных",
     "countTotal": "{{count}} всего",
     "markAllAsRead": "Отметить все как прочитанные",
@@ -71,8 +106,8 @@
     "empty": "Нет уведомлений",
     "markAsRead": "Отметить как прочитанное",
     "contestFinished": "Контест завершен | Результаты",
-    "challengeFinished": "Вызов завершен | Результаты",
-    "challengeCallAccepted": "Вызов принят | Начать",
+    "challengeFinished": "Поединок завершён",
+    "challengeCallAccepted": "Приглашение на поединок принято",
     "arenaFinished": "Арена завершена | Результаты",
     "duelStarts": "Дуэль начинается",
     "duelReminder": "Напоминание о дуэли",
@@ -91,6 +126,11 @@
     "kepcoinReasonBonusFromAdmin": "Бонус от админа",
     "kepcoinReasonDaily": "Победитель ежедневного рейтинга задач",
     "kepcoinReasonWeekly": "Победитель еженедельного рейтинга задач",
-    "kepcoinReasonMonthly": "Победитель ежемесячного рейтинга задач"
+    "kepcoinReasonMonthly": "Победитель ежемесячного рейтинга задач",
+    "actions": "Действия с уведомлением",
+    "remove": "Удалить уведомление",
+    "reportIssue": "Сообщить о проблеме",
+    "challengeCallAcceptedDescription": "Откройте поединок, чтобы проверить настройки и подготовиться.",
+    "challengeFinishedDescription": "Посмотрите итоговый счёт и результаты по вопросам."
   }
 }

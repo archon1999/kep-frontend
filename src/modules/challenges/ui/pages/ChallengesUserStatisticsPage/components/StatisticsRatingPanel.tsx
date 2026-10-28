@@ -4,6 +4,8 @@ import { Link as RouterLink } from 'react-router-dom';
 import { Box, Link, MenuItem, Stack, TextField, Typography } from '@mui/material';
 import { normalizeSupportedLocale } from 'app/locales/locale';
 import { resources } from 'app/routes/resources';
+import { statisticsHeadingSx } from 'app/theme/styles/statistics';
+import { statisticsInset } from 'app/theme/styles/statistics';
 import type { ChallengeUserStatistics } from 'modules/challenges/domain';
 import ChallengeRatingChangesChart from 'modules/challenges/ui/shared/components/ChallengeRatingChangesChart';
 import {
@@ -12,7 +14,6 @@ import {
 } from 'shared/components/rating/challengesRating';
 import { formatDateTime } from 'shared/lib/dateTime';
 import { createNumberFormatter } from 'shared/lib/numberFormat';
-import { statisticsInset } from './statisticsStyles';
 
 const StatisticsRatingPanel = ({ statistics }: { statistics: ChallengeUserStatistics }) => {
   const { t, i18n } = useTranslation();
@@ -46,7 +47,7 @@ const StatisticsRatingPanel = ({ statistics }: { statistics: ChallengeUserStatis
         gap={2}
         sx={{ mb: 4 }}
       >
-        <Typography component="h2" variant="h6">
+        <Typography component="h2" variant="h6" sx={statisticsHeadingSx}>
           {t('challenges.statisticsPage.ratingHistory')}
         </Typography>
         {history.length > 50 && (
@@ -77,7 +78,7 @@ const StatisticsRatingPanel = ({ statistics }: { statistics: ChallengeUserStatis
       >
         <Box>
           <Stack direction="row" alignItems="center" gap={1.5}>
-            <Typography variant="h4" component="p" fontWeight={500}>
+            <Typography variant="metric" fontSize={32} component="p" fontWeight={500}>
               {general ? number.format(general.currentRating) : '—'}
             </Typography>
             {rankImage && (
@@ -123,7 +124,13 @@ const StatisticsRatingPanel = ({ statistics }: { statistics: ChallengeUserStatis
               <Typography variant="subtitle2" color="text.secondary">
                 {t('challenges.statisticsPage.' + record.key)}
               </Typography>
-              <Typography variant="h5" component="p" fontWeight={500} sx={{ mt: 0.5 }}>
+              <Typography
+                variant="metric"
+                fontSize={26}
+                component="p"
+                fontWeight={500}
+                sx={{ mt: 0.5 }}
+              >
                 {record.value == null ? '—' : number.format(record.value)}
               </Typography>
               <Typography variant="caption" color="text.secondary">

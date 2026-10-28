@@ -1,10 +1,19 @@
 import { Theme, inputBaseClasses, outlinedInputClasses } from '@mui/material';
 import { Components } from '@mui/material/styles';
+import { motion } from '../../styles/transitions';
 
 const OutlinedInput: Components<Omit<Theme, 'components'>>['MuiOutlinedInput'] = {
   styleOverrides: {
     root: ({ theme }) => ({
-      borderRadius: 8,
+      borderRadius: theme.preset === 'default' ? 0 : 8,
+      ...(theme.preset === 'default' && {
+        [`&.${inputBaseClasses.sizeSmall}`]: { borderRadius: 0 },
+        transition: motion.interaction,
+        '&.Mui-focused:not(.Mui-error)': {
+          boxShadow: `0 0 0 3px ${theme.vars.palette.action.focus}`,
+        },
+        [motion.reduced]: { transition: 'none' },
+      }),
       ':hover': {
         [`&:not(&.${outlinedInputClasses.focused},.${outlinedInputClasses.disabled},.${outlinedInputClasses.error})`]:
           {
@@ -78,6 +87,8 @@ const OutlinedInput: Components<Omit<Theme, 'components'>>['MuiOutlinedInput'] =
       height: '1.625rem',
     },
     notchedOutline: ({ theme }) => ({
+      transition: 'border-color 180ms ease',
+      [motion.reduced]: { transition: 'none' },
       borderStyle: 'solid',
       borderColor: theme.vars.palette.divider,
       borderWidth: '1px !important',

@@ -1,16 +1,26 @@
 import { useMemo, useState } from 'react';
-import { Button, ListItemIcon, ListItemText, MenuItem, Typography } from '@mui/material';
+import { useTranslation } from 'react-i18next';
+import {
+  Button,
+  ListItemIcon,
+  ListItemText,
+  ListSubheader,
+  MenuItem,
+  Typography,
+} from '@mui/material';
 import Menu from '@mui/material/Menu';
 import { SupportedLanguage, languages } from 'app/locales/languages';
 import { useSettingsContext } from 'app/providers/SettingsProvider';
 import { SET_LOCALE } from 'app/reducers/SettingsReducer';
 import IconifyIcon from 'shared/components/base/IconifyIcon';
+import PatternArtwork from 'shared/components/common/PatternArtwork';
 
 interface LanguageMenuProps {
   type?: 'default' | 'slim';
 }
 
 const LanguageMenu = ({ type = 'default' }: LanguageMenuProps) => {
+  const { t } = useTranslation();
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
   const {
     config: { locale },
@@ -39,8 +49,11 @@ const LanguageMenu = ({ type = 'default' }: LanguageMenuProps) => {
   return (
     <>
       <Button
-        aria-label="Change language"
-        title="Change language"
+        aria-label={t('common.languageMenu.title')}
+        aria-haspopup="menu"
+        aria-expanded={open}
+        aria-controls={open ? 'language-menu' : undefined}
+        title={t('common.languageMenu.title')}
         color="neutral"
         size={type === 'slim' ? 'small' : 'medium'}
         variant="text"
@@ -57,7 +70,32 @@ const LanguageMenu = ({ type = 'default' }: LanguageMenuProps) => {
         onClick={handleClose}
         transformOrigin={{ horizontal: 'right', vertical: 'top' }}
         anchorOrigin={{ horizontal: 'right', vertical: 'bottom' }}
+        slotProps={{
+          paper: { sx: { minWidth: 260, maxWidth: 'calc(100vw - 32px)' } },
+          list: { sx: { py: 0 } },
+        }}
       >
+        <ListSubheader
+          disableSticky
+          sx={{
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'space-between',
+            px: 2.5,
+            py: 1,
+            bgcolor: 'background.default',
+            borderBottom: 1,
+            borderColor: 'divider',
+          }}
+        >
+          <Typography component="span" variant="subtitle1">
+            {t('common.languageMenu.title')}
+          </Typography>
+          <PatternArtwork
+            kind="language"
+            sx={{ width: 96, '& .kep-pattern-signal': { animation: 'none', opacity: 1 } }}
+          />
+        </ListSubheader>
         {languages.map((language) => (
           <MenuItem
             key={language.shortLabel}
@@ -73,7 +111,7 @@ const LanguageMenu = ({ type = 'default' }: LanguageMenuProps) => {
             <ListItemText
               primary={language.label}
               slotProps={{
-                primary: { sx: { fontSize: 14 } },
+                primary: { component: 'span', sx: { fontSize: 14 } },
               }}
             />
             <Typography

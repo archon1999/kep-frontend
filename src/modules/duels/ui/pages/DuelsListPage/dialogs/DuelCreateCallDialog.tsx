@@ -1,15 +1,10 @@
-import {
-  Button,
-  Dialog,
-  DialogActions,
-  DialogContent,
-  DialogTitle,
-  Stack,
-  Typography,
-} from '@mui/material';
 import { useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
+import { Button, Dialog, DialogActions, DialogContent, Skeleton, Stack } from '@mui/material';
 import { DuelPreset, DuelTypeInfo } from 'modules/duels/domain/index.ts';
+import IconifyIcon from 'shared/components/base/IconifyIcon';
+import DialogHeader from 'shared/components/common/DialogHeader';
+import EmptyState from 'shared/components/common/EmptyState';
 import DuelCallComposerForm from '../components/DuelCallComposerForm.tsx';
 
 type Props = {
@@ -17,6 +12,9 @@ type Props = {
   presets: DuelPreset[];
   duelTypes: DuelTypeInfo[];
   disabled?: boolean;
+  loading?: boolean;
+  error?: unknown;
+  onRetry?: () => void;
   onClose: () => void;
   onSubmit: (payload: { duelPresetId: number; duelTypeId: number }) => void | Promise<void>;
 };
@@ -26,6 +24,9 @@ const DuelCreateCallDialog = ({
   presets,
   duelTypes,
   disabled,
+  loading,
+  error,
+  onRetry,
   onClose,
   onSubmit,
 }: Props) => {
@@ -47,7 +48,11 @@ const DuelCreateCallDialog = ({
   }, [duelTypes, selectedTypeId]);
 
   const handleSubmit = async () => {
-    if (!selectedPresetId || !selectedTypeId) return;
+    if (
+      !presets.some((preset) => String(preset.id) === selectedPresetId) ||
+      !duelTypes.some((type) => String(type.id) === selectedTypeId)
+    )
+      return;
     await onSubmit({
       duelPresetId: Number(selectedPresetId),
       duelTypeId: Number(selectedTypeId),
@@ -55,13 +60,35 @@ const DuelCreateCallDialog = ({
   };
 
   return (
-    <Dialog open={open} onClose={onClose} maxWidth="sm" fullWidth>
-      <DialogTitle>{t('duels.createCallTitle')}</DialogTitle>
-      <DialogContent>
-        <Stack spacing={2.5} mt={1}>
-          <Typography variant="body2" color="text.secondary">
-            {t('duels.createCallDescription')}
-          </Typography>
+    <Dialog
+      aria-labelledby="duel-create-title"
+      open={open}
+      onClose={onClose}
+      maxWidth="sm"
+      fullWidth
+    >
+      <DialogHeader
+        id="duel-create-title"
+        title={t('duels.createCallTitle')}
+        subtitle={t('duels.createCallDescription')}
+        icon={<IconifyIcon icon="mdi:sword-cross" color="primary.main" />}
+        onClose={onClose}
+      />
+      <DialogContent sx={{ py: 3 }}>
+        {loading ? (
+          <Stack gap={2.5}>
+            <Skeleton variant="rectangular" height={56} />
+            <Skeleton variant="rectangular" height={56} />
+            <Skeleton variant="rectangular" height={160} />
+          </Stack>
+        ) : error ? (
+          <EmptyState
+            kind="error"
+            compact
+            title={t('duels.error')}
+            action={onRetry && <Button onClick={onRetry}>{t('common.retry')}</Button>}
+          />
+        ) : (
           <DuelCallComposerForm
             presets={presets}
             duelTypes={duelTypes}
@@ -70,10 +97,10 @@ const DuelCreateCallDialog = ({
             onPresetChange={setSelectedPresetId}
             onTypeChange={setSelectedTypeId}
           />
-        </Stack>
+        )}
       </DialogContent>
-      <DialogActions sx={{ px: 3, pb: 2.5 }}>
-        <Button color="inherit" onClick={onClose}>
+      <DialogActions>
+        <Button color="inherit" onClick={onClose} autoFocus>
           {t('duels.cancel')}
         </Button>
         <Button
@@ -81,8 +108,15 @@ const DuelCreateCallDialog = ({
           onClick={() => {
             void handleSubmit();
           }}
-          disabled={disabled || !selectedPresetId || !selectedTypeId}
-          sx={{ borderRadius: 999 }}
+          disabled={
+            disabled ||
+            loading ||
+            Boolean(error) ||
+            !presets.some((preset) => String(preset.id) === selectedPresetId) ||
+            !duelTypes.some((type) => String(type.id) === selectedTypeId)
+          }
+          loading={disabled}
+          endIcon={<IconifyIcon icon="mdi:arrow-right" />}
         >
           {t('duels.createDuel')}
         </Button>

@@ -1,9 +1,8 @@
 {
   "projects": {
     "title": "Projects",
-    "subtitle": "Build a practical project, complete its tasks, and submit your solution.",
     "emptyTitle": "No projects available yet",
-    "emptySubtitle": "Check back later for new build challenges.",
+    "emptySubtitle": "No projects to display.",
     "view": "View",
     "purchase": "Purchase",
     "levelLabel": "Level: {{level}}",
@@ -40,11 +39,8 @@
     "taskCount": "Tasks",
     "attemptsCount": "Attempts",
     "progressTitle": "Progress",
-    "progressPrompt": "Progress tracking",
-    "progressHint": "Sign in to unlock personal progress",
     "progressCompleted": "Completed",
     "progressRewardUnit": "kepcoin earned",
-    "progressGuestHint": "Sign in to see your personal progress, started projects, and completed tracks.",
     "cardFallback": "Complete the project tasks using one of the available technologies.",
     "projectsCount": "{{count}} projects",
     "stats": {
@@ -63,19 +59,19 @@
     "categories": {
       "frontend": {
         "title": "Frontend",
-        "subtitle": "Interfaces, interaction flows, and polished client-side behavior."
+        "subtitle": "Build interfaces and implement user interactions."
       },
       "backend": {
         "title": "Backend",
-        "subtitle": "APIs, business rules, validation, and service-side architecture."
+        "subtitle": "Build APIs, validate data, and implement application rules."
       },
       "python": {
         "title": "Python",
-        "subtitle": "Bots, parsers, CLI utilities, and practical scripting tasks."
+        "subtitle": "Build bots, parsers, command-line tools, and scripts."
       },
       "devops": {
         "title": "DevOps",
-        "subtitle": "Structured troubleshooting, incident analysis, and release discipline."
+        "subtitle": "Investigate incidents, diagnose issues, and work through operational tasks."
       }
     },
     "allProjects": "All projects",

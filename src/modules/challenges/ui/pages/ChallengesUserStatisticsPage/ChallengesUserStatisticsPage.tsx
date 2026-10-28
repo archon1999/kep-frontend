@@ -1,28 +1,13 @@
 import { useTranslation } from 'react-i18next';
 import { Link as RouterLink } from 'react-router-dom';
-import {
-  Alert,
-  Avatar,
-  Box,
-  Button,
-  Grid,
-  Link,
-  Paper,
-  Skeleton,
-  Stack,
-  Typography,
-} from '@mui/material';
-import { useAuth } from 'app/providers/AuthProvider';
-import { getResourceByUsername, resources } from 'app/routes/resources';
-import {
-  useChallengeUserStatistics,
-  useUserChallenges,
-} from 'modules/challenges/application/queries';
-import IconifyIcon from 'shared/components/base/IconifyIcon';
-import KepIcon from 'shared/components/base/KepIcon';
-import PageBreadcrumb from 'shared/components/sections/common/PageBreadcrumb';
-import useRouteQueryState from 'shared/hooks/useRouteQueryState';
-import { numberParam } from 'shared/lib/queryParams';
+import { Alert, Avatar, Button, Grid, Paper, Skeleton, Stack, Typography } from '@mui/material';
+import { resources } from 'app/routes/resources';
+import { statisticsInset, statisticsPanelSx } from 'app/theme/styles/statistics';
+import { useChallengesUserStatisticsPage } from 'modules/challenges/application/hooks/useChallengesUserStatisticsPage';
+import UserPopover from 'modules/users/ui/shared/components/UserPopover';
+import EmptyState from 'shared/components/common/EmptyState';
+import FramedPage from 'shared/components/sections/common/FramedPage';
+import PageHeader from 'shared/components/sections/common/PageHeader';
 import StatisticsActivity from './components/StatisticsActivity';
 import StatisticsHistory from './components/StatisticsHistory';
 import StatisticsKnowledge from './components/StatisticsKnowledge';
@@ -31,27 +16,21 @@ import StatisticsOpponents from './components/StatisticsOpponents';
 import StatisticsRatingPanel from './components/StatisticsRatingPanel';
 import StatisticsRecords from './components/StatisticsRecords';
 import StatisticsResults from './components/StatisticsResults';
-import { statisticsInset, statisticsPanelSx } from './components/statisticsStyles';
 
 const ChallengesUserStatisticsPage = () => {
+  const {
+    currentUser,
+    state,
+    setField,
+    statisticsQuery,
+    historyQuery,
+    username,
+    statistics,
+    loading,
+    hasChallenges,
+  } = useChallengesUserStatisticsPage();
+
   const { t } = useTranslation();
-  const { currentUser, isAuthLoading } = useAuth();
-  const username = currentUser?.username;
-  const { state, setField } = useRouteQueryState<{ page: number; selectedYear?: number }>({
-    defaults: { page: 1, selectedYear: undefined },
-    schema: {
-      page: numberParam({ min: 1 }),
-      selectedYear: { ...numberParam({ min: 1, max: 9999 }), param: 'year' },
-    },
-    historyByKey: { page: 'push' },
-  });
-  const statisticsQuery = useChallengeUserStatistics(username);
-  const historyQuery = useUserChallenges({ username, page: state.page, pageSize: 6 });
-  const statistics = statisticsQuery.data;
-  const loading = isAuthLoading || statisticsQuery.isLoading;
-  const hasChallenges = statistics?.general
-    ? statistics.general.totalChallenges > 0
-    : Boolean(statistics?.ratingHistory.length);
   const history = (
     <Paper sx={statisticsPanelSx}>
       <StatisticsHistory
@@ -70,32 +49,35 @@ const ChallengesUserStatisticsPage = () => {
   );
 
   return (
-    <Box sx={{ bgcolor: 'background.paper', minWidth: 0 }}>
-      <Paper sx={[statisticsPanelSx, { px: statisticsInset, py: 3 }]}>
-        <PageBreadcrumb
-          items={[
-            { label: t('challenges.title'), url: resources.Challenges },
-            { label: t('contests.tabs.statistics'), active: true },
-          ]}
-          sx={{ mb: 1.5 }}
-        />
-        <Stack
-          direction={{ xs: 'column', sm: 'row' }}
-          justifyContent="space-between"
-          alignItems={{ sm: 'center' }}
-          gap={2}
-        >
-          <Typography variant="h4" component="h1">
-            {t('challenges.statisticsTitle')}
-          </Typography>
+    <FramedPage>
+      <PageHeader
+        variant="detail"
+        title={t('challenges.statisticsTitle')}
+        backTo={resources.Challenges}
+        navigationComponent={
+          username && statistics && hasChallenges ? (
+            <Stack direction="row" gap={1} flexWrap="wrap" useFlexGap>
+              {['overview', 'activity', 'knowledge', 'opponents'].map((section) => (
+                <Button
+                  key={section}
+                  component="a"
+                  href={`#challenge-stats-${section}`}
+                  size="small"
+                  variant="text"
+                >
+                  {t(`challenges.statisticsPage.tabs.${section}`)}
+                </Button>
+              ))}
+            </Stack>
+          ) : undefined
+        }
+        actionComponent={
           <Stack direction="row" alignItems="center" gap={3}>
             {username && (
-              <Link
-                component={RouterLink}
-                to={getResourceByUsername(resources.UserProfile, username)}
-                underline="none"
-                color="text.primary"
-                sx={{ display: 'flex', gap: 1.5, alignItems: 'center' }}
+              <UserPopover
+                username={username}
+                avatar={currentUser?.avatar ?? undefined}
+                sx={{ gap: 1.5 }}
               >
                 <Avatar
                   src={currentUser?.avatar ?? undefined}
@@ -107,25 +89,15 @@ const ChallengesUserStatisticsPage = () => {
                 <Typography variant="body2" fontWeight={600}>
                   {username}
                 </Typography>
-              </Link>
+              </UserPopover>
             )}
-            <Button
-              component={RouterLink}
-              to={resources.Challenges}
-              variant="outlined"
-              color="neutral"
-              size="small"
-              startIcon={<IconifyIcon icon="material-symbols:arrow-back-rounded" />}
-            >
-              {t('challenges.backToList')}
-            </Button>
           </Stack>
-        </Stack>
-      </Paper>
+        }
+      />
       {loading ? (
         <Grid container>
           {[5, 7, 5, 7].map((size, index) => (
-            <Grid size={{ xs: 12, xl: size }} key={index}>
+            <Grid size={{ xs: 12, lg: size }} key={index}>
               <Paper sx={[statisticsPanelSx, { p: statisticsInset }]}>
                 <Skeleton height={400} />
               </Paper>
@@ -153,35 +125,39 @@ const ChallengesUserStatisticsPage = () => {
         </>
       ) : !statistics || !hasChallenges ? (
         <>
-          <Stack alignItems="center" spacing={2} sx={{ p: 6, textAlign: 'center' }}>
-            <KepIcon name="challenges" sx={{ fontSize: 40, color: 'text.disabled' }} />
-            <Typography variant="h6">{t('challenges.noChallenges')}</Typography>
-            <Typography variant="body2" color="text.secondary">
-              {t('challenges.statisticsPage.overview.noChallenges')}
-            </Typography>
-            <Button component={RouterLink} to={resources.Challenges} variant="contained">
-              {t('challenges.statisticsPage.overview.startChallenge')}
-            </Button>
-          </Stack>
+          <EmptyState
+            kind="battles"
+            title={t('challenges.noChallenges')}
+            description={t('challenges.statisticsPage.overview.noChallenges')}
+            action={
+              <Button component={RouterLink} to={resources.Challenges} variant="contained">
+                {t('challenges.statisticsPage.overview.startChallenge')}
+              </Button>
+            }
+          />
           {history}
         </>
       ) : (
         <Grid container>
-          <Grid size={{ xs: 12, xl: 5 }}>
+          <Grid size={12} id="challenge-stats-overview" sx={{ scrollMarginTop: 100 }}>
             <StatisticsKpis statistics={statistics} />
           </Grid>
-          <Grid size={{ xs: 12, xl: 7 }}>
+          <Grid size={{ xs: 12, lg: 7 }}>
             <Paper sx={statisticsPanelSx}>
               <StatisticsRatingPanel statistics={statistics} />
             </Paper>
           </Grid>
-          <Grid size={{ xs: 12, xl: 5 }}>
+          <Grid size={{ xs: 12, lg: 5 }}>
             <Paper sx={statisticsPanelSx}>
               <StatisticsResults statistics={statistics} />
             </Paper>
           </Grid>
-          <Grid size={{ xs: 12, xl: 7 }}>{history}</Grid>
-          <Grid size={{ xs: 12, xl: 7 }}>
+          <Grid size={12}>{history}</Grid>
+          <Grid
+            size={{ xs: 12, lg: 7 }}
+            id="challenge-stats-activity"
+            sx={{ scrollMarginTop: 100 }}
+          >
             <Paper sx={statisticsPanelSx}>
               <StatisticsActivity
                 statistics={statistics}
@@ -190,18 +166,18 @@ const ChallengesUserStatisticsPage = () => {
               />
             </Paper>
           </Grid>
-          <Grid size={{ xs: 12, xl: 5 }}>
+          <Grid size={{ xs: 12, lg: 5 }}>
             <StatisticsRecords statistics={statistics} />
           </Grid>
-          <Grid size={12}>
+          <Grid size={12} id="challenge-stats-knowledge" sx={{ scrollMarginTop: 100 }}>
             <StatisticsKnowledge statistics={statistics} />
           </Grid>
-          <Grid size={12}>
+          <Grid size={12} id="challenge-stats-opponents" sx={{ scrollMarginTop: 100 }}>
             <StatisticsOpponents statistics={statistics} />
           </Grid>
         </Grid>
       )}
-    </Box>
+    </FramedPage>
   );
 };
 

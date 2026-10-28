@@ -2,21 +2,19 @@ import { useEffect, useMemo, useRef, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { Link as RouterLink } from 'react-router-dom';
 import {
-  Box,
   Button,
   Card,
   CardContent,
   Dialog,
   DialogActions,
   DialogContent,
-  DialogTitle,
   Stack,
   Typography,
 } from '@mui/material';
-import { alpha } from '@mui/material/styles';
 import { getResourceByParams, resources } from 'app/routes/resources';
 import { ContestDetail } from 'modules/contests/domain/entities/contest-detail.entity';
 import { ContestStatus } from 'modules/contests/domain/entities/contest-status';
+import DialogHeader from 'shared/components/common/DialogHeader';
 import { getCountdownParts, getDateTimeValue } from 'shared/lib/dateTime';
 
 interface ContestStandingsCountdownProps {
@@ -24,34 +22,17 @@ interface ContestStandingsCountdownProps {
 }
 
 const DigitBox = ({ digit }: { digit: string }) => (
-  <Box
-    sx={(theme) => ({
-      width: { xs: '100%', md: 90 },
-      minWidth: { xs: 24, sm: 34, md: 90 },
-      height: { xs: 42, sm: 54, md: 110 },
-      display: 'grid',
-      placeItems: 'center',
-      borderRadius: { xs: 1, md: 2 },
-      backgroundColor:
-        theme.palette.mode === 'dark'
-          ? alpha(theme.palette.common.white, 0.08)
-          : alpha(theme.palette.primary.main, 0.05),
-      border: '1px solid',
-      borderColor:
-        theme.palette.mode === 'dark'
-          ? alpha(theme.palette.primary.light, 0.3)
-          : alpha(theme.palette.primary.main, 0.14),
-      boxShadow: {
-        xs: 'none',
-        md: `0 14px 46px ${theme.palette.common.black}18`,
-      },
-      fontWeight: 800,
-      fontSize: { xs: 22, sm: 28, md: 40 },
-      lineHeight: 1,
-    })}
+  <Typography
+    variant="metric"
+    sx={{
+      minWidth: { xs: 22, md: 32 },
+      fontSize: { xs: 30, md: 42 },
+      lineHeight: 1.15,
+      textAlign: 'center',
+    }}
   >
     {digit}
-  </Box>
+  </Typography>
 );
 
 const TimeUnit = ({ label, value }: { label: string; value: number }) => {
@@ -181,22 +162,11 @@ const ContestStandingsCountdown = ({ contest }: ContestStandingsCountdownProps) 
   return (
     <>
       {showCard ? (
-        <Card
-          variant="outlined"
-          sx={(theme) => ({
-            borderRadius: { xs: 2, md: 3 },
-            overflow: 'hidden',
-            background:
-              theme.palette.mode === 'dark'
-                ? `linear-gradient(140deg, ${alpha(theme.palette.primary.main, 0.18)}, ${alpha(theme.palette.secondary.main, 0.16)})`
-                : `linear-gradient(140deg, ${alpha(theme.palette.primary.main, 0.02)}, ${alpha(theme.palette.secondary.main, 0.02)})`,
-            borderColor: alpha(theme.palette.primary.main, 0.2),
-          })}
-        >
-          <CardContent sx={{ px: { xs: 1.25, sm: 2, md: 3 }, py: { xs: 1.25, md: 3.5 } }}>
+        <Card variant="section">
+          <CardContent sx={{ px: { xs: 1.25, sm: 2, md: 3 }, py: { xs: 1.5, md: 2 } }}>
             <Stack spacing={{ xs: 1, md: 2 }} alignItems="center">
               <Typography
-                variant="overline"
+                variant="label"
                 sx={{
                   color: { xs: 'text.primary', md: 'text.secondary' },
                   letterSpacing: { xs: 0.2, md: 0.6 },
@@ -232,11 +202,15 @@ const ContestStandingsCountdown = ({ contest }: ContestStandingsCountdownProps) 
         onClose={() => setActiveModal(null)}
         aria-labelledby="contest-standings-countdown-dialog-title"
       >
-        <DialogTitle id="contest-standings-countdown-dialog-title">
-          {activeModal === 'start'
-            ? t('contests.countdownCard.started')
-            : t('contests.countdownCard.finished')}
-        </DialogTitle>
+        <DialogHeader
+          id="contest-standings-countdown-dialog-title"
+          title={
+            activeModal === 'start'
+              ? t('contests.countdownCard.started')
+              : t('contests.countdownCard.finished')
+          }
+          onClose={() => setActiveModal(null)}
+        />
         <DialogContent dividers>
           <Typography variant="body1">
             {activeModal === 'start'

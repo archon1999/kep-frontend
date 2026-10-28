@@ -1,7 +1,7 @@
-import { AlertColor, PaletteColor, Theme, alertClasses } from '@mui/material';
+import { Theme, alertClasses } from '@mui/material';
 import { Components } from '@mui/material/styles';
 import IconifyIcon from 'shared/components/base/IconifyIcon';
-import { capitalize } from 'shared/lib/utils';
+import { feedbackSurfaceStyles } from '../styles/feedback';
 
 declare module '@mui/material/Alert' {
   interface AlertPropsColorOverrides {
@@ -22,71 +22,55 @@ const Alert: Components<Omit<Theme, 'components'>>['MuiAlert'] = {
     },
   },
   styleOverrides: {
-    root: ({ theme }) => ({
-      variants: [
-        {
-          props: (props) => {
-            const { variant } = props;
-            return variant === 'standard';
-          },
-          //@ts-ignore
-          style: ({ severity, color, theme }) => {
-            const paletteColor = theme.vars.palette[
-              (color || severity) as AlertColor
-            ] as PaletteColor;
-            return {
-              [`&.${alertClasses.standard}${capitalize(color || severity || '')}`]: {
-                backgroundColor: paletteColor.lighter,
-                color: paletteColor.darker,
-                [`& .${alertClasses.icon}`]: {
-                  color: paletteColor.main,
-                },
-              },
-            };
-          },
+    root: ({ theme, ownerState }) => {
+      const color = theme.vars.palette[ownerState.color ?? ownerState.severity ?? 'success'];
+      const filled = ownerState.variant === 'filled';
+      const outlined = ownerState.variant === 'outlined';
+      const tone = ownerState.color ?? ownerState.severity ?? 'success';
+      return {
+        minWidth: 0,
+        flexWrap: 'wrap',
+        borderRadius: theme.preset === 'default' ? 0 : (theme.shape.borderRadius as number) * 2,
+        backgroundColor: filled ? color.main : outlined ? 'transparent' : color.lighter,
+        color: filled ? color.contrastText : color.darker,
+        ...(outlined && { borderColor: color.main }),
+        ...(theme.preset === 'default' && {
+          ...feedbackSurfaceStyles(theme, tone),
+          padding: '10px 16px',
+          ...(outlined && { backgroundColor: 'transparent' }),
+          ...(filled && {
+            backgroundColor: color.main,
+            color: color.contrastText,
+            borderColor: color.main,
+          }),
+        }),
+        [`& .${alertClasses.icon}`]: {
+          color: filled ? color.contrastText : color.main,
         },
-        {
-          props: { variant: 'filled' },
-          //@ts-ignore
-          style: ({ severity, theme }) => {
-            const paletteColor = theme.vars.palette[severity as AlertColor] as PaletteColor;
-            return {
-              [`&.${alertClasses.filled}${capitalize(severity || '')}`]: {
-                backgroundColor: paletteColor.main,
-                color: paletteColor.contrastText,
-                [`& .${alertClasses.icon}`]: {
-                  color: paletteColor.contrastText,
-                },
-              },
-            };
-          },
-        },
-        {
-          props: { variant: 'outlined' },
-          //@ts-ignore
-          style: ({ severity, theme }) => {
-            const paletteColor = theme.vars.palette[severity as AlertColor] as PaletteColor;
-            return {
-              [`&.${alertClasses.outlined}${capitalize(severity || '')}`]: {
-                borderColor: paletteColor.main,
-                color: paletteColor.main,
-                [`& .${alertClasses.icon}`]: {
-                  color: paletteColor.main,
-                },
-              },
-            };
-          },
-        },
-      ],
-      borderRadius: (theme.shape.borderRadius as number) * 2,
-      outline: 0,
+      };
+    },
+    message: ({ theme }) => ({
+      ...theme.typography.body2,
+      flex: '1 1 0',
+      minWidth: 0,
+      lineHeight: 1.65,
+      overflowWrap: 'anywhere',
+      '& .MuiAlertTitle-root': { fontWeight: 600, lineHeight: 1.5 },
     }),
-    message: () => ({
-      fontSize: '1rem',
-      fontWeight: 500,
-    }),
-    icon: ({ theme }) => ({
-      marginTop: theme.spacing(0.35),
+    icon: { flexShrink: 0, fontSize: 20, alignItems: 'flex-start', paddingBlock: 9 },
+    action: ({ theme }) => ({
+      flexShrink: 0,
+      alignItems: 'center',
+      paddingTop: 0,
+      [theme.breakpoints.down('sm')]: {
+        flexBasis: '100%',
+        justifyContent: 'flex-end',
+        paddingLeft: 0,
+        '&:has(> .MuiIconButton-root:only-child)': {
+          flexBasis: 'auto',
+          paddingLeft: 8,
+        },
+      },
     }),
   },
 };

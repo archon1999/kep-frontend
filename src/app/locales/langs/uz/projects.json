@@ -1,9 +1,8 @@
 {
   "projects": {
     "title": "Loyihalar",
-    "subtitle": "Amaliy loyiha tanlang, topshiriqlarni bajaring va yechimingizni yuboring.",
     "emptyTitle": "Loyihalar topilmadi",
-    "emptySubtitle": "Yangi topshiriqlar tez orada paydo boʻladi.",
+    "emptySubtitle": "Ko‘rsatish uchun loyiha yo‘q.",
     "view": "Koʻrish",
     "purchase": "Sotib olish",
     "levelLabel": "Daraja: {{level}}",
@@ -40,11 +39,8 @@
     "taskCount": "Topshiriqlar",
     "attemptsCount": "Urinishlar",
     "progressTitle": "Natija",
-    "progressPrompt": "Progress kuzatuvi",
-    "progressHint": "Shaxsiy progressni korish uchun tizimga kiring",
     "progressCompleted": "Tugallangan",
     "progressRewardUnit": "kepcoin yigildi",
-    "progressGuestHint": "Tizimga kirganingizdan keyin shaxsiy progress, boshlangan loyihalar va tugallangan tracklar korinadi.",
     "cardFallback": "Mavjud texnologiyalardan biri bilan loyiha topshiriqlarini bajaring.",
     "projectsCount": "{{count}} ta loyiha",
     "stats": {
@@ -63,19 +59,19 @@
     "categories": {
       "frontend": {
         "title": "Frontend",
-        "subtitle": "Interfeys, interaction va client-side tajriba yonalishi."
+        "subtitle": "Interfeys tuzing va foydalanuvchi amallarini ishlating."
       },
       "backend": {
         "title": "Backend",
-        "subtitle": "API, business logic, validatsiya va server arxitekturasi."
+        "subtitle": "API, ma’lumot tekshiruvi va ilova qoidalarini amalga oshiring."
       },
       "python": {
         "title": "Python",
-        "subtitle": "Bot, parser, CLI utility va amaliy script loyihalari."
+        "subtitle": "Bot, parser, buyruq qatori vositasi va skriptlar tuzing."
       },
       "devops": {
         "title": "DevOps",
-        "subtitle": "Troubleshooting, incident tahlili va release intizomi."
+        "subtitle": "Nosozliklarni aniqlash va tizim hodisalarini tahlil qilish topshiriqlari."
       }
     },
     "allProjects": "Barcha loyihalar",

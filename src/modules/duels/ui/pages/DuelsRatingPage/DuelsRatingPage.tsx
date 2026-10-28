@@ -1,27 +1,21 @@
 import { useTranslation } from 'react-i18next';
-import { Box, Stack } from '@mui/material';
+import { Box } from '@mui/material';
 import { resources } from 'app/routes/resources';
+import FramedPage from 'shared/components/sections/common/FramedPage';
 import PageHeader from 'shared/components/sections/common/PageHeader.tsx';
-import { responsivePagePaddingSx } from 'shared/lib/styles';
 import DuelsRatingPageTable from './DuelsRatingPageTable.tsx';
 
 const DuelsRatingPage = () => {
   const { t } = useTranslation();
 
   return (
-    <Stack direction="column">
-      <PageHeader
-        title={t('duels.ratingTitle')}
-        breadcrumb={[
-          { label: t('duels.title'), url: resources.Duels },
-          { label: t('duels.ratingTitle'), active: true },
-        ]}
-      />
+    <FramedPage>
+      <PageHeader title={t('duels.ratingTitle')} backTo={resources.Duels} />
 
-      <Box sx={responsivePagePaddingSx}>
+      <Box sx={{ minWidth: 0 }}>
         <DuelsRatingPageTable />
       </Box>
-    </Stack>
+    </FramedPage>
   );
 };
 

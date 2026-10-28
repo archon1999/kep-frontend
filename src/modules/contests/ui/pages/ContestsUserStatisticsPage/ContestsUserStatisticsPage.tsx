@@ -2,10 +2,9 @@ import { useCallback, useMemo } from 'react';
 import { useTranslation } from 'react-i18next';
 import { Link as RouterLink } from 'react-router-dom';
 import {
+  Alert,
   Box,
   Button,
-  Card,
-  CardContent,
   Chip,
   Divider,
   Grid,
@@ -13,8 +12,6 @@ import {
   Stack,
   Typography,
 } from '@mui/material';
-import { useTheme } from '@mui/material/styles';
-import { useAuth } from 'app/providers/AuthProvider';
 import { getResourceById, getResourceByParams, resources } from 'app/routes/resources';
 import { BarChart, PieChart } from 'echarts/charts';
 import { GridComponent, LegendComponent, TooltipComponent } from 'echarts/components';
@@ -22,17 +19,18 @@ import * as echarts from 'echarts/core';
 import type { EChartsCoreOption } from 'echarts/core';
 import { LegacyGridContainLabel } from 'echarts/features';
 import { CanvasRenderer } from 'echarts/renderers';
-import { useContestUserStatistics } from 'modules/contests/application/queries';
+import { useContestsUserStatisticsPage } from 'modules/contests/application/hooks/useContestsUserStatisticsPage';
 import {
   ContestUserStatisticsContestDeltaEntry,
-  ContestUserStatisticsContestRankEntry,
   ContestUserStatisticsTopAttempt,
   ContestUserStatisticsUnsolvedProblem,
 } from 'modules/contests/domain/entities/contest-user-statistics.entity';
+import FramedPage from 'shared/components/sections/common/FramedPage';
 import PageHeader from 'shared/components/sections/common/PageHeader';
+import StatisticsSection from 'shared/components/statistics/StatisticsSection';
 import type { KepIconName } from 'shared/config/icons';
+import useChartPalette from 'shared/hooks/useChartPalette';
 import { getColor } from 'shared/lib/echart-utils';
-import { createNumberFormatter } from 'shared/lib/numberFormat';
 import ContestRatingChangesChart from '../../shared/components/ContestRatingChangesChart';
 import ContestsUserStatisticsPageChartCard from './ContestsUserStatisticsPageChartCard.tsx';
 import ContestsUserStatisticsPageHighlightCard, {
@@ -58,28 +56,27 @@ echarts.use([
 const integerAxisLabelFormatter = (value: number) => Math.round(value).toString();
 
 const ContestsUserStatisticsPage = () => {
-  const { t, i18n } = useTranslation();
-  const theme = useTheme();
-  const { currentUser } = useAuth();
+  const {
+    statistics,
+    isLoading,
+    error,
+    mutate,
+    username,
+    contestRankCardsFormatted,
+    numberFormatter,
+    formatDeltaCard,
+  } = useContestsUserStatisticsPage();
 
-  const username = currentUser?.username;
-  const { data: statistics, isLoading } = useContestUserStatistics(username);
+  const { t } = useTranslation();
+  const palette = useChartPalette();
 
-  const numberFormatter = useMemo(
-    () =>
-      createNumberFormatter({
-        maximumFractionDigits: 2,
-      }, i18n.language),
-    [i18n.language],
-  );
-
-  const axisLabelColor = getColor(theme.vars.palette.text.secondary);
-  const neutralColor = getColor(theme.vars.palette.text.disabled);
-  const primaryColor = getColor(theme.vars.palette.primary.main);
-  const successColor = getColor(theme.vars.palette.success.main);
-  const errorColor = getColor(theme.vars.palette.error.main);
-  const infoColor = getColor(theme.vars.palette.info.main);
-  const warningColor = getColor(theme.vars.palette.warning.main);
+  const axisLabelColor = getColor(palette.text.secondary);
+  const neutralColor = getColor(palette.text.disabled);
+  const primaryColor = getColor(palette.primary.main);
+  const successColor = getColor(palette.success.main);
+  const errorColor = getColor(palette.error.main);
+  const infoColor = getColor(palette.info.main);
+  const warningColor = getColor(palette.warning.main);
 
   const generalCards = useMemo<ContestsUserStatisticsPageStatCardProps[]>(() => {
     if (!statistics?.general) return [];
@@ -132,7 +129,7 @@ const ContestsUserStatisticsPage = () => {
       {
         icon: 'statistics',
         label: t('contests.statistics.averageAttempts'),
-        value: (overview.averageAttemptsPerProblem + 1).toFixed(2),
+        value: overview.averageAttemptsPerProblem.toFixed(2),
       },
       {
         icon: 'attempt',
@@ -195,34 +192,6 @@ const ContestsUserStatisticsPage = () => {
     ];
   }, [numberFormatter, statistics?.overview, t]);
 
-  const contestRankCards = useMemo<
-    {
-      icon: KepIconName;
-      label: string;
-      entry: ContestUserStatisticsContestRankEntry | null | undefined;
-      valueColor?: string;
-    }[]
-  >(
-    () =>
-      [
-        {
-          icon: 'contest' as KepIconName,
-          label: t('contests.statistics.bestRank'),
-          entry: statistics?.contestRanks?.best,
-        },
-        {
-          icon: 'contest' as KepIconName,
-          label: t('contests.statistics.toughestRank'),
-          entry: statistics?.contestRanks?.worst,
-        },
-      ].map(({ entry, ...rest }) => ({
-        ...rest,
-        entry,
-        valueColor: undefined as string | undefined,
-      })),
-    [statistics?.contestRanks, t],
-  );
-
   const contestDeltaCards = useMemo<
     {
       icon: KepIconName;
@@ -257,49 +226,6 @@ const ContestsUserStatisticsPage = () => {
       })),
     [errorColor, statistics?.contestDeltas, successColor, t],
   );
-
-  const formatRankCard = (card: {
-    icon: KepIconName;
-    label: string;
-    entry: ContestUserStatisticsContestRankEntry | null | undefined;
-    valueColor?: string;
-  }) => ({
-    ...card,
-    value: card.entry ? `#${card.entry.rank}` : undefined,
-    contestTitle: card.entry?.contestTitle,
-    contestLink: card.entry?.contestId
-      ? getResourceById(resources.Contest, card.entry.contestId)
-      : undefined,
-    subtitle: card.entry
-      ? t('contests.statistics.participants', {
-          total: numberFormatter.format(card.entry.participantsCount),
-        })
-      : undefined,
-  });
-
-  const formatDeltaCard = (card: {
-    icon: KepIconName;
-    label: string;
-    entry: ContestUserStatisticsContestDeltaEntry | null | undefined;
-    valueColor?: string;
-  }) => ({
-    ...card,
-    value:
-      card.entry?.delta != null
-        ? `${card.entry.delta > 0 ? '+' : ''}${card.entry.delta}`
-        : undefined,
-    contestTitle: card.entry?.contestTitle,
-    contestLink: card.entry?.contestId
-      ? getResourceById(resources.Contest, card.entry.contestId)
-      : undefined,
-    subtitle: card.entry
-      ? t('contests.statistics.participants', {
-          total: numberFormatter.format(card.entry.participantsCount),
-        })
-      : undefined,
-  });
-
-  const contestRankCardsFormatted = contestRankCards.map(formatRankCard);
   const contestDeltaCardsFormatted = contestDeltaCards.map(formatDeltaCard);
   const contestRankRecordItems =
     contestRankCardsFormatted as ContestsUserStatisticsPageRecordItem[];
@@ -387,7 +313,7 @@ const ContestsUserStatisticsPage = () => {
           avoidLabelOverlap: true,
           itemStyle: {
             borderRadius: 6,
-            borderColor: getColor(theme.vars.palette.background.paper),
+            borderColor: getColor(palette.background.paper),
             borderWidth: 2,
           },
           label: { show: false },
@@ -403,7 +329,7 @@ const ContestsUserStatisticsPage = () => {
       neutralColor,
       primaryColor,
       successColor,
-      theme.vars.palette.background.paper,
+      palette.background.paper,
       warningColor,
     ],
   );
@@ -439,7 +365,7 @@ const ContestsUserStatisticsPage = () => {
           key={`${attempt.contestId}-${attempt.problemSymbol}`}
           direction="column"
           spacing={0.5}
-          sx={{ p: 1.5, borderRadius: 2, bgcolor: 'action.hover' }}
+          sx={{ py: 1.5, borderBottom: 1, borderColor: 'divider', minWidth: 0 }}
         >
           <Stack direction="row" justifyContent="space-between" alignItems="center">
             <Typography variant="subtitle1" fontWeight={700}>
@@ -495,7 +421,7 @@ const ContestsUserStatisticsPage = () => {
           spacing={1}
           justifyContent="space-between"
           alignItems="center"
-          sx={{ p: 1.5, borderRadius: 2, bgcolor: 'action.hover' }}
+          sx={{ py: 1.5, borderBottom: 1, borderColor: 'divider', minWidth: 0 }}
         >
           <Typography variant="subtitle1" fontWeight={700}>
             {problem.problemSymbol}
@@ -526,195 +452,143 @@ const ContestsUserStatisticsPage = () => {
     <Grid container spacing={2} alignItems="stretch">
       {opponents.map((opponent) => (
         <Grid key={opponent.opponent} size={{ xs: 12, md: 4 }}>
-          <Card
-            variant="outlined"
-            sx={{ height: '100%', minHeight: 360, borderRadius: 3, display: 'flex' }}
-          >
-            <CardContent sx={{ display: 'flex', flexDirection: 'column', gap: 1.5, flex: 1 }}>
-              <Stack
-                direction="row"
-                justifyContent="space-between"
-                alignItems="flex-start"
-                spacing={1}
-              >
-                <Typography variant="subtitle1" fontWeight={800}>
-                  {opponent.opponent}
-                </Typography>
-                <Chip
-                  label={t('contests.statistics.sharedContests', {
-                    count: opponent.sharedCount,
-                  })}
-                  size="small"
-                  color="primary"
-                  variant="soft"
-                />
-              </Stack>
-              <Typography variant="subtitle2" color="text.secondary">
-                {opponent.type}
+          <Box sx={{ minWidth: 0, display: 'flex', flexDirection: 'column', gap: 1.5, py: 2 }}>
+            <Stack
+              direction="row"
+              justifyContent="space-between"
+              alignItems="flex-start"
+              spacing={1}
+            >
+              <Typography variant="subtitle1" fontWeight={800}>
+                {opponent.opponent}
               </Typography>
-              <Typography variant="h6" fontWeight={800}>
-                {opponent.userWins} : {opponent.opponentWins}
-              </Typography>
-              <Divider />
-              <Stack
-                direction="column"
-                spacing={1}
-                sx={{ flex: 1, minHeight: 0, overflowY: 'auto', pr: 0.5 }}
-              >
-                {opponent.contests.map((contest: any) => (
-                  <Stack key={contest.contestId} direction="column" spacing={0.5}>
-                    <Button
-                      component={RouterLink}
-                      to={getResourceById(resources.Contest, contest.contestId)}
-                      size="small"
-                      variant="text"
-                      sx={{ px: 0, justifyContent: 'flex-start' }}
+              <Chip
+                label={t('contests.statistics.sharedContests', {
+                  count: opponent.sharedCount,
+                })}
+                size="small"
+                color="primary"
+                variant="soft"
+              />
+            </Stack>
+            <Typography variant="subtitle2" color="text.secondary">
+              {opponent.type}
+            </Typography>
+            <Typography variant="h6" fontWeight={800}>
+              {opponent.userWins} : {opponent.opponentWins}
+            </Typography>
+            <Divider />
+            <Stack
+              direction="column"
+              spacing={1}
+              sx={{ flex: 1, minHeight: 0, overflowY: 'auto', pr: 0.5 }}
+            >
+              {opponent.contests.map((contest: any) => (
+                <Stack key={contest.contestId} direction="column" spacing={0.5}>
+                  <Button
+                    component={RouterLink}
+                    to={getResourceById(resources.Contest, contest.contestId)}
+                    size="small"
+                    variant="text"
+                    sx={{ px: 0, justifyContent: 'flex-start' }}
+                  >
+                    {contest.contestTitle}
+                  </Button>
+                  <Stack direction="row" spacing={1} alignItems="center">
+                    <Typography
+                      variant="body2"
+                      color={
+                        contest.userRank < contest.opponentRank
+                          ? 'success.main'
+                          : contest.userRank === contest.opponentRank
+                            ? 'text.secondary'
+                            : 'error.main'
+                      }
                     >
-                      {contest.contestTitle}
-                    </Button>
-                    <Stack direction="row" spacing={1} alignItems="center">
-                      <Typography
-                        variant="body2"
-                        color={
-                          contest.userRank < contest.opponentRank
-                            ? 'success.main'
-                            : contest.userRank === contest.opponentRank
-                              ? 'text.secondary'
-                              : 'error.main'
-                        }
-                      >
-                        #{contest.userRank} ({contest.userPoints})
-                      </Typography>
-                      <Typography variant="body2" color="text.secondary">
-                        vs
-                      </Typography>
-                      <Typography
-                        variant="body2"
-                        color={
-                          contest.opponentRank < contest.userRank
-                            ? 'success.main'
-                            : contest.opponentRank === contest.userRank
-                              ? 'text.secondary'
-                              : 'error.main'
-                        }
-                      >
-                        #{contest.opponentRank} ({contest.opponentPoints})
-                      </Typography>
-                    </Stack>
+                      #{contest.userRank} ({contest.userPoints})
+                    </Typography>
+                    <Typography variant="body2" color="text.secondary">
+                      vs
+                    </Typography>
+                    <Typography
+                      variant="body2"
+                      color={
+                        contest.opponentRank < contest.userRank
+                          ? 'success.main'
+                          : contest.opponentRank === contest.userRank
+                            ? 'text.secondary'
+                            : 'error.main'
+                      }
+                    >
+                      #{contest.opponentRank} ({contest.opponentPoints})
+                    </Typography>
                   </Stack>
-                ))}
-                {!opponent.contests.length ? (
-                  <Typography variant="body2" color="text.secondary">
-                    {t('contests.statistics.noData')}
-                  </Typography>
-                ) : null}
-              </Stack>
-            </CardContent>
-          </Card>
+                </Stack>
+              ))}
+              {!opponent.contests.length ? (
+                <Typography variant="body2" color="text.secondary">
+                  {t('contests.statistics.noData')}
+                </Typography>
+              ) : null}
+            </Stack>
+          </Box>
         </Grid>
       ))}
     </Grid>
   );
 
   const renderContent = () => {
-    if (isLoading) {
+    if (isLoading)
       return (
-        <Card variant="outlined" sx={{ borderRadius: 3 }}>
-          <CardContent>
-            <Stack direction="column" spacing={2}>
-              <Typography variant="body1">{t('contests.statistics.loading')}</Typography>
-              <LinearProgress />
-            </Stack>
-          </CardContent>
-        </Card>
+        <StatisticsSection>
+          <LinearProgress aria-label={t('common.loading')} />
+        </StatisticsSection>
       );
-    }
-
-    if (!statistics) {
+    if (error)
       return (
-        <Card variant="outlined" sx={{ borderRadius: 3 }}>
-          <CardContent>
-            <Typography variant="body1" color="text.secondary">
-              {t('contests.statistics.noData')}
-            </Typography>
-          </CardContent>
-        </Card>
+        <Alert
+          severity="error"
+          sx={{ m: 'var(--kep-content-inset)' }}
+          action={
+            <Button color="inherit" onClick={() => void mutate()}>
+              {t('common.statistics.retry')}
+            </Button>
+          }
+        >
+          {t('common.statistics.error')}
+        </Alert>
       );
-    }
-
+    if (!statistics)
+      return (
+        <StatisticsSection>
+          <Typography color="text.secondary">{t('contests.statistics.noData')}</Typography>
+        </StatisticsSection>
+      );
     return (
-      <Stack direction="column" spacing={3}>
-        <Typography variant="body1" color="text.secondary">
-          {t('contests.statistics.subtitle', { username })}
-        </Typography>
-
-        <Grid container spacing={2}>
+      <Stack spacing={0}>
+        <Grid container spacing={0}>
           {generalCards.map((card) => (
-            <Grid key={card.label} size={{ xs: 12, sm: 6, md: 3 }}>
-              <ContestsUserStatisticsPageStatCard {...card} highlight />
-            </Grid>
-          ))}
-        </Grid>
-
-        <Grid container spacing={2}>
-          {overviewCards.map((card) => (
-            <Grid key={card.label} size={{ xs: 12, sm: 6, md: 3 }}>
+            <Grid key={card.label} size={{ xs: 6, md: 3 }}>
               <ContestsUserStatisticsPageStatCard {...card} />
             </Grid>
           ))}
         </Grid>
-
-        <Grid container spacing={2}>
-          {highlightCards.map((card) => (
-            <Grid key={card.label} size={{ xs: 12, md: 4 }}>
-              <ContestsUserStatisticsPageHighlightCard {...card} />
+        <StatisticsSection title={t('contests.statistics.ratingChangesHistory')}>
+          <ContestRatingChangesChart username={username} height={300} />
+        </StatisticsSection>
+        <Grid container spacing={0}>
+          {overviewCards.map((card) => (
+            <Grid key={card.label} size={{ xs: 6, md: 3 }}>
+              <ContestsUserStatisticsPageStatCard {...card} />
             </Grid>
           ))}
         </Grid>
-
-        <Card variant="outlined" sx={{ height: '100%', borderRadius: 3, overflow: 'visible' }}>
-          <CardContent
-            sx={{
-              height: '100%',
-              overflow: 'visible',
-              p: { xs: 1.25, sm: 1.5 },
-              '&:last-child': { pb: { xs: 1.25, sm: 1.5 } },
-            }}
-          >
-            <Stack direction="column" spacing={1.25} sx={{ height: '100%', overflow: 'visible' }}>
-              <Typography variant="subtitle1" fontWeight={700}>
-                {t('contests.statistics.ratingChangesHistory')}
-              </Typography>
-              <ContestRatingChangesChart username={username} height={360} />
-            </Stack>
-          </CardContent>
-        </Card>
-
-        <Grid container spacing={2}>
-          <Grid size={{ xs: 12, md: 6 }}>
-            <ContestsUserStatisticsPageRecordCard
-              title={t('contests.statistics.contestRanks')}
-              items={contestRankRecordItems}
-              emptyText={t('contests.statistics.noData')}
-            />
-          </Grid>
-
-          <Grid size={{ xs: 12, md: 6 }}>
-            <ContestsUserStatisticsPageRecordCard
-              title={t('contests.statistics.ratingChanges')}
-              items={contestDeltaRecordItems}
-              emptyText={t('contests.statistics.noData')}
-            />
-          </Grid>
-        </Grid>
-
-        <Grid container spacing={2}>
+        <Grid container spacing={0}>
           <Grid size={{ xs: 12, md: 8 }}>
             <ContestsUserStatisticsPageChartCard
               title={t('contests.statistics.attemptsTimeline')}
               option={timelineOption}
               emptyText={t('contests.statistics.noData')}
-              height={340}
               extra={
                 <Typography variant="body2" color="text.secondary">
                   {t('contests.statistics.attemptsCount', {
@@ -729,18 +603,13 @@ const ContestsUserStatisticsPage = () => {
               title={t('contests.statistics.languages')}
               option={languagesOption}
               emptyText={t('contests.statistics.noData')}
-              height={340}
             />
           </Grid>
-        </Grid>
-
-        <Grid container spacing={2}>
           <Grid size={{ xs: 12, md: 4 }}>
             <ContestsUserStatisticsPageChartCard
               title={t('contests.statistics.verdictDistribution')}
               option={verdictsOption}
               emptyText={t('contests.statistics.noData')}
-              height={320}
             />
           </Grid>
           <Grid size={{ xs: 12, md: 4 }}>
@@ -748,7 +617,6 @@ const ContestsUserStatisticsPage = () => {
               title={t('contests.statistics.tags')}
               option={tagsOption}
               emptyText={t('contests.statistics.noData')}
-              height={320}
             />
           </Grid>
           <Grid size={{ xs: 12, md: 4 }}>
@@ -756,68 +624,62 @@ const ContestsUserStatisticsPage = () => {
               title={t('contests.statistics.symbols')}
               option={symbolsOption}
               emptyText={t('contests.statistics.noData')}
-              height={320}
             />
           </Grid>
-        </Grid>
-
-        <Grid container spacing={2}>
           <Grid size={{ xs: 12, md: 6 }}>
-            <Card variant="outlined" sx={{ height: '100%', borderRadius: 3 }}>
-              <CardContent>
-                <Stack direction="column" spacing={2}>
-                  <Typography variant="subtitle1" fontWeight={700}>
-                    {t('contests.statistics.unsolvedProblems')}
-                  </Typography>
-                  {renderUnsolvedProblems(
-                    statistics.unsolvedProblems,
-                    t('contests.statistics.noUnsolvedProblems'),
-                  )}
-                </Stack>
-              </CardContent>
-            </Card>
+            <ContestsUserStatisticsPageRecordCard
+              title={t('contests.statistics.contestRanks')}
+              items={contestRankRecordItems}
+              emptyText={t('contests.statistics.noData')}
+            />
           </Grid>
           <Grid size={{ xs: 12, md: 6 }}>
-            <Card variant="outlined" sx={{ height: '100%', borderRadius: 3 }}>
-              <CardContent>
-                <Stack direction="column" spacing={2}>
-                  <Typography variant="subtitle1" fontWeight={700}>
-                    {t('contests.statistics.topAttempts')}
-                  </Typography>
-                  {renderAttemptsList(statistics.topAttempts, t('contests.statistics.noData'))}
-                </Stack>
-              </CardContent>
-            </Card>
+            <ContestsUserStatisticsPageRecordCard
+              title={t('contests.statistics.ratingChanges')}
+              items={contestDeltaRecordItems}
+              emptyText={t('contests.statistics.noData')}
+            />
+          </Grid>
+          {highlightCards.map((card) => (
+            <Grid key={card.label} size={{ xs: 12, md: 4 }}>
+              <ContestsUserStatisticsPageHighlightCard {...card} />
+            </Grid>
+          ))}
+          <Grid size={{ xs: 12, md: 6 }}>
+            <StatisticsSection title={t('contests.statistics.unsolvedProblems')}>
+              {renderUnsolvedProblems(
+                statistics.unsolvedProblems,
+                t(
+                  !statistics.overview?.totalAttempts && !statistics.contestRanks?.best
+                    ? 'contests.statistics.noContestHistory'
+                    : 'contests.statistics.noUnsolvedProblems',
+                ),
+              )}
+            </StatisticsSection>
+          </Grid>
+          <Grid size={{ xs: 12, md: 6 }}>
+            <StatisticsSection title={t('contests.statistics.topAttempts')}>
+              {renderAttemptsList(statistics.topAttempts, t('contests.statistics.noData'))}
+            </StatisticsSection>
           </Grid>
         </Grid>
-
-        {statistics.worthyOpponents.length ? (
-          <Card variant="outlined" sx={{ borderRadius: 3 }}>
-            <CardContent>
-              <Stack direction="column" spacing={2}>
-                <Typography variant="subtitle1" fontWeight={700}>
-                  {t('contests.statistics.worthyOpponents')}
-                </Typography>
-                {renderOpponents(statistics.worthyOpponents)}
-              </Stack>
-            </CardContent>
-          </Card>
-        ) : null}
+        {statistics.worthyOpponents.length > 0 && (
+          <StatisticsSection title={t('contests.statistics.worthyOpponents')}>
+            {renderOpponents(statistics.worthyOpponents)}
+          </StatisticsSection>
+        )}
       </Stack>
     );
   };
-
   return (
-    <Stack direction="column" spacing={4} height={1}>
+    <FramedPage>
       <PageHeader
         title={t('contests.statistics.title')}
-        breadcrumb={[
-          { label: t('contests.title'), url: resources.Contests },
-          { label: t('contests.tabs.statistics'), active: true },
-        ]}
+        subtitle={t('contests.statistics.subtitle', { username })}
+        backTo={resources.Contests}
       />
-      <Box sx={{ flex: 1, px: { xs: 3, md: 5 }, pb: { xs: 4, md: 6 } }}>{renderContent()}</Box>
-    </Stack>
+      {renderContent()}
+    </FramedPage>
   );
 };
 

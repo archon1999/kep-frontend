@@ -55,8 +55,7 @@ export interface ColorGroup {
 }
 
 export const COLOR_GROUPS: ColorGroup[] = [
-  { key: 'default-light', main: blue[500], palette: blue },
-  { key: 'default-dark', main: blue[400], palette: blue },
+  { key: 'cobalt', main: blue[500], palette: blue },
   { key: 'retro', main: primaryRetro[500], palette: primaryRetro },
   { key: 'luxury', main: luxuryPrimary[500], palette: luxuryPrimary },
   { key: 'arctic', main: arcticPrimary[500], palette: arcticPrimary },

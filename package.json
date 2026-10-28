@@ -9,12 +9,16 @@
   "scripts": {
     "dev": "vite",
     "build": "node --max-old-space-size=2048 ./node_modules/vite/bin/vite.js build",
+    "check:bundle": "node scripts/check-bundle.mjs",
+    "test:lazy-loading": "node scripts/performance/verify-lazy-loading.mjs",
     "lint": "eslint . --report-unused-disable-directives --max-warnings 0",
     "typecheck": "tsc --noEmit",
-    "test:unit": "node --experimental-strip-types --test \"src/**/*.test.ts\"",
+    "test:unit": "node --experimental-transform-types --test --test-concurrency=1 \"src/**/*.test.ts\"",
     "preview": "vite preview",
     "pretty": "prettier --write .",
-    "orval:gen-api": "orval --config orval.config.ts"
+    "orval:gen-api": "orval --config orval.config.ts",
+    "check:seo": "node scripts/seo/check-seo.mjs",
+    "check:release": "npm run lint && npm run typecheck && npm run test:unit && npm run build && npm run check:bundle && npm run test:lazy-loading && npm run check:seo && npm audit --audit-level=high"
   },
   "dependencies": {
     "@colyseus/sdk": "0.18.4",
@@ -26,7 +30,6 @@
     "@fullcalendar/interaction": "6.1.19",
     "@fullcalendar/react": "6.1.19",
     "@fullcalendar/timegrid": "6.1.19",
-    "@g-loot/react-tournament-brackets": "1.0.31-rc",
     "@gsap/react": "2.1.2",
     "@hookform/resolvers": "^5.2.2",
     "@iconify/react": "^6.0.2",
@@ -45,13 +48,13 @@
     "clsx": "^2.1.1",
     "dayjs": "^1.11.18",
     "devicon": "2.15.1",
-    "dompurify": "3.4.16",
+    "dompurify": "3.4.17",
     "echarts": "6.1.0",
     "echarts-for-react": "3.0.5",
     "gsap": "3.13.0",
     "i18next": "^25.6.0",
     "i18next-browser-languagedetector": "^8.2.0",
-    "katex": "^0.16.11",
+    "katex": "0.18.2",
     "lodash.merge": "^4.6.2",
     "lottie-react": "^2.4.1",
     "monaco-editor": "0.56.0",
@@ -85,6 +88,7 @@
     "@typescript-eslint/parser": "^8.46.1",
     "@vitejs/plugin-react": "^5.0.4",
     "ajv": "8.20.0",
+    "esbuild": "0.28.1",
     "eslint": "^9.38.0",
     "eslint-config-prettier": "^10.1.8",
     "eslint-plugin-prettier": "^5.5.4",
@@ -102,7 +106,7 @@
     "vite-tsconfig-paths": "^5.1.4"
   },
   "overrides": {
-    "dompurify": "3.4.16",
+    "dompurify": "3.4.17",
     "js-yaml": "4.3.2"
   }
 }

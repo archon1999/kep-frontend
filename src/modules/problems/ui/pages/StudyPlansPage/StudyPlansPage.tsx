@@ -1,38 +1,27 @@
-import { Box, Button, Grid, Skeleton, Stack } from '@mui/material';
 import { useTranslation } from 'react-i18next';
-import { Link as RouterLink } from 'react-router-dom';
+import { Box, Grid, Skeleton, Stack } from '@mui/material';
 import { resources } from 'app/routes/resources';
-import { useStudyPlans } from 'modules/problems/application/queries.ts';
+import { useStudyPlansPage } from 'modules/problems/application/hooks/useStudyPlansPage';
 import StudyPlanCard from 'modules/problems/ui/shared/components/StudyPlanCard.tsx';
+import FramedPage from 'shared/components/sections/common/FramedPage';
 import PageHeader from 'shared/components/sections/common/PageHeader.tsx';
 
 const StudyPlansPage = () => {
+  const { studyPlans, isLoading } = useStudyPlansPage();
+
   const { t } = useTranslation();
-  const { data: studyPlans, isLoading } = useStudyPlans();
 
   return (
-    <Stack spacing={4}>
-      <PageHeader
-        title={t('problems.studyPlans.pageTitle')}
-        breadcrumb={[
-          { label: t('home'), url: resources.Home },
-          { label: t('problems.title'), url: resources.Problems },
-          { label: t('problems.studyPlans.pageTitle'), active: true },
-        ]}
-        actionComponent={
-          <Button component={RouterLink} to={resources.Problems} variant="text">
-            {t('problems.studyPlans.backToProblems')}
-          </Button>
-        }
-      />
+    <FramedPage>
+      <PageHeader title={t('problems.studyPlans.pageTitle')} backTo={resources.Problems} />
 
-      <Box sx={{ px: { xs: 3, md: 5 }, pb: { xs: 5, md: 6 } }}>
+      <Box sx={{ p: 'var(--kep-content-inset)' }}>
         <Stack spacing={3}>
           <Grid container spacing={3}>
             {isLoading
               ? Array.from({ length: 3 }).map((_, index) => (
                   <Grid key={`study-plan-skeleton-${index}`} size={{ xs: 12, md: 6, xl: 4 }}>
-                  <Skeleton variant="rounded" height={280} />
+                    <Skeleton variant="rounded" height={280} />
                   </Grid>
                 ))
               : (studyPlans ?? []).map((studyPlan) => (
@@ -43,7 +32,7 @@ const StudyPlansPage = () => {
           </Grid>
         </Stack>
       </Box>
-    </Stack>
+    </FramedPage>
   );
 };
 

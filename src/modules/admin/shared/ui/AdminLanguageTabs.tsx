@@ -1,9 +1,10 @@
 import { ReactNode, useMemo, useState } from 'react';
-import { Box } from '@mui/material';
 import { useTranslation } from 'react-i18next';
+import { Box } from '@mui/material';
+import type { AdminLanguageCode } from 'modules/admin/shared/domain/language.types';
 import ResponsiveTabs from 'shared/components/common/ResponsiveTabs';
 
-export type AdminLanguageCode = 'uz' | 'en' | 'ru';
+export type { AdminLanguageCode } from 'modules/admin/shared/domain/language.types';
 
 const languageCodes: AdminLanguageCode[] = ['uz', 'en', 'ru'];
 

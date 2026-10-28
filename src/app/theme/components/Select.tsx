@@ -46,12 +46,12 @@ const Select: Components<Omit<Theme, 'components'>>['MuiSelect'] = {
         },
       },
     }),
-    select: {
+    select: ({ theme }) => ({
       '&:focus': {
         backgroundColor: 'transparent',
-        borderRadius: 8,
+        borderRadius: theme.preset === 'default' ? 0 : 8,
       },
-    },
+    }),
     standard: {
       paddingTop: 8,
       paddingBottom: 8,

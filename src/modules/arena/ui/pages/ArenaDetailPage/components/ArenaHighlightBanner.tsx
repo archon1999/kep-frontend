@@ -1,7 +1,7 @@
 import { Box, Stack, Typography } from '@mui/material';
 import { alpha } from '@mui/material/styles';
-import IconifyIcon from 'shared/components/base/IconifyIcon.tsx';
 import { ArenaHighlight } from 'modules/arena/domain/entities/arena-highlight.entity.ts';
+import IconifyIcon from 'shared/components/base/IconifyIcon.tsx';
 
 interface HighlightBannerProps {
   highlight?: ArenaHighlight;
@@ -47,7 +47,7 @@ const ArenaHighlightBanner = ({ highlight }: HighlightBannerProps) => {
         minWidth: 0,
         px: { xs: 1.5, sm: 2 },
         py: 1.25,
-        borderRadius: 1,
+        borderRadius: 0,
         background: alpha(theme.palette[color].main, 0.1),
       })}
     >
@@ -56,7 +56,7 @@ const ArenaHighlightBanner = ({ highlight }: HighlightBannerProps) => {
           sx={(theme) => ({
             width: 32,
             height: 32,
-            borderRadius: 1,
+            borderRadius: 0,
             display: 'inline-flex',
             alignItems: 'center',
             justifyContent: 'center',

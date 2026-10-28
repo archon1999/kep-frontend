@@ -3,8 +3,10 @@ import { useTranslation } from 'react-i18next';
 import { Link as RouterLink } from 'react-router';
 import { Box, Button, Chip, Link, Skeleton, Stack, Typography } from '@mui/material';
 import { getResourceById, resources } from 'app/routes/resources';
+import { interactiveContentSx } from 'app/theme/styles/content';
 import { Test } from 'modules/testing/domain';
 import IconifyIcon from 'shared/components/base/IconifyIcon';
+import MixedText from 'shared/components/common/MixedText';
 
 interface ChapterTestsListProps {
   tests: Test[];
@@ -21,20 +23,25 @@ const getDurationSeconds = (duration: string) => {
 };
 
 export const ChapterTestsListSkeleton = () => (
-  <Stack gap={1} aria-hidden="true">
+  <Stack gap={0} aria-hidden="true">
     {Array.from({ length: 4 }, (_, index) => (
       <Stack
         key={index}
         direction="row"
         alignItems="center"
         gap={{ xs: 1.5, sm: 2 }}
-        sx={{ p: { xs: 2, sm: 2.5 }, minHeight: { sm: 112 } }}
+        sx={{
+          px: 'var(--kep-content-inset)',
+          py: 2.5,
+          minHeight: { sm: 120 },
+          borderBottom: '1px solid var(--kep-line)',
+        }}
       >
         <Skeleton
           variant="rounded"
-          width={52}
-          height={52}
-          sx={{ display: { xs: 'none', sm: 'block' }, flexShrink: 0, borderRadius: 2 }}
+          width={32}
+          height={28}
+          sx={{ display: { xs: 'none', sm: 'block' }, flexShrink: 0, borderRadius: 0 }}
         />
         <Stack gap={0.75} sx={{ flex: 1, minWidth: 0 }}>
           <Skeleton width="65%" height={25} />
@@ -122,11 +129,11 @@ const ChapterTestsList = ({ tests, completion }: ChapterTestsListProps) => {
               />
             )}
             <Typography
-              variant={compact ? 'caption' : 'body1'}
+              variant="metric"
               fontWeight={600}
               color={perfect ? 'success.main' : 'text.primary'}
               aria-label={`${t('tests.bestResult')}: ${result}/${questionCount}`}
-              sx={{ fontVariantNumeric: 'tabular-nums' }}
+              sx={{ fontSize: compact ? 15 : 24 }}
             >
               {result}
               <Box
@@ -148,7 +155,7 @@ const ChapterTestsList = ({ tests, completion }: ChapterTestsListProps) => {
 
   return (
     <Stack gap={2} sx={{ minWidth: 0 }}>
-      <Stack component="ol" gap={1} sx={{ listStyle: 'none', m: 0, p: 0 }}>
+      <Stack component="ol" gap={0} sx={{ listStyle: 'none', m: 0, p: 0 }}>
         {(expanded ? tests : tests.slice(0, INITIAL_TEST_COUNT)).map((test, index) => {
           const questionCount = test.questionsCount ?? test.questions?.length ?? 0;
           const description = descriptions.get(test.id);
@@ -161,14 +168,16 @@ const ChapterTestsList = ({ tests, completion }: ChapterTestsListProps) => {
                 underline="none"
                 color="text.primary"
                 sx={{
+                  ...interactiveContentSx,
                   display: 'flex',
                   alignItems: 'center',
                   gap: { xs: 1.5, sm: 2 },
                   minWidth: 0,
-                  minHeight: { sm: 112 },
-                  p: { xs: 2, sm: 2.5 },
-                  borderRadius: 2,
-                  '&:hover': { bgcolor: 'background.elevation1' },
+                  minHeight: { sm: 120 },
+                  px: 'var(--kep-content-inset)',
+                  py: 2.5,
+                  borderBottom: '1px solid var(--kep-line)',
+                  borderRadius: 0,
                   '&:focus-visible': {
                     outline: '2px solid',
                     outlineColor: 'primary.main',
@@ -184,17 +193,15 @@ const ChapterTestsList = ({ tests, completion }: ChapterTestsListProps) => {
                     alignItems: 'center',
                     justifyContent: 'center',
                     flexShrink: 0,
-                    width: { xs: 40, sm: 52 },
-                    height: { xs: 40, sm: 52 },
-                    bgcolor: 'background.elevation1',
-                    borderRadius: 2,
+                    width: 32,
+                    height: 32,
                   }}
                 >
                   <Typography
-                    variant="subtitle1"
+                    variant="metric"
                     fontWeight={500}
                     color="text.secondary"
-                    sx={{ fontVariantNumeric: 'tabular-nums' }}
+                    sx={{ fontSize: 20 }}
                   >
                     {String(index + 1).padStart(2, '0')}
                   </Typography>
@@ -202,13 +209,19 @@ const ChapterTestsList = ({ tests, completion }: ChapterTestsListProps) => {
 
                 <Stack gap={0.75} sx={{ flex: 1, minWidth: 0 }}>
                   <Typography
-                    component="h2"
+                    component="h3"
                     variant="subtitle1"
                     fontWeight={600}
                     data-test-title
-                    sx={{ fontSize: 17, lineHeight: 1.45, overflowWrap: 'anywhere' }}
+                    sx={{
+                      fontFamily: 'var(--kep-display-font)',
+                      fontWeight: 500,
+                      fontSize: 20,
+                      lineHeight: 1.4,
+                      overflowWrap: 'anywhere',
+                    }}
                   >
-                    {test.title}
+                    <MixedText>{test.title}</MixedText>
                   </Typography>
                   {description && (
                     <Typography
@@ -273,7 +286,8 @@ const ChapterTestsList = ({ tests, completion }: ChapterTestsListProps) => {
         <Button
           size="small"
           onClick={() => setExpanded((previous) => !previous)}
-          sx={{ alignSelf: 'flex-start' }}
+          variant="outlined"
+          sx={{ alignSelf: 'flex-start', mx: 'var(--kep-content-inset)', mb: 2.5 }}
         >
           {expanded
             ? t('tests.showLessTests')

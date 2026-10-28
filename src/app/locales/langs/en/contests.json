@@ -1,7 +1,21 @@
 {
   "contests": {
+    "card": {
+      "readMore": "Read announcement",
+      "showLess": "Show less",
+      "starts": "Starts",
+      "ends": "Ends",
+      "open": "View contest",
+      "leaderboard": "CONTEST LEADERBOARD",
+      "ratingError": "Could not load the leaderboard.",
+      "leadersError": "Could not load contest results.",
+      "problems": "Problems",
+      "registrations": "Registrations",
+      "contestants": "Contestants"
+    },
+    "heroBadge": "COMPETE & GROW",
     "title": "Contests",
-    "subtitle": "Join live programming contests, track standings, and get ready for the next challenge.",
+    "subtitle": "Browse upcoming contests, solve past problems, and review the standings.",
     "searchLabel": "Search contests",
     "searchPlaceholder": "Search by title or author",
     "typeLabel": "Type",
@@ -9,7 +23,10 @@
     "categoriesLabel": "Categories",
     "allCategories": "All categories",
     "filters": {
-      "toggle": "Filters"
+      "toggle": "Filters",
+      "close": "Close filters",
+      "done": "Done",
+      "remove": "Remove {{label}} filter"
     },
     "participation": {
       "all": "All",
@@ -30,7 +47,7 @@
     "topContestants": {
       "title": "Top 3 contestants",
       "loading": "Loading results...",
-      "empty": "Top finishers will appear once the contest is completed."
+      "empty": "Top finishers appear after the contest ends."
     },
     "topRating": {
       "title": "Top 10",
@@ -59,9 +76,11 @@
     },
     "contestants": "{{count}} contestants",
     "rated": "Rated",
-    "noDescription": "No description provided.",
+    "noDescription": "No announcement has been added.",
+    "filteredEmptyTitle": "No matching contests",
+    "filteredEmptySubtitle": "Try another search or clear your filters to see all contests.",
     "emptyTitle": "No contests available",
-    "emptySubtitle": "New contests will appear here soon.",
+    "emptySubtitle": "There are no contests to display.",
     "viewRating": "Contests rating",
     "viewMyStats": "My stats",
     "register": "Register",
@@ -70,7 +89,7 @@
     "startVirtualContest": "Start virtual contest",
     "statistics": {
       "title": "Contest performance",
-      "subtitle": "Detailed results for {{username}} across rated contests.",
+      "subtitle": "{{username}}’s contest results and rating history.",
       "authRequired": "Sign in to view your contest statistics.",
       "loginCta": "Sign in",
       "loading": "Loading statistics...",
@@ -100,7 +119,7 @@
       "tags": "Favorite tags",
       "symbols": "Problem symbols",
       "unsolvedProblems": "Unsolved problems",
-      "noUnsolvedProblems": "All contest problems are solved",
+      "noUnsolvedProblems": "No unsolved problems to display.",
       "topAttempts": "Most attempts",
       "solved": "Solved",
       "unsolved": "Unsolved",
@@ -108,7 +127,8 @@
       "attemptsCount": "{{count}} attempts",
       "worthyOpponents": "Worthy opponents",
       "sharedContests": "{{count}} shared contests",
-      "noData": "No data yet"
+      "noData": "No data yet",
+      "noContestHistory": "No contest results have been recorded for this account yet."
     },
     "verdicts": {
       "AC": "Accepted",
@@ -118,7 +138,6 @@
     },
     "rating": {
       "title": "Contests rating",
-      "subtitle": "See the most consistent contestants across all rated contests.",
       "ordering": {
         "rating": "Rating",
         "maxRating": "Max rating",
@@ -181,7 +200,6 @@
     },
     "problemsTable": {
       "symbol": "#",
-      "title": "Title",
       "limits": "Limits",
       "ball": "Ball",
       "stats": "Stats"
@@ -274,7 +292,6 @@
     "problem": {
       "description": "Description",
       "myAttempts": "My attempts",
-      "footerTitle": "Your contest results",
       "prev": "Prev",
       "next": "Next",
       "openOriginal": "Open problem",
@@ -307,7 +324,7 @@
       "loading": "Preparing replay…",
       "retry": "Retry",
       "error": "Could not load the replay.",
-      "unavailable": "This contest does not have enough reliable history to replay its final standings.",
+      "unavailable": "There is not enough recorded history to replay this contest.",
       "empty": "There are no participants to replay.",
       "play": "Play",
       "pause": "Pause",
@@ -321,6 +338,15 @@
       "participant": "Participant",
       "points": "Points",
       "penalty": "Penalty"
+    },
+    "detail": {
+      "announcement": "Announcement",
+      "navigation": "Contest navigation",
+      "loadError": "Could not load this contest. Please try again.",
+      "dataError": "Could not load this section. Please try again.",
+      "problemSet": "Problem set",
+      "solve": "Solve problem",
+      "lockedProblems": "Problems will be available when the contest starts."
     }
   }
 }

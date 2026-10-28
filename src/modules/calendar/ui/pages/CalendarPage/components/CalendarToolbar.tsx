@@ -1,9 +1,11 @@
-import { ToggleButton, ToggleButtonGroup, Stack, Button, Typography } from '@mui/material';
 import { useTranslation } from 'react-i18next';
+import { Button, Stack, Typography } from '@mui/material';
+import { contentHeadingSx, contentInsetSx } from 'app/theme/styles/content';
 import IconifyIcon from 'shared/components/base/IconifyIcon';
+import MixedText from 'shared/components/common/MixedText';
+import ResponsiveTabs from 'shared/components/common/ResponsiveTabs';
 
 export type CalendarView = 'dayGridMonth' | 'timeGridWeek' | 'timeGridDay';
-
 interface CalendarToolbarProps {
   currentRangeLabel: string;
   onToday: () => void;
@@ -12,7 +14,6 @@ interface CalendarToolbarProps {
   view: CalendarView;
   onChangeView: (view: CalendarView) => void;
 }
-
 const CalendarToolbar = ({
   currentRangeLabel,
   onToday,
@@ -22,64 +23,55 @@ const CalendarToolbar = ({
   view,
 }: CalendarToolbarProps) => {
   const { t } = useTranslation();
-
   return (
-    <Stack
-      direction={{ xs: 'column', md: 'row' }}
-      spacing={2}
-      alignItems={{ xs: 'stretch', md: 'center' }}
-      justifyContent="space-between"
-    >
-      <Stack direction={{ xs: 'column', sm: 'row' }} spacing={1.5} alignItems="center">
-        <Typography variant="h5" fontWeight={700} sx={{ textAlign: { xs: 'center', sm: 'left' } }}>
-          {currentRangeLabel}
+    <Stack gap={2} sx={{ ...contentInsetSx, borderBottom: 1, borderColor: 'divider' }}>
+      <Stack
+        direction="row"
+        gap={2}
+        alignItems="center"
+        justifyContent="space-between"
+        flexWrap="wrap"
+      >
+        <Typography component="h2" aria-live="polite" sx={contentHeadingSx}>
+          <MixedText>{currentRangeLabel}</MixedText>
         </Typography>
-
-        <Stack direction="row" spacing={1} alignItems="center">
-          <Button variant="outlined" color="neutral" onClick={onToday} size="small">
+        <Stack direction="row" gap={1} alignItems="center">
+          <Button variant="outlined" onClick={onToday} size="small">
             {t('calendar.today')}
           </Button>
-          <Stack direction="row" spacing={0.5} alignItems="center">
-            <Button
-              shape="square"
-              color="neutral"
-              onClick={onPrev}
-              size="small"
-              aria-label={t('common.pagination.previous')}
-              title={t('common.pagination.previous')}
-            >
-              <IconifyIcon icon="material-symbols:chevron-left-rounded" />
-            </Button>
-            <Button
-              shape="square"
-              color="neutral"
-              onClick={onNext}
-              size="small"
-              aria-label={t('common.pagination.next')}
-              title={t('common.pagination.next')}
-            >
-              <IconifyIcon icon="material-symbols:chevron-right-rounded" />
-            </Button>
-          </Stack>
+          <Button
+            shape="square"
+            variant="outlined"
+            color="neutral"
+            onClick={onPrev}
+            size="small"
+            aria-label={t('common.pagination.previous')}
+          >
+            <IconifyIcon icon="mdi:chevron-left" />
+          </Button>
+          <Button
+            shape="square"
+            variant="outlined"
+            color="neutral"
+            onClick={onNext}
+            size="small"
+            aria-label={t('common.pagination.next')}
+          >
+            <IconifyIcon icon="mdi:chevron-right" />
+          </Button>
         </Stack>
       </Stack>
-
-      <ToggleButtonGroup
-        exclusive
+      <ResponsiveTabs
         value={view}
-        onChange={(_, nextView) => {
-          if (!nextView) return;
-          onChangeView(nextView);
-        }}
-        color="primary"
-        size="small"
-      >
-        <ToggleButton value="dayGridMonth">{t('calendar.monthView')}</ToggleButton>
-        <ToggleButton value="timeGridWeek">{t('calendar.weekView')}</ToggleButton>
-        <ToggleButton value="timeGridDay">{t('calendar.dayView')}</ToggleButton>
-      </ToggleButtonGroup>
+        onChange={onChangeView}
+        ariaLabel={t('calendar.title')}
+        items={[
+          { value: 'dayGridMonth', label: t('calendar.monthView') },
+          { value: 'timeGridWeek', label: t('calendar.weekView') },
+          { value: 'timeGridDay', label: t('calendar.dayView') },
+        ]}
+      />
     </Stack>
   );
 };
-
 export default CalendarToolbar;

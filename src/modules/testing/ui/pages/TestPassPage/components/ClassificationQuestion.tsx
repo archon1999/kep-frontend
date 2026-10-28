@@ -9,9 +9,12 @@ import {
   useMediaQuery,
   useTheme,
 } from '@mui/material';
+import {
+  ClassificationGroup,
+  TestPassQuestion,
+} from 'modules/testing/domain/entities/test-pass.types';
 import IconifyIcon from 'shared/components/base/IconifyIcon';
 import { DragLocation, moveClassificationItem } from '../dragAndDrop';
-import { ClassificationGroup, TestPassQuestion } from '../types';
 import QuestionHeader from './QuestionHeader';
 
 interface ClassificationQuestionProps {
@@ -76,7 +79,7 @@ const ClassificationQuestion = ({ question, groups, onChange }: ClassificationQu
             <Stack
               key={key}
               spacing={1.5}
-              sx={{ p: 1.5, border: '1px solid', borderColor: 'divider', borderRadius: 2 }}
+              sx={{ p: 1.5, border: '1px solid', borderColor: 'divider', borderRadius: 0 }}
             >
               <Typography variant="body1" sx={{ overflowWrap: 'anywhere' }}>
                 {value}
@@ -133,7 +136,7 @@ const ClassificationQuestion = ({ question, groups, onChange }: ClassificationQu
               spacing={1}
               sx={{
                 p: 2,
-                borderRadius: 2,
+                borderRadius: 0,
                 border: '1px solid',
                 borderColor: 'divider',
               }}
@@ -173,7 +176,7 @@ const ClassificationQuestion = ({ question, groups, onChange }: ClassificationQu
                       gap: 0.75,
                       alignItems: 'center',
                       maxWidth: '100%',
-                      borderRadius: 1.5,
+                      borderRadius: 0,
                       bgcolor: 'transparent',
                       '&:active': { cursor: 'grabbing' },
                       userSelect: 'none',

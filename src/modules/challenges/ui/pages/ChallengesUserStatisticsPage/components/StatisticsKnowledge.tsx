@@ -15,9 +15,10 @@ import {
   Typography,
 } from '@mui/material';
 import { normalizeSupportedLocale } from 'app/locales/locale';
+import { statisticsHeadingSx } from 'app/theme/styles/statistics';
+import { statisticsInset, statisticsPanelSx } from 'app/theme/styles/statistics';
 import { ChallengeQuestionTimeType, type ChallengeUserStatistics } from 'modules/challenges/domain';
 import { createNumberFormatter } from 'shared/lib/numberFormat';
-import { statisticsInset, statisticsPanelSx } from './statisticsStyles';
 
 interface StatisticsKnowledgeProps {
   statistics: ChallengeUserStatistics;
@@ -237,7 +238,7 @@ const StatisticsKnowledge = ({ statistics }: StatisticsKnowledgeProps) => {
     <Grid container>
       <Grid size={{ xs: 12, lg: 5 }}>
         <Paper component="section" sx={[statisticsPanelSx, { p: statisticsInset, height: 1 }]}>
-          <Typography component="h2" variant="h6" sx={{ mb: 4 }}>
+          <Typography component="h2" variant="h6" sx={[statisticsHeadingSx, { mb: 4 }]}>
             {t('challenges.statisticsPage.knowledge.difficulty')}
           </Typography>
           {difficultyRows.length ? (
@@ -329,7 +330,7 @@ const StatisticsKnowledge = ({ statistics }: StatisticsKnowledgeProps) => {
 
       <Grid size={{ xs: 12, lg: 7 }}>
         <Paper component="section" sx={[statisticsPanelSx, { p: statisticsInset, height: 1 }]}>
-          <Typography component="h2" variant="h6" sx={{ mb: 4 }}>
+          <Typography component="h2" variant="h6" sx={[statisticsHeadingSx, { mb: 4 }]}>
             {t('challenges.statisticsPage.knowledge.questionTypes')}
           </Typography>
           <KnowledgeTable
@@ -342,7 +343,7 @@ const StatisticsKnowledge = ({ statistics }: StatisticsKnowledgeProps) => {
 
       <Grid size={{ xs: 12, lg: 7 }}>
         <Paper component="section" sx={[statisticsPanelSx, { p: statisticsInset, height: 1 }]}>
-          <Typography component="h2" variant="h6" sx={{ mb: 4 }}>
+          <Typography component="h2" variant="h6" sx={[statisticsHeadingSx, { mb: 4 }]}>
             {t('challenges.statisticsPage.knowledge.topChapters')}
           </Typography>
           <KnowledgeTable
@@ -355,7 +356,7 @@ const StatisticsKnowledge = ({ statistics }: StatisticsKnowledgeProps) => {
 
       <Grid size={{ xs: 12, lg: 5 }}>
         <Paper component="section" sx={[statisticsPanelSx, { p: statisticsInset, height: 1 }]}>
-          <Typography component="h2" variant="h6" sx={{ mb: 4 }}>
+          <Typography component="h2" variant="h6" sx={[statisticsHeadingSx, { mb: 4 }]}>
             {t('challenges.statisticsPage.history.format')}
           </Typography>
           <Grid container columnSpacing={3} rowSpacing={3}>

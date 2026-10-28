@@ -1,25 +1,16 @@
 import { useEffect, useMemo, useState } from 'react';
 import { useTranslation } from 'react-i18next';
-import {
-  Box,
-  Button,
-  Card,
-  CardContent,
-  CardHeader,
-  Chip,
-  Divider,
-  IconButton,
-  Rating,
-  Skeleton,
-  Stack,
-  Typography,
-} from '@mui/material';
+import { Box, Button, Card, IconButton, Rating, Skeleton, Stack, Typography } from '@mui/material';
 import { useAuth } from 'app/providers/AuthProvider';
-import { ShopProduct } from 'modules/shop/domain/entities/product.entity';
+import { contentHeadingSx, contentInsetSx } from 'app/theme/styles/content';
+import { ShopProduct, ShopProductColor } from 'modules/shop/domain/entities/product.entity';
 import IconifyIcon from 'shared/components/base/IconifyIcon';
 import KepcoinValue from 'shared/components/common/KepcoinValue';
+import MixedText from 'shared/components/common/MixedText';
 import { useLoginRedirect } from 'shared/lib/authRedirect';
 import ShopCheckoutModal from './ShopCheckoutModal';
+
+const sizesForColor = (color?: ShopProductColor) => color?.sizes ?? [];
 
 interface ShopProductCardProps {
   product: ShopProduct;
@@ -33,7 +24,12 @@ const ShopProductCard = ({ product, onPurchaseSuccess }: ShopProductCardProps) =
   const colors = product.colors.length ? product.colors : [];
   const [selectedColorIndex, setSelectedColorIndex] = useState(0);
   const selectedColor = colors[selectedColorIndex] ?? colors[0];
-  const [selectedSizeIndex, setSelectedSizeIndex] = useState(0);
+  const [selectedSizeIndex, setSelectedSizeIndex] = useState(() =>
+    Math.max(
+      0,
+      sizesForColor(product.colors[0]).findIndex((size) => size.isAvailable),
+    ),
+  );
   const [isCheckoutOpen, setIsCheckoutOpen] = useState(false);
   const colorImages = selectedColor?.images?.length ? selectedColor.images : product.images;
   const [currentImageIndex, setCurrentImageIndex] = useState(0);
@@ -51,8 +47,13 @@ const ShopProductCard = ({ product, onPurchaseSuccess }: ShopProductCardProps) =
       : '';
 
   useEffect(() => {
-    setSelectedSizeIndex(0);
-  }, [selectedColorIndex]);
+    setSelectedSizeIndex(
+      Math.max(
+        0,
+        sizesForColor(colors[selectedColorIndex]).findIndex((size) => size.isAvailable),
+      ),
+    );
+  }, [selectedColorIndex, product.colors]);
 
   useEffect(() => {
     setCurrentImageIndex(0);
@@ -97,21 +98,25 @@ const ShopProductCard = ({ product, onPurchaseSuccess }: ShopProductCardProps) =
   return (
     <>
       <Card
-        elevation={0}
+        component="article"
+        variant="panel"
         sx={{
           height: 1,
+          border: 0,
           display: 'flex',
           flexDirection: 'column',
-          borderRadius: 3,
-          overflow: 'hidden',
-          position: 'relative',
+          '&::before': { display: 'none' },
         }}
       >
         <Box
           sx={{
             position: 'relative',
-            bgcolor: 'background.level1',
-            height: { xs: 360, md: 420, xl: 500 },
+            bgcolor: 'action.hover',
+            aspectRatio: '4 / 3',
+            maxHeight: 280,
+            borderBottom: 1,
+            borderColor: 'divider',
+            overflow: 'hidden',
           }}
         >
           {currentImage ? (
@@ -119,170 +124,201 @@ const ShopProductCard = ({ product, onPurchaseSuccess }: ShopProductCardProps) =
               component="img"
               src={currentImage.url}
               alt={currentImage.name || product.title}
+              loading="lazy"
               sx={{ width: 1, height: 1, objectFit: 'contain', display: 'block' }}
             />
           ) : (
             <Stack
               sx={{
-                width: 1,
                 height: 1,
                 alignItems: 'center',
                 justifyContent: 'center',
                 color: 'text.secondary',
               }}
+              gap={1}
             >
-              <IconifyIcon icon="mdi:store" fontSize={36} />
+              <IconifyIcon icon="mdi:store-outline" fontSize={36} />
               <Typography variant="body2">{t('shop.noImage')}</Typography>
             </Stack>
           )}
-
           {hasMultipleImages && (
             <>
-              <IconButton
-                aria-label="Previous image"
-                size="small"
-                onClick={() => handleImageShift('prev')}
+              {(['prev', 'next'] as const).map((direction) => (
+                <IconButton
+                  key={direction}
+                  aria-label={t(`common.pagination.${direction === 'prev' ? 'previous' : 'next'}`)}
+                  onClick={() => handleImageShift(direction)}
+                  sx={{
+                    position: 'absolute',
+                    top: '50%',
+                    [direction === 'prev' ? 'left' : 'right']: 12,
+                    transform: 'translateY(-50%)',
+                    bgcolor: 'background.default',
+                    border: 1,
+                    borderColor: 'divider',
+                    borderRadius: 0,
+                  }}
+                >
+                  <IconifyIcon icon={`mdi:chevron-${direction === 'prev' ? 'left' : 'right'}`} />
+                </IconButton>
+              ))}
+              <Typography
+                variant="label"
                 sx={{
                   position: 'absolute',
-                  top: '50%',
-                  left: 12,
-                  transform: 'translateY(-50%)',
-                  bgcolor: 'rgba(0,0,0,0.45)',
-                  color: 'common.white',
-                }}
-              >
-                <IconifyIcon icon="mdi:chevron-left" />
-              </IconButton>
-              <IconButton
-                aria-label="Next image"
-                size="small"
-                onClick={() => handleImageShift('next')}
-                sx={{
-                  position: 'absolute',
-                  top: '50%',
                   right: 12,
-                  transform: 'translateY(-50%)',
-                  bgcolor: 'rgba(0,0,0,0.45)',
-                  color: 'common.white',
+                  bottom: 12,
+                  px: 1,
+                  py: 0.5,
+                  bgcolor: 'background.default',
+                  color: 'text.secondary',
                 }}
               >
-                <IconifyIcon icon="mdi:chevron-right" />
-              </IconButton>
+                {currentImageIndex + 1} / {colorImages.length}
+              </Typography>
             </>
           )}
         </Box>
-
-        <CardContent sx={{ display: 'flex', flexDirection: 'column', gap: 2, flexGrow: 1 }}>
-          <CardHeader
-            title={product.title}
-            subheader={
-              <Stack direction="row" spacing={1} alignItems="center">
-                <Rating value={product.ratingAverage ?? 5} precision={0.1} size="small" readOnly />
-                {product.ratingCount > 0 ? (
+        <Stack gap={2} sx={{ ...contentInsetSx, flex: 1 }}>
+          <Stack gap={1}>
+            <Typography component="h2" sx={contentHeadingSx}>
+              <MixedText>{product.title}</MixedText>
+            </Typography>
+            <Stack direction="row" gap={1} alignItems="center">
+              {product.ratingCount > 0 ? (
+                <>
+                  <Rating
+                    value={product.ratingAverage ?? 0}
+                    precision={0.1}
+                    size="small"
+                    readOnly
+                  />
                   <Typography variant="caption" color="text.secondary">
                     ({product.ratingCount})
                   </Typography>
-                ) : null}
-              </Stack>
-            }
-            sx={{ px: 0, '& .MuiCardHeader-title': { fontWeight: 700 } }}
-          />
-
-          <Typography variant="body2" color="text.secondary">
-            {product.description}
-          </Typography>
-
-          <Divider sx={{ borderStyle: 'dashed' }} />
-
-          <Stack spacing={1}>
-            <Typography variant="caption" color="text.secondary">
+                </>
+              ) : (
+                <Typography variant="caption" color="text.secondary">
+                  {t('shop.rating.empty')}
+                </Typography>
+              )}
+            </Stack>
+            <Typography variant="body2" color="text.secondary">
+              {product.description}
+            </Typography>
+          </Stack>
+          <Box
+            sx={{
+              borderTop: 1,
+              borderColor: 'divider',
+              pt: 2,
+              display: 'grid',
+              gridTemplateColumns: 'minmax(70px, auto) minmax(0, 1fr)',
+              gap: 2,
+              alignItems: 'start',
+            }}
+          >
+            <Typography variant="label" color="text.secondary">
               {t('shop.colorLabel')}
             </Typography>
-            <Stack direction="row" spacing={1}>
-              {colors.map((color, index) => {
-                const isSelected = index === selectedColorIndex;
-
-                return (
+            <Stack direction="row" gap={1} flexWrap="wrap">
+              {colors.map((color, index) => (
+                <Box
+                  component="button"
+                  type="button"
+                  key={`${color.name}-${index}`}
+                  onClick={() => setSelectedColorIndex(index)}
+                  aria-pressed={index === selectedColorIndex}
+                  aria-label={color.name}
+                  title={color.name}
+                  sx={{
+                    width: 32,
+                    height: 32,
+                    p: 0.5,
+                    border: 1,
+                    borderColor: index === selectedColorIndex ? 'primary.main' : 'divider',
+                    bgcolor: 'transparent',
+                    cursor: 'pointer',
+                    '&:focus-visible': {
+                      outline: '2px solid',
+                      outlineColor: 'primary.main',
+                      outlineOffset: 2,
+                    },
+                  }}
+                >
                   <Box
-                    key={`color-${color.name}-${index}`}
-                    onClick={() => setSelectedColorIndex(index)}
-                    sx={{
-                      width: 32,
-                      height: 32,
-                      borderRadius: '50%',
-                      border: 2,
-                      borderColor: isSelected ? 'primary.main' : 'transparent',
-                      boxShadow: (theme) =>
-                        isSelected ? `0 0 0 1px ${theme.palette.primary.dark}` : 'none',
-                      background: color.color,
-                      cursor: 'pointer',
-                    }}
-                    role="button"
-                    aria-label={color.name}
+                    component="span"
+                    sx={{ display: 'block', width: 1, height: 1, bgcolor: color.color }}
                   />
-                );
-              })}
+                </Box>
+              ))}
             </Stack>
-          </Stack>
-
-          {sizes.length > 0 ? (
-            <Stack spacing={1}>
-              <Typography variant="caption" color="text.secondary">
-                {t('shop.sizeLabel')}
-              </Typography>
-              <Stack direction="row" spacing={1} flexWrap="wrap">
-                {sizes.map((size, index) => (
-                  <Chip
-                    key={`size-${size.name}-${index}`}
-                    label={size.name}
-                    variant={index === selectedSizeIndex ? 'filled' : 'outlined'}
-                    color={index === selectedSizeIndex ? 'primary' : 'default'}
+            <Typography variant="label" color="text.secondary">
+              {t('shop.sizeLabel')}
+            </Typography>
+            <Stack direction="row" gap={0.75} flexWrap="wrap">
+              {sizes.length ? (
+                sizes.map((size, index) => (
+                  <Button
+                    key={`${size.name}-${index}`}
+                    size="small"
+                    variant="outlined"
+                    color={index === selectedSizeIndex ? 'primary' : 'neutral'}
+                    aria-pressed={index === selectedSizeIndex}
                     onClick={() => setSelectedSizeIndex(index)}
                     disabled={!size.isAvailable}
-                    sx={{ opacity: size.isAvailable ? 1 : 0.4 }}
-                  />
-                ))}
-              </Stack>
+                    sx={{
+                      minWidth: 36,
+                      minHeight: 34,
+                      px: 1,
+                      borderRadius: 0,
+                      bgcolor: index === selectedSizeIndex ? 'action.selected' : 'transparent',
+                    }}
+                  >
+                    {size.name}
+                  </Button>
+                ))
+              ) : (
+                <Typography variant="body2" color="text.secondary">
+                  {t('shop.noVariants')}
+                </Typography>
+              )}
             </Stack>
-          ) : (
-            <Typography variant="body2" color="text.secondary">
-              {t('shop.noVariants')}
-            </Typography>
-          )}
-
+          </Box>
           {variantCaption && (
             <Typography variant="caption" color="text.secondary">
               {variantCaption}
             </Typography>
           )}
-
-          <Stack direction="row" justifyContent="space-between" alignItems="center">
-            <KepcoinValue
-              value={t('shop.kepcoinValue', { value: product.kepcoin })}
-              iconSize={18}
-              textVariant="body2"
-              fontWeight={700}
-            />
-            <Typography variant="caption" color="text.secondary">
-              {t('shop.totalStock', { count: product.totalStock })}
-            </Typography>
+          <Stack gap={1.5} sx={{ mt: 'auto', pt: 2, borderTop: 1, borderColor: 'divider' }}>
+            <Stack
+              direction="row"
+              justifyContent="space-between"
+              alignItems="center"
+              gap={1}
+              flexWrap="wrap"
+            >
+              <KepcoinValue value={product.kepcoin} iconSize={24} textVariant="metric" />
+              <Typography variant="caption" color="text.secondary">
+                {t('shop.totalStock', { count: product.totalStock })}
+              </Typography>
+            </Stack>
+            <Button
+              variant="contained"
+              onClick={handleBuyClick}
+              disabled={buyDisabled || !selectedSize}
+              endIcon={<IconifyIcon icon="mdi:arrow-up-right" />}
+            >
+              {t('shop.buyNow')}
+            </Button>
+            {buyDisabledReason && (
+              <Typography variant="caption" color="text.secondary">
+                {buyDisabledReason}
+              </Typography>
+            )}
           </Stack>
-
-          <Button
-            variant="contained"
-            onClick={handleBuyClick}
-            disabled={buyDisabled || !selectedSize}
-          >
-            {t('shop.buyNow')}
-          </Button>
-          {buyDisabledReason ? (
-            <Typography variant="caption" color="error.main">
-              {buyDisabledReason}
-            </Typography>
-          ) : null}
-        </CardContent>
+        </Stack>
       </Card>
-
       <ShopCheckoutModal
         open={isCheckoutOpen}
         onClose={() => setIsCheckoutOpen(false)}
@@ -297,15 +333,14 @@ const ShopProductCard = ({ product, onPurchaseSuccess }: ShopProductCardProps) =
 };
 
 export const ShopProductCardSkeleton = () => (
-  <Card elevation={0} sx={{ borderRadius: 3, height: 1 }}>
-    <Stack spacing={2} p={2}>
-      <Skeleton variant="rectangular" height={480} />
-      <Skeleton height={24} width="70%" />
-      <Skeleton height={18} width="40%" />
-      <Skeleton height={18} width="55%" />
-      <Skeleton height={36} />
+  <Box sx={{ height: 1 }}>
+    <Skeleton variant="rectangular" sx={{ aspectRatio: '4 / 3', maxHeight: 280 }} />
+    <Stack gap={2} sx={contentInsetSx}>
+      <Skeleton height={30} width="70%" />
+      <Skeleton height={20} />
+      <Skeleton height={70} />
+      <Skeleton height={40} />
     </Stack>
-  </Card>
+  </Box>
 );
-
 export default ShopProductCard;

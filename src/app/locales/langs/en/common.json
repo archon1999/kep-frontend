@@ -6,6 +6,18 @@
       "skipToContent": "Skip to main content"
     },
     "back": "Back",
+    "backTo": "Back to {{destination}}",
+    "backToList": "Back to list",
+    "statistics": {
+      "byWeekday": "By weekday",
+      "byMonth": "By month",
+      "byTime": "By time of day",
+      "period": "Activity period",
+      "days": "{{count}} days",
+      "noData": "No data for this period.",
+      "error": "Statistics could not be loaded.",
+      "retry": "Try again"
+    },
     "loading": "Loading...",
     "wins": "Wins",
     "draws": "Draws",
@@ -15,8 +27,9 @@
     "searchPlaceholder": "Search",
     "dataGrid": {
       "emptyState": {
-        "description": "Items will appear here when data becomes available.",
-        "filteredDescription": "No items match the current filters. Try adjusting or clearing them."
+        "filteredTitle": "No matching results",
+        "description": "No items to display.",
+        "filteredDescription": "No items match these filters. Try changing or clearing them."
       },
       "noRows": {
         "default": "No data found.",
@@ -38,12 +51,11 @@
     },
     "pagination": {
       "previous": "Previous",
-      "next": "Next",
-      "displayedRows": "Showing <range>{{from}}-{{to}}</range> out of <total>{{count}}</total> items"
+      "next": "Next"
     },
     "dailyTasks": {
       "title": "Daily tasks",
-      "subtitle": "Keep your streak growing",
+      "subtitle": "Complete all of today’s tasks to earn Kepcoin and continue your streak.",
       "tasksCount": "{{count}} tasks",
       "completed": "Completed",
       "empty": "No daily tasks for now"
@@ -52,17 +64,40 @@
       "name": "KEPPER",
       "companion": "Your coding companion on KEP.uz",
       "loading": "Loading",
-      "notFound": "KEPPER could not find this page. Let's get you back on track."
+      "notFound": "This page could not be found. Check the address or return to the home page."
+    },
+    "retry": "Try again",
+    "loadFailed": "Could not load the data. Please try again.",
+    "preview": "Image preview",
+    "accountMenu": {
+      "title": "{{username}} — account menu",
+      "profile": "Profile",
+      "settings": "Settings",
+      "logout": "Sign out",
+      "signIn": "Sign in"
+    },
+    "kepcoinMenu": {
+      "title": "Kepcoin balance",
+      "view": "View wallet",
+      "earned": "Earned today",
+      "spent": "Spent today"
+    },
+    "done": "Done",
+    "cancel": "Cancel",
+    "confirm": "Confirm",
+    "confirmTitle": "Confirm action",
+    "invalidFormula": "Check the formula syntax and try again.",
+    "languageMenu": {
+      "title": "Language"
     }
   },
   "notifications": {
-    "systemInfoTitle": "Information",
+    "unread": "Unread",
+    "all": "All",
     "systemNotificationTitle": "System notification",
     "systemNotificationOk": "OK",
     "systemNotificationFallback": "Notification",
     "title": "Notifications",
-    "subtitleUnread": "Unread notifications",
-    "subtitleAll": "All notifications",
     "countUnread": "{{count}} unread",
     "countTotal": "{{count}} total",
     "markAllAsRead": "Mark all as read",
@@ -71,8 +106,8 @@
     "empty": "No notifications",
     "markAsRead": "Mark as read",
     "contestFinished": "Contest finished | Results",
-    "challengeFinished": "Challenge finished | Results",
-    "challengeCallAccepted": "Challenge call accepted | Start",
+    "challengeFinished": "Challenge finished",
+    "challengeCallAccepted": "Challenge invitation accepted",
     "arenaFinished": "Arena finished | Results",
     "duelStarts": "Duel starts",
     "duelReminder": "Duel reminder",
@@ -91,6 +126,11 @@
     "kepcoinReasonBonusFromAdmin": "Bonus from admin",
     "kepcoinReasonDaily": "Daily problems rating winner",
     "kepcoinReasonWeekly": "Weekly problems rating winner",
-    "kepcoinReasonMonthly": "Monthly problems rating winner"
+    "kepcoinReasonMonthly": "Monthly problems rating winner",
+    "actions": "Notification actions",
+    "remove": "Remove notification",
+    "reportIssue": "Report issue",
+    "challengeCallAcceptedDescription": "Open the challenge to review the settings and get ready.",
+    "challengeFinishedDescription": "View the final score and question results."
   }
 }

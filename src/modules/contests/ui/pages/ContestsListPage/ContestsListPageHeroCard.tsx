@@ -1,111 +1,95 @@
+import { MouseEventHandler } from 'react';
 import { useTranslation } from 'react-i18next';
-import { Link as RouterLink } from 'react-router-dom';
-import { Box, Button, Card, CardContent, Stack, Typography } from '@mui/material';
+import { Link as RouterLink } from 'react-router';
+import { Button } from '@mui/material';
 import { resources } from 'app/routes/resources';
 import IconifyIcon from 'shared/components/base/IconifyIcon';
 import FilterButton from 'shared/components/common/FilterButton';
-import Logo from 'shared/components/common/Logo';
-import { cssVarRgba } from 'shared/lib/utils';
+import { ScrambleText } from 'shared/components/motion/InteractionEffects';
+import PageHeader from 'shared/components/sections/common/PageHeader';
 
 interface ContestsListPageHeroCardProps {
   canViewMyStats: boolean;
   filtersOpen: boolean;
-  activeFiltersCount: number;
-  onToggleFilters: () => void;
+  activeFilters: Array<{ key: string; label: string; onRemove: () => void }>;
+  onClearFilters: () => void;
+  onToggleFilters: MouseEventHandler<HTMLButtonElement>;
 }
 
 const ContestsListPageHeroCard = ({
   canViewMyStats,
   filtersOpen,
-  activeFiltersCount,
+  activeFilters,
+  onClearFilters,
   onToggleFilters,
 }: ContestsListPageHeroCardProps) => {
   const { t } = useTranslation();
+  const title = t('contests.title');
 
   return (
-    <Card
-      sx={(theme) => ({
-        position: 'relative',
-        overflow: 'hidden',
-        borderRadius: 3,
-        bgcolor: 'background.paper',
-        background: `linear-gradient(135deg, ${cssVarRgba(theme.vars.palette.primary.lightChannel, 0.08)}, ${cssVarRgba(theme.vars.palette.primary.mainChannel, 0.06)})`,
-      })}
-    >
-      <CardContent sx={{ p: { xs: 2, sm: 3, md: 4 } }}>
-        <Stack direction="column" spacing={2}>
-          <Stack
-            direction={{ xs: 'column', sm: 'row' }}
-            justifyContent="space-between"
-            alignItems={{ sm: 'center' }}
-            spacing={2}
-          >
-            <Stack direction="column" spacing={1}>
-              <Typography variant="h4" fontWeight={800}>
-                {t('contests.title')}
-              </Typography>
-              <Typography variant="body1" color="text.secondary" sx={{ maxWidth: 720 }}>
-                {t('contests.subtitle')}
-              </Typography>
-            </Stack>
-
-            <Stack
-              direction={{ xs: 'column', sm: 'row' }}
-              spacing={1.25}
-              alignItems={{ xs: 'stretch', sm: 'center' }}
+    <>
+      <PageHeader
+        variant="hero"
+        title={title}
+        titleId="contests-list-title"
+        badge={t('contests.heroBadge')}
+        subtitle={t('contests.subtitle')}
+      />
+      <div className="contests-list-toolbar">
+        <div className="contests-filter-controls">
+          <FilterButton
+            onClick={onToggleFilters}
+            aria-haspopup="dialog"
+            aria-expanded={filtersOpen}
+            aria-controls={filtersOpen ? 'contests-filter-menu' : undefined}
+            label={t('problems.filters')}
+            endIcon={<IconifyIcon icon={filtersOpen ? 'mdi:chevron-up' : 'mdi:chevron-down'} />}
+          />
+          {activeFilters.map((filter) => (
+            <button
+              className="contests-inline-filter"
+              key={filter.key}
+              onClick={filter.onRemove}
+              aria-label={t('contests.filters.remove', { label: filter.label })}
+              title={filter.label}
             >
-              <Button
-                component={RouterLink}
-                to={resources.ContestsRating}
-                variant="contained"
-                color="primary"
-                startIcon={<IconifyIcon icon="mdi:trophy" sx={{ fontSize: 20 }} />}
-                sx={{ alignSelf: { xs: 'stretch', sm: 'flex-start' } }}
-              >
-                {t('contests.viewRating')}
-              </Button>
-
-              {canViewMyStats ? (
-                <Button
-                  component={RouterLink}
-                  to={resources.ContestsUserStatistics}
-                  variant="outlined"
-                  color="primary"
-                  startIcon={<IconifyIcon icon="mdi:chart-line" sx={{ fontSize: 20 }} />}
-                  sx={{ alignSelf: { xs: 'stretch', sm: 'flex-start' } }}
-                >
-                  {t('contests.viewMyStats')}
-                </Button>
-              ) : null}
-
-              <FilterButton
-                onClick={onToggleFilters}
-                aria-haspopup="true"
-                aria-expanded={filtersOpen ? 'true' : undefined}
-                aria-controls={filtersOpen ? 'contests-filters-drawer' : undefined}
-                label={t('problems.filters')}
-                badgeContent={activeFiltersCount}
-                containerSx={{ width: { xs: 1, sm: 'auto' } }}
-                sx={{ width: { xs: 1, sm: 'auto' } }}
-              />
-            </Stack>
-          </Stack>
-        </Stack>
-      </CardContent>
-
-      <Box
-        sx={{
-          position: 'absolute',
-          display: { xs: 'none', sm: 'block' },
-          right: { sm: -48, md: 24 },
-          bottom: { sm: -48, md: 8 },
-          opacity: 0.08,
-          pointerEvents: 'none',
-        }}
-      >
-        <Logo sx={{ width: { sm: 220, md: 280 }, height: { sm: 220, md: 280 } }} />
-      </Box>
-    </Card>
+              <span>{filter.label}</span>
+              <IconifyIcon icon="mdi:close" aria-hidden="true" />
+            </button>
+          ))}
+          {activeFilters.length > 1 && (
+            <button
+              className="contests-clear-filters"
+              onClick={onClearFilters}
+              aria-label={t('problems.clearFilters')}
+              title={t('problems.clearFilters')}
+            >
+              <IconifyIcon icon="mdi:filter-remove-outline" />
+            </button>
+          )}
+        </div>
+        <div className="contests-list-shortcuts">
+          <Button
+            component={RouterLink}
+            to={resources.ContestsRating}
+            variant="outlined"
+            startIcon={<IconifyIcon icon="mdi:trophy-outline" />}
+          >
+            <ScrambleText>{t('contests.viewRating')}</ScrambleText>
+          </Button>
+          {canViewMyStats && (
+            <Button
+              component={RouterLink}
+              to={resources.ContestsUserStatistics}
+              variant="outlined"
+              startIcon={<IconifyIcon icon="mdi:chart-line" />}
+            >
+              <ScrambleText>{t('contests.viewMyStats')}</ScrambleText>
+            </Button>
+          )}
+        </div>
+      </div>
+    </>
   );
 };
 

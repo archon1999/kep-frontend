@@ -7,7 +7,6 @@ import {
   Dialog,
   DialogActions,
   DialogContent,
-  DialogTitle,
   FormControl,
   InputLabel,
   LinearProgress,
@@ -17,7 +16,6 @@ import {
   Stack,
   TextField,
   Typography,
-  useTheme,
 } from '@mui/material';
 import {
   DuelPreset,
@@ -25,7 +23,7 @@ import {
   getDuelPresetCategoryTitle,
 } from 'modules/duels/domain/index.ts';
 import IconifyIcon from 'shared/components/base/IconifyIcon.tsx';
-import { cssVarRgba } from 'shared/lib/utils.ts';
+import DialogHeader from 'shared/components/common/DialogHeader';
 
 type Props = {
   open: boolean;
@@ -75,7 +73,7 @@ const PresetOptionContent = ({
       sx={{ minWidth: 0 }}
     >
       <Stack spacing={compact ? 0.2 : 0.45} sx={{ minWidth: 0, flex: 1 }}>
-        <Typography variant={compact ? 'subtitle2' : 'subtitle1'} fontWeight={800} noWrap>
+        <Typography variant={compact ? 'subtitle2' : 'subtitle1'} fontWeight={600} noWrap>
           {preset.title}
         </Typography>
         <Stack direction="row" spacing={0.75} alignItems="center" flexWrap="wrap" rowGap={0.5}>
@@ -139,7 +137,6 @@ const DuelPresetDialog = ({
   onSubmit,
 }: Props) => {
   const { t } = useTranslation();
-  const theme = useTheme();
   const [presetId, setPresetId] = useState('');
   const [startTime, setStartTime] = useState(defaultStartTime ?? '');
 
@@ -174,28 +171,18 @@ const DuelPresetDialog = ({
 
   return (
     <Dialog
+      aria-labelledby="duel-preset-title"
       open={open}
       onClose={onClose}
       maxWidth="sm"
       fullWidth
-      PaperProps={{
-        sx: {
-          borderRadius: 4,
-          overflow: 'hidden',
-          background: `linear-gradient(180deg, ${cssVarRgba(theme.vars.palette.primary.mainChannel, 0.08)}, ${cssVarRgba(theme.vars.palette.background.paperChannel, 0.98)})`,
-        },
-      }}
     >
-      <DialogTitle sx={{ pb: 1.5 }}>
-        <Stack spacing={0.75}>
-          <Typography variant="h5" fontWeight={900}>
-            {t('duels.selectPreset')}
-          </Typography>
-          <Typography variant="body2" color="text.secondary">
-            {t('duels.selectPresetDescription', { username: opponent?.username ?? '' })}
-          </Typography>
-        </Stack>
-      </DialogTitle>
+      <DialogHeader
+        id="duel-preset-title"
+        title={t('duels.selectPreset')}
+        subtitle={t('duels.selectPresetDescription', { username: opponent?.username ?? '' })}
+        onClose={onClose}
+      />
       {loading ? <LinearProgress /> : null}
       <DialogContent sx={{ pt: 2 }}>
         <Stack spacing={2.5}>
@@ -225,9 +212,7 @@ const DuelPresetDialog = ({
                 PaperProps: {
                   sx: {
                     mt: 1,
-                    borderRadius: 3,
-                    p: 1,
-                    backgroundColor: 'background.paper',
+                    p: 0,
                   },
                 },
               }}
@@ -242,7 +227,7 @@ const DuelPresetDialog = ({
                   key={preset.id}
                   value={String(preset.id ?? '')}
                   sx={{
-                    borderRadius: 2,
+                    borderRadius: 0,
                     alignItems: 'stretch',
                     py: 1.25,
                     my: 0.25,
@@ -266,11 +251,9 @@ const DuelPresetDialog = ({
           {selectedPreset ? (
             <Box
               sx={{
-                borderRadius: 3,
-                border: '1px solid',
-                borderColor: cssVarRgba(theme.vars.palette.primary.mainChannel, 0.16),
-                backgroundColor: cssVarRgba(theme.vars.palette.primary.mainChannel, 0.06),
-                p: 2,
+                borderTop: '1px solid',
+                borderColor: 'divider',
+                pt: 2.5,
               }}
             >
               <Stack spacing={1.25}>

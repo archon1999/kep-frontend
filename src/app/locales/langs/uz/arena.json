@@ -1,8 +1,7 @@
 {
   "arena": {
     "title": "Arena",
-    "listSubtitle": "Siz uchun {{count}} ta arena ochiq.",
-    "listEmptySubtitle": "Hozircha arena topilmadi.",
+    "listEmptySubtitle": "Ko‘rsatish uchun arena yo‘q.",
     "searchPlaceholder": "Arena qidirish",
     "status": {
       "upcoming": "Tez orada",
@@ -22,8 +21,8 @@
     "duration": "Har bellashuv vaqti",
     "questionTimeType": {
       "label": "Savol vaqti turi",
-      "one": "Time to one",
-      "all": "Time to all"
+      "one": "Har bir savolga",
+      "all": "Barcha savollarga"
     },
     "actions": {
       "register": "Arena'ga qo'shilish",
@@ -41,6 +40,7 @@
     "players": "Natijalar",
     "participants": "ishtirokchi",
     "participantsTitle": "Ishtirokchilar",
+    "noParticipants": "Hozircha ishtirokchilar yo‘q",
     "columns": {
       "rank": "O'rin",
       "user": "O'yinchi",
@@ -71,6 +71,7 @@
     },
     "opponents": "Raqiblar",
     "winners": "Arena g'oliblari",
+    "noWinners": "Hozircha g‘oliblar yo‘q",
     "winnerStats": {
       "wins": "G'alaba: {{count}}",
       "draws": "Durrang: {{count}}",
@@ -83,9 +84,9 @@
     "finishedLabel": "Arena final",
     "chaptersLabel": "Bo'limlar",
     "stateDescriptions": {
-      "upcoming": "Arena hali boshlanmagan. Hozir ro'yxatdan o'ting va boshlanishigacha ro'yxatdan chiqishingiz mumkin.",
-      "ongoing": "Arena davom etmoqda. Navbatga kiring, avtomatik juftlaning va seriyani ushlab turing.",
-      "finished": "Arena yakunlandi. Final natijalar, g'oliblar va so'nggi bellashuvlarni ko'ring."
+      "upcoming": "Arena boshlanguncha ro‘yxatdan o‘ting. Shu vaqtgacha ro‘yxatdan chiqish mumkin.",
+      "ongoing": "Keyingi bellashuv uchun raqib topish navbatiga qo‘shiling.",
+      "finished": "Yakuniy natijalar va o‘tkazilgan bellashuvlarni ko‘ring."
     },
     "insights": {
       "upcomingTitle": "Arena boshlanishidan oldin",
@@ -107,6 +108,16 @@
       "paused": "Navbat pauzada. Keyingi juftlikka tayyor bo'lsangiz uni boshlang.",
       "active": "Navbat ishlayapti. Yangi arena bellashuvlari shu yerdan avtomatik ochiladi.",
       "finishingSoon": "Arena tugashiga ikki daqiqadan kam qoldi. Agar joriy bellashuvingiz bo'lsa, uni yakunlang."
-    }
+    },
+    "heroBadge": "Tezlik va mahorat",
+    "listHeroSubtitle": "Vaqtli savol-javob bellashuvlarida qatnashib arena ochkolarini to‘plang.",
+    "listCaption": "Vaqtli savollar · Arena natijalari",
+    "countLabel": "{{count}} ta arena",
+    "countLabel_one": "{{count}} ta arena",
+    "countLabel_other": "{{count}} ta arena",
+    "emptyTitle": "Hozircha arenalar yo‘q",
+    "loadError": "Arenalarni yuklab bo‘lmadi. Qayta urinib ko‘ring.",
+    "viewArena": "Arenani ko‘rish",
+    "secondsShort": "{{count}} s"
   }
 }

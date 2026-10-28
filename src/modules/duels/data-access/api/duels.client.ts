@@ -1,11 +1,11 @@
 import { instance } from 'shared/api/http/axiosInstance.ts';
 import {
   DuelAcceptPayload,
+  DuelCallsParams,
   DuelCounterPayload,
   DuelCreatePayload,
-  DuelCallsParams,
   DuelsListParams,
-} from '../../domain/ports/duels.repository.ts';
+} from '../../domain/contracts/duels.repository.ts';
 
 const mapListParams = (params?: DuelsListParams) => ({
   page: params?.page,
@@ -84,21 +84,33 @@ export const duelsApiClient = {
     return response.data;
   },
   confirmDuelCall: async (id: number | string) => {
-    const response = await instance.post(`/api/duel-calls/${id}/confirm/`, {}, {
-      params: { scope: 'mine' },
-    });
+    const response = await instance.post(
+      `/api/duel-calls/${id}/confirm/`,
+      {},
+      {
+        params: { scope: 'mine' },
+      },
+    );
     return response.data;
   },
   rejectDuelCall: async (id: number | string) => {
-    const response = await instance.post(`/api/duel-calls/${id}/reject/`, {}, {
-      params: { scope: 'mine' },
-    });
+    const response = await instance.post(
+      `/api/duel-calls/${id}/reject/`,
+      {},
+      {
+        params: { scope: 'mine' },
+      },
+    );
     return response.data;
   },
   cancelDuelCall: async (id: number | string) => {
-    const response = await instance.post(`/api/duel-calls/${id}/cancel/`, {}, {
-      params: { scope: 'mine' },
-    });
+    const response = await instance.post(
+      `/api/duel-calls/${id}/cancel/`,
+      {},
+      {
+        params: { scope: 'mine' },
+      },
+    );
     return response.data;
   },
   counterDuelCall: async (id: number | string, payload: DuelCounterPayload) => {

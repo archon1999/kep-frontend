@@ -1,6 +1,6 @@
 import { useTranslation } from 'react-i18next';
 import { Checkbox, FormControlLabel, FormGroup, Stack, Typography } from '@mui/material';
-import { TestPassQuestion } from '../types';
+import { TestPassQuestion } from 'modules/testing/domain/entities/test-pass.types';
 import QuestionHeader from './QuestionHeader';
 
 interface MultipleChoiceQuestionProps {
@@ -47,8 +47,8 @@ const MultipleChoiceQuestion = ({
                   minHeight: 56,
                   border: '1px solid',
                   borderColor: isSelected ? 'primary.main' : 'divider',
-                  bgcolor: isSelected ? 'primary.lighter' : 'transparent',
-                  borderRadius: 2,
+                  bgcolor: isSelected ? 'action.selected' : 'transparent',
+                  borderRadius: 0,
                   transition: (theme) =>
                     theme.transitions.create(['border-color', 'background-color']),
                   '&:hover': { borderColor: isSelected ? 'primary.main' : 'text.secondary' },

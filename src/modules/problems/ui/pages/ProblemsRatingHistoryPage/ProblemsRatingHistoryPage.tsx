@@ -1,14 +1,11 @@
-import { useMemo } from 'react';
 import { useTranslation } from 'react-i18next';
 import {
   Box,
-  Button,
   Card,
   CardContent,
   Chip,
   Divider,
   LinearProgress,
-  Pagination,
   Skeleton,
   Stack,
   Table,
@@ -16,28 +13,25 @@ import {
   TableCell,
   TableRow,
   Typography,
-  alpha,
   useTheme,
 } from '@mui/material';
 import Grid from '@mui/material/Grid';
 import { Palette } from '@mui/material/styles';
-import { useAuth } from 'app/providers/AuthProvider';
 import { resources } from 'app/routes/resources';
-import { Link as RouterLink } from 'react-router-dom';
-import UserPopover from 'modules/users/ui/shared/components/UserPopover';
-import IconifyIcon from 'shared/components/base/IconifyIcon';
-import KepIcon from 'shared/components/base/KepIcon';
-import ContestsRatingChip from 'shared/components/rating/ContestsRatingChip';
-import PageHeader from 'shared/components/sections/common/PageHeader';
-import useRouteQueryState from 'shared/hooks/useRouteQueryState';
-import { formatDateTime, formatMachineDateTime } from 'shared/lib/dateTime';
-import { numberParam } from 'shared/lib/queryParams';
-import { responsivePagePaddingSx } from 'shared/lib/styles';
-import { useProblemsRatingHistory } from 'modules/problems/application/queries';
+import { useProblemsRatingHistoryPage } from 'modules/problems/application/hooks/useProblemsRatingHistoryPage';
 import {
   ProblemsRatingHistoryEntry,
   ProblemsRatingHistoryType,
 } from 'modules/problems/domain/entities/problem.entity';
+import UserPopover from 'modules/users/ui/shared/components/UserPopover';
+import KepIcon from 'shared/components/base/KepIcon';
+import ContestsRatingChip from 'shared/components/rating/ContestsRatingChip';
+import { ListPagination } from 'shared/components/sections/common/FramedListPage';
+import FramedPage from 'shared/components/sections/common/FramedPage';
+import PageHeader from 'shared/components/sections/common/PageHeader';
+import { formatDateTime, formatMachineDateTime } from 'shared/lib/dateTime';
+import { responsivePagePaddingSx } from 'shared/lib/styles';
+import { cssVarRgba } from 'shared/lib/utils';
 
 type RatingHistoryColor = keyof Pick<Palette, 'success' | 'info' | 'primary'>;
 
@@ -51,85 +45,21 @@ const ratingHistoryConfigs: Array<{
   { type: 3, periodKey: 'monthly', color: 'primary' },
 ];
 
-const historyPageSize = 10;
-
 const ProblemsRatingHistoryPage = () => {
+  const {
+    currentUser,
+    state,
+    dailyHistory,
+    weeklyHistory,
+    monthlyHistory,
+    dailyBest,
+    weeklyBest,
+    monthlyBest,
+    isLoading,
+    handlePageChange,
+  } = useProblemsRatingHistoryPage();
+
   const { t } = useTranslation();
-  const { currentUser } = useAuth();
-  const { state, setField } = useRouteQueryState({
-    defaults: {
-      dailyPage: 1,
-      weeklyPage: 1,
-      monthlyPage: 1,
-    },
-    schema: {
-      dailyPage: {
-        ...numberParam({ min: 1 }),
-        param: 'dailyPage',
-      },
-      weeklyPage: {
-        ...numberParam({ min: 1 }),
-        param: 'weeklyPage',
-      },
-      monthlyPage: {
-        ...numberParam({ min: 1 }),
-        param: 'monthlyPage',
-      },
-    },
-    historyByKey: {
-      dailyPage: 'push',
-      weeklyPage: 'push',
-      monthlyPage: 'push',
-    },
-  });
-
-  const dailyParams = useMemo(
-    () => ({ type: 1, page: state.dailyPage, pageSize: historyPageSize }),
-    [state.dailyPage],
-  );
-  const weeklyParams = useMemo(
-    () => ({ type: 2, page: state.weeklyPage, pageSize: historyPageSize }),
-    [state.weeklyPage],
-  );
-  const monthlyParams = useMemo(
-    () => ({ type: 3, page: state.monthlyPage, pageSize: historyPageSize }),
-    [state.monthlyPage],
-  );
-
-  const dailyHistory = useProblemsRatingHistory(dailyParams);
-  const weeklyHistory = useProblemsRatingHistory(weeklyParams);
-  const monthlyHistory = useProblemsRatingHistory(monthlyParams);
-
-  const dailyBestParams = useMemo(
-    () => ({ type: 1, ordering: '-result', page: 1, pageSize: 1 }),
-    [],
-  );
-  const weeklyBestParams = useMemo(
-    () => ({ type: 2, ordering: '-result', page: 1, pageSize: 1 }),
-    [],
-  );
-  const monthlyBestParams = useMemo(
-    () => ({ type: 3, ordering: '-result', page: 1, pageSize: 1 }),
-    [],
-  );
-
-  const dailyBest = useProblemsRatingHistory(dailyBestParams);
-  const weeklyBest = useProblemsRatingHistory(weeklyBestParams);
-  const monthlyBest = useProblemsRatingHistory(monthlyBestParams);
-
-  const isLoading =
-    dailyHistory.isLoading ||
-    weeklyHistory.isLoading ||
-    monthlyHistory.isLoading ||
-    dailyHistory.isValidating ||
-    weeklyHistory.isValidating ||
-    monthlyHistory.isValidating ||
-    dailyBest.isLoading ||
-    weeklyBest.isLoading ||
-    monthlyBest.isLoading ||
-    dailyBest.isValidating ||
-    weeklyBest.isValidating ||
-    monthlyBest.isValidating;
 
   const cards = [
     {
@@ -152,40 +82,9 @@ const ProblemsRatingHistoryPage = () => {
     },
   ];
 
-  const handlePageChange = (type: ProblemsRatingHistoryType, page: number) => {
-    if (type === 1) {
-      setField('dailyPage', page);
-      return;
-    }
-
-    if (type === 2) {
-      setField('weeklyPage', page);
-      return;
-    }
-
-    setField('monthlyPage', page);
-  };
-
   return (
-    <Stack direction="column" spacing={0}>
-      <PageHeader
-        title={t('problems.ratingHistory.title')}
-        breadcrumb={[
-          { label: t('problems.title'), url: resources.Problems },
-          { label: t('problems.rating.title'), url: resources.ProblemsRating },
-          { label: t('problems.ratingHistory.breadcrumb'), active: true },
-        ]}
-        actionComponent={
-          <Button
-            component={RouterLink}
-            to={resources.ProblemsRating}
-            variant="text"
-            startIcon={<IconifyIcon icon="mdi:arrow-left" width={18} height={18} />}
-          >
-            {t('problems.ratingHistory.backToRating')}
-          </Button>
-        }
-      />
+    <FramedPage>
+      <PageHeader title={t('problems.ratingHistory.title')} backTo={resources.ProblemsRating} />
 
       {isLoading ? <LinearProgress /> : null}
 
@@ -209,7 +108,7 @@ const ProblemsRatingHistoryPage = () => {
           ))}
         </Grid>
       </Stack>
-    </Stack>
+    </FramedPage>
   );
 };
 
@@ -240,22 +139,12 @@ const RatingHistoryCard = ({
 }: RatingHistoryCardProps) => {
   const { t } = useTranslation();
   const theme = useTheme();
-  const isDark = theme.palette.mode === 'dark';
-
-  const highlightColor = alpha(theme.palette[color].main, isDark ? 0.2 : 0.08);
-  const borderColor = alpha(theme.palette[color].main, isDark ? 0.5 : 1);
-  const cardBackground = `linear-gradient(135deg, ${alpha(
-    theme.palette[color].main,
-    isDark ? 0.15 : 0.08,
-  )}, ${alpha(theme.palette.background.paper, isDark ? 0.45 : 0.15)})`;
-  const headerBackground = alpha(theme.palette[color].main, isDark ? 0.14 : 0.02);
+  const highlightColor = cssVarRgba(theme.vars.palette[color].mainChannel, 0.08);
 
   return (
     <Card
-      variant="outlined"
+      variant="section"
       sx={{
-        borderColor,
-        background: cardBackground,
         height: '100%',
       }}
     >
@@ -269,17 +158,17 @@ const RatingHistoryCard = ({
                 borderRadius: '50%',
                 display: 'grid',
                 placeItems: 'center',
-                backgroundColor: alpha(theme.palette[color].main, isDark ? 0.28 : 0.15),
+                backgroundColor: cssVarRgba(theme.vars.palette[color].mainChannel, 0.12),
               }}
             >
-              <KepIcon name="ranking" fontSize={18} color={`var(--mui-palette-${color}-main)`} />
+              <KepIcon name="ranking" fontSize={18} color={`${color}.main`} />
             </Box>
-            <Typography variant="h6" fontWeight={800}>
+            <Typography variant="h6" fontWeight={600}>
               {periodLabel}
             </Typography>
           </Stack>
 
-          <Typography variant="caption" fontWeight={700} color={`var(--mui-palette-${color}-main)`}>
+          <Typography variant="caption" fontWeight={700} color={`${color}.main`}>
             {t('problems.ratingHistory.bestResult')}
           </Typography>
         </Stack>
@@ -291,7 +180,7 @@ const RatingHistoryCard = ({
           highlightColor={highlightColor}
         />
 
-        <Divider sx={{ borderColor: alpha(theme.palette[color].main, 0.2) }} />
+        <Divider />
 
         <HistoryTable
           color={color}
@@ -299,28 +188,13 @@ const RatingHistoryCard = ({
           isLoading={Boolean(isHistoryLoading)}
           currentUsername={currentUsername}
           highlightColor={highlightColor}
-          headerBackground={headerBackground}
         />
 
         {pagesCount > 1 ? (
-          <Pagination
+          <ListPagination
             page={page}
             count={pagesCount}
-            onChange={(_, value) => onPageChange(value)}
-            color="primary"
-            shape="rounded"
-            size="small"
-            sx={{
-              alignSelf: 'center',
-              mt: 0.5,
-              '& .MuiPaginationItem-root': {
-                color: `var(--mui-palette-${color}-main)`,
-              },
-              '& .MuiPaginationItem-root.Mui-selected': {
-                backgroundColor: alpha(theme.palette[color].main, 0.16),
-                borderColor: alpha(theme.palette[color].main, 0.35),
-              },
-            }}
+            onChange={(value) => onPageChange(value)}
           />
         ) : null}
       </CardContent>
@@ -364,7 +238,7 @@ const BestResultCard = ({
       spacing={0.75}
       sx={{
         p: 1.25,
-        borderRadius: 1.5,
+        borderRadius: 0,
         backgroundColor: highlightColor,
       }}
     >
@@ -403,13 +277,21 @@ const HistoryTable = ({
   isLoading: boolean;
   currentUsername?: string;
   highlightColor: string;
-  headerBackground: string;
 }) => {
   const { t } = useTranslation();
 
   return (
     <Box sx={{ overflowX: 'auto' }}>
-      <Table size="small" sx={{ minWidth: 320 }}>
+      <Table
+        size="small"
+        sx={{
+          tableLayout: 'fixed',
+          width: '100%',
+          '& td': { px: 0.75, py: 1.25 },
+          '& td:first-of-type': { width: 92, pl: 0 },
+          '& td:last-of-type': { width: 44, pr: 0 },
+        }}
+      >
         <TableBody>
           {isLoading
             ? Array.from({ length: 5 }).map((_, index) => (
@@ -449,31 +331,33 @@ const HistoryTable = ({
                     }}
                   >
                     <TableCell align="center">
-                      <Chip
-                        size="small"
-                        variant="outlined"
-                        color={color}
-                        label={formatMachineDateTime(row.date, 'slashDate')}
-                      />
+                      <Typography
+                        variant="caption"
+                        sx={{ fontVariantNumeric: 'tabular-nums', whiteSpace: 'nowrap' }}
+                      >
+                        {formatMachineDateTime(row.date, 'slashDate')}
+                      </Typography>
                     </TableCell>
                     <TableCell>
-                      <Stack direction="row" spacing={1} alignItems="center">
+                      <Stack direction="row" spacing={1} alignItems="center" minWidth={0}>
                         {row.contestsRatingTitle ? (
                           <ContestsRatingChip title={row.contestsRatingTitle} imgSize={22} />
                         ) : null}
-                        <UserPopover username={row.username}>
-                          <Typography variant="body2" fontWeight={600} noWrap>
+                        <UserPopover username={row.username} sx={{ flex: 1, overflow: 'hidden' }}>
+                          <Typography variant="body2" fontWeight={600} noWrap title={row.username}>
                             {row.username}
                           </Typography>
                         </UserPopover>
                       </Stack>
                     </TableCell>
                     <TableCell align="right">
-                      <Chip
-                        size="small"
-                        color={color}
-                        label={row.result ?? t('problems.rating.emptyValue')}
-                      />
+                      <Typography
+                        variant="metric"
+                        color={`${color}.main`}
+                        sx={{ fontSize: '1rem' }}
+                      >
+                        {row.result ?? t('problems.rating.emptyValue')}
+                      </Typography>
                     </TableCell>
                   </TableRow>
                 );

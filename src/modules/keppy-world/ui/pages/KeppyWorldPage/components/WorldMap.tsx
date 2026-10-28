@@ -36,7 +36,7 @@ export default function WorldMap({
   const bridges = worldBridges(world.zones);
   return (
     <Stack spacing={1.5}>
-      <Box sx={{ bgcolor: '#c8e1e5', borderRadius: 2.5, overflow: 'hidden' }}>
+      <Box sx={{ bgcolor: '#c8e1e5', borderRadius: 0, overflow: 'hidden' }}>
         <svg
           viewBox={`${bounds.left} ${bounds.top} ${bounds.width} ${bounds.height}`}
           role="img"

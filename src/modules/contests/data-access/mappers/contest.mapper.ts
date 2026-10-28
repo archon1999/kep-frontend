@@ -1,5 +1,11 @@
-import { Contest, ContestAuthor, ContestsCategory } from 'shared/api/orval/generated/endpoints/index.schemas';
 import { contestUsesRating } from 'modules/contests/ui/shared/utils/contestType';
+import {
+  Contest,
+  ContestAuthor,
+  ContestsCategory,
+} from 'shared/api/orval/generated/endpoints/index.schemas';
+import { PageResult } from '../../domain/contracts/contests.repository';
+import { ContestRatingRow } from '../../domain/entities/contest-rating.entity';
 import {
   ContestAuthorEntity,
   ContestCategoryEntity,
@@ -8,8 +14,6 @@ import {
   ContestTopContestantTeamMember,
   ContestTypeInfo,
 } from '../../domain/entities/contest.entity';
-import { ContestRatingRow } from '../../domain/entities/contest-rating.entity';
-import { PageResult } from '../../domain/ports/contests.repository';
 
 const mapAuthor = (payload?: ContestAuthor): ContestAuthorEntity => ({
   username: payload?.username ?? '',
@@ -73,9 +77,7 @@ export const mapCategory = (payload: ContestsCategory): ContestCategoryEntity =>
   contestsCount: Number((payload as any)?.contestsCount ?? 0),
 });
 
-export const mapContestRating = (
-  payload: any,
-): ContestRatingRow => {
+export const mapContestRating = (payload: any): ContestRatingRow => {
   return {
     rowIndex: payload?.rowIndex ?? payload?.row_index,
     username: payload?.username ?? '',
@@ -87,10 +89,7 @@ export const mapContestRating = (
   };
 };
 
-export const mapPageResult = <T>(
-  payload: any,
-  mapItem: (item: any) => T,
-): PageResult<T> => {
+export const mapPageResult = <T>(payload: any, mapItem: (item: any) => T): PageResult<T> => {
   const page = payload?.page ?? (payload as any)?.current_page ?? 1;
   const pageSize = payload?.pageSize ?? payload?.page_size ?? payload?.per_page ?? 0;
   const data = (payload as any)?.data ?? (payload as any)?.results ?? [];

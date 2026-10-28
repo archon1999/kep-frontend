@@ -1,6 +1,13 @@
-import { testingApiClient, type TestsListParams } from '../api/testing.client.ts';
+import { Test, TestPass } from '../../domain';
 import {
-  hydrateQuestion,
+  FinishTestResponse,
+  PageResult,
+  StartTestResponse,
+  TestResultRow,
+  TestingRepository,
+} from '../../domain/contracts/testing.repository.ts';
+import { type TestsListParams, testingApiClient } from '../api/testing.client.ts';
+import {
   mapFinishTestResponse,
   mapPageResult,
   mapStartTestResponse,
@@ -8,14 +15,6 @@ import {
   mapTestPass,
   mapTestResults,
 } from '../mappers/test.mapper.ts';
-import {
-  FinishTestResponse,
-  PageResult,
-  StartTestResponse,
-  TestResultRow,
-  TestingRepository,
-} from '../../domain/ports/testing.repository.ts';
-import { Question, TestPass, Test } from '../../domain';
 
 export class HttpTestingRepository implements TestingRepository {
   async listTests(params?: TestsListParams): Promise<PageResult<Test>> {
@@ -55,9 +54,5 @@ export class HttpTestingRepository implements TestingRepository {
   async finishTest(testPassId: number): Promise<FinishTestResponse> {
     const response = await testingApiClient.finishTest(testPassId);
     return mapFinishTestResponse(response);
-  }
-
-  hydrateQuestion(question: Question): Question {
-    return hydrateQuestion(question);
   }
 }

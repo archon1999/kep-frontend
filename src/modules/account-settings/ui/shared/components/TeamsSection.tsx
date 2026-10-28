@@ -1,19 +1,15 @@
 import { useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import {
+  Alert,
   Avatar,
   AvatarGroup,
+  Box,
   Button,
-  Card,
-  CardActions,
-  CardContent,
-  CardHeader,
   Dialog,
   DialogActions,
   DialogContent,
   DialogContentText,
-  DialogTitle,
-  Grid,
   LinearProgress,
   Stack,
   TextField,
@@ -22,6 +18,7 @@ import {
 } from '@mui/material';
 import { useAuth } from 'app/providers/AuthProvider.tsx';
 import { getResourceById, resources } from 'app/routes/resources';
+import { contentGridSx, contentHeadingSx } from 'app/theme/styles/content';
 import {
   useAccountTeams,
   useCreateTeam,
@@ -31,13 +28,15 @@ import {
 } from 'modules/account-settings/application';
 import type { AccountTeam } from 'modules/account-settings/domain';
 import IconifyIcon from 'shared/components/base/IconifyIcon.tsx';
+import DialogHeader from 'shared/components/common/DialogHeader';
 import { toast } from 'sonner';
+import SettingsSection from './SettingsSection';
 
 const TeamsSection = () => {
   const { t } = useTranslation();
   const { currentUser } = useAuth();
 
-  const { data, isLoading, mutate } = useAccountTeams();
+  const { data, isLoading, error: loadError, mutate } = useAccountTeams();
   const { trigger: createTeam, isMutating: isCreating } = useCreateTeam();
   const { trigger: joinTeam, isMutating: isJoining } = useJoinTeam();
   const { trigger: deleteTeam, isMutating: isDeleting } = useDeleteTeam();
@@ -96,103 +95,121 @@ const TeamsSection = () => {
   };
 
   const renderTeamCard = (team: AccountTeam) => (
-    <Grid size={12} key={team.id}>
-      <Card sx={{ outline: 'none', borderRadius: 3 }} background={2}>
-        <CardHeader
-          title={team.name}
-          subheader={isCreator(team) ? t('settings.creator') : undefined}
-        />
-        <CardContent>
-          <Stack direction="row" spacing={1.5}>
-            <AvatarGroup component="div">
-              {team.members?.map((member) => (
-                <Tooltip key={member.username} title={member.username}>
-                  <Avatar src={member.avatar} alt={member.username} />
-                </Tooltip>
-              ))}
-            </AvatarGroup>
-          </Stack>
-        </CardContent>
-        <CardActions sx={{ justifyContent: 'space-between' }}>
-          <Stack direction="row" spacing={1}>
+    <Box key={team.id} sx={{ py: 2.5, borderBottom: 1, borderColor: 'divider' }}>
+      <Stack
+        direction="row"
+        alignItems="center"
+        justifyContent="space-between"
+        gap={2}
+        flexWrap="wrap"
+      >
+        <Box>
+          <Typography component="h3" sx={contentHeadingSx}>
+            {team.name}
+          </Typography>
+          {isCreator(team) && (
+            <Typography variant="caption" color="text.secondary">
+              {t('settings.creator')}
+            </Typography>
+          )}
+        </Box>
+        <AvatarGroup component="div" max={6}>
+          {team.members?.map((member) => (
+            <Tooltip key={member.username} title={member.username}>
+              <Avatar src={member.avatar} alt={member.username} />
+            </Tooltip>
+          ))}
+        </AvatarGroup>
+      </Stack>
+      <Stack direction="row" gap={1} flexWrap="wrap" sx={{ mt: 2 }}>
+        <Button
+          size="small"
+          variant="outlined"
+          startIcon={<IconifyIcon icon="mdi:link-variant" />}
+          onClick={() => handleCopy(team.code)}
+        >
+          {t('settings.linkToJoin')}
+        </Button>
+        {isCreator(team) && (
+          <>
+            <Button size="small" onClick={() => handleRefreshCode(team.code)} disabled={isBusy}>
+              {t('settings.refreshLink')}
+            </Button>
             <Button
               size="small"
-              startIcon={<IconifyIcon icon="material-symbols:content-copy-outline" />}
-              onClick={() => handleCopy(team.code)}
+              color="error"
+              onClick={() => setPendingDeleteTeam(team)}
+              disabled={isBusy}
             >
-              {t('settings.linkToJoin')}
+              {t('settings.deleteTeam')}
             </Button>
-            {isCreator(team) ? (
-              <>
-                <Button
-                  size="small"
-                  startIcon={<IconifyIcon icon="material-symbols:refresh-rounded" />}
-                  onClick={() => handleRefreshCode(team.code)}
-                  disabled={isBusy}
-                >
-                  {t('settings.refreshLink')}
-                </Button>
-                <Button
-                  size="small"
-                  color="error"
-                  startIcon={<IconifyIcon icon="material-symbols:delete-outline" />}
-                  onClick={() => setPendingDeleteTeam(team)}
-                  disabled={isBusy}
-                >
-                  {t('settings.deleteTeam')}
-                </Button>
-              </>
-            ) : null}
-          </Stack>
-        </CardActions>
-      </Card>
-    </Grid>
+          </>
+        )}
+      </Stack>
+    </Box>
   );
 
   return (
     <>
-      <Card sx={{ outline: 'none', borderRadius: 3 }} background={1}>
-        <CardHeader title={t('settings.teams')} />
-        <CardContent>
-          {(isLoading || isBusy) && <LinearProgress sx={{ mb: 3 }} />}
-          <Grid container spacing={3}>
-            <Grid size={{ xs: 12, md: 12 }}>
-              <Stack direction="column" spacing={2}>
-                {data?.length ? (
-                  data.map(renderTeamCard)
-                ) : (
-                  <Typography color="text.secondary">{t('settings.noTeams')}</Typography>
-                )}
-              </Stack>
-            </Grid>
-            <Grid size={{ xs: 12, md: 12 }}>
-              <Stack direction="column" spacing={2}>
-                <Typography variant="h6">{t('settings.createTeam')}</Typography>
-                <TextField
-                  label={t('settings.teamName')}
-                  value={teamName}
-                  onChange={(event) => setTeamName(event.target.value)}
-                />
-                <Button variant="contained" onClick={handleCreateTeam} disabled={!teamName.trim()}>
-                  {t('settings.create')}
-                </Button>
-
-                <Typography variant="h6">{t('settings.joinTeam')}</Typography>
-                <TextField
-                  label={t('settings.teamCodeLabel')}
-                  value={joinCode}
-                  onChange={(event) => setJoinCode(event.target.value)}
-                />
-                <Button variant="outlined" onClick={handleJoinTeam} disabled={!joinCode.trim()}>
-                  {t('settings.join')}
-                </Button>
-              </Stack>
-            </Grid>
-          </Grid>
-        </CardContent>
-      </Card>
+      <SettingsSection title={t('settings.teams')}>
+        {(isLoading || isBusy) && <LinearProgress sx={{ mb: 3 }} />}
+        {loadError ? (
+          <Alert
+            severity="error"
+            action={<Button onClick={() => mutate()}>{t('common.retry')}</Button>}
+          >
+            {t('common.loadFailed')}
+          </Alert>
+        ) : data?.length ? (
+          data.map(renderTeamCard)
+        ) : (
+          !isLoading && <Typography color="text.secondary">{t('settings.noTeams')}</Typography>
+        )}
+      </SettingsSection>
+      <Box
+        sx={{
+          ...contentGridSx,
+          gridTemplateColumns: { xs: '1fr', lg: 'repeat(2, minmax(0, 1fr))' },
+        }}
+      >
+        <SettingsSection title={t('settings.createTeam')}>
+          <Stack direction="column" gap={2}>
+            <TextField
+              label={t('settings.teamName')}
+              value={teamName}
+              onChange={(event) => setTeamName(event.target.value)}
+            />
+            <Button
+              variant="contained"
+              onClick={handleCreateTeam}
+              disabled={!teamName.trim() || isBusy}
+              sx={{ alignSelf: 'flex-start' }}
+            >
+              {t('settings.create')}
+            </Button>
+          </Stack>
+        </SettingsSection>
+        <SettingsSection title={t('settings.joinTeam')}>
+          <Stack direction="column" gap={2}>
+            <TextField
+              label={t('settings.teamCodeLabel')}
+              value={joinCode}
+              onChange={(event) => setJoinCode(event.target.value)}
+            />
+            <Button
+              variant="outlined"
+              onClick={handleJoinTeam}
+              disabled={!joinCode.trim() || isBusy}
+              sx={{ alignSelf: 'flex-start' }}
+            >
+              {t('settings.join')}
+            </Button>
+          </Stack>
+        </SettingsSection>
+      </Box>
 
       <Dialog
+        aria-labelledby="team-delete-title"
         open={Boolean(pendingDeleteTeam)}
         onClose={() => {
           if (!isDeleting) {
@@ -202,7 +219,16 @@ const TeamsSection = () => {
         maxWidth="xs"
         fullWidth
       >
-        <DialogTitle>{t('settings.deleteTeam')}</DialogTitle>
+        <DialogHeader
+          id="team-delete-title"
+          title={t('settings.deleteTeam')}
+          onClose={() => {
+            if (!isDeleting) {
+              setPendingDeleteTeam(null);
+            }
+          }}
+          closeDisabled={isDeleting}
+        />
         <DialogContent>
           <DialogContentText>
             {t('settings.confirmDeleteTeam', { name: pendingDeleteTeam?.name ?? '' })}

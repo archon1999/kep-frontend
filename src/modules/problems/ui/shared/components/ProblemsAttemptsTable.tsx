@@ -6,7 +6,6 @@ import {
   Button,
   Chip,
   IconButton,
-  Pagination,
   Paper,
   Skeleton,
   Stack,
@@ -19,14 +18,16 @@ import {
 import { DataGrid, GridColDef, GridPaginationModel } from '@mui/x-data-grid';
 import { useAuth } from 'app/providers/AuthProvider';
 import { getResourceById, resources } from 'app/routes/resources';
-import { problemsQueries } from 'modules/problems/application/queries';
+import { rerunProblemAttempt } from 'modules/problems/application/mutations';
 import { AttemptListItem, Verdicts } from 'modules/problems/domain/entities/problem.entity';
 import UserPopover from 'modules/users/ui/shared/components/UserPopover.tsx';
 import IconifyIcon from 'shared/components/base/IconifyIcon';
 import { getDataGridNoRowsOverlaySlotProps } from 'shared/components/common/DataGridNoRowsOverlay';
+import DataGridListPagination from 'shared/components/pagination/DataGridListPagination';
 import AttemptLanguage from 'shared/components/problems/AttemptLanguage';
 import AttemptVerdict from 'shared/components/problems/AttemptVerdict';
 import { VerdictKey } from 'shared/components/problems/attemptVerdict.utils';
+import { ListPagination } from 'shared/components/sections/common/FramedListPage';
 import useStableGridRowCount from 'shared/hooks/useStableGridRowCount';
 import { formatCalendarDateTime, formatDateTime as formatUserDateTime } from 'shared/lib/dateTime';
 import { playSuccessSound } from 'shared/lib/soundSettings';
@@ -47,6 +48,8 @@ interface ProblemsAttemptsTableProps {
   getProblemLink?: (attempt: AttemptListItem) => string;
   isFiltered?: boolean;
   mobileCards?: boolean;
+  surface?: 'standalone' | 'section';
+  paginationStyle?: 'table' | 'list';
 }
 
 interface AttemptUpdatePayload {
@@ -72,6 +75,8 @@ const ProblemsAttemptsTable = ({
   getProblemLink,
   isFiltered,
   mobileCards = false,
+  surface = 'standalone',
+  paginationStyle = 'table',
 }: ProblemsAttemptsTableProps) => {
   const { t, i18n } = useTranslation();
   const theme = useTheme();
@@ -223,7 +228,7 @@ const ProblemsAttemptsTable = ({
 
   const handleRerun = useCallback(
     async (attemptId: number) => {
-      await problemsQueries.problemsRepository.rerunAttempt(attemptId);
+      await rerunProblemAttempt(attemptId);
       onRerun?.();
     },
     [onRerun],
@@ -602,20 +607,17 @@ const ProblemsAttemptsTable = ({
             ))
           )}
           {stableRowCount > paginationModel.pageSize ? (
-            <Pagination
+            <ListPagination
               count={Math.ceil(stableRowCount / paginationModel.pageSize)}
               page={paginationModel.page + 1}
-              onChange={(_, page) => onPaginationChange({ ...paginationModel, page: page - 1 })}
-              color="primary"
-              shape="rounded"
-              size="small"
-              siblingCount={0}
-              sx={{ display: 'flex', justifyContent: 'center', pt: 1.5 }}
+              onChange={(page) => onPaginationChange({ ...paginationModel, page: page - 1 })}
             />
           ) : null}
         </Stack>
       ) : (
         <DataGrid
+          className={surface === 'section' ? 'kep-data-grid-section' : undefined}
+          slots={paginationStyle === 'list' ? { pagination: DataGridListPagination } : undefined}
           autoHeight
           disableColumnMenu
           disableColumnSelector
@@ -633,7 +635,7 @@ const ProblemsAttemptsTable = ({
           sortingMode="server"
           disableColumnFilter
           sx={{
-            mb: 2,
+            mb: surface === 'section' ? 0 : 2,
             '& .MuiDataGrid-row--hovered': {
               backgroundColor: alpha(theme.palette.primary.main, 0.04),
             },

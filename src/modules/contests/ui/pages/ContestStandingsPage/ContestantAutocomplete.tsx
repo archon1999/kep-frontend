@@ -127,18 +127,24 @@ const ContestantAutocomplete = ({
       onChange={(_, nextValue) => onChange(nextValue)}
       options={options}
       value={value}
-      size="large"
+      size="small"
+      slotProps={{ paper: { variant: 'framed' } }}
       renderOption={(props, option) => (
         <li {...props} key={option.id}>
           <ContestantOptionContent contestant={option} />
         </li>
       )}
       renderValue={(selected) =>
-        selected ? <Box pt={1}><ContestantOptionContent contestant={selected} compact /></Box> : null
+        selected ? (
+          <Box pt={1}>
+            <ContestantOptionContent contestant={selected} compact />
+          </Box>
+        ) : null
       }
       renderInput={(params) => (
         <TextField
           {...params}
+          variant="outlined"
           label={t('contests.standings.compareWith')}
           InputProps={{
             ...params.InputProps,

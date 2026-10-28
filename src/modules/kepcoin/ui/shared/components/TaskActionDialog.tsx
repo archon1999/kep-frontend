@@ -1,4 +1,5 @@
 import { useMemo } from 'react';
+import { useTranslation } from 'react-i18next';
 import {
   Alert,
   Button,
@@ -6,19 +7,18 @@ import {
   Dialog,
   DialogActions,
   DialogContent,
-  DialogTitle,
   Divider,
   Stack,
   Typography,
 } from '@mui/material';
-import { useTranslation } from 'react-i18next';
-import { toast } from 'sonner';
 import { useAuth } from 'app/providers/AuthProvider';
-import IconifyIcon from 'shared/components/base/IconifyIcon';
-import KepcoinValue from 'shared/components/common/KepcoinValue';
-import { setPendingTaskSlug } from 'modules/kepcoin/lib/pending-task-storage';
 import { useStartTask, useVerifyTask } from 'modules/kepcoin/application/mutations';
 import type { OneTimeTask } from 'modules/kepcoin/domain/entities/kepcoin.entity';
+import { setPendingTaskSlug } from 'modules/kepcoin/lib/pending-task-storage';
+import IconifyIcon from 'shared/components/base/IconifyIcon';
+import DialogHeader from 'shared/components/common/DialogHeader';
+import KepcoinValue from 'shared/components/common/KepcoinValue';
+import { toast } from 'sonner';
 
 interface TaskActionDialogProps {
   open: boolean;
@@ -66,7 +66,9 @@ const TaskActionDialog = ({ open, task, onClose, onCompleted }: TaskActionDialog
     const subtitle = instructionContent?.subtitle;
     const hint = instructionContent?.hint;
     const resolvedSteps = Array.isArray(instructionContent?.steps)
-      ? instructionContent.steps.filter((step) => typeof step === 'string' && step.trim().length > 0)
+      ? instructionContent.steps.filter(
+          (step) => typeof step === 'string' && step.trim().length > 0,
+        )
       : [];
 
     return {
@@ -147,24 +149,32 @@ const TaskActionDialog = ({ open, task, onClose, onCompleted }: TaskActionDialog
   };
 
   return (
-    <Dialog open={open} onClose={onClose} fullWidth maxWidth="sm">
-      <DialogTitle sx={{ display: 'flex', alignItems: 'center', gap: 1.5 }}>
-        <IconifyIcon icon={taskIcon} fontSize={26} />
-        <Stack direction="column" spacing={0.5}>
-          <Typography variant="h6">{task?.title}</Typography>
-          {dialogCopy.subtitle ? (
-            <Typography variant="body2" color="text.secondary">
-              {dialogCopy.subtitle}
-            </Typography>
-          ) : null}
-        </Stack>
-      </DialogTitle>
+    <Dialog
+      open={open}
+      onClose={onClose}
+      fullWidth
+      maxWidth="sm"
+      aria-labelledby="task-action-title"
+    >
+      <DialogHeader
+        id="task-action-title"
+        title={task?.title ?? ''}
+        subtitle={dialogCopy.subtitle}
+        onClose={onClose}
+      />
 
       <DialogContent dividers>
         <Stack direction="column" spacing={2.5}>
           {dialogCopy.hint ? <Alert severity="info">{dialogCopy.hint}</Alert> : null}
 
-          <Stack direction="row" justifyContent="space-between" alignItems="center" gap={2} flexWrap="wrap">
+          <Stack
+            direction="row"
+            justifyContent="space-between"
+            alignItems="center"
+            gap={2}
+            flexWrap="wrap"
+          >
+            <IconifyIcon icon={taskIcon} color="primary.main" fontSize={28} />
             <KepcoinValue
               value={task?.reward ?? 0}
               iconSize={18}

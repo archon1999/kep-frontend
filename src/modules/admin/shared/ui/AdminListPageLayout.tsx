@@ -1,12 +1,13 @@
 import { ReactNode } from 'react';
 import { useTranslation } from 'react-i18next';
-import { Box, Button, Stack } from '@mui/material';
 import { Link } from 'react-router';
+import { Box, Button, Stack } from '@mui/material';
 import IconifyIcon from 'shared/components/base/IconifyIcon';
 import {
   DEFAULT_FILTER_DRAWER_WIDTH,
   FilterDrawerLayout,
 } from 'shared/components/common/FilterDrawer';
+import FramedPage from 'shared/components/sections/common/FramedPage';
 import PageHeader from 'shared/components/sections/common/PageHeader';
 import AdminFiltersToolbar from './AdminFiltersToolbar';
 
@@ -21,6 +22,7 @@ interface AdminListPageLayoutProps {
   toolbar?: ReactNode;
   filterDrawer?: ReactNode;
   filterDrawerOpen?: boolean;
+  filterAnchorEl?: HTMLElement | null;
   filterDrawerWidth?: number;
   children: ReactNode;
 }
@@ -36,6 +38,7 @@ const AdminListPageLayout = ({
   toolbar,
   filterDrawer,
   filterDrawerOpen = false,
+  filterAnchorEl,
   filterDrawerWidth = DEFAULT_FILTER_DRAWER_WIDTH,
   children,
 }: AdminListPageLayoutProps) => {
@@ -51,7 +54,7 @@ const AdminListPageLayout = ({
   );
 
   const content = (
-    <Stack direction="column" height={1} spacing={4}>
+    <Stack direction="column" spacing={0}>
       <PageHeader
         title={title}
         actionComponent={
@@ -74,20 +77,19 @@ const AdminListPageLayout = ({
           </Stack>
         }
       />
-      <Box sx={{ flex: 1, px: { xs: 3, md: 5 }, pb: 4 }}>
-        <Stack spacing={2}>
-          {children}
-        </Stack>
+      <Box sx={{ flex: 1, minWidth: 0, '& .MuiDataGrid-root': { border: 0, borderRadius: 0 } }}>
+        <Stack spacing={2}>{children}</Stack>
       </Box>
     </Stack>
   );
 
   if (!filterDrawer) {
-    return content;
+    return <FramedPage>{content}</FramedPage>;
   }
 
   return (
     <FilterDrawerLayout
+      anchorEl={filterAnchorEl}
       open={filterDrawerOpen}
       drawerWidth={filterDrawerWidth}
       drawer={filterDrawer}

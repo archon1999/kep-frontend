@@ -1,16 +1,9 @@
-import { useRef, useState } from 'react';
-import { useGSAP } from '@gsap/react';
+import { useState } from 'react';
 import { Box, ButtonBase, Tooltip } from '@mui/material';
 import { useSettingsContext } from 'app/providers/SettingsProvider';
-import { gsap } from 'gsap';
-import { MorphSVGPlugin } from 'gsap/MorphSVGPlugin';
-
-gsap.registerPlugin(MorphSVGPlugin);
 
 const SidenavCollapse = () => {
   const [isHovered, setIsHovered] = useState(false);
-  const pathRef = useRef(null);
-  const svgRef = useRef(null);
   const {
     config: { sidenavCollapsed },
     toggleNavbarCollapse,
@@ -22,26 +15,12 @@ const SidenavCollapse = () => {
     chevronLeft: 'M14 6l-6 6 6 6',
   };
 
-  useGSAP(() => {
-    if (!pathRef.current) return;
-
-    const targetPath = isHovered
-      ? sidenavCollapsed
-        ? paths.chevronRight
-        : paths.chevronLeft
-      : paths.vertical;
-
-    gsap.to(pathRef.current, {
-      duration: 0.3,
-      morphSVG: targetPath,
-      ease: 'power2.out',
-    });
-  }, [isHovered, sidenavCollapsed]);
-
   return (
     <ButtonBase
       onMouseEnter={() => setIsHovered(true)}
       onMouseLeave={() => setIsHovered(false)}
+      onFocus={() => setIsHovered(true)}
+      onBlur={() => setIsHovered(false)}
       onClick={toggleNavbarCollapse}
       disableRipple
       sx={{
@@ -80,7 +59,6 @@ const SidenavCollapse = () => {
       >
         <Box
           component="svg"
-          ref={svgRef}
           width="24"
           height="24"
           viewBox="0 0 24 24"
@@ -92,9 +70,19 @@ const SidenavCollapse = () => {
             width: 24,
             stroke: (theme) => theme.vars.palette.background.elevation4,
             height: 24,
+            '& path': {
+              transition: 'opacity 180ms ease, transform 180ms ease',
+              transformOrigin: 'center',
+              '@media (prefers-reduced-motion: reduce)': { transition: 'none' },
+            },
           }}
         >
-          <path ref={pathRef} d={paths.vertical} />
+          <path d={paths.vertical} opacity={isHovered ? 0 : 1} />
+          <path
+            d={sidenavCollapsed ? paths.chevronRight : paths.chevronLeft}
+            opacity={isHovered ? 1 : 0}
+            style={{ transform: `translateX(${isHovered ? 0 : -3}px)` }}
+          />
         </Box>
       </Tooltip>
     </ButtonBase>

@@ -1,4 +1,4 @@
-import { Suspense, lazy, useCallback, useEffect, useRef, useState } from 'react';
+import { Suspense, lazy, useCallback, useRef, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { Link as RouterLink } from 'react-router';
 import {
@@ -8,7 +8,6 @@ import {
   CircularProgress,
   Dialog,
   DialogContent,
-  DialogTitle,
   IconButton,
   LinearProgress,
   Paper,
@@ -16,11 +15,13 @@ import {
   Stack,
   Typography,
 } from '@mui/material';
-import { useAuth } from 'app/providers/AuthProvider';
 import { resources } from 'app/routes/resources';
-import { useGameAudio } from 'modules/games/application';
+import { contentEntranceStyles } from 'app/theme/styles/transitions';
+import { useKeppyWorldPage } from 'modules/keppy-world/application/hooks/useKeppyWorldPage';
 import IconifyIcon from 'shared/components/base/IconifyIcon';
-import { useWorldExperience } from '../../../application';
+import DialogHeader from 'shared/components/common/DialogHeader';
+import FramedPage from 'shared/components/sections/common/FramedPage';
+import PageHeader from 'shared/components/sections/common/PageHeader';
 import { mascotPortraits, mascotVisuals } from '../../shared/helpers/mascot-visuals';
 import { questPresentation } from '../../shared/helpers/quest-presentation';
 import MascotPicker from './components/MascotPicker';
@@ -37,52 +38,45 @@ import WorldRanking from './components/WorldRanking';
 
 const WorldScene = lazy(() => import('./components/WorldScene'));
 const surface = {
-  bgcolor: 'background.paper',
-  border: 0,
-  boxShadow: '0 6px 30px rgba(20, 47, 65, .09)',
-  borderRadius: 2.5,
+  bgcolor: 'background.default',
+  border: 1,
+  borderColor: 'divider',
+  boxShadow: 'none',
+  borderRadius: 0,
 };
 const KeppyWorldPage = () => {
+  const {
+    currentUser,
+    isAuthLoading,
+    game,
+    audio,
+    entered,
+    setEntered,
+    profile,
+    run,
+    saveProfile,
+    resetProfileDraft,
+    openPanel,
+    closePanel,
+    selectQuest,
+    errorKey,
+    connectionStatus,
+    completedRun,
+    mascot,
+    setMascot,
+    cosmetic,
+    setCosmetic,
+    panel,
+    setPanel,
+  } = useKeppyWorldPage();
+
   const { t } = useTranslation();
-  const { currentUser, isAuthLoading } = useAuth();
-  const game = useWorldExperience(currentUser?.username);
   const frame = useRef<HTMLDivElement>(null);
-  const [entered, setEntered] = useState(false);
-  const [panel, setPanel] = useState<
-    'profile' | 'ranking' | 'quests' | 'run' | 'map' | 'growth' | null
-  >(null);
   const [collapsed, setCollapsed] = useState(false);
   const [profileCollapsed, setProfileCollapsed] = useState(false);
   const [chatFocused, setChatFocused] = useState(false);
-  const [mascot, setMascot] = useState('keppy');
-  const [cosmetic, setCosmetic] = useState('none');
-  const audio = useGameAudio('keppy-world', entered && game.connection.status === 'connected');
-  const profile = game.data?.player;
-  const run = game.run;
-  useEffect(() => {
-    if (profile) {
-      setMascot(profile.mascotId);
-      setCosmetic(profile.equippedCosmetic);
-    }
-  }, [profile?.mascotId, profile?.equippedCosmetic]);
-  const saveProfile = () => game.saveProfile({ mascotId: mascot, equippedCosmetic: cosmetic });
-  const resetProfileDraft = useCallback(() => {
-    setMascot(profile?.mascotId ?? 'keppy');
-    setCosmetic(profile?.equippedCosmetic ?? 'none');
-  }, [profile?.mascotId, profile?.equippedCosmetic]);
-  const openPanel = useCallback(
-    (next: typeof panel) => {
-      if (next === 'profile') resetProfileDraft();
-      setPanel(next);
-    },
-    [resetProfileDraft],
-  );
   const toggleCollapsed = useCallback(() => setCollapsed((current) => !current), []);
   const tooltipContainer = useCallback(() => frame.current, []);
-  const closePanel = () => {
-    if (panel === 'profile') resetProfileDraft();
-    setPanel(null);
-  };
   const start = async () => {
     audio.startFromGesture();
     if (frame.current && !document.fullscreenElement)
@@ -100,37 +94,17 @@ const KeppyWorldPage = () => {
     if (document.fullscreenElement === frame.current)
       void document.exitFullscreen().catch(() => undefined);
   };
-  const selectQuest = async (id: string) => {
-    if (run && !['completed', 'expired', 'abandoned'].includes(run.status)) {
-      setPanel('run');
-      return;
-    }
-    const claimed = await game.claim(id);
-    if (claimed) setPanel('run');
-  };
-  const errorKey =
-    game.actionError &&
-    t(`keppyWorld.errors.${game.actionError}`, { defaultValue: t('keppyWorld.requestFailed') });
-  const connectionStatus = game.connection.status;
-  const completedRun = run?.status === 'completed';
 
   return (
-    <Box sx={{ p: { xs: 1, md: 2.5 } }}>
-      <Stack direction="row" alignItems="center" gap={1} mb={1.5}>
-        <IconButton component={RouterLink} to={resources.Games} aria-label={t('keppyWorld.back')}>
-          <IconifyIcon icon="mdi:arrow-left" width={20} />
-        </IconButton>
-        <Typography component="h1" fontSize={22} fontWeight={700}>
-          Keppy World
-        </Typography>
-      </Stack>
+    <FramedPage>
+      <PageHeader variant="detail" title={t('keppyWorld.welcome')} backTo={resources.Games} />
       <Box
         ref={frame}
         sx={{
           position: 'relative',
           minHeight: { xs: '78dvh', md: 700 },
           height: entered ? 'calc(100dvh - 145px)' : 'auto',
-          borderRadius: 3,
+          borderRadius: 0,
           overflow: 'hidden',
           bgcolor: 'background.default',
           '&:fullscreen': {
@@ -143,6 +117,7 @@ const KeppyWorldPage = () => {
         {!entered ? (
           <Box
             sx={{
+              ...contentEntranceStyles,
               maxWidth: 1120,
               mx: 'auto',
               display: 'grid',
@@ -157,7 +132,7 @@ const KeppyWorldPage = () => {
                 component="img"
                 src="/games/keppy-world-preview.webp"
                 alt=""
-                sx={{ width: '100%', maxHeight: 300, objectFit: 'cover', borderRadius: 3 }}
+                sx={{ width: '100%', maxHeight: 300, objectFit: 'cover', borderRadius: 0 }}
               />
               <Box>
                 <Typography
@@ -479,6 +454,7 @@ const KeppyWorldPage = () => {
           </>
         )}
         <Dialog
+          aria-labelledby="keppy-world-panel-title"
           open={panel !== null}
           disableRestoreFocus
           onClose={closePanel}
@@ -488,36 +464,37 @@ const KeppyWorldPage = () => {
           fullWidth
           slotProps={{
             paper: {
-              sx: { ...surface, maxHeight: 'calc(100% - 40px)', m: 2, width: 'calc(100% - 32px)' },
+              sx: { maxHeight: 'calc(100% - 40px)', m: 2, width: 'calc(100% - 32px)' },
             },
           }}
         >
-          <DialogTitle
-            sx={{ display: 'flex', alignItems: 'center', gap: 1.25, fontSize: 19, fontWeight: 700 }}
-          >
-            <IconifyIcon
-              icon={
-                panel === 'run'
-                  ? questPresentation(run?.kind ?? '').icon
-                  : panel === 'ranking'
-                    ? 'mdi:trophy-outline'
-                    : panel === 'profile'
-                      ? 'mdi:hanger'
-                      : panel === 'map'
-                        ? 'mdi:map-outline'
-                        : panel === 'growth'
-                          ? 'mdi:city-variant-outline'
-                          : 'mdi:compass-outline'
-              }
-              width={23}
-            />
-            {panel === 'run'
-              ? run && t(`keppyWorld.kinds.${run.kind}`, { defaultValue: run.title })
-              : t(`keppyWorld.${panel === 'growth' ? 'growth.title' : (panel ?? 'quests')}`)}
-            <IconButton sx={{ ml: 'auto' }} onClick={closePanel} aria-label={t('keppyWorld.close')}>
-              <IconifyIcon icon="mdi:close" width={20} />
-            </IconButton>
-          </DialogTitle>
+          <DialogHeader
+            id="keppy-world-panel-title"
+            title={
+              panel === 'run' && run
+                ? t(`keppyWorld.kinds.${run.kind}`, { defaultValue: run.title })
+                : t(`keppyWorld.${panel === 'growth' ? 'growth.title' : (panel ?? 'quests')}`)
+            }
+            icon={
+              <IconifyIcon
+                icon={
+                  panel === 'run'
+                    ? questPresentation(run?.kind ?? '').icon
+                    : panel === 'ranking'
+                      ? 'mdi:trophy-outline'
+                      : panel === 'profile'
+                        ? 'mdi:hanger'
+                        : panel === 'map'
+                          ? 'mdi:map-outline'
+                          : panel === 'growth'
+                            ? 'mdi:city-variant-outline'
+                            : 'mdi:compass-outline'
+                }
+                width={23}
+              />
+            }
+            onClose={closePanel}
+          />
           <DialogContent sx={{ pb: 3 }}>
             {errorKey && (
               <Alert severity="warning" onClose={game.clearError} sx={{ mb: 2 }}>
@@ -564,7 +541,7 @@ const KeppyWorldPage = () => {
                     direction="row"
                     gap={1.5}
                     alignItems="center"
-                    sx={{ p: 1.5, borderRadius: 1.5, bgcolor: 'background.elevation1' }}
+                    sx={{ py: 1.5, borderBottom: '1px solid', borderColor: 'divider' }}
                   >
                     <IconifyIcon
                       icon={questPresentation(quest.kind).icon}
@@ -629,7 +606,7 @@ const KeppyWorldPage = () => {
           </DialogContent>
         </Dialog>
       </Box>
-    </Box>
+    </FramedPage>
   );
 };
 export default KeppyWorldPage;

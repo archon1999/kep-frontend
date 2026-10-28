@@ -1,28 +1,28 @@
-import { useEffect, useMemo, useState } from 'react';
 import { useTranslation } from 'react-i18next';
-import { useSearchParams } from 'react-router';
 import {
   Alert,
   Avatar,
   Box,
   Button,
   Chip,
-  Container,
   InputAdornment,
   MenuItem,
-  Paper,
   Skeleton,
   Stack,
   Tab,
   Tabs,
   Typography,
 } from '@mui/material';
-import { useAuth } from 'app/providers/AuthProvider';
-import { useTestsCatalog } from 'modules/testing/application/queries';
+import { resources } from 'app/routes/resources';
+import { contentGridSx } from 'app/theme/styles/content';
+import { useTestsListPage } from 'modules/testing/application/hooks/useTestsListPage';
 import IconifyIcon from 'shared/components/base/IconifyIcon';
-import StyledTextField from 'shared/components/styled/StyledTextField';
 import DebouncedTextField from 'shared/components/common/DebouncedTextField';
-import { responsivePagePaddingSx } from 'shared/lib/styles';
+import EmptyState from 'shared/components/common/EmptyState';
+import BackToListButton from 'shared/components/sections/common/BackToListButton';
+import FramedPage from 'shared/components/sections/common/FramedPage';
+import PageHeader from 'shared/components/sections/common/PageHeader';
+import StyledTextField from 'shared/components/styled/StyledTextField';
 import ChapterTestsList, { ChapterTestsListSkeleton } from './components/ChapterTestsList';
 import TestsDataGrid from './components/TestsDataGrid';
 import TestsDataGridSkeleton from './components/TestsDataGridSkeleton';
@@ -30,6 +30,7 @@ import TopicCard from './components/TopicCard';
 import TopicCardSkeleton from './components/TopicCardSkeleton';
 
 const topicGridSx = {
+  ...contentGridSx,
   display: 'grid',
   gridTemplateColumns: {
     xs: 'repeat(2, minmax(0, 1fr))',
@@ -37,97 +38,34 @@ const topicGridSx = {
     md: 'repeat(4, minmax(0, 1fr))',
     lg: 'repeat(5, minmax(0, 1fr))',
   },
-  gap: { xs: 2, md: 3 },
+  gap: '1px',
 };
 
 const TestsListPage = () => {
-  const { t } = useTranslation();
-  const { currentUser, isAuthLoading } = useAuth();
   const {
-    data: tests = [],
-    isLoading: isCatalogLoading,
+    tests,
     error,
     mutate,
-  } = useTestsCatalog(currentUser?.username, !isAuthLoading);
-  const isLoading = isAuthLoading || isCatalogLoading;
-  const completion = useMemo(
-    () =>
-      Object.fromEntries(
-        tests
-          .filter((test) => typeof test.userCompleted === 'boolean')
-          .map((test) => [test.id, test.userCompleted!]),
-      ),
-    [tests],
-  );
-  const [searchParams, setSearchParams] = useSearchParams();
-  const chapterParam = searchParams.get('chapter');
-  const parsedChapterId = chapterParam && /^\d+$/.test(chapterParam) ? Number(chapterParam) : 0;
-  const chapterId =
-    Number.isSafeInteger(parsedChapterId) && parsedChapterId > 0 ? parsedChapterId : 0;
-  const [view, setView] = useState('topics');
-  const [search, setSearch] = useState('');
-  const [difficulty, setDifficulty] = useState(0);
+    setSearchParams,
+    isLoading,
+    completion,
+    chapterId,
+    chapters,
+    selectedChapter,
+    showTopics,
+    difficulties,
+    filteredTests,
+    resetFilters,
+    openTopics,
+    search,
+    setSearch,
+    difficulty,
+    setDifficulty,
+    view,
+    setView,
+  } = useTestsListPage();
 
-  useEffect(() => {
-    setSearch('');
-    setDifficulty(0);
-  }, [chapterId]);
-
-  const chapters = useMemo(() => {
-    const grouped = new Map<
-      number,
-      { id: number; title: string; icon: string; count: number; completed: number }
-    >();
-    tests.forEach((test) => {
-      const chapter = grouped.get(test.chapter.id);
-      const completed = completion?.[test.id] ? 1 : 0;
-      if (chapter) {
-        chapter.count += 1;
-        chapter.completed += completed;
-      } else grouped.set(test.chapter.id, { ...test.chapter, count: 1, completed });
-    });
-    return [...grouped.values()].sort((a, b) => a.id - b.id);
-  }, [tests, completion]);
-  const selectedChapter = chapters.find((chapter) => chapter.id === chapterId);
-  const showTopics = view === 'topics' && !search.trim() && !chapterId;
-  const difficulties = useMemo(
-    () =>
-      [...new Map(tests.map((test) => [test.difficulty, test.difficultyTitle])).entries()].sort(
-        ([a], [b]) => a - b,
-      ),
-    [tests],
-  );
-  const filteredTests = useMemo(() => {
-    const query = search.trim().toLocaleLowerCase();
-    const filtered = tests.filter(
-      (test) =>
-        (!chapterId || test.chapter.id === chapterId) &&
-        (!difficulty || test.difficulty === difficulty) &&
-        (!query ||
-          [
-            test.title,
-            test.description,
-            test.chapter.title,
-            ...(test.tags ?? []).map((tag) => tag.name),
-          ].some((value) => value.toLocaleLowerCase().includes(query))),
-    );
-    return filtered.sort((a, b) => a.chapter.id - b.chapter.id || a.id - b.id);
-  }, [tests, chapterId, difficulty, search]);
-  const resetFilters = () => {
-    setSearch('');
-    setDifficulty(0);
-    if (searchParams.has('chapter')) {
-      setSearchParams((previous) => {
-        const next = new URLSearchParams(previous);
-        next.delete('chapter');
-        return next;
-      });
-    }
-  };
-  const openTopics = () => {
-    resetFilters();
-    setView('topics');
-  };
+  const { t } = useTranslation();
   const resultsCount = (
     <Chip
       aria-live="polite"
@@ -141,12 +79,22 @@ const TestsListPage = () => {
   );
 
   return (
-    <Paper
-      elevation={0}
-      sx={{ ...responsivePagePaddingSx, outline: 0, minHeight: 'calc(100vh - 180px)' }}
-    >
-      <Container maxWidth={chapterId ? 'md' : 'lg'} disableGutters>
-        <Stack spacing={{ xs: 3, md: 4 }}>
+    <FramedPage>
+      <PageHeader
+        title={t('tests.title')}
+        variant="detail"
+        actionComponent={
+          chapterId > 0 ? (
+            <BackToListButton
+              to={resources.Tests}
+              onClick={openTopics}
+              label={t('common.backTo', { destination: t('tests.chapters') })}
+            />
+          ) : undefined
+        }
+      />
+      <Box>
+        <Stack spacing={0}>
           {!chapterId && (
             <>
               <Stack
@@ -154,11 +102,13 @@ const TestsListPage = () => {
                 alignItems={{ sm: 'center' }}
                 justifyContent="space-between"
                 gap={2}
+                sx={{
+                  px: 'var(--kep-content-inset)',
+                  py: 2.5,
+                  borderBottom: '1px solid var(--kep-line)',
+                }}
               >
                 <Stack direction="row" alignItems="center" gap={2} flexWrap="wrap">
-                  <Typography component="h1" variant="h4">
-                    {t('tests.title')}
-                  </Typography>
                   <Stack direction="row" spacing={1} flexWrap="wrap">
                     {isLoading ? (
                       <>
@@ -212,22 +162,12 @@ const TestsListPage = () => {
                   resetFilters();
                 }}
                 aria-label={t('tests.title')}
-                sx={{ borderBottom: '1px solid', borderColor: 'divider' }}
+                sx={{ px: 'var(--kep-content-inset)', borderBottom: '1px solid var(--kep-line)' }}
               >
                 <Tab value="topics" label={t('tests.chapters')} onClick={openTopics} />
                 <Tab value="tests" label={t('tests.allTests')} />
               </Tabs>
             </>
-          )}
-          {chapterId > 0 && (
-            <Button
-              color="neutral"
-              onClick={openTopics}
-              startIcon={<IconifyIcon icon="material-symbols:arrow-back-rounded" fontSize={17} />}
-              sx={{ alignSelf: 'flex-start', px: 0, py: 0, fontSize: 14 }}
-            >
-              {t('tests.chapters')}
-            </Button>
           )}
           {error ? (
             <Alert
@@ -273,7 +213,7 @@ const TestsListPage = () => {
               )}
             </Stack>
           ) : showTopics ? (
-            <Stack spacing={2}>
+            <Stack spacing={0}>
               <Box sx={topicGridSx}>
                 {chapters.map((chapter) => (
                   <TopicCard
@@ -289,19 +229,26 @@ const TestsListPage = () => {
                   />
                 ))}
                 {chapters.length === 0 && (
-                  <Typography variant="body2" color="text.secondary">
-                    {t('tests.emptyTitle')}
-                  </Typography>
+                  <EmptyState
+                    title={t('tests.emptyTitle')}
+                    description={t('tests.emptySubtitle')}
+                    sx={{ gridColumn: '1 / -1' }}
+                  />
                 )}
               </Box>
             </Stack>
           ) : (
-            <Stack spacing={2}>
+            <Stack spacing={0}>
               <Stack
                 direction={{ xs: 'column', md: 'row' }}
                 alignItems={{ md: 'flex-end' }}
                 justifyContent="space-between"
                 gap={2}
+                sx={{
+                  px: 'var(--kep-content-inset)',
+                  py: 3,
+                  borderBottom: '1px solid var(--kep-line)',
+                }}
               >
                 <Stack spacing={1.5} sx={{ minWidth: 0 }}>
                   <Stack direction="row" alignItems="center" gap={1.5} sx={{ minWidth: 0 }}>
@@ -324,7 +271,7 @@ const TestsListPage = () => {
                     <Stack direction="row" alignItems="center" gap={1.5} flexWrap="wrap">
                       {(chapterId > 0 || search.trim()) && (
                         <Typography
-                          component={chapterId ? 'h1' : 'h2'}
+                          component="h2"
                           variant={chapterId ? 'h5' : 'h6'}
                           fontWeight={600}
                         >
@@ -362,27 +309,26 @@ const TestsListPage = () => {
                 </Stack>
               </Stack>
               {!filteredTests.length ? (
-                <Stack alignItems="flex-start" spacing={1.5} sx={{ py: 5 }}>
-                  <Typography variant="h6">
-                    {t(tests.length || chapterId ? 'tests.noMatches' : 'tests.emptyTitle')}
-                  </Typography>
-                  <Typography variant="body2" color="text.secondary">
-                    {t(
-                      tests.length || chapterId ? 'tests.noMatchesSubtitle' : 'tests.emptySubtitle',
-                    )}
-                  </Typography>
-                  <Button
-                    variant="outlined"
-                    onClick={() => {
-                      if (selectedChapter) {
-                        setSearch('');
-                        setDifficulty(0);
-                      } else resetFilters();
-                    }}
-                  >
-                    {t('tests.resetFilters')}
-                  </Button>
-                </Stack>
+                <EmptyState
+                  kind="search"
+                  title={t(tests.length || chapterId ? 'tests.noMatches' : 'tests.emptyTitle')}
+                  description={t(
+                    tests.length || chapterId ? 'tests.noMatchesSubtitle' : 'tests.emptySubtitle',
+                  )}
+                  action={
+                    <Button
+                      variant="outlined"
+                      onClick={() => {
+                        if (selectedChapter) {
+                          setSearch('');
+                          setDifficulty(0);
+                        } else resetFilters();
+                      }}
+                    >
+                      {t('tests.resetFilters')}
+                    </Button>
+                  }
+                />
               ) : chapterId ? (
                 <ChapterTestsList tests={filteredTests} completion={completion} />
               ) : (
@@ -396,8 +342,8 @@ const TestsListPage = () => {
             </Stack>
           )}
         </Stack>
-      </Container>
-    </Paper>
+      </Box>
+    </FramedPage>
   );
 };
 export default TestsListPage;

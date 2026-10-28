@@ -1,94 +1,65 @@
 import { PropsWithChildren, Suspense } from 'react';
 import { useTranslation } from 'react-i18next';
-import { Stack, Typography } from '@mui/material';
-import Grid from '@mui/material/Grid';
-import Kepper from 'shared/components/common/Kepper';
+import { Box, Stack, Typography } from '@mui/material';
 import Logo from 'shared/components/common/Logo';
+import MixedText from 'shared/components/common/MixedText';
+import PatternArtwork from 'shared/components/common/PatternArtwork';
 import DefaultLoader from 'shared/components/loading/DefaultLoader';
+import StandalonePage from 'shared/components/sections/common/StandalonePage';
 
 const DefaultAuthLayout = ({ children }: PropsWithChildren) => {
   const { t } = useTranslation();
-
   return (
-    <Grid
-      container
-      sx={{
-        height: { md: '100vh' },
-        minHeight: '100vh',
-        flexDirection: {
-          xs: 'column',
-          md: 'row',
-        },
-      }}
-    >
-      <Grid
+    <StandalonePage>
+      <Box
+        component="header"
+        sx={{ p: { xs: 2.5, md: 3.5 }, borderBottom: 1, borderColor: 'divider' }}
+      >
+        <Logo />
+      </Box>
+      <Box
         sx={{
-          borderRight: { md: 1 },
-          borderColor: { md: 'divider' },
-        }}
-        size={{
-          xs: 12,
-          md: 6,
+          display: 'grid',
+          gridTemplateColumns: { xs: 'minmax(0, 1fr)', md: 'minmax(0, 1fr) minmax(0, 1fr)' },
         }}
       >
         <Stack
-          direction="column"
+          justifyContent="center"
+          alignItems="center"
+          spacing={3}
           sx={{
-            justifyContent: 'space-between',
-            height: 1,
-            p: { xs: 3, sm: 5 },
+            p: 5,
+            display: { xs: 'none', md: 'flex' },
+            borderRight: '1px solid var(--kep-line)',
+            backgroundImage: 'radial-gradient(var(--kep-line) 1px, transparent 1px)',
+            backgroundSize: '16px 16px',
           }}
         >
-          <Stack
-            direction="row"
+          <PatternArtwork kind="auth" sx={{ width: 360 }} />
+          <Typography
+            variant="h3"
             sx={{
-              justifyContent: { xs: 'center', md: 'flex-start' },
+              fontFamily: 'var(--kep-display-font)',
+              fontWeight: 500,
+              maxWidth: 340,
+              textAlign: 'center',
+              textWrap: 'balance',
             }}
           >
-            <Logo />
-          </Stack>
-
-          <Stack
-            direction="row"
-            sx={{
-              justifyContent: 'center',
-              alignItems: 'center',
-              flex: 1,
-              display: 'flex',
-              flexDirection: 'column',
-              py: { xs: 2, md: 6 },
-            }}
+            <MixedText>{t('auth.platformTitle')}</MixedText>
+          </Typography>
+          <Typography
+            color="text.secondary"
+            sx={{ maxWidth: 320, textAlign: 'center', lineHeight: 1.7 }}
           >
-            <Stack sx={{ display: { xs: 'none', md: 'flex' } }}>
-              <Kepper pose="welcome" motion="loop" size={300} />
-            </Stack>
-            <Stack sx={{ display: { xs: 'flex', md: 'none' } }}>
-              <Kepper pose="welcome" size={80} />
-            </Stack>
-            <Typography variant="h4" sx={{ mt: 2 }}>
-              {t('common.mascot.name')}
-            </Typography>
-            <Typography color="text.secondary" textAlign="center" sx={{ mt: 1, maxWidth: 320 }}>
-              {t('common.mascot.companion')}
-            </Typography>
-          </Stack>
+            {t('auth.platformDescription')}
+          </Typography>
         </Stack>
-      </Grid>
-      <Grid
-        size={{
-          md: 6,
-          xs: 12,
-        }}
-        sx={{
-          display: { xs: 'block', md: 'block' },
-          flexDirection: 'column',
-          flex: 1,
-        }}
-      >
-        <Suspense fallback={<DefaultLoader />}>{children}</Suspense>
-      </Grid>
-    </Grid>
+        <Box sx={{ minWidth: 0, py: { xs: 1, md: 3 } }}>
+          <Suspense fallback={<DefaultLoader />}>{children}</Suspense>
+        </Box>
+      </Box>
+    </StandalonePage>
   );
 };
-
 export default DefaultAuthLayout;

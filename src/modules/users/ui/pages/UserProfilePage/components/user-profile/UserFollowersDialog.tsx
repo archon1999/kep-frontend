@@ -4,21 +4,18 @@ import {
   Avatar,
   Dialog,
   DialogContent,
-  DialogTitle,
-  Divider,
-  IconButton,
   List,
   ListItem,
   ListItemAvatar,
   ListItemText,
-  Pagination,
   Skeleton,
   Stack,
   Typography,
 } from '@mui/material';
-import IconifyIcon from 'shared/components/base/IconifyIcon';
 import { useUserFollowers } from 'modules/users/application/queries';
 import UserPopover from 'modules/users/ui/shared/components/UserPopover';
+import DialogHeader from 'shared/components/common/DialogHeader';
+import { ListPagination } from 'shared/components/sections/common/FramedListPage';
 
 const DIALOG_PAGE_SIZE = 10;
 const SKELETON_ROWS = 5;
@@ -49,36 +46,13 @@ const UserFollowersDialog = ({ open, onClose, username }: UserFollowersDialogPro
   const showPagination = pagesCount > 1;
 
   return (
-    <Dialog
-      open={open}
-      onClose={onClose}
-      maxWidth="sm"
-      fullWidth
-      PaperProps={{
-        sx: {
-          borderRadius: 4,
-        },
-      }}
-    >
-      <DialogTitle sx={{ pb: 1.5 }}>
-        <Stack direction="row" alignItems="center" justifyContent="space-between" spacing={2}>
-          <Stack direction="row" alignItems="center" spacing={1}>
-            <Typography variant="h6" fontWeight={700}>
-              {t('users.profile.followers.title')}
-            </Typography>
-            <Typography variant="body2" color="text.secondary">
-              {total}
-            </Typography>
-          </Stack>
-
-          <IconButton aria-label={t('users.profile.followers.title')} onClick={onClose}>
-            <IconifyIcon icon="mdi:close" />
-          </IconButton>
-        </Stack>
-      </DialogTitle>
-
-      <Divider />
-
+    <Dialog aria-labelledby="followers-title" open={open} onClose={onClose} maxWidth="sm" fullWidth>
+      <DialogHeader
+        id="followers-title"
+        title={t('users.profile.followers.title')}
+        subtitle={total}
+        onClose={onClose}
+      />
       <DialogContent sx={{ pt: 2.5, pb: 3 }}>
         {isInitialLoading ? (
           <List disablePadding>
@@ -134,12 +108,10 @@ const UserFollowersDialog = ({ open, onClose, username }: UserFollowersDialogPro
 
         {showPagination ? (
           <Stack alignItems="center" sx={{ pt: 2.5 }}>
-            <Pagination
+            <ListPagination
               count={pagesCount}
               page={page}
-              onChange={(_, value) => setPage(value)}
-              color="primary"
-              shape="rounded"
+              onChange={(value) => setPage(value)}
               disabled={isLoading || isValidating}
             />
           </Stack>

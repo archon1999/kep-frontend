@@ -1,17 +1,6 @@
-import { hydrateQuestion } from 'modules/testing/data-access/mappers/test.mapper.ts';
-import {
-  challengesApiClient,
-  type ChallengeListParams,
-} from '../api/challenges.client.ts';
-import {
-  extractList,
-  mapChallenge,
-  mapChallengeCall,
-  mapChallengeRating,
-  mapChallengeRatingChange,
-  mapPageResult,
-} from '../mappers/challenge.mapper.ts';
-import { mapChallengeUserStatistics } from '../mappers/challenge-statistics.mapper.ts';
+import { Chapter } from 'modules/testing/domain/entities/chapter.entity.ts';
+import { Question } from 'modules/testing/domain/entities/question.entity.ts';
+import { hydrateQuestion } from 'modules/testing/domain/utils/hydrate-question';
 import {
   Challenge,
   ChallengeCall,
@@ -20,29 +9,48 @@ import {
   ChallengeUserStatistics,
 } from '../../domain';
 import {
-  ChessChallengeAnswer,
-  ChessMovePayload,
-  ChessMoveResponse,
+  ChallengeAnswerPayload,
   ChallengeAntiCheatPenaltyPayload,
   ChallengeAntiCheatPenaltyResponse,
-  ChallengeAnswerPayload,
   ChallengeCheckResponse,
   ChallengeRatingParams,
   ChallengeStartResponse,
   ChallengesRepository,
+  ChessChallengeAnswer,
+  ChessMovePayload,
+  ChessMoveResponse,
   PageResult,
-} from '../../domain/ports/challenges.repository.ts';
-import { Chapter } from 'modules/testing/domain/entities/chapter.entity.ts';
-import { Question } from 'modules/testing/domain/entities/question.entity.ts';
+} from '../../domain/contracts/challenges.repository.ts';
+import {
+  type ChallengeListParams,
+  challengesApiClient,
+  sendChallengeAntiCheatPenaltyKeepalive,
+} from '../api/challenges.client.ts';
+import { mapChallengeUserStatistics } from '../mappers/challenge-statistics.mapper.ts';
+import {
+  extractList,
+  mapChallenge,
+  mapChallengeCall,
+  mapChallengeRating,
+  mapChallengeRatingChange,
+  mapPageResult,
+} from '../mappers/challenge.mapper.ts';
 
 export class HttpChallengesRepository implements ChallengesRepository {
+  sendAntiCheatPenaltyOnExit(
+    challengeId: number | string,
+    payload: ChallengeAntiCheatPenaltyPayload,
+  ): void {
+    sendChallengeAntiCheatPenaltyKeepalive(challengeId, payload);
+  }
+
   private mapChallengeAnswer(answer: ChallengeAnswerPayload['answer']): unknown {
     const chessAnswer = answer as Partial<ChessChallengeAnswer> | null;
 
     if (
-      chessAnswer
-      && Array.isArray(chessAnswer.playedLine)
-      && typeof chessAnswer.result === 'string'
+      chessAnswer &&
+      Array.isArray(chessAnswer.playedLine) &&
+      typeof chessAnswer.result === 'string'
     ) {
       return {
         played_line: chessAnswer.playedLine,
@@ -58,7 +66,11 @@ export class HttpChallengesRepository implements ChallengesRepository {
     return extractList(result).map(mapChallengeCall);
   }
 
-  async createChallengeCall(payload: { timeSeconds: number; questionsCount: number; chapters?: number[] }): Promise<void> {
+  async createChallengeCall(payload: {
+    timeSeconds: number;
+    questionsCount: number;
+    chapters?: number[];
+  }): Promise<void> {
     await challengesApiClient.createChallengeCall(payload);
   }
 
@@ -88,7 +100,10 @@ export class HttpChallengesRepository implements ChallengesRepository {
     await challengesApiClient.startChallenge(challengeId);
   }
 
-  async submitAnswer(challengeId: number, payload: ChallengeAnswerPayload): Promise<ChallengeCheckResponse> {
+  async submitAnswer(
+    challengeId: number,
+    payload: ChallengeAnswerPayload,
+  ): Promise<ChallengeCheckResponse> {
     const response = await challengesApiClient.submitAnswer(challengeId, {
       answer: this.mapChallengeAnswer(payload.answer),
       finish: payload.isFinish,
@@ -99,7 +114,10 @@ export class HttpChallengesRepository implements ChallengesRepository {
     };
   }
 
-  async submitChessMove(challengeId: number, payload: ChessMovePayload): Promise<ChessMoveResponse> {
+  async submitChessMove(
+    challengeId: number,
+    payload: ChessMovePayload,
+  ): Promise<ChessMoveResponse> {
     const response = await challengesApiClient.submitChessMove(challengeId, payload);
     return {
       status: response?.status ?? 'failed',
@@ -149,7 +167,11 @@ export class HttpChallengesRepository implements ChallengesRepository {
     return mapChallengeUserStatistics(response);
   }
 
-  async listUserChallenges(params: { username: string; page?: number; pageSize?: number }): Promise<PageResult<Challenge>> {
+  async listUserChallenges(params: {
+    username: string;
+    page?: number;
+    pageSize?: number;
+  }): Promise<PageResult<Challenge>> {
     const response = await challengesApiClient.listUserChallenges(params);
     return mapPageResult<Challenge>(response, mapChallenge);
   }

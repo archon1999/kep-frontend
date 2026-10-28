@@ -1,50 +1,36 @@
-import { useEffect, useMemo, useRef, useState } from 'react';
+import { useEffect, useMemo, useState } from 'react';
 import { useTranslation } from 'react-i18next';
-import { Link as RouterLink, useParams } from 'react-router';
+import { Link as RouterLink } from 'react-router';
 import {
-  Alert,
   Avatar,
   Box,
   Button,
   Chip,
-  Divider,
-  Grid,
   List,
   ListItemButton,
   ListItemText,
-  Paper,
   Skeleton,
   Stack,
   Typography,
 } from '@mui/material';
-import { useDocumentTitle } from 'app/providers/DocumentTitleProvider';
-import { getResourceByUsername, resources } from 'app/routes/resources';
-import { SwiperSlide } from 'swiper/react';
-import Swiper from 'shared/components/base/Swiper';
-import IconifyIcon from 'shared/components/base/IconifyIcon';
-import PageLoader from 'shared/components/loading/PageLoader';
-import { formatDateTimeOrOriginal } from 'shared/lib/dateTime';
-import { responsivePagePaddingSx } from 'shared/lib/styles';
-import { cssVarRgba } from 'shared/lib/utils';
-import { toast } from 'sonner';
-import {
-  useBlogCommentCreate,
-  useBlogCommentDelete,
-  useBlogCommentLike,
-  useBlogComments,
-  useBlogPost,
-  useBlogPostLike,
-  useBlogPosts,
-} from 'modules/blog/application/queries';
+import { getResourceById, resources } from 'app/routes/resources';
+import { contentGridSx } from 'app/theme/styles/content';
+import { useBlogPostPage } from 'modules/blog/application/hooks/useBlogPostPage';
 import BlogArticleContent from 'modules/blog/ui/shared/components/BlogArticleContent';
 import BlogCard from 'modules/blog/ui/shared/components/BlogCard';
 import CommentsSection from 'modules/blog/ui/shared/components/CommentsSection';
 import {
   type BlogArticleHeading,
-  estimateBlogReadTime,
   prepareBlogArticle,
-  stripBlogHtml,
 } from 'modules/blog/ui/shared/lib/article-content';
+import UserPopover from 'modules/users/ui/shared/components/UserPopover';
+import IconifyIcon from 'shared/components/base/IconifyIcon';
+import EmptyState from 'shared/components/common/EmptyState';
+import PageLoader from 'shared/components/loading/PageLoader';
+import FramedPage from 'shared/components/sections/common/FramedPage';
+import PageHeader from 'shared/components/sections/common/PageHeader';
+import SectionHeader from 'shared/components/sections/common/SectionHeader';
+import { toast } from 'sonner';
 
 const useActiveHeading = (headings: BlogArticleHeading[]) => {
   const [activeHeadingId, setActiveHeadingId] = useState<string>('');
@@ -85,123 +71,39 @@ const useActiveHeading = (headings: BlogArticleHeading[]) => {
   return activeHeadingId;
 };
 
-const formatMetaDate = (value?: string) => {
-  if (!value) return '';
-
-  return formatDateTimeOrOriginal(value, 'compactDate');
-};
-
 const BlogPostPage = () => {
-  const { id } = useParams();
-  const { t } = useTranslation();
-  const navigationPrevRef = useRef<HTMLButtonElement | null>(null);
-  const navigationNextRef = useRef<HTMLButtonElement | null>(null);
-  const blogId = useMemo(() => id ?? '', [id]);
-  const [commentsDrawerOpen, setCommentsDrawerOpen] = useState(false);
-
-  const { data: post, isLoading, mutate } = useBlogPost(blogId);
   const {
-    data: comments,
-    isLoading: commentsLoading,
-    mutate: mutateComments,
-  } = useBlogComments(blogId);
-  const { trigger: likePost, isMutating: likingPost } = useBlogPostLike(blogId);
-  const { trigger: likeComment } = useBlogCommentLike(blogId);
-  const { trigger: deleteComment } = useBlogCommentDelete(blogId);
-  const { trigger: createComment, isMutating: creatingComment } = useBlogCommentCreate(blogId);
+    post,
+    isLoading,
+    error,
+    mutate,
+    comments,
+    commentsLoading,
+    likingPost,
+    creatingComment,
+    isAuthorPostsLoading,
+    isRecommendationsLoading,
+    readTime,
+    articlePreview,
+    authorBio,
+    articleSource,
+    authorBlogUrl,
+    metaDate,
+    authorPosts,
+    recommendedPosts,
+    handleLikePost,
+    handleLikeComment,
+    handleDeleteComment,
+    handleCreateComment,
+  } = useBlogPostPage();
 
-  const authorPostsParams = useMemo(
-    () =>
-      post
-        ? {
-            page: 1,
-            pageSize: 4,
-            author: post.author.username,
-          }
-        : null,
-    [post],
-  );
-
-  const { data: authorPostsPage, isLoading: isAuthorPostsLoading } =
-    useBlogPosts(authorPostsParams);
-
-  const { data: recommendationsPage, isLoading: isRecommendationsLoading } = useBlogPosts({
-    page: 1,
-    pageSize: 8,
-    order_by: '2',
-  });
-
-  useDocumentTitle(
-    post?.title ? 'pageTitles.blogPost' : undefined,
-    post?.title
-      ? {
-          postTitle: post.title,
-        }
-      : undefined,
-  );
-
-  const articleSource = post?.body ?? post?.bodyShort ?? '';
+  const { t } = useTranslation();
   const article = useMemo(
-    () => prepareBlogArticle(articleSource, post?.tableOfContents ?? []),
-    [articleSource, post?.tableOfContents],
+    () => prepareBlogArticle(articleSource, post?.tableOfContents ?? [], post?.title),
+    [articleSource, post?.tableOfContents, post?.title],
   );
-  const articleHeadings = post?.tableOfContents?.length ? post.tableOfContents : article.headings;
-  const readTime = useMemo(() => estimateBlogReadTime(articleSource), [articleSource]);
-  const articlePreview = useMemo(() => stripBlogHtml(articleSource).slice(0, 220), [articleSource]);
+  const articleHeadings = article.headings;
   const activeHeadingId = useActiveHeading(articleHeadings);
-  const authorBlogUrl = post
-    ? getResourceByUsername(resources.UserProfileBlog, post.author.username)
-    : resources.Blog;
-  const metaDate = formatMetaDate(post?.publishedAt ?? post?.updatedAt ?? post?.created ?? '');
-  const authorBio = stripBlogHtml(post?.author.bio?.trim() || '') || t('blog.authorSectionSubtitle');
-
-  const authorPosts = useMemo(
-    () => (authorPostsPage?.data ?? []).filter((item) => item.id !== post?.id).slice(0, 3),
-    [authorPostsPage?.data, post?.id],
-  );
-
-  const recommendedPosts = useMemo(() => {
-    const excludedIds = new Set([post?.id, ...authorPosts.map((item) => item.id)]);
-
-    return (recommendationsPage?.data ?? [])
-      .filter((item) => !excludedIds.has(item.id))
-      .slice(0, 6);
-  }, [authorPosts, recommendationsPage?.data, post?.id]);
-
-  const handleLikePost = async () => {
-    const likes = await likePost();
-    await mutate((prev) => (prev ? { ...prev, likesCount: likes } : prev), { revalidate: false });
-  };
-
-  const handleLikeComment = async (commentId: number) => {
-    const likes = await likeComment(commentId);
-    await mutateComments(
-      (prev) =>
-        prev
-          ? prev.map((comment) =>
-              comment.id === commentId
-                ? {
-                    ...comment,
-                    likes,
-                  }
-                : comment,
-            )
-          : prev,
-      { revalidate: false },
-    );
-  };
-
-  const handleDeleteComment = async (commentId: number) => {
-    await deleteComment(commentId);
-    await mutateComments((prev) => prev?.filter((comment) => comment.id !== commentId), {
-      revalidate: false,
-    });
-  };
-
-  const handleCreateComment = async (body: string) => {
-    await createComment(body);
-    await mutateComments();
-  };
 
   const handleShare = async () => {
     try {
@@ -224,384 +126,342 @@ const BlogPostPage = () => {
     }
   };
 
-  if (isLoading) {
-    return <PageLoader />;
-  }
-
-  if (!post) {
+  if (isLoading) return <PageLoader />;
+  if (!post || error)
     return (
-      <Box sx={{ ...responsivePagePaddingSx, maxWidth: 1280, mx: 'auto' }}>
-        <Alert severity="warning">{t('blog.editor.notFound')}</Alert>
-      </Box>
+      <FramedPage>
+        <PageHeader variant="detail" title={t('blog.title')} backTo={resources.Blog} />
+        <EmptyState
+          kind={error ? 'error' : 'blog'}
+          title={t(error ? 'blog.loadError' : 'blog.editor.notFound')}
+          action={
+            <Button variant="outlined" onClick={() => void mutate()}>
+              {t('common.retry')}
+            </Button>
+          }
+        />
+      </FramedPage>
     );
-  }
+
+  const contents = (
+    <List disablePadding aria-label={t('blog.tableOfContents')}>
+      {articleHeadings.map((heading) => (
+        <ListItemButton
+          key={heading.id}
+          component="a"
+          href={`#${heading.id}`}
+          selected={heading.id === activeHeadingId}
+          sx={{
+            py: 0.75,
+            pl: heading.level === 3 ? 2 : 1,
+            borderLeft: 2,
+            borderColor: heading.id === activeHeadingId ? 'primary.main' : 'divider',
+            '&.Mui-selected': { bgcolor: 'transparent', color: 'primary.main' },
+          }}
+        >
+          <ListItemText
+            primary={heading.text}
+            slotProps={{
+              primary: { variant: 'caption', sx: { lineHeight: 1.6, overflowWrap: 'anywhere' } },
+            }}
+          />
+        </ListItemButton>
+      ))}
+    </List>
+  );
 
   return (
-    <Box sx={{ ...responsivePagePaddingSx, maxWidth: 1280, mx: 'auto' }}>
-      <Grid container spacing={3}>
-        <Grid size={{ xs: 12, lg: 9 }}>
-          <Stack spacing={{ xs: 3, md: 5 }}>
-            <Box>
-              <Typography variant="h4" sx={{ mb: 1, maxWidth: 860 }}>
-                {post.title}
-              </Typography>
-
-              <Stack direction="row" sx={{ gap: 2, alignItems: 'center', mb: 3 }} flexWrap="wrap">
-                {post.tags[0] ? <Chip size="small" label={post.tags[0]} /> : null}
-
-                <Typography variant="caption" sx={{ color: 'text.secondary', fontWeight: 500 }}>
-                  {t('blog.minRead', { count: readTime })}
-                </Typography>
-
-                {metaDate ? (
-                  <Typography variant="caption" sx={{ color: 'text.secondary', fontWeight: 500 }}>
-                    {metaDate}
-                  </Typography>
-                ) : null}
-              </Stack>
-
-              <Grid container spacing={2}>
-                <Grid size={{ xs: 12, sm: 'auto' }}>
-                  <Stack direction="row" sx={{ gap: 1, alignItems: 'center' }}>
-                    <Avatar src={post.author.avatar ?? undefined} alt={post.author.username} sx={{ width: 32, height: 32 }} />
-                    <Typography
-                      component={RouterLink}
-                      to={authorBlogUrl}
-                      variant="subtitle1"
-                      fontWeight={700}
-                      sx={{ color: 'text.primary', textDecoration: 'none' }}
-                    >
-                      {post.author.username}
-                    </Typography>
-                  </Stack>
-                </Grid>
-
-                <Grid
-                  size={{ xs: 12, sm: 'auto' }}
-                  sx={{
-                    ml: 'auto',
-                    display: 'flex',
-                    alignItems: 'center',
-                  }}
-                >
-                  <Stack direction="row" sx={{ gap: 1, alignItems: 'center' }}>
-                    <Stack direction="row" sx={{ gap: 1, alignItems: 'center' }}>
-                      <Button
-                        variant="text"
-                        color="neutral"
-                        onClick={handleLikePost}
-                        disabled={likingPost}
-                        startIcon={
-                          <IconifyIcon
-                            icon="material-symbols:thumb-up-outline-rounded"
-                            fontSize={18}
-                          />
-                        }
-                      >
-                        {post.likesCount}
-                      </Button>
-
-                      <Button
-                        variant="text"
-                        color="neutral"
-                        onClick={() => setCommentsDrawerOpen(true)}
-                        startIcon={
-                          <IconifyIcon
-                            icon="material-symbols:mode-comment-outline-rounded"
-                            fontSize={18}
-                          />
-                        }
-                      >
-                        {comments?.length ?? post.commentsCount}
-                      </Button>
-                    </Stack>
-
-                    <Stack direction="row" sx={{ gap: 1, alignItems: 'center' }}>
-                      <Button variant="text" color="neutral" shape="square" onClick={handleShare}>
-                        <IconifyIcon icon="material-symbols:share-outline" fontSize={18} />
-                      </Button>
-
-                      <Button variant="text" color="neutral" shape="square">
-                        <IconifyIcon
-                          icon="material-symbols:bookmark-outline-rounded"
-                          fontSize={18}
-                        />
-                      </Button>
-
-                      <Button variant="text" color="neutral" shape="square">
-                        <IconifyIcon icon="mdi:dots-horizontal" fontSize={20} />
-                      </Button>
-                    </Stack>
-                  </Stack>
-                </Grid>
-              </Grid>
-            </Box>
-
-            {post.image ? (
+    <FramedPage>
+      <PageHeader
+        variant="detail"
+        title={post.title}
+        subtitle={post.subtitle}
+        backTo={resources.Blog}
+        sx={{
+          '& .kep-page-hero-copy h1': {
+            fontSize: { xs: 30, md: 44 },
+            maxWidth: 900,
+            lineHeight: 1.15,
+          },
+        }}
+        actionComponent={
+          post.canEdit ? (
+            <Button
+              component={RouterLink}
+              to={getResourceById(resources.BlogEdit, post.id)}
+              variant="contained"
+              startIcon={<IconifyIcon icon="material-symbols:edit-outline-rounded" />}
+            >
+              {t('blog.profile.edit')}
+            </Button>
+          ) : undefined
+        }
+      />
+      <Stack
+        direction="row"
+        gap={2}
+        alignItems="center"
+        flexWrap="wrap"
+        sx={{ px: 'var(--kep-content-inset)', py: 2, borderBottom: 1, borderColor: 'divider' }}
+      >
+        <Avatar src={post.author.avatar ?? undefined} alt="" sx={{ width: 32, height: 32 }} />
+        <Box>
+          <UserPopover username={post.author.username} avatar={post.author.avatar ?? undefined}>
+            <Typography
+              variant="body2"
+              sx={{ color: 'text.primary', textDecoration: 'none', fontWeight: 600 }}
+            >
+              {post.author.username}
+            </Typography>
+          </UserPopover>
+          <Typography variant="caption" color="text.secondary" sx={{ display: 'block' }}>
+            {metaDate} · {t('blog.minRead', { count: readTime })}
+          </Typography>
+        </Box>
+        <Stack direction="row" gap={0.5} sx={{ ml: { sm: 'auto' }, flexWrap: 'wrap' }}>
+          <Button
+            variant="text"
+            size="small"
+            onClick={handleLikePost}
+            disabled={likingPost}
+            aria-label={`${t('blog.actions.like')}: ${post.likesCount}`}
+            startIcon={<IconifyIcon icon="material-symbols:thumb-up-outline-rounded" />}
+          >
+            {post.likesCount}
+          </Button>
+          <Button
+            component="a"
+            href="#blog-comments"
+            variant="text"
+            size="small"
+            aria-label={t('blog.comments')}
+            startIcon={<IconifyIcon icon="material-symbols:mode-comment-outline-rounded" />}
+          >
+            {comments?.length ?? post.commentsCount}
+          </Button>
+          <Button
+            variant="text"
+            size="small"
+            onClick={handleShare}
+            startIcon={<IconifyIcon icon="material-symbols:share-outline" />}
+          >
+            {t('blog.actions.share')}
+          </Button>
+        </Stack>
+      </Stack>
+      <Box
+        sx={{
+          display: 'grid',
+          gridTemplateColumns: { xs: 'minmax(0,1fr)', lg: 'minmax(0,1fr) 280px' },
+        }}
+      >
+        <Box component="article" sx={{ minWidth: 0 }}>
+          {post.image && (
+            <Box sx={{ borderBottom: 1, borderColor: 'divider', bgcolor: 'background.level1' }}>
               <Box
                 component="img"
                 src={post.image}
                 alt={post.title}
                 sx={{
-                  width: 1,
-                  aspectRatio: '16 / 10',
-                  objectFit: 'cover',
-                  borderRadius: 5,
+                  display: 'block',
+                  width: '100%',
+                  maxHeight: { xs: 220, md: 300 },
+                  objectFit: 'contain',
                 }}
-              />
-            ) : null}
-
-            <BlogArticleContent
-              html={article.html}
-              sx={{
-                '& h1, & h2, & h3, & h4': {
-                  mb: 2,
-                  mt: 4,
-                  fontWeight: 700,
-                },
-                '& p, & li': {
-                  color: 'text.secondary',
-                  lineHeight: 1.9,
-                },
-                '& img': {
-                  borderRadius: 3,
-                  my: 2,
-                },
-              }}
-            />
-
-            {post.tags.length ? (
-              <Stack direction="row" spacing={1} flexWrap="wrap" useFlexGap>
-                {post.tags.map((tag) => (
-                  <Chip key={tag} label={tag} size="small" />
-                ))}
-              </Stack>
-            ) : null}
-
-            <Divider />
-
-            <Paper
-              background={1}
-              elevation={0}
-              sx={{
-                p: 3,
-                borderRadius: 4,
-              }}
-            >
-              <Stack spacing={2}>
-                <Stack direction="row" spacing={2} alignItems="center" justifyContent="space-between">
-                  <Stack direction="row" spacing={1.5} alignItems="center">
-                    <Avatar src={post.author.avatar ?? undefined} alt={post.author.username} sx={{ width: 64, height: 64 }} />
-
-                    <Stack spacing={0.75}>
-                      <Typography
-                        component={RouterLink}
-                        to={authorBlogUrl}
-                        variant="subtitle1"
-                        fontWeight={700}
-                        sx={{ color: 'text.primary', textDecoration: 'none' }}
-                      >
-                        {post.author.username}
-                      </Typography>
-
-                      <Stack gap={{ xs: 1, sm: 2 }} sx={{ flexWrap: { xs: 'wrap', sm: 'nowrap' } }}>
-                        <Typography variant="caption" fontWeight={500} sx={{ color: 'text.secondary' }}>
-                          {authorPostsPage?.total ?? authorPosts.length} Stories
-                        </Typography>
-                        <Typography variant="caption" fontWeight={500} sx={{ color: 'text.secondary' }}>
-                          {post.tags.length} Topics
-                        </Typography>
-                        <Typography variant="caption" fontWeight={500} sx={{ color: 'text.secondary' }}>
-                          {post.likesCount} Likes
-                        </Typography>
-                      </Stack>
-                    </Stack>
-                  </Stack>
-
-                  <Button component={RouterLink} to={authorBlogUrl} variant="soft" color="primary">
-                    {t('blog.authorSectionAction')}
-                  </Button>
-                </Stack>
-
-                <Typography sx={{ color: 'text.secondary' }}>{authorBio}</Typography>
-              </Stack>
-            </Paper>
-
-            <Divider />
-
-            <Stack spacing={3}>
-              <Typography variant="h6">{t('blog.moreFromCreator')}</Typography>
-
-              {isAuthorPostsLoading ? (
-                <Stack spacing={2}>
-                  {Array.from({ length: 2 }).map((_, index) => (
-                    <Skeleton key={`author-post-skeleton-${index}`} variant="rounded" height={240} sx={{ borderRadius: 4 }} />
-                  ))}
-                </Stack>
-              ) : authorPosts.length ? (
-                <Stack spacing={2}>
-                  {authorPosts.map((item) => (
-                    <BlogCard key={item.id} post={item} variant="horizontal" />
-                  ))}
-                </Stack>
-              ) : null}
-            </Stack>
-
-            <Divider />
-
-            <Box id="blog-comments">
-              <CommentsSection
-                comments={comments}
-                isLoading={commentsLoading || creatingComment}
-                onLike={handleLikeComment}
-                onDelete={handleDeleteComment}
-                onSubmit={handleCreateComment}
               />
             </Box>
-          </Stack>
-        </Grid>
-
-        {articleHeadings.length ? (
-          <Grid size={{ xs: 12, lg: 3 }}>
-            <Paper
-              elevation={0}
+          )}
+          {articleHeadings.length > 0 && (
+            <Box
+              component="details"
               sx={{
-                outline: 0,
-                bgcolor: 'transparent',
-                boxShadow: 'none',
+                display: { lg: 'none' },
+                px: 'var(--kep-content-inset)',
+                py: 2,
+                borderBottom: 1,
+                borderColor: 'divider',
               }}
             >
-              <List
-                dense
-                sx={{
-                  width: '100%',
-                  position: 'sticky',
-                  top: 96,
-                  py: 0,
-                  px: 0,
-                }}
+              <Typography
+                component="summary"
+                variant="body2"
+                sx={{ cursor: 'pointer', color: 'primary.main', mb: 1 }}
               >
-                <Typography variant="body1" fontWeight={600} sx={{ mb: 2 }}>
-                  {t('blog.tableOfContents')}
-                </Typography>
-
-                {articleHeadings.map((heading) => (
-                  <ListItemButton
-                    key={heading.id}
-                    component="a"
-                    href={`#${heading.id}`}
-                    selected={heading.id === activeHeadingId}
-                    sx={{
-                      mb: 0.6,
-                      borderRadius: 2,
-                      '&.Mui-selected': {
-                        bgcolor: (theme) => cssVarRgba(theme.vars.palette.primary.mainChannel, 0.08),
-                      },
-                    }}
-                  >
-                    <ListItemText
-                      primary={heading.text}
-                      primaryTypographyProps={{
-                        variant: 'caption',
-                        fontWeight: 500,
-                        fontSize: '12px !important',
-                      }}
-                    />
-                  </ListItemButton>
-                ))}
-              </List>
-            </Paper>
-          </Grid>
-        ) : null}
-      </Grid>
-
-      {(isRecommendationsLoading || recommendedPosts.length > 0) && (
-        <>
-          <Divider sx={{ mt: { xs: 4, md: 5 } }} />
-
-          <Stack direction="column" sx={{ gap: 3, py: { xs: 3, md: 5 } }}>
-            <Grid container spacing={2}>
-              <Grid size={{ xs: 12, sm: 7 }}>
-                <Typography variant="h4">{t('blog.moreBlogs')}</Typography>
-              </Grid>
-
-              <Grid size={{ xs: 12, sm: 5 }} sx={{ ml: { sm: 'auto' } }}>
-                <Stack
-                  sx={{
-                    alignItems: 'center',
-                    justifyContent: { xs: 'space-between', sm: 'flex-end' },
-                  }}
-                >
-                  <Stack sx={{ alignItems: 'center' }}>
-                    <Button ref={navigationPrevRef} variant="soft" color="neutral" sx={{ mr: 1 }}>
-                      <IconifyIcon icon="material-symbols:chevron-left-rounded" fontSize={18} />
-                    </Button>
-                    <Button ref={navigationNextRef} variant="soft" color="neutral" sx={{ mr: 2 }}>
-                      <IconifyIcon icon="material-symbols:chevron-right-rounded" fontSize={18} />
-                    </Button>
-                  </Stack>
-
-                  <Button component={RouterLink} to={resources.Blog}>
-                    {t('blog.title')}
-                  </Button>
-                </Stack>
-              </Grid>
-            </Grid>
-
-            {isRecommendationsLoading ? (
-              <Stack direction="row" spacing={2} sx={{ overflow: 'hidden' }}>
-                {Array.from({ length: 3 }).map((_, index) => (
-                  <Skeleton
-                    key={`recommendation-skeleton-${index}`}
-                    variant="rounded"
-                    width={272}
-                    height={360}
-                    sx={{ borderRadius: 4, flexShrink: 0 }}
-                  />
+                {t('blog.tableOfContents')}
+              </Typography>
+              {contents}
+            </Box>
+          )}
+          <Box sx={{ px: 'var(--kep-content-inset)', py: { xs: 3, md: 4 } }}>
+            <BlogArticleContent html={article.html} sx={{ maxWidth: '72ch', mx: 'auto' }} />
+            {!!post.tags.length && (
+              <Stack
+                direction="row"
+                gap={1}
+                flexWrap="wrap"
+                sx={{ mt: 4, maxWidth: '72ch', mx: 'auto' }}
+              >
+                {post.tags.map((tag) => (
+                  <Chip key={tag} label={tag} size="small" variant="outlined" />
                 ))}
               </Stack>
-            ) : (
-              <Swiper
-                slidesPerView="auto"
-                spaceBetween={16}
-                loop
-                navigation={{
-                  prevEl: navigationPrevRef,
-                  nextEl: navigationNextRef,
-                }}
-                sx={{
-                  '& .swiper-slide': {
-                    width: 'auto',
-                    maxHeight: 'auto',
-                    boxSizing: 'border-box',
-                  },
-                }}
+            )}
+          </Box>
+          <Box
+            id="blog-comments"
+            sx={{
+              borderTop: 1,
+              borderColor: 'divider',
+              p: 'var(--kep-content-inset)',
+              scrollMarginTop: 100,
+            }}
+          >
+            <CommentsSection
+              comments={comments}
+              isLoading={commentsLoading}
+              isSubmitting={creatingComment}
+              onLike={handleLikeComment}
+              onDelete={handleDeleteComment}
+              onSubmit={handleCreateComment}
+            />
+          </Box>
+        </Box>
+        <Box
+          component="aside"
+          sx={{
+            minWidth: 0,
+            borderLeft: { lg: 1 },
+            borderTop: { xs: 1, lg: 0 },
+            borderColor: { xs: 'divider', lg: 'divider' },
+          }}
+        >
+          <Stack
+            direction="column"
+            gap={3}
+            sx={{
+              p: 3,
+              position: { lg: 'sticky' },
+              top: 96,
+              maxHeight: { lg: 'calc(100dvh - 112px)' },
+              overflowY: { lg: 'auto' },
+            }}
+          >
+            {articleHeadings.length > 0 && (
+              <Box sx={{ display: { xs: 'none', lg: 'block' } }}>
+                <Typography
+                  variant="overline"
+                  color="text.secondary"
+                  sx={{ display: 'block', mb: 2 }}
+                >
+                  {t('blog.tableOfContents')}
+                </Typography>
+                {contents}
+              </Box>
+            )}
+            <Box>
+              <Typography component="h2" variant="overline" color="text.secondary" sx={{ mb: 2 }}>
+                {t('blog.aboutAuthor')}
+              </Typography>
+              <Stack direction="row" gap={1.25} alignItems="center" sx={{ my: 1.5 }}>
+                <Avatar
+                  src={post.author.avatar ?? undefined}
+                  alt=""
+                  sx={{ width: 36, height: 36 }}
+                />
+                <UserPopover
+                  username={post.author.username}
+                  avatar={post.author.avatar ?? undefined}
+                >
+                  <Typography
+                    variant="body2"
+                    sx={{ color: 'text.primary', textDecoration: 'none', overflowWrap: 'anywhere' }}
+                  >
+                    {post.author.username}
+                  </Typography>
+                </UserPopover>
+              </Stack>
+              <Typography
+                variant="body2"
+                color="text.secondary"
+                sx={{ lineHeight: 1.7, overflowWrap: 'anywhere' }}
               >
-                {recommendedPosts.map((item) => (
-                  <SwiperSlide key={item.id}>
-                    <Box sx={{ width: 272 }}>
-                      <BlogCard post={item} variant="home" />
-                    </Box>
-                  </SwiperSlide>
-                ))}
-              </Swiper>
+                {authorBio}
+              </Typography>
+              <Button
+                component={RouterLink}
+                to={authorBlogUrl}
+                size="small"
+                sx={{ mt: 1.5, px: 0, textAlign: 'left' }}
+              >
+                {t('blog.authorSectionAction')} ↗
+              </Button>
+            </Box>
+            {(isAuthorPostsLoading || authorPosts.length > 0) && (
+              <Box sx={{ pt: 3, borderTop: 1, borderColor: 'divider' }}>
+                <Typography component="h2" variant="overline" color="text.secondary">
+                  {t('blog.moreFromCreator')}
+                </Typography>
+                {isAuthorPostsLoading ? (
+                  <Skeleton height={80} />
+                ) : (
+                  authorPosts.map((item) => (
+                    <Typography
+                      key={item.id}
+                      component={RouterLink}
+                      to={getResourceById(resources.BlogPost, item.id)}
+                      variant="body2"
+                      sx={{
+                        display: 'block',
+                        py: 1.5,
+                        color: 'text.primary',
+                        textDecoration: 'none',
+                        borderBottom: 1,
+                        borderColor: 'divider',
+                        overflowWrap: 'anywhere',
+                        '&:hover': { color: 'primary.main' },
+                      }}
+                    >
+                      {item.title}{' '}
+                      <Box component="span" color="primary.main">
+                        ↗
+                      </Box>
+                    </Typography>
+                  ))
+                )}
+              </Box>
             )}
           </Stack>
-        </>
+        </Box>
+      </Box>
+      {(isRecommendationsLoading || recommendedPosts.length > 0) && (
+        <Box sx={{ borderTop: 1, borderColor: 'divider' }}>
+          <SectionHeader
+            title={t('blog.moreBlogs')}
+            action={
+              <Button component={RouterLink} to={resources.Blog}>
+                {t('blog.viewAll')} ↗
+              </Button>
+            }
+          />
+          <Box
+            sx={{
+              ...contentGridSx,
+              bgcolor: 'background.default',
+              gap: 0,
+              borderBottom: 0,
+              '& > *': { minWidth: 0, borderRight: 1, borderBottom: 1, borderColor: 'divider' },
+              gridTemplateColumns: { xs: '1fr', md: 'repeat(3,minmax(0,1fr))' },
+            }}
+          >
+            {isRecommendationsLoading
+              ? Array.from({ length: 3 }, (_, i) => (
+                  <Skeleton key={i} variant="rectangular" height={300} />
+                ))
+              : recommendedPosts.map((item) => <BlogCard key={item.id} post={item} />)}
+          </Box>
+        </Box>
       )}
-
-      <CommentsSection
-        comments={comments}
-        isLoading={commentsLoading || creatingComment}
-        onLike={handleLikeComment}
-        onDelete={handleDeleteComment}
-        onSubmit={handleCreateComment}
-        isDrawer
-        open={commentsDrawerOpen}
-        onClose={() => setCommentsDrawerOpen(false)}
-      />
-    </Box>
+    </FramedPage>
   );
 };
-
 export default BlogPostPage;

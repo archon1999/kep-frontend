@@ -1,379 +1,312 @@
 import { useMemo } from 'react';
 import { useTranslation } from 'react-i18next';
-import Avatar from '@mui/material/Avatar';
-import AvatarGroup from '@mui/material/AvatarGroup';
-import Chip, { type ChipProps } from '@mui/material/Chip';
-import Grid from '@mui/material/Grid';
-import Paper from '@mui/material/Paper';
-import Skeleton from '@mui/material/Skeleton';
-import Stack from '@mui/material/Stack';
-import Tooltip from '@mui/material/Tooltip';
-import Typography from '@mui/material/Typography';
-import { useTheme } from '@mui/material/styles';
-import { LineChart } from 'echarts/charts';
+import {
+  Alert,
+  Avatar,
+  Box,
+  Button,
+  Chip,
+  Paper,
+  Skeleton,
+  Stack,
+  Tooltip,
+  Typography,
+} from '@mui/material';
+import { alpha } from '@mui/material/styles';
+import { BarChart, LineChart } from 'echarts/charts';
 import { GridComponent, TooltipComponent } from 'echarts/components';
 import * as echarts from 'echarts/core';
 import { LegacyGridContainLabel } from 'echarts/features';
 import { CanvasRenderer } from 'echarts/renderers';
 import { useOnlineUsers, useUserActivityStatistics } from 'modules/home/application/queries';
-import type { HomeOnlineUsers } from 'modules/home/domain/entities/home.entity';
 import UserPopover from 'modules/users/ui/shared/components/UserPopover';
 import IconifyIcon from 'shared/components/base/IconifyIcon';
-import ReactEchart from 'shared/components/base/ReactEchart';
+import type { ReactEchartProps } from 'shared/components/base/ReactEchart';
+import MixedText from 'shared/components/common/MixedText';
+import { PointerSpotlight } from 'shared/components/motion/InteractionEffects';
+import StatisticsChart from 'shared/components/statistics/StatisticsChart';
+import useChartPalette from 'shared/hooks/useChartPalette';
 import { formatDateTime } from 'shared/lib/dateTime';
 import { getColor } from 'shared/lib/echart-utils';
 import { createNumberFormatter } from 'shared/lib/numberFormat';
 import { getPastDates } from 'shared/lib/utils';
+import { DashboardPattern } from './DashboardPattern';
 
-echarts.use([LineChart, GridComponent, TooltipComponent, LegacyGridContainLabel, CanvasRenderer]);
-
-type TrendStyles = { color: ChipProps['color']; icon: string };
-
-const getTrendStyles = (value: number): TrendStyles => {
-  if (value > 0) {
-    return {
-      color: 'success',
-      icon: 'material-symbols:trending-up-rounded',
-    };
-  }
-
-  if (value < 0) {
-    return {
-      color: 'error',
-      icon: 'material-symbols:trending-down-rounded',
-    };
-  }
-
-  return {
-    color: 'neutral',
-    icon: 'material-symbols:trending-flat-rounded',
-  };
-};
-
-const withPadding = (series: number[]): [number, number] => {
-  const min = Math.min(...series);
-  const max = Math.max(...series);
-  const range = max - min;
-  const padding = range === 0 ? 1 : range * 0.15;
-
-  return [Math.max(0, Math.floor(min - padding)), Math.ceil(max + padding)];
-};
-
-const integerAxisLabelFormatter = (value: number) => Math.round(value).toString();
+echarts.use([
+  BarChart,
+  LineChart,
+  GridComponent,
+  TooltipComponent,
+  LegacyGridContainLabel,
+  CanvasRenderer,
+]);
 
 const UserActivitySection = () => {
-  const theme = useTheme();
-  const { t } = useTranslation();
-  const { data, isLoading } = useUserActivityStatistics();
-  const { data: onlineUsersData, isLoading: isOnlineLoading } = useOnlineUsers(8);
-  const showSkeleton = isLoading || !data;
-
-  const newUsersStat = data?.newUsers;
-  const activeUsersStat = data?.activeUsers;
-
-  const newUsersSeries = newUsersStat?.series?.length ? newUsersStat.series : [0];
-  const activeUsersSeries = activeUsersStat?.series?.length ? activeUsersStat.series : [0];
-
-  const periodLength = Math.max(newUsersSeries.length, activeUsersSeries.length, 1);
-
-  const numberFormatter = useMemo(
-    () =>
-      createNumberFormatter({
-        maximumFractionDigits: 0,
-      }),
-    [],
+  const { t, i18n } = useTranslation();
+  const palette = useChartPalette();
+  const { data, isLoading, error, mutate } = useUserActivityStatistics();
+  const {
+    data: onlineUsersData,
+    isLoading: isOnlineLoading,
+    error: onlineError,
+  } = useOnlineUsers(8);
+  const onlineUsers = onlineUsersData?.data.slice(0, 8) ?? [];
+  const periodLength = Math.max(
+    data?.newUsers.series.length ?? 0,
+    data?.activeUsers.series.length ?? 0,
+    1,
   );
-
+  const formatter = useMemo(
+    () => createNumberFormatter({ maximumFractionDigits: 0 }),
+    [i18n.resolvedLanguage],
+  );
   const percentFormatter = useMemo(
-    () =>
-      createNumberFormatter({
-        minimumFractionDigits: 1,
-        maximumFractionDigits: 1,
-        signDisplay: 'always',
-      }),
-    [],
+    () => createNumberFormatter({ maximumFractionDigits: 1, signDisplay: 'always' }),
+    [i18n.resolvedLanguage],
   );
-
-  const axisLabelColor = getColor(theme.vars.palette.text.secondary);
-  const splitLineColor = getColor(theme.vars.palette.chGrey[200]);
-  const pointerColor = getColor(theme.vars.palette.chGrey[300]);
-  const newUsersColor = getColor(theme.vars.palette.primary.main);
-  const activeUsersColor = getColor(theme.vars.palette.success.main);
-  const tooltipSuffix = t('homePage.userActivity.tooltipSuffix');
-
-  const createChartOptions = useMemo(
-    () => (series: number[], color: string) => {
-      const labels = getPastDates(series.length).map((date) => formatDateTime(date, 'monthDay'));
-      const [min, max] = withPadding(series);
-
-      return {
-        tooltip: {
-          trigger: 'axis',
-          axisPointer: {
-            type: 'line',
-            lineStyle: {
-              color: pointerColor,
-            },
-          },
-          valueFormatter: (value: string | number) => `${value} ${tooltipSuffix}`,
+  const primary = getColor(palette.primary.main);
+  const secondary = getColor(palette.secondary.main);
+  const option = useMemo<ReactEchartProps['option'] | null>(() => {
+    if (!data || (!data.newUsers.series.length && !data.activeUsers.series.length)) return null;
+    const align = (values: number[]) => [
+      ...Array(Math.max(0, periodLength - values.length)).fill(null),
+      ...values,
+    ];
+    return {
+      tooltip: {
+        trigger: 'axis',
+        axisPointer: { type: 'shadow' },
+        valueFormatter: (value: number) =>
+          formatter.format(value) + ' ' + t('homePage.userActivity.tooltipSuffix'),
+      },
+      grid: { left: 8, right: 18, top: 20, bottom: 10, containLabel: true },
+      xAxis: {
+        type: 'category',
+        data: getPastDates(periodLength).map((date) => formatDateTime(date, 'monthDay')),
+        axisTick: { show: false },
+        axisLine: { show: false },
+        axisLabel: { hideOverlap: true, margin: 14, interval: 'auto', fontSize: 12 },
+      },
+      yAxis: {
+        type: 'value',
+        min: 0,
+        minInterval: 1,
+        splitNumber: 4,
+        axisTick: { show: false },
+        axisLine: { show: false },
+        axisLabel: { margin: 12, formatter: (value: number) => formatter.format(value) },
+      },
+      series: [
+        {
+          name: t('homePage.userActivity.series.newUsers'),
+          type: 'bar',
+          data: align(data.newUsers.series),
+          barMaxWidth: 14,
+          itemStyle: { color: alpha(secondary, 0.55), borderRadius: [2, 2, 0, 0] },
+          emphasis: { itemStyle: { color: secondary } },
         },
-        grid: { left: 12, right: 12, top: 24, bottom: 12, containLabel: true },
-        xAxis: {
-          type: 'category',
-          boundaryGap: false,
-          data: labels,
-          axisLabel: {
-            color: axisLabelColor,
-            fontFamily: theme.typography.fontFamily,
-          },
-          axisTick: {
-            show: false,
-          },
-          axisLine: {
-            show: false,
+        {
+          name: t('homePage.userActivity.series.activeUsers'),
+          type: 'line',
+          data: align(data.activeUsers.series),
+          smooth: 0.22,
+          showSymbol: false,
+          symbolSize: 7,
+          lineStyle: { width: 2.5, color: primary, cap: 'round' },
+          itemStyle: { color: primary },
+          areaStyle: {
+            color: new echarts.graphic.LinearGradient(0, 0, 0, 1, [
+              { offset: 0, color: alpha(primary, 0.17) },
+              { offset: 1, color: alpha(primary, 0) },
+            ]),
           },
         },
-        yAxis: {
-          type: 'value',
-          min,
-          max,
-          axisLabel: {
-            color: axisLabelColor,
-            formatter: integerAxisLabelFormatter,
-          },
-          minInterval: 1,
-          splitLine: {
-            lineStyle: {
-              color: splitLineColor,
-            },
-          },
-          axisLine: { show: false },
-          axisTick: { show: false },
-        },
-        series: [
-          {
-            type: 'line',
-            data: series,
-            smooth: true,
-            showSymbol: false,
-            lineStyle: {
-              width: 3,
-              color,
-            },
-            emphasis: {
-              focus: 'series',
-            },
-          },
-        ],
-      };
-    },
-    [axisLabelColor, pointerColor, splitLineColor, theme.typography.fontFamily, tooltipSuffix],
-  );
-
-  const newUsersChartOptions = useMemo(
-    () => createChartOptions(newUsersSeries, newUsersColor),
-    [createChartOptions, newUsersColor, newUsersSeries],
-  );
-
-  const activeUsersChartOptions = useMemo(
-    () => createChartOptions(activeUsersSeries, activeUsersColor),
-    [createChartOptions, activeUsersColor, activeUsersSeries],
-  );
-
-  const newUsersTrend = getTrendStyles(newUsersStat?.percentage ?? 0);
-  const activeUsersTrend = getTrendStyles(activeUsersStat?.percentage ?? 0);
-
-  const onlineUsers = useMemo(() => {
-    if (Array.isArray((onlineUsersData as HomeOnlineUsers)?.data)) {
-      return (onlineUsersData as HomeOnlineUsers).data;
-    }
-
-    if (Array.isArray(onlineUsersData as unknown as unknown[])) {
-      return onlineUsersData as unknown as HomeOnlineUsers['data'];
-    }
-
-    return [];
-  }, [onlineUsersData]);
-
-  const getDisplayName = (user: HomeOnlineUsers['data'][number]) => {
-    const firstName = user.firstName?.trim() ?? '';
-    const lastName = user.lastName?.trim() ?? '';
-    const fullName = `${firstName} ${lastName}`.trim();
-
-    return fullName || user.username;
-  };
+      ],
+    };
+  }, [data, periodLength, primary, secondary, formatter, t, i18n.resolvedLanguage]);
 
   return (
-    <Stack direction="column">
-      <Paper sx={{ p: { xs: 2, sm: 3, md: 4 } }}>
-        <Stack
-          direction={{ xs: 'column', sm: 'row' }}
-          alignItems={{ xs: 'flex-start', sm: 'center' }}
-          justifyContent="space-between"
-          spacing={2}
+    <Paper
+      component={PointerSpotlight}
+      variant="section"
+      className="kep-dashboard-activity"
+      sx={{ p: 'var(--kep-content-inset)' }}
+    >
+      <Stack
+        direction="row"
+        alignItems="center"
+        justifyContent="space-between"
+        gap={2}
+        sx={{ mb: 3 }}
+      >
+        <Typography component="h2" variant="h5" sx={{ flex: 1 }}>
+          <MixedText>{t('homePage.userActivity.title')}</MixedText>
+        </Typography>
+        <DashboardPattern kind="activity" inline />
+        <Typography variant="caption" color="text.secondary">
+          {t('homePage.userActivity.subtitle', { days: isLoading ? 14 : periodLength })}
+        </Typography>
+      </Stack>
+      {error ? (
+        <Alert
+          severity="error"
+          action={<Button onClick={() => void mutate()}>{t('common.retry')}</Button>}
         >
-          <Stack direction="column" spacing={0.5}>
-            <Typography variant="h5" sx={{ fontWeight: 600 }}>
-              {t('homePage.userActivity.title')}
-            </Typography>
-            <Typography variant="subtitle2" color="text.secondary">
-              {t('homePage.userActivity.subtitle', { days: periodLength })}
-            </Typography>
-          </Stack>
-
-          <Stack direction="column" alignItems={{ xs: 'flex-start', sm: 'flex-end' }} spacing={1}>
-            <Typography variant="body2" color="text.secondary">
-              {t('homePage.userActivity.onlineNow')}
-            </Typography>
-
-            {isOnlineLoading ? (
-              <Stack direction="row" spacing={0.75}>
-                <Skeleton variant="circular" width={36} height={36} />
-                <Skeleton variant="circular" width={36} height={36} />
-                <Skeleton variant="circular" width={36} height={36} />
-              </Stack>
-            ) : onlineUsers.length ? (
-              <AvatarGroup component="div" max={40} sx={{ '& .MuiAvatar-root': { width: 36, height: 36 } }}>
-                {onlineUsers.map((user) => {
-                  const displayName = getDisplayName(user);
-
-                  return (
-                    <UserPopover
-                      key={user.username}
-                      username={user.username}
-                      fullName={displayName}
-                      avatar={user.avatar}
-                      sx={{ marginLeft: -1.5 }}
-                    >
-                      <Tooltip title={displayName} arrow>
-                        <Avatar alt={displayName} src={user.avatar} />
-                      </Tooltip>
-                    </UserPopover>
-                  );
-                })}
-              </AvatarGroup>
-            ) : (
-              <Typography variant="body2" color="text.secondary">
-                {t('homePage.userActivity.noOnlineUsers')}
-              </Typography>
-            )}
-          </Stack>
+          {t('common.loadFailed')}
+        </Alert>
+      ) : (
+        <div className="kep-dashboard-activity-layout">
+          <dl className="kep-dashboard-activity-metrics">
+            {(['activeUsers', 'newUsers'] as const).map((key) => {
+              const stat = data?.[key];
+              const change = stat?.percentage ?? 0;
+              return (
+                <div key={key}>
+                  <Typography
+                    component="dt"
+                    variant="body2"
+                    color="text.secondary"
+                    sx={{ display: 'flex', alignItems: 'center', gap: 1 }}
+                  >
+                    <Box
+                      component="span"
+                      sx={{
+                        width: 8,
+                        height: 8,
+                        bgcolor: key === 'activeUsers' ? primary : secondary,
+                        borderRadius: key === 'activeUsers' ? '50%' : 0,
+                      }}
+                    />
+                    {t('homePage.userActivity.series.' + key)}
+                  </Typography>
+                  <Stack
+                    component="dd"
+                    direction="row"
+                    alignItems="center"
+                    flexWrap="wrap"
+                    gap={1.5}
+                    sx={{ m: 0, mt: 1 }}
+                  >
+                    <Typography variant="metric" sx={{ fontSize: 34 }}>
+                      {isLoading ? (
+                        <Skeleton width={80} />
+                      ) : stat ? (
+                        formatter.format(stat.total)
+                      ) : (
+                        '—'
+                      )}
+                    </Typography>
+                    {isLoading ? (
+                      <Skeleton variant="rounded" width={64} height={24} />
+                    ) : (
+                      stat && (
+                        <Tooltip title={t('homePage.userActivity.changeLabel')}>
+                          <Chip
+                            size="small"
+                            variant="soft"
+                            color={change > 0 ? 'success' : change < 0 ? 'error' : 'neutral'}
+                            label={percentFormatter.format(change) + '%'}
+                            icon={
+                              <IconifyIcon
+                                icon={change < 0 ? 'mdi:trending-down' : 'mdi:trending-up'}
+                              />
+                            }
+                          />
+                        </Tooltip>
+                      )
+                    )}
+                  </Stack>
+                  <Typography variant="caption" color="text.secondary">
+                    {t('homePage.userActivity.changeLabel')}
+                  </Typography>
+                </div>
+              );
+            })}
+          </dl>
+          <div className="kep-dashboard-activity-chart">
+            <StatisticsChart
+              label={t('homePage.userActivity.title')}
+              option={option}
+              height={230}
+              loading={isLoading}
+            />
+          </div>
+        </div>
+      )}
+      <Stack
+        direction="row"
+        alignItems="center"
+        justifyContent="space-between"
+        flexWrap="wrap"
+        gap={2}
+        sx={{ pt: 2.5, mt: 2.5, borderTop: 1, borderColor: 'divider' }}
+      >
+        <Stack direction="row" alignItems="center" gap={1}>
+          <span className="kep-live-dot" aria-hidden="true" />
+          <Typography variant="body2" color="text.secondary">
+            {t('homePage.userActivity.onlineNow')}
+          </Typography>
         </Stack>
-      </Paper>
-
-      <Grid container>
-        <Grid size={{ xs: 12, md: 6 }}>
-          <Paper sx={{ p: { xs: 2, sm: 3, md: 4 }, height: '100%' }}>
-            <Stack spacing={3} direction="column" sx={{ height: '100%' }}>
-              <Stack
-                direction={{ xs: 'column', sm: 'row', md: 'column', lg: 'row' }}
-                justifyContent="space-between"
-                alignItems="flex-start"
-                spacing={2}
+        {isOnlineLoading ? (
+          <Stack direction="row" sx={{ '& > * + *': { ml: -1 } }} aria-hidden="true">
+            {[0, 1, 2].map((index) => (
+              <Skeleton
+                key={index}
+                variant="circular"
+                width={32}
+                height={32}
+                sx={{ border: '2px solid', borderColor: 'background.default' }}
+              />
+            ))}
+          </Stack>
+        ) : onlineError ? (
+          <Typography variant="caption" color="text.secondary">
+            {t('common.loadFailed')}
+          </Typography>
+        ) : onlineUsers.length ? (
+          <Stack
+            direction="row"
+            role="group"
+            aria-label={t('homePage.userActivity.onlineNow')}
+            sx={{ '& > * + *': { ml: -1 } }}
+          >
+            {onlineUsers.map((user, index) => (
+              <UserPopover
+                key={user.username}
+                username={user.username}
+                fullName={
+                  [user.firstName, user.lastName].filter(Boolean).join(' ') || user.username
+                }
+                avatar={user.avatar}
+                sx={{
+                  position: 'relative',
+                  zIndex: onlineUsers.length - index,
+                  borderRadius: '50%',
+                  '&:hover, &:focus-visible': { zIndex: onlineUsers.length + 1 },
+                }}
               >
-                <Stack direction="column" spacing={0.5}>
-                  <Typography variant="subtitle2" color="text.secondary">
-                    {t('homePage.userActivity.series.newUsers')}
-                  </Typography>
-                  <Typography variant="h4" sx={{ fontWeight: 600 }}>
-                    {showSkeleton ? (
-                      <Skeleton width={120} />
-                    ) : (
-                      numberFormatter.format(newUsersStat?.total ?? 0)
-                    )}
-                  </Typography>
-                </Stack>
-
-                <Stack justifyContent="flex-end" direction="column" spacing={1.5}>
-                  <Typography variant="subtitle2" color="text.secondary">
-                    {t('homePage.userActivity.changeLabel')}
-                  </Typography>
-
-                  <Stack direction="row" justifyContent={{ xs: 'flex-start', sm: 'flex-end' }}>
-                    {showSkeleton ? (
-                      <Skeleton width={140} height={36} />
-                    ) : (
-                      <Chip
-                        label={`${percentFormatter.format(newUsersStat?.percentage ?? 0)}%`}
-                        color={newUsersTrend.color}
-                        icon={<IconifyIcon icon={newUsersTrend.icon} />}
-                        sx={{ flexDirection: 'row-reverse' }}
-                      />
-                    )}
-                  </Stack>
-                </Stack>
-              </Stack>
-
-              {showSkeleton ? (
-                <Skeleton variant="rounded" height={260} />
-              ) : (
-                <ReactEchart
-                  echarts={echarts}
-                  option={newUsersChartOptions}
-                  style={{ minHeight: 260 }}
-                />
-              )}
-            </Stack>
-          </Paper>
-        </Grid>
-
-        <Grid size={{ xs: 12, md: 6 }}>
-          <Paper sx={{ p: { xs: 2, sm: 3, md: 4 }, height: '100%' }}>
-            <Stack spacing={3} direction="column" sx={{ height: '100%' }}>
-              <Stack
-                direction={{ xs: 'column', sm: 'row', md: 'column', lg: 'row' }}
-                justifyContent="space-between"
-                alignItems="flex-start"
-                spacing={2}
-              >
-                <Stack direction="column" spacing={0.5}>
-                  <Typography variant="subtitle2" color="text.secondary">
-                    {t('homePage.userActivity.series.activeUsers')}
-                  </Typography>
-                  <Typography variant="h4" sx={{ fontWeight: 600 }}>
-                    {showSkeleton ? (
-                      <Skeleton width={120} />
-                    ) : (
-                      numberFormatter.format(activeUsersStat?.total ?? 0)
-                    )}
-                  </Typography>
-                </Stack>
-
-                <Stack justifyContent="flex-end" direction="column" spacing={1.5}>
-                  <Typography variant="subtitle2" color="text.secondary">
-                    {t('homePage.userActivity.changeLabel')}
-                  </Typography>
-
-                  <Stack direction="row" justifyContent={{ xs: 'flex-start', sm: 'flex-end' }}>
-                    {showSkeleton ? (
-                      <Skeleton width={140} height={36} />
-                    ) : (
-                      <Chip
-                        label={`${percentFormatter.format(activeUsersStat?.percentage ?? 0)}%`}
-                        color={activeUsersTrend.color}
-                        icon={<IconifyIcon icon={activeUsersTrend.icon} />}
-                        sx={{ flexDirection: 'row-reverse' }}
-                      />
-                    )}
-                  </Stack>
-                </Stack>
-              </Stack>
-
-              {showSkeleton ? (
-                <Skeleton variant="rounded" height={260} />
-              ) : (
-                <ReactEchart
-                  echarts={echarts}
-                  option={activeUsersChartOptions}
-                  style={{ minHeight: 260 }}
-                />
-              )}
-            </Stack>
-          </Paper>
-        </Grid>
-      </Grid>
-    </Stack>
+                <Avatar
+                  alt={user.username}
+                  src={user.avatar}
+                  sx={{
+                    width: 32,
+                    height: 32,
+                    border: '2px solid',
+                    borderColor: 'background.default',
+                  }}
+                >
+                  {user.username[0]?.toUpperCase()}
+                </Avatar>
+              </UserPopover>
+            ))}
+          </Stack>
+        ) : (
+          <Typography variant="caption" color="text.secondary">
+            {t('homePage.userActivity.noOnlineUsers')}
+          </Typography>
+        )}
+      </Stack>
+    </Paper>
   );
 };
-
 export default UserActivitySection;

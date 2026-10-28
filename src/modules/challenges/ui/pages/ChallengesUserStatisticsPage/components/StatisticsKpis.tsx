@@ -1,11 +1,11 @@
 import { useTranslation } from 'react-i18next';
-import { Avatar, Grid, Paper, Typography } from '@mui/material';
+import { Grid } from '@mui/material';
 import { normalizeSupportedLocale } from 'app/locales/locale';
 import type { ChallengeUserStatistics } from 'modules/challenges/domain';
 import IconifyIcon from 'shared/components/base/IconifyIcon';
+import StatisticsMetric from 'shared/components/statistics/StatisticsMetric';
 import { formatDateTime } from 'shared/lib/dateTime';
 import { createNumberFormatter } from 'shared/lib/numberFormat';
-import { statisticsInset, statisticsPanelSx } from './statisticsStyles';
 
 const StatisticsKpis = ({ statistics }: { statistics: ChallengeUserStatistics }) => {
   const { t, i18n } = useTranslation();
@@ -58,41 +58,15 @@ const StatisticsKpis = ({ statistics }: { statistics: ChallengeUserStatistics })
   ];
 
   return (
-    <Grid container sx={{ height: 1 }}>
+    <Grid container spacing={0}>
       {kpis.map((kpi) => (
-        <Grid key={kpi.title} size={{ xs: 6, md: 3, xl: 6 }}>
-          <Paper component="section" sx={[statisticsPanelSx, { p: statisticsInset }]}>
-            <Typography
-              variant="subtitle1"
-              component="h2"
-              sx={{
-                fontWeight: 700,
-                mb: 3,
-                color: 'text.secondary',
-                minHeight: { xs: '2.6em', sm: 'auto' },
-              }}
-            >
-              {kpi.title}
-            </Typography>
-            <Avatar
-              variant="rounded"
-              sx={{
-                width: 48,
-                height: 48,
-                bgcolor: `${kpi.color}.lighter`,
-                borderRadius: 2,
-                mb: 1,
-              }}
-            >
-              <IconifyIcon icon={kpi.icon} sx={{ fontSize: 32, color: `${kpi.color}.main` }} />
-            </Avatar>
-            <Typography variant="h4" component="p" sx={{ fontWeight: 500, mb: 3 }}>
-              {typeof kpi.value === 'number' ? number.format(kpi.value) : (kpi.value ?? '—')}
-            </Typography>
-            <Typography variant="caption" color="text.secondary" fontWeight={500}>
-              {kpi.detail}
-            </Typography>
-          </Paper>
+        <Grid key={kpi.title} size={{ xs: 6, md: 3 }}>
+          <StatisticsMetric
+            label={kpi.title}
+            value={typeof kpi.value === 'number' ? number.format(kpi.value) : kpi.value}
+            subtitle={kpi.detail}
+            icon={<IconifyIcon icon={kpi.icon} fontSize={20} />}
+          />
         </Grid>
       ))}
     </Grid>

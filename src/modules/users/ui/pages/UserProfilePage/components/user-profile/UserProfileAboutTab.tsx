@@ -79,7 +79,7 @@ const UserProfileAboutTab = () => {
     return (
       <Stack direction="column" spacing={2}>
         {Array.from({ length: 3 }).map((_, index) => (
-          <Card key={index} variant="outlined">
+          <Card key={index} variant="section">
             <CardContent>
               <Skeleton variant="text" width="60%" />
               <Skeleton variant="rectangular" height={80} sx={{ mt: 1 }} />
@@ -92,17 +92,13 @@ const UserProfileAboutTab = () => {
 
   return (
     <Stack direction="column" spacing={2}>
-      <Card variant="outlined">
+      <Card variant="section">
         <CardContent>
           <Stack direction="column" spacing={1}>
             <Typography variant="h6" fontWeight={700}>
               {t('users.profile.about')}
             </Typography>
-            <Typography
-              variant="body2"
-              color="text.secondary"
-              sx={{ whiteSpace: 'pre-wrap' }}
-            >
+            <Typography variant="body2" color="text.secondary" sx={{ whiteSpace: 'pre-wrap' }}>
               {bio}
             </Typography>
           </Stack>
@@ -112,7 +108,7 @@ const UserProfileAboutTab = () => {
       {skillEntries.length ? (
         <>
           <Divider />
-          <Card variant="outlined">
+          <Card variant="section">
             <CardContent>
               <Stack direction="column" spacing={2}>
                 <Typography variant="h6" fontWeight={700}>
@@ -121,14 +117,18 @@ const UserProfileAboutTab = () => {
 
                 <Stack direction="column" spacing={1.5}>
                   {skillEntries.map((entry) => (
-                    <Stack key={`${entry.skillId ?? entry.name}-${entry.level}`} direction="column" spacing={0.5}>
+                    <Stack
+                      key={`${entry.skillId ?? entry.name}-${entry.level}`}
+                      direction="column"
+                      spacing={0.5}
+                    >
                       <Typography variant="body2" color="text.secondary">
                         {entry.name}
                       </Typography>
                       <LinearProgress
                         variant="determinate"
                         value={entry.level}
-                        sx={{ height: 8, borderRadius: 2 }}
+                        sx={{ height: 8, borderRadius: 0 }}
                       />
                     </Stack>
                   ))}
@@ -142,7 +142,7 @@ const UserProfileAboutTab = () => {
       {technologies.length ? (
         <>
           <Divider />
-          <Card variant="outlined">
+          <Card variant="section">
             <CardContent>
               <Stack direction="column" spacing={1.5}>
                 <Typography variant="h6" fontWeight={700}>
@@ -170,7 +170,7 @@ const UserProfileAboutTab = () => {
       {educations.length ? (
         <>
           <Divider />
-          <Card variant="outlined">
+          <Card variant="section">
             <CardContent>
               <Stack direction="column" spacing={1.25}>
                 <Stack direction="row" spacing={1} alignItems="center">
@@ -192,7 +192,7 @@ const UserProfileAboutTab = () => {
       {workExperiences.length ? (
         <>
           <Divider />
-          <Card variant="outlined">
+          <Card variant="section">
             <CardContent>
               <Stack direction="column" spacing={1.25}>
                 <Stack direction="row" spacing={1} alignItems="center">

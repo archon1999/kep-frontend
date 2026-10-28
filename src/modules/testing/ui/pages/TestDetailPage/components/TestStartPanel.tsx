@@ -1,28 +1,20 @@
 import { useTranslation } from 'react-i18next';
-import {
-  Box,
-  Button,
-  CircularProgress,
-  Divider,
-  LinearProgress,
-  Paper,
-  Stack,
-  Typography,
-} from '@mui/material';
+import { Box, Button, LinearProgress, Stack, Typography } from '@mui/material';
 import { Test } from 'modules/testing/domain';
 import IconifyIcon from 'shared/components/base/IconifyIcon';
 import KepcoinSpendConfirm from 'shared/components/common/KepcoinSpendConfirm';
 import KepcoinValue from 'shared/components/common/KepcoinValue';
+import PatternArtwork from 'shared/components/common/PatternArtwork';
+import SectionHeader from 'shared/components/sections/common/SectionHeader';
 
-interface TestStartPanelProps {
+type Props = {
   test: Test;
   questionsCount: number;
   canStart: boolean;
   isStarting: boolean;
   onStart: () => void;
   onPurchase: () => void;
-}
-
+};
 const TestStartPanel = ({
   test,
   questionsCount,
@@ -30,143 +22,103 @@ const TestStartPanel = ({
   isStarting,
   onStart,
   onPurchase,
-}: TestStartPanelProps) => {
+}: Props) => {
   const { t } = useTranslation();
-  const hasCompleted = Boolean(test.lastPassed);
-  const bestResult = test.userBestResult;
-  const hasScore = hasCompleted && typeof bestResult === 'number' && Number.isFinite(bestResult);
-  const isPerfect = hasScore && questionsCount > 0 && bestResult === questionsCount;
+  const score = test.userBestResult;
+  const hasScore = Boolean(test.lastPassed) && typeof score === 'number' && Number.isFinite(score);
+  const perfect = hasScore && questionsCount > 0 && score === questionsCount;
   const progress =
-    hasScore && questionsCount > 0
-      ? Math.min(100, Math.max(0, (bestResult / questionsCount) * 100))
-      : 0;
-  const startButton = (
+    hasScore && questionsCount > 0 ? Math.max(0, Math.min(100, (score / questionsCount) * 100)) : 0;
+  const button = (
     <Button
       variant="contained"
       fullWidth
-      sx={{ minHeight: { xs: 44, md: 36 } }}
       disabled={isStarting}
+      loading={isStarting}
       onClick={canStart ? onStart : undefined}
-      endIcon={
-        isStarting ? (
-          <CircularProgress size={18} color="inherit" />
-        ) : (
-          <IconifyIcon
-            icon={
-              canStart
-                ? 'material-symbols:arrow-forward-rounded'
-                : 'material-symbols:lock-open-rounded'
-            }
-            fontSize={18}
-          />
-        )
-      }
+      endIcon={<IconifyIcon icon={canStart ? 'mdi:arrow-right' : 'mdi:lock-open-outline'} />}
     >
-      {canStart ? t('tests.start') : t('tests.unlockTest')}
+      {t(canStart ? 'tests.start' : 'tests.unlockTest')}
     </Button>
   );
-
   return (
-    <Paper
-      variant="elevation"
-      elevation={0}
-      sx={{ bgcolor: 'background.elevation1', borderRadius: 4, p: 2.5 }}
-    >
-      <Typography
-        component="h2"
-        variant="body2"
-        color="text.secondary"
-        fontWeight={500}
-        sx={{ mb: 2 }}
-      >
-        {t('tests.yourProgress')}
-      </Typography>
-
-      {hasScore ? (
-        <Box>
-          <Stack
-            direction="row"
-            alignItems="center"
-            justifyContent="space-between"
-            sx={{ mb: 0.5 }}
-          >
-            <Typography variant="h5" sx={{ fontVariantNumeric: 'tabular-nums' }}>
-              {bestResult}
-              <Typography component="span" variant="body2" color="text.secondary" sx={{ ml: 0.75 }}>
+    <Box component="section" className="kep-test-start">
+      <SectionHeader
+        title={t('tests.yourProgress')}
+        action={<PatternArtwork kind="daily-tasks" sx={{ width: 76, opacity: 0.4 }} />}
+      />
+      <Stack gap={2.5} sx={{ p: 'var(--kep-content-inset)' }}>
+        {hasScore ? (
+          <Box>
+            <Stack direction="row" gap={1.25} alignItems="baseline">
+              <Typography
+                variant="metric"
+                color={perfect ? 'success.main' : 'text.primary'}
+                sx={{ fontSize: 44 }}
+              >
+                {score}
+              </Typography>
+              <Typography variant="metric" color="text.secondary" sx={{ fontSize: 21 }}>
                 / {questionsCount}
               </Typography>
+              {perfect && (
+                <IconifyIcon
+                  icon="mdi:check-circle-outline"
+                  sx={{ fontSize: 22, ml: 'auto', color: 'success.main', alignSelf: 'center' }}
+                />
+              )}
+            </Stack>
+            <Typography variant="caption" color="text.secondary">
+              {t('tests.bestResult')}
             </Typography>
-            {isPerfect ? (
-              <IconifyIcon
-                icon="material-symbols:check-circle-rounded"
-                fontSize={22}
-                sx={{ color: 'success.main' }}
-                aria-hidden
-              />
-            ) : null}
-          </Stack>
-          <Typography variant="caption" color="text.secondary">
-            {t('tests.bestResult')}
-          </Typography>
-          {questionsCount > 0 ? (
             <LinearProgress
               variant="determinate"
-              color={isPerfect ? 'success' : 'warning'}
               value={progress}
+              color={perfect ? 'success' : 'primary'}
               aria-label={t('tests.bestResult')}
-              sx={{ mt: 1.5, height: 4 }}
+              sx={{ height: 3, mt: 2, bgcolor: 'action.selected' }}
             />
-          ) : null}
-        </Box>
-      ) : (
-        <Typography variant="body2" color="text.secondary">
-          {t('tests.noScore')}
-        </Typography>
-      )}
-
-      <Stack
-        direction="row"
-        spacing={1.5}
-        alignItems="baseline"
-        justifyContent="space-between"
-        sx={{ mt: 2 }}
-      >
-        <Typography variant="caption" color="text.secondary" sx={{ flexShrink: 0 }}>
-          {t('tests.lastPass')}
-        </Typography>
-        <Typography
-          variant="caption"
-          color="text.primary"
-          sx={{ textAlign: 'right', overflowWrap: 'anywhere', minWidth: 0 }}
-        >
-          {test.lastPassed || t('tests.notPassed')}
-        </Typography>
-      </Stack>
-
-      <Divider sx={{ my: 2.5 }} />
-
-      {!canStart ? (
-        <Stack direction="row" alignItems="center" justifyContent="space-between" sx={{ mb: 2 }}>
+          </Box>
+        ) : (
           <Typography variant="body2" color="text.secondary">
-            {t('kepcoinSpend.costLabel')}
+            {t('tests.noScore')}
           </Typography>
-          <KepcoinValue value={1} iconSize={18} />
+        )}
+        <Stack gap={0.75}>
+          <Typography variant="label" color="text.secondary">
+            {t('tests.lastPass')}
+          </Typography>
+          <Typography variant="body2">{test.lastPassed || t('tests.notPassed')}</Typography>
         </Stack>
-      ) : null}
-      {canStart ? (
-        startButton
-      ) : (
-        <KepcoinSpendConfirm
-          value={1}
-          purchaseUrl={`/api/tests/${test.id}/purchase/`}
-          onSuccess={onPurchase}
-          disabled={isStarting}
-        >
-          {startButton}
-        </KepcoinSpendConfirm>
-      )}
-    </Paper>
+        <Box sx={{ pt: 2.5, borderTop: '1px solid var(--kep-line)' }}>
+          {!canStart && (
+            <Stack
+              direction="row"
+              alignItems="center"
+              justifyContent="space-between"
+              sx={{ mb: 2 }}
+            >
+              <Typography variant="body2" color="text.secondary">
+                {t('kepcoinSpend.costLabel')}
+              </Typography>
+              <KepcoinValue value={1} iconSize={20} />
+            </Stack>
+          )}
+          {canStart ? (
+            button
+          ) : (
+            <KepcoinSpendConfirm
+              value={1}
+              purchaseUrl={`/api/tests/${test.id}/purchase/`}
+              onSuccess={onPurchase}
+              disabled={isStarting}
+            >
+              {button}
+            </KepcoinSpendConfirm>
+          )}
+        </Box>
+      </Stack>
+    </Box>
   );
 };
-
 export default TestStartPanel;

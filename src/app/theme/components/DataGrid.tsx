@@ -1,8 +1,11 @@
 import { Theme, inputBaseClasses, tablePaginationClasses } from '@mui/material';
 import { Components } from '@mui/material/styles';
+import { overlayPaperStyles } from 'app/theme/styles/overlays';
 import IconifyIcon from 'shared/components/base/IconifyIcon';
-import DataGridNoRowsOverlay from 'shared/components/common/DataGridNoRowsOverlay';
-import DataGridPagination from 'shared/components/pagination/DataGridPagination';
+import DataGridNoRowsOverlay, {
+  DataGridNoResultsOverlay,
+} from 'shared/components/common/DataGridNoRowsOverlay';
+import DataGridListPagination from 'shared/components/pagination/DataGridListPagination';
 import { cssVarRgba } from 'shared/lib/utils';
 
 const DataGrid: Components<Omit<Theme, 'components'>>['MuiDataGrid'] = {
@@ -21,8 +24,9 @@ const DataGrid: Components<Omit<Theme, 'components'>>['MuiDataGrid'] = {
           sx={{ transform: 'rotateX(180deg)' }}
         />
       ),
-      basePagination: DataGridPagination,
+      pagination: DataGridListPagination,
       noRowsOverlay: DataGridNoRowsOverlay,
+      noResultsOverlay: DataGridNoResultsOverlay,
     },
     slotProps: {
       filterPanel: {
@@ -49,11 +53,36 @@ const DataGrid: Components<Omit<Theme, 'components'>>['MuiDataGrid'] = {
     root: ({ theme }) => ({
       border: 'none',
       overflow: 'unset',
-      '--DataGrid-overlayHeight': 'calc(var(--height, 52px) * 10)',
+      '--DataGrid-overlayHeight': '320px',
       ['& .MuiDataGrid-filler']: {
         '--DataGrid-rowBorderColor': 'transparent',
       },
       '--DataGrid-rowBorderColor': theme.vars.palette.dividerLight,
+      ...(theme.preset === 'default' && {
+        border: 0,
+        borderTop: `1px solid ${theme.vars.palette.divider}`,
+        borderRadius: 0,
+        backgroundColor: theme.vars.palette.background.default,
+        '--DataGrid-rowBorderColor': theme.vars.palette.divider,
+        '& .MuiDataGrid-columnHeaderTitle': { ...theme.typography.label },
+        '& .MuiDataGrid-columnHeaders, & .MuiDataGrid-footerContainer': { borderRadius: 0 },
+        '& .MuiDataGrid-footerContainer': { borderTop: `1px solid ${theme.vars.palette.divider}` },
+      }),
+      '&.kep-data-grid-section': {
+        border: 0,
+        borderRadius: 0,
+        outline: 'none',
+        boxShadow: 'none',
+        backgroundColor: 'transparent',
+        '& .MuiDataGrid-columnHeaders, & .MuiDataGrid-footerContainer': { borderRadius: 0 },
+        '& .MuiDataGrid-footerContainer': {
+          borderTop: `1px solid ${theme.vars.palette.divider}`,
+          backgroundColor: 'transparent',
+        },
+      },
+      '& .MuiDataGrid-row:hover, & .MuiDataGrid-row:focus-within': {
+        backgroundColor: theme.vars.palette.action.hover,
+      },
     }),
     panel: ({ theme }) => ({
       ['& .MuiDataGrid-paper']: {
@@ -64,6 +93,7 @@ const DataGrid: Components<Omit<Theme, 'components'>>['MuiDataGrid'] = {
         borderColor: theme.vars.palette.menuDivider,
         boxShadow: theme.vars.shadows[3],
         padding: 0,
+        ...(theme.preset === 'default' && overlayPaperStyles(theme)),
       },
     }),
     panelContent: {
@@ -128,7 +158,7 @@ const DataGrid: Components<Omit<Theme, 'components'>>['MuiDataGrid'] = {
         },
       },
     }),
-    columnHeader: {
+    columnHeader: ({ theme }) => ({
       borderBottom: `0 !important`,
       '&.MuiDataGrid-columnHeader--last': {
         paddingRight: 24,
@@ -139,7 +169,11 @@ const DataGrid: Components<Omit<Theme, 'components'>>['MuiDataGrid'] = {
       '&:focus-within': {
         outline: 'none',
       },
-    },
+      '&:focus-visible, &:has(:focus-visible)': {
+        outline: `2px solid ${theme.vars.palette.primary.main}`,
+        outlineOffset: -2,
+      },
+    }),
     columnSeparator: {
       display: 'none',
     },
@@ -155,6 +189,10 @@ const DataGrid: Components<Omit<Theme, 'components'>>['MuiDataGrid'] = {
       },
       '&:focus-within': {
         outline: 'none',
+      },
+      '&:focus-visible, &:has(:focus-visible)': {
+        outline: `2px solid ${theme.vars.palette.primary.main}`,
+        outlineOffset: -2,
       },
     }),
     cellCheckbox: {

@@ -1,11 +1,44 @@
 {
   "homePage": {
+    "landingHeader": {
+      "navigation": "Explore KEP",
+      "platform": "Platform",
+      "howItWorks": "How it works",
+      "community": "Community",
+      "faq": "FAQ",
+      "closeMenu": "Close menu"
+    },
+    "dashboard": {
+      "calendar": "Open calendar",
+      "loading": "Loading your home",
+      "welcome": "Welcome back, {{name}}.",
+      "description": "Your recent activity, upcoming competitions, and community updates.",
+      "rank": "Rank #{{rank}}",
+      "unranked": "Not ranked yet",
+      "myAttempts": "My attempts",
+      "shortcuts": "Quick access",
+      "personal": "Your activity and community",
+      "community": "Community activity",
+      "events": "What's happening",
+      "news": "From the community",
+      "shortcutsDescription": {
+        "projects": "Build a project and submit its files for checking.",
+        "recommend": "Find problems and a study plan that match your level.",
+        "challenges": "Answer timed questions against another participant."
+      },
+      "allActivity": "View all",
+      "calendarHint": "View upcoming contests, arenas, and tournaments.",
+      "shortcutsTitle": {
+        "projects": "Projects",
+        "recommend": "Recommend me",
+        "challenges": "Challenges"
+      }
+    },
     "greeting": {
       "defaultName": "Guest",
       "goodMorning": "Welcome, {{name}}!",
-      "loginPrompt": "Sign in to continue your journey.",
+      "loginPrompt": "Sign in to view your activity and progress.",
       "loginCta": "Login",
-      "subtitle": "Updates from yesterday.",
       "ordersCount": "You have {{count}} orders today.",
       "stats": {
         "visitors": "Visitors",
@@ -27,16 +60,15 @@
         "challenges": "Challenges"
       },
       "info": {
-        "skillsRating": "This rating shows your skill strength in the platform. The rating depends on the number of solved problems, on the rating of contests and challenges.",
-        "activityRating": "This rating shows your activity over the last 30 days. It depends on the number of Kepcoin earned, daily logins and completed daily tasks.",
-        "contests": "This rating shows your strength in competitions.",
-        "challenges": "This rating shows your strength in challenges."
+        "skillsRating": "Based on solved problems, problem rating, contest rating, and challenge rating.",
+        "activityRating": "Based on daily activity, completed daily tasks, and Kepcoin earned in the last 30 days, excluding admin bonuses.",
+        "contests": "Your rating from rated programming contests.",
+        "challenges": "Your rating from rated question challenges."
       },
       "percentile": "You are better than {{percentile}}% of users"
     },
     "statistics": {
       "title": "Statistics",
-      "subtitle": "Last year",
       "changeLabel": "Since last year",
       "cards": {
         "users": "Users",
@@ -52,13 +84,8 @@
     },
     "promos": {
       "blogCreate": {
-        "title": "Create a blog on KEP and turn useful stories into community value.",
-        "subtitle": "Share tutorials, postmortems, and platform insights. Strong blog posts can earn Kepcoin rewards after review.",
         "availableNow": "Available now",
-        "footerNote": "Draft first, then submit for review when the story is ready.",
-        "previewTitle": "Editor preview",
         "previewBadge": "Suggested flow",
-        "previewHeadline": "Write a practical story, add strong tags, and ship it for review.",
         "previewTags": {
           "story": "Community story",
           "reward": "Kepcoin reward",
@@ -80,17 +107,17 @@
         }
       },
       "kepCover": {
-        "activeSubtitle": "Vote for the strongest covers, follow the live leaderboard, and open the full KEP Cover page.",
-        "upcomingSubtitle": "The next KEP Cover contest is already scheduled. Refresh your cover before voting opens.",
+        "activeSubtitle": "View the covers, vote, and check the standings.",
+        "upcomingSubtitle": "Check the dates and cover-entry rules before the contest begins.",
         "voteLimit": "{{count}} votes per user"
       },
       "contest": {
-        "activeSubtitle": "A contest is live right now. Open it to solve problems, track standings, and stay inside the race.",
-        "upcomingSubtitle": "The next contest is coming up. Check the schedule and register before it starts."
+        "activeSubtitle": "The contest is live. Open the problems or standings.",
+        "upcomingSubtitle": "Check the start time and registration details."
       },
       "arena": {
-        "activeSubtitle": "An arena round is in progress now. Jump in and keep pace with the live field.",
-        "upcomingSubtitle": "A new arena round is approaching. Review the schedule and get ready for the next duel.",
+        "activeSubtitle": "The arena is live. Join the queue to find an opponent.",
+        "upcomingSubtitle": "Check the arena’s topics, question count, and start time.",
         "roundTime": "{{count}} sec per round"
       },
       "actions": {
@@ -140,12 +167,14 @@
       "loginToLike": "Login to like updates",
       "noImage": "Screenshot will be added",
       "navigatorTitle": "On this page",
-      "loadMore": "Load more"
+      "loadMore": "Load more",
+      "changeType": {
+        "new": "New",
+        "update": "Updated"
+      }
     },
     "topUsers": {
       "title": "Top users",
-      "subtitle": "Best performers in every category",
-      "empty": "No users to display yet.",
       "viewAll": "View all users",
       "tabs": {
         "contests": "Contests",
@@ -159,7 +188,13 @@
     "birthdays": {
       "title": "Birthdays",
       "empty": "No upcoming birthdays yet.",
-      "dateUnknown": "Date to be announced"
+      "dateUnknown": "Date to be announced",
+      "today": "Today",
+      "tomorrow": "Tomorrow",
+      "turns_one": "Turns {{count}}",
+      "turns_other": "Turns {{count}}",
+      "daysLeft_one": "day left",
+      "daysLeft_other": "days left"
     },
     "userActivity": {
       "title": "User activity",
@@ -185,19 +220,23 @@
       "defaultLabel": "Activity update",
       "types": {
         "problemAttemptSummary": {
-          "description": "Solved {{accepted}} out of {{total}} problems."
+          "description": "Solved {{accepted}} out of {{total}} problems.",
+          "title": "Problems solved"
         },
         "challengeSummary": {
           "description": "Challenge results summary.",
           "wins": "Wins: {{value}}",
           "draws": "Draws: {{value}}",
-          "losses": "Losses: {{value}}"
+          "losses": "Losses: {{value}}",
+          "title": "Challenge results"
         },
         "projectAttemptSummary": {
-          "description": "Checked {{checked}} of {{total}} project attempts."
+          "description": "Checked {{checked}} of {{total}} project attempts.",
+          "title": "Project submissions"
         },
         "testPassSummary": {
-          "description": "Completed {{completed}} of {{total}} tests and solved {{solved}} tasks."
+          "description": "Completed {{completed}} of {{total}} tests and solved {{solved}} tasks.",
+          "title": "Tests completed"
         },
         "contestParticipation": {
           "description": "Participated in {{title}}.",
@@ -205,29 +244,234 @@
           "rating": "{{before}} → {{after}} rating",
           "ratingChange": "Δ {{delta}}",
           "bonus": "Bonus: {{bonus}}",
-          "noRank": "N/A"
+          "noRank": "N/A",
+          "title": "Contest participation"
         },
         "arenaParticipation": {
           "description": "Joined arena {{title}}.",
           "points": "Points: {{points}}",
           "rank": "Rank: {{rank}}",
-          "finishTime": "Finished at {{time}}"
+          "finishTime": "Finished at {{time}}",
+          "title": "Arena participation"
         },
         "dailyActivity": {
           "description": "Logged daily activity (+{{value}}).",
-          "note": "Note: {{note}}"
+          "note": "Note: {{note}}",
+          "title": "Daily activity"
         },
         "hardProblemSolved": {
           "description": "Solved {{title}} ({{difficulty}}).",
-          "problem": "Problem #{{id}}"
+          "problem": "Problem #{{id}}",
+          "title": "Problem solved"
         },
         "achievementUnlocked": {
-          "description": "{{message}}"
+          "description": "{{message}}",
+          "title": "Achievement unlocked"
         },
         "dailyTaskCompleted": {
           "description": "Completed daily task ({{type}}).",
-          "task": "{{description}}"
+          "task": "{{description}}",
+          "title": "Daily task completed"
         }
+      }
+    },
+    "landing": {
+      "language": "Programming language",
+      "example": "Example",
+      "codeSample": "Solution example",
+      "input": "Input",
+      "output": "Output",
+      "catalog": "Problems",
+      "rating": "Rating",
+      "retry": "Retry",
+      "loadError": "Could not load data. Please try again.",
+      "empty": "Nothing here yet.",
+      "allProblems": "Explore all problems",
+      "startSolving": "Start solving",
+      "explore": "Explore",
+      "learning": "Practice",
+      "competition": "Compete",
+      "viewRating": "View rating",
+      "allUsers": "View all developers",
+      "read": "Read story",
+      "previous": "Previous story",
+      "next": "Next story",
+      "trust": "Problems, projects, tests, and competitions in one account.",
+      "hero": {
+        "eyebrow": "THINK. SOLVE. LEVEL UP.",
+        "title": "Programming practice,",
+        "highlight": "from problems to projects.",
+        "description": "Solve programming problems, build practical projects, and test your knowledge in competitions.",
+        "explorePlatform": "Explore the platform",
+        "tryWorkspace": "Try the workspace",
+        "planLink": "New to coding? Start with a study plan"
+      },
+      "platform": {
+        "eyebrow": "THE PLATFORM",
+        "title": "Choose how to practise.",
+        "description": "Choose individual practice, a study plan, or a competition.",
+        "problems": {
+          "title": "Programming problems",
+          "description": "Filter by topic and rating, write your code, and check it against the problem tests.",
+          "action": "Solve problems"
+        },
+        "plans": {
+          "title": "Study plans",
+          "description": "Solve problems arranged by topic and study day, and track what you have completed.",
+          "action": "Choose a study plan"
+        },
+        "contests": {
+          "title": "Contests",
+          "description": "Solve a shared problem set within a time limit and compare results in the standings.",
+          "action": "Browse contests"
+        },
+        "duels": {
+          "title": "Head-to-head duels",
+          "description": "Choose a problem preset, agree on a start time, and compete under the selected scoring rules.",
+          "action": "Explore duels"
+        },
+        "projects": {
+          "title": "Practical projects",
+          "description": "Implement a project’s requirements, upload your solution, and review the task results.",
+          "action": "Browse projects"
+        }
+      },
+      "journey": {
+        "eyebrow": "HOW IT WORKS",
+        "title": "Choose, solve, submit.",
+        "choose": {
+          "title": "Pick a problem",
+          "description": "Filter by topic or rating and open a problem you want to solve."
+        },
+        "solve": {
+          "title": "Write and test",
+          "description": "Read the statement and examples, then write your solution in the editor."
+        },
+        "improve": {
+          "title": "Submit and learn",
+          "description": "Submit your solution and use the verdict to decide what to change."
+        }
+      },
+      "languages": {
+        "eyebrow": "YOUR TOOLKIT",
+        "title": "Supported programming languages.",
+        "description": "Available languages depend on the problem. Check its editor before submitting."
+      },
+      "formats": {
+        "compare": "Different formats. One place to improve.",
+        "format": "Format",
+        "compete": [
+          {
+            "items": ["Scheduled competitions", "Contest standings", "Post-contest review"]
+          },
+          {
+            "title": "Enter the arena",
+            "items": ["Round-based challenges", "Timed questions", "Live competition"]
+          },
+          {
+            "items": ["Head-to-head format", "A focused challenge", "Competitive practice"]
+          }
+        ],
+        "table": {
+          "practice": "Practice",
+          "contest": "Contest",
+          "duel": "Duel",
+          "pace": "Pace",
+          "pace0": "Your own pace",
+          "pace1": "Scheduled time limit",
+          "pace2": "Head-to-head race",
+          "goal": "Focus",
+          "goal0": "Learn an idea",
+          "goal1": "Solve the problem set",
+          "goal2": "Challenge an opponent",
+          "feedback": "Feedback",
+          "feedback0": "Judge verdict",
+          "feedback1": "Verdicts and standings",
+          "feedback2": "Duel result"
+        }
+      },
+      "events": {
+        "eyebrow": "HAPPENING ON KEP",
+        "title": "Upcoming and ongoing events.",
+        "description": "View event dates, registration details, and current results.",
+        "empty": "No upcoming events are listed. You can browse past contests."
+      },
+      "faq": {
+        "eyebrow": "FAQ",
+        "title": "Frequently asked questions",
+        "description": "Before you submit your first solution.",
+        "asideTitle": "Start with a study plan.",
+        "asideDescription": "Choose a study plan for problems arranged by topic and day.",
+        "items": [
+          {
+            "question": "Where should I start as a beginner?",
+            "answer": "Choose a low-rated problem or a beginner study plan. Read the statement and examples, then try a solution."
+          },
+          {
+            "question": "Which programming languages can I use?",
+            "answer": "Each problem’s editor lists the languages accepted for that problem."
+          },
+          {
+            "question": "What happens when I submit a solution?",
+            "answer": "The judge checks your code against the problem’s tests and returns a verdict, such as Accepted or Wrong answer."
+          },
+          {
+            "question": "How do I choose the right difficulty?",
+            "answer": "Filter by topic and rating. Start with lower-rated problems and increase the rating when you can solve them consistently."
+          },
+          {
+            "question": "What is the difference between contests and duels?",
+            "answer": "Contests have a shared problem set and standings for many participants. Duels use a selected problem set for two opponents, with an agreed start time and scoring format."
+          },
+          {
+            "question": "Why should I sign in?",
+            "answer": "An account lets you submit solutions, save your results, and take part in competitions."
+          }
+        ]
+      },
+      "leaders": {
+        "eyebrow": "THE COMMUNITY",
+        "title": "Leading participants.",
+        "description": "View participants by their current rating."
+      },
+      "community": {
+        "eyebrow": "FROM THE COMMUNITY",
+        "title": "Articles and community rankings.",
+        "description": "Read community articles and view leading participants.",
+        "latestArticles": "Latest articles"
+      },
+      "final": {
+        "eyebrow": "YOUR NEXT STEP",
+        "title": "Choose your first problem.",
+        "description": "Open the catalog and choose a topic or difficulty."
+      },
+      "footer": {
+        "description": "Programming practice, knowledge tests, and competitions on KEP.uz.",
+        "practice": "Practice",
+        "compete": "Compete",
+        "community": "Community",
+        "menu": "Open navigation",
+        "blog": "Blog",
+        "updates": "Updates"
+      },
+      "workspace": {
+        "title": "KEP workspace",
+        "pick": "Choose a problem.",
+        "hint": "Open a problem to view its statement and code editor.",
+        "fullWorkspace": "Open full workspace",
+        "editor": "Code editor",
+        "continue": "Sign in to solve",
+        "signInHint": "Sign in to run and submit this solution.",
+        "sample": "Sample {{number}}",
+        "topics": {
+          "sorting": "Sorting",
+          "strings": "Strings",
+          "numbers": "Number theory",
+          "matrix": "Simulation",
+          "graphs": "Graphs"
+        },
+        "starter": "Write your solution here.",
+        "back": "Problems"
       }
     }
   }

@@ -1,3 +1,4 @@
+import { useTranslation } from 'react-i18next';
 import { Stack, Typography, useTheme } from '@mui/material';
 import {
   DataGrid,
@@ -6,13 +7,12 @@ import {
   GridSortModel,
   GridValidRowModel,
 } from '@mui/x-data-grid';
-import { useTranslation } from 'react-i18next';
-import ContestsRatingChip from 'shared/components/rating/ContestsRatingChip';
 import { difficultyColorByKey, difficultyOptions } from 'modules/problems/config/difficulty';
 import { ProblemsRatingRow } from 'modules/problems/domain/entities/problem.entity';
 import UserPopover from 'modules/users/ui/shared/components/UserPopover.tsx';
-import { rowMatchesUsername } from 'shared/lib/pinnedRows';
+import ContestsRatingChip from 'shared/components/rating/ContestsRatingChip';
 import useStableGridRowCount from 'shared/hooks/useStableGridRowCount';
+import { rowMatchesUsername } from 'shared/lib/pinnedRows';
 
 export type ProblemsRatingDataGridLabels = {
   rank: string;
@@ -125,7 +125,12 @@ const ProblemsRatingDataGrid = ({
       headerAlign: 'right',
       align: 'right',
       renderCell: ({ row }) => (
-        <Typography variant="body2" fontWeight={700} color="success.main" sx={{ textAlign: 'right', width: '100%' }}>
+        <Typography
+          variant="body2"
+          fontWeight={700}
+          color="success.main"
+          sx={{ textAlign: 'right', width: '100%' }}
+        >
           {(row as ProblemsRatingRow).solved ?? labels.emptyValue}
         </Typography>
       ),
@@ -139,7 +144,12 @@ const ProblemsRatingDataGrid = ({
       headerAlign: 'right',
       align: 'right',
       renderCell: ({ row }) => (
-        <Typography variant="body2" fontWeight={700} color="secondary.main" sx={{ textAlign: 'right', width: '100%' }}>
+        <Typography
+          variant="body2"
+          fontWeight={700}
+          color="secondary.main"
+          sx={{ textAlign: 'right', width: '100%' }}
+        >
           {(row as ProblemsRatingRow).rating ?? labels.emptyValue}
         </Typography>
       ),
@@ -148,6 +158,7 @@ const ProblemsRatingDataGrid = ({
 
   return (
     <DataGrid
+      className="kep-data-grid-section"
       autoHeight
       rowHeight={76}
       rows={rows}
@@ -164,7 +175,9 @@ const ProblemsRatingDataGrid = ({
       columns={columns}
       localeText={{ noRowsLabel: t('common.dataGrid.noRows.problemsRating') }}
       disableRowSelectionOnClick
-      getRowId={(row) => `${(row as ProblemsRatingRow).user.username}-${(row as ProblemsRatingRow).rowIndex}`}
+      getRowId={(row) =>
+        `${(row as ProblemsRatingRow).user.username}-${(row as ProblemsRatingRow).rowIndex}`
+      }
       getRowClassName={({ row }) =>
         rowMatchesUsername(row, currentUsername) ? 'MuiDataGrid-row--currentUser' : ''
       }

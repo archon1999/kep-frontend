@@ -1,9 +1,8 @@
-import { HttpTestingRepository } from '../data-access/repository/http.testing.repository.ts';
-import { FinishTestResponse, StartTestResponse } from '../domain/ports/testing.repository.ts';
+import { testingRepository } from '../data-access';
+import { FinishTestResponse, StartTestResponse } from '../domain/contracts/testing.repository.ts';
 
-const testingRepository = new HttpTestingRepository();
-
-export const startTest = (testId: number): Promise<StartTestResponse> => testingRepository.startTest(testId);
+export const startTest = (testId: number): Promise<StartTestResponse> =>
+  testingRepository.startTest(testId);
 
 export const submitAnswer = (
   testPassId: number,
@@ -13,10 +12,3 @@ export const submitAnswer = (
 
 export const finishTest = (testPassId: number): Promise<FinishTestResponse> =>
   testingRepository.finishTest(testPassId);
-
-export const testingMutations = {
-  startTest,
-  submitAnswer,
-  finishTest,
-  testingRepository,
-};

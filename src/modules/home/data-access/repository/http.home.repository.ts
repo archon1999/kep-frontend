@@ -1,7 +1,6 @@
-import { homeApiClient } from '../api/home.client';
-import { mapHomePromos } from '../mappers/home-promo.mapper';
-import type { HomeRepository } from '../../domain/ports/home.repository';
+import type { HomeRepository } from '../../domain/contracts/home.repository';
 import type {
+  HomeLandingPageStatistics,
   HomeListParams,
   HomeNewsList,
   HomeNextBirthdays,
@@ -10,13 +9,20 @@ import type {
   HomePromoSourceItem,
   HomeSystemUpdateLikeResult,
   HomeSystemUpdatesList,
-  HomeLandingPageStatistics,
   HomeTopUsers,
-  HomeUserActivityStatistics,
   HomeUserActivityHistory,
+  HomeUserActivityStatistics,
   HomeUserRatings,
   HomeUsersChart,
 } from '../../domain/entities/home.entity';
+import { homeApiClient } from '../api/home.client';
+import {
+  mapBirthdayProfile,
+  mapNextBirthdays,
+  mapOnlineUsers,
+} from '../mappers/home-people.mapper';
+import { mapHomePromos } from '../mappers/home-promo.mapper';
+import { mapHomeUserRatings } from '../mappers/home-ratings.mapper';
 
 export class HttpHomeRepository implements HomeRepository {
   getNews(params?: HomeListParams): Promise<HomeNewsList> {
@@ -31,12 +37,30 @@ export class HttpHomeRepository implements HomeRepository {
     return homeApiClient.topUsers({ pageSize: params?.pageSize });
   }
 
-  getNextBirthdays(params?: HomeListParams): Promise<HomeNextBirthdays> {
-    return homeApiClient.nextBirthdays({ pageSize: params?.pageSize });
+  async getNextBirthdays(params?: HomeListParams): Promise<HomeNextBirthdays> {
+    const birthdays = mapNextBirthdays(
+      await homeApiClient.nextBirthdays({ pageSize: params?.pageSize }),
+    );
+    const data = await Promise.all(
+      birthdays.data.map(async (user) => {
+        if (user.dateOfBirth) return user;
+        // The birthdays endpoint currently omits the birth year. Use only the
+        // date already public on the profile; a failed lookup leaves age hidden.
+        try {
+          const dateOfBirth = mapBirthdayProfile(
+            await homeApiClient.birthdayProfile(user.username),
+          );
+          return { ...user, dateOfBirth };
+        } catch {
+          return user;
+        }
+      }),
+    );
+    return { data };
   }
 
   getOnlineUsers(params?: HomeListParams): Promise<HomeOnlineUsers> {
-    return homeApiClient.onlineUsers({ pageSize: params?.pageSize });
+    return homeApiClient.onlineUsers({ pageSize: params?.pageSize }).then(mapOnlineUsers);
   }
 
   getUsersChart(): Promise<HomeUsersChart> {
@@ -44,14 +68,17 @@ export class HttpHomeRepository implements HomeRepository {
   }
 
   getUserRatings(username: string): Promise<HomeUserRatings> {
-    return homeApiClient.userRatings(username);
+    return homeApiClient.userRatings(username).then(mapHomeUserRatings);
   }
 
   getUserActivityStatistics(): Promise<HomeUserActivityStatistics> {
     return homeApiClient.userActivityStatistics();
   }
 
-  getUserActivityHistory(username: string, params?: HomeListParams): Promise<HomeUserActivityHistory> {
+  getUserActivityHistory(
+    username: string,
+    params?: HomeListParams,
+  ): Promise<HomeUserActivityHistory> {
     return homeApiClient.userActivityHistory(username, {
       page: params?.page,
       pageSize: params?.pageSize,

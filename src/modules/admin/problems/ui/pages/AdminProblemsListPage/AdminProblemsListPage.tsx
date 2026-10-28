@@ -1,5 +1,5 @@
-﻿import { useEffect, useMemo, useState } from 'react';
 import { useTranslation } from 'react-i18next';
+import { Link as RouterLink } from 'react-router';
 import {
   Autocomplete,
   Checkbox,
@@ -9,307 +9,75 @@ import {
   Stack,
   Typography,
 } from '@mui/material';
-import { DataGrid, GridColDef, GridRowSelectionModel, GridSortModel } from '@mui/x-data-grid';
-import { Link as RouterLink } from 'react-router';
-import AdminDataGridSkeletonLoadingOverlay from 'modules/admin/shared/ui/AdminDataGridSkeletonLoadingOverlay';
+import { DataGrid, GridColDef } from '@mui/x-data-grid';
 import { getResourceById, resources } from 'app/routes/resources';
-import { AdminAutocompleteOption, UsersAutocomplete } from 'modules/admin/shared/ui/AdminResourceAutocomplete';
-import { getDifficultyColor, getDifficultyLabelKey } from 'modules/problems/config/difficulty';
-import UserPopover from 'modules/users/ui/shared/components/UserPopover';
+import {
+  problemRatingRange,
+  useAdminProblemsListPage,
+} from 'modules/admin/problems/application/hooks/useAdminProblemsListPage';
+import { AdminProblem } from 'modules/admin/problems/domain/types';
 import AdminBatchActionsToolbar from 'modules/admin/shared/ui/AdminBatchActionsToolbar';
+import AdminDataGridSkeletonLoadingOverlay from 'modules/admin/shared/ui/AdminDataGridSkeletonLoadingOverlay';
 import AdminFiltersToolbar from 'modules/admin/shared/ui/AdminFiltersToolbar';
 import AdminListPageLayout from 'modules/admin/shared/ui/AdminListPageLayout';
+import { UsersAutocomplete } from 'modules/admin/shared/ui/AdminResourceAutocomplete';
 import AdminRowActions from 'modules/admin/shared/ui/AdminRowActions';
 import TextField from 'modules/admin/shared/ui/AdminTextField';
-import { getOrderingFromSortModel } from 'modules/admin/shared/utils/gridSorting';
+import { getDifficultyColor, getDifficultyLabelKey } from 'modules/problems/config/difficulty';
+import UserPopover from 'modules/users/ui/shared/components/UserPopover';
+import DataGridNoRowsOverlay, {
+  getDataGridNoRowsOverlaySlotProps,
+} from 'shared/components/common/DataGridNoRowsOverlay';
 import FilterDrawer, {
   DEFAULT_FILTER_DRAWER_WIDTH,
   FilterRangeField,
   useFilterDrawer,
 } from 'shared/components/common/FilterDrawer';
-import DataGridNoRowsOverlay, {
-  getDataGridNoRowsOverlaySlotProps,
-} from 'shared/components/common/DataGridNoRowsOverlay';
-import useGridPagination from 'shared/hooks/useGridPagination';
-import useStableGridRowCount from 'shared/hooks/useStableGridRowCount';
-import { useAdminProblemMeta, useAdminProblems } from 'modules/admin/problems/application/queries';
-import { problemsAdminClient } from 'modules/admin/problems/data-access/problemsAdminClient';
-import { AdminProblem } from 'modules/admin/problems/domain/types';
+import { useConfirmationDialog } from 'shared/hooks/useConfirmationDialog';
 
-const problemRatingRange = {
-  min: 100,
-  max: 3000,
-  step: 100,
-};
-
-const problemOrderingFieldMap = {
-  problemRating: 'problem_rating',
-  solvedCount: 'solved_count',
-};
-
-const formatProblemRatingBand = (min?: string, max?: string) => {
-  if (min && max) {
-    return `${min}-${max}`;
-  }
-  if (min) {
-    return `${min}+`;
-  }
-  if (max) {
-    return `<= ${max}`;
-  }
-  return '';
-};
+const getProblemRowHeight = () => 'auto' as const;
 
 const AdminProblemsListPage = () => {
-  const { t } = useTranslation();
-  const [search, setSearch] = useState('');
-  const [selectedDifficulties, setSelectedDifficulties] = useState<number[]>([]);
-  const [selectedGroups, setSelectedGroups] = useState<number[]>([]);
-  const [problemRatingMin, setProblemRatingMin] = useState('');
-  const [problemRatingMax, setProblemRatingMax] = useState('');
-  const [hiddenFilter, setHiddenFilter] = useState<boolean | null>(null);
-  const [authorFilter, setAuthorFilter] = useState<AdminAutocompleteOption | null>(null);
-  const [sortModel, setSortModel] = useState<GridSortModel>([{ field: 'id', sort: 'desc' }]);
-  const filterDrawer = useFilterDrawer();
-  const [rowSelectionModel, setRowSelectionModel] = useState<GridRowSelectionModel>({
-    type: 'include',
-    ids: new Set(),
-  });
-  const [isBatching, setIsBatching] = useState(false);
-  const { paginationModel, onPaginationModelChange, pageParams, setPaginationModel } =
-    useGridPagination({
-      initialPageSize: 20,
-      querySync: {
-        pageKey: 'page',
-        pageSizeKey: 'pageSize',
-      },
-    });
-
-  useEffect(() => {
-    setPaginationModel((prev) => ({ ...prev, page: 0 }));
-  }, [
-    search,
-    selectedDifficulties,
-    selectedGroups,
-    problemRatingMin,
-    problemRatingMax,
-    hiddenFilter,
-    authorFilter?.id,
-    sortModel,
-    setPaginationModel,
-  ]);
-
-  const queryParams = useMemo(
-    () => ({
-      page: pageParams.page,
-      pageSize: pageParams.pageSize,
-      ordering: getOrderingFromSortModel(sortModel, problemOrderingFieldMap),
-      search,
-      difficulty: selectedDifficulties,
-      groups: selectedGroups,
-      problemRatingMin: problemRatingMin ? Number(problemRatingMin) : undefined,
-      problemRatingMax: problemRatingMax ? Number(problemRatingMax) : undefined,
-      hidden: hiddenFilter,
-      author: authorFilter?.id,
-    }),
-    [
-      pageParams.page,
-      pageParams.pageSize,
-      sortModel,
-      search,
-      selectedDifficulties,
-      selectedGroups,
-      problemRatingMin,
-      problemRatingMax,
-      hiddenFilter,
-      authorFilter?.id,
-    ],
-  );
-
-  const { data, isLoading, isValidating, mutate } = useAdminProblems(queryParams);
-  const { data: meta } = useAdminProblemMeta();
-  const isGridLoading = isLoading || (isValidating && !data?.data);
-  const rowCount = useStableGridRowCount(data?.total, isGridLoading);
-
-  const handleSearchChange = (value: string) => setSearch(value);
-
-  const selectedIds = useMemo(
-    () => Array.from(rowSelectionModel.ids).map((id) => Number(id)).filter(Number.isFinite),
-    [rowSelectionModel],
-  );
-
-  const difficultyFilterOptions = useMemo(
-    () =>
-      (meta?.difficulties ?? []).map((difficulty) => {
-        const value = Number(difficulty.value);
-        const labelKey = getDifficultyLabelKey(value);
-
-        return {
-          value,
-          label: labelKey ? t(labelKey) : String(difficulty.label),
-        };
-      }),
-    [meta?.difficulties, t],
-  );
-
-  const selectedDifficultyOptions = useMemo(
-    () => difficultyFilterOptions.filter((difficulty) => selectedDifficulties.includes(difficulty.value)),
-    [difficultyFilterOptions, selectedDifficulties],
-  );
-
-  const problemRatingRangeValue = useMemo<[number, number]>(() => {
-    const min = Number(problemRatingMin);
-    const max = Number(problemRatingMax);
-    const normalizedMin = Number.isFinite(min) && min > 0 ? min : problemRatingRange.min;
-    const normalizedMax = Number.isFinite(max) && max > 0 ? max : problemRatingRange.max;
-
-    return [
-      Math.max(problemRatingRange.min, Math.min(normalizedMin, normalizedMax)),
-      Math.min(problemRatingRange.max, Math.max(normalizedMin, normalizedMax)),
-    ];
-  }, [problemRatingMax, problemRatingMin]);
-
-  const tagById = useMemo(
-    () => new Map((meta?.tags ?? []).map((tag) => [tag.id, tag.name])),
-    [meta?.tags],
-  );
-
-  const groupById = useMemo(
-    () => new Map((meta?.groups ?? []).map((group) => [group.id, group.name])),
-    [meta?.groups],
-  );
-
-  const selectedGroupOptions = useMemo(
-    () => (meta?.groups ?? []).filter((group) => selectedGroups.includes(group.id)),
-    [meta?.groups, selectedGroups],
-  );
-
-  const handleClearFilters = () => {
-    setSelectedDifficulties([]);
-    setSelectedGroups([]);
-    setProblemRatingMin('');
-    setProblemRatingMax('');
-    setHiddenFilter(null);
-    setAuthorFilter(null);
-  };
-
-  const handleProblemRatingRangeChange = (_event: Event, value: number | number[]) => {
-    if (!Array.isArray(value)) return;
-
-    const [min, max] = value;
-    setProblemRatingMin(min > problemRatingRange.min ? String(min) : '');
-    setProblemRatingMax(max < problemRatingRange.max ? String(max) : '');
-  };
-
-  const activeFilters = useMemo(() => {
-    const items: Array<{ key: string; label: string; onRemove: () => void }> = [];
-
-    if (selectedDifficultyOptions.length > 0) {
-      items.push({
-        key: 'difficulty',
-        label: `${t('admin.filters.difficulty')}: ${selectedDifficultyOptions
-          .map((difficulty) => difficulty.label)
-          .join(', ')}`,
-        onRemove: () => setSelectedDifficulties([]),
-      });
-    }
-
-    if (problemRatingMin || problemRatingMax) {
-      items.push({
-        key: 'problem-rating',
-        label: `${t('problems.problemRating')}: ${formatProblemRatingBand(
-          problemRatingMin,
-          problemRatingMax,
-        )}`,
-        onRemove: () => {
-          setProblemRatingMin('');
-          setProblemRatingMax('');
-        },
-      });
-    }
-
-    if (selectedGroupOptions.length > 0) {
-      items.push({
-        key: 'groups',
-        label: `${t('problems.groups')}: ${selectedGroupOptions
-          .map((group) => group.name)
-          .join(', ')}`,
-        onRemove: () => setSelectedGroups([]),
-      });
-    }
-
-    if (hiddenFilter !== null) {
-      items.push({
-        key: 'hidden',
-        label: hiddenFilter ? t('admin.filters.hiddenOnly') : t('admin.filters.visibleOnly'),
-        onRemove: () => setHiddenFilter(null),
-      });
-    }
-
-    if (authorFilter) {
-      items.push({
-        key: 'author',
-        label: `${t('admin.filters.author')}: ${authorFilter.username}`,
-        onRemove: () => setAuthorFilter(null),
-      });
-    }
-
-    return items;
-  }, [
-    authorFilter,
-    hiddenFilter,
-    problemRatingMax,
-    problemRatingMin,
+  const { confirm, confirmationDialog } = useConfirmationDialog();
+  const {
+    paginationModel,
+    onPaginationModelChange,
+    data,
+    meta,
+    rowCount,
+    handleDelete,
+    handleHiddenChange,
+    handleBatchAction,
+    isGridLoading,
+    difficultyFilterOptions,
     selectedDifficultyOptions,
+    tagById,
+    groupById,
     selectedGroupOptions,
-    t,
-  ]);
+    activeFilters,
+    selectedIds,
+    isBatching,
+    resetRowSelection,
+    search,
+    setSelectedDifficulties,
+    setSelectedGroups,
+    hiddenFilter,
+    authorFilter,
+    setAuthorFilter,
+    sortModel,
+    setSortModel,
+    handleSearchChange,
+    rowSelectionModel,
+    setRowSelectionModel,
+    problemRatingRangeValue,
+    handleClearFilters,
+    handleProblemRatingRangeChange,
+    cycleHiddenFilter,
+    hiddenFilterLabel,
+  } = useAdminProblemsListPage(confirm);
 
-  const resetRowSelection = () => setRowSelectionModel({ type: 'include', ids: new Set() });
-
-  const handleDelete = async (problem: AdminProblem) => {
-    if (!window.confirm(t('admin.problems.confirmDelete', { id: problem.id }))) {
-      return;
-    }
-
-    await problemsAdminClient.remove(problem.id);
-    await mutate();
-  };
-
-  const handleHiddenChange = async (problem: AdminProblem, hidden: boolean) => {
-    await problemsAdminClient.update(problem.id, { hidden });
-    await mutate();
-  };
-
-  const handleBatchAction = async (action: 'delete' | 'show' | 'hide') => {
-    if (selectedIds.length === 0) {
-      return;
-    }
-
-    if (action === 'delete' && !window.confirm(t('admin.problems.confirmBatchDelete', { count: selectedIds.length }))) {
-      return;
-    }
-
-    setIsBatching(true);
-    try {
-      await problemsAdminClient.batch({ ids: selectedIds, action });
-      resetRowSelection();
-      await mutate();
-    } finally {
-      setIsBatching(false);
-    }
-  };
-
-  const cycleHiddenFilter = () => {
-    setHiddenFilter((prev) => (prev === null ? true : prev ? false : null));
-  };
-
-  const hiddenFilterLabel =
-    hiddenFilter === null
-      ? t('admin.filters.hiddenAll')
-      : hiddenFilter
-        ? t('admin.filters.hiddenOnly')
-        : t('admin.filters.visibleOnly');
+  const { t } = useTranslation();
+  const filterDrawer = useFilterDrawer();
 
   const renderDifficultyBadge = (difficulty?: number) => {
     const labelKey = getDifficultyLabelKey(difficulty);
@@ -435,7 +203,9 @@ const AdminProblemsListPage = () => {
       flex: 0.5,
       sortable: false,
       renderCell: ({ row }) => {
-        const groups = (row.groups ?? []).map((groupId) => groupById.get(groupId) ?? String(groupId));
+        const groups = (row.groups ?? []).map(
+          (groupId) => groupById.get(groupId) ?? String(groupId),
+        );
 
         if (groups.length === 0) {
           return <Typography color="text.secondary">{t('admin.emptyValue')}</Typography>;
@@ -528,7 +298,9 @@ const AdminProblemsListPage = () => {
         options={difficultyFilterOptions}
         value={selectedDifficultyOptions}
         getOptionLabel={(option) => option.label}
-        onChange={(_, value) => setSelectedDifficulties(value.map((difficulty) => difficulty.value))}
+        onChange={(_, value) =>
+          setSelectedDifficulties(value.map((difficulty) => difficulty.value))
+        }
         renderInput={(params) => (
           <TextField {...params} fullWidth label={t('admin.filters.difficulty')} placeholder="" />
         )}
@@ -583,99 +355,107 @@ const AdminProblemsListPage = () => {
   );
 
   return (
-    <AdminListPageLayout
-      title={t('admin.problems.title')}
-      createPath={resources.AdminProblemCreate}
-      createLabel={t('admin.problems.createButton')}
-      search={search}
-      onSearchChange={handleSearchChange}
-      searchPlaceholder={t('admin.problems.searchPlaceholder')}
-      filterDrawerOpen={filterDrawer.open}
-      filterDrawerWidth={DEFAULT_FILTER_DRAWER_WIDTH}
-      filterDrawer={
-        <FilterDrawer
-          id="admin-problems-filters-drawer"
-          open={filterDrawer.open}
-          onClose={filterDrawer.close}
-          drawerWidth={DEFAULT_FILTER_DRAWER_WIDTH}
-          hasActiveFilters={activeFilters.length > 0}
-          clearLabel={t('problems.clear')}
-          onClear={handleClearFilters}
+    <>
+      {confirmationDialog}
+      {
+        <AdminListPageLayout
+          title={t('admin.problems.title')}
+          createPath={resources.AdminProblemCreate}
+          createLabel={t('admin.problems.createButton')}
+          search={search}
+          onSearchChange={handleSearchChange}
+          searchPlaceholder={t('admin.problems.searchPlaceholder')}
+          filterDrawerOpen={filterDrawer.open}
+          filterAnchorEl={filterDrawer.anchorEl}
+          filterDrawerWidth={DEFAULT_FILTER_DRAWER_WIDTH}
+          filterDrawer={
+            <FilterDrawer
+              id="admin-problems-filters-drawer"
+              open={filterDrawer.open}
+              onClose={filterDrawer.close}
+              drawerWidth={DEFAULT_FILTER_DRAWER_WIDTH}
+              hasActiveFilters={activeFilters.length > 0}
+              clearLabel={t('problems.clear')}
+              onClear={handleClearFilters}
+            >
+              {filterControls}
+            </FilterDrawer>
+          }
+          toolbar={
+            <>
+              <Stack direction="column" spacing={2}>
+                <AdminFiltersToolbar
+                  id="admin-problems"
+                  search={search}
+                  onSearchChange={handleSearchChange}
+                  searchPlaceholder={t('admin.problems.searchPlaceholder')}
+                  activeFilters={activeFilters}
+                  onClearFilters={handleClearFilters}
+                  filters={filterControls}
+                  filtersOpen={filterDrawer.open}
+                  onToggleFilters={filterDrawer.toggle}
+                />
+              </Stack>
+            </>
+          }
         >
-          {filterControls}
-        </FilterDrawer>
+          <AdminBatchActionsToolbar
+            selectedCount={selectedIds.length}
+            selectedLabel={t('admin.selectedProblems')}
+            disabled={isBatching}
+            onClear={resetRowSelection}
+            actions={[
+              {
+                label: t('admin.actions.show'),
+                icon: 'mdi:eye-outline',
+                onClick: () => handleBatchAction('show'),
+              },
+              {
+                label: t('admin.actions.hide'),
+                icon: 'mdi:eye-off-outline',
+                color: 'warning',
+                onClick: () => handleBatchAction('hide'),
+              },
+              {
+                label: t('admin.actions.delete'),
+                icon: 'mdi:delete-outline',
+                color: 'error',
+                onClick: () => handleBatchAction('delete'),
+              },
+            ]}
+          />
+          <DataGrid
+            autoHeight
+            getRowHeight={getProblemRowHeight}
+            sx={{ '& .MuiDataGrid-cell': { py: 1, minHeight: 56 } }}
+            rows={data?.data ?? []}
+            rowCount={rowCount}
+            loading={isGridLoading}
+            slots={{
+              loadingOverlay: AdminDataGridSkeletonLoadingOverlay,
+              noRowsOverlay: DataGridNoRowsOverlay,
+            }}
+            localeText={{ noRowsLabel: t('common.dataGrid.noRows.adminProblems') }}
+            slotProps={getDataGridNoRowsOverlaySlotProps({
+              filtered: Boolean(search || activeFilters.length),
+            })}
+            columns={columns}
+            paginationModel={paginationModel}
+            onPaginationModelChange={onPaginationModelChange}
+            pageSizeOptions={[10, 20, 50]}
+            paginationMode="server"
+            sortModel={sortModel}
+            onSortModelChange={setSortModel}
+            sortingMode="server"
+            checkboxSelection
+            rowSelectionModel={rowSelectionModel}
+            onRowSelectionModelChange={setRowSelectionModel}
+            disableRowSelectionExcludeModel
+            disableRowSelectionOnClick
+          />
+        </AdminListPageLayout>
       }
-      toolbar={
-        <>
-          <Stack direction="column" spacing={2}>
-            <AdminFiltersToolbar
-              id="admin-problems"
-              search={search}
-              onSearchChange={handleSearchChange}
-              searchPlaceholder={t('admin.problems.searchPlaceholder')}
-              activeFilters={activeFilters}
-              onClearFilters={handleClearFilters}
-              filters={filterControls}
-              filtersOpen={filterDrawer.open}
-              onToggleFilters={filterDrawer.toggle}
-            />
-          </Stack>
-        </>
-      }
-    >
-      <AdminBatchActionsToolbar
-        selectedCount={selectedIds.length}
-        selectedLabel={t('admin.selectedProblems')}
-        disabled={isBatching}
-        onClear={resetRowSelection}
-        actions={[
-          {
-            label: t('admin.actions.show'),
-            icon: 'mdi:eye-outline',
-            onClick: () => handleBatchAction('show'),
-          },
-          {
-            label: t('admin.actions.hide'),
-            icon: 'mdi:eye-off-outline',
-            color: 'warning',
-            onClick: () => handleBatchAction('hide'),
-          },
-          {
-            label: t('admin.actions.delete'),
-            icon: 'mdi:delete-outline',
-            color: 'error',
-            onClick: () => handleBatchAction('delete'),
-          },
-        ]}
-      />
-      <DataGrid
-        autoHeight
-        rows={data?.data ?? []}
-        rowCount={rowCount}
-        loading={isGridLoading}
-        slots={{
-          loadingOverlay: AdminDataGridSkeletonLoadingOverlay,
-          noRowsOverlay: DataGridNoRowsOverlay,
-        }}
-        localeText={{ noRowsLabel: t('common.dataGrid.noRows.adminProblems') }}
-        slotProps={getDataGridNoRowsOverlaySlotProps({
-          filtered: Boolean(search || activeFilters.length),
-        })}
-        columns={columns}
-        paginationModel={paginationModel}
-        onPaginationModelChange={onPaginationModelChange}
-        pageSizeOptions={[10, 20, 50]}
-        paginationMode="server"
-        sortModel={sortModel}
-        onSortModelChange={setSortModel}
-        sortingMode="server"
-        checkboxSelection
-        rowSelectionModel={rowSelectionModel}
-        onRowSelectionModelChange={setRowSelectionModel}
-        disableRowSelectionExcludeModel
-        disableRowSelectionOnClick
-      />
-    </AdminListPageLayout>
+    </>
   );
 };
 

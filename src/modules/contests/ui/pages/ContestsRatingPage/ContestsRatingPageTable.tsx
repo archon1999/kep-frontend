@@ -1,4 +1,5 @@
 import { useMemo } from 'react';
+import { useTranslation } from 'react-i18next';
 import { Stack, Typography } from '@mui/material';
 import {
   DataGrid,
@@ -7,13 +8,12 @@ import {
   GridSortModel,
   GridValidRowModel,
 } from '@mui/x-data-grid';
-import IconifyIcon from 'shared/components/base/IconifyIcon';
-import ContestsRatingChip from 'shared/components/rating/ContestsRatingChip';
-import { useTranslation } from 'react-i18next';
 import { ContestRatingRow } from 'modules/contests/domain/entities/contest-rating.entity';
 import ContestantView from 'modules/contests/ui/shared/components/ContestantView';
-import { rowMatchesUsername } from 'shared/lib/pinnedRows';
+import IconifyIcon from 'shared/components/base/IconifyIcon';
+import ContestsRatingChip from 'shared/components/rating/ContestsRatingChip';
 import useStableGridRowCount from 'shared/hooks/useStableGridRowCount';
+import { rowMatchesUsername } from 'shared/lib/pinnedRows';
 
 export type ContestsRatingPageRow = GridValidRowModel & ContestRatingRow;
 
@@ -141,6 +141,7 @@ const ContestsRatingPageTable = ({
 
   return (
     <DataGrid
+      className="kep-data-grid-section"
       autoHeight
       disableRowSelectionOnClick
       loading={loading}

@@ -1,81 +1,49 @@
 import { useNavigate } from 'react-router';
 import { Box, Button, Stack, Typography } from '@mui/material';
-import Lottie from 'lottie-react';
+import { useDocumentNoIndex } from 'app/providers/DocumentTitleProvider';
 import { useForbiddenContent } from 'modules/errors/application';
-import animation404Dark from 'shared/assets/json/404-dark.json';
-import animation404 from 'shared/assets/json/404.json';
-import { useThemeMode } from 'shared/hooks/useThemeMode';
+import Logo from 'shared/components/common/Logo';
+import MixedText from 'shared/components/common/MixedText';
+import PatternArtwork from 'shared/components/common/PatternArtwork';
+import StandalonePage from 'shared/components/sections/common/StandalonePage';
 
 const Page403 = () => {
-  const { isDark } = useThemeMode();
+  useDocumentNoIndex();
   const { title, description, ctaHref, ctaLabel } = useForbiddenContent();
   const navigate = useNavigate();
-
-  const handleBack = () => {
-    if (window.history.length > 1) {
-      navigate(-1);
-      return;
-    }
-
-    navigate(ctaHref);
-  };
-
+  const handleBack = () => (window.history.length > 1 ? navigate(-1) : navigate(ctaHref));
   return (
-    <Stack
-      sx={{
-        justifyContent: 'center',
-        alignItems: 'center',
-        height: '100vh',
-        p: { xs: 2.5, sm: 5 },
-        overflow: 'hidden',
-      }}
-    >
+    <StandalonePage maxWidth={820}>
+      <Box sx={{ p: 3, borderBottom: 1, borderColor: 'divider' }}>
+        <Logo />
+      </Box>
       <Stack
-        direction="column"
-        sx={{
-          alignItems: 'center',
-          justifyContent: 'center',
-          textAlign: 'center',
-        }}
-        spacing={{ xs: 6, md: 8 }}
+        alignItems="center"
+        spacing={2.5}
+        sx={{ px: { xs: 3, sm: 6 }, py: { xs: 4, sm: 6 }, textAlign: 'center' }}
       >
-        <Box
-          sx={{
-            width: '100%',
-            maxWidth: {
-              xs: 300,
-              sm: 500,
-              md: 720,
-              lg: 920,
-            },
-            maxHeight: {
-              xs: '40vh',
-              sm: '45vh',
-              md: '55vh',
-              lg: '60vh',
-            },
-          }}
+        <PatternArtwork kind="error" sx={{ width: 280 }} />
+        <Typography
+          variant="metric"
+          sx={{ fontSize: { xs: 64, sm: 96 }, lineHeight: 1, color: 'primary.main' }}
         >
-          <Lottie
-            animationData={isDark ? animation404Dark : animation404}
-            style={{ width: '100%', height: '100%' }}
-          />
-        </Box>
-        <Box sx={{ textAlign: 'center' }}>
-          <Typography variant="h2" sx={{ color: 'text.disabled', fontWeight: 'medium', mb: 2 }}>
-            {title}
-          </Typography>
-          <Typography variant="h5" sx={{ color: 'text.secondary', fontWeight: 'normal', mb: 5 }}>
-            {description}
-          </Typography>
-
-          <Button variant="contained" size="large" sx={{ px: 7 }} onClick={handleBack}>
-            {ctaLabel}
-          </Button>
-        </Box>
+          403
+        </Typography>
+        <Typography
+          component="h1"
+          variant="h3"
+          sx={{ fontFamily: 'var(--kep-display-font)', fontWeight: 500 }}
+        >
+          <MixedText>{title}</MixedText>
+        </Typography>
+        <Typography color="text.secondary" sx={{ maxWidth: 460, lineHeight: 1.7 }}>
+          {description}
+        </Typography>
+        <Button variant="contained" size="large" onClick={handleBack}>
+          {ctaLabel}
+        </Button>
       </Stack>
-    </Stack>
+    </StandalonePage>
   );
 };
-
 export default Page403;

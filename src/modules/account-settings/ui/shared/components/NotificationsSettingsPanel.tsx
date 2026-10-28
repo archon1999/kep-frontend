@@ -1,9 +1,8 @@
 import { ChangeEvent, useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import {
-  Card,
-  CardContent,
-  CardHeader,
+  Alert,
+  Button,
   FormControlLabel,
   LinearProgress,
   Stack,
@@ -13,13 +12,19 @@ import {
 import { useAuth } from 'app/providers/AuthProvider.tsx';
 import { useAccountGeneralInfo, useUpdateGeneralInfo } from 'modules/account-settings/application';
 import { toast } from 'sonner';
+import SettingsSection from './SettingsSection';
 
 const NotificationsSettingsPanel = () => {
   const { t } = useTranslation();
   const { currentUser } = useAuth();
   const username = currentUser?.username;
   const [telegramNotificationsEnabled, setTelegramNotificationsEnabled] = useState(true);
-  const { data: generalInfo, isLoading, mutate } = useAccountGeneralInfo(username);
+  const {
+    data: generalInfo,
+    isLoading,
+    error: loadError,
+    mutate,
+  } = useAccountGeneralInfo(username);
   const { trigger: updateGeneralInfo, isMutating } = useUpdateGeneralInfo();
 
   useEffect(() => {
@@ -51,40 +56,49 @@ const NotificationsSettingsPanel = () => {
     }
   };
 
-  return (
-    <Card sx={{ outline: 'none', borderRadius: 3 }} background={1}>
-      <CardHeader
-        title={t('notifications.title')}
-        subheader={t('settings.botNotificationsSubtitle')}
-      />
-      <CardContent>
-        {isLoading || isMutating ? <LinearProgress sx={{ mb: 3 }} /> : null}
-        <Stack
-          direction={{ xs: 'column', sm: 'row' }}
-          spacing={2}
-          alignItems={{ xs: 'flex-start', sm: 'center' }}
-          justifyContent="space-between"
+  if (loadError)
+    return (
+      <SettingsSection title={t('notifications.title')}>
+        <Alert
+          severity="error"
+          action={<Button onClick={() => mutate()}>{t('common.retry')}</Button>}
         >
-          <Stack spacing={0.5}>
-            <Typography variant="subtitle2">{t('settings.botNotifications')}</Typography>
-            <Typography variant="body2" color="text.secondary">
-              {t('settings.botNotificationsSubtitle')}
-            </Typography>
-          </Stack>
-          <FormControlLabel
-            sx={{ m: 0, flexShrink: 0, gap: 1 }}
-            control={
-              <Switch
-                checked={telegramNotificationsEnabled}
-                onChange={handleTelegramNotificationsChange}
-                disabled={!username || isLoading || isMutating}
-              />
-            }
-            label={telegramNotificationsEnabled ? t('settings.enabled') : t('settings.disabled')}
-          />
+          {t('common.loadFailed')}
+        </Alert>
+      </SettingsSection>
+    );
+
+  return (
+    <SettingsSection
+      title={t('notifications.title')}
+      description={t('settings.botNotificationsSubtitle')}
+    >
+      {isLoading || isMutating ? <LinearProgress sx={{ mb: 3 }} /> : null}
+      <Stack
+        direction={{ xs: 'column', sm: 'row' }}
+        spacing={2}
+        alignItems={{ xs: 'flex-start', sm: 'center' }}
+        justifyContent="space-between"
+      >
+        <Stack spacing={0.5}>
+          <Typography variant="subtitle2">{t('settings.botNotifications')}</Typography>
+          <Typography variant="body2" color="text.secondary">
+            {t('settings.botNotificationsSubtitle')}
+          </Typography>
         </Stack>
-      </CardContent>
-    </Card>
+        <FormControlLabel
+          sx={{ m: 0, flexShrink: 0, gap: 1 }}
+          control={
+            <Switch
+              checked={telegramNotificationsEnabled}
+              onChange={handleTelegramNotificationsChange}
+              disabled={!username || isLoading || isMutating}
+            />
+          }
+          label={telegramNotificationsEnabled ? t('settings.enabled') : t('settings.disabled')}
+        />
+      </Stack>
+    </SettingsSection>
   );
 };
 

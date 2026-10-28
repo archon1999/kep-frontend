@@ -4,8 +4,10 @@ import { Components } from '@mui/material/styles';
 const FormHelperText: Components<Omit<Theme, 'components'>>['MuiFormHelperText'] = {
   styleOverrides: {
     root: ({ theme }) => ({
+      lineHeight: 1.5,
+      overflowWrap: 'anywhere',
       [`&.${formHelperTextClasses.error}`]: {
-        color: theme.vars.palette.error.light,
+        color: theme.vars.palette.error.main,
       },
     }),
   },

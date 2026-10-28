@@ -1,19 +1,11 @@
 import { useTranslation } from 'react-i18next';
-import {
-  Box,
-  Button,
-  CircularProgress,
-  Divider,
-  IconButton,
-  LinearProgress,
-  Paper,
-  Stack,
-  Typography,
-} from '@mui/material';
+import { Box, Button, IconButton, LinearProgress, Stack, Typography } from '@mui/material';
+import { TestPassQuestion } from 'modules/testing/domain/entities/test-pass.types';
 import IconifyIcon from 'shared/components/base/IconifyIcon';
-import { TestPassQuestion } from '../types';
+import PatternArtwork from 'shared/components/common/PatternArtwork';
+import SectionHeader from 'shared/components/sections/common/SectionHeader';
 
-interface TestPassSidebarProps {
+type Props = {
   questions: TestPassQuestion[];
   currentIndex: number;
   disabled: boolean;
@@ -22,8 +14,7 @@ interface TestPassSidebarProps {
   onFinish: () => void;
   mobile?: boolean;
   onClose?: () => void;
-}
-
+};
 const TestPassSidebar = ({
   questions,
   currentIndex,
@@ -33,65 +24,60 @@ const TestPassSidebar = ({
   onFinish,
   mobile = false,
   onClose,
-}: TestPassSidebarProps) => {
-  const { t } = useTranslation();
-  const answeredCount = questions.filter((question) => question.answered).length;
-
+}: Props) => {
+  const { t } = useTranslation(),
+    answered = questions.filter((q) => q.answered).length;
   return (
-    <Paper
-      variant="elevation"
-      elevation={0}
+    <Box
+      component="section"
+      className="kep-test-questions"
       sx={{
-        bgcolor: mobile ? 'background.paper' : 'background.elevation1',
-        border: 0,
-        borderRadius: mobile ? 0 : 4,
-        overflow: 'hidden',
-        position: mobile ? undefined : { md: 'sticky' },
-        top: { md: 96 },
+        minWidth: 0,
+        bgcolor: 'background.default',
+        position: mobile ? undefined : 'sticky',
+        top: 0,
+        maxHeight: mobile ? '80dvh' : undefined,
+        display: 'flex',
+        flexDirection: 'column',
       }}
     >
-      <Stack
-        spacing={mobile ? 1.5 : 2.5}
-        sx={{ p: mobile ? 2 : 2.5, maxHeight: mobile ? '80dvh' : undefined, minHeight: 0 }}
-      >
-        <Stack spacing={1.25} sx={{ flexShrink: 0 }}>
-          <Stack direction="row" alignItems="center" justifyContent="space-between">
-            <Typography
-              component="h2"
-              id={mobile ? 'test-mobile-questions-title' : undefined}
-              variant="subtitle1"
-              fontWeight={600}
-            >
-              {t('tests.questions')}
-            </Typography>
-            <Stack direction="row" alignItems="center" gap={1}>
+      <SectionHeader
+        title={t('tests.questions')}
+        id={mobile ? 'test-mobile-questions-title' : undefined}
+        action={
+          <Stack direction="row" gap={1} alignItems="center">
+            <Typography variant="metric" color="primary.main" sx={{ fontSize: 22 }}>
+              {answered}
               <Typography
-                variant="body2"
+                component="span"
+                variant="metric"
                 color="text.secondary"
-                sx={{ fontVariantNumeric: 'tabular-nums' }}
+                sx={{ fontSize: 14 }}
               >
-                {answeredCount}/{questions.length}
+                {' '}
+                / {questions.length}
               </Typography>
-              {mobile && (
-                <IconButton
-                  onClick={onClose}
-                  aria-label={t('tests.closeQuestions')}
-                  sx={{ width: 44, height: 44 }}
-                >
-                  <IconifyIcon icon="material-symbols:close-rounded" fontSize={24} />
-                </IconButton>
-              )}
-            </Stack>
+            </Typography>
+            {mobile ? (
+              <IconButton onClick={onClose} aria-label={t('tests.closeQuestions')} size="small">
+                <IconifyIcon icon="mdi:close" />
+              </IconButton>
+            ) : (
+              <PatternArtwork kind="daily-tasks" sx={{ width: 64, opacity: 0.4 }} />
+            )}
           </Stack>
+        }
+      />
+      <Stack gap={2.5} sx={{ p: 'var(--kep-content-inset)', minHeight: 0, overflowY: 'auto' }}>
+        <Stack gap={1}>
           <Typography variant="body2" color="text.secondary">
-            {t('tests.savedAnswers', { count: answeredCount, total: questions.length })}
+            {t('tests.savedAnswers', { count: answered, total: questions.length })}
           </Typography>
           <LinearProgress
-            aria-label={t('tests.savedAnswers', { count: answeredCount, total: questions.length })}
             variant="determinate"
-            value={questions.length ? (answeredCount / questions.length) * 100 : 0}
-            color="success"
-            sx={{ height: 4, borderRadius: 1 }}
+            value={questions.length ? (answered / questions.length) * 100 : 0}
+            aria-label={t('tests.savedAnswers', { count: answered, total: questions.length })}
+            sx={{ height: 3, bgcolor: 'action.selected' }}
           />
         </Stack>
         <Box
@@ -99,74 +85,71 @@ const TestPassSidebar = ({
           aria-label={t('tests.questions')}
           sx={{
             display: 'grid',
-            gridTemplateColumns: {
-              xs: 'repeat(5, minmax(0, 1fr))',
-              sm: 'repeat(6, minmax(0, 1fr))',
-              md: 'repeat(5, minmax(0, 1fr))',
-              lg: 'repeat(6, minmax(0, 1fr))',
-            },
+            gridTemplateColumns: 'repeat(5,minmax(0,1fr))',
             gap: 1,
-            maxHeight: mobile ? '40dvh' : { md: 320 },
-            minHeight: 0,
-            flexShrink: 1,
+            maxHeight: mobile ? '40dvh' : 340,
             overflowY: 'auto',
-            p: 0.5,
-            m: -0.5,
+            p: 0.25,
+            minHeight: 0,
           }}
         >
-          {questions.map((question, index) => {
-            const isCurrent = index === currentIndex;
-
-            return (
-              <Button
-                key={question.id ?? question.number}
-                variant={isCurrent ? 'contained' : 'soft'}
-                color={isCurrent ? 'primary' : question.answered ? 'success' : 'neutral'}
-                aria-current={isCurrent ? 'step' : undefined}
-                aria-label={`${t('tests.questionLabel', { index: question.number, total: questions.length })}, ${t(question.answered ? 'tests.answered' : 'tests.notAnswered')}`}
-                onClick={() => onQuestionSelect(index)}
-                disabled={disabled}
-                sx={{
-                  minWidth: 0,
-                  height: mobile ? 44 : 40,
-                  p: 0,
-                  borderRadius: 1.25,
-                  fontVariantNumeric: 'tabular-nums',
-                }}
-              >
-                {question.number}
-              </Button>
-            );
-          })}
+          {questions.map((q, i) => (
+            <Button
+              key={q.id ?? q.number}
+              variant={i === currentIndex ? 'contained' : 'outlined'}
+              color={q.answered ? 'success' : 'primary'}
+              aria-current={i === currentIndex ? 'step' : undefined}
+              aria-label={
+                t('tests.questionLabel', { index: q.number, total: questions.length }) +
+                ', ' +
+                t(q.answered ? 'tests.answered' : 'tests.notAnswered')
+              }
+              disabled={disabled}
+              onClick={() => onQuestionSelect(i)}
+              sx={{
+                minWidth: 0,
+                p: 0,
+                height: 44,
+                borderRadius: 0,
+                fontFamily: 'var(--kep-display-font)',
+                fontFeatureSettings: '"ss01" 1',
+                fontSize: 17,
+                borderColor: i === currentIndex ? undefined : 'var(--kep-line)',
+                color:
+                  i === currentIndex ? undefined : q.answered ? 'success.main' : 'text.secondary',
+              }}
+            >
+              {String(q.number).padStart(2, '0')}
+            </Button>
+          ))}
         </Box>
-        <Stack direction="row" spacing={1.5} useFlexGap flexWrap="wrap" sx={{ flexShrink: 0 }}>
+        <Stack direction="row" gap={2} flexWrap="wrap">
           {[
-            { label: 'tests.answered', color: 'success.main' },
-            { label: 'tests.notAnswered', color: 'text.disabled' },
-          ].map(({ label, color }) => (
-            <Stack key={label} direction="row" alignItems="center" spacing={0.75}>
-              <Box sx={{ width: 6, height: 6, borderRadius: '50%', bgcolor: color }} />
+            { key: 'tests.answered', color: 'success.main' },
+            { key: 'tests.notAnswered', color: 'text.disabled' },
+          ].map((s) => (
+            <Stack key={s.key} direction="row" gap={0.75} alignItems="center">
+              <Box sx={{ width: 5, height: 5, bgcolor: s.color }} />
               <Typography variant="caption" color="text.secondary">
-                {t(label)}
+                {t(s.key)}
               </Typography>
             </Stack>
           ))}
         </Stack>
-        <Divider sx={{ flexShrink: 0 }} />
-        <Button
-          variant="outlined"
-          color="neutral"
-          fullWidth
-          onClick={onFinish}
-          disabled={disabled}
-          startIcon={isFinishing ? <CircularProgress size={18} color="inherit" /> : undefined}
-          sx={{ minHeight: mobile ? 44 : undefined, flexShrink: 0 }}
-        >
-          {t('tests.finishTest')}
-        </Button>
+        <Box sx={{ pt: 2.5, borderTop: '1px solid var(--kep-line)' }}>
+          <Button
+            variant="outlined"
+            fullWidth
+            onClick={onFinish}
+            disabled={disabled}
+            loading={isFinishing}
+            endIcon={<IconifyIcon icon="mdi:flag-checkered" />}
+          >
+            {t('tests.finishTest')}
+          </Button>
+        </Box>
       </Stack>
-    </Paper>
+    </Box>
   );
 };
-
 export default TestPassSidebar;

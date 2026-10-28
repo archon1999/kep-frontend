@@ -1,13 +1,15 @@
 import { useTranslation } from 'react-i18next';
-import { Chip } from '@mui/material';
+import { Chip, ChipProps } from '@mui/material';
 import { type Hackathon, HackathonStatus } from 'modules/hackathons/domain';
+import IconifyIcon from 'shared/components/base/IconifyIcon';
 import { isAfterNow, isBeforeNow } from 'shared/lib/dateTime';
 
 interface HackathonStatusChipProps {
   hackathon: Hackathon;
+  variant?: ChipProps['variant'];
 }
 
-const HackathonStatusChip = ({ hackathon }: HackathonStatusChipProps) => {
+const HackathonStatusChip = ({ hackathon, variant = 'status' }: HackathonStatusChipProps) => {
   const { t } = useTranslation();
   const finished =
     hackathon.status === HackathonStatus.FINISHED ||
@@ -19,8 +21,21 @@ const HackathonStatusChip = ({ hackathon }: HackathonStatusChipProps) => {
   return (
     <Chip
       size="small"
-      variant="soft"
+      variant={variant}
       color={finished ? 'neutral' : upcoming ? 'info' : 'success'}
+      icon={
+        variant === 'status' ? (
+          <IconifyIcon
+            icon={
+              finished
+                ? 'mdi:check-circle-outline'
+                : upcoming
+                  ? 'mdi:clock-outline'
+                  : 'mdi:access-point'
+            }
+          />
+        ) : undefined
+      }
       label={t(
         finished ? 'hackathons.finished' : upcoming ? 'hackathons.upcoming' : 'hackathons.active',
       )}

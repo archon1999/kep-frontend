@@ -1,17 +1,9 @@
 import { useState } from 'react';
 import { useTranslation } from 'react-i18next';
-import {
-  Avatar,
-  Box,
-  ButtonBase,
-  Chip,
-  Pagination,
-  Stack,
-  TextField,
-  Typography,
-} from '@mui/material';
+import { Avatar, Box, ButtonBase, Chip, Stack, TextField, Typography } from '@mui/material';
 import UserPopover from 'modules/users/ui/shared/components/UserPopover';
 import DebouncedTextField from 'shared/components/common/DebouncedTextField';
+import { ListPagination } from 'shared/components/sections/common/FramedListPage';
 import type { Participant } from '../../../../domain/entities/giveaway.types';
 
 export default function Participants({
@@ -69,13 +61,15 @@ export default function Participants({
             gap={1}
             sx={{
               p: 1.5,
-              borderRadius: 2,
-              bgcolor: person.username === username ? 'action.selected' : 'action.hover',
+              borderRadius: 0,
+              bgcolor: person.username === username ? 'action.selected' : 'transparent',
+              borderBottom: '1px solid',
+              borderColor: 'divider',
               minWidth: 0,
             }}
           >
             <UserPopover username={person.username} avatar={person.avatar ?? undefined}>
-              <ButtonBase sx={{ gap: 1, minWidth: 0, borderRadius: 1, textAlign: 'left' }}>
+              <ButtonBase sx={{ gap: 1, minWidth: 0, borderRadius: 0, textAlign: 'left' }}>
                 <Avatar
                   src={person.avatar ?? undefined}
                   alt={person.username}
@@ -100,11 +94,10 @@ export default function Participants({
         </Typography>
       )}
       {filtered.length > 24 && (
-        <Pagination
-          sx={{ mt: 3 }}
+        <ListPagination
           count={Math.ceil(filtered.length / 24)}
           page={currentPage}
-          onChange={(_, value) => setPage(value)}
+          onChange={setPage}
         />
       )}
     </Box>

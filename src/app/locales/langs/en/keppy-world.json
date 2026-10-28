@@ -1,7 +1,7 @@
 {
   "keppyWorld": {
     "welcome": "Keppy World",
-    "intro": "Choose your mascot. Explore, solve quests and open new places together.",
+    "intro": "Choose a character, complete quests, and help unlock new areas for everyone.",
     "chooseMascot": "Choose your character",
     "enterWorld": "Enter the world",
     "community": "Community contribution",
@@ -19,7 +19,7 @@
     "emptyRanking": "Complete a quest to join the leaderboard.",
     "questHelp": "Approach a marker on the map and press Enter to claim a quest.",
     "difficulty": "Difficulty {{count}}",
-    "signInDescription": "Sign in to save your character and join the shared world.",
+    "signInDescription": "Sign in to save your character, quest progress, and XP.",
     "signIn": "Sign in",
     "loadError": "The world is unavailable. Please try again.",
     "requestFailed": "Could not complete the action. Please try again.",
@@ -132,7 +132,7 @@
       "worldLevel": "World · Level {{count}}",
       "next": "{{name}} · {{xp}} XP",
       "fullyBuilt": "All regions unlocked",
-      "help": "Quest XP expands the world. Buildings take shape with each level.",
+      "help": "Quest XP contributes to the community’s world level and area unlocks.",
       "levelUp": "The world reached level {{count}}",
       "you": "You",
       "players": "Players",
@@ -167,7 +167,6 @@
     "brainWatchTime": "Remember the pattern: {{seconds}} seconds",
     "brainTimeLeft": "Time left: {{seconds}} seconds",
     "rankColumn": "Rank",
-    "rankingRange": "{{from}}–{{to}} of {{total}} players",
     "yourRank": "Your rank: {{rank}}",
     "playerColumn": "Player",
     "completedTasksColumn": "Done",
@@ -197,6 +196,6 @@
     "practice": "Practice",
     "practiceNoXp": "Practice · no XP",
     "pointCooldown": "XP available in {{time}}",
-    "pointRewardRule": "Each point awards XP once every 24 hours. New islands add more points. You can practice while a point recharges."
+    "pointRewardRule": "A quest point grants XP once per 24 hours. You can keep practising there while its reward resets."
   }
 }

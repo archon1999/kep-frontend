@@ -1,4 +1,4 @@
-import { GridSortModel } from '@mui/x-data-grid';
+import type { SortModel as GridSortModel } from 'shared/lib/grid-state';
 
 export const getOrderingFromSortModel = (
   model: GridSortModel,

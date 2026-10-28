@@ -1,30 +1,34 @@
 import { useEffect, useMemo, useRef, useState } from 'react';
-import { Box, Card, CardContent, Chip, Divider, Stack, Typography } from '@mui/material';
-import { GridPaginationModel } from '@mui/x-data-grid';
-import { Panel, PanelGroup } from 'react-resizable-panels';
 import { useTranslation } from 'react-i18next';
-import { toast } from 'sonner';
-import useSWR from 'swr';
-import { duelsQueries } from 'modules/duels/application/queries.ts';
+import { Box, Button, Stack, Tab, Tabs, Typography, useMediaQuery, useTheme } from '@mui/material';
+import { GridPaginationModel } from '@mui/x-data-grid';
+import { submitDuelSolution } from 'modules/duels/application/mutations';
 import {
   Duel,
   DuelDetailPageNavigationProblem,
   DuelDetailPageWorkspaceTab,
   DuelProblem,
 } from 'modules/duels/domain/index.ts';
-import { problemsQueries } from 'modules/problems/application/queries.ts';
-import { AttemptsListParams } from 'modules/problems/domain/ports/problems.repository';
-import { usePersistedCode } from 'modules/problems/hooks/usePersistedCode';
-import { useProblemLanguage } from 'modules/problems/hooks/useProblemLanguage';
+import { usePersistedCode } from 'modules/problems/application/hooks/usePersistedCode';
+import { useProblemLanguage } from 'modules/problems/application/hooks/useProblemLanguage';
+import {
+  checkProblemSampleTests,
+  runProblemCustomTest,
+} from 'modules/problems/application/mutations';
+import { useDuelWorkspaceAttempts } from 'modules/problems/application/queries.ts';
+import { AttemptsListParams } from 'modules/problems/domain/contracts/problems.repository';
 import ProblemsAttemptsTable from 'modules/problems/ui/shared/components/ProblemsAttemptsTable.tsx';
-import { PanelHandle } from 'modules/problems/ui/shared/components/problem-detail/PanelHandles';
 import { ProblemBody } from 'modules/problems/ui/shared/components/problem-detail/ProblemBody';
 import ProblemDescriptionSkeleton from 'modules/problems/ui/shared/components/problem-detail/ProblemDescriptionSkeleton';
 import { ProblemEditorPanel } from 'modules/problems/ui/shared/components/problem-detail/ProblemEditorPanel';
 import ProblemEditorSkeleton from 'modules/problems/ui/shared/components/problem-detail/ProblemEditorSkeleton';
-import { VerdictKey } from 'shared/components/problems/attemptVerdict.utils';
+import ProblemIntro from 'modules/problems/ui/shared/components/problem-detail/ProblemIntro';
+import { ProblemWorkspaceLayout } from 'modules/problems/ui/shared/components/problem-detail/ProblemWorkspaceLayout';
 import IconifyIcon from 'shared/components/base/IconifyIcon';
-import ResponsiveTabs from 'shared/components/common/ResponsiveTabs';
+import EmptyState from 'shared/components/common/EmptyState';
+import MixedText from 'shared/components/common/MixedText';
+import { VerdictKey } from 'shared/components/problems/attemptVerdict.utils';
+import { WorkspacePane, WorkspaceToolbar } from 'shared/components/sections/common/Workspace';
 import useGridPagination from 'shared/hooks/useGridPagination';
 import useRouteQueryState from 'shared/hooks/useRouteQueryState';
 import { useThemeMode } from 'shared/hooks/useThemeMode.tsx';
@@ -32,11 +36,13 @@ import { useLoginRedirect } from 'shared/lib/authRedirect';
 import { formatCalendarDateTime } from 'shared/lib/dateTime';
 import { enumParam, stringParam } from 'shared/lib/queryParams';
 import { wsService } from 'shared/services/websocket';
+import { toast } from 'sonner';
 import DuelResultsFooter from './components/DuelResultsFooter.tsx';
 import { playDuelTickSound } from './duelTickSound.ts';
 
 export type DuelDetailPageWorkspaceProps = {
   duel: Duel;
+  hasCode: boolean;
   isLoading: boolean;
   isValidating: boolean;
   activeTab: DuelDetailPageWorkspaceTab;
@@ -148,9 +154,7 @@ const useProblemPermissions = (permissionsRaw: unknown) =>
     const value = permissionsRaw as Record<string, unknown>;
 
     return {
-      canUseCheckSamples: Boolean(
-        value.canUseCheckSamples ?? value.can_use_check_samples,
-      ),
+      canUseCheckSamples: Boolean(value.canUseCheckSamples ?? value.can_use_check_samples),
     };
   }, [permissionsRaw]);
 
@@ -165,7 +169,11 @@ export const useDuelDetailPageWorkspaceState = ({
   const themeMode = useThemeMode();
   const redirectToLogin = useLoginRedirect();
   const permissions = useProblemPermissions(currentUser?.permissions);
-  const { state: routeState, patchState, setField } = useRouteQueryState<DuelDetailQueryState>({
+  const {
+    state: routeState,
+    patchState,
+    setField,
+  } = useRouteQueryState<DuelDetailQueryState>({
     defaults: {
       activeTab: 'description',
       problem: '',
@@ -262,9 +270,7 @@ export const useDuelDetailPageWorkspaceState = ({
   const isWorkspaceLocked = duel?.status === -1 || !activeProblem?.problem;
   const isSubmitLocked = isWorkspaceLocked || !activeProblem?.canSubmit;
   const showDuelAttempts = Boolean(
-    currentUser &&
-      duel &&
-      (duel.viewerRole !== 'spectator' || duel.duelType?.code === 'BallF'),
+    currentUser && duel && (duel.viewerRole !== 'spectator' || duel.duelType?.code === 'BallF'),
   );
   const canUseCheckSamples = Boolean(permissions.canUseCheckSamples || currentUser?.isSuperuser);
 
@@ -286,9 +292,7 @@ export const useDuelDetailPageWorkspaceState = ({
   }, [duel?.id]);
 
   useEffect(() => {
-    const claimedProblems = navigationProblems.filter(
-      (problem) => problem.firstAcceptedAttemptId,
-    );
+    const claimedProblems = navigationProblems.filter((problem) => problem.firstAcceptedAttemptId);
     if (!hasInitializedFirstAcClaimsRef.current) {
       claimedProblems.forEach((problem) => {
         handledFirstAcAttemptsRef.current.add(problem.firstAcceptedAttemptId!);
@@ -444,11 +448,7 @@ export const useDuelDetailPageWorkspaceState = ({
     data: attemptsPage,
     mutate: mutateAttempts,
     isLoading: isAttemptsLoading,
-  } = useSWR(
-    attemptsParams ? ['duel-workspace-attempts', attemptsParams] : null,
-    () => problemsQueries.problemsRepository.listAttempts(attemptsParams!),
-    { keepPreviousData: true, revalidateOnFocus: false },
-  );
+  } = useDuelWorkspaceAttempts(attemptsParams);
 
   const { selectedLang, setSelectedLang, selectedLanguage } = useProblemLanguage({
     availableLanguages: activeProblem?.problem?.availableLanguages,
@@ -465,10 +465,7 @@ export const useDuelDetailPageWorkspaceState = ({
     template: selectedLanguage?.codeTemplate || '',
   });
 
-  const updateSearch = (values: {
-    tab?: DuelDetailPageWorkspaceTab;
-    symbol?: string | null;
-  }) => {
+  const updateSearch = (values: { tab?: DuelDetailPageWorkspaceTab; symbol?: string | null }) => {
     patchState((prev) => ({
       activeTab: values.tab ?? prev.activeTab,
       problem: values.symbol ?? activeNavigationProblem?.symbol ?? prev.problem,
@@ -495,7 +492,7 @@ export const useDuelDetailPageWorkspaceState = ({
 
     setIsSubmitting(true);
     try {
-      await duelsQueries.duelsRepository.submitToDuel(duel.id, {
+      await submitDuelSolution(duel.id, {
         duelProblem: activeProblem.symbol,
         sourceCode: codeRef.current,
         lang: selectedLang,
@@ -535,7 +532,7 @@ export const useDuelDetailPageWorkspaceState = ({
     setIsRunning(true);
     setOutput('');
     try {
-      const response = await problemsQueries.problemsRepository.runCustomTest({
+      const response = await runProblemCustomTest({
         problemId: activeProblem.problem.id,
         sourceCode: codeRef.current,
         lang: selectedLang,
@@ -578,13 +575,10 @@ export const useDuelDetailPageWorkspaceState = ({
     setIsCheckingSamples(true);
     setCheckSamplesResult([]);
     try {
-      const response = await problemsQueries.problemsRepository.checkSampleTests(
-        activeProblem.problem.id,
-        {
-          sourceCode: codeRef.current,
-          lang: selectedLang,
-        },
-      );
+      const response = await checkProblemSampleTests(activeProblem.problem.id, {
+        sourceCode: codeRef.current,
+        lang: selectedLang,
+      });
 
       if (response?.id) {
         wsService.send('check-sample-tests-add', response.id);
@@ -702,6 +696,7 @@ export const useDuelDetailPageWorkspaceState = ({
   return {
     workspaceProps: {
       duel,
+      hasCode,
       isLoading,
       isValidating,
       activeTab,
@@ -756,6 +751,7 @@ export const useDuelDetailPageWorkspaceState = ({
 
 const DuelDetailPageWorkspace = ({
   duel,
+  hasCode,
   isLoading,
   isValidating,
   activeTab,
@@ -770,7 +766,6 @@ const DuelDetailPageWorkspace = ({
   isAttemptsLoading,
   workspaceAttemptLink,
   onRefreshAttempts,
-  onChangeTab,
   onSelectProblem,
   initialCode,
   editorKey,
@@ -796,240 +791,220 @@ const DuelDetailPageWorkspace = ({
   editorTheme,
 }: DuelDetailPageWorkspaceProps) => {
   const { t } = useTranslation();
+  const theme = useTheme();
+  const compact = useMediaQuery(theme.breakpoints.down('md'));
+  const [mobilePane, setMobilePane] = useState<'description' | 'editor'>('description');
   const [unlockNow, setUnlockNow] = useState(Date.now());
+  const attemptsRef = useRef<HTMLElement | null>(null);
   const unlockSeconds = activeNavigationProblem?.unlockAt
     ? Math.max(
         0,
         Math.ceil((new Date(activeNavigationProblem.unlockAt).getTime() - unlockNow) / 1000),
       )
-    : null;
-
+    : 0;
   useEffect(() => {
     if (!activeNavigationProblem?.isLocked || !activeNavigationProblem.unlockAt) return;
     const interval = window.setInterval(() => setUnlockNow(Date.now()), 250);
     return () => window.clearInterval(interval);
   }, [activeNavigationProblem?.isLocked, activeNavigationProblem?.unlockAt]);
-
-  const lockedProblemMessage = activeNavigationProblem?.unlockAt
-    ? t('duels.problemUnlocksIn', { seconds: unlockSeconds ?? 0 })
-    : t('duels.solvePreviousProblemFirst');
-
-  return (
-    <Card
-      sx={{
-        flex: 1,
-        display: 'flex',
-        flexDirection: 'column',
-        minHeight: 0,
-        position: 'relative',
-      }}
-    >
-      <PanelGroup direction="horizontal" style={{ flex: 1, minHeight: 0 }}>
-        <Panel defaultSize={50} minSize={35}>
-          {activeProblem?.problem ? (
-            <Card
-              background={0}
-              sx={{
-                height: '100%',
-                display: 'flex',
-                flexDirection: 'column',
-                overflow: 'hidden',
-              }}
-            >
-              <CardContent sx={{ flex: 1, minHeight: 0, overflowY: 'auto', p: 0 }}>
-                <ResponsiveTabs
-                  value={activeTab}
-                  onChange={onChangeTab}
-                  ariaLabel="duel problem tabs"
-                  items={[
-                    {
-                      value: 'description',
-                      label: t('contests.problem.description'),
-                      icon: (
-                        <IconifyIcon icon="mdi:book-open-page-variant" width={18} height={18} />
-                      ),
-                      tabProps: { iconPosition: 'start', sx: { fontWeight: 600 } },
-                    },
-                    {
-                      value: 'attempts',
-                      label: t('duels.myAttempts'),
-                      icon: <IconifyIcon icon="mdi:history" width={18} height={18} />,
-                      tabProps: { iconPosition: 'start', sx: { fontWeight: 600 } },
-                    },
-                  ]}
-                  tabsProps={{
-                    variant: 'scrollable',
-                    scrollButtons: 'auto',
-                    textColor: 'primary',
-                    indicatorColor: 'primary',
-                    sx: { px: 2, pt: 1 },
-                  }}
-                />
-                <Divider />
-
-                <Box sx={{ p: 3 }}>
-                  {activeTab === 'description' ? (
-                    <Stack spacing={2}>
-                      <Stack spacing={1}>
-                        <Typography variant="h5" fontWeight={700}>
-                          {activeProblem.symbol}. {activeProblem.problem.title}
-                        </Typography>
-                        <Stack direction="row" spacing={1} flexWrap="wrap" useFlexGap>
-                          <Chip label={`${activeProblem.ball ?? 0} pts`} size="small" />
-                          <Chip
-                            label={`${selectedLanguage?.timeLimit ?? activeProblem.problem.timeLimit ?? 0} ms`}
-                            size="small"
-                            variant="outlined"
-                          />
-                          <Chip
-                            label={`${selectedLanguage?.memoryLimit ?? activeProblem.problem.memoryLimit ?? 0} MB`}
-                            size="small"
-                            variant="outlined"
-                          />
-                        </Stack>
-                      </Stack>
-
-                      <ProblemBody problem={activeProblem.problem} />
-                    </Stack>
-                  ) : isAuthenticated ? (
-                    <ProblemsAttemptsTable
-                      attempts={attempts}
-                      total={attemptsTotal}
-                      paginationModel={attemptsPagination}
-                      onPaginationChange={onAttemptsPaginationChange}
-                      isLoading={isAttemptsLoading}
-                      onRerun={onRefreshAttempts}
-                      showProblemColumn={false}
-                      getProblemLink={() => workspaceAttemptLink}
-                    />
-                  ) : (
-                    <Typography color="text.secondary">{t('duels.signInForAttempts')}</Typography>
-                  )}
-                </Box>
-              </CardContent>
-            </Card>
-          ) : navigationProblems.length &&
-            duel.status !== -1 &&
-            !activeNavigationProblem?.isLocked &&
-            (isLoading || isValidating) ? (
-            <ProblemDescriptionSkeleton />
-          ) : (
-            <Card
-              background={0}
-              sx={{
-                height: '100%',
-                display: 'flex',
-                flexDirection: 'column',
-                overflow: 'hidden',
-              }}
-            >
-              <CardContent
-                sx={{
-                  flex: 1,
-                  display: 'flex',
-                  alignItems: 'center',
-                  justifyContent: 'center',
-                  textAlign: 'center',
-                  p: 4,
-                }}
+  useEffect(() => {
+    if (activeTab !== 'attempts' || isSubmitting) return;
+    setMobilePane('description');
+    attemptsRef.current?.scrollIntoView({ block: 'start' });
+  }, [activeTab, isSubmitting, activeProblem?.problem?.id, compact]);
+  const lockedMessage =
+    duel.status === -1
+      ? t('duels.workspaceLockedDescription', {
+          startTime: formatDuelDetailPageDate(duel.startTime),
+        })
+      : activeNavigationProblem?.isLocked
+        ? activeNavigationProblem.unlockAt
+          ? t('duels.problemUnlocksIn', { seconds: unlockSeconds })
+          : t('duels.solvePreviousProblemFirst')
+        : t('duels.noProblems');
+  const loadingProblem =
+    !activeProblem?.problem &&
+    navigationProblems.length > 0 &&
+    duel.status !== -1 &&
+    !activeNavigationProblem?.isLocked &&
+    (isLoading || isValidating);
+  const description = activeProblem?.problem ? (
+    <WorkspacePane component="section" aria-label={t('contests.problem.description')}>
+      <Box sx={{ flex: 1, minHeight: 0, overflowY: 'auto' }}>
+        <Stack gap={2} sx={{ p: { xs: 2, md: 3 }, minWidth: 0 }}>
+          <ProblemIntro
+            symbol={activeProblem.symbol}
+            title={activeProblem.problem.title}
+            timeLimit={selectedLanguage?.timeLimit ?? activeProblem.problem.timeLimit ?? 0}
+            memoryLimit={selectedLanguage?.memoryLimit ?? activeProblem.problem.memoryLimit ?? 0}
+            metadata={
+              <Typography variant="metric" color="primary.main" sx={{ fontSize: 14 }}>
+                {activeProblem.ball ?? 0} {t('duels.points')}
+              </Typography>
+            }
+          />
+          <ProblemBody problem={activeProblem.problem} />
+        </Stack>
+        <Box
+          component="section"
+          ref={attemptsRef}
+          aria-labelledby="duel-attempts-heading"
+          sx={{ borderTop: '1px solid var(--kep-line)' }}
+        >
+          <Typography
+            component="h2"
+            id="duel-attempts-heading"
+            sx={{
+              px: { xs: 2, md: 3 },
+              py: 2,
+              fontFamily: 'var(--kep-display-font)',
+              fontWeight: 500,
+              fontSize: 18,
+            }}
+          >
+            <MixedText>{t('duels.myAttempts')}</MixedText>
+          </Typography>
+          {isAuthenticated ? (
+            !isAttemptsLoading && !attempts.length ? (
+              <Typography
+                variant="body2"
+                color="text.secondary"
+                sx={{ px: { xs: 2, md: 3 }, pb: 3 }}
               >
-                <Stack spacing={1.5} alignItems="center" maxWidth={420}>
-                  <IconifyIcon icon="mdi:shield-lock-outline" width={36} height={36} />
-                  <Typography variant="h6" fontWeight={700}>
-                    {activeNavigationProblem
-                      ? `${activeNavigationProblem.symbol} | ${activeNavigationProblem.ball ?? 0} pts`
-                      : t('duels.problems')}
-                  </Typography>
-                  <Typography color="text.secondary">
-                    {duel.status === -1
-                      ? t('duels.workspaceLockedDescription', {
-                          startTime: formatDuelDetailPageDate(duel.startTime),
-                        })
-                      : activeNavigationProblem?.isLocked
-                        ? lockedProblemMessage
-                        : t('duels.noProblems')}
-                  </Typography>
-                </Stack>
-              </CardContent>
-            </Card>
-          )}
-        </Panel>
-
-        <PanelHandle />
-
-        <Panel defaultSize={50} minSize={35}>
-          {activeProblem?.problem ? (
-            <ProblemEditorPanel
-              problem={activeProblem.problem}
-              initialCode={initialCode}
-              editorKey={editorKey}
-              onCodeChange={onCodeChange}
-              selectedLang={selectedLang}
-              onLangChange={onLangChange}
-              sampleTests={activeProblem.problem.sampleTests ?? []}
-              selectedSampleIndex={selectedSampleIndex}
-              onSampleChange={onSampleChange}
-              input={input}
-              onInputChange={onInputChange}
-              output={output}
-              answer={answer}
-              onRun={onRun}
-              onSubmit={onSubmit}
-              onCheckSamples={onCheckSamples}
-              isRunning={isRunning}
-              isSubmitting={isSubmitting}
-              isCheckingSamples={isCheckingSamples}
-              checkSamplesResult={checkSamplesResult}
-              editorTab={editorTab}
-              onEditorTabChange={onEditorTabChange}
-              canUseCheckSamples={false}
-              editorTheme={editorTheme}
-            />
-          ) : navigationProblems.length &&
-            duel.status !== -1 &&
-            !activeNavigationProblem?.isLocked &&
-            (isLoading || isValidating) ? (
-            <ProblemEditorSkeleton />
+                {t('common.dataGrid.noRows.problemAttempts')}
+              </Typography>
+            ) : (
+              <ProblemsAttemptsTable
+                surface="section"
+                paginationStyle="list"
+                attempts={attempts}
+                total={attemptsTotal}
+                paginationModel={attemptsPagination}
+                onPaginationChange={onAttemptsPaginationChange}
+                isLoading={isAttemptsLoading}
+                onRerun={onRefreshAttempts}
+                showProblemColumn={false}
+                getProblemLink={() => workspaceAttemptLink}
+              />
+            )
           ) : (
-            <Card
-              background={0}
-              sx={{
-                height: '100%',
-                display: 'flex',
-                alignItems: 'center',
-                justifyContent: 'center',
-                textAlign: 'center',
-                p: 4,
-              }}
-            >
-              <Stack spacing={1.5} alignItems="center" maxWidth={360}>
-                <IconifyIcon icon="mdi:code-tags" width={40} height={40} />
-                <Typography variant="h6" fontWeight={700}>
-                  {activeNavigationProblem?.symbol
-                    ? `${activeNavigationProblem.symbol} editor`
-                    : t('duels.problems')}
-                </Typography>
-                <Typography color="text.secondary">
-                  {duel.status === -1
-                    ? t('duels.editorUnlockedOnStart')
-                    : activeNavigationProblem?.isLocked
-                      ? lockedProblemMessage
-                      : t('duels.noProblems')}
-                </Typography>
-              </Stack>
-            </Card>
+            <Typography variant="body2" color="text.secondary" sx={{ px: 2, pb: 3 }}>
+              {t('duels.signInForAttempts')}
+            </Typography>
           )}
-        </Panel>
-      </PanelGroup>
-
+        </Box>
+      </Box>
+    </WorkspacePane>
+  ) : loadingProblem ? (
+    <ProblemDescriptionSkeleton />
+  ) : (
+    <WorkspacePane sx={{ justifyContent: 'center' }}>
+      <EmptyState
+        compact
+        kind="auth"
+        title={activeNavigationProblem?.symbol ?? t('duels.problems')}
+        description={lockedMessage}
+      />
+    </WorkspacePane>
+  );
+  const editor = activeProblem?.problem ? (
+    <ProblemEditorPanel
+      problem={activeProblem.problem}
+      initialCode={initialCode}
+      editorKey={editorKey}
+      onCodeChange={onCodeChange}
+      selectedLang={selectedLang}
+      onLangChange={onLangChange}
+      sampleTests={activeProblem.problem.sampleTests ?? []}
+      selectedSampleIndex={selectedSampleIndex}
+      onSampleChange={onSampleChange}
+      input={input}
+      onInputChange={onInputChange}
+      output={output}
+      answer={answer}
+      onRun={onRun}
+      onSubmit={onSubmit}
+      onCheckSamples={onCheckSamples}
+      isRunning={isRunning}
+      isSubmitting={isSubmitting}
+      isCheckingSamples={isCheckingSamples}
+      checkSamplesResult={checkSamplesResult}
+      editorTab={editorTab}
+      onEditorTabChange={onEditorTabChange}
+      canUseCheckSamples={false}
+      editorTheme={editorTheme}
+    />
+  ) : loadingProblem ? (
+    <ProblemEditorSkeleton />
+  ) : (
+    <WorkspacePane sx={{ justifyContent: 'center' }}>
+      <EmptyState
+        compact
+        kind="hackathon"
+        title={t('duels.editorTitle', { symbol: activeNavigationProblem?.symbol ?? '' })}
+        description={duel.status === -1 ? t('duels.editorUnlockedOnStart') : lockedMessage}
+      />
+    </WorkspacePane>
+  );
+  return (
+    <Box
+      className="kep-duel-workspace"
+      sx={{ flex: 1, minHeight: 0, minWidth: 0, display: 'flex', flexDirection: 'column' }}
+    >
+      <ProblemWorkspaceLayout
+        isMobile={compact}
+        showEditor={mobilePane === 'editor'}
+        description={description}
+        editor={editor}
+        loading={isLoading}
+        hasLoadError={false}
+        onRetry={onRefreshAttempts}
+        tabs={
+          <WorkspaceToolbar sx={{ px: 0, py: 0 }}>
+            <Tabs
+              value={mobilePane}
+              onChange={(_, value) => setMobilePane(value)}
+              variant="fullWidth"
+              aria-label={t('duels.problems')}
+              sx={{ width: 1, minHeight: 40, '& .MuiTab-root': { minHeight: 40, py: 1 } }}
+            >
+              <Tab value="description" label={t('contests.problem.description')} />
+              <Tab value="editor" label={t('duels.editor')} />
+            </Tabs>
+          </WorkspaceToolbar>
+        }
+        footer={
+          <Stack direction="row" gap={1} sx={{ p: 1.25, borderTop: '1px solid var(--kep-line)' }}>
+            <Button
+              variant="outlined"
+              fullWidth
+              disabled={isRunning || !hasCode || duel.status === -1 || !activeProblem?.problem}
+              loading={isRunning}
+              onClick={onRun}
+              startIcon={<IconifyIcon icon="mdi:play-outline" />}
+            >
+              {t('problems.detail.run')}
+            </Button>
+            <Button
+              variant="contained"
+              fullWidth
+              disabled={isSubmitting || !hasCode || duel.status === -1 || !activeProblem?.canSubmit}
+              loading={isSubmitting}
+              onClick={onSubmit}
+              endIcon={<IconifyIcon icon="mdi:arrow-top-right" />}
+            >
+              {t('problems.detail.submit')}
+            </Button>
+          </Stack>
+        }
+      />
       <DuelResultsFooter
         duel={duel}
         problems={navigationProblems}
         activeSymbol={activeNavigationProblem?.symbol}
         onSelectProblem={onSelectProblem}
       />
-    </Card>
+    </Box>
   );
 };
-
 export default DuelDetailPageWorkspace;

@@ -2,6 +2,8 @@ import { useTranslation } from 'react-i18next';
 import { Box, Divider, LinearProgress, Stack, Typography } from '@mui/material';
 import { useColorScheme, useTheme } from '@mui/material/styles';
 import { normalizeSupportedLocale } from 'app/locales/locale';
+import { statisticsHeadingSx } from 'app/theme/styles/statistics';
+import { statisticsInset } from 'app/theme/styles/statistics';
 import { PieChart } from 'echarts/charts';
 import { TooltipComponent } from 'echarts/components';
 import * as echarts from 'echarts/core';
@@ -9,7 +11,6 @@ import { CanvasRenderer } from 'echarts/renderers';
 import type { ChallengeUserStatistics } from 'modules/challenges/domain';
 import ReactEchart from 'shared/components/base/ReactEchart';
 import { createNumberFormatter } from 'shared/lib/numberFormat';
-import { statisticsInset } from './statisticsStyles';
 
 echarts.use([PieChart, TooltipComponent, CanvasRenderer]);
 
@@ -63,7 +64,7 @@ const StatisticsResults = ({ statistics }: { statistics: ChallengeUserStatistics
 
   return (
     <Box component="section" sx={{ p: statisticsInset, fontVariantNumeric: 'tabular-nums' }}>
-      <Typography component="h2" variant="h6" sx={{ mb: 1 }}>
+      <Typography component="h2" variant="h6" sx={[statisticsHeadingSx, { mb: 1 }]}>
         {t('challenges.statisticsPage.overview.results')}
       </Typography>
       <Typography variant="body2" color="text.secondary" sx={{ mb: 3 }}>
@@ -94,7 +95,7 @@ const StatisticsResults = ({ statistics }: { statistics: ChallengeUserStatistics
                     <Typography variant="body2" color="text.secondary">
                       {t('challenges.statisticsPage.results.' + row.key)}
                     </Typography>
-                    <Typography variant="h5" component="span" fontWeight={500}>
+                    <Typography variant="metric" fontSize={24} component="span" fontWeight={500}>
                       {number.format(row.value)}
                     </Typography>
                   </Stack>
@@ -114,7 +115,7 @@ const StatisticsResults = ({ statistics }: { statistics: ChallengeUserStatistics
                   justifyContent: 'center',
                 }}
               >
-                <Typography variant="h4" component="p" fontWeight={500}>
+                <Typography variant="metric" fontSize={32} component="p" fontWeight={500}>
                   {number.format(
                     general?.totalChallenges ?? rows.reduce((sum, row) => sum + row.value, 0),
                   )}
@@ -134,7 +135,13 @@ const StatisticsResults = ({ statistics }: { statistics: ChallengeUserStatistics
               {percent.format(results.solveRate)}%
             </Typography>
           </Stack>
-          <Typography variant="h5" component="p" fontWeight={500} sx={{ mt: 1, mb: 2 }}>
+          <Typography
+            variant="metric"
+            fontSize={26}
+            component="p"
+            fontWeight={500}
+            sx={{ mt: 1, mb: 2 }}
+          >
             {number.format(results.questionsSolved)}{' '}
             <Box component="span" sx={{ fontSize: 14, color: 'text.secondary' }}>
               / {number.format(results.questionsSeen)}

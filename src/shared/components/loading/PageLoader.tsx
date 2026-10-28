@@ -8,7 +8,7 @@ const pageLoaderSx = {
   display: 'flex',
   flex: 1,
   justifyContent: 'center',
-  minHeight: '100dvh',
+  minHeight: '60dvh',
   width: 1,
 };
 

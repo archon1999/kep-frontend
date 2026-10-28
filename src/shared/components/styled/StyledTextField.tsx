@@ -1,24 +1,32 @@
-import { autocompleteClasses, formLabelClasses, inputBaseClasses, inputLabelClasses, selectClasses } from '@mui/material';
+import {
+  autocompleteClasses,
+  formLabelClasses,
+  inputBaseClasses,
+  inputLabelClasses,
+  selectClasses,
+} from '@mui/material';
 import TextField, { TextFieldProps } from '@mui/material/TextField';
 import { styled } from '@mui/material/styles';
-
 
 type StyledTextFieldProps = TextFieldProps & {
   disabledSpinButton?: boolean;
 };
 
 const StyledTextField = styled(
-  ({ ref, ...rest }: StyledTextFieldProps) => (
+  ({ ref, slotProps, ...rest }: StyledTextFieldProps) => (
     <TextField
       autoComplete="off"
-      sx={{}}
       ref={ref}
-      slotProps={{
-        inputLabel: {
-          shrink: true,
-        },
-      }}
       {...rest}
+      slotProps={{
+        ...slotProps,
+        inputLabel: (ownerState) => ({
+          shrink: true,
+          ...(typeof slotProps?.inputLabel === 'function'
+            ? slotProps.inputLabel(ownerState)
+            : slotProps?.inputLabel),
+        }),
+      }}
     />
   ),
   {
@@ -44,6 +52,17 @@ const StyledTextField = styled(
     [`&.${inputLabelClasses.shrink}`]: {
       transform: 'none !important',
     },
+    ...(theme.preset === 'default' && {
+      marginLeft: 0,
+      marginBottom: theme.spacing(0.75),
+      lineHeight: 1.5,
+      whiteSpace: 'normal',
+      overflowWrap: 'anywhere',
+      [`&.${inputLabelClasses.sizeSmall}, &.MuiInputLabel-sizeLarge`]: { marginLeft: 0 },
+      [`&.${inputLabelClasses.outlined}.${inputLabelClasses.shrink}`]: {
+        transform: 'none !important',
+      },
+    }),
   },
   [`& .${inputBaseClasses.root}`]: {
     [`&.${autocompleteClasses.inputRoot}`]: {
@@ -154,9 +173,20 @@ const StyledTextField = styled(
       },
     },
     [`&.${inputBaseClasses.focused}`]: {
-      backgroundColor: theme.vars.palette.primary.lighter,
+      backgroundColor:
+        theme.preset === 'default'
+          ? theme.vars.palette.background.default
+          : theme.vars.palette.primary.lighter,
     },
   },
+  ...(theme.preset === 'default' && {
+    minWidth: 0,
+    '& .MuiOutlinedInput-notchedOutline legend': { display: 'none' },
+    '& .MuiOutlinedInput-notchedOutline': { top: 0 },
+    '& .MuiFormHelperText-root': { marginInline: 0 },
+    [`& .${inputBaseClasses.root}:not(.${inputBaseClasses.multiline})`]: { minHeight: 40 },
+    [`& .${inputBaseClasses.inputMultiline}`]: { height: 'auto', lineHeight: 1.6 },
+  }),
 }));
 
 export default StyledTextField;

@@ -1,3 +1,4 @@
+import { UserProfileRepository } from '../../domain/contracts/user-profile.repository';
 import {
   UserAchievement,
   UserCompetitionPrize,
@@ -5,7 +6,6 @@ import {
   UserProfileAbout,
   UserSocialLinks,
 } from '../../domain/entities/user-profile.entity';
-import { UserProfileRepository } from '../../domain/ports/user-profile.repository';
 import { usersApiClient } from '../api/users.client';
 import { mapApiUserToDomain } from '../mappers/user.mapper';
 

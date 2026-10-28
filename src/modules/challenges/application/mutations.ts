@@ -1,23 +1,22 @@
 import useSWRMutation from 'swr/mutation';
-import { HttpChallengesRepository } from '../data-access/repository/http.challenges.repository.ts';
+import { challengesRepository } from '../data-access';
 import {
-  ChessMovePayload,
-  ChessMoveResponse,
+  ChallengeAnswerPayload,
   ChallengeAntiCheatPenaltyPayload,
   ChallengeAntiCheatPenaltyResponse,
-  ChallengeAnswerPayload,
   ChallengeCheckResponse,
   ChallengeStartResponse,
-} from '../domain/ports/challenges.repository.ts';
-import { challengesQueries } from './queries.ts';
-
-const challengesRepository = new HttpChallengesRepository();
+  ChessMovePayload,
+  ChessMoveResponse,
+} from '../domain/contracts/challenges.repository.ts';
 
 export const useCreateChallengeCall = () =>
-  useSWRMutation<void, Error, string, { timeSeconds: number; questionsCount: number; chapters?: number[] }>(
-    'challenge-calls',
-    (_, { arg }) => challengesRepository.createChallengeCall(arg),
-  );
+  useSWRMutation<
+    void,
+    Error,
+    string,
+    { timeSeconds: number; questionsCount: number; chapters?: number[] }
+  >('challenge-calls', (_, { arg }) => challengesRepository.createChallengeCall(arg));
 
 export const useDeleteChallengeCall = () =>
   useSWRMutation<void, Error, string, number>('challenge-calls', (_, { arg }) =>
@@ -25,8 +24,9 @@ export const useDeleteChallengeCall = () =>
   );
 
 export const useAcceptChallengeCall = () =>
-  useSWRMutation<ChallengeStartResponse, Error, string, number>('accept-challenge-call', (_, { arg }) =>
-    challengesRepository.acceptChallengeCall(arg),
+  useSWRMutation<ChallengeStartResponse, Error, string, number>(
+    'accept-challenge-call',
+    (_, { arg }) => challengesRepository.acceptChallengeCall(arg),
   );
 
 export const useStartChallenge = () =>
@@ -40,7 +40,9 @@ export const useSubmitChallengeAnswer = () =>
     Error,
     string,
     { challengeId: number; payload: ChallengeAnswerPayload }
-  >('submit-challenge-answer', (_, { arg }) => challengesRepository.submitAnswer(arg.challengeId, arg.payload));
+  >('submit-challenge-answer', (_, { arg }) =>
+    challengesRepository.submitAnswer(arg.challengeId, arg.payload),
+  );
 
 export const useSubmitChessMove = () =>
   useSWRMutation<
@@ -48,7 +50,9 @@ export const useSubmitChessMove = () =>
     Error,
     string,
     { challengeId: number; payload: ChessMovePayload }
-  >('submit-chess-move', (_, { arg }) => challengesRepository.submitChessMove(arg.challengeId, arg.payload));
+  >('submit-chess-move', (_, { arg }) =>
+    challengesRepository.submitChessMove(arg.challengeId, arg.payload),
+  );
 
 export const useApplyChallengeAntiCheatPenalty = () =>
   useSWRMutation<
@@ -60,7 +64,7 @@ export const useApplyChallengeAntiCheatPenalty = () =>
     challengesRepository.applyAntiCheatPenalty(arg.challengeId, arg.payload),
   );
 
-export const challengesMutations = {
-  challengesRepository,
-  challengesQueries,
-};
+export const sendChallengeAntiCheatPenaltyOnExit = (
+  challengeId: number | string,
+  payload: ChallengeAntiCheatPenaltyPayload,
+) => challengesRepository.sendAntiCheatPenaltyOnExit(challengeId, payload);

@@ -1,10 +1,11 @@
-import { ContestType } from 'shared/api/orval/generated/endpoints/index.schemas';
+import { ContestType } from 'modules/contests/domain/enums/contest.enums';
+import type { ProblemResultComponent } from './types';
 import Acm2hProblemResult from './Acm2hProblemResult';
 import Acm10mProblemResult from './Acm10mProblemResult';
 import Acm20mProblemResult from './Acm20mProblemResult';
-import BallProblemResult from './BallProblemResult';
 import Ball525ProblemResult from './Ball525ProblemResult';
 import Ball550ProblemResult from './Ball550ProblemResult';
+import BallProblemResult from './BallProblemResult';
 import CodeGolfProblemResult from './CodeGolfProblemResult';
 import DcProblemResult from './DcProblemResult';
 import ExamProblemResult from './ExamProblemResult';
@@ -14,7 +15,6 @@ import LessCodeProblemResult from './LessCodeProblemResult';
 import LessLineProblemResult from './LessLineProblemResult';
 import MultiLanguageProblemResult from './MultiLanguageProblemResult';
 import OneAttemptProblemResult from './OneAttemptProblemResult';
-import type { ProblemResultComponent } from './types';
 
 const resultComponents: Record<string, ProblemResultComponent> = {
   [ContestType.ACM2H]: Acm2hProblemResult,

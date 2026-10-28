@@ -58,8 +58,13 @@ export const FilledInput: Components<Omit<Theme, 'components'>>['MuiFilledInput'
   styleOverrides: {
     root: ({ theme }) => [
       {
-        borderRadius: 8,
+        borderRadius: theme.preset === 'default' ? 0 : 8,
         backgroundColor: theme.vars.palette.background.elevation2,
+        ...(theme.preset === 'default' && {
+          border: `1px solid ${theme.vars.palette.divider}`,
+          backgroundColor: theme.vars.palette.background.default,
+          [`&.${inputBaseClasses.sizeSmall}`]: { borderRadius: 0 },
+        }),
         '&:hover': {
           backgroundColor: theme.vars.palette.background.elevation3,
         },

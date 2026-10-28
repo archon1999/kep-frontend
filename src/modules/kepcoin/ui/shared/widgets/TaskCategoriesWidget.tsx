@@ -1,7 +1,8 @@
-import { Box, Grid, Skeleton, Stack, Typography } from '@mui/material';
-import { alpha } from '@mui/material/styles';
 import { useTranslation } from 'react-i18next';
+import { Box, Grid, Skeleton, Stack, Typography } from '@mui/material';
+import { contentGridSx } from 'app/theme/styles/content';
 import type { OneTimeTask, TaskCategory } from 'modules/kepcoin/domain/entities/kepcoin.entity';
+import SectionHeader from 'shared/components/sections/common/SectionHeader';
 import TaskCard from '../components/TaskCard';
 
 interface TaskCategoriesWidgetProps {
@@ -14,12 +15,12 @@ const TaskCategoriesWidget = ({ categories, isLoading, onOpenTask }: TaskCategor
   const { t } = useTranslation();
 
   return (
-    <Stack direction="column" spacing={15}>
+    <Stack direction="column" spacing={0}>
       {isLoading ? (
         <Grid container spacing={3}>
           {Array.from({ length: 6 }).map((_, index) => (
             <Grid key={index} size={{ xs: 12, md: 6, xl: 4 }}>
-              <Skeleton variant="rounded" height={168} sx={{ borderRadius: 3 }} />
+              <Skeleton variant="rectangular" height={168} />
             </Grid>
           ))}
         </Grid>
@@ -29,28 +30,24 @@ const TaskCategoriesWidget = ({ categories, isLoading, onOpenTask }: TaskCategor
         </Typography>
       ) : (
         categories.map((category) => (
-          <Stack key={category.slug} direction="column" spacing={2.5}>
-            <Stack direction="column" spacing={1} alignItems={{ xs: 'flex-start', md: 'center' }}>
-              <Box
-                sx={{
-                  width: 56,
-                  height: 4,
-                  borderRadius: 999,
-                  bgcolor: (theme) => alpha(theme.palette.warning.main, 0.35),
-                }}
-              />
-              <Typography variant="h4" fontWeight={700} textAlign={{ xs: 'left', md: 'center' }}>
-                {category.title}
-              </Typography>
-            </Stack>
-
-            <Grid container spacing={10}>
+          <Stack key={category.slug} direction="column" spacing={0}>
+            <SectionHeader title={category.title} />
+            <Box
+              sx={{
+                ...contentGridSx,
+                gridTemplateColumns: {
+                  xs: '1fr',
+                  md: 'repeat(2, minmax(0, 1fr))',
+                  xl: 'repeat(3, minmax(0, 1fr))',
+                },
+              }}
+            >
               {category.tasks.map((task) => (
-                <Grid key={task.slug} size={{ xs: 12, md: 6, xl: 4 }}>
+                <Box key={task.slug}>
                   <TaskCard task={task} onOpenTask={onOpenTask} />
-                </Grid>
+                </Box>
               ))}
-            </Grid>
+            </Box>
           </Stack>
         ))
       )}

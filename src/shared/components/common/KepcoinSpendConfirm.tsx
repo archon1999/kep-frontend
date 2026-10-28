@@ -15,11 +15,11 @@ import {
   DialogActions,
   DialogContent,
   DialogContentText,
-  DialogTitle,
   Stack,
   Typography,
 } from '@mui/material';
 import { useAuth } from 'app/providers/AuthProvider';
+import DialogHeader from 'shared/components/common/DialogHeader';
 import { useLoginRedirect } from 'shared/lib/authRedirect';
 import { formatInteger } from 'shared/lib/numberFormat';
 import axiosFetcher from 'shared/services/axios/axiosFetcher';
@@ -157,8 +157,19 @@ const KepcoinSpendConfirm = ({
     <>
       {renderTrigger()}
 
-      <Dialog open={open} onClose={handleClose} maxWidth="xs" fullWidth>
-        <DialogTitle>{t('kepcoinSpend.confirmTitle')}</DialogTitle>
+      <Dialog
+        aria-labelledby="kepcoin-spend-title"
+        open={open}
+        onClose={handleClose}
+        maxWidth="xs"
+        fullWidth
+      >
+        <DialogHeader
+          id="kepcoin-spend-title"
+          title={t('kepcoinSpend.confirmTitle')}
+          onClose={handleClose}
+          closeDisabled={isMutating}
+        />
         <DialogContent>
           <Stack direction="column" spacing={2}>
             <DialogContentText>{t('kepcoinSpend.confirmDescription')}</DialogContentText>

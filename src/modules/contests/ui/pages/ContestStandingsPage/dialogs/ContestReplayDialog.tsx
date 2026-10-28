@@ -7,8 +7,6 @@ import {
   CircularProgress,
   Dialog,
   DialogContent,
-  DialogTitle,
-  IconButton,
   MenuItem,
   Slider,
   Stack,
@@ -25,6 +23,7 @@ import {
   replayTime,
 } from 'modules/contests/domain/utils/contestReplay';
 import IconifyIcon from 'shared/components/base/IconifyIcon';
+import DialogHeader from 'shared/components/common/DialogHeader';
 import ReplayStandings from '../components/ReplayStandings';
 
 interface Props {
@@ -114,21 +113,12 @@ export default function ContestReplayDialog({
       fullScreen={mobile}
       aria-labelledby="contest-replay-title"
     >
-      <DialogTitle
-        component="div"
+      <DialogHeader
         id="contest-replay-title"
-        sx={{ display: 'flex', alignItems: 'center', gap: 2 }}
-      >
-        <Box sx={{ flex: 1, minWidth: 0 }}>
-          <Typography variant="h6">{t('contests.replay.title')}</Typography>
-          <Typography variant="body2" color="text.secondary" noWrap>
-            {title}
-          </Typography>
-        </Box>
-        <IconButton onClick={onClose} aria-label={t('contests.replay.close')}>
-          <IconifyIcon icon="mdi:close" />
-        </IconButton>
-      </DialogTitle>
+        title={t('contests.replay.title')}
+        subtitle={title}
+        onClose={onClose}
+      />
       <DialogContent sx={{ px: { xs: 1.5, sm: 3 }, pb: 3, overflowX: 'hidden' }}>
         {isLoading ? (
           <Stack alignItems="center" gap={2} sx={{ py: 8 }}>
@@ -147,7 +137,7 @@ export default function ContestReplayDialog({
         ) : !data.participantsCount ? (
           <Alert severity="info">{t('contests.replay.empty')}</Alert>
         ) : (
-          <Stack gap={2.5} sx={{ mt: 1.5 }}>
+          <Stack gap={2.5} sx={{ mt: 0 }}>
             <Stack direction="row" gap={2} flexWrap="wrap" alignItems="center">
               <Stack direction="row" gap={1} alignItems="center">
                 <Button
@@ -162,9 +152,17 @@ export default function ContestReplayDialog({
                   {t('contests.replay.restart')}
                 </Button>
               </Stack>
-              <Stack direction="row" gap={1} sx={{ ml: 'auto' }}>
+              <Stack
+                direction="row"
+                gap={1}
+                sx={{ ml: { sm: 'auto' }, flexWrap: 'wrap', rowGap: 2 }}
+              >
                 <TextField
                   select
+                  variant="outlined"
+                  slotProps={{
+                    select: { MenuProps: { slotProps: { paper: { variant: 'framed' } } } },
+                  }}
                   size="small"
                   label={t('contests.replay.duration')}
                   value={minutes}
@@ -179,6 +177,10 @@ export default function ContestReplayDialog({
                 </TextField>
                 <TextField
                   select
+                  variant="outlined"
+                  slotProps={{
+                    select: { MenuProps: { slotProps: { paper: { variant: 'framed' } } } },
+                  }}
                   size="small"
                   label={t('contests.replay.visible')}
                   value={limit}
@@ -193,13 +195,14 @@ export default function ContestReplayDialog({
                 </TextField>
               </Stack>
             </Stack>
-            <Box sx={{ px: 1 }}>
+            <Box sx={{ px: 1, py: 2.5, borderBlock: '1px solid', borderColor: 'divider' }}>
               <Stack direction="row" justifyContent="space-between" gap={1}>
-                <Typography variant="body2">{t('contests.replay.contestTime')}</Typography>
+                <Typography variant="label" color="text.secondary">
+                  {t('contests.replay.contestTime')}
+                </Typography>
                 <Typography
-                  variant="body2"
-                  fontWeight={700}
-                  sx={{ fontVariantNumeric: 'tabular-nums' }}
+                  variant="metric"
+                  sx={{ fontSize: { xs: 18, sm: 24 } }}
                   data-testid="replay-clock"
                 >
                   {formatReplayTime(time)} / {formatReplayTime(duration)}

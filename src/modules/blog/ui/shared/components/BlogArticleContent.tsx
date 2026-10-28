@@ -22,9 +22,12 @@ const BlogArticleContent = ({ html, emptyMessage, sx }: BlogArticleContentProps)
       sx={[
         {
           color: 'text.primary',
+          minWidth: 0,
+          overflowWrap: 'anywhere',
           '& h1, & h2, & h3': {
             scrollMarginTop: 112,
-            fontWeight: 800,
+            fontFamily: 'var(--kep-display-font)',
+            fontWeight: 600,
             lineHeight: 1.2,
             letterSpacing: '-0.02em',
             mt: 0,
@@ -34,9 +37,9 @@ const BlogArticleContent = ({ html, emptyMessage, sx }: BlogArticleContentProps)
           '& h2': { fontSize: { xs: '1.5rem', md: '1.875rem' }, mt: 5 },
           '& h3': { fontSize: { xs: '1.25rem', md: '1.5rem' }, mt: 4 },
           '& p, & li': {
-            color: 'text.secondary',
-            fontSize: '1rem',
-            lineHeight: 1.9,
+            color: 'text.primary',
+            fontSize: { xs: '1rem', md: '1.0625rem' },
+            lineHeight: 1.85,
           },
           '& p': { my: 0 },
           '& p + p': { mt: 2.5 },
@@ -55,7 +58,7 @@ const BlogArticleContent = ({ html, emptyMessage, sx }: BlogArticleContentProps)
             py: 2,
             borderLeft: (theme) => `4px solid ${theme.vars.palette.primary.main}`,
             backgroundColor: 'background.default',
-            borderRadius: 2,
+            borderRadius: 0,
           },
           '& blockquote p': {
             color: 'text.primary',
@@ -64,11 +67,13 @@ const BlogArticleContent = ({ html, emptyMessage, sx }: BlogArticleContentProps)
             my: 3,
             p: 2.5,
             overflowX: 'auto',
-            borderRadius: 3,
-            backgroundColor: 'common.black',
+            borderRadius: 0,
+            backgroundColor: 'background.level1',
+            border: 1,
+            borderColor: 'divider',
           },
           '& pre code': {
-            color: 'common.white',
+            color: 'text.primary',
             fontFamily: 'monospace',
           },
           '& code': {
@@ -77,18 +82,19 @@ const BlogArticleContent = ({ html, emptyMessage, sx }: BlogArticleContentProps)
           },
           '& a': {
             color: 'primary.main',
-            fontWeight: 700,
+            fontWeight: 600,
             textDecoration: 'none',
           },
           '& a:hover': {
             textDecoration: 'underline',
           },
+          '& figure': { mx: 0, maxWidth: '100%' },
           '& img': {
             width: '100%',
             height: 'auto',
             display: 'block',
             my: 3,
-            borderRadius: 4,
+            borderRadius: 0,
             objectFit: 'cover',
           },
           '& hr': {
@@ -97,6 +103,9 @@ const BlogArticleContent = ({ html, emptyMessage, sx }: BlogArticleContentProps)
             borderTop: (theme) => `1px solid ${theme.vars.palette.divider}`,
           },
           '& table': {
+            display: 'block',
+            overflowX: 'auto',
+            maxWidth: '100%',
             width: '100%',
             borderCollapse: 'collapse',
             my: 3,

@@ -36,6 +36,7 @@ const MobileTimePicker: Components<Omit<Theme, 'components'>>['MuiMobileTimePick
             [`& .${dialogClasses.paper}`]: {
               [`& .${dialogContentClasses.root}`]: {
                 width: 352,
+                maxWidth: 'calc(100vw - 32px)',
               },
             },
           }}

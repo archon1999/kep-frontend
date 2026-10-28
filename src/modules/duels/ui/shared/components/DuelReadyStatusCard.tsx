@@ -1,5 +1,15 @@
-import { Box, Card, CardContent, Chip, LinearProgress, Stack, Switch, Typography, useTheme } from '@mui/material';
 import { useTranslation } from 'react-i18next';
+import {
+  Box,
+  Card,
+  CardContent,
+  Chip,
+  LinearProgress,
+  Stack,
+  Switch,
+  Typography,
+  useTheme,
+} from '@mui/material';
 import IconifyIcon from 'shared/components/base/IconifyIcon.tsx';
 import { formatDateTime } from 'shared/lib/dateTime';
 import { cssVarRgba } from 'shared/lib/utils.ts';
@@ -24,16 +34,12 @@ const DuelReadyStatusCard = ({ ready, readyUntil, loading, onToggle }: Props) =>
 
   return (
     <Card
+      variant="section"
       sx={{
         height: '100%',
         position: 'relative',
         overflow: 'hidden',
-        borderRadius: 4,
-        border: '1px solid',
-        borderColor: ready ? 'success.main' : 'divider',
-        background: ready
-          ? `linear-gradient(145deg, ${cssVarRgba(theme.vars.palette.success.mainChannel, 0.16)}, ${cssVarRgba(theme.vars.palette.background.paperChannel, 0.92)})`
-          : `linear-gradient(145deg, ${cssVarRgba(theme.vars.palette.warning.mainChannel, 0.12)}, ${cssVarRgba(theme.vars.palette.background.paperChannel, 0.96)})`,
+        bgcolor: 'transparent',
       }}
     >
       {loading ? <LinearProgress /> : null}
@@ -45,7 +51,7 @@ const DuelReadyStatusCard = ({ ready, readyUntil, loading, onToggle }: Props) =>
                 sx={{
                   width: 44,
                   height: 44,
-                  borderRadius: 2.5,
+                  borderRadius: 0,
                   display: 'grid',
                   placeItems: 'center',
                   backgroundColor: ready
@@ -62,7 +68,7 @@ const DuelReadyStatusCard = ({ ready, readyUntil, loading, onToggle }: Props) =>
                 />
               </Box>
               <Stack spacing={0.5}>
-                <Typography variant="h6" fontWeight={800}>
+                <Typography variant="h6" fontWeight={600}>
                   {t('duels.readyStatusTitle')}
                 </Typography>
                 <Typography variant="body2" color="text.secondary">
@@ -78,7 +84,7 @@ const DuelReadyStatusCard = ({ ready, readyUntil, loading, onToggle }: Props) =>
               label={ready ? t('duels.ready') : t('duels.notReady')}
               color={ready ? 'success' : 'warning'}
               variant="filled"
-              sx={{ textTransform: 'uppercase', fontWeight: 800 }}
+              sx={{ textTransform: 'uppercase', fontWeight: 600 }}
             />
           </Stack>
 
@@ -98,7 +104,11 @@ const DuelReadyStatusCard = ({ ready, readyUntil, loading, onToggle }: Props) =>
             </Stack>
 
             <Stack direction="row" alignItems="center" spacing={1.25}>
-              <Typography variant="body2" color={ready ? 'text.secondary' : 'text.primary'} fontWeight={700}>
+              <Typography
+                variant="body2"
+                color={ready ? 'text.secondary' : 'text.primary'}
+                fontWeight={700}
+              >
                 {t('duels.notReady')}
               </Typography>
               <Switch
@@ -107,7 +117,11 @@ const DuelReadyStatusCard = ({ ready, readyUntil, loading, onToggle }: Props) =>
                 disabled={loading}
                 color="success"
               />
-              <Typography variant="body2" color={ready ? 'text.primary' : 'text.secondary'} fontWeight={700}>
+              <Typography
+                variant="body2"
+                color={ready ? 'text.primary' : 'text.secondary'}
+                fontWeight={700}
+              >
                 {t('duels.ready')}
               </Typography>
             </Stack>

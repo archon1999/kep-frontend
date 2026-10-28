@@ -1,19 +1,11 @@
 import { useEffect, useMemo, useState } from 'react';
 import { useTranslation } from 'react-i18next';
-import {
-  Avatar,
-  Box,
-  Card,
-  CardContent,
-  LinearProgress,
-  Stack,
-  Tooltip,
-  Typography,
-} from '@mui/material';
-import { alpha } from '@mui/material/styles';
-import IconifyIcon from 'shared/components/base/IconifyIcon.tsx';
-import { diffDateTime, formatCountdownClock } from 'shared/lib/dateTime';
+import { Chip, LinearProgress, Stack, Typography } from '@mui/material';
+import { resources } from 'app/routes/resources';
 import { Arena, ArenaStatus } from 'modules/arena/domain/entities/arena.entity.ts';
+import { ChapterLogos } from 'shared/components/common/ChapterLogo';
+import PageHeader from 'shared/components/sections/common/PageHeader';
+import { diffDateTime, formatCountdownClock } from 'shared/lib/dateTime';
 
 interface CountdownCardProps {
   arena?: Arena;
@@ -27,41 +19,15 @@ interface CountdownView {
   color: 'warning' | 'success' | 'info';
 }
 
-const TimeSegment = ({ value }: { value: string }) => (
-  <Box
-    sx={(theme) => ({
-      minWidth: { xs: 58, sm: 70, md: 82 },
-      px: { xs: 1, sm: 1.5 },
-      py: { xs: 1, sm: 1.25 },
-      borderRadius: 1,
-      border: '1px solid',
-      borderColor: alpha(theme.palette.warning.main, 0.28),
-      background: alpha(theme.palette.warning.main, 0.12),
-      boxShadow: `inset 0 1px 0 ${alpha(theme.palette.common.white, 0.46)}`,
-      textAlign: 'center',
-      backdropFilter: 'blur(8px)',
-    })}
-  >
-    <Typography
-      component="span"
-      fontFamily="monospace"
-      fontWeight={900}
-      color="text.primary"
-      sx={{ fontSize: { xs: 28, sm: 34, md: 40 }, lineHeight: 1 }}
-    >
-      {value}
-    </Typography>
-  </Box>
-);
-
 const ArenaCountdownCard = ({ arena }: CountdownCardProps) => {
   const { t } = useTranslation();
   const [now, setNow] = useState(() => Date.now());
 
   useEffect(() => {
+    if (arena?.status == null || arena.status === ArenaStatus.Finished) return;
     const timer = setInterval(() => setNow(Date.now()), 1000);
     return () => clearInterval(timer);
-  }, []);
+  }, [arena?.status]);
 
   const { label, progress, timerLabel, showProgress, color } = useMemo<CountdownView>(() => {
     if (!arena) {
@@ -101,128 +67,44 @@ const ArenaCountdownCard = ({ arena }: CountdownCardProps) => {
       label: t('arena.countdown.finished'),
       progress: 100,
       timerLabel: '00:00:00',
-      showProgress: true,
+      showProgress: false,
       color: 'info',
     };
   }, [arena, now, t]);
 
-  const [hours, minutes, seconds] = timerLabel.split(':');
   const headerTitle = arena?.title ?? t('arena.title');
-  const chapterPreview = arena?.chapters?.slice(0, 4) ?? [];
 
   return (
-    <Card
-      sx={{
-        outline: 'none',
-        borderRadius: 4,
-        background:
-          arena?.status === ArenaStatus.Already
-            ? 'linear-gradient(135deg, rgba(46,125,50,0.18), rgba(255,193,7,0.12))'
-            : arena?.status === ArenaStatus.Finished
-              ? 'linear-gradient(135deg, rgba(255,193,7,0.18), rgba(84,110,122,0.10))'
-              : 'linear-gradient(120deg, rgba(255,193,7,0.16), rgba(33,150,243,0.08))',
-      }}
-      background={1}
-    >
-      <CardContent sx={{ p: { xs: 2.5, md: 3 }, '&:last-child': { pb: { xs: 2.5, md: 3 } } }}>
-        <Stack
-          direction={{ xs: 'column', md: 'row' }}
-          spacing={2.5}
-          alignItems={{ xs: 'stretch', md: 'center' }}
-          justifyContent="space-between"
-        >
-          <Stack direction="column" spacing={1.5} sx={{ flex: { md: 1 }, minWidth: 0 }}>
-            <Stack direction="row" spacing={1.5} alignItems="center" minWidth={0}>
-              <IconifyIcon
-                icon={
-                  arena?.status === ArenaStatus.Finished ? 'mdi:trophy-award' : 'mdi:sword-cross'
-                }
-                color="warning.main"
-                fontSize={34}
-              />
-              <Typography variant="h4" fontWeight={900} color="text.primary" noWrap>
-                {headerTitle}
-              </Typography>
-            </Stack>
-
-            {chapterPreview.length ? (
-              <Stack direction="row" spacing={1} alignItems="center" flexWrap="wrap" useFlexGap>
-                {chapterPreview.map((chapter) => (
-                  <Tooltip key={chapter.id} title={chapter.title}>
-                    <Avatar
-                      src={chapter.icon}
-                      alt={chapter.title}
-                      sx={{
-                        width: 36,
-                        height: 36,
-                      }}
-                    />
-                  </Tooltip>
-                ))}
-              </Stack>
+    <PageHeader
+      title={headerTitle}
+      backTo={resources.Arena}
+      actionComponent={
+        <Stack gap={1} alignItems={{ xs: 'flex-start', sm: 'flex-end' }} sx={{ minWidth: 0 }}>
+          <Stack direction="row" alignItems="center" flexWrap="wrap" gap={2}>
+            {arena?.chapters?.length ? (
+              <ChapterLogos chapters={arena.chapters} label={t('arena.chaptersLabel')} />
             ) : null}
+            {label && arena?.status !== ArenaStatus.Finished && (
+              <Chip label={label} size="small" variant="status" color={color} />
+            )}
           </Stack>
-
-          <Stack
-            direction="column"
-            spacing={1.5}
-            alignItems={{ xs: 'stretch', md: 'flex-end' }}
-            sx={{ flex: { md: 1 }, minWidth: 0 }}
-          >
-            <Typography
-              variant="subtitle2"
-              fontWeight={800}
-              color="text.secondary"
-              textAlign={{ md: 'right' }}
-            >
-              {label}
+          {arena && arena.status !== ArenaStatus.Finished && (
+            <Typography variant="metric" aria-label={label} sx={{ fontSize: 28, lineHeight: 1.2 }}>
+              {timerLabel}
             </Typography>
-            <Stack
-              direction="row"
-              spacing={{ xs: 0.5, sm: 0.75 }}
-              alignItems="center"
-              justifyContent="flex-end"
-            >
-              <TimeSegment value={hours} />
-              <Typography
-                fontFamily="monospace"
-                fontWeight={900}
-                color="text.primary"
-                sx={{ fontSize: 30 }}
-              >
-                :
-              </Typography>
-              <TimeSegment value={minutes} />
-              <Typography
-                fontFamily="monospace"
-                fontWeight={900}
-                color="text.primary"
-                sx={{ fontSize: 30 }}
-              >
-                :
-              </Typography>
-              <TimeSegment value={seconds} />
-            </Stack>
-            {showProgress ? (
-              <LinearProgress
-                value={progress}
-                variant="determinate"
-                color={color}
-                sx={(theme) => ({
-                  width: { md: 300 },
-                  height: 8,
-                  borderRadius: 1,
-                  backgroundColor: alpha(theme.palette[color].main, 0.16),
-                  '& .MuiLinearProgress-bar': {
-                    borderRadius: 1,
-                  },
-                })}
-              />
-            ) : null}
-          </Stack>
+          )}
+          {showProgress && (
+            <LinearProgress
+              aria-label={label}
+              value={progress}
+              variant="determinate"
+              color={color}
+              sx={{ width: 180, maxWidth: '100%', height: 4 }}
+            />
+          )}
         </Stack>
-      </CardContent>
-    </Card>
+      }
+    />
   );
 };
 

@@ -1,130 +1,202 @@
-import { Box, Button, Paper, Skeleton, Stack, Typography } from '@mui/material';
 import { useTranslation } from 'react-i18next';
 import { Link as RouterLink } from 'react-router';
-import { resources } from 'app/routes/resources.ts';
+import { Alert, Box, Button, Paper, Skeleton, Stack, Tooltip, Typography } from '@mui/material';
+import { resources } from 'app/routes/resources';
 import { useHomeUpdates } from 'modules/home/application/queries';
+import type { HomeSystemUpdate } from 'modules/home/domain/entities/home.entity';
 import SystemUpdateLikeButton from 'modules/home/ui/shared/components/SystemUpdateLikeButton';
 import IconifyIcon from 'shared/components/base/IconifyIcon';
-import { formatDateTime } from 'shared/lib/dateTime';
+import MixedText from 'shared/components/common/MixedText';
+import { PointerSpotlight } from 'shared/components/motion/InteractionEffects';
+import { formatDateTime, formatDateTimePattern } from 'shared/lib/dateTime';
 import { createSafeHtml } from 'shared/lib/safeHtml';
-import { responsivePagePaddingSx } from 'shared/lib/styles.ts';
+import DashboardFeed from './DashboardFeed';
+import { DashboardPattern } from './DashboardPattern';
 
-const UpdatesSection = () => {
+const UpdatePreviewRow = ({
+  update,
+  compact,
+  onChanged,
+}: {
+  update?: HomeSystemUpdate;
+  compact: boolean;
+  onChanged?: () => void;
+}) => {
   const { t } = useTranslation();
-  const { data, isLoading, mutate } = useHomeUpdates();
-  const updates = data?.data ?? [];
-
-  const getUpdateIcon = (updateType: string) =>
-    updateType === 'new' ? 'material-symbols:add-circle-outline-rounded' : 'mdi:update';
-
   return (
-    <Paper sx={{ height: '100%' }}>
-      <Stack direction="column" spacing={3} sx={responsivePagePaddingSx}>
-        <Stack
-          direction={{ xs: 'column', sm: 'row' }}
-          spacing={1.5}
-          alignItems={{ xs: 'flex-start', sm: 'center' }}
-          justifyContent="space-between"
+    <Box
+      component="article"
+      data-feed-item
+      aria-busy={!update}
+      sx={{
+        display: 'grid',
+        gridTemplateColumns: '40px minmax(0, 1fr) auto',
+        gap: 1.5,
+        alignItems: 'center',
+        height: compact ? 52 : 128,
+        py: compact ? 0.5 : 1.5,
+        borderTop: 1,
+        borderColor: 'divider',
+      }}
+    >
+      <Box
+        component="time"
+        dateTime={update?.date}
+        aria-label={update ? formatDateTime(update.date, 'fullDate') : undefined}
+        sx={{
+          borderRight: 1,
+          borderColor: 'divider',
+          pr: 1,
+          display: 'flex',
+          flexDirection: 'column',
+          alignItems: 'center',
+          gap: 0.25,
+        }}
+      >
+        <Typography
+          component="span"
+          variant="metric"
+          sx={{ fontSize: 17, color: 'var(--kep-logo-sand)' }}
         >
-          <Typography variant="h5" sx={{ fontWeight: 700 }}>
-            {t('homePage.updates.title')}
-          </Typography>
-
-          <Button component={RouterLink} to={resources.Updates} variant="outlined">
-            {t('homePage.updates.viewAll')}
-          </Button>
-        </Stack>
-
-        {isLoading ? (
-          <Stack direction="column" spacing={2}>
-            {Array.from({ length: 3 }).map((_, index) => (
-              <Skeleton key={index} variant="rounded" height={116} sx={{ borderRadius: 3 }} />
-            ))}
-          </Stack>
-        ) : updates.length ? (
-          <Stack direction="column">
-            {updates.map((update, index) => (
+          {update ? formatDateTimePattern(update.date, 'DD') : <Skeleton width={20} />}
+        </Typography>
+        <Typography
+          component="span"
+          variant="caption"
+          color="text.secondary"
+          sx={{ fontSize: 9, textTransform: 'uppercase', letterSpacing: '.06em' }}
+        >
+          {update ? formatDateTimePattern(update.date, 'MMM') : <Skeleton width={20} />}
+        </Typography>
+      </Box>
+      <Box sx={{ minWidth: 0 }}>
+        <Stack direction="row" gap={0.75} alignItems="flex-start">
+          {update && (
+            <Tooltip title={t(`homePage.updates.changeType.${update.updateType}`)}>
               <Box
-                key={update.id}
+                component="span"
                 sx={{
-                  display: 'grid',
-                  gridTemplateColumns: '52px minmax(0, 1fr)',
-                  columnGap: 2,
+                  display: 'inline-flex',
+                  mt: 0.2,
+                  color: update.updateType === 'new' ? 'success.main' : 'primary.main',
+                  flexShrink: 0,
                 }}
               >
-                <Stack alignItems="center" sx={{ position: 'relative' }}>
-                  <Box
-                    sx={{
-                      position: 'relative',
-                      zIndex: 1,
-                      display: 'grid',
-                      placeItems: 'center',
-                      width: 44,
-                      height: 44,
-                      borderRadius: '50%',
-                      bgcolor: 'primary.lighter',
-                    }}
-                  >
-                    <IconifyIcon icon={getUpdateIcon(update.updateType)} sx={{ fontSize: 20, color: 'primary.dark' }} />
-                  </Box>
-
-                  {index !== updates.length - 1 && (
-                    <Box
-                      sx={(theme) => ({
-                        width: 2,
-                        flex: 1,
-                        minHeight: 76,
-                        mt: 1,
-                        mb: 1,
-                        borderRadius: 1,
-                        bgcolor: theme.vars.palette.divider,
-                      })}
-                    />
-                  )}
-                </Stack>
-
-                <Box sx={{ minWidth: 0, pb: index !== updates.length - 1 ? 3 : 0 }}>
-                  <Stack direction="column" spacing={1} sx={{ minWidth: 0 }}>
-                    <Typography variant="subtitle1" fontWeight={800}>
-                      {update.title}
-                    </Typography>
-                    <Typography
-                      component="div"
-                      variant="body2"
-                      color="text.secondary"
-                      dangerouslySetInnerHTML={createSafeHtml(update.description)}
-                      sx={{
-                        display: '-webkit-box',
-                        WebkitLineClamp: 2,
-                        WebkitBoxOrient: 'vertical',
-                        overflow: 'hidden',
-                        '& p': { m: 0 },
-                      }}
-                    />
-                    <Stack
-                      direction={{ xs: 'column', sm: 'row' }}
-                      spacing={1}
-                      alignItems={{ xs: 'flex-start', sm: 'center' }}
-                      justifyContent="space-between"
-                    >
-                      <Typography variant="body2" color="text.disabled" fontWeight={700}>
-                        {formatDateTime(update.date, 'compactDate')}
-                      </Typography>
-                      <SystemUpdateLikeButton update={update} onChanged={() => mutate()} />
-                    </Stack>
-                  </Stack>
-                </Box>
+                <IconifyIcon
+                  icon={update.updateType === 'new' ? 'mdi:plus' : 'mdi:arrow-top-right'}
+                  fontSize={12}
+                />
               </Box>
-            ))}
-          </Stack>
+            </Tooltip>
+          )}
+          <Typography
+            component="h3"
+            variant="body2"
+            title={update?.title}
+            sx={{
+              flex: 1,
+              minWidth: 0,
+              fontFamily: 'var(--kep-display-font)',
+              fontWeight: 500,
+              fontSize: compact ? 13 : 16,
+              lineHeight: 1.4,
+              display: '-webkit-box',
+              WebkitLineClamp: 2,
+              WebkitBoxOrient: 'vertical',
+              overflow: 'hidden',
+            }}
+          >
+            {update ? update.title : <Skeleton width="85%" />}
+          </Typography>
+        </Stack>
+        {!compact &&
+          (update ? (
+            <Typography
+              component="div"
+              variant="body2"
+              color="text.secondary"
+              dangerouslySetInnerHTML={createSafeHtml(update.description)}
+              sx={{
+                mt: 0.75,
+                display: '-webkit-box',
+                WebkitLineClamp: 2,
+                WebkitBoxOrient: 'vertical',
+                overflow: 'hidden',
+                '& p': { m: 0 },
+              }}
+            />
+          ) : (
+            <Box sx={{ mt: 0.75 }}>
+              <Skeleton width="100%" />
+              <Skeleton width="75%" />
+            </Box>
+          ))}
+      </Box>
+      {update ? (
+        <SystemUpdateLikeButton update={update} compact onChanged={onChanged} />
+      ) : (
+        <Skeleton variant="rounded" width={40} height={32} />
+      )}
+    </Box>
+  );
+};
+
+const UpdatesSection = ({ compact = false }: { compact?: boolean }) => {
+  const { t } = useTranslation();
+  const previewCount = 7;
+  const { data, isLoading, error, mutate } = useHomeUpdates(previewCount);
+  const updates = data?.data.slice(0, previewCount) ?? [];
+  return (
+    <Paper
+      component={PointerSpotlight}
+      variant="section"
+      className="kep-dashboard-updates-card"
+      sx={{ height: '100%', p: 'var(--kep-content-inset)' }}
+    >
+      <Stack
+        direction="row"
+        gap={1.5}
+        alignItems="center"
+        justifyContent="space-between"
+        flexWrap="wrap"
+        sx={{ mb: 2 }}
+      >
+        <Typography component="h2" variant="h5" sx={{ flex: 1 }}>
+          <MixedText>{t('homePage.updates.title')}</MixedText>
+        </Typography>
+        <DashboardPattern kind="writing" inline />
+        <Button component={RouterLink} to={resources.Updates} variant="text" size="small">
+          {t('homePage.updates.viewAll')}
+        </Button>
+      </Stack>
+      <DashboardFeed label={t('homePage.updates.title')} visibleItems={previewCount}>
+        {isLoading ? (
+          Array.from({ length: previewCount }, (_, index) => (
+            <UpdatePreviewRow key={index} compact={compact} />
+          ))
+        ) : error ? (
+          <Alert
+            severity="error"
+            action={<Button onClick={() => void mutate()}>{t('common.retry')}</Button>}
+          >
+            {t('common.loadFailed')}
+          </Alert>
+        ) : updates.length ? (
+          updates.map((update) => (
+            <UpdatePreviewRow
+              key={update.id}
+              update={update}
+              compact={compact}
+              onChanged={() => void mutate()}
+            />
+          ))
         ) : (
           <Typography variant="body2" color="text.secondary">
             {t('homePage.updates.empty')}
           </Typography>
         )}
-      </Stack>
+      </DashboardFeed>
     </Paper>
   );
 };
-
 export default UpdatesSection;

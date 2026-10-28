@@ -1,7 +1,9 @@
 import { PropsWithChildren, useEffect, useLayoutEffect, useMemo } from 'react';
 import { CssBaseline, ThemeProvider as MuiThemeProvider } from '@mui/material';
 import { REFRESH } from 'app/reducers/SettingsReducer';
+import { resolveInitialMode } from 'app/theme/presets';
 import { createTheme } from 'app/theme/theme.ts';
+import { getItemFromStore } from 'shared/lib/utils';
 import { useSettingsContext } from './SettingsProvider';
 
 const ThemeProvider = ({ children }: PropsWithChildren) => {
@@ -35,7 +37,13 @@ const ThemeProvider = ({ children }: PropsWithChildren) => {
     root.setAttribute('data-kep-bg-pattern', backgroundPattern);
     root.setAttribute('data-kep-card-style', cardStyle);
     root.setAttribute('data-kep-card-background', cardBackground);
-  }, [backgroundPattern, cardBackground, cardStyle, themePreset]);
+  }, [
+    backgroundPattern,
+    cardBackground,
+    cardStyle,
+    customTheme.typography.fontFamily,
+    themePreset,
+  ]);
 
   useEffect(() => {
     const observer = new MutationObserver(() => configDispatch({ type: REFRESH }));
@@ -50,7 +58,10 @@ const ThemeProvider = ({ children }: PropsWithChildren) => {
     <MuiThemeProvider
       disableTransitionOnChange
       theme={customTheme}
-      defaultMode="system"
+      defaultMode={resolveInitialMode(
+        getItemFromStore('themePreset'),
+        getItemFromStore('kep-mode'),
+      )}
       modeStorageKey="kep-mode"
     >
       <CssBaseline enableColorScheme />

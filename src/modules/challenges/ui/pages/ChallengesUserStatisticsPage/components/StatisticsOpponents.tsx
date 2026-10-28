@@ -19,6 +19,8 @@ import {
 } from '@mui/material';
 import { normalizeSupportedLocale } from 'app/locales/locale';
 import { getResourceById, resources } from 'app/routes/resources';
+import { statisticsHeadingSx } from 'app/theme/styles/statistics';
+import { statisticsInset, statisticsPanelSx } from 'app/theme/styles/statistics';
 import type {
   ChallengeStatisticsMatchRecord,
   ChallengeStatisticsOpponentRow,
@@ -28,7 +30,6 @@ import UserPopover from 'modules/users/ui/shared/components/UserPopover';
 import IconifyIcon from 'shared/components/base/IconifyIcon';
 import { formatDateTime } from 'shared/lib/dateTime';
 import { createNumberFormatter } from 'shared/lib/numberFormat';
-import { statisticsInset, statisticsPanelSx } from './statisticsStyles';
 
 const panelContentSx = { p: statisticsInset, minWidth: 0, fontVariantNumeric: 'tabular-nums' };
 
@@ -259,7 +260,7 @@ const StatisticsOpponents = ({ statistics }: { statistics: ChallengeUserStatisti
   if (!opponents) {
     return (
       <Paper component="section" sx={[statisticsPanelSx, panelContentSx]}>
-        <Typography component="h2" variant="h6" sx={{ mb: 4 }}>
+        <Typography component="h2" variant="h6" sx={[statisticsHeadingSx, { mb: 4 }]}>
           {t('challenges.statisticsPage.details.opponents')}
         </Typography>
         <Typography variant="body2" color="text.secondary">
@@ -285,7 +286,7 @@ const StatisticsOpponents = ({ statistics }: { statistics: ChallengeUserStatisti
       <Grid size={{ xs: 12, lg: 5 }}>
         <Stack direction="column" sx={{ height: 1 }}>
           <Paper sx={[statisticsPanelSx, panelContentSx]}>
-            <Typography component="h2" variant="h6" sx={{ mb: 4 }}>
+            <Typography component="h2" variant="h6" sx={[statisticsHeadingSx, { mb: 4 }]}>
               {t('challenges.statisticsPage.opponents.summary')}
             </Typography>
             <Stack direction="row" justifyContent="space-between" alignItems="baseline" spacing={2}>
@@ -337,7 +338,7 @@ const StatisticsOpponents = ({ statistics }: { statistics: ChallengeUserStatisti
             </Stack>
           </Paper>
           <Paper sx={[statisticsPanelSx, panelContentSx, { flex: 1 }]}>
-            <Typography component="h2" variant="h6" sx={{ mb: 4 }}>
+            <Typography component="h2" variant="h6" sx={[statisticsHeadingSx, { mb: 4 }]}>
               {t('challenges.statisticsPage.opponents.rivals')}
             </Typography>
             <OpponentList items={opponents.rivals} />
@@ -347,7 +348,7 @@ const StatisticsOpponents = ({ statistics }: { statistics: ChallengeUserStatisti
       <Grid size={{ xs: 12, lg: 7 }}>
         <Stack direction="column" sx={{ height: 1 }}>
           <Paper sx={[statisticsPanelSx, panelContentSx]}>
-            <Typography component="h2" variant="h6" sx={{ mb: 4 }}>
+            <Typography component="h2" variant="h6" sx={[statisticsHeadingSx, { mb: 4 }]}>
               {t('challenges.statisticsPage.opponents.mostPlayed')}
             </Typography>
             <OpponentTable items={opponents.mostPlayedOpponents} />
@@ -359,7 +360,7 @@ const StatisticsOpponents = ({ statistics }: { statistics: ChallengeUserStatisti
             ].map(({ title, items }) => (
               <Grid key={title} size={{ xs: 12, md: 6 }}>
                 <Paper sx={[statisticsPanelSx, panelContentSx, { height: 1 }]}>
-                  <Typography component="h2" variant="h6" sx={{ mb: 4 }}>
+                  <Typography component="h2" variant="h6" sx={[statisticsHeadingSx, { mb: 4 }]}>
                     {t('challenges.statisticsPage.opponents.' + title)}
                   </Typography>
                   <MatchList items={items} />

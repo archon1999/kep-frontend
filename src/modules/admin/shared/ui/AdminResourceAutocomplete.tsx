@@ -1,23 +1,15 @@
 ﻿import { UIEvent, useEffect, useMemo, useState } from 'react';
-import useSWRInfinite from 'swr/infinite';
 import { Autocomplete, Avatar, Stack, Typography } from '@mui/material';
 import type { TextFieldProps } from '@mui/material/TextField';
-import { adminApiClient } from '../helpers/adminApiClient.ts';
-import { AdminPaginatedResponse } from '../helpers/types.ts';
+import type { AdminAutocompleteOption } from 'modules/admin/shared/domain/autocomplete.types';
+import { useAdminResourceOptions } from '../application/queries';
 import AdminTextField from './AdminTextField';
 
-export interface AdminAutocompleteOption {
-  id: number;
-  username?: string;
-  firstName?: string;
-  lastName?: string;
-  email?: string;
-  title?: string;
-  name?: string;
-  code?: string;
-}
+export type { AdminAutocompleteOption } from 'modules/admin/shared/domain/autocomplete.types';
 
-interface AdminResourceAutocompleteProps<TOption extends AdminAutocompleteOption = AdminAutocompleteOption> {
+interface AdminResourceAutocompleteProps<
+  TOption extends AdminAutocompleteOption = AdminAutocompleteOption,
+> {
   resource: string;
   value: TOption | null;
   onChange: (value: TOption | null) => void;
@@ -29,7 +21,6 @@ interface AdminResourceAutocompleteProps<TOption extends AdminAutocompleteOption
   showAvatar?: boolean;
 }
 
-const AUTOCOMPLETE_PAGE_SIZE = 20;
 const AUTOCOMPLETE_SCROLL_THRESHOLD = 48;
 
 const defaultGetOptionLabel = (option: AdminAutocompleteOption) =>
@@ -55,7 +46,9 @@ const getTitledOptionLabel = (option: AdminAutocompleteOption) =>
 const getTeamOptionLabel = (option: AdminAutocompleteOption) =>
   option.name ?? option.code ?? `#${option.id}`;
 
-const AdminResourceAutocomplete = <TOption extends AdminAutocompleteOption = AdminAutocompleteOption>({
+const AdminResourceAutocomplete = <
+  TOption extends AdminAutocompleteOption = AdminAutocompleteOption,
+>({
   resource,
   value,
   onChange,
@@ -63,12 +56,16 @@ const AdminResourceAutocomplete = <TOption extends AdminAutocompleteOption = Adm
   placeholder,
   textFieldProps,
   getOptionLabel = defaultGetOptionLabel as (option: TOption) => string,
-  getOptionSecondaryLabel = defaultGetOptionSecondaryLabel as (option: TOption) => string | undefined,
+  getOptionSecondaryLabel = defaultGetOptionSecondaryLabel as (
+    option: TOption,
+  ) => string | undefined,
   showAvatar = false,
 }: AdminResourceAutocompleteProps<TOption>) => {
   const [open, setOpen] = useState(false);
   const [inputValue, setInputValue] = useState(value ? getOptionLabel(value) : '');
-  const [debouncedInputValue, setDebouncedInputValue] = useState(value ? getOptionLabel(value) : '');
+  const [debouncedInputValue, setDebouncedInputValue] = useState(
+    value ? getOptionLabel(value) : '',
+  );
 
   useEffect(() => {
     const nextInputValue = value ? getOptionLabel(value) : '';
@@ -81,35 +78,10 @@ const AdminResourceAutocomplete = <TOption extends AdminAutocompleteOption = Adm
     return () => window.clearTimeout(timeoutId);
   }, [inputValue]);
 
-  const getAutocompleteKey = (
-    pageIndex: number,
-    previousPageData: AdminPaginatedResponse<TOption> | null,
-  ) => {
-    if (!open) {
-      return null;
-    }
-
-    if (previousPageData && previousPageData.page >= previousPageData.pagesCount) {
-      return null;
-    }
-
-    return ['admin-autocomplete', resource, debouncedInputValue, pageIndex + 1] as const;
-  };
-
-  const { data, isLoading, isValidating, setSize } = useSWRInfinite(
-    getAutocompleteKey,
-    ([, currentResource, searchTerm, page]) =>
-      adminApiClient.list<TOption>(currentResource, {
-        page,
-        pageSize: AUTOCOMPLETE_PAGE_SIZE,
-        term: searchTerm,
-      }),
-    {
-      keepPreviousData: true,
-      revalidateAll: false,
-      revalidateFirstPage: false,
-      revalidateOnFocus: false,
-    },
+  const { data, isLoading, isValidating, setSize } = useAdminResourceOptions<TOption>(
+    resource,
+    debouncedInputValue,
+    open,
   );
 
   const loadedOptions = useMemo(() => {
@@ -212,12 +184,15 @@ const AdminResourceAutocomplete = <TOption extends AdminAutocompleteOption = Adm
   );
 };
 
-type NamedAutocompleteProps<TOption extends AdminAutocompleteOption = AdminAutocompleteOption> = Omit<
-  AdminResourceAutocompleteProps<TOption>,
-  'resource' | 'getOptionLabel' | 'getOptionSecondaryLabel' | 'showAvatar'
->;
+type NamedAutocompleteProps<TOption extends AdminAutocompleteOption = AdminAutocompleteOption> =
+  Omit<
+    AdminResourceAutocompleteProps<TOption>,
+    'resource' | 'getOptionLabel' | 'getOptionSecondaryLabel' | 'showAvatar'
+  >;
 
-export const UsersAutocomplete = <TOption extends AdminAutocompleteOption = AdminAutocompleteOption>(
+export const UsersAutocomplete = <
+  TOption extends AdminAutocompleteOption = AdminAutocompleteOption,
+>(
   props: NamedAutocompleteProps<TOption>,
 ) => (
   <AdminResourceAutocomplete
@@ -228,7 +203,9 @@ export const UsersAutocomplete = <TOption extends AdminAutocompleteOption = Admi
   />
 );
 
-export const ProblemsAutocomplete = <TOption extends AdminAutocompleteOption = AdminAutocompleteOption>(
+export const ProblemsAutocomplete = <
+  TOption extends AdminAutocompleteOption = AdminAutocompleteOption,
+>(
   props: NamedAutocompleteProps<TOption>,
 ) => (
   <AdminResourceAutocomplete
@@ -238,7 +215,9 @@ export const ProblemsAutocomplete = <TOption extends AdminAutocompleteOption = A
   />
 );
 
-export const ContestsAutocomplete = <TOption extends AdminAutocompleteOption = AdminAutocompleteOption>(
+export const ContestsAutocomplete = <
+  TOption extends AdminAutocompleteOption = AdminAutocompleteOption,
+>(
   props: NamedAutocompleteProps<TOption>,
 ) => (
   <AdminResourceAutocomplete
@@ -248,7 +227,9 @@ export const ContestsAutocomplete = <TOption extends AdminAutocompleteOption = A
   />
 );
 
-export const TeamsAutocomplete = <TOption extends AdminAutocompleteOption = AdminAutocompleteOption>(
+export const TeamsAutocomplete = <
+  TOption extends AdminAutocompleteOption = AdminAutocompleteOption,
+>(
   props: NamedAutocompleteProps<TOption>,
 ) => (
   <AdminResourceAutocomplete

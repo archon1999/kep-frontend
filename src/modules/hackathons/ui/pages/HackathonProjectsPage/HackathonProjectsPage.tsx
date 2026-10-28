@@ -1,25 +1,10 @@
-import { useParams } from 'react-router-dom';
-import { Grid } from '@mui/material';
-import { useDocumentTitle } from 'app/providers/DocumentTitleProvider';
-import { useHackathon, useHackathonProjects } from 'modules/hackathons/application';
-import {
-  HackathonCountdownCard,
-  HackathonDetailLayout,
-  HackathonProjectsSection,
-} from 'modules/hackathons/ui/shared';
+import { Box } from '@mui/material';
+import { useHackathonProjectsPage } from 'modules/hackathons/application/hooks/useHackathonProjectsPage';
+import { HackathonDetailLayout, HackathonProjectsSection } from 'modules/hackathons/ui/shared';
 
 const HackathonProjectsPage = () => {
-  const { id } = useParams();
-  const {
-    data: hackathon,
-    isLoading: isHackathonLoading,
-    error: hackathonError,
-  } = useHackathon(id);
-  const { data: projects, isLoading, error } = useHackathonProjects(id);
-  useDocumentTitle(
-    hackathon?.title ? 'pageTitles.hackathonProjects' : undefined,
-    hackathon?.title ? { hackathonTitle: hackathon.title } : undefined,
-  );
+  const { id, hackathon, isHackathonLoading, hackathonError, projects, isLoading, error } =
+    useHackathonProjectsPage();
 
   return (
     <HackathonDetailLayout
@@ -27,19 +12,14 @@ const HackathonProjectsPage = () => {
       isLoading={isHackathonLoading}
       error={hackathonError}
     >
-      <Grid container spacing={3}>
-        <Grid size={{ xs: 12, md: 8 }} sx={{ minWidth: 0 }}>
-          <HackathonProjectsSection
-            hackathonId={id ?? ''}
-            projects={projects}
-            isLoading={isLoading}
-            error={error}
-          />
-        </Grid>
-        <Grid size={{ xs: 12, md: 4 }}>
-          <HackathonCountdownCard hackathon={hackathon} />
-        </Grid>
-      </Grid>
+      <Box>
+        <HackathonProjectsSection
+          hackathonId={id ?? ''}
+          projects={projects}
+          isLoading={isLoading}
+          error={error}
+        />
+      </Box>
     </HackathonDetailLayout>
   );
 };

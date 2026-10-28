@@ -3,6 +3,7 @@ import {
   ProblemList,
   ProblemsCategory,
 } from 'shared/api/orval/generated/endpoints/index.schemas';
+import { PageResult } from '../../domain/contracts/problems.repository.ts';
 import {
   AttemptDetail,
   AttemptFilterOption,
@@ -13,9 +14,9 @@ import {
   AttemptListItem,
   DifficultyBreakdown,
   PeriodRatingEntry,
+  ProblemAttachment,
   ProblemAttemptStatistic,
   ProblemAttemptSummary,
-  ProblemAttachment,
   ProblemAttemptsForSolveStatistic,
   ProblemAvailableLanguage,
   ProblemCategory,
@@ -53,7 +54,6 @@ import {
   StudyPlanDetail,
   StudyPlanListItem,
 } from '../../domain/entities/problem.entity.ts';
-import { PageResult } from '../../domain/ports/problems.repository.ts';
 
 const toNumber = (value: unknown) => (typeof value === 'number' ? value : Number(value) || 0);
 const toNullableNumber = (value: any) =>
@@ -198,10 +198,7 @@ export const mapProblem = (problem: ProblemList): ProblemListItem => ({
   userInfo: mapProblemUserInfo((problem as any).userInfo ?? (problem as any).user_info),
 });
 
-const mapPageResult = <T>(
-  payload: any,
-  mapItem: (item: any) => T,
-): PageResult<T> => {
+const mapPageResult = <T>(payload: any, mapItem: (item: any) => T): PageResult<T> => {
   const page = payload?.page ?? (payload as any)?.current_page ?? 1;
   const data = Array.isArray(payload?.data) ? payload.data : Array.isArray(payload) ? payload : [];
   const pageSize =
@@ -257,7 +254,9 @@ export const mapProblemGroup = (group: any): ProblemGroup => ({
   parent: group?.parent ?? null,
   order: toNullableNumber(group?.order),
   problemsCount: toNullableNumber(group?.problemsCount ?? group?.problems_count),
-  children: Array.isArray(group?.children) ? group.children.map((child: any) => mapProblemGroup(child)) : [],
+  children: Array.isArray(group?.children)
+    ? group.children.map((child: any) => mapProblemGroup(child))
+    : [],
 });
 
 export const mapProblemGroups = (payload: any): ProblemGroup[] => {
@@ -497,9 +496,7 @@ export const mapRecommendationResolveResponse = (payload: any): RecommendationRe
   };
 };
 
-export const mapProblemsRatingRow = (
-  payload: any,
-): ProblemsRatingRow => {
+export const mapProblemsRatingRow = (payload: any): ProblemsRatingRow => {
   return {
     rowIndex: toNumber(payload?.rowIndex ?? payload?.row_index),
     rating: payload?.rating !== undefined ? toNumber(payload.rating) : undefined,

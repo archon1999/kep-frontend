@@ -1,563 +1,240 @@
 import { useTranslation } from 'react-i18next';
 import { Link as RouterLink } from 'react-router';
-import {
-  Badge,
-  Box,
-  Card,
-  CardActionArea,
-  CardContent,
-  CardMedia,
-  Chip,
-  Stack,
-  Typography,
-  cardMediaClasses,
-} from '@mui/material';
-import { SxProps, Theme } from '@mui/material/styles';
+import { Avatar, Box, Stack, SxProps, Theme, Typography } from '@mui/material';
 import { getResourceById, resources } from 'app/routes/resources';
-import KepIcon from 'shared/components/base/KepIcon';
-import { formatDateTimeOrOriginal } from 'shared/lib/dateTime';
-import { cssVarRgba, formatNumber } from 'shared/lib/utils';
+import { contentEntranceStyles, motion } from 'app/theme/styles/transitions';
+import { estimateBlogReadTime } from 'modules/blog/application/blog-content';
+import { stripBlogHtml } from 'modules/blog/application/blog-content';
 import { BlogPost } from 'modules/blog/domain/entities/blog.entity';
-import { estimateBlogReadTime, stripBlogHtml } from 'modules/blog/ui/shared/lib/article-content';
-
-type BlogCardVariant = 'default' | 'horizontal' | 'home';
-type BlogCardEmphasis = 'regular' | 'highlight' | 'featured';
+import UserPopover from 'modules/users/ui/shared/components/UserPopover';
+import KepIcon from 'shared/components/base/KepIcon';
+import MixedText from 'shared/components/common/MixedText';
+import PatternArtwork from 'shared/components/common/PatternArtwork';
+import { formatDateTimeOrOriginal } from 'shared/lib/dateTime';
+import { formatNumber } from 'shared/lib/utils';
 
 interface BlogCardProps {
   post: BlogPost;
   featured?: boolean;
-  variant?: BlogCardVariant;
-  emphasis?: BlogCardEmphasis;
+  variant?: 'default' | 'horizontal' | 'home';
+  emphasis?: 'regular' | 'highlight' | 'featured';
   sx?: SxProps<Theme>;
 }
 
-const mergeSx = (base: SxProps<Theme>, extra?: SxProps<Theme>): SxProps<Theme> => {
-  if (extra == null) {
-    return base;
-  }
-
-  const baseEntries = Array.isArray(base) ? base : [base];
-  const extraEntries = Array.isArray(extra) ? extra : [extra];
-
-  return [...baseEntries, ...extraEntries] as SxProps<Theme>;
-};
-
-const StatPill = ({
-  icon,
-  value,
-  light = false,
-}: {
-  icon: Parameters<typeof KepIcon>[0]['name'];
-  value: number;
-  light?: boolean;
-}) => (
-  <Stack direction="row" spacing={0.5} alignItems="center">
-    <KepIcon
-      name={icon}
-      fontSize={15}
-      color={light ? 'rgba(255,255,255,0.82)' : 'rgba(15,23,42,0.58)'}
-    />
-    <Typography
-      variant="caption"
-      fontWeight={700}
-      color={light ? 'common.white' : 'text.secondary'}
-    >
-      {formatNumber(value)}
-    </Typography>
-  </Stack>
-);
-
-const formatMetaDate = (value?: string) => {
-  if (!value) return '';
-
-  return formatDateTimeOrOriginal(value, 'compactDate');
-};
-
-const MediaFallback = ({
-  featured = false,
-  soft = false,
-}: {
-  featured?: boolean;
-  soft?: boolean;
-}) => (
-  <Box
-    sx={(theme) => ({
-      width: 1,
-      height: 1,
-      display: 'flex',
-      alignItems: 'center',
-      justifyContent: 'center',
-      background: soft
-        ? [
-            `linear-gradient(145deg, ${cssVarRgba(theme.vars.palette.background.paperChannel, 0.98)} 0%, ${cssVarRgba(theme.vars.palette.background.defaultChannel, 0.92)} 100%)`,
-            `radial-gradient(circle at 18% 24%, ${cssVarRgba(theme.vars.palette.primary.mainChannel, 0.16)} 0%, transparent 28%)`,
-            `radial-gradient(circle at 78% 78%, ${cssVarRgba(theme.vars.palette.info.mainChannel, 0.12)} 0%, transparent 24%)`,
-          ].join(',')
-        : `linear-gradient(135deg, ${cssVarRgba(theme.vars.palette.primary.mainChannel, 0.3)}, ${cssVarRgba(theme.vars.palette.info.mainChannel, 0.12)} 55%, ${cssVarRgba(theme.vars.palette.common.blackChannel, 0.45)})`,
-    })}
-  >
-    <KepIcon
-      name="blog"
-      fontSize={featured ? 54 : 42}
-      color={soft ? 'rgba(15,23,42,0.22)' : 'rgba(255,255,255,0.72)'}
-    />
-  </Box>
-);
-
-const BlogCard = ({
-  post,
-  featured = false,
-  variant = 'default',
-  emphasis = 'regular',
-  sx,
-}: BlogCardProps) => {
+const BlogCard = ({ post, featured = false, variant = 'default', emphasis, sx }: BlogCardProps) => {
   const { t } = useTranslation();
-  const blogUrl = getResourceById(resources.BlogPost, post.id);
-  const previewText = stripBlogHtml(post.bodyShort ?? post.body);
-  const resolvedEmphasis = featured ? 'featured' : emphasis;
-  const excerpt = previewText.slice(
-    0,
-    resolvedEmphasis === 'featured'
-      ? 220
-      : variant === 'horizontal'
-        ? 150
-        : variant === 'home'
-          ? 132
-          : 120,
+  const isFeatured = featured || emphasis === 'featured';
+  const horizontal = isFeatured || variant === 'horizontal';
+  const url = getResourceById(resources.BlogPost, post.id);
+  const excerpt = post.subtitle || stripBlogHtml(post.bodyShort ?? post.body);
+  const date = formatDateTimeOrOriginal(
+    post.publishedAt ?? post.created ?? post.updatedAt ?? '',
+    'compactDate',
   );
-  const metaDate = formatMetaDate(post.publishedAt ?? post.created ?? post.updatedAt ?? '');
-  const readTime = estimateBlogReadTime(post.bodyShort ?? post.body);
-  const primaryTag = post.tags[0];
-  const isHorizontal = variant === 'horizontal';
-  const isHome = variant === 'home';
-  const isEditorial = !isHorizontal && !isHome;
-  const mediaTransition = 'transform 0.4s ease, filter 0.4s ease';
+  const topic = post.topics[0]?.title || post.tags[0];
 
-  if (isEditorial) {
-    const cardHeight = {
-      xs: 327,
-      sm: 280,
-      md: 334,
-      lg: resolvedEmphasis === 'featured' ? 576 : 280,
-    };
-
-    return (
-      <Card
-        sx={mergeSx({
+  return (
+    <Box
+      component="article"
+      sx={[
+        {
+          ...contentEntranceStyles,
+          height: '100%',
+          minWidth: 0,
+          display: 'grid',
+          gridTemplateColumns: horizontal
+            ? { xs: '1fr', md: isFeatured ? '1fr 1fr' : '220px 1fr' }
+            : '1fr',
+          bgcolor: 'background.default',
           position: 'relative',
-          borderRadius: 4,
-          overflow: 'hidden',
-          cursor: 'pointer',
-          height: cardHeight,
-          backgroundColor: 'background.paper',
-          backgroundImage: 'none',
-          boxShadow: 'none',
-          [`&:hover .${cardMediaClasses.img}`]: {
-            transform: 'scale(1.05)',
-            filter: 'brightness(1)',
+          '&:hover .blog-card-title, &:focus-within .blog-card-title': { color: 'primary.main' },
+          '@media (hover: hover) and (pointer: fine)': {
+            '&:hover .blog-card-image': { transform: 'scale(1.025)' },
           },
-        }, sx)}
+          '@media (prefers-reduced-motion: reduce)': {
+            animation: 'none',
+            '& .blog-card-image, &:hover .blog-card-image': {
+              transition: 'none',
+              transform: 'none',
+            },
+          },
+        },
+        ...(Array.isArray(sx) ? sx : [sx]),
+      ]}
+    >
+      <Box
+        component={RouterLink}
+        to={url}
+        tabIndex={-1}
+        aria-hidden="true"
+        sx={{
+          display: 'grid',
+          placeItems: 'center',
+          overflow: 'hidden',
+          position: 'relative',
+          minWidth: 0,
+          aspectRatio: horizontal ? { xs: '16 / 9', md: 'auto' } : '16 / 9',
+          minHeight: isFeatured ? { md: 310 } : undefined,
+          bgcolor: 'background.level1',
+          borderBottom: { xs: 1, md: horizontal ? 0 : 1 },
+          borderRight: { md: horizontal ? 1 : 0 },
+          borderColor: 'divider',
+        }}
       >
-        <CardActionArea
-          component={RouterLink}
-          to={blogUrl}
-          sx={{
-            height: 1,
-            display: 'block',
-            outline: 0,
-          }}
-        >
-          <Box sx={{ position: 'absolute', inset: 0 }}>
-            {post.image ? (
-              <CardMedia
-                component="img"
-                image={post.image}
-                alt={post.title}
-                sx={{
-                  width: 1,
-                  height: 1,
-                  objectFit: 'cover',
-                  filter: 'brightness(0.7)',
-                  transition: mediaTransition,
-                  transformOrigin: 'center',
-                }}
-              />
-            ) : (
-              <MediaFallback featured={resolvedEmphasis === 'featured'} />
-            )}
-
-            <Box
-              sx={(theme) => ({
-                position: 'absolute',
-                inset: 0,
-                background: `linear-gradient(to bottom, ${cssVarRgba(theme.vars.palette.common.blackChannel, 0)} 0%, ${cssVarRgba(theme.vars.palette.common.blackChannel, 0.55)} 55%, ${cssVarRgba(theme.vars.palette.common.blackChannel, 1)} 100%)`,
-              })}
-            />
-
-            <Badge
-              overlap="circular"
-              badgeContent={
-                <Box
-                  sx={(theme) => ({
-                    width: 40,
-                    height: 40,
-                    borderRadius: '50%',
-                    display: 'flex',
-                    alignItems: 'center',
-                    justifyContent: 'center',
-                    bgcolor: cssVarRgba(theme.vars.palette.background.paperChannel, 0.96),
-                    color: 'text.primary',
-                    boxShadow: `0 14px 28px -18px ${cssVarRgba(theme.vars.palette.common.blackChannel, 0.45)}`,
-                  })}
-                >
-                  <KepIcon name="blog" fontSize={22} />
-                </Box>
-              }
-              sx={{ position: 'absolute', top: 44, left: 44 }}
-            />
-          </Box>
-
-          <CardContent
+        {post.image ? (
+          <Box
+            className="blog-card-image"
+            component="img"
+            src={post.image}
+            alt=""
+            loading={isFeatured ? 'eager' : 'lazy'}
             sx={{
-              position: 'relative',
-              zIndex: 1,
-              width: 1,
-              p: 3,
-              height: 1,
-              display: 'flex',
-              flexDirection: 'column',
-              justifyContent: 'flex-end',
+              position: 'absolute',
+              inset: 0,
+              width: '100%',
+              height: '100%',
+              objectFit: 'cover',
+              transition: `transform 380ms ${motion.easing}`,
             }}
-          >
-            <Stack spacing={1.5}>
-              <Stack
-                direction="row"
-                spacing={1}
-                alignItems="center"
-                flexWrap="wrap"
-                useFlexGap
-                mb={0.25}
-              >
-                {primaryTag ? <Chip size="small" label={primaryTag} /> : null}
-                <Typography variant="caption" color="common.white" fontWeight={600}>
-                  {t('blog.minRead', { count: readTime })}
-                </Typography>
-              </Stack>
-
-              <Typography
-                variant={resolvedEmphasis === 'featured' ? 'h5' : 'h6'}
-                color="common.white"
-                fontWeight={700}
-                sx={{
-                  lineHeight: 1.15,
-                  lineClamp: 2,
-                  maxWidth: resolvedEmphasis === 'featured' ? 520 : 'unset',
-                }}
-              >
-                {post.title}
-              </Typography>
-
-              <Stack
-                direction="row"
-                spacing={1.5}
-                alignItems="center"
-                justifyContent="space-between"
-              >
-                <Stack spacing={0.25}>
-                  <Typography variant="subtitle2" color="common.white" fontWeight={600} mb={0.5}>
-                    {post.author.username}
-                  </Typography>
-                  {metaDate ? (
-                    <Typography variant="caption" color="common.white">
-                      {metaDate}
-                    </Typography>
-                  ) : null}
-                </Stack>
-
-                <Stack direction="row" spacing={1.25} alignItems="center">
-                  <StatPill icon="view" value={post.views} light />
-                  <StatPill icon="like" value={post.likesCount} light />
-                </Stack>
-              </Stack>
-            </Stack>
-          </CardContent>
-        </CardActionArea>
-      </Card>
-    );
-  }
-
-  if (isHome) {
-    return (
-      <Card
-        sx={mergeSx((theme) => ({
-          height: 1,
-          borderRadius: 5,
-          overflow: 'hidden',
-          backgroundImage: [
-            `linear-gradient(180deg, ${cssVarRgba(theme.vars.palette.background.paperChannel, 0.98)} 0%, ${cssVarRgba(theme.vars.palette.background.defaultChannel, 0.96)} 100%)`,
-            `radial-gradient(circle at 16% 20%, ${cssVarRgba(theme.vars.palette.primary.mainChannel, 0.08)} 0%, transparent 24%)`,
-          ].join(','),
-          border: `1px solid ${cssVarRgba(theme.vars.palette.dividerChannel, 0.7)}`,
-          boxShadow: 'none',
-          transition: 'transform 0.22s ease, box-shadow 0.22s ease, border-color 0.22s ease',
-          '&:hover': {
-            transform: 'translateY(-2px)',
-            boxShadow: `0 22px 40px -30px ${cssVarRgba(theme.vars.palette.common.blackChannel, 0.35)}`,
-            borderColor: cssVarRgba(theme.vars.palette.primary.mainChannel, 0.22),
-          },
-          [`&:hover .${cardMediaClasses.img}`]: {
-            transform: 'scale(1.04)',
-          },
-        }), sx)}
+          />
+        ) : (
+          <PatternArtwork kind="blog" sx={{ width: isFeatured ? 280 : 220 }} />
+        )}
+      </Box>
+      <Stack
+        direction="column"
+        gap={2}
+        sx={{ p: isFeatured ? { xs: 2.5, md: 4 } : 2.5, minWidth: 0, justifyContent: 'center' }}
       >
-        <CardActionArea
-          component={RouterLink}
-          to={blogUrl}
+        <Stack direction="row" gap={1.5} flexWrap="wrap" alignItems="center">
+          {topic && (
+            <Typography
+              variant="overline"
+              color="primary.main"
+              sx={{
+                fontSize: 10,
+                lineHeight: 1.5,
+                letterSpacing: '.1em',
+                overflowWrap: 'anywhere',
+              }}
+            >
+              {topic}
+            </Typography>
+          )}
+          <Typography variant="caption" color="text.secondary">
+            {t('blog.minRead', { count: estimateBlogReadTime(post.body ?? post.bodyShort) })}
+          </Typography>
+        </Stack>
+        <Typography
+          component="h2"
           sx={{
-            height: 1,
-            display: 'flex',
-            flexDirection: 'column',
-            alignItems: 'stretch',
+            fontFamily: 'var(--kep-display-font)',
+            fontSize: isFeatured ? { xs: 27, md: 36 } : 23,
+            fontWeight: 500,
+            lineHeight: 1.25,
+            letterSpacing: '-.025em',
+            overflowWrap: 'anywhere',
           }}
         >
           <Box
+            component={RouterLink}
+            to={url}
+            className="blog-card-title"
             sx={{
-              width: 1,
-              aspectRatio: '16 / 10',
+              color: 'text.primary',
+              textDecoration: 'none',
+              transition: 'color .2s',
+              display: '-webkit-box',
+              WebkitBoxOrient: 'vertical',
+              WebkitLineClamp: isFeatured ? 4 : 3,
               overflow: 'hidden',
-              bgcolor: 'background.default',
             }}
           >
-            {post.image ? (
-              <CardMedia
-                component="img"
-                image={post.image}
-                alt={post.title}
-                sx={{
-                  width: 1,
-                  height: 1,
-                  objectFit: 'cover',
-                  transition: 'transform 0.4s ease',
-                }}
-              />
-            ) : (
-              <MediaFallback soft />
+            <MixedText>{post.title}</MixedText>
+          </Box>
+        </Typography>
+        {excerpt && (
+          <Typography
+            variant="body2"
+            color="text.secondary"
+            sx={{
+              lineHeight: 1.7,
+              display: '-webkit-box',
+              WebkitBoxOrient: 'vertical',
+              WebkitLineClamp: isFeatured ? 3 : 2,
+              overflow: 'hidden',
+              overflowWrap: 'anywhere',
+            }}
+          >
+            {excerpt}
+          </Typography>
+        )}
+        <Stack direction="row" gap={1} alignItems="center" sx={{ mt: 'auto', pt: 0.5 }}>
+          <Avatar src={post.author.avatar ?? undefined} alt="" sx={{ width: 24, height: 24 }} />
+          <Box sx={{ minWidth: 0 }}>
+            <UserPopover username={post.author.username} avatar={post.author.avatar ?? undefined}>
+              <Typography
+                variant="caption"
+                sx={{ color: 'text.primary', textDecoration: 'none', overflowWrap: 'anywhere' }}
+              >
+                {post.author.username}
+              </Typography>
+            </UserPopover>
+            {date && (
+              <Typography
+                variant="caption"
+                color="text.secondary"
+                sx={{ display: 'block', fontSize: 11 }}
+              >
+                {date}
+              </Typography>
             )}
           </Box>
-
-          <CardContent
+        </Stack>
+        <Stack
+          direction="row"
+          justifyContent="space-between"
+          gap={2}
+          alignItems="center"
+          sx={{ pt: 1.5, borderTop: 1, borderColor: 'divider' }}
+        >
+          <Typography
+            component={RouterLink}
+            to={url}
+            variant="caption"
+            color="primary.main"
             sx={{
-              flex: 1,
-              p: { xs: 2.5, md: 3 },
-              display: 'flex',
-              flexDirection: 'column',
-              gap: 1.5,
+              textDecoration: 'none',
+              display: 'inline-flex',
+              gap: 1,
+              alignItems: 'center',
+              fontWeight: 600,
             }}
           >
-            <Stack direction="row" spacing={1} alignItems="center" flexWrap="wrap" useFlexGap>
-              {primaryTag ? <Chip label={primaryTag} size="small" /> : null}
-              <Typography variant="caption" color="text.secondary" fontWeight={700}>
-                {t('blog.minRead', { count: readTime })}
-              </Typography>
-            </Stack>
-
-            <Typography
-              variant="h6"
-              fontWeight={800}
-              sx={{
-                lineHeight: 1.15,
-                letterSpacing: '-0.02em',
-                lineClamp: 2,
-              }}
-            >
-              {post.title}
-            </Typography>
-
-            {excerpt ? (
-              <Typography variant="body2" color="text.secondary" sx={{ lineClamp: 3 }}>
-                {excerpt}
-              </Typography>
-            ) : null}
-
-            <Stack
-              direction={{ xs: 'column', sm: 'row' }}
-              spacing={1}
-              alignItems={{ sm: 'center' }}
-              justifyContent="space-between"
-              sx={{ mt: 'auto' }}
-            >
-              <Stack spacing={0.25}>
-                <Typography variant="subtitle2" fontWeight={700}>
-                  {post.author.username}
-                </Typography>
-                {metaDate ? (
-                  <Typography variant="caption" color="text.secondary">
-                    {metaDate}
-                  </Typography>
-                ) : null}
-              </Stack>
-
-              <Stack direction="row" spacing={1.25} alignItems="center">
-                <StatPill icon="view" value={post.views} />
-                <StatPill icon="like" value={post.likesCount} />
-              </Stack>
-            </Stack>
-          </CardContent>
-        </CardActionArea>
-      </Card>
-    );
-  }
-
-  return (
-    <Card
-      sx={mergeSx((theme) => ({
-        height: 1,
-        borderRadius: 4.5,
-        p: 1,
-        outline: 0,
-        overflow: 'hidden',
-        backgroundImage: [
-          `linear-gradient(180deg, ${cssVarRgba(theme.vars.palette.background.paperChannel, 0.98)} 0%, ${cssVarRgba(theme.vars.palette.background.defaultChannel, 0.96)} 100%)`,
-          `radial-gradient(circle at 18% 16%, ${cssVarRgba(theme.vars.palette.primary.mainChannel, 0.08)} 0%, transparent 22%)`,
-        ].join(','),
-        border: `1px solid ${cssVarRgba(theme.vars.palette.dividerChannel, 0.78)}`,
-        boxShadow: 'none',
-        transition: 'background-color 0.2s ease, transform 0.2s ease, box-shadow 0.2s ease',
-        '&:hover': {
-          transform: 'translateY(-2px)',
-          boxShadow: `0 26px 50px -34px ${cssVarRgba(theme.vars.palette.common.blackChannel, 0.35)}`,
-        },
-        [`&:hover .${cardMediaClasses.img}`]: {
-          transform: 'scale(1.04)',
-        },
-      }), sx)}
-    >
-      <CardActionArea
-        component={RouterLink}
-        to={blogUrl}
-        sx={{
-          height: 1,
-          borderRadius: 3,
-          display: 'flex',
-          alignItems: 'stretch',
-          flexDirection: { xs: 'column', md: 'row' },
-        }}
-      >
-        <Box
-          sx={{
-            width: { xs: 1, md: 300, lg: 320 },
-            maxWidth: { md: 320 },
-            aspectRatio: '16 / 10',
-            borderRadius: 3,
-            overflow: 'hidden',
-            flexShrink: 0,
-            bgcolor: 'background.default',
-          }}
-        >
-          {post.image ? (
-            <CardMedia
-              component="img"
-              image={post.image}
-              alt={post.title}
-              sx={{
-                width: 1,
-                height: 1,
-                objectFit: 'cover',
-                transition: 'transform 0.4s ease',
-              }}
-            />
-          ) : (
-            <MediaFallback soft />
-          )}
-        </Box>
-
-        <CardContent
-          sx={{
-            flex: 1,
-            minWidth: 0,
-            px: { xs: 0.5, md: 2.5 },
-            py: { xs: 2, md: '14px !important' },
-            display: 'flex',
-            flexDirection: 'column',
-            justifyContent: 'space-between',
-            gap: 1.5,
-          }}
-        >
-          <Stack
-            direction={{ xs: 'column', sm: 'row' }}
-            spacing={1}
-            alignItems={{ sm: 'center' }}
-            justifyContent="space-between"
-          >
-            <Stack direction="row" spacing={1} alignItems="center" flexWrap="wrap" useFlexGap>
-              {primaryTag ? <Chip label={primaryTag} size="small" /> : null}
-              <Typography variant="caption" color="text.secondary" fontWeight={600}>
-                {t('blog.minRead', { count: readTime })}
-              </Typography>
-            </Stack>
-            {metaDate ? (
-              <Typography variant="caption" color="text.secondary" fontWeight={600}>
-                {metaDate}
-              </Typography>
-            ) : null}
-          </Stack>
-
-          <Stack spacing={0.75} flex={1}>
-            <Typography
-              variant="h6"
-              fontWeight={800}
-              sx={{
-                lineHeight: 1.15,
-                letterSpacing: '-0.02em',
-                lineClamp: 2,
-              }}
-            >
-              {post.title}
-            </Typography>
-
-            {excerpt ? (
-              <Typography
-                variant="body2"
-                color="text.secondary"
-                sx={{
-                  lineClamp: 3,
-                }}
+            {t('blog.readMore')} <span aria-hidden="true">↗</span>
+          </Typography>
+          <Stack direction="row" spacing={1.5} color="text.secondary">
+            {(
+              [
+                { icon: 'view', value: post.views, label: 'blog.views' },
+                { icon: 'like', value: post.likesCount, label: 'blog.likes' },
+              ] as const
+            ).map((stat) => (
+              <Stack
+                key={stat.icon}
+                direction="row"
+                gap={0.5}
+                alignItems="center"
+                aria-label={`${t(stat.label)}: ${stat.value}`}
               >
-                {excerpt}
-              </Typography>
-            ) : null}
-          </Stack>
-
-          <Stack spacing={1.25}>
-            <Stack
-              direction={{ xs: 'column', sm: 'row' }}
-              spacing={1}
-              alignItems={{ sm: 'center' }}
-              justifyContent="space-between"
-            >
-              <Stack spacing={0.25}>
-                <Typography variant="subtitle2" fontWeight={700}>
-                  {post.author.username}
-                </Typography>
-                <Typography variant="caption" color="text.secondary" fontWeight={600}>
-                  {formatNumber(post.views)} {t('blog.views').toLowerCase()}
-                </Typography>
+                <KepIcon name={stat.icon} fontSize={14} />
+                <Typography variant="caption">{formatNumber(stat.value)}</Typography>
               </Stack>
-
-              <Stack direction="row" spacing={1.25} alignItems="center" flexWrap="wrap" useFlexGap>
-                <StatPill icon="comment" value={post.commentsCount} />
-                <StatPill icon="like" value={post.likesCount} />
-              </Stack>
-            </Stack>
-
-            <Typography variant="body2" color="primary.main" fontWeight={700}>
-              {t('blog.readMore')}
-            </Typography>
+            ))}
           </Stack>
-        </CardContent>
-      </CardActionArea>
-    </Card>
+        </Stack>
+      </Stack>
+    </Box>
   );
 };
-
 export default BlogCard;

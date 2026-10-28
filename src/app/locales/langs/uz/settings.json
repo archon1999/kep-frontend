@@ -1,5 +1,9 @@
 {
   "settings": {
+    "pageSubtitle": "Profil, ulangan hisoblar va sozlamalarni boshqaring.",
+    "account": "Hisob",
+    "navigation": "Sozlamalar bo‘limlari",
+    "coverSizeError": "Muqova rasmi hajmi 4 MB dan oshmasligi kerak.",
     "general": "Umumiy",
     "changePassword": "Parolni oʻzgartirish",
     "information": "Maʻlumot",
@@ -9,10 +13,10 @@
     "teams": "Jamoalar",
     "system": "Tizim",
     "generalSettings": "Umumiy sozlamalar",
-    "generalSettingsSubtitle": "Profil asosiy maʻlumotlarini va qoplamani yangilang.",
+    "generalSettingsSubtitle": "Ism, avatar va profil muqovasini yangilang.",
     "upload": "Yuklash",
     "coverImage": "Qoplama rasmi",
-    "coverPlaceholder": "Profilni shaxsiylashtirish uchun qoplama yuklang.",
+    "coverPlaceholder": "Profil tepasidagi banner uchun rasm tanlang.",
     "coverChangeAction": "Xarid qilish",
     "coverChangeNote": "Orqa fon rasmini yangilash {{value}} Kepcoin talab qiladi.",
     "username": "Foydalanuvchi nomi",
@@ -40,7 +44,7 @@
     "telegram": "Telegram",
     "publicTelegram": "Public Telegram",
     "connectedAccounts": "Ulangan akkauntlar",
-    "connectedAccountsSubtitle": "Kepcoin topshiriqlari uchun tashqi akkauntlarni ulang.",
+    "connectedAccountsSubtitle": "Qo‘llab-quvvatlangan xizmatlarni KEP.uz hisobingizga ulang.",
     "connectedAccountsLinked": "Ulangan",
     "connectedAccountsNotLinked": "Ulanmagan",
     "connectedAccountsOpened": "Ulash jarayoni ochildi",
@@ -49,10 +53,9 @@
     "reconnect": "Qayta ulash",
     "codeforcesHandle": "Codeforcesdagi profil",
     "technologies": "Texnologiyalar",
-    "technologiesSubtitle": "Sevimli texnologiyalar va ranglarni belgilang.",
+    "technologiesSubtitle": "Profilingizda ko‘rinadigan texnologiyalarni tanlang.",
     "text": "Matn",
     "devIconClass": "Dev icons class",
-    "devIconHelper": "devicon.io saytidagi istalgan sinfni kiriting",
     "badgeColor": "Badge rangi",
     "preview": "Koʻrinish",
     "addNew": "Yangi qoʻshish",
@@ -68,15 +71,13 @@
     "linkToJoin": "Qoʻshilish havolasi",
     "refreshLink": "Havolani yangilash",
     "teamCode": "Jamoa kodi: {{code}}",
-    "teamsEmpty": "Yangi jamoa yarating yoki mavjudiga qoʻshiling.",
     "sounds": "Tovushlar",
     "botNotifications": "Bot bildirishnomalari",
-    "botNotificationsSubtitle": "Telegram botdan keladigan bildirishnomalarni yoqing yoki o'chiring.",
+    "botNotificationsSubtitle": "Telegram bot qaysi bildirishnomalarni yuborishini tanlang.",
     "successSound": "Muvaffaqiyat tovushi",
     "homeSound": "Bosh sahifa tovushi",
     "themeToggleEffect": "Tema almashish effekti",
     "openNavigation": "Navigatsiyani ochish",
-    "loginRequired": "Hisob sozlamalarini boshqarish uchun tizimga kiring.",
     "linkCopied": "Havola nusxalandi",
     "teamCodeLabel": "Jamoa kodi",
     "teamName": "Nomi",
@@ -127,7 +128,6 @@
       "toggle": "Moslash",
       "title": "Moslash",
       "reset": "Qayta tiklash",
-      "new": "yangi",
       "notAvailableInLayout": "Bu layoutda mavjud emas.",
       "sections": {
         "theme": "Tema",
@@ -139,7 +139,8 @@
         "cardStyle": "Karta uslubi",
         "cardBackground": "Karta foni",
         "font": "Shrift",
-        "visionMode": "Ko‘rish rejimi"
+        "visionMode": "Ko‘rish rejimi",
+        "layout": "Joylashuv"
       },
       "labels": {
         "default": "Standart",
@@ -175,28 +176,29 @@
         "nature": "Tabiat",
         "ember": "Cho‘g‘",
         "dracula": "Drakula",
-        "midnight": "Yarim tun"
+        "midnight": "Yarim tun",
+        "cobalt": "Cobalt"
       },
       "visionModes": {
         "normal": {
           "label": "Oddiy",
-          "description": "Barcha ranglarni odatdagidek ko‘rsatadi"
+          "description": "Standart ranglar."
         },
         "protanopia": {
           "label": "Protanopiya",
-          "description": "Qizil tuslarni ko‘rish qiyinlashadi"
+          "description": "Protanopiya rang filtrini qo‘llaydi."
         },
         "deuteranopia": {
           "label": "Deyteranopiya",
-          "description": "Yashil tuslarni ko‘rish qiyinlashadi"
+          "description": "Deyteranopiya rang filtrini qo‘llaydi."
         },
         "tritanopia": {
           "label": "Tritanopiya",
-          "description": "Ko‘k tuslarni ko‘rish qiyinlashadi"
+          "description": "Tritanopiya rang filtrini qo‘llaydi."
         },
         "achromatopsia": {
           "label": "Axromatopsiya",
-          "description": "Faqat qora va oq ranglarda ko‘rsatadi"
+          "description": "Kulrang tuslardan iborat palitra."
         }
       }
     }

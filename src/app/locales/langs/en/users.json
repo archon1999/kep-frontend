@@ -47,10 +47,19 @@
       "empty": "User statistics are not available yet"
     },
     "popover": {
-      "viewDetails": "View user details"
+      "viewDetails": "View user details",
+      "online": "Online",
+      "offline": "Offline"
     },
     "emptyValue": "—",
     "profile": {
+      "identity": "Profile",
+      "editProfile": "Edit profile",
+      "previewCover": "View cover",
+      "navigation": "Profile sections",
+      "emptyBio": "No bio added yet.",
+      "noSkills": "No skills added yet.",
+      "noDetails": "No details added yet.",
       "tabs": {
         "about": "About",
         "ratings": "Ratings",
@@ -63,8 +72,8 @@
         "sectionTitle": "Personal",
         "title": "Personal info",
         "fullName": "Full name",
-        "wasBorn": "Was born",
-        "lives": "Lives",
+        "wasBorn": "Date of birth",
+        "lives": "Location",
         "email": "Email",
         "website": "Website",
         "joined": "Joined",
@@ -133,7 +142,7 @@
         "size": "Size",
         "color": "Color",
         "reviewTitle": "Rate this order",
-        "reviewHint": "Leave a 1-5 star rating after delivery is completed.",
+        "reviewHint": "Rate this order from 1 to 5 stars after delivery is complete.",
         "submitReview": "Submit review",
         "reviewSaved": "Review saved",
         "starsRequired": "Choose a star rating first.",

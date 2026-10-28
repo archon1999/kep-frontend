@@ -101,7 +101,7 @@ const AnimatedRow = memo(
         aria-hidden={exiting || undefined}
         data-replay-row={row.id}
         data-replay-direction={direction}
-        sx={(theme) => ({
+        sx={{
           position: 'absolute',
           left: 0,
           right: 0,
@@ -110,10 +110,9 @@ const AnimatedRow = memo(
           opacity: exiting ? 0 : 1,
           zIndex: direction > 0 ? 3 : direction < 0 ? 2 : 1,
           willChange: motion ? 'transform' : undefined,
-          bgcolor: muted ? '#f7f7f7' : 'background.paper',
-          ...(muted && theme.applyStyles('dark', { bgcolor: '#111418' })),
+          bgcolor: muted ? 'background.elevation1' : 'background.default',
           borderBottom: index === visibleCount - 1 ? 0 : 1,
-          borderColor: 'dividerLight',
+          borderColor: 'divider',
           borderLeft: '3px solid',
           borderLeftColor:
             direction > 0 ? 'success.main' : direction < 0 ? 'error.main' : 'transparent',
@@ -126,12 +125,10 @@ const AnimatedRow = memo(
             fontSize: compact ? '0.7rem' : undefined,
           },
           '& .MuiTypography-caption': { fontSize: compact ? '0.65rem' : undefined },
-        })}
+        }}
       >
         <Stack role="cell" direction="row" alignItems="center" gap={0.25}>
-          <Typography variant="body2" fontWeight={700}>
-            {row.rank}
-          </Typography>
+          <Typography variant="metric">{row.rank}</Typography>
           {direction !== 0 && (
             <Typography
               aria-hidden
@@ -267,8 +264,8 @@ const ReplayStandings = memo(
               alignItems: 'center',
               minHeight: compact ? 38 : 56,
               bgcolor: 'background.elevation1',
-              borderTopLeftRadius: '16px',
-              borderTopRightRadius: '16px',
+              borderBottom: 1,
+              borderColor: 'divider',
               pl: '3px',
               '& > [role="columnheader"]': { px: compact ? 0.5 : 1.5 },
             }}
@@ -281,8 +278,7 @@ const ReplayStandings = memo(
               <Typography
                 role="columnheader"
                 key={label}
-                variant="subtitle2"
-                fontWeight={500}
+                variant="label"
                 sx={{ fontSize: compact ? '0.75rem' : undefined }}
               >
                 {label}

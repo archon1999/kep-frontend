@@ -13,9 +13,7 @@ import {
   Tooltip,
   Typography,
 } from '@mui/material';
-import { useAuth } from 'app/providers/AuthProvider';
-import { useGameSession } from 'modules/kepper-game/application';
-import { codeIslandsScore } from 'modules/kepper-game/domain';
+import { useKepperGamePage } from 'modules/kepper-game/application/hooks/useKepperGamePage';
 import IconifyIcon from 'shared/components/base/IconifyIcon';
 import PageHeader from 'shared/components/sections/common/PageHeader';
 import { responsivePagePaddingSx } from 'shared/lib/styles';
@@ -39,13 +37,11 @@ const KepperGamePage = ({
   embedded = false,
 }: KepperGamePageProps) => {
   const { t } = useTranslation();
-  const { currentUser } = useAuth();
-  const game = useGameSession(currentUser?.username);
+  const { game, score } = useKepperGamePage({ onScore, onAudioStop, onAudioCue });
   const [showHint, setShowHint] = useState(false);
   const [speedAnchor, setSpeedAnchor] = useState<HTMLElement | null>(null);
   const boardRef = useRef<HTMLDivElement>(null);
   const revealBoardOnRunRef = useRef(false);
-  const score = codeIslandsScore(game.progress);
 
   const runProgram = () => {
     if (game.playing) return;
@@ -63,16 +59,6 @@ const KepperGamePage = ({
   };
 
   useEffect(() => setShowHint(false), [game.level.id]);
-  useEffect(() => {
-    if (score > 0) onScore?.(score);
-  }, [onScore, score]);
-  useEffect(() => {
-    if (game.feedback?.kind === 'win') onAudioCue?.('correct');
-    else if (game.feedback && game.feedback.kind !== 'unavailable') onAudioCue?.('wrong');
-  }, [game.feedback, onAudioCue]);
-  useEffect(() => {
-    if (game.progress.completed.length === game.levels.length) onAudioStop?.();
-  }, [game.progress.completed.length, game.levels.length, onAudioStop]);
   useEffect(() => {
     const onKeyDown = (event: KeyboardEvent) => {
       if ((event.ctrlKey || event.metaKey) && event.key === 'Enter') {

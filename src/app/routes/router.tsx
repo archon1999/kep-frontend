@@ -1,5 +1,12 @@
 import { type ReactNode, Suspense, lazy } from 'react';
-import { Navigate, Outlet, RouteObject, createBrowserRouter, generatePath, useLocation } from 'react-router';
+import {
+  Navigate,
+  Outlet,
+  RouteObject,
+  createBrowserRouter,
+  generatePath,
+  useLocation,
+} from 'react-router';
 import App from 'app/App.tsx';
 import MainLayout from 'app/layouts/main-layout';
 import { AccountSettingsPage, TeamJoinPage } from 'modules/account-settings/ui/pages';
@@ -93,7 +100,9 @@ import { adminMenu } from './sitemap';
 const IS_PROD = import.meta.env.PROD;
 const GiveawayPage = lazy(() => import('modules/giveaways/ui/pages/GiveawayPage/GiveawayPage'));
 const GamesPage = lazy(() => import('modules/games/ui/pages/GamesPage/GamesPage'));
-const KeppyWorldPage = lazy(() => import('modules/keppy-world/ui/pages/KeppyWorldPage/KeppyWorldPage'));
+const KeppyWorldPage = lazy(
+  () => import('modules/keppy-world/ui/pages/KeppyWorldPage/KeppyWorldPage'),
+);
 const GamePlayPage = lazy(() => import('modules/games/ui/pages/GamePlayPage/GamePlayPage'));
 
 const AuthLayout = lazy(() => import('app/layouts/auth-layout'));
@@ -343,7 +352,9 @@ export const routes: RouteObject[] = [
           },
           {
             path: resources.KepperGame,
-            element: <Navigate to={generatePath(resources.Game, { gameId: 'code-islands' })} replace />,
+            element: (
+              <Navigate to={generatePath(resources.Game, { gameId: 'code-islands' })} replace />
+            ),
           },
           {
             path: resources.Game,
@@ -589,14 +600,6 @@ export const routes: RouteObject[] = [
             },
           },
           {
-            path: resources.HackathonProject,
-            element: <HackathonProjectPage />,
-            handle: {
-              titleKey: 'pageTitles.hackathonProject',
-              fallbackTitleKey: 'pageTitles.hackathons',
-            },
-          },
-          {
             path: resources.HackathonAttempts,
             element: <HackathonAttemptsPage />,
             handle: {
@@ -693,6 +696,14 @@ export const routes: RouteObject[] = [
         ],
       },
 
+      {
+        path: resources.HackathonProject,
+        element: withSuspense(<HackathonProjectPage />),
+        handle: {
+          titleKey: 'pageTitles.hackathonProject',
+          fallbackTitleKey: 'pageTitles.hackathons',
+        },
+      },
       {
         path: resources.Project,
         element: withSuspense(<ProjectDetailPage />),

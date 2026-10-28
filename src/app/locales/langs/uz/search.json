@@ -4,15 +4,13 @@
   "search.recentEmpty": "Hozircha oxirgi sahifalar yoʻq.",
   "search.minCharsHint": "Qidirishni boshlash uchun kamida 2 ta belgi kiriting.",
   "search.resources": "Resurslar",
-  "search.noMatchingResources": "Mos boʻlgan boʻlimlar topilmadi.",
   "search.users": "Foydalanuvchilar",
-  "search.usersEmpty": "Foydalanuvchilar topilmadi.",
   "search.problems": "Masalalar",
-  "search.problemsEmpty": "Masalalar topilmadi.",
   "search.blogs": "Blog postlar",
-  "search.blogsEmpty": "Blog postlar topilmadi.",
   "search.contests": "Kontestlar",
-  "search.contestsEmpty": "Kontestlar topilmadi.",
   "search.noResults": "Soʻrov boʻyicha natijalar topilmadi.",
-  "search.loading": "Qidirilmoqda..."
+  "search.loading": "Qidirilmoqda...",
+  "search.clearQuery": "Qidiruvni tozalash",
+  "search.tryAnotherQuery": "Boshqa sarlavha, foydalanuvchi yoki bo‘lim nomini kiriting.",
+  "search.loadError": "Ayrim natijalarni yuklab bo‘lmadi. Qayta urinib ko‘ring."
 }

@@ -1,6 +1,6 @@
 import { useTranslation } from 'react-i18next';
 import { MenuItem, Stack, TextField, Typography, useMediaQuery, useTheme } from '@mui/material';
-import { TestPassQuestion } from '../types';
+import { TestPassQuestion } from 'modules/testing/domain/entities/test-pass.types';
 import QuestionHeader from './QuestionHeader';
 import SortableList from './SortableList';
 
@@ -49,7 +49,7 @@ const ConformityQuestion = ({
             <Stack
               key={`${item}-${groupOne.slice(0, index).filter((value) => value === item).length}`}
               spacing={1.25}
-              sx={{ p: 1.5, border: '1px solid', borderColor: 'divider', borderRadius: 2 }}
+              sx={{ p: 1.5, border: '1px solid', borderColor: 'divider', borderRadius: 0 }}
             >
               <Typography variant="body1" sx={{ overflowWrap: 'anywhere' }}>
                 {item}

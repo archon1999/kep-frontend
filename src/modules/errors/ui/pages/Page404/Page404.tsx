@@ -1,81 +1,51 @@
 import { useTranslation } from 'react-i18next';
 import { useNavigate } from 'react-router';
 import { Box, Button, Stack, Typography } from '@mui/material';
+import { useDocumentNoIndex } from 'app/providers/DocumentTitleProvider';
 import { useNotFoundContent } from 'modules/errors/application';
-import Kepper from 'shared/components/common/Kepper';
+import Logo from 'shared/components/common/Logo';
+import MixedText from 'shared/components/common/MixedText';
+import PatternArtwork from 'shared/components/common/PatternArtwork';
+import StandalonePage from 'shared/components/sections/common/StandalonePage';
 
 const Page404 = () => {
+  useDocumentNoIndex();
   const { title, ctaHref, ctaLabel } = useNotFoundContent();
   const { t } = useTranslation();
   const navigate = useNavigate();
-
-  const handleBack = () => {
-    if (window.history.length > 1) {
-      navigate(-1);
-      return;
-    }
-
-    navigate(ctaHref);
-  };
-
+  const handleBack = () => (window.history.length > 1 ? navigate(-1) : navigate(ctaHref));
   return (
-    <Stack
-      sx={{
-        justifyContent: 'center',
-        alignItems: 'center',
-        height: '100vh',
-        p: { xs: 2.5, sm: 5 },
-        overflow: 'hidden',
-      }}
-    >
+    <StandalonePage maxWidth={820}>
+      <Box sx={{ p: 3, borderBottom: 1, borderColor: 'divider' }}>
+        <Logo />
+      </Box>
       <Stack
-        direction="column"
-        sx={{
-          alignItems: 'center',
-          justifyContent: 'center',
-          textAlign: 'center',
-        }}
-        spacing={{ xs: 3, md: 4 }}
+        alignItems="center"
+        spacing={2.5}
+        sx={{ px: { xs: 3, sm: 6 }, py: { xs: 4, sm: 6 }, textAlign: 'center' }}
       >
-        <Box
-          sx={{
-            width: '100%',
-            maxWidth: {
-              xs: 300,
-              sm: 500,
-              md: 720,
-              lg: 920,
-            },
-            maxHeight: {
-              xs: '40vh',
-              sm: '45vh',
-              md: '55vh',
-              lg: '60vh',
-            },
-          }}
+        <PatternArtwork kind="error" sx={{ width: 280 }} />
+        <Typography
+          variant="metric"
+          sx={{ fontSize: { xs: 64, sm: 96 }, lineHeight: 1, color: 'primary.main' }}
         >
-          <Stack alignItems="center">
-            <Kepper pose="confused" motion="loop" size={220} />
-            <Typography variant="h2" color="primary.main">
-              404
-            </Typography>
-          </Stack>
-        </Box>
-        <Box sx={{ textAlign: 'center' }}>
-          <Typography variant="h2" sx={{ color: 'text.disabled', fontWeight: 'medium', mb: 2 }}>
-            {title}
-          </Typography>
-          <Typography variant="h5" sx={{ color: 'text.secondary', fontWeight: 'normal', mb: 5 }}>
-            {t('common.mascot.notFound')}
-          </Typography>
-
-          <Button variant="contained" size="large" sx={{ px: 7 }} onClick={handleBack}>
-            {ctaLabel}
-          </Button>
-        </Box>
+          404
+        </Typography>
+        <Typography
+          component="h1"
+          variant="h3"
+          sx={{ fontFamily: 'var(--kep-display-font)', fontWeight: 500 }}
+        >
+          <MixedText>{title}</MixedText>
+        </Typography>
+        <Typography color="text.secondary" sx={{ maxWidth: 460, lineHeight: 1.7 }}>
+          {t('common.mascot.notFound')}
+        </Typography>
+        <Button variant="contained" size="large" onClick={handleBack}>
+          {ctaLabel}
+        </Button>
       </Stack>
-    </Stack>
+    </StandalonePage>
   );
 };
-
 export default Page404;

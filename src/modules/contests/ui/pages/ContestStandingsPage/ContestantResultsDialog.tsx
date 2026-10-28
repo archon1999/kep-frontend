@@ -1,18 +1,18 @@
 import { useEffect, useMemo, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import {
+  Alert,
   Avatar,
   AvatarGroup,
   Box,
   CircularProgress,
   Dialog,
   DialogContent,
-  DialogTitle,
   Divider,
-  IconButton,
   Skeleton,
   Stack,
   Typography,
+  useMediaQuery,
 } from '@mui/material';
 import { useTheme } from '@mui/material/styles';
 import { LineChart } from 'echarts/charts';
@@ -24,8 +24,8 @@ import { useContestContestantTimeline } from 'modules/contests/application/queri
 import { ContestantEntity } from 'modules/contests/domain/entities/contestant.entity';
 import ContestantView from 'modules/contests/ui/shared/components/ContestantView';
 import { formatContestPoints } from 'modules/contests/ui/shared/utils/contestType';
-import IconifyIcon from 'shared/components/base/IconifyIcon';
 import ReactEchart from 'shared/components/base/ReactEchart';
+import DialogHeader from 'shared/components/common/DialogHeader';
 import { getColor } from 'shared/lib/echart-utils';
 import ContestantAutocomplete from './ContestantAutocomplete';
 
@@ -63,7 +63,11 @@ interface ContestantSummaryRowProps {
 const renderContestantAvatar = (contestant?: ContestantEntity | null, size = 48) => {
   if (contestant?.team?.members?.length) {
     return (
-      <AvatarGroup component="div" max={4} sx={{ '& .MuiAvatar-root': { width: size, height: size } }}>
+      <AvatarGroup
+        component="div"
+        max={4}
+        sx={{ '& .MuiAvatar-root': { width: size, height: size } }}
+      >
         {contestant.team.members.map((member) => (
           <Avatar key={member.username} src={member.avatar ?? undefined} alt={member.username}>
             {getInitial(member.username)}
@@ -91,10 +95,12 @@ const ContestantSummaryRow = ({
 }: ContestantSummaryRowProps) => (
   <Box
     sx={{
-      borderRadius: 1,
+      borderRadius: 0,
+      borderBottom: 1,
+      borderColor: 'divider',
       px: 1.5,
       py: 1.25,
-      bgcolor: 'background.elevation1',
+      bgcolor: 'transparent',
     }}
   >
     <Stack
@@ -142,7 +148,7 @@ const ContestantSummaryRow = ({
         sx={{ minWidth: 96 }}
       >
         {loading && contestant ? <CircularProgress color="inherit" size={16} /> : null}
-        <Typography variant="body2" fontWeight={800} color="primary.main">
+        <Typography variant="metric" sx={{ fontSize: 24 }} color="primary.main">
           {contestant?.points === undefined || contestant?.points === null
             ? '-'
             : formatContestPoints(contestant.points)}
@@ -167,9 +173,18 @@ const ContestantResultsDialog = ({
 }: ContestantResultsDialogProps) => {
   const { t } = useTranslation();
   const theme = useTheme();
+  const mobile = useMediaQuery(theme.breakpoints.down('sm'));
   const [comparisonContestant, setComparisonContestant] = useState<ContestantEntity | null>(null);
-  const { data: timeline, isLoading } = useContestContestantTimeline(contestId, contestantId, open);
-  const { data: comparisonTimeline, isLoading: isComparisonLoading } = useContestContestantTimeline(
+  const {
+    data: timeline,
+    isLoading,
+    error,
+  } = useContestContestantTimeline(contestId, contestantId, open);
+  const {
+    data: comparisonTimeline,
+    isLoading: isComparisonLoading,
+    error: comparisonError,
+  } = useContestContestantTimeline(
     contestId,
     comparisonContestant?.id,
     open && Boolean(comparisonContestant?.id),
@@ -211,6 +226,7 @@ const ContestantResultsDialog = ({
 
   const chartOption = useMemo<EChartsCoreOption>(
     () => ({
+      textStyle: { fontFamily: theme.typography.fontFamily },
       grid: {
         top: comparisonContestant ? 42 : 24,
         right: 18,
@@ -222,6 +238,7 @@ const ContestantResultsDialog = ({
             top: 0,
             left: 0,
             data: [primarySeriesName, comparisonSeriesName],
+            textStyle: { color: getColor(theme.vars.palette.text.secondary) },
           }
         : undefined,
       tooltip: {
@@ -248,8 +265,12 @@ const ContestantResultsDialog = ({
         max: durationSeconds,
         interval: getAxisInterval(),
         axisLabel: {
+          color: getColor(theme.vars.palette.text.secondary),
+          hideOverlap: true,
           formatter: (value: number) => formatElapsedTime(value),
         },
+        axisLine: { lineStyle: { color: getColor(theme.vars.palette.divider) } },
+        axisTick: { show: false },
         splitLine: {
           lineStyle: {
             color: getColor(theme.vars.palette.divider),
@@ -262,6 +283,7 @@ const ContestantResultsDialog = ({
         max: maxSolved,
         minInterval: 1,
         axisLabel: {
+          color: getColor(theme.vars.palette.text.secondary),
           formatter: (value: number) => Math.round(value).toString(),
         },
         splitLine: {
@@ -276,6 +298,7 @@ const ContestantResultsDialog = ({
           type: 'line',
           data: chartPoints,
           step: 'end',
+          symbol: 'rect',
           symbolSize: 8,
           lineStyle: {
             width: 3,
@@ -296,6 +319,7 @@ const ContestantResultsDialog = ({
                 type: 'line',
                 data: comparisonChartPoints,
                 step: 'end',
+                symbol: 'rect',
                 symbolSize: 8,
                 lineStyle: {
                   width: 3,
@@ -323,20 +347,24 @@ const ContestantResultsDialog = ({
   );
 
   return (
-    <Dialog open={open} onClose={onClose} fullWidth maxWidth="md">
-      <DialogTitle>
-        <Stack direction="row" alignItems="center" justifyContent="space-between" spacing={2}>
-          <Typography variant="h6" fontWeight={800}>
-            {t('contests.standings.contestantResults', { defaultValue: 'Contestant results' })}
-          </Typography>
-          <IconButton aria-label={t('common.close')} onClick={onClose}>
-            <IconifyIcon icon="mdi:close" />
-          </IconButton>
-        </Stack>
-      </DialogTitle>
-
+    <Dialog
+      open={open}
+      onClose={onClose}
+      fullWidth
+      maxWidth="md"
+      fullScreen={mobile}
+      aria-labelledby="contestant-results-title"
+    >
+      <DialogHeader
+        id="contestant-results-title"
+        title={t('contests.standings.contestantResults')}
+        onClose={onClose}
+      />
       <DialogContent dividers>
         <Stack spacing={3}>
+          {error || comparisonError ? (
+            <Alert severity="error">{t('contests.detail.dataError')}</Alert>
+          ) : null}
           <Stack direction={{ xs: 'column', md: 'row' }} spacing={2} alignItems="stretch">
             <Box flex={1} minWidth={0}>
               <ContestantSummaryRow
@@ -360,11 +388,11 @@ const ContestantResultsDialog = ({
           <Divider />
 
           <Box>
-            <Typography variant="subtitle1" fontWeight={800} sx={{ mb: 1.5 }}>
+            <Typography variant="label" component="h3" sx={{ mb: 2 }}>
               {t('contests.standings.progressChart')}
             </Typography>
             {isLoading || isComparisonLoading ? (
-              <Skeleton variant="rounded" height={320} />
+              <Skeleton variant="rectangular" height={320} />
             ) : (
               <ReactEchart echarts={echarts} option={chartOption} style={{ height: 320 }} />
             )}

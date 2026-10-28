@@ -1,7 +1,15 @@
-import { KepCoverRepository, PageResult } from '../../domain/ports/kep-cover.repository';
-import { KepCoverContestSummary, KepCoverEntry, KepCoverVoteState } from '../../domain/entities/kep-cover.entity';
+import { KepCoverRepository, PageResult } from '../../domain/contracts/kep-cover.repository';
+import {
+  KepCoverContestSummary,
+  KepCoverEntry,
+  KepCoverVoteState,
+} from '../../domain/entities/kep-cover.entity';
 import { kepCoverApiClient } from '../api/kep-cover.client';
-import { mapKepCoverPage, mapKepCoverSummary, mapKepCoverVoteState } from '../mappers/kep-cover.mapper';
+import {
+  mapKepCoverPage,
+  mapKepCoverSummary,
+  mapKepCoverVoteState,
+} from '../mappers/kep-cover.mapper';
 
 export class HttpKepCoverRepository implements KepCoverRepository {
   async getSummary(): Promise<KepCoverContestSummary> {
@@ -9,7 +17,10 @@ export class HttpKepCoverRepository implements KepCoverRepository {
     return mapKepCoverSummary(result);
   }
 
-  async getEntries(params?: { page?: number; pageSize?: number }): Promise<PageResult<KepCoverEntry>> {
+  async getEntries(params?: {
+    page?: number;
+    pageSize?: number;
+  }): Promise<PageResult<KepCoverEntry>> {
     const result = await kepCoverApiClient.entries(params);
     return mapKepCoverPage(result);
   }

@@ -1,14 +1,18 @@
-import { useState } from 'react';
+import { lazy, useState } from 'react';
 import { useTranslation } from 'react-i18next';
-import { Box, ButtonBase, IconButton, Stack, Tooltip, Typography } from '@mui/material';
+import { Box, ButtonBase, IconButton, Skeleton, Stack, Tooltip, Typography } from '@mui/material';
 import {
   cosmeticColors,
   cosmeticIcons,
 } from 'modules/keppy-world/ui/shared/helpers/mascot-accessories';
 import IconifyIcon from 'shared/components/base/IconifyIcon';
+import DeferredContent from 'shared/components/loading/DeferredContent';
 import type { WorldBootstrap } from '../../../../domain';
 import { mascotOptions } from '../../../shared/helpers/mascot-visuals';
-import { MascotAccessoryPreview } from './MascotAccessoryPreview';
+
+const MascotAccessoryPreview = lazy(() =>
+  import('./MascotAccessoryPreview').then((module) => ({ default: module.MascotAccessoryPreview })),
+);
 
 type Props = {
   mascotId: string;
@@ -35,7 +39,7 @@ const MascotPicker = ({ mascotId, cosmetic, cosmetics, disabled, onMascot, onCos
             width: { xs: 1, sm: 176 },
             flexShrink: 0,
             bgcolor: 'background.elevation1',
-            borderRadius: 2.5,
+            borderRadius: 0,
             overflow: 'hidden',
           }}
         >
@@ -44,11 +48,13 @@ const MascotPicker = ({ mascotId, cosmetic, cosmetics, disabled, onMascot, onCos
             aria-label={`${selected.name} · ${t(`keppyWorld.cosmetics.${cosmetic}`)}`}
             sx={{ height: 170, width: 1 }}
           >
-            <MascotAccessoryPreview
-              mascotId={mascotId}
-              cosmetic={cosmetic}
-              yaw={previewViews.find((item) => item.id === view)?.yaw}
-            />
+            <DeferredContent fallback={<Skeleton variant="rectangular" height={170} />}>
+              <MascotAccessoryPreview
+                mascotId={mascotId}
+                cosmetic={cosmetic}
+                yaw={previewViews.find((item) => item.id === view)?.yaw}
+              />
+            </DeferredContent>
           </Box>
           <Stack direction="row" justifyContent="center" spacing={0.25} sx={{ pb: 0.5 }}>
             {previewViews.map((item) => (
@@ -99,7 +105,7 @@ const MascotPicker = ({ mascotId, cosmetic, cosmetics, disabled, onMascot, onCos
                       minWidth: 0,
                       minHeight: 64,
                       p: 0.5,
-                      borderRadius: 2,
+                      borderRadius: 0,
                       bgcolor: mascot.id === mascotId ? 'primary.lighter' : 'transparent',
                       '&:hover': { bgcolor: 'action.hover' },
                       '&.Mui-focusVisible': { outline: '2px solid', outlineColor: 'primary.main' },
@@ -157,7 +163,7 @@ const MascotPicker = ({ mascotId, cosmetic, cosmetics, disabled, onMascot, onCos
                     py: 1.2,
                     px: 0.25,
                     gap: 0.65,
-                    borderRadius: 2,
+                    borderRadius: 0,
                     bgcolor: cosmetic === item.id ? 'primary.lighter' : 'background.elevation1',
                     color: cosmetic === item.id ? 'primary.main' : 'text.secondary',
                     '&:hover': { bgcolor: 'action.selected' },

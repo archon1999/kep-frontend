@@ -29,9 +29,10 @@ export const worldZoneIcons: Record<string, string> = {
 type WorldPanel = 'map' | 'growth' | 'quests' | 'ranking' | 'profile';
 const surface = {
   bgcolor: 'background.paper',
-  border: 0,
-  boxShadow: '0 6px 30px rgba(20,47,65,.09)',
-  borderRadius: 2.5,
+  border: 1,
+  borderColor: 'divider',
+  boxShadow: 'none',
+  borderRadius: 0,
 };
 
 export const WorldProgressCard = memo(
@@ -200,7 +201,9 @@ export const WorldGrowthDetails = ({ world }: { world: CommunityWorld }) => {
             sx={{
               py: 1.5,
               px: 1.5,
-              borderRadius: 2,
+              borderRadius: 0,
+              borderBottom: '1px solid',
+              borderColor: 'divider',
               bgcolor: current ? 'background.elevation1' : 'transparent',
             }}
           >
@@ -212,7 +215,7 @@ export const WorldGrowthDetails = ({ world }: { world: CommunityWorld }) => {
                 display: 'grid',
                 placeItems: 'center',
                 bgcolor: unlocked ? 'primary.lighter' : 'background.elevation1',
-                borderRadius: 1.5,
+                borderRadius: 0,
                 color: unlocked ? 'primary.main' : 'text.disabled',
               }}
             >

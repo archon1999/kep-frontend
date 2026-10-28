@@ -2,6 +2,8 @@ import { useMemo } from 'react';
 import { useTranslation } from 'react-i18next';
 import { Box, Grid, MenuItem, Stack, TextField, Tooltip, Typography } from '@mui/material';
 import { alpha, useColorScheme, useTheme } from '@mui/material/styles';
+import { statisticsHeadingSx } from 'app/theme/styles/statistics';
+import { statisticsInset } from 'app/theme/styles/statistics';
 import dayjs from 'dayjs';
 import { BarChart } from 'echarts/charts';
 import { GridComponent, TooltipComponent } from 'echarts/components';
@@ -14,7 +16,6 @@ import type {
 } from 'modules/challenges/domain';
 import ReactEchart from 'shared/components/base/ReactEchart';
 import { formatDateTime, formatMachineDateTime } from 'shared/lib/dateTime';
-import { statisticsInset } from './statisticsStyles';
 
 echarts.use([BarChart, GridComponent, TooltipComponent, LegacyGridContainLabel, CanvasRenderer]);
 const weekdayKeys = ['mon', 'tue', 'wed', 'thu', 'fri', 'sat', 'sun'];
@@ -75,7 +76,7 @@ const ActivityCalendar = ({
         sx={{ mb: 2 }}
       >
         <Stack direction="column" spacing={0.75}>
-          <Typography variant="h6" component="h2">
+          <Typography variant="h6" component="h2" sx={statisticsHeadingSx}>
             {t('challenges.statisticsPage.activity.title')}
           </Typography>
           <Stack direction="row" spacing={2} flexWrap="wrap" useFlexGap>
@@ -314,7 +315,7 @@ const StatisticsActivity = ({
   if (!activity)
     return (
       <Box sx={{ p: statisticsInset }}>
-        <Typography variant="h6" component="h2" sx={{ mb: 1 }}>
+        <Typography variant="h6" component="h2" sx={[statisticsHeadingSx, { mb: 1 }]}>
           {t('challenges.statisticsPage.activity.title')}
         </Typography>
         <Typography variant="body2" color="text.secondary">

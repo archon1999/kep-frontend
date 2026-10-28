@@ -1,16 +1,6 @@
 import { useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
-import {
-  Card,
-  CardContent,
-  CardHeader,
-  FormControl,
-  InputLabel,
-  LinearProgress,
-  MenuItem,
-  Select,
-  Stack,
-} from '@mui/material';
+import { FormControl, InputLabel, LinearProgress, MenuItem, Select, Stack } from '@mui/material';
 import {
   SUCCESS_SOUND_STORAGE_KEY,
   SYSTEM_SETTINGS_STORAGE_KEY,
@@ -28,6 +18,7 @@ import {
   setStoredThemeToggleEffect,
   themeToggleEffectOptions,
 } from 'shared/lib/themeToggleEffects';
+import SettingsSection from './SettingsSection';
 
 const getInitialSuccessSound = (value: unknown): SuccessSound => {
   if (isSuccessSound(value)) return value;
@@ -122,16 +113,13 @@ const SystemSettingsPanel = () => {
   );
 
   return (
-    <Card sx={{ outline: 'none', borderRadius: 3 }} background={1}>
-      <CardHeader title={t('settings.system')} />
-      <CardContent>
-        {isLoading ? <LinearProgress sx={{ mb: 3 }} /> : null}
-        <Stack direction="column" spacing={3}>
-          {renderSuccessSoundSelect()}
-          {renderThemeToggleEffectSelect()}
-        </Stack>
-      </CardContent>
-    </Card>
+    <SettingsSection title={t('settings.system')}>
+      {isLoading ? <LinearProgress sx={{ mb: 3 }} /> : null}
+      <Stack direction="column" spacing={3}>
+        {renderSuccessSoundSelect()}
+        {renderThemeToggleEffectSelect()}
+      </Stack>
+    </SettingsSection>
   );
 };
 

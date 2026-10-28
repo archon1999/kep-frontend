@@ -29,18 +29,29 @@ import type { ApiHomePromoItem } from '../mappers/home-promo.mapper.ts';
 
 export const homeApiClient = {
   news: (params?: ApiNewsListParams) => apiClient.apiNewsList(params) as Promise<ApiNewsListResult>,
-  posts: (params?: ApiBlogListParams) => apiClient.apiBlogList(params) as Promise<ApiBlogListResult>,
-  topUsers: (params?: ApiUsersTopRatingParams) => apiClient.apiUsersTopRating(params) as Promise<ApiUsersTopRatingResult>,
+  posts: (params?: ApiBlogListParams) =>
+    apiClient.apiBlogList(params) as Promise<ApiBlogListResult>,
+  topUsers: (params?: ApiUsersTopRatingParams) =>
+    apiClient.apiUsersTopRating(params) as Promise<ApiUsersTopRatingResult>,
   nextBirthdays: (params?: ApiUsersNextBirthdaysParams) =>
     apiClient.apiUsersNextBirthdays(params) as Promise<ApiUsersNextBirthdaysResult>,
-  onlineUsers: (params?: ApiUsersOnlineParams) => apiClient.apiUsersOnline(params) as Promise<ApiUsersOnlineResult>,
+  birthdayProfile: (username: string): Promise<unknown> => apiClient.apiUsersInfoRead(username),
+  onlineUsers: (params?: ApiUsersOnlineParams) =>
+    apiClient.apiUsersOnline(params) as Promise<ApiUsersOnlineResult>,
   usersChart: (params?: ApiUsersChartStatParams) =>
     apiClient.apiUsersChartStat(params) as Promise<ApiUsersChartStatResult>,
-  userRatings: (username: string) => apiClient.apiUsersRatings(username) as Promise<ApiUsersRatingsResult>,
+  userRatings: (username: string) =>
+    apiClient.apiUsersRatings(username) as Promise<ApiUsersRatingsResult>,
   userActivityHistory: (username: string, params?: ApiUserActivityHistoryReadParams) =>
-    apiClient.apiUserActivityHistoryRead(username, params) as Promise<ApiUserActivityHistoryReadResult>,
+    apiClient.apiUserActivityHistoryRead(
+      username,
+      params,
+    ) as Promise<ApiUserActivityHistoryReadResult>,
   userActivityStatistics: () =>
-    axiosMutator<HomeUserActivityStatistics>({ url: '/api/users/user-activity-statistics/', method: 'GET' }),
+    axiosMutator<HomeUserActivityStatistics>({
+      url: '/api/users/user-activity-statistics/',
+      method: 'GET',
+    }),
   landingPageStatistics: () =>
     apiClient.apiLandingPageStatisticsList() as unknown as Promise<HomeLandingPageStatistics>,
   promos: () => axiosMutator<ApiHomePromoItem[]>({ url: '/api/home-promos', method: 'GET' }),

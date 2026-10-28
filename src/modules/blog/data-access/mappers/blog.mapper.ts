@@ -1,14 +1,14 @@
 import { BlogComment as ApiBlogComment } from 'shared/api/orval/generated/endpoints/index.schemas';
+import { PageResult } from '../../domain/contracts/blog.repository';
 import {
   BlogComment,
   BlogPost,
   BlogStatus,
   BlogTableOfContentsItem,
   BlogTopic,
-  BlogTranslations,
   BlogTranslationLocale,
+  BlogTranslations,
 } from '../../domain/entities/blog.entity';
-import { PageResult } from '../../domain/ports/blog.repository';
 
 interface BlogApiTranslationFields {
   title?: string | null;
@@ -18,11 +18,14 @@ interface BlogApiTranslationFields {
 
 export interface BlogApiPost {
   id?: number | string;
-  author?: {
-    username?: string | null;
-    avatar?: string | null;
-    bio?: string | null;
-  } | string | null;
+  author?:
+    | {
+        username?: string | null;
+        avatar?: string | null;
+        bio?: string | null;
+      }
+    | string
+    | null;
   title?: string | null;
   subText?: string | null;
   sub_text?: string | null;
@@ -83,7 +86,11 @@ const mapTags = (tags?: string | string[] | null): string[] => {
 const normalizeStatus = (value?: number | string | null) => {
   const parsed = Number(value);
 
-  if (parsed === BlogStatus.Draft || parsed === BlogStatus.Published || parsed === BlogStatus.Pending) {
+  if (
+    parsed === BlogStatus.Draft ||
+    parsed === BlogStatus.Published ||
+    parsed === BlogStatus.Pending
+  ) {
     return parsed;
   }
 
@@ -136,8 +143,8 @@ const mapBasePost = (payload: BlogApiPost): BlogPost => {
         typeof payload.author === 'string'
           ? payload.author
           : payload.author?.username?.trim() || 'unknown',
-      avatar: typeof payload.author === 'string' ? null : payload.author?.avatar ?? null,
-      bio: typeof payload.author === 'string' ? '' : payload.author?.bio?.trim() ?? '',
+      avatar: typeof payload.author === 'string' ? null : (payload.author?.avatar ?? null),
+      bio: typeof payload.author === 'string' ? '' : (payload.author?.bio?.trim() ?? ''),
     },
     title: payload.title ?? '',
     subtitle: payload.subText ?? payload.sub_text ?? undefined,

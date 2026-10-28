@@ -1,6 +1,6 @@
-import { ReactNode, useEffect, useMemo, useState } from 'react';
+import { ReactNode, useMemo } from 'react';
 import { useTranslation } from 'react-i18next';
-import useSWR from 'swr';
+import { Link as RouterLink } from 'react-router';
 import {
   Alert,
   ButtonProps,
@@ -13,71 +13,60 @@ import {
   Switch,
   Typography,
 } from '@mui/material';
-import { DataGrid, GridColDef, GridRowSelectionModel, GridSortModel } from '@mui/x-data-grid';
-import { Link as RouterLink, useNavigate, useParams } from 'react-router';
+import { DataGrid, GridColDef } from '@mui/x-data-grid';
+import { DateTimePicker } from '@mui/x-date-pickers/DateTimePicker';
 import { getResourceById } from 'app/routes/resources';
+import type { AdminResourceOperationsConfig } from 'modules/admin/shared/application/admin-resource-config';
+import type {
+  AdminAutocompleteFieldKind,
+  AdminFilterConfig,
+  AdminFormFieldConfig,
+  AdminSimpleRow,
+} from 'modules/admin/shared/application/admin-resource-config';
+import {
+  autocompleteFieldKinds,
+  isAutocompleteFieldKind,
+} from 'modules/admin/shared/application/admin-resource-fields';
+import { useAdminResourceFormPage } from 'modules/admin/shared/application/hooks/useAdminResourceFormPage';
+import { useAdminResourceListPage } from 'modules/admin/shared/application/hooks/useAdminResourceListPage';
+import type { AdminAutocompleteOption } from 'modules/admin/shared/domain/autocomplete.types';
+import type { AdminLanguageCode } from 'modules/admin/shared/domain/language.types';
 import UserPopover from 'modules/users/ui/shared/components/UserPopover';
-import FilterDrawer, {
-  DEFAULT_FILTER_DRAWER_WIDTH,
-  useFilterDrawer,
-} from 'shared/components/common/FilterDrawer';
 import DataGridNoRowsOverlay, {
   getDataGridNoRowsOverlaySlotProps,
   hasDataGridActiveFilters,
 } from 'shared/components/common/DataGridNoRowsOverlay';
-import AdminRichTextEditor from './AdminRichTextEditor';
+import FilterDrawer, {
+  DEFAULT_FILTER_DRAWER_WIDTH,
+  useFilterDrawer,
+} from 'shared/components/common/FilterDrawer';
 import AttemptLanguage from 'shared/components/problems/AttemptLanguage';
 import AttemptVerdict from 'shared/components/problems/AttemptVerdict';
 import { VerdictKey } from 'shared/components/problems/attemptVerdict.utils';
-import useGridPagination from 'shared/hooks/useGridPagination';
+import { useConfirmationDialog } from 'shared/hooks/useConfirmationDialog';
 import useStableGridRowCount from 'shared/hooks/useStableGridRowCount';
-import { adminApiClient } from '../helpers/adminApiClient.ts';
-import { AdminChoiceOption, AdminListParams } from '../helpers/types.ts';
+import { formatDateTimePickerValue, parseDateTimePickerValue } from 'shared/lib/dateTime';
+import { AdminChoiceOption } from '../domain/types.ts';
+import { formatAdminEditTitle, getAdminResourceTitle } from '../utils/editTitle';
+import { toNumberOrNull } from '../utils/formUtils';
 import AdminBatchActionsToolbar from './AdminBatchActionsToolbar';
 import { AdminChoiceSelect, LanguageSelect, VerdictSelect } from './AdminChoiceSelects';
+import AdminDataGridSkeletonLoadingOverlay from './AdminDataGridSkeletonLoadingOverlay';
 import AdminDateTimeDisplay from './AdminDateTimeDisplay';
 import AdminFiltersToolbar, { AdminActiveFilter } from './AdminFiltersToolbar';
 import AdminFormPageLayout from './AdminFormPageLayout';
 import AdminFormSection from './AdminFormSection';
-import AdminLanguageTabs, { AdminLanguageCode } from './AdminLanguageTabs';
+import AdminLanguageTabs from './AdminLanguageTabs';
 import AdminListPageLayout from './AdminListPageLayout';
-import AdminDataGridSkeletonLoadingOverlay from './AdminDataGridSkeletonLoadingOverlay';
 import {
-  AdminAutocompleteOption,
   ContestsAutocomplete,
   ProblemsAutocomplete,
   TeamsAutocomplete,
   UsersAutocomplete,
 } from './AdminResourceAutocomplete';
+import AdminRichTextEditor from './AdminRichTextEditor';
 import AdminRowActions, { AdminRowActionItem } from './AdminRowActions';
 import TextField from './AdminTextField';
-import { formatAdminEditTitle, getAdminResourceTitle } from '../utils/editTitle';
-import { toNumberOrNull } from '../utils/formUtils';
-import { DateTimePicker } from '@mui/x-date-pickers/DateTimePicker';
-import { getOrderingFromSortModel } from '../utils/gridSorting';
-import {
-  formatDateTimeLocalInputValue,
-  formatDateTimePickerValue,
-  parseDateTimePickerValue,
-  toBackendUtcDateTime,
-} from 'shared/lib/dateTime';
-
-type AdminSimpleRow = {
-  id: number | string;
-  [key: string]: any;
-};
-
-type AdminFieldValueType = 'string' | 'number';
-type AdminFieldSection = 'main' | 'sidebar';
-type AdminAutocompleteFieldKind = 'user' | 'problem' | 'contest' | 'team';
-
-interface AdminFilterConfig {
-  name: string;
-  labelKey: string;
-  kind: 'text' | 'number' | 'select' | 'nullableBoolean' | AdminAutocompleteFieldKind;
-  choicesKey?: string;
-  valueType?: AdminFieldValueType;
-}
 
 interface AdminListColumnConfig {
   field: string;
@@ -116,69 +105,29 @@ interface AdminBatchActionConfig {
   confirmKey?: string;
 }
 
-interface AdminFormFieldConfig {
-  name: string;
-  labelKey: string;
-  kind:
-    | 'text'
-    | 'number'
-    | 'textarea'
-    | 'checkbox'
-    | 'select'
-    | 'richText'
-    | 'dateTime'
-    | AdminAutocompleteFieldKind;
-  section?: AdminFieldSection;
-  choicesKey?: string;
-  valueType?: AdminFieldValueType;
-  nullable?: boolean;
-  omitWhenEmpty?: boolean;
-  required?: boolean;
-  minRows?: number;
-  minHeight?: number;
-  usernameField?: string;
-  labelField?: string;
-  readOnly?: boolean;
-}
-
-interface AdminTranslatedFieldConfig {
-  baseName: string;
-  labelKey: string;
-  kind: 'text' | 'richText';
-  fallbackName?: string;
-  minHeight?: number;
-}
-
-interface AdminSimpleResourceConfig {
-  resource: string;
-  listPath: string;
+interface AdminSimpleResourceConfig extends AdminResourceOperationsConfig {
   createPath: string;
   editPath: string;
   titleKey: string;
   createButtonKey?: string;
-  createTitleKey: string;
   editTitleKey: string;
   searchPlaceholderKey: string;
   selectedLabelKey: string;
-  confirmDeleteKey: string;
   sidebarTitleKey: string;
-  defaultValues: Record<string, any>;
   columns: AdminListColumnConfig[];
-  fields: AdminFormFieldConfig[];
-  translatedFields?: AdminTranslatedFieldConfig[];
   translatedSectionTitleKey?: string;
   translatedSectionSubheaderKey?: string;
-  filters?: AdminFilterConfig[];
   batchActions?: AdminBatchActionConfig[];
   rowActions?: (
     row: AdminSimpleRow,
     helpers: {
       t: ReturnType<typeof useTranslation>['t'];
-      runBatchAction: (ids: Array<number | string>, action: AdminBatchActionConfig) => Promise<void>;
+      runBatchAction: (
+        ids: Array<number | string>,
+        action: AdminBatchActionConfig,
+      ) => Promise<void>;
     },
   ) => AdminRowActionItem[];
-  metaResource?: string;
-  defaultSortModel?: GridSortModel;
 }
 
 interface AdminSimpleResourcePageProps {
@@ -201,66 +150,13 @@ const defaultBatchActions: AdminBatchActionConfig[] = [
   },
 ];
 
-const autocompleteFieldKinds: AdminAutocompleteFieldKind[] = ['user', 'problem', 'contest', 'team'];
-
-const isAutocompleteFieldKind = (kind: AdminFormFieldConfig['kind']): kind is AdminAutocompleteFieldKind =>
-  autocompleteFieldKinds.includes(kind as AdminAutocompleteFieldKind);
-
-const getDefaultLabelField = (field: AdminFormFieldConfig) => {
-  if (field.labelField) {
-    return field.labelField;
-  }
-
-  if (field.kind === 'user') {
-    return field.usernameField ?? `${field.name}Username`;
-  }
-
-  if (field.kind === 'problem' || field.kind === 'contest') {
-    return `${field.name}Title`;
-  }
-
-  if (field.kind === 'team') {
-    return `${field.name}Name`;
-  }
-
-  return field.name;
-};
-
-const buildAutocompleteOption = (
-  field: AdminFormFieldConfig,
-  id?: number | string | null,
-  label?: string | null,
-): AdminAutocompleteOption | null => {
-  if (!id) {
-    return null;
-  }
-
-  const option: AdminAutocompleteOption = { id: Number(id) };
-  const resolvedLabel = label || `#${id}`;
-
-  if (field.kind === 'user') {
-    option.username = resolvedLabel;
-  } else if (field.kind === 'problem' || field.kind === 'contest') {
-    option.title = resolvedLabel;
-  } else if (field.kind === 'team') {
-    option.name = resolvedLabel;
-  }
-
-  return option;
-};
-
 const getAutocompleteOptionLabel = (value: AdminAutocompleteOption) =>
   value.username ?? value.title ?? value.name ?? value.code ?? `#${value.id}`;
 
 const getChoiceOptions = (
   meta: Record<string, AdminChoiceOption[]> | undefined,
   choicesKey?: string,
-) => (choicesKey ? meta?.[choicesKey] ?? [] : []);
-
-const getRowLabelParams = (row: AdminSimpleRow) => ({
-  id: row.id,
-  name: row.name ?? row.title ?? row.username ?? row.code ?? row.id,
-});
+) => (choicesKey ? (meta?.[choicesKey] ?? []) : []);
 
 const getFieldValue = (form: Record<string, any>, field: AdminFormFieldConfig) => {
   const value = form[field.name];
@@ -276,128 +172,31 @@ const getFieldValue = (form: Record<string, any>, field: AdminFormFieldConfig) =
   return value ?? '';
 };
 
-const toPayloadFieldValue = (value: any, field: AdminFormFieldConfig) => {
-  if (field.kind === 'number') {
-    return field.nullable ? toNumberOrNull(value) : Number(value || 0);
-  }
-  if (field.kind === 'dateTime') {
-    return value ? toBackendUtcDateTime(value) : null;
-  }
-  if (isAutocompleteFieldKind(field.kind)) {
-    return value || null;
-  }
-  return value;
-};
-
 const AdminSimpleResourceListPage = ({ config }: AdminSimpleResourcePageProps) => {
+  const { confirm, confirmationDialog } = useConfirmationDialog();
   const { t } = useTranslation();
-  const [search, setSearch] = useState('');
-  const [filters, setFilters] = useState<Record<string, any>>({});
-  const [rowSelectionModel, setRowSelectionModel] = useState<GridRowSelectionModel>({
-    type: 'include',
-    ids: new Set(),
-  });
-  const [isBatching, setIsBatching] = useState(false);
-  const [sortModel, setSortModel] = useState<GridSortModel>(
-    config.defaultSortModel ?? [{ field: 'id', sort: 'desc' }],
-  );
-  const filterDrawer = useFilterDrawer();
-  const { paginationModel, onPaginationModelChange, pageParams, setPaginationModel } =
-    useGridPagination({
-      initialPageSize: 20,
-      querySync: {
-        pageKey: 'page',
-        pageSizeKey: 'pageSize',
-      },
-    });
-
-  const { data: meta } = useSWR<Record<string, AdminChoiceOption[]>>(
-    config.metaResource ? [`admin-${config.resource}-meta`] : null,
-    () => adminApiClient.meta<Record<string, AdminChoiceOption[]>>(config.metaResource ?? config.resource),
-    { revalidateOnFocus: false },
-  );
-
-  const filterSignature = useMemo(() => JSON.stringify(filters), [filters]);
-
-  useEffect(() => {
-    setPaginationModel((prev) => ({ ...prev, page: 0 }));
-  }, [search, filterSignature, sortModel, setPaginationModel]);
-
-  const queryParams = useMemo<AdminListParams>(() => {
-    const params: AdminListParams = {
-      page: pageParams.page,
-      pageSize: pageParams.pageSize,
-      ordering: getOrderingFromSortModel(sortModel),
-      search,
-    };
-
-    (config.filters ?? []).forEach((filter) => {
-      const value = filters[filter.name];
-
-      if (autocompleteFieldKinds.includes(filter.kind as AdminAutocompleteFieldKind)) {
-        params[filter.name] = value?.id;
-      } else if (filter.kind === 'nullableBoolean') {
-        params[filter.name] = value === '' || value === undefined ? undefined : value === 'true';
-      } else if (filter.kind === 'number') {
-        params[filter.name] = value === '' || value === undefined ? undefined : Number(value);
-      } else {
-        params[filter.name] = value;
-      }
-    });
-
-    return params;
-  }, [
-    config.filters,
+  const {
     search,
+    setSearch,
     filters,
-    pageParams.page,
-    pageParams.pageSize,
+    setFilters,
+    rowSelectionModel,
+    setRowSelectionModel,
+    isBatching,
     sortModel,
-  ]);
-
-  const { data, isLoading, isValidating, mutate } = useSWR(
-    [`admin-${config.resource}`, queryParams],
-    () => adminApiClient.list<AdminSimpleRow>(config.resource, queryParams),
-    { keepPreviousData: true, revalidateOnFocus: false },
-  );
-
-  const selectedIds = useMemo(
-    () => Array.from(rowSelectionModel.ids).map((id) => Number(id)).filter(Number.isFinite),
-    [rowSelectionModel],
-  );
-
-  const resetRowSelection = () => setRowSelectionModel({ type: 'include', ids: new Set() });
-
-  const runBatchAction = async (
-    ids: Array<number | string>,
-    action: AdminBatchActionConfig,
-  ) => {
-    if (ids.length === 0) {
-      return;
-    }
-
-    if (action.confirmKey && !window.confirm(t(action.confirmKey, { count: ids.length }))) {
-      return;
-    }
-
-    setIsBatching(true);
-    try {
-      await adminApiClient.batch(config.resource, { ids, action: action.action });
-      resetRowSelection();
-      await mutate();
-    } finally {
-      setIsBatching(false);
-    }
-  };
-
-  const handleDelete = async (row: AdminSimpleRow) => {
-    if (!window.confirm(t(config.confirmDeleteKey, getRowLabelParams(row)))) {
-      return;
-    }
-
-    await adminApiClient.remove(config.resource, row.id);
-    await mutate();
-  };
+    setSortModel,
+    paginationModel,
+    onPaginationModelChange,
+    meta,
+    data,
+    isLoading,
+    isValidating,
+    selectedIds,
+    resetRowSelection,
+    runBatchAction,
+    handleDelete,
+  } = useAdminResourceListPage(config, confirm);
+  const filterDrawer = useFilterDrawer();
 
   const renderColumnValue = (column: AdminListColumnConfig, row: AdminSimpleRow) => {
     const value = row[column.field];
@@ -473,7 +272,8 @@ const AdminSimpleResourceListPage = ({ config }: AdminSimpleResourcePageProps) =
     }
 
     if (column.type === 'attemptTime' || column.type === 'attemptMemory') {
-      const unitKey = column.type === 'attemptTime' ? 'problems.attempts.ms' : 'problems.attempts.kb';
+      const unitKey =
+        column.type === 'attemptTime' ? 'problems.attempts.ms' : 'problems.attempts.kb';
 
       return (
         <Typography variant="body2" fontWeight={600}>
@@ -561,12 +361,7 @@ const AdminSimpleResourceListPage = ({ config }: AdminSimpleResourcePageProps) =
       return <TeamsAutocomplete {...props} />;
     }
 
-    return (
-      <UsersAutocomplete
-        {...props}
-        placeholder={t('admin.form.placeholders.username')}
-      />
-    );
+    return <UsersAutocomplete {...props} placeholder={t('admin.form.placeholders.username')} />;
   };
 
   const renderFilter = (filter: AdminFilterConfig) => {
@@ -647,8 +442,8 @@ const AdminSimpleResourceListPage = ({ config }: AdminSimpleResourcePageProps) =
         valueLabel = getAutocompleteOptionLabel(value as AdminAutocompleteOption);
       } else if (filter.kind === 'select') {
         valueLabel =
-          getChoiceOptions(meta, filter.choicesKey).find((option) => option.value === value)?.label ??
-          String(value);
+          getChoiceOptions(meta, filter.choicesKey).find((option) => option.value === value)
+            ?.label ?? String(value);
       } else if (filter.kind === 'nullableBoolean') {
         valueLabel = value === 'true' ? t('admin.status.yes') : t('admin.status.no');
       }
@@ -666,7 +461,9 @@ const AdminSimpleResourceListPage = ({ config }: AdminSimpleResourcePageProps) =
   const handleClearFilters = () => setFilters({});
   const batchActions = config.batchActions ?? defaultBatchActions;
   const filterControls = config.filters?.length ? (
-    <Stack direction="column" spacing={2.5}>{config.filters.map(renderFilter)}</Stack>
+    <Stack direction="column" spacing={2.5}>
+      {config.filters.map(renderFilter)}
+    </Stack>
   ) : null;
   const filtersId = `admin-${config.resource.replace(/[^a-z0-9]+/gi, '-')}`;
 
@@ -674,213 +471,117 @@ const AdminSimpleResourceListPage = ({ config }: AdminSimpleResourcePageProps) =
   const rowCount = useStableGridRowCount(data?.total, isGridLoading);
 
   return (
-    <AdminListPageLayout
-      title={t(config.titleKey)}
-      createPath={config.createPath}
-      createLabel={config.createButtonKey ? t(config.createButtonKey) : undefined}
-      search={search}
-      onSearchChange={setSearch}
-      searchPlaceholder={t(config.searchPlaceholderKey)}
-      filterDrawerOpen={filterDrawer.open}
-      filterDrawerWidth={DEFAULT_FILTER_DRAWER_WIDTH}
-      filterDrawer={
-        filterControls ? (
-          <FilterDrawer
-            id={`${filtersId}-filters-drawer`}
-            open={filterDrawer.open}
-            onClose={filterDrawer.close}
-            drawerWidth={DEFAULT_FILTER_DRAWER_WIDTH}
-            hasActiveFilters={activeFilters.length > 0}
-            clearLabel={t('problems.clear')}
-            onClear={handleClearFilters}
-          >
-            {filterControls}
-          </FilterDrawer>
-        ) : undefined
-      }
-      toolbar={
-        filterControls ? (
-          <AdminFiltersToolbar
-            id={filtersId}
-            search={search}
-            onSearchChange={setSearch}
-            searchPlaceholder={t(config.searchPlaceholderKey)}
-            filters={filterControls}
-            activeFilters={activeFilters}
-            onClearFilters={handleClearFilters}
-            filtersOpen={filterDrawer.open}
-            onToggleFilters={filterDrawer.toggle}
+    <>
+      {confirmationDialog}
+      {
+        <AdminListPageLayout
+          title={t(config.titleKey)}
+          createPath={config.createPath}
+          createLabel={config.createButtonKey ? t(config.createButtonKey) : undefined}
+          search={search}
+          onSearchChange={setSearch}
+          searchPlaceholder={t(config.searchPlaceholderKey)}
+          filterDrawerOpen={filterDrawer.open}
+          filterAnchorEl={filterDrawer.anchorEl}
+          filterDrawerWidth={DEFAULT_FILTER_DRAWER_WIDTH}
+          filterDrawer={
+            filterControls ? (
+              <FilterDrawer
+                id={`${filtersId}-filters-drawer`}
+                open={filterDrawer.open}
+                onClose={filterDrawer.close}
+                drawerWidth={DEFAULT_FILTER_DRAWER_WIDTH}
+                hasActiveFilters={activeFilters.length > 0}
+                clearLabel={t('problems.clear')}
+                onClear={handleClearFilters}
+              >
+                {filterControls}
+              </FilterDrawer>
+            ) : undefined
+          }
+          toolbar={
+            filterControls ? (
+              <AdminFiltersToolbar
+                id={filtersId}
+                search={search}
+                onSearchChange={setSearch}
+                searchPlaceholder={t(config.searchPlaceholderKey)}
+                filters={filterControls}
+                activeFilters={activeFilters}
+                onClearFilters={handleClearFilters}
+                filtersOpen={filterDrawer.open}
+                onToggleFilters={filterDrawer.toggle}
+              />
+            ) : undefined
+          }
+        >
+          <AdminBatchActionsToolbar
+            selectedCount={selectedIds.length}
+            selectedLabel={t(config.selectedLabelKey)}
+            disabled={isBatching}
+            onClear={resetRowSelection}
+            actions={batchActions.map((action) => ({
+              label: t(action.labelKey),
+              icon: action.icon,
+              color: action.color,
+              onClick: () => runBatchAction(selectedIds, action),
+            }))}
           />
-        ) : undefined
+          <DataGrid
+            autoHeight
+            rows={data?.data ?? []}
+            rowCount={rowCount}
+            loading={isGridLoading}
+            slots={{
+              loadingOverlay: AdminDataGridSkeletonLoadingOverlay,
+              noRowsOverlay: DataGridNoRowsOverlay,
+            }}
+            localeText={{
+              noRowsLabel: t('common.dataGrid.noRows.adminResources', {
+                resource: t(config.titleKey).toLowerCase(),
+              }),
+            }}
+            slotProps={getDataGridNoRowsOverlaySlotProps({
+              filtered: hasDataGridActiveFilters({ search, ...filters }),
+            })}
+            columns={columns}
+            paginationModel={paginationModel}
+            onPaginationModelChange={onPaginationModelChange}
+            pageSizeOptions={[10, 20, 50]}
+            paginationMode="server"
+            sortModel={sortModel}
+            onSortModelChange={setSortModel}
+            sortingMode="server"
+            checkboxSelection
+            rowSelectionModel={rowSelectionModel}
+            onRowSelectionModelChange={setRowSelectionModel}
+            disableRowSelectionExcludeModel
+            disableRowSelectionOnClick
+          />
+        </AdminListPageLayout>
       }
-    >
-      <AdminBatchActionsToolbar
-        selectedCount={selectedIds.length}
-        selectedLabel={t(config.selectedLabelKey)}
-        disabled={isBatching}
-        onClear={resetRowSelection}
-        actions={batchActions.map((action) => ({
-          label: t(action.labelKey),
-          icon: action.icon,
-          color: action.color,
-          onClick: () => runBatchAction(selectedIds, action),
-        }))}
-      />
-      <DataGrid
-        autoHeight
-        rows={data?.data ?? []}
-        rowCount={rowCount}
-        loading={isGridLoading}
-        slots={{
-          loadingOverlay: AdminDataGridSkeletonLoadingOverlay,
-          noRowsOverlay: DataGridNoRowsOverlay,
-        }}
-        localeText={{
-          noRowsLabel: t('common.dataGrid.noRows.adminResources', {
-            resource: t(config.titleKey).toLowerCase(),
-          }),
-        }}
-        slotProps={getDataGridNoRowsOverlaySlotProps({
-          filtered: hasDataGridActiveFilters({ search, ...filters }),
-        })}
-        columns={columns}
-        paginationModel={paginationModel}
-        onPaginationModelChange={onPaginationModelChange}
-        pageSizeOptions={[10, 20, 50]}
-        paginationMode="server"
-        sortModel={sortModel}
-        onSortModelChange={setSortModel}
-        sortingMode="server"
-        checkboxSelection
-        rowSelectionModel={rowSelectionModel}
-        onRowSelectionModelChange={setRowSelectionModel}
-        disableRowSelectionExcludeModel
-        disableRowSelectionOnClick
-      />
-    </AdminListPageLayout>
+    </>
   );
 };
 
 const AdminSimpleResourceFormPage = ({ config }: AdminSimpleResourcePageProps) => {
+  const { confirm, confirmationDialog } = useConfirmationDialog();
   const { t } = useTranslation();
-  const { id } = useParams();
-  const isEdit = Boolean(id);
-  const navigate = useNavigate();
-  const [form, setForm] = useState<Record<string, any>>(config.defaultValues);
-  const [selectedAutocompleteOptions, setSelectedAutocompleteOptions] = useState<
-    Record<string, AdminAutocompleteOption | null>
-  >({});
-  const [isSaving, setIsSaving] = useState(false);
-  const [error, setError] = useState<string | null>(null);
-
-  const { data, isLoading } = useSWR<AdminSimpleRow>(
-    isEdit && id ? [`admin-${config.resource}`, id] : null,
-    () => adminApiClient.read<AdminSimpleRow>(config.resource, id!),
-    { revalidateOnFocus: false },
-  );
-
-  const { data: meta } = useSWR<Record<string, AdminChoiceOption[]>>(
-    config.metaResource ? [`admin-${config.resource}-meta`] : null,
-    () => adminApiClient.meta<Record<string, AdminChoiceOption[]>>(config.metaResource ?? config.resource),
-    { revalidateOnFocus: false },
-  );
-
-  useEffect(() => {
-    if (data) {
-      const nextForm = { ...config.defaultValues, ...data };
-
-      config.fields.forEach((field) => {
-        if (field.kind === 'dateTime') {
-          nextForm[field.name] = formatDateTimeLocalInputValue(data[field.name]);
-        }
-      });
-
-      setForm(nextForm);
-
-      const nextAutocompleteOptions: Record<string, AdminAutocompleteOption | null> = {};
-      config.fields
-        .filter((field) => isAutocompleteFieldKind(field.kind))
-        .forEach((field) => {
-          nextAutocompleteOptions[field.name] = buildAutocompleteOption(
-            field,
-            data[field.name],
-            data[getDefaultLabelField(field)],
-          );
-        });
-      setSelectedAutocompleteOptions(nextAutocompleteOptions);
-    }
-  }, [config.defaultValues, config.fields, data]);
-
-  const setField = (name: string, value: any) => {
-    setForm((prev) => ({ ...prev, [name]: value }));
-  };
-
-  const buildPayload = () => {
-    const payload: Record<string, any> = {};
-
-    config.fields.forEach((field) => {
-      if (field.readOnly) {
-        return;
-      }
-      if (field.omitWhenEmpty && (form[field.name] === '' || form[field.name] === null || form[field.name] === undefined)) {
-        return;
-      }
-      payload[field.name] = toPayloadFieldValue(form[field.name], field);
-    });
-
-    (config.translatedFields ?? []).forEach((field) => {
-      const values = (['Uz', 'En', 'Ru'] as const).map((suffix) => ({
-        name: `${field.baseName}${suffix}`,
-        value: form[`${field.baseName}${suffix}`] ?? '',
-      }));
-
-      values.forEach(({ name, value }) => {
-        payload[name] = value;
-      });
-
-      if (field.fallbackName) {
-        payload[field.fallbackName] =
-          form[field.fallbackName] || values.find(({ value }) => value)?.value || '';
-      }
-    });
-
-    return payload;
-  };
-
-  const handleSave = async () => {
-    const requiredField = config.fields.find((field) => field.required && !form[field.name]);
-
-    if (requiredField) {
-      setError(t('admin.form.validation.required', { field: t(requiredField.labelKey) }));
-      return;
-    }
-
-    const payload = buildPayload();
-    setIsSaving(true);
-    setError(null);
-
-    try {
-      if (isEdit && id) {
-        await adminApiClient.update(config.resource, id, payload);
-      } else {
-        await adminApiClient.create(config.resource, payload);
-      }
-      navigate(config.listPath);
-    } catch (caughtError: any) {
-      setError(JSON.stringify(caughtError?.data ?? caughtError));
-    } finally {
-      setIsSaving(false);
-    }
-  };
-
-  const handleDelete = async () => {
-    if (!id || !window.confirm(t(config.confirmDeleteKey, { id }))) {
-      return;
-    }
-
-    await adminApiClient.remove(config.resource, id);
-    navigate(config.listPath);
-  };
+  const {
+    id,
+    isEdit,
+    form,
+    setField,
+    selectedAutocompleteOptions,
+    setSelectedAutocompleteOptions,
+    isSaving,
+    error,
+    data,
+    isLoading,
+    meta,
+    handleSave,
+    handleDelete,
+  } = useAdminResourceFormPage(config, confirm);
 
   const renderField = (field: AdminFormFieldConfig) => {
     if (field.kind === 'checkbox') {
@@ -929,7 +630,10 @@ const AdminSimpleResourceFormPage = ({ config }: AdminSimpleResourcePageProps) =
           setField(field.name, value?.id ?? null);
         },
         label: t(field.labelKey),
-        placeholder: field.kind === 'user' ? t('admin.form.placeholders.username') : t('admin.searchPlaceholder'),
+        placeholder:
+          field.kind === 'user'
+            ? t('admin.form.placeholders.username')
+            : t('admin.searchPlaceholder'),
       };
 
       if (field.kind === 'problem') {
@@ -973,9 +677,7 @@ const AdminSimpleResourceFormPage = ({ config }: AdminSimpleResourcePageProps) =
           key={field.name}
           label={t(field.labelKey)}
           value={fieldValueAsDate}
-          onChange={(value) =>
-            setField(field.name, formatDateTimePickerValue(value))
-          }
+          onChange={(value) => setField(field.name, formatDateTimePickerValue(value))}
           slotProps={{
             textField: {
               fullWidth: true,
@@ -1005,7 +707,7 @@ const AdminSimpleResourceFormPage = ({ config }: AdminSimpleResourcePageProps) =
           )
         }
         multiline={field.kind === 'textarea'}
-        minRows={field.kind === 'textarea' ? field.minRows ?? 4 : undefined}
+        minRows={field.kind === 'textarea' ? (field.minRows ?? 4) : undefined}
         disabled={field.readOnly}
         fullWidth
       />
@@ -1061,37 +763,42 @@ const AdminSimpleResourceFormPage = ({ config }: AdminSimpleResourcePageProps) =
   }
 
   return (
-    <AdminFormPageLayout
-      title={pageTitle}
-      listPath={config.listPath}
-      isEdit={isEdit}
-      isSaving={isSaving}
-      onSave={handleSave}
-      onDelete={handleDelete}
-      sidebarTitle={t(config.sidebarTitleKey)}
-      sidebar={<Stack spacing={2.5}>{sidebarFields.map(renderField)}</Stack>}
-    >
-      {error ? <Alert severity="error">{error}</Alert> : null}
-
-      {config.translatedFields?.length ? (
-        <AdminFormSection
-          title={t(config.translatedSectionTitleKey ?? 'admin.form.sections.translations')}
-          subheader={
-            config.translatedSectionSubheaderKey
-              ? t(config.translatedSectionSubheaderKey)
-              : undefined
-          }
+    <>
+      {confirmationDialog}
+      {
+        <AdminFormPageLayout
+          title={pageTitle}
+          listPath={config.listPath}
+          isEdit={isEdit}
+          isSaving={isSaving}
+          onSave={handleSave}
+          onDelete={handleDelete}
+          sidebarTitle={t(config.sidebarTitleKey)}
+          sidebar={<Stack spacing={2.5}>{sidebarFields.map(renderField)}</Stack>}
         >
-          <AdminLanguageTabs>{renderTranslatedFields}</AdminLanguageTabs>
-        </AdminFormSection>
-      ) : null}
+          {error ? <Alert severity="error">{error}</Alert> : null}
 
-      {mainFields.length ? (
-        <AdminFormSection title={t('admin.form.sections.details')}>
-          {mainFields.map(renderField)}
-        </AdminFormSection>
-      ) : null}
-    </AdminFormPageLayout>
+          {config.translatedFields?.length ? (
+            <AdminFormSection
+              title={t(config.translatedSectionTitleKey ?? 'admin.form.sections.translations')}
+              subheader={
+                config.translatedSectionSubheaderKey
+                  ? t(config.translatedSectionSubheaderKey)
+                  : undefined
+              }
+            >
+              <AdminLanguageTabs>{renderTranslatedFields}</AdminLanguageTabs>
+            </AdminFormSection>
+          ) : null}
+
+          {mainFields.length ? (
+            <AdminFormSection title={t('admin.form.sections.details')}>
+              {mainFields.map(renderField)}
+            </AdminFormSection>
+          ) : null}
+        </AdminFormPageLayout>
+      }
+    </>
   );
 };
 

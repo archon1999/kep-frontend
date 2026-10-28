@@ -16,8 +16,9 @@ import type {
 } from 'modules/home/domain/entities/home.entity.ts';
 import KepIcon from 'shared/components/base/KepIcon';
 import type { KepIconName } from 'shared/config/icons';
-import { formatDateTime } from 'shared/lib/dateTime';
+import { formatDateTime, formatDateTimePattern } from 'shared/lib/dateTime';
 import { decodeHtmlEntities } from 'shared/lib/html';
+import DashboardFeed from './DashboardFeed';
 
 const SKELETON_ITEMS = 3;
 
@@ -25,11 +26,13 @@ interface HomeActivityHistoryProps {
   username?: string | null;
   history?: HomeUserActivityHistory | null;
   isLoading?: boolean;
-  maxHeight?: number;
+  maxHeight?: number | 'none';
   onLoadMore?: () => void;
   hasMore?: boolean;
   isLoadingMore?: boolean;
   showTitle?: boolean;
+  compact?: boolean;
+  visibleItems?: number;
 }
 
 type ActivityType = HomeUserActivityHistoryItem['activityType'];
@@ -50,6 +53,19 @@ const ACTIVITY_ICON_MAP: Record<ActivityType, KepIconName> = {
   hard_problem_solved: 'problem',
   achievement_unlocked: 'todo',
   daily_task_completed: 'todo',
+};
+
+const ACTIVITY_LABEL_MAP: Record<ActivityType, string> = {
+  problem_attempt_summary: 'problemAttemptSummary',
+  challenge_summary: 'challengeSummary',
+  project_attempt_summary: 'projectAttemptSummary',
+  test_pass_summary: 'testPassSummary',
+  contest_participation: 'contestParticipation',
+  arena_participation: 'arenaParticipation',
+  daily_activity: 'dailyActivity',
+  hard_problem_solved: 'hardProblemSolved',
+  achievement_unlocked: 'achievementUnlocked',
+  daily_task_completed: 'dailyTaskCompleted',
 };
 
 const parseNumber = (value: unknown): number | undefined => {
@@ -87,7 +103,7 @@ const compact = (values: Array<string | undefined>): string | undefined => {
   return filtered.length ? filtered.join(' · ') : undefined;
 };
 
-const getActivityTexts = (
+const getTranslatedActivityTexts = (
   activity: HomeUserActivityHistoryItem,
   t: TFunction<'translation'>,
 ): ActivityText => {
@@ -168,7 +184,7 @@ const getActivityTexts = (
       };
     }
     case 'arena_participation': {
-      const title = parseString(payload.title);
+      const title = parseString(payload.arenaTitle ?? payload.title);
       const points = parseNumber(payload.points);
       const rank = parseNumber(payload.rank);
       const finishTime = parseString(payload.finishTime)
@@ -207,7 +223,7 @@ const getActivityTexts = (
     case 'hard_problem_solved':
       return {
         primary: t('homePage.activityHistory.types.hardProblemSolved.description', {
-          title: withFallback(parseString(payload.title)),
+          title: withFallback(parseString(payload.problemTitle ?? payload.title)),
           difficulty: withFallback(parseString(payload.difficulty)),
         }),
         secondary:
@@ -241,6 +257,133 @@ const getActivityTexts = (
   }
 };
 
+const getActivityTexts = (
+  activity: HomeUserActivityHistoryItem,
+  t: TFunction<'translation'>,
+): ActivityText => {
+  const texts = getTranslatedActivityTexts(activity, t);
+  // These are React text nodes. Decode after interpolation so i18next does not
+  // expose escaped apostrophes and comparison signs in activity descriptions.
+  return {
+    primary: texts.primary ? decodeHtmlEntities(texts.primary) : undefined,
+    secondary: texts.secondary ? decodeHtmlEntities(texts.secondary) : undefined,
+  };
+};
+
+const ActivitySummary = ({
+  activity,
+  texts,
+  t,
+}: {
+  activity: HomeUserActivityHistoryItem;
+  texts: ActivityText;
+  t: TFunction<'translation'>;
+}) => {
+  const payload = activity.payload ?? {};
+  if (activity.activityType === 'challenge_summary') {
+    return (
+      <Stack direction="row" flexWrap="wrap" gap={2} sx={{ mt: 1 }}>
+        {(
+          [
+            { key: 'wins', label: 'W', color: 'success.main' },
+            { key: 'losses', label: 'L', color: 'error.main' },
+            { key: 'draws', label: 'D', color: 'warning.main' },
+          ] as const
+        ).map(({ key, label, color }) => {
+          const value = parseNumber(payload[key]);
+          return value !== undefined ? (
+            <Typography
+              key={key}
+              component="span"
+              variant="metric"
+              color={color}
+              aria-label={t(`homePage.activityHistory.types.challengeSummary.${key}`, { value })}
+              sx={{ fontSize: 17 }}
+            >
+              <Box component="span" sx={{ fontFeatureSettings: 'normal' }}>
+                {label}
+              </Box>{' '}
+              {value}
+            </Typography>
+          ) : null;
+        })}
+      </Stack>
+    );
+  }
+  if (
+    activity.activityType === 'problem_attempt_summary' ||
+    activity.activityType === 'project_attempt_summary'
+  ) {
+    const done = parseNumber(
+      activity.activityType === 'problem_attempt_summary' ? payload.accepted : payload.checked,
+    );
+    const total = parseNumber(payload.total);
+    if (done !== undefined && total !== undefined)
+      return (
+        <Typography
+          variant="metric"
+          color="success.main"
+          aria-label={texts.primary}
+          sx={{ mt: 1, fontSize: 20 }}
+        >
+          {done}
+          <Box component="span" sx={{ color: 'text.secondary', fontSize: 16 }}>
+            {' '}
+            / {total}
+          </Box>
+        </Typography>
+      );
+  }
+  if (activity.activityType === 'hard_problem_solved') {
+    const title = parseString(payload.problemTitle ?? payload.title);
+    const id = parseNumber(payload.problemId);
+    return (
+      <Typography
+        variant="body2"
+        sx={{
+          mt: 0.75,
+          fontFamily: 'var(--kep-display-font)',
+          fontWeight: 500,
+          color: 'primary.main',
+        }}
+      >
+        {id !== undefined && (
+          <Box component="span" sx={{ color: 'text.secondary', mr: 1 }}>
+            #{id}{' '}
+          </Box>
+        )}
+        {title}
+      </Typography>
+    );
+  }
+  if (activity.activityType === 'daily_task_completed') {
+    const description = parseString(payload.description);
+    return description ? (
+      <Typography
+        variant="body2"
+        sx={{ mt: 0.75, fontFamily: 'var(--kep-display-font)', color: 'primary.main' }}
+      >
+        {description}
+      </Typography>
+    ) : null;
+  }
+  const daily = activity.activityType === 'daily_activity';
+  return (
+    <>
+      {(daily ? texts.secondary : texts.primary) && (
+        <Typography variant="body2" color="text.secondary" sx={{ mt: 0.75 }}>
+          {daily ? texts.secondary : texts.primary}
+        </Typography>
+      )}
+      {!daily && texts.secondary && (
+        <Typography variant="caption" color="text.secondary" sx={{ display: 'block', mt: 0.5 }}>
+          {texts.secondary}
+        </Typography>
+      )}
+    </>
+  );
+};
+
 const HomeActivityHistory = ({
   username: _username,
   history,
@@ -250,13 +393,24 @@ const HomeActivityHistory = ({
   hasMore = false,
   isLoadingMore = false,
   showTitle = true,
+  compact = false,
+  visibleItems,
 }: HomeActivityHistoryProps) => {
   const { t } = useTranslation();
   const activities = history?.data ?? [];
   const showEmpty = !isLoading && activities.length === 0;
+  const days = new Map<string, HomeUserActivityHistoryItem[]>();
+  if (compact) {
+    for (const activity of activities) {
+      const day = formatDateTime(activity.recordedFor, 'profileDate');
+      const entries = days.get(day) ?? [];
+      entries.push(activity);
+      days.set(day, entries);
+    }
+  }
 
   return (
-    <Stack direction="column" spacing={2}>
+    <Stack className="kep-home-history" direction="column" spacing={2}>
       {showTitle ? (
         <Typography variant="h6" fontWeight={600}>
           {t('homePage.activityHistory.title')}
@@ -264,12 +418,163 @@ const HomeActivityHistory = ({
       ) : null}
 
       <Box
+        component={compact && visibleItems ? DashboardFeed : 'div'}
+        {...(compact && visibleItems
+          ? { label: t('homePage.activityHistory.title'), visibleItems }
+          : {})}
         sx={{
           maxHeight: maxHeight,
           overflowY: 'auto',
         }}
       >
-        {isLoading ? (
+        {compact ? (
+          <Stack component="ul" sx={{ p: 0, m: 0, listStyle: 'none' }}>
+            {isLoading ? (
+              Array.from({ length: visibleItems ?? SKELETON_ITEMS }, (_, index) => (
+                <Box
+                  component="li"
+                  data-feed-item
+                  key={index}
+                  sx={{
+                    display: 'grid',
+                    gridTemplateColumns: '48px minmax(0, 1fr)',
+                    gap: 2,
+                    py: 2,
+                    borderBottom: 1,
+                    borderColor: 'divider',
+                    '&:first-of-type': { pt: 0 },
+                  }}
+                >
+                  <Stack gap={0.5}>
+                    <Typography variant="metric" sx={{ fontSize: 26 }}>
+                      <Skeleton width={34} height="1.2em" />
+                    </Typography>
+                    <Typography variant="caption">
+                      <Skeleton width={24} height="1.5em" />
+                    </Typography>
+                  </Stack>
+                  <Stack
+                    direction="row"
+                    gap={1}
+                    alignItems="flex-start"
+                    sx={{ pl: 2, borderLeft: 1, borderColor: 'divider' }}
+                  >
+                    <Skeleton variant="rectangular" width={16} height={16} sx={{ mt: 0.25 }} />
+                    <Box flex={1}>
+                      <Skeleton width="85%" height={21} />
+                    </Box>
+                    <Skeleton width={26} height={22} />
+                  </Stack>
+                </Box>
+              ))
+            ) : showEmpty ? (
+              <Typography component="li" variant="body2" color="text.secondary">
+                {t('homePage.activityHistory.empty')}
+              </Typography>
+            ) : (
+              [...days.entries()].map(([day, entries]) => (
+                <Box
+                  component="li"
+                  key={day}
+                  sx={{
+                    display: 'grid',
+                    gridTemplateColumns: '48px minmax(0, 1fr)',
+                    gap: 2,
+                    py: 2,
+                    borderBottom: 1,
+                    borderColor: 'divider',
+                    '&:first-of-type': { pt: 0 },
+                    '&:last-of-type': { borderBottom: 0 },
+                  }}
+                >
+                  <Box
+                    component="time"
+                    dateTime={entries[0].recordedFor}
+                    aria-label={day}
+                    sx={{ display: 'flex', flexDirection: 'column', gap: 0.5 }}
+                  >
+                    <Typography component="span" variant="metric" sx={{ fontSize: 26 }}>
+                      {formatDateTimePattern(entries[0].recordedFor, 'DD')}
+                    </Typography>
+                    <Typography
+                      component="span"
+                      variant="caption"
+                      color="text.secondary"
+                      sx={{ textTransform: 'uppercase', letterSpacing: '.06em' }}
+                    >
+                      {formatDateTimePattern(entries[0].recordedFor, 'MMM')}
+                    </Typography>
+                  </Box>
+                  <Stack
+                    component="ul"
+                    sx={{
+                      p: 0,
+                      pl: 2,
+                      m: 0,
+                      minWidth: 0,
+                      listStyle: 'none',
+                      borderLeft: 1,
+                      borderColor: 'divider',
+                      position: 'relative',
+                      '&::before': {
+                        content: '""',
+                        position: 'absolute',
+                        left: -3,
+                        top: 7,
+                        width: 5,
+                        height: 5,
+                        bgcolor: 'primary.main',
+                      },
+                    }}
+                  >
+                    {entries.map((activity, index) => {
+                      const texts = getActivityTexts(activity, t);
+                      const daily = activity.activityType === 'daily_activity';
+                      const dailyValue = daily ? parseNumber(activity.payload?.value) : undefined;
+                      return (
+                        <Box
+                          component="li"
+                          data-feed-item
+                          key={activity.id ?? `${activity.activityType}-${activity.recordedFor}`}
+                          sx={{
+                            minWidth: 0,
+                            overflowWrap: 'anywhere',
+                            ...(index
+                              ? { mt: 2, pt: 2, borderTop: 1, borderColor: 'divider' }
+                              : {}),
+                          }}
+                        >
+                          <Stack direction="row" alignItems="center" gap={1}>
+                            <KepIcon
+                              name={ACTIVITY_ICON_MAP[activity.activityType]}
+                              fontSize={16}
+                              color="primary.main"
+                            />
+                            <Typography variant="body2" fontWeight={600} sx={{ flex: 1 }}>
+                              {t(
+                                `homePage.activityHistory.types.${ACTIVITY_LABEL_MAP[activity.activityType]}.title`,
+                              )}
+                            </Typography>
+                            {dailyValue !== undefined && (
+                              <Typography
+                                variant="metric"
+                                color="primary.main"
+                                sx={{ fontSize: 18 }}
+                              >
+                                {formatDelta(dailyValue)}
+                              </Typography>
+                            )}
+                          </Stack>
+                          <ActivitySummary activity={activity} texts={texts} t={t} />
+                        </Box>
+                      );
+                    })}
+                  </Stack>
+                </Box>
+              ))
+            )}
+          </Stack>
+        ) : isLoading ? (
           <Timeline
             position="right"
             sx={{
@@ -325,7 +630,7 @@ const HomeActivityHistory = ({
               const recordedAt = activity.recordedFor;
               const label = decodeHtmlEntities(
                 activity.activityTypeDisplay ||
-                activity.user?.username ||
+                  activity.user?.username ||
                   t('homePage.activityHistory.defaultLabel'),
               );
 
@@ -405,12 +710,7 @@ const HomeActivityHistory = ({
 
       {!isLoading && activities.length > 0 && hasMore ? (
         <Box display="flex" justifyContent="center">
-          <Button
-            variant="outlined"
-            size="small"
-            loading={isLoadingMore}
-            onClick={onLoadMore}
-          >
+          <Button variant="outlined" size="small" loading={isLoadingMore} onClick={onLoadMore}>
             {t('homePage.activityHistory.loadMore')}
           </Button>
         </Box>

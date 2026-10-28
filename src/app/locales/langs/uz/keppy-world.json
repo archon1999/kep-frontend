@@ -1,7 +1,7 @@
 {
   "keppyWorld": {
     "welcome": "Keppy World",
-    "intro": "Personajni tanlang. Topshiriqlarni bajaring va birgalikda yangi hududlarni oching.",
+    "intro": "Qahramon tanlang, topshiriqlar bajaring va hammaga yangi joylar ochilishiga hissa qo‘shing.",
     "chooseMascot": "Personajingizni tanlang",
     "enterWorld": "Dunyoga kirish",
     "community": "Hamjamiyat hissasi",
@@ -19,7 +19,7 @@
     "emptyRanking": "Reytingga kirish uchun topshiriqni bajaring.",
     "questHelp": "Xaritadagi belgiga yaqinlashib, Enter orqali topshiriqni oling.",
     "difficulty": "Qiyinlik: {{count}}",
-    "signInDescription": "Personajingizni saqlash va umumiy dunyoga kirish uchun tizimga kiring.",
+    "signInDescription": "Qahramon, topshiriq natijalari va XPni saqlash uchun hisobga kiring.",
     "signIn": "Kirish",
     "loadError": "Dunyoni yuklab bo‘lmadi. Qayta urinib ko‘ring.",
     "requestFailed": "Amalni bajarib bo‘lmadi. Qayta urinib ko‘ring.",
@@ -132,7 +132,7 @@
       "worldLevel": "Dunyo · {{count}}-daraja",
       "next": "{{name}} · {{xp}} XP",
       "fullyBuilt": "Barcha hududlar ochilgan",
-      "help": "Topshiriqlardan olingan XP dunyoni kengaytiradi. Binolar har darajada qurilib boradi.",
+      "help": "Topshiriqlardan olingan XP umumiy dunyo darajasi va yangi hududlarning ochilishiga hissa qo‘shadi.",
       "levelUp": "Dunyo {{count}}-darajaga yetdi",
       "you": "Siz",
       "players": "O‘yinchilar",
@@ -167,7 +167,6 @@
     "brainWatchTime": "Kataklarni eslab qoling: {{seconds}} soniya",
     "brainTimeLeft": "Qolgan vaqt: {{seconds}} soniya",
     "rankColumn": "O‘rin",
-    "rankingRange": "{{total}} o‘yinchidan {{from}}–{{to}}",
     "yourRank": "Sizning o‘rningiz: {{rank}}",
     "playerColumn": "O‘yinchi",
     "completedTasksColumn": "Jami",
@@ -197,6 +196,6 @@
     "practice": "Mashq",
     "practiceNoXp": "Mashq · XP berilmaydi",
     "pointCooldown": "XP ochilishiga {{time}}",
-    "pointRewardRule": "Har bir point 24 soatda bir marta XP beradi. Yangi orollar bilan pointlar ham ko‘payadi. Kutish vaqtida mashq qilish mumkin."
+    "pointRewardRule": "Bir topshiriq nuqtasi 24 soatda bir marta XP beradi. Kutish vaqtida mashq qilish mumkin."
   }
 }

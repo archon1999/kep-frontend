@@ -2,15 +2,12 @@ import { useEffect, useMemo, useRef, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { Link as RouterLink } from 'react-router-dom';
 import {
-  Box,
   Button,
   Card,
   CardContent,
-  Chip,
   Dialog,
   DialogActions,
   DialogContent,
-  DialogTitle,
   Skeleton,
   Stack,
   Typography,
@@ -19,12 +16,8 @@ import { getResourceByParams, resources } from 'app/routes/resources';
 import { ContestDetail } from 'modules/contests/domain/entities/contest-detail.entity';
 import { ContestStatus } from 'modules/contests/domain/entities/contest-status';
 import KepIcon from 'shared/components/base/KepIcon';
-import {
-  formatDateTime,
-  getCountdownParts,
-  getDateTimeValue,
-} from 'shared/lib/dateTime';
-import { cssVarRgba } from 'shared/lib/utils';
+import DialogHeader from 'shared/components/common/DialogHeader';
+import { formatDateTime, getCountdownParts, getDateTimeValue } from 'shared/lib/dateTime';
 
 interface ContestCountdownCardProps {
   contest?: ContestDetail | null;
@@ -35,22 +28,14 @@ type CountdownPhase = ContestStatus.NotStarted | ContestStatus.Already | Contest
 
 const CountdownTile = ({ value, label }: { value: string; label: string }) => (
   <Stack
-    spacing={0.5}
+    spacing={0.75}
     alignItems="center"
-    sx={(theme) => ({
-      px: 2,
-      py: 1.5,
-      minWidth: 72,
-      borderRadius: 2,
-      background: theme.palette.background.paper,
-      boxShadow: `0 10px 40px ${theme.palette.common.black}0a`,
-      color: theme.palette.text.primary,
-    })}
+    sx={{ flex: 1, minWidth: 0, py: 1.5, border: 1, borderColor: 'divider' }}
   >
-    <Typography variant="h4" fontWeight={800}>
+    <Typography variant="metric" sx={{ fontSize: { xs: 32, md: 36 }, lineHeight: 1.1 }}>
       {value}
     </Typography>
-    <Typography variant="caption" sx={{ textTransform: 'uppercase', letterSpacing: 0.4 }}>
+    <Typography variant="label" color="text.secondary">
       {label}
     </Typography>
   </Stack>
@@ -159,9 +144,14 @@ const ContestCountdownCard = ({ contest, isLoading = false }: ContestCountdownCa
       return t('contests.startsLabel', { date: formatDateTime(startDate, 'compactDateTime') });
     }
     if (finishDate) {
-      return t('contests.countdownCard.finishedAt', {
-        date: formatDateTime(finishDate, 'compactDateTime'),
-      });
+      return t(
+        safePhase === ContestStatus.Finished
+          ? 'contests.countdownCard.finishedAt'
+          : 'contests.endsLabel',
+        {
+          date: formatDateTime(finishDate, 'compactDateTime'),
+        },
+      );
     }
     return null;
   }, [finishDate, safePhase, startDate, t]);
@@ -185,90 +175,49 @@ const ContestCountdownCard = ({ contest, isLoading = false }: ContestCountdownCa
 
   return (
     <>
-      <Card
-        variant="outlined"
-        sx={(theme) => ({
-          position: 'relative',
-          overflow: 'hidden',
-          borderRadius: 3,
-          color: theme.palette.text.primary,
-          background: `linear-gradient(135deg, ${cssVarRgba(theme.vars.palette.primary.lightChannel, 0.12)}, ${cssVarRgba(theme.vars.palette.primary.mainChannel, 0.08)} 58%, ${cssVarRgba(theme.vars.palette.primary.mainChannel, 0.04)})`,
-          borderColor: cssVarRgba(theme.vars.palette.primary.mainChannel, 0.12),
-        })}
-      >
-        {contest?.logo ? (
-          <Box
-            sx={{
-              position: 'absolute',
-              inset: 0,
-              backgroundSize: 'cover',
-              backgroundPosition: 'center',
-              opacity: 0.08,
-              filter: 'blur(1px)',
-            }}
-          />
-        ) : null}
-        <Box
-          sx={(theme) => ({
-            position: 'absolute',
-            inset: 0,
-            pointerEvents: 'none',
-            background: `radial-gradient(circle at 14% 18%, ${cssVarRgba(theme.vars.palette.primary.lightChannel, 0.16)}, transparent 34%), radial-gradient(circle at 85% 14%, ${cssVarRgba(theme.vars.palette.primary.mainChannel, 0.12)}, transparent 28%)`,
-          })}
-        />
-        <CardContent sx={{ position: 'relative', zIndex: 1 }}>
+      <Card variant="section">
+        <CardContent>
           {showSkeleton ? (
             <Stack spacing={2}>
-              <Skeleton variant="rounded" width={140} height={36} sx={{ mx: 'auto' }} />
-              <Stack
-                direction="row"
-                spacing={1.25}
-                alignItems="center"
-                justifyContent="center"
-                flexWrap="wrap"
-                useFlexGap
-              >
-                {Array.from({ length: 3 }).map((_, index) => (
-                  <Skeleton key={index} variant="rounded" width={96} height={82} />
-                ))}
-              </Stack>
-              <Skeleton variant="text" width="70%" sx={{ mx: 'auto' }} />
+              <Skeleton width="60%" height={28} />
+              <Skeleton variant="rectangular" height={85} />
             </Stack>
           ) : (
-            <Stack spacing={2}>
-              <Stack direction="column" spacing={1} alignItems="center" flexWrap="wrap" useFlexGap>
-                <Chip
-                  icon={<KepIcon name="timer" fontSize={16} />}
-                  label={statusChip.label}
-                  color={statusChip.color}
-                  variant="filled"
-                  sx={{
-                    color: statusChip.color === 'default' ? 'text.primary' : '#fff',
-                    backgroundColor:
-                      statusChip.color === 'default' ? 'background.paper' : undefined,
-                    fontWeight: 700,
-                  }}
-                />
-              </Stack>
-
-              <Stack
-                direction="row"
-                spacing={1.5}
-                alignItems="center"
-                justifyContent="center"
-                flexWrap="wrap"
-                useFlexGap
-              >
-                {tiles.map((item) => (
-                  <CountdownTile key={item.label} value={item.value} label={item.label} />
-                ))}
-              </Stack>
-
-              {helperLabel ? (
-                <Typography align="center" variant="caption" fontWeight={500}>
-                  {helperLabel}
+            <Stack spacing={2.5}>
+              <Stack direction="row" spacing={1} alignItems="center">
+                <KepIcon name="timer" fontSize={20} sx={{ color: 'primary.main' }} />
+                <Typography variant="label" component="h2">
+                  {statusChip.label}
                 </Typography>
-              ) : null}
+              </Stack>
+              {safePhase === ContestStatus.Finished ? (
+                <>
+                  <Typography variant="body2" color="text.secondary" sx={{ lineHeight: 1.75 }}>
+                    {helperLabel}
+                  </Typography>
+                  <Button
+                    component={RouterLink}
+                    to={standingsLink}
+                    variant="outlined"
+                    endIcon={<KepIcon name="ranking" />}
+                  >
+                    {t('contests.tabs.standings')}
+                  </Button>
+                </>
+              ) : (
+                <>
+                  <Stack direction="row" gap={1}>
+                    {tiles.map((item) => (
+                      <CountdownTile key={item.label} value={item.value} label={item.label} />
+                    ))}
+                  </Stack>
+                  {helperLabel && (
+                    <Typography variant="body2" color="text.secondary">
+                      {helperLabel}
+                    </Typography>
+                  )}
+                </>
+              )}
             </Stack>
           )}
         </CardContent>
@@ -279,11 +228,15 @@ const ContestCountdownCard = ({ contest, isLoading = false }: ContestCountdownCa
         onClose={() => setActiveModal(null)}
         aria-labelledby="contest-countdown-dialog-title"
       >
-        <DialogTitle id="contest-countdown-dialog-title">
-          {activeModal === 'start'
-            ? t('contests.countdownCard.started')
-            : t('contests.countdownCard.finished')}
-        </DialogTitle>
+        <DialogHeader
+          id="contest-countdown-dialog-title"
+          title={
+            activeModal === 'start'
+              ? t('contests.countdownCard.started')
+              : t('contests.countdownCard.finished')
+          }
+          onClose={() => setActiveModal(null)}
+        />
         <DialogContent dividers>
           <Typography variant="body1">
             {activeModal === 'start'

@@ -8,6 +8,7 @@ import {
 import { Components } from '@mui/material/styles';
 import { PaletteColorKey } from 'app/theme/palette';
 import { cssVarRgba } from 'shared/lib/utils';
+import { motion } from '../styles/transitions';
 
 const toggleBtnColors: PaletteColorKey[] = [
   'primary',
@@ -23,6 +24,7 @@ const toggleBtnCustomVariants: ComponentsVariants['MuiToggleButton'] = toggleBtn
     props: { color: color as ToggleButtonProps['color'] },
     style: (style) => {
       const theme = style.theme as Theme;
+      if (theme.preset === 'default') return {};
       const paletteColor = theme.vars.palette[color];
       return {
         backgroundColor: 'transparent',
@@ -43,6 +45,7 @@ const toggleBtnGroupCustomVariants: ComponentsVariants['MuiToggleButtonGroup'] =
     props: { color: color as ToggleButtonGroupProps['color'] },
     style: (style) => {
       const theme = style.theme as Theme;
+      if (theme.preset === 'default') return {};
       const paletteColor = theme.vars.palette[color];
       return {
         [`& .${toggleButtonClasses.root}`]: {
@@ -66,6 +69,7 @@ const ToggleButton: Components<Omit<Theme, 'components'>>['MuiToggleButton'] = {
       props: { color: 'standard' },
       style: (style) => {
         const theme = style.theme as Theme;
+        if (theme.preset === 'default') return {};
         return {
           backgroundColor: 'transparent',
           color: theme.vars.palette.neutral.dark,
@@ -84,7 +88,7 @@ const ToggleButton: Components<Omit<Theme, 'components'>>['MuiToggleButton'] = {
   ],
   defaultProps: {},
   styleOverrides: {
-    root: ({ theme }) => ({
+    root: ({ theme, ownerState }) => ({
       border: 'none',
       '&.Mui-disabled': {
         border: 'none',
@@ -96,24 +100,63 @@ const ToggleButton: Components<Omit<Theme, 'components'>>['MuiToggleButton'] = {
           color: theme.vars.palette.text.disabled,
         },
       },
+      ...(theme.preset === 'default' && {
+        ...theme.typography.body2,
+        fontWeight: 600,
+        lineHeight: 1.4,
+        minHeight: 36,
+        minWidth: 36,
+        border: `1px solid ${theme.vars.palette.divider}`,
+        color: theme.vars.palette.text.secondary,
+        transition: motion.interaction,
+        '&:hover': {
+          color: theme.vars.palette.text.primary,
+          backgroundColor: theme.vars.palette.action.hover,
+        },
+        '&.Mui-selected': {
+          color:
+            theme.vars.palette[
+              ownerState.color === 'standard' || !ownerState.color ? 'primary' : ownerState.color
+            ].main,
+          backgroundColor:
+            theme.vars.palette[
+              ownerState.color === 'standard' || !ownerState.color ? 'primary' : ownerState.color
+            ].lighter,
+          borderColor:
+            theme.vars.palette[
+              ownerState.color === 'standard' || !ownerState.color ? 'primary' : ownerState.color
+            ].main,
+          '&:hover': { filter: 'brightness(.98)' },
+        },
+        '&.Mui-focusVisible': {
+          outline: `2px solid ${theme.vars.palette.primary.main}`,
+          outlineOffset: 2,
+        },
+        '&.Mui-disabled, &.Mui-selected.Mui-disabled': {
+          border: `1px solid ${theme.vars.palette.divider}`,
+          color: theme.vars.palette.text.disabled,
+          backgroundColor: 'transparent',
+        },
+        [motion.reduced]: { transition: 'none' },
+      }),
     }),
     sizeSmall: ({ theme }) => ({
       padding: theme.spacing(0.75),
-      borderRadius: theme.shape.borderRadius,
+      borderRadius: theme.preset === 'default' ? 0 : theme.shape.borderRadius,
       '& .iconify': {
         fontSize: 18,
       },
     }),
     sizeMedium: ({ theme }) => ({
       padding: theme.spacing(1),
-      borderRadius: (theme.shape.borderRadius as number) * 1.5,
+      borderRadius: theme.preset === 'default' ? 0 : (theme.shape.borderRadius as number) * 1.5,
       '& .iconify': {
         fontSize: 20,
       },
     }),
     sizeLarge: ({ theme }) => ({
       padding: theme.spacing(1.125),
-      borderRadius: (theme.shape.borderRadius as number) * 2,
+      borderRadius: theme.preset === 'default' ? 0 : (theme.shape.borderRadius as number) * 2,
       '& .iconify': {
         fontSize: 24,
       },
@@ -128,6 +171,7 @@ export const ToggleButtonGroup: Components<Omit<Theme, 'components'>>['MuiToggle
       props: { color: 'standard' },
       style: (style) => {
         const theme = style.theme as Theme;
+        if (theme.preset === 'default') return {};
         return {
           [`& .${toggleButtonClasses.root}`]: {
             color: theme.vars.palette.text.secondary,
@@ -160,6 +204,19 @@ export const ToggleButtonGroup: Components<Omit<Theme, 'components'>>['MuiToggle
         border: 'none !important',
         marginLeft: 0,
       },
+      ...(theme.preset === 'default' && {
+        borderRadius: 0,
+        padding: 0,
+        gap: theme.spacing(0.75),
+        maxWidth: '100%',
+        backgroundColor: 'transparent',
+        [`& .${toggleButtonClasses.root}`]: {
+          borderRadius: 0,
+          border: `1px solid ${theme.vars.palette.divider}`,
+          margin: 0,
+          '&.Mui-selected': { borderColor: 'currentColor' },
+        },
+      }),
     }),
   },
 };

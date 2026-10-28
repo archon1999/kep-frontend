@@ -1,11 +1,15 @@
 import { useEffect, useState } from 'react';
-import { Button, Card, CardContent, CardHeader, Grid, IconButton, LinearProgress, Stack, TextField } from '@mui/material';
 import { useTranslation } from 'react-i18next';
-import { toast } from 'sonner';
+import { Alert, Button, Grid, IconButton, LinearProgress, Stack, TextField } from '@mui/material';
 import { useAuth } from 'app/providers/AuthProvider.tsx';
-import { useAccountWorkExperiences, useUpdateWorkExperiences } from 'modules/account-settings/application';
+import {
+  useAccountWorkExperiences,
+  useUpdateWorkExperiences,
+} from 'modules/account-settings/application';
 import type { AccountWorkExperience } from 'modules/account-settings/domain';
 import IconifyIcon from 'shared/components/base/IconifyIcon.tsx';
+import { toast } from 'sonner';
+import SettingsSection from './SettingsSection';
 
 type EditableWorkExperience = AccountWorkExperience & {
   _rowId: string;
@@ -27,7 +31,7 @@ const WorkExperiencesForm = () => {
   const { currentUser } = useAuth();
   const username = currentUser?.username;
 
-  const { data, isLoading, mutate } = useAccountWorkExperiences(username);
+  const { data, isLoading, error: loadError, mutate } = useAccountWorkExperiences(username);
   const { trigger, isMutating } = useUpdateWorkExperiences();
   const [items, setItems] = useState<EditableWorkExperience[] | null>(null);
 
@@ -51,10 +55,10 @@ const WorkExperiencesForm = () => {
   };
 
   const addItem = () =>
-    setItems((prev) => ([
+    setItems((prev) => [
       ...(prev || []),
       { _rowId: createRowId(), company: '', jobTitle: '', fromYear: null, toYear: null },
-    ]));
+    ]);
 
   const removeItem = (rowId: string) =>
     setItems((prev) => (prev ? prev.filter((item) => item._rowId !== rowId) : prev));
@@ -72,77 +76,105 @@ const WorkExperiencesForm = () => {
     }
   };
 
-  return (
-    <Card sx={{ outline: 'none', borderRadius: 3 }} background={1}>
-      <CardHeader title={t('settings.workExperience')} />
-      <CardContent>
-        {isLoading || isMutating ? <LinearProgress sx={{ mb: 3 }} /> : null}
-        <Stack direction="column" spacing={3}>
-          {items?.map((item) => (
-            <Grid container spacing={2} alignItems="center" key={item._rowId}>
-              <Grid size={{ xs: 12, md: 3 }}>
-                <TextField
-                  fullWidth
-                  label={t('settings.company')}
-                  value={item.company}
-                  onChange={(event) => updateItem(item._rowId, 'company', event.target.value)}
-                />
-              </Grid>
-              <Grid size={{ xs: 12, md: 3 }}>
-                <TextField
-                  fullWidth
-                  label={t('settings.jobTitle')}
-                  value={item.jobTitle}
-                  onChange={(event) => updateItem(item._rowId, 'jobTitle', event.target.value)}
-                />
-              </Grid>
-              <Grid size={{ xs: 12, md: 2.5 }}>
-                <TextField
-                  fullWidth
-                  type="number"
-                  label={t('settings.fromYear')}
-                  value={item.fromYear ?? ''}
-                  onChange={(event) => updateItem(item._rowId, 'fromYear', event.target.value)}
-                  inputProps={yearInputProps}
-                />
-              </Grid>
-              <Grid size={{ xs: 12, md: 2.5 }}>
-                <TextField
-                  fullWidth
-                  type="number"
-                  label={t('settings.toYear')}
-                  value={item.toYear ?? ''}
-                  onChange={(event) => updateItem(item._rowId, 'toYear', event.target.value)}
-                  inputProps={yearInputProps}
-                />
-              </Grid>
-              <Grid size={{ xs: 12, md: 1 }}>
-                <IconButton color="error" onClick={() => removeItem(item._rowId)}>
-                  <IconifyIcon icon="material-symbols:delete-outline" />
-                </IconButton>
-              </Grid>
-            </Grid>
-          ))}
+  if (loadError)
+    return (
+      <SettingsSection title={t('settings.workExperience')}>
+        <Alert
+          severity="error"
+          action={<Button onClick={() => mutate()}>{t('common.retry')}</Button>}
+        >
+          {t('common.loadFailed')}
+        </Alert>
+      </SettingsSection>
+    );
 
+  return (
+    <SettingsSection title={t('settings.workExperience')}>
+      {isLoading || isMutating ? <LinearProgress sx={{ mb: 3 }} /> : null}
+      <Stack direction="column" spacing={3}>
+        {items?.map((item) => (
+          <Grid
+            container
+            spacing={2}
+            alignItems="center"
+            key={item._rowId}
+            sx={{ pb: 3, borderBottom: 1, borderColor: 'divider' }}
+          >
+            <Grid size={{ xs: 12, md: 3 }}>
+              <TextField
+                fullWidth
+                label={t('settings.company')}
+                value={item.company}
+                onChange={(event) => updateItem(item._rowId, 'company', event.target.value)}
+              />
+            </Grid>
+            <Grid size={{ xs: 12, md: 3 }}>
+              <TextField
+                fullWidth
+                label={t('settings.jobTitle')}
+                value={item.jobTitle}
+                onChange={(event) => updateItem(item._rowId, 'jobTitle', event.target.value)}
+              />
+            </Grid>
+            <Grid size={{ xs: 6, md: 2.5 }}>
+              <TextField
+                fullWidth
+                type="number"
+                label={t('settings.fromYear')}
+                value={item.fromYear ?? ''}
+                onChange={(event) => updateItem(item._rowId, 'fromYear', event.target.value)}
+                inputProps={yearInputProps}
+              />
+            </Grid>
+            <Grid size={{ xs: 6, md: 2.5 }}>
+              <TextField
+                fullWidth
+                type="number"
+                label={t('settings.toYear')}
+                value={item.toYear ?? ''}
+                onChange={(event) => updateItem(item._rowId, 'toYear', event.target.value)}
+                inputProps={yearInputProps}
+              />
+            </Grid>
+            <Grid size={{ xs: 12, md: 1 }} sx={{ textAlign: { xs: 'right', md: 'center' } }}>
+              <IconButton
+                aria-label={t('settings.delete')}
+                color="error"
+                onClick={() => removeItem(item._rowId)}
+              >
+                <IconifyIcon icon="material-symbols:delete-outline" />
+              </IconButton>
+            </Grid>
+          </Grid>
+        ))}
+
+        <Button
+          variant="outlined"
+          startIcon={<IconifyIcon icon="material-symbols:add-circle-outline" />}
+          onClick={addItem}
+        >
+          {t('settings.addNew')}
+        </Button>
+
+        <Stack direction="row" spacing={2} justifyContent="flex-end">
           <Button
             variant="outlined"
-            startIcon={<IconifyIcon icon="material-symbols:add-circle-outline" />}
-            onClick={addItem}
+            color="secondary"
+            onClick={handleReset}
+            disabled={isLoading || isMutating}
           >
-            {t('settings.addNew')}
+            {t('settings.reset')}
           </Button>
-
-          <Stack direction="row" spacing={2} justifyContent="flex-end">
-            <Button variant="outlined" color="secondary" onClick={handleReset} disabled={isLoading}>
-              {t('settings.reset')}
-            </Button>
-            <Button variant="contained" onClick={handleSave} disabled={!items?.length}>
-              {t('settings.save')}
-            </Button>
-          </Stack>
+          <Button
+            variant="contained"
+            onClick={handleSave}
+            disabled={items === null || isLoading || isMutating}
+          >
+            {t('settings.save')}
+          </Button>
         </Stack>
-      </CardContent>
-    </Card>
+      </Stack>
+    </SettingsSection>
   );
 };
 

@@ -1,6 +1,7 @@
 import { useMemo } from 'react';
 import { useTranslation } from 'react-i18next';
 import { Box, Divider, Stack, Typography } from '@mui/material';
+import type { AttemptJudgeSummary } from 'modules/problems/domain/entities/problem.entity';
 import AttemptVerdict from 'shared/components/problems/AttemptVerdict.tsx';
 import {
   formatBallsLabel,
@@ -8,7 +9,6 @@ import {
   formatSubtaskLabel,
   verdictShortTitle,
 } from 'shared/components/problems/attemptVerdict.utils';
-import type { AttemptJudgeSummary } from 'modules/problems/domain/entities/problem.entity';
 
 interface AttemptJudgeSummaryCardProps {
   summary?: AttemptJudgeSummary;
@@ -59,13 +59,9 @@ const AttemptJudgeSummaryCard = ({ summary, balls }: AttemptJudgeSummaryCardProp
         {summary.subtasks.length ? (
           <Stack spacing={0.5}>
             {summary.subtasks.map((subtask) => (
-              <Typography
-                key={`subtask-${subtask.id}`}
-                fontFamily="monospace"
-                variant="body1"
-                fontWeight={700}
-              >
-                {formatSubtaskLabel(subtask.id)}: {formatScore(subtask.score)} / {formatScore(subtask.maxScore)} ball
+              <Typography key={`subtask-${subtask.id}`} variant="body1" fontWeight={700}>
+                {formatSubtaskLabel(subtask.id)}: {formatScore(subtask.score)} /{' '}
+                {formatScore(subtask.maxScore)} ball
               </Typography>
             ))}
           </Stack>
@@ -74,7 +70,7 @@ const AttemptJudgeSummaryCard = ({ summary, balls }: AttemptJudgeSummaryCardProp
         <Stack spacing={1}>
           {summary.groups.map((group) => (
             <Box key={`group-${group.id}`}>
-              <Typography fontFamily="monospace" variant="body1" fontWeight={700}>
+              <Typography variant="body1" fontWeight={700}>
                 {formatGroupLabel(group.id)}
                 {isIoiSummary ? '' : `: ${formatBallsLabel(group.score ?? 0)}`}
               </Typography>
@@ -86,7 +82,7 @@ const AttemptJudgeSummaryCard = ({ summary, balls }: AttemptJudgeSummaryCardProp
                     spacing={1}
                     alignItems="center"
                   >
-                    <Typography fontFamily="monospace" variant="body2">
+                    <Typography variant="body2">
                       {t('problems.attempts.modal.caseProtocolLine', {
                         number: testCase.number,
                       })}

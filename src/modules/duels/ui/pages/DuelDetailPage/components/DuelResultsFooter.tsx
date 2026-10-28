@@ -1,10 +1,8 @@
 import { useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import {
+  Box,
   Button,
-  Card,
-  Chip,
-  Divider,
   IconButton,
   Stack,
   Table,
@@ -16,15 +14,13 @@ import {
   Tooltip,
   Typography,
 } from '@mui/material';
-import { alpha } from '@mui/material/styles';
-import ContestsRatingChip from 'shared/components/rating/ContestsRatingChip.tsx';
-import IconifyIcon from 'shared/components/base/IconifyIcon';
 import {
   Duel,
   DuelDetailPageNavigationProblem,
   getDuelDetailPagePlayerRows,
-} from 'modules/duels/domain/index.ts';
-import UserPopover from 'modules/users/ui/shared/components/UserPopover.tsx';
+} from 'modules/duels/domain';
+import DuelParticipant from 'modules/duels/ui/shared/components/DuelParticipant';
+import IconifyIcon from 'shared/components/base/IconifyIcon';
 
 type Props = {
   duel: Duel;
@@ -32,229 +28,150 @@ type Props = {
   activeSymbol?: string | null;
   onSelectProblem: (symbol: string) => void;
 };
-
-const DuelResultsFooter = ({
-  duel,
-  problems,
-  activeSymbol,
-  onSelectProblem,
-}: Props) => {
+const DuelResultsFooter = ({ duel, problems, activeSymbol, onSelectProblem }: Props) => {
   const { t } = useTranslation();
-  const [isCollapsed, setIsCollapsed] = useState(false);
+  const [collapsed, setCollapsed] = useState(true);
   const rows = getDuelDetailPagePlayerRows(duel);
-  const firstTotal = duel.playerFirst.balls ?? 0;
-  const secondTotal = duel.playerSecond?.balls ?? 0;
-  const getTotalColor = (order: number): 'default' | 'success' | 'error' => {
-    if (!duel.playerSecond || firstTotal === secondTotal) return 'default';
-    const isFirstLeading = firstTotal > secondTotal;
-    return (order === 0) === isFirstLeading ? 'success' : 'error';
-  };
-
-  if (!rows.length || !problems.length) {
-    return null;
-  }
-
-  if (isCollapsed) {
-    return (
-      <Card
-        sx={{
-          borderTop: '1px solid',
-          borderColor: 'divider',
-          borderRadius: 0,
-          bgcolor: (theme) =>
-            alpha(theme.palette.background.default, theme.palette.mode === 'dark' ? 0.28 : 0.82),
-        }}
-      >
-        <Stack direction="row" alignItems="center" spacing={1.5} sx={{ minHeight: 44, px: 1.5 }}>
-          <Stack direction="row" alignItems="center" spacing={0.75} color="text.secondary">
-            <IconifyIcon icon="mdi:chart-bar" width={20} height={20} />
-            <Typography variant="subtitle2" fontWeight={800}>
-              {t('duels.standings')}
-            </Typography>
-          </Stack>
-
-          <Stack
-            direction="row"
-            alignItems="center"
-            justifyContent="center"
-            spacing={1.25}
-            divider={<Divider orientation="vertical" flexItem />}
-            sx={{ flex: 1, minWidth: 0, overflow: 'hidden' }}
-          >
-            {rows.map((row) => (
-              <UserPopover key={row.key} username={row.player.username}>
-                <Stack direction="row" alignItems="center" spacing={0.75} sx={{ minWidth: 0 }}>
-                  {row.player.ratingTitle ? (
-                    <ContestsRatingChip title={row.player.ratingTitle} imgSize={20} />
-                  ) : null}
-                  <Typography
-                    variant="body2"
-                    fontWeight={700}
-                    noWrap
-                    sx={{ display: { xs: 'none', sm: 'block' }, maxWidth: 140 }}
-                  >
-                    {row.player.username}
-                  </Typography>
-                  <Chip
-                    label={row.player.balls ?? 0}
-                    color={getTotalColor(row.order)}
-                    size="small"
-                    sx={{ minWidth: 48, fontWeight: 800 }}
-                  />
-                </Stack>
-              </UserPopover>
-            ))}
-          </Stack>
-
-          <Tooltip title={t('duels.expandStandings')}>
-            <IconButton
-              size="small"
-              onClick={() => setIsCollapsed(false)}
-              aria-label={t('duels.expandStandings')}
-              aria-expanded={false}
-            >
-              <IconifyIcon icon="mdi:chevron-up" width={22} height={22} />
-            </IconButton>
-          </Tooltip>
-        </Stack>
-      </Card>
-    );
-  }
-
+  const first = duel.playerFirst.balls ?? 0,
+    second = duel.playerSecond?.balls ?? 0;
+  const color = (order: number) =>
+    !duel.playerSecond || first === second
+      ? 'text.primary'
+      : (order === 0) === first > second
+        ? 'success.main'
+        : 'error.main';
+  if (!rows.length || !problems.length) return null;
   return (
-    <Card
+    <Box
+      component="section"
+      className="kep-duel-results"
+      aria-label={t('duels.standings')}
       sx={{
-        borderTop: '1px solid',
-        borderColor: 'divider',
-        borderRadius: 0,
-        bgcolor: (theme) =>
-          alpha(theme.palette.background.default, theme.palette.mode === 'dark' ? 0.28 : 0.82),
+        borderTop: '1px solid var(--kep-line)',
+        bgcolor: 'background.default',
+        flexShrink: 0,
+        minWidth: 0,
       }}
     >
-      <TableContainer sx={{ overflowX: 'auto' }}>
-        <Table
-          size="small"
-          aria-label="Duel live standings"
-          sx={{ minWidth: Math.max(720, 310 + problems.length * 104) }}
+      <Stack
+        direction="row"
+        gap={2}
+        alignItems="center"
+        sx={{ minHeight: 48, px: { xs: 1.5, md: 2.5 } }}
+      >
+        <Stack
+          direction="row"
+          gap={0.75}
+          alignItems="center"
+          sx={{ color: 'text.secondary', display: { xs: 'none', sm: 'flex' } }}
         >
-          <TableHead>
-            <TableRow>
-              <TableCell sx={{ minWidth: 190, py: 1.1 }}>
-                <Stack direction="row" alignItems="center" justifyContent="space-between">
-                  <IconifyIcon icon="mdi:account-outline" width={21} height={21} />
-                  <Tooltip title={t('duels.collapseStandings')}>
-                    <IconButton
-                      size="small"
-                      onClick={() => setIsCollapsed(true)}
-                      aria-label={t('duels.collapseStandings')}
-                      aria-expanded
-                    >
-                      <IconifyIcon icon="mdi:chevron-down" width={22} height={22} />
-                    </IconButton>
-                  </Tooltip>
-                </Stack>
-              </TableCell>
-              <TableCell align="center" sx={{ width: 110, py: 1.1 }}>
-                <IconifyIcon icon="mdi:chart-bar" width={21} height={21} />
-              </TableCell>
-              {problems.map((problem) => {
-                const isActive = problem.symbol === activeSymbol;
-
-                return (
+          <IconifyIcon icon="mdi:podium" sx={{ fontSize: 18 }} />
+          <Typography variant="label">{t('duels.standings')}</Typography>
+        </Stack>
+        <Stack
+          direction="row"
+          gap={{ xs: 1.5, sm: 3 }}
+          alignItems="center"
+          justifyContent="center"
+          sx={{ flex: 1, minWidth: 0 }}
+        >
+          {rows.map((row) => (
+            <Stack
+              key={row.key}
+              direction="row"
+              gap={1.25}
+              alignItems="center"
+              sx={{ minWidth: 0 }}
+            >
+              <DuelParticipant player={row.player} compact />
+              <Typography variant="metric" color={color(row.order)} sx={{ fontSize: 22 }}>
+                {row.player.balls ?? 0}
+              </Typography>
+            </Stack>
+          ))}
+        </Stack>
+        <Tooltip title={t(collapsed ? 'duels.expandStandings' : 'duels.collapseStandings')}>
+          <IconButton
+            size="small"
+            onClick={() => setCollapsed((value) => !value)}
+            aria-label={t(collapsed ? 'duels.expandStandings' : 'duels.collapseStandings')}
+            aria-expanded={!collapsed}
+          >
+            <IconifyIcon icon={collapsed ? 'mdi:chevron-up' : 'mdi:chevron-down'} />
+          </IconButton>
+        </Tooltip>
+      </Stack>
+      {!collapsed && (
+        <TableContainer sx={{ overflowX: 'auto', maxHeight: 180 }}>
+          <Table
+            size="small"
+            stickyHeader
+            aria-label={t('duels.standings')}
+            sx={{ minWidth: Math.max(480, 190 + problems.length * 64) }}
+          >
+            <TableHead>
+              <TableRow>
+                <TableCell sx={{ width: 140 }}>{t('duels.table.username')}</TableCell>
+                <TableCell align="center" sx={{ width: 72 }}>
+                  {t('duels.points')}
+                </TableCell>
+                {problems.map((problem) => (
                   <TableCell
                     key={problem.symbol}
                     align="center"
-                    sx={(theme) => ({
-                      width: 104,
-                      py: 0.4,
-                      bgcolor: isActive
-                        ? alpha(theme.palette.primary.main, theme.palette.mode === 'dark' ? 0.12 : 0.06)
-                        : 'transparent',
-                    })}
+                    sx={{
+                      p: 0.5,
+                      bgcolor: problem.symbol === activeSymbol ? 'action.selected' : undefined,
+                    }}
                   >
                     <Button
                       size="small"
-                      color={isActive ? 'primary' : 'inherit'}
-                      variant="text"
+                      aria-pressed={problem.symbol === activeSymbol}
                       onClick={() => onSelectProblem(problem.symbol)}
                       disabled={Boolean(problem.isLocked && !problem.unlockAt)}
-                      startIcon={
-                        problem.isLocked ? (
-                          <IconifyIcon icon="mdi:lock-outline" width={16} height={16} />
-                        ) : undefined
-                      }
-                      sx={{ minWidth: 40, fontWeight: 800, fontSize: '0.95rem' }}
+                      sx={{ minWidth: 32, fontFamily: 'var(--kep-display-font)', borderRadius: 0 }}
                     >
                       {problem.symbol}
                     </Button>
                   </TableCell>
-                );
-              })}
-            </TableRow>
-          </TableHead>
-
-          <TableBody>
-            {rows.map((row) => (
-              <TableRow key={row.key} hover>
-                <TableCell sx={{ py: 1.15 }}>
-                  <UserPopover username={row.player.username}>
-                    <Stack direction="row" spacing={1} alignItems="center" sx={{ minWidth: 0 }}>
-                      {row.player.ratingTitle ? (
-                        <ContestsRatingChip title={row.player.ratingTitle} imgSize={28} />
-                      ) : null}
-                      <Typography fontWeight={800} noWrap>
-                        {row.player.username}
-                      </Typography>
-                      {row.player.isBot ? (
-                        <Chip size="small" color="secondary" variant="outlined" label="BOT" />
-                      ) : null}
-                    </Stack>
-                  </UserPopover>
-                </TableCell>
-
-                <TableCell align="center">
-                  <Chip
-                    label={row.player.balls ?? 0}
-                    color={getTotalColor(row.order)}
-                    size="small"
-                    sx={{ minWidth: 58, fontWeight: 800 }}
-                  />
-                </TableCell>
-
-                {problems.map((problem) => {
-                  const score = row.scoreAccessor(problem);
-                  const isActive = problem.symbol === activeSymbol;
-
-                  return (
-                    <TableCell
-                      key={`${row.key}-${problem.symbol}`}
-                      align="center"
-                      sx={(theme) => ({
-                        bgcolor: isActive
-                          ? alpha(theme.palette.primary.main, theme.palette.mode === 'dark' ? 0.12 : 0.06)
-                          : 'transparent',
-                      })}
-                    >
-                      {score > 0 ? (
-                        <Chip
-                          label={score}
-                          color="success"
-                          size="small"
-                          sx={{ minWidth: 54, fontWeight: 800 }}
-                        />
-                      ) : (
-                        <Typography color="text.disabled">—</Typography>
-                      )}
-                    </TableCell>
-                  );
-                })}
+                ))}
               </TableRow>
-            ))}
-          </TableBody>
-        </Table>
-      </TableContainer>
-    </Card>
+            </TableHead>
+            <TableBody>
+              {rows.map((row) => (
+                <TableRow key={row.key} hover>
+                  <TableCell>
+                    <DuelParticipant player={row.player} compact />
+                  </TableCell>
+                  <TableCell align="center">
+                    <Typography variant="metric" color={color(row.order)} sx={{ fontSize: 19 }}>
+                      {row.player.balls ?? 0}
+                    </Typography>
+                  </TableCell>
+                  {problems.map((problem) => (
+                    <TableCell
+                      key={problem.symbol}
+                      align="center"
+                      sx={{
+                        bgcolor: problem.symbol === activeSymbol ? 'action.selected' : undefined,
+                      }}
+                    >
+                      <Typography
+                        variant="metric"
+                        color={row.scoreAccessor(problem) > 0 ? 'success.main' : 'text.disabled'}
+                        sx={{ fontSize: 16 }}
+                      >
+                        {row.scoreAccessor(problem) > 0 ? row.scoreAccessor(problem) : '—'}
+                      </Typography>
+                    </TableCell>
+                  ))}
+                </TableRow>
+              ))}
+            </TableBody>
+          </Table>
+        </TableContainer>
+      )}
+    </Box>
   );
 };
-
 export default DuelResultsFooter;

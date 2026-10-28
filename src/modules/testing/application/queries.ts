@@ -1,9 +1,7 @@
 import useSWR from 'swr';
-import { HttpTestingRepository } from '../data-access/repository/http.testing.repository.ts';
+import { testingRepository } from '../data-access';
 import { Test, TestPass } from '../domain';
-import { PageResult, TestResultRow } from '../domain/ports/testing.repository.ts';
-
-const testingRepository = new HttpTestingRepository();
+import { PageResult, TestResultRow } from '../domain/contracts/testing.repository.ts';
 
 export const useTestsList = (params?: { page?: number; pageSize?: number }) =>
   useSWR<PageResult<Test>>(['tests-list', params?.page, params?.pageSize], () =>
@@ -47,7 +45,3 @@ export const useTestResults = (testId?: string) =>
       return { bestResults, lastResults };
     },
   );
-
-export const testingQueries = {
-  testingRepository,
-};
