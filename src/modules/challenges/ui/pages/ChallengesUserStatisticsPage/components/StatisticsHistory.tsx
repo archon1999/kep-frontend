@@ -114,10 +114,10 @@ const StatisticsHistory = ({
               '& td': { py: 1.5 },
               '& th': {
                 borderRadius: 0,
-                bgcolor: 'action.hover',
-                fontSize: 14,
+                bgcolor: 'transparent',
+                fontSize: 11,
                 color: 'text.secondary',
-                fontWeight: 500,
+                fontWeight: 600,
               },
               '& th:first-of-type, & td:first-of-type': { pl: statisticsInset, borderRadius: 0 },
               '& th:last-child, & td:last-child': { pr: statisticsInset, borderRadius: 0 },

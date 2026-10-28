@@ -332,13 +332,15 @@
         "rating": "Rating",
         "rank": "Rank",
         "usersCount": "{{count}} users",
-        "singleAttempt": "Solved with single attempt"
+        "singleAttempt": "Solved with single attempt",
+        "usersCount_one": "{{count}} user",
+        "usersCount_other": "{{count}} users"
       },
       "profile": {
         "languages": "Languages",
         "tags": "Tags",
         "topics": "Topics",
-        "byCategoryAndTags": "By Category & By Tags",
+        "byCategoryAndTags": "Categories & tags",
         "byTags": "By Tags"
       },
       "activity": {
@@ -350,7 +352,8 @@
         "overview": "{{solved}} solved out of {{total}}"
       },
       "heatmap": {
-        "title": "Heatmap"
+        "title": "Activity calendar",
+        "last365Days": "Last 365 days"
       },
       "attempts": {
         "title": "Attempts to solve"
@@ -372,7 +375,9 @@
         "thursdayShort": "Thu",
         "fridayShort": "Fri",
         "saturdayShort": "Sat"
-      }
+      },
+      "attemptsCount_one": "{{count}} attempt",
+      "attemptsCount_other": "{{count}} attempts"
     },
     "studyPlans": {
       "title": "Study plans",

@@ -8,6 +8,7 @@ import {
   GridSortModel,
   GridValidRowModel,
 } from '@mui/x-data-grid';
+import { getRankColor } from 'app/theme/colors/medals';
 import { ContestRatingRow } from 'modules/contests/domain/entities/contest-rating.entity';
 import ContestantView from 'modules/contests/ui/shared/components/ContestantView';
 import IconifyIcon from 'shared/components/base/IconifyIcon';
@@ -51,7 +52,11 @@ const ContestsRatingPageTable = ({
         align: 'center',
         sortable: false,
         renderCell: ({ value, row }) => (
-          <Typography variant="subtitle1" fontWeight={800}>
+          <Typography
+            variant="subtitle1"
+            fontWeight={800}
+            color={getRankColor(Number(value ?? row.rowIndex))}
+          >
             {value ?? row.rowIndex ?? '--'}
           </Typography>
         ),

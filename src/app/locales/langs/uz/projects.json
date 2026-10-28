@@ -136,6 +136,26 @@
     "noAttemptsHint": "Yuborilgan yechimlar shu yerda ko‘rinadi.",
     "score": "Natija",
     "actions": "Amallar",
-    "appliedFilters": "{{count}} ta filtr qo‘llangan"
+    "appliedFilters": "{{count}} ta filtr qo‘llangan",
+    "rating": {
+      "title": "Loyihalar reytingi",
+      "leaderboard": "Reyting",
+      "points": "Reyting",
+      "place": "O‘rin",
+      "completed": "Tugallangan loyihalar",
+      "passedTasks": "Bajarilgan vazifalar",
+      "completedCount": "Tugallangan loyihalar: {{count}}",
+      "maximum": "Har loyiha uchun maksimal reyting",
+      "levels": {
+        "junior": "Junior",
+        "juniorPlus": "Junior+",
+        "middle": "Middle"
+      },
+      "search": "Ishtirokchilarni qidirish",
+      "emptyTitle": "Reytingda hali ishtirokchilar yo‘q",
+      "emptySearchTitle": "Ishtirokchilar topilmadi",
+      "emptyDescription": "Ilk reyting ballarini olish uchun loyiha vazifalarini bajaring.",
+      "emptySearch": "Boshqa foydalanuvchi nomi yoki ism bilan qidirib ko‘ring."
+    }
   }
 }

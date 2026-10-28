@@ -111,7 +111,6 @@
     },
     "heroBadge": "Скорость и мастерство",
     "listHeroSubtitle": "Отвечайте на вопросы за ограниченное время и набирайте очки в арене.",
-    "listCaption": "Поединки на вопросы · Результаты арены",
     "countLabel": "Арен: {{count}}",
     "countLabel_one": "{{count}} арена",
     "countLabel_few": "{{count}} арены",

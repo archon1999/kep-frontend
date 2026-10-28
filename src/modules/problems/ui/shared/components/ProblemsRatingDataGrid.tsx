@@ -7,6 +7,7 @@ import {
   GridSortModel,
   GridValidRowModel,
 } from '@mui/x-data-grid';
+import { getRankColor } from 'app/theme/colors/medals';
 import { difficultyColorByKey, difficultyOptions } from 'modules/problems/config/difficulty';
 import { ProblemsRatingRow } from 'modules/problems/domain/entities/problem.entity';
 import UserPopover from 'modules/users/ui/shared/components/UserPopover.tsx';
@@ -83,7 +84,11 @@ const ProblemsRatingDataGrid = ({
       headerAlign: 'right',
       sortable: false,
       renderCell: ({ row }) => (
-        <Typography variant="subtitle2" fontWeight={800} color="primary">
+        <Typography
+          variant="subtitle2"
+          fontWeight={800}
+          color={getRankColor((row as ProblemsRatingRow).rowIndex)}
+        >
           #{(row as ProblemsRatingRow).rowIndex}
         </Typography>
       ),

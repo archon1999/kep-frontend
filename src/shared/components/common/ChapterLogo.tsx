@@ -15,7 +15,7 @@ const ChapterLogo = ({
   size?: number;
   focusable?: boolean;
 }) => (
-  <Tooltip title={chapter.title}>
+  <Tooltip title={chapter.title} describeChild disableInteractive>
     <Box
       component="span"
       role="img"

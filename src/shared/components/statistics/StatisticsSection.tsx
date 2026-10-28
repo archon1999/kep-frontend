@@ -36,7 +36,7 @@ const StatisticsSection = ({
           justifyContent="space-between"
           gap={2}
           flexWrap="wrap"
-          sx={{ mb: 2.5 }}
+          sx={{ mb: 2 }}
         >
           <Box sx={{ minWidth: 0, flex: '1 1 180px' }}>
             {title && (

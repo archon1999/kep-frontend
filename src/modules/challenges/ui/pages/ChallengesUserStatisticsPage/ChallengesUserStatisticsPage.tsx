@@ -1,6 +1,6 @@
 import { useTranslation } from 'react-i18next';
 import { Link as RouterLink } from 'react-router-dom';
-import { Alert, Avatar, Button, Grid, Paper, Skeleton, Stack, Typography } from '@mui/material';
+import { Alert, Avatar, Button, Grid, Paper, Stack, Typography } from '@mui/material';
 import { resources } from 'app/routes/resources';
 import { statisticsInset, statisticsPanelSx } from 'app/theme/styles/statistics';
 import { useChallengesUserStatisticsPage } from 'modules/challenges/application/hooks/useChallengesUserStatisticsPage';
@@ -8,6 +8,7 @@ import UserPopover from 'modules/users/ui/shared/components/UserPopover';
 import EmptyState from 'shared/components/common/EmptyState';
 import FramedPage from 'shared/components/sections/common/FramedPage';
 import PageHeader from 'shared/components/sections/common/PageHeader';
+import ChallengesStatisticsSkeleton from './components/ChallengesStatisticsSkeleton';
 import StatisticsActivity from './components/StatisticsActivity';
 import StatisticsHistory from './components/StatisticsHistory';
 import StatisticsKnowledge from './components/StatisticsKnowledge';
@@ -55,8 +56,18 @@ const ChallengesUserStatisticsPage = () => {
         title={t('challenges.statisticsTitle')}
         backTo={resources.Challenges}
         navigationComponent={
-          username && statistics && hasChallenges ? (
-            <Stack direction="row" gap={1} flexWrap="wrap" useFlexGap>
+          username && (loading || (statistics && hasChallenges)) ? (
+            <Stack
+              direction="row"
+              gap={1}
+              useFlexGap
+              sx={{
+                maxWidth: '100%',
+                overflowX: 'auto',
+                scrollbarWidth: 'none',
+                '&::-webkit-scrollbar': { display: 'none' },
+              }}
+            >
               {['overview', 'activity', 'knowledge', 'opponents'].map((section) => (
                 <Button
                   key={section}
@@ -64,6 +75,7 @@ const ChallengesUserStatisticsPage = () => {
                   href={`#challenge-stats-${section}`}
                   size="small"
                   variant="text"
+                  sx={{ flexShrink: 0 }}
                 >
                   {t(`challenges.statisticsPage.tabs.${section}`)}
                 </Button>
@@ -95,15 +107,7 @@ const ChallengesUserStatisticsPage = () => {
         }
       />
       {loading ? (
-        <Grid container>
-          {[5, 7, 5, 7].map((size, index) => (
-            <Grid size={{ xs: 12, lg: size }} key={index}>
-              <Paper sx={[statisticsPanelSx, { p: statisticsInset }]}>
-                <Skeleton height={400} />
-              </Paper>
-            </Grid>
-          ))}
-        </Grid>
+        <ChallengesStatisticsSkeleton />
       ) : !username ? (
         <Alert severity="info" sx={{ m: statisticsInset }}>
           {t('challenges.authRequired')}

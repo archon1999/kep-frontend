@@ -1,6 +1,6 @@
 import { useMemo } from 'react';
 import { useTranslation } from 'react-i18next';
-import { Skeleton, useMediaQuery } from '@mui/material';
+import { useMediaQuery } from '@mui/material';
 import { alpha, useTheme } from '@mui/material/styles';
 import { getResourceByParams, resources } from 'app/routes/resources';
 import { LineChart } from 'echarts/charts';
@@ -23,6 +23,7 @@ import {
   getContestsRatingImageSrc,
   getContestsRatingLevelByRating,
 } from 'shared/components/rating/contestsRating';
+import { StatisticsChartSkeleton } from 'shared/components/statistics/StatisticsSkeleton';
 import useChartPalette from 'shared/hooks/useChartPalette';
 import {
   diffDateTime,
@@ -442,7 +443,7 @@ const ContestRatingChangesChart = ({ username, height = 360 }: ContestRatingChan
   }, [chartData, isDownSm, numberFormatter, t, theme, palette, username]);
 
   if (isLoading) {
-    return <Skeleton variant="rectangular" height={height} />;
+    return <StatisticsChartSkeleton height={height} />;
   }
 
   if (!option) {

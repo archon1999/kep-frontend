@@ -4,6 +4,7 @@ import { Link as RouterLink } from 'react-router-dom';
 import { Box, Chip, Link, Stack, Tooltip, Typography } from '@mui/material';
 import { GridColDef } from '@mui/x-data-grid';
 import { getResourceByParams, resources } from 'app/routes/resources';
+import { getRankColor } from 'app/theme/colors/medals';
 import type { ContestStandingsPageModel } from 'modules/contests/application/hooks/useContestStandingsPage';
 import { ContestProblemEntity } from 'modules/contests/domain/entities/contest-problem.entity';
 import { ContestantEntity } from 'modules/contests/domain/entities/contestant.entity';
@@ -56,7 +57,7 @@ export const useContestStandingsColumns = ({
         ),
         renderCell: ({ row }) =>
           row.rowType === 'upsolve' ? null : (
-            <Typography variant="body2" fontWeight={700}>
+            <Typography variant="body2" fontWeight={700} color={getRankColor(row.rank)}>
               {row.rank ?? '—'}
             </Typography>
           ),

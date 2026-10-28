@@ -383,16 +383,9 @@ export const dashboardStyles: CSSObject = {
       '& .kep-leader-rank': {
         position: 'static',
         font: '500 14px/1 var(--kep-display-font)',
-        color: 'var(--kep-logo-sand)',
         fontFeatureSettings: '"ss01" 1',
       },
       '& .kep-leader-arrow': { display: 'none' },
-    },
-    '& .kep-dashboard-leaders .kep-leader-card:nth-of-type(2) .kep-leader-rank': {
-      color: 'var(--kep-muted)',
-    },
-    '& .kep-dashboard-leaders .kep-leader-card:nth-of-type(3) .kep-leader-rank': {
-      color: 'var(--kep-bronze)',
     },
     '& .kep-dashboard-leaders .kep-centered-link': {
       margin: '20px 0 0',

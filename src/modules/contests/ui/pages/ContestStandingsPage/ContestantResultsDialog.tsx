@@ -15,6 +15,7 @@ import {
   useMediaQuery,
 } from '@mui/material';
 import { useTheme } from '@mui/material/styles';
+import { getRankColor } from 'app/theme/colors/medals';
 import { LineChart } from 'echarts/charts';
 import { GridComponent, LegendComponent, TooltipComponent } from 'echarts/components';
 import * as echarts from 'echarts/core';
@@ -118,7 +119,7 @@ const ContestantSummaryRow = ({
         <Typography
           variant="body2"
           fontWeight={800}
-          color="text.secondary"
+          color={getRankColor(contestant?.rank)}
           sx={{ width: 44, flexShrink: 0 }}
         >
           {contestant?.rank ? `#${contestant.rank}` : '-'}

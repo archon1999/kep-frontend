@@ -128,7 +128,21 @@
       "worthyOpponents": "Достойные соперники",
       "sharedContests": "{{count}} общих контестов",
       "noData": "Данных пока нет",
-      "noContestHistory": "У этого аккаунта пока нет результатов контестов."
+      "noContestHistory": "У этого аккаунта пока нет результатов контестов.",
+      "headToHead": "Личные встречи",
+      "versus": "против",
+      "attemptsCount_one": "{{count}} попытка",
+      "attemptsCount_few": "{{count}} попытки",
+      "attemptsCount_many": "{{count}} попыток",
+      "attemptsCount_other": "{{count}} попытки",
+      "sharedContests_one": "{{count}} общий контест",
+      "sharedContests_few": "{{count}} общих контеста",
+      "sharedContests_many": "{{count}} общих контестов",
+      "sharedContests_other": "{{count}} общего контеста",
+      "participants_one": "{{total}} участник",
+      "participants_few": "{{total}} участника",
+      "participants_many": "{{total}} участников",
+      "participants_other": "{{total}} участника"
     },
     "verdicts": {
       "AC": "Принято",

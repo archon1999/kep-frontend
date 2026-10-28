@@ -84,7 +84,7 @@ import {
   StudyPlanPage,
   StudyPlansPage,
 } from 'modules/problems/ui/pages';
-import { ProjectDetailPage, ProjectsListPage } from 'modules/projects/ui/pages';
+import { ProjectDetailPage, ProjectsListPage, ProjectsRatingPage } from 'modules/projects/ui/pages';
 import { ShopPage } from 'modules/shop/ui/pages';
 import { TestDetailPage, TestPassPage, TestsListPage } from 'modules/testing/ui/pages';
 import { TournamentPage, TournamentsListPage } from 'modules/tournaments/ui/pages';
@@ -395,6 +395,11 @@ export const routes: RouteObject[] = [
             path: resources.Projects,
             element: <ProjectsListPage />,
             handle: { titleKey: 'pageTitles.projects' },
+          },
+          {
+            path: resources.ProjectsRating,
+            element: <ProjectsRatingPage />,
+            handle: { titleKey: 'pageTitles.projectsRating' },
           },
           {
             path: resources.Tests,

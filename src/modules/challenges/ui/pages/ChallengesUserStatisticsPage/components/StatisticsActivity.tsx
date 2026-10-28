@@ -330,8 +330,8 @@ const StatisticsActivity = ({
         selectedYear={selectedYear}
         onYearChange={onYearChange}
       />
-      <Box sx={{ mt: 5, pt: 4, borderTop: 1, borderColor: 'divider' }}>
-        <Grid container spacing={3}>
+      <Box sx={{ mt: 3, pt: 2, borderTop: 1, borderColor: 'divider' }}>
+        <Grid container spacing={2}>
           <Grid size={12}>
             <Typography
               variant="subtitle1"
@@ -342,7 +342,7 @@ const StatisticsActivity = ({
               {t('challenges.statisticsPage.activity.title')}
             </Typography>
             {activity.last30Days.length ? (
-              <ReactEchart echarts={echarts} option={options.daily} style={{ height: 240 }} />
+              <ReactEchart echarts={echarts} option={options.daily} style={{ height: 220 }} />
             ) : (
               <Typography variant="body2" color="text.secondary">
                 {t('challenges.statisticsPage.noData')}
@@ -366,7 +366,7 @@ const StatisticsActivity = ({
                   {t(`challenges.statisticsPage.activity.${key}`)}
                 </Typography>
                 {rows.length ? (
-                  <ReactEchart echarts={echarts} option={options[key]} style={{ height: 250 }} />
+                  <ReactEchart echarts={echarts} option={options[key]} style={{ height: 200 }} />
                 ) : (
                   <Typography variant="body2" color="text.secondary">
                     {t('challenges.statisticsPage.noData')}

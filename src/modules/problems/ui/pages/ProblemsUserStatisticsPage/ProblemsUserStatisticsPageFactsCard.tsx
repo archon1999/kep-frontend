@@ -5,7 +5,7 @@ import { getResourceById, resources } from 'app/routes/resources';
 import { ProblemsUserStatistics } from 'modules/problems/domain/entities/problem.entity';
 import KepIcon from 'shared/components/base/KepIcon';
 import StatisticsSection from 'shared/components/statistics/StatisticsSection';
-import { formatMachineDateTime } from 'shared/lib/dateTime';
+import { formatDateTime } from 'shared/lib/dateTime';
 
 interface ProblemsUserStatisticsPageFactsCardProps {
   statistics: ProblemsUserStatistics | undefined;
@@ -93,7 +93,7 @@ const ProblemsUserStatisticsPageFactsCard = ({
                 )}
                 {fact.datetime ? (
                   <Typography variant="caption" color="text.secondary">
-                    {formatMachineDateTime(fact.datetime, 'isoDateTimeMinute')}
+                    {formatDateTime(fact.datetime, 'compactDateTimeNoComma')}
                   </Typography>
                 ) : null}
                 {fact.attemptsCount ? (

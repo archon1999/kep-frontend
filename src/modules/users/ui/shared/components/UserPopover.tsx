@@ -15,6 +15,7 @@ import {
   Typography,
 } from '@mui/material';
 import { getResourceByUsername, resources } from 'app/routes/resources';
+import { getRankColor } from 'app/theme/colors/medals';
 import { overlayPaperStyles } from 'app/theme/styles/overlays';
 import { useUserDetails, useUserRatings } from 'modules/users/application/queries';
 import IconifyIcon from 'shared/components/base/IconifyIcon';
@@ -313,7 +314,7 @@ const UserPopover = ({
                 </Stack>
                 <Typography
                   variant="caption"
-                  color="text.secondary"
+                  color={getRankColor(stat?.rank)}
                   sx={{ display: 'block', minHeight: 17, mt: 0.25, fontSize: 10 }}
                 >
                   {ratings.isLoading ? (

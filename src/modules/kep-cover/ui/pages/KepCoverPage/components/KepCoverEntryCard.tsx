@@ -1,6 +1,7 @@
 import { useTranslation } from 'react-i18next';
 import { Link as RouterLink } from 'react-router-dom';
 import { Avatar, Box, Button, Chip, Paper, Stack, Typography } from '@mui/material';
+import { getRankColor } from 'app/theme/colors/medals';
 import type { KepCoverEntry } from 'modules/kep-cover/domain/entities/kep-cover.entity';
 import UserPopover from 'modules/users/ui/shared/components/UserPopover';
 import IconifyIcon from 'shared/components/base/IconifyIcon';
@@ -55,7 +56,11 @@ const KepCoverEntryCard = ({
           sx={{ position: 'absolute', inset: 0, p: 2 }}
         >
           {typeof rank === 'number' ? (
-            <Chip label={`#${rank}`} color={rank <= 3 ? 'warning' : 'default'} variant="filled" />
+            <Chip
+              label={`#${rank}`}
+              variant="filled"
+              sx={{ bgcolor: 'background.default', color: getRankColor(rank) }}
+            />
           ) : (
             <span />
           )}

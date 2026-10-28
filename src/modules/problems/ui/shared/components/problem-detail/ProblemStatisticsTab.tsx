@@ -9,9 +9,14 @@ import { CanvasRenderer } from 'echarts/renderers';
 import { useProblemStatistics } from 'modules/problems/application/queries';
 import { ProblemDetail, Verdicts } from 'modules/problems/domain/entities/problem.entity';
 import AttemptLanguage from 'shared/components/problems/AttemptLanguage';
+import StatisticsBreakdown from 'shared/components/statistics/StatisticsBreakdown';
 import StatisticsChart from 'shared/components/statistics/StatisticsChart';
 import StatisticsMetric from 'shared/components/statistics/StatisticsMetric';
 import StatisticsSection from 'shared/components/statistics/StatisticsSection';
+import {
+  StatisticsMetricSkeleton,
+  StatisticsSectionSkeleton,
+} from 'shared/components/statistics/StatisticsSkeleton';
 import useChartPalette from 'shared/hooks/useChartPalette';
 import { getColor } from 'shared/lib/echart-utils';
 
@@ -107,49 +112,6 @@ export const ProblemStatisticsTab = ({ problemId, problem }: ProblemStatisticsTa
 
   const submissionPressure = totalUsers ? (totalAttempts / totalUsers).toFixed(1) : '0.0';
 
-  const attemptChart: EChartsCoreOption | null = useMemo(() => {
-    if (!stats?.attemptStatistics?.length) {
-      return null;
-    }
-
-    const data = stats.attemptStatistics.map((item) => ({
-      name: item.verdictTitle || String(item.verdict),
-      value: item.value,
-      itemStyle: {
-        color:
-          paletteMap[(item.color as keyof typeof paletteMap) ?? 'primary'] ?? paletteMap.primary,
-      },
-    }));
-
-    return {
-      tooltip: { trigger: 'item' },
-      title: [
-        {
-          text: `${acceptanceShare}%`,
-          left: 'center',
-          top: '39%',
-          textStyle: { fontSize: 30, fontWeight: 800, color: paletteMap.dark },
-        },
-        {
-          text: t('problems.detail.acceptanceShare'),
-          left: 'center',
-          top: '54%',
-          textStyle: { fontSize: 12, color: paletteMap.muted },
-        },
-      ],
-      series: [
-        {
-          type: 'pie',
-          radius: ['56%', '78%'],
-          center: ['50%', '48%'],
-          data,
-          label: { show: false },
-          itemStyle: { borderRadius: 0, borderColor: 'transparent', borderWidth: 2 },
-        },
-      ],
-    };
-  }, [paletteMap, stats?.attemptStatistics, acceptanceShare, t]);
-
   const attemptsForSolveChart: EChartsCoreOption | null = useMemo(() => {
     if (!stats?.attemptsForSolveStatistics?.length) {
       return null;
@@ -188,9 +150,28 @@ export const ProblemStatisticsTab = ({ problemId, problem }: ProblemStatisticsTa
 
   if (isLoading)
     return (
-      <StatisticsSection>
-        <LinearProgress aria-label={t('common.loading')} />
-      </StatisticsSection>
+      <Grid container spacing={0} aria-busy="true" aria-label={t('common.loading')}>
+        {['usersSolved', 'usersUnsolved', 'successRate', 'totalAttempts'].map((key) => (
+          <Grid key={key} size={{ xs: 6, md: 3 }}>
+            <StatisticsMetricSkeleton label={t('problems.detail.' + key)} />
+          </Grid>
+        ))}
+        <Grid size={{ xs: 12, lg: 6 }}>
+          <StatisticsSection title={t('problems.detail.attemptStatistics')}>
+            <StatisticsBreakdown
+              loading
+              label={t('problems.detail.attemptStatistics')}
+              items={[]}
+            />
+          </StatisticsSection>
+        </Grid>
+        <Grid size={{ xs: 12, lg: 6 }}>
+          <StatisticsSectionSkeleton title={t('problems.detail.languageStatistics')} rows={4} />
+        </Grid>
+        <Grid size={12}>
+          <StatisticsSectionSkeleton title={t('problems.detail.numberAttemptsSolve')} />
+        </Grid>
+      </Grid>
     );
   if (error)
     return (
@@ -226,23 +207,17 @@ export const ProblemStatisticsTab = ({ problemId, problem }: ProblemStatisticsTa
       ))}
       <Grid size={{ xs: 12, lg: 6 }}>
         <StatisticsSection title={t('problems.detail.attemptStatistics')}>
-          <StatisticsChart
+          <StatisticsBreakdown
             label={t('problems.detail.attemptStatistics')}
-            option={attemptChart}
-            height={260}
+            totalLabel={t('problems.detail.totalAttempts')}
+            items={stats.attemptStatistics.map((item) => ({
+              label: item.verdictTitle || String(item.verdict),
+              value: item.value,
+              color:
+                paletteMap[(item.color as keyof typeof paletteMap) ?? 'primary'] ??
+                paletteMap.primary,
+            }))}
           />
-          <Stack spacing={1} sx={{ mt: 2 }}>
-            {stats.attemptStatistics.map((item) => (
-              <Stack key={item.verdict} direction="row" justifyContent="space-between" gap={2}>
-                <Typography variant="body2" color="text.secondary">
-                  {item.verdictTitle}
-                </Typography>
-                <Typography variant="body2" fontWeight={600}>
-                  {item.value}
-                </Typography>
-              </Stack>
-            ))}
-          </Stack>
         </StatisticsSection>
       </Grid>
       <Grid size={{ xs: 12, lg: 6 }}>

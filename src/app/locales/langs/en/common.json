@@ -16,7 +16,10 @@
       "days": "{{count}} days",
       "noData": "No data for this period.",
       "error": "Statistics could not be loaded.",
-      "retry": "Try again"
+      "retry": "Try again",
+      "total": "Total",
+      "days_one": "{{count}} day",
+      "days_other": "{{count}} days"
     },
     "loading": "Loading...",
     "wins": "Wins",

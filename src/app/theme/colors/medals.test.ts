@@ -1,6 +1,15 @@
 import assert from 'node:assert/strict';
 import test from 'node:test';
-import { medalColors } from './medals.ts';
+import { getRankColor, medalColors } from './medals.ts';
+
+test('ranks serialized as strings keep their medal color and unranked values keep the fallback', () => {
+  for (const rank of [1, 2, 3, 16]) {
+    assert.equal(getRankColor(String(rank)), getRankColor(rank));
+  }
+  for (const rank of [null, undefined, '', 'unranked', 0]) {
+    assert.equal(getRankColor(rank, 'inherit'), 'inherit');
+  }
+});
 
 const luminance = (hex: string) => {
   const channels = hex.match(/[a-f\d]{2}/gi)!.map((channel) => {
