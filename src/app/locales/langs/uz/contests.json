@@ -128,7 +128,15 @@
       "worthyOpponents": "Kuchli raqiblar",
       "sharedContests": "{{count}} ta umumiy kontest",
       "noData": "Maʻlumotlar yoʻq",
-      "noContestHistory": "Bu hisobda hali musobaqa natijalari yo‘q."
+      "noContestHistory": "Bu hisobda hali musobaqa natijalari yo‘q.",
+      "headToHead": "O‘zaro natija",
+      "versus": "vs",
+      "attemptsCount_one": "{{count}} ta urinish",
+      "attemptsCount_other": "{{count}} ta urinish",
+      "sharedContests_one": "{{count}} ta umumiy contest",
+      "sharedContests_other": "{{count}} ta umumiy contest",
+      "participants_one": "{{total}} nafar ishtirokchi",
+      "participants_other": "{{total}} nafar ishtirokchi"
     },
     "verdicts": {
       "AC": "Qabul qilindi",

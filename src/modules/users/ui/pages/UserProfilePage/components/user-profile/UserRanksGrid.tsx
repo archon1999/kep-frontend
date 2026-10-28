@@ -1,9 +1,9 @@
 import { useMemo } from 'react';
 import { useTranslation } from 'react-i18next';
 import { Card, Grid, Skeleton, Stack, Typography } from '@mui/material';
-import KepIcon from 'shared/components/base/KepIcon';
+import { getRankColor } from 'app/theme/colors/medals';
 import { UserRatingInfo, UserRatings } from 'modules/users/domain/entities/user.entity';
-
+import KepIcon from 'shared/components/base/KepIcon';
 
 const ratingConfig = [
   { key: 'skillsRating', labelKey: 'users.columns.skills', icon: 'rating' },
@@ -67,7 +67,7 @@ const UserRanksGrid = ({ ratings, isLoading }: UserRanksGridProps) => {
             )}
 
             {stat?.rank !== undefined ? (
-              <Typography variant="caption" color="text.secondary">
+              <Typography variant="caption" color={getRankColor(stat.rank)}>
                 #{stat.rank}
               </Typography>
             ) : null}

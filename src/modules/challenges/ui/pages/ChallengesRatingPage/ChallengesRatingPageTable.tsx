@@ -8,6 +8,7 @@ import {
   GridValidRowModel,
 } from '@mui/x-data-grid';
 import { useBreakpoints } from 'app/providers/BreakpointsProvider';
+import { getRankColor } from 'app/theme/colors/medals';
 import ChallengeRecord from 'modules/challenges/ui/shared/components/ChallengeRecord';
 import UserPopover from 'modules/users/ui/shared/components/UserPopover.tsx';
 import ChallengesRatingChip from 'shared/components/rating/ChallengesRatingChip.tsx';
@@ -62,11 +63,7 @@ const ChallengesRatingPageTable = ({
       align: 'center',
       sortable: false,
       renderCell: ({ row }) => (
-        <Typography
-          variant="metric"
-          sx={{ fontSize: 20 }}
-          color={row.rowIndex <= 3 ? 'warning.main' : 'text.secondary'}
-        >
+        <Typography variant="metric" sx={{ fontSize: 20 }} color={getRankColor(row.rowIndex)}>
           {String(row.rowIndex).padStart(2, '0')}
         </Typography>
       ),

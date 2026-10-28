@@ -29,10 +29,10 @@ export const ProblemsLanguagesPanel = ({ statistics }: PanelProps) => {
   return (
     <StatisticsSection title={t('problems.statisticsPage.profile.languages')}>
       <Stack
-        spacing={2.5}
+        spacing={1.5}
         tabIndex={0}
         aria-label={t('problems.statisticsPage.profile.languages')}
-        sx={{ maxHeight: 300, overflowY: 'auto', pr: 1 }}
+        sx={{ maxHeight: 232, overflowY: 'auto', pr: 1 }}
       >
         {[...statistics.byLang]
           .sort((a, b) => b.solved - a.solved)
@@ -51,7 +51,7 @@ export const ProblemsLanguagesPanel = ({ statistics }: PanelProps) => {
                     {lang.langFull}
                   </Typography>
                 </Stack>
-                <Typography variant="metric" fontSize={20}>
+                <Typography variant="metric" fontSize={18}>
                   {number.format(lang.solved)}
                 </Typography>
               </Stack>
@@ -83,7 +83,7 @@ export const ProblemsDifficultyPanel = ({ statistics }: PanelProps) => {
         total: statistics.byDifficulty.totalProblems,
       })}
     >
-      <Stack spacing={2}>
+      <Stack spacing={1.5}>
         {difficultyOptions.map((option) => {
           const data = statistics.byDifficulty;
           const solved = Number(data[option.key as keyof typeof data] ?? 0);
@@ -146,14 +146,31 @@ export const ProblemsTagsPanel = ({ statistics }: PanelProps) => {
   }, [statistics.byTag, t]);
   return (
     <StatisticsSection title={t('problems.statisticsPage.profile.byCategoryAndTags')}>
-      <Box sx={{ maxHeight: 410, overflowY: 'auto' }}>
+      <Box sx={{ maxHeight: 320, overflowY: 'auto' }}>
         {groups.map(([key, group]) => (
           <Accordion
             key={key}
             disableGutters
-            sx={{ background: 'transparent', border: 0, borderBottom: 1, borderColor: 'divider' }}
+            sx={{
+              background: 'transparent',
+              borderRadius: 0,
+              border: 0,
+              borderBottom: 1,
+              borderColor: 'divider',
+              '&.Mui-expanded': { m: 0 },
+              '&::before': { display: 'none' },
+            }}
           >
-            <AccordionSummary>
+            <AccordionSummary
+              sx={{
+                px: 0,
+                minHeight: 44,
+                '&.Mui-expanded': { minHeight: 44 },
+                '& .MuiAccordionSummary-content, & .MuiAccordionSummary-content.Mui-expanded': {
+                  my: 1,
+                },
+              }}
+            >
               <Stack
                 direction="row"
                 justifyContent="space-between"
@@ -161,7 +178,7 @@ export const ProblemsTagsPanel = ({ statistics }: PanelProps) => {
                 gap={2}
                 sx={{ width: 1, minWidth: 0 }}
               >
-                <Typography variant="body2" fontWeight={600} sx={{ overflowWrap: 'anywhere' }}>
+                <Typography variant="body2" fontWeight={500} sx={{ overflowWrap: 'anywhere' }}>
                   {group.title}
                 </Typography>
                 <Typography variant="metric" fontSize={20} color="primary.main">
@@ -169,7 +186,7 @@ export const ProblemsTagsPanel = ({ statistics }: PanelProps) => {
                 </Typography>
               </Stack>
             </AccordionSummary>
-            <AccordionDetails>
+            <AccordionDetails sx={{ px: 0, pt: 0, pb: 1.5 }}>
               <Stack spacing={1}>
                 {group.tags.map((tag) => (
                   <Stack key={tag.name} direction="row" justifyContent="space-between" gap={2}>

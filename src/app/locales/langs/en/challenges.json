@@ -105,8 +105,8 @@
         "range": "Rating history range",
         "lastChange": "Rating change in latest challenge",
         "pointsUnit": "pts",
-        "ratedCount_one": "{{count}} completed challenge",
-        "ratedCount_other": "{{count}} completed challenges"
+        "ratedCount_one": "{{count}} rated challenge",
+        "ratedCount_other": "{{count}} rated challenges"
       },
       "details": {
         "title": "Detailed statistics",
@@ -187,7 +187,9 @@
         "perQuestion": "Per question",
         "wholeChallenge": "Whole challenge",
         "questionsCount": "{{count}} questions",
-        "seconds": "{{count}}s"
+        "seconds": "{{count}}s",
+        "questionsCount_one": "{{count}} question",
+        "questionsCount_other": "{{count}} questions"
       },
       "knowledge": {
         "difficulty": "Difficulty breakdown",
@@ -196,7 +198,10 @@
         "topChapters": "Most frequent chapters",
         "solvedOf": "{{solved}} / {{seen}} solved",
         "solveRate": "Solve rate",
-        "questionsSeen": "Questions seen"
+        "questionsSeen": "Questions seen",
+        "seenShort": "Seen",
+        "solvedShort": "Solved",
+        "rateShort": "Rate"
       },
       "difficulty": {
         "easy": "Easy",
@@ -211,7 +216,8 @@
         "ordering": "Ordering",
         "classification": "Classification",
         "codeInput": "Custom checker",
-        "problem": "Coding problem"
+        "problem": "Coding problem",
+        "chessPuzzle": "Chess puzzle"
       },
       "buckets": {
         "higher": "Higher rated",
@@ -247,7 +253,9 @@
       "streakCurrent": "Current",
       "streakBest": "Best",
       "streakCount_one": "{{count}} challenge",
-      "streakCount_other": "{{count}} challenges"
+      "streakCount_other": "{{count}} challenges",
+      "arenaChallenges_one": "{{count}} arena challenge",
+      "arenaChallenges_other": "{{count}} arena challenges"
     },
     "authRequired": "Sign in to see your challenge statistics.",
     "currentRank": "Current rating",

@@ -19,6 +19,7 @@ import {
 } from '@mui/material';
 import { normalizeSupportedLocale } from 'app/locales/locale';
 import { getResourceById, resources } from 'app/routes/resources';
+import { statisticsTableSx } from 'app/theme/styles/statistics';
 import { statisticsHeadingSx } from 'app/theme/styles/statistics';
 import { statisticsInset, statisticsPanelSx } from 'app/theme/styles/statistics';
 import type {
@@ -56,7 +57,13 @@ const OpponentList = ({ items }: { items: ChallengeStatisticsOpponentRow[] }) =>
       sx={{ m: 0, p: 0, listStyle: 'none' }}
     >
       {items.map((opponent) => (
-        <Stack component="li" key={opponent.username} direction="column" spacing={1} sx={{ py: 2 }}>
+        <Stack
+          component="li"
+          key={opponent.username}
+          direction="column"
+          spacing={1}
+          sx={{ py: 1.25 }}
+        >
           <Stack direction="row" justifyContent="space-between" spacing={2} alignItems="baseline">
             <UserPopover username={opponent.username} sx={{ minWidth: 0 }}>
               <Typography variant="body2" fontWeight={500} sx={{ overflowWrap: 'anywhere' }}>
@@ -120,7 +127,7 @@ const OpponentTable = ({ items }: { items: ChallengeStatisticsOpponentRow[] }) =
       <Table
         size="small"
         aria-label={t('challenges.statisticsPage.opponents.mostPlayed')}
-        sx={{ minWidth: 640 }}
+        sx={[statisticsTableSx, { minWidth: 640 }]}
       >
         <TableHead>
           <TableRow>
@@ -202,7 +209,7 @@ const MatchList = ({ items }: { items: ChallengeStatisticsMatchRecord[] }) => {
           direction="row"
           alignItems="center"
           spacing={1.5}
-          sx={{ py: 2 }}
+          sx={{ py: 1.25 }}
         >
           <Stack direction="column" spacing={0.5} sx={{ minWidth: 0, flex: 1 }}>
             <Stack direction="row" spacing={1} alignItems="baseline" flexWrap="wrap" useFlexGap>
@@ -260,7 +267,7 @@ const StatisticsOpponents = ({ statistics }: { statistics: ChallengeUserStatisti
   if (!opponents) {
     return (
       <Paper component="section" sx={[statisticsPanelSx, panelContentSx]}>
-        <Typography component="h2" variant="h6" sx={[statisticsHeadingSx, { mb: 4 }]}>
+        <Typography component="h2" variant="h6" sx={[statisticsHeadingSx, { mb: 2 }]}>
           {t('challenges.statisticsPage.details.opponents')}
         </Typography>
         <Typography variant="body2" color="text.secondary">
@@ -286,7 +293,7 @@ const StatisticsOpponents = ({ statistics }: { statistics: ChallengeUserStatisti
       <Grid size={{ xs: 12, lg: 5 }}>
         <Stack direction="column" sx={{ height: 1 }}>
           <Paper sx={[statisticsPanelSx, panelContentSx]}>
-            <Typography component="h2" variant="h6" sx={[statisticsHeadingSx, { mb: 4 }]}>
+            <Typography component="h2" variant="h6" sx={[statisticsHeadingSx, { mb: 2 }]}>
               {t('challenges.statisticsPage.opponents.summary')}
             </Typography>
             <Stack direction="row" justifyContent="space-between" alignItems="baseline" spacing={2}>
@@ -298,7 +305,7 @@ const StatisticsOpponents = ({ statistics }: { statistics: ChallengeUserStatisti
               </Typography>
             </Stack>
             <Divider sx={{ my: 3 }} />
-            <Stack direction="column" spacing={3}>
+            <Stack direction="column" spacing={2}>
               {buckets.map(({ label, data }) => (
                 <Stack key={label} direction="column" spacing={1}>
                   <Stack direction="row" justifyContent="space-between" spacing={2}>
@@ -338,7 +345,7 @@ const StatisticsOpponents = ({ statistics }: { statistics: ChallengeUserStatisti
             </Stack>
           </Paper>
           <Paper sx={[statisticsPanelSx, panelContentSx, { flex: 1 }]}>
-            <Typography component="h2" variant="h6" sx={[statisticsHeadingSx, { mb: 4 }]}>
+            <Typography component="h2" variant="h6" sx={[statisticsHeadingSx, { mb: 2 }]}>
               {t('challenges.statisticsPage.opponents.rivals')}
             </Typography>
             <OpponentList items={opponents.rivals} />
@@ -348,7 +355,7 @@ const StatisticsOpponents = ({ statistics }: { statistics: ChallengeUserStatisti
       <Grid size={{ xs: 12, lg: 7 }}>
         <Stack direction="column" sx={{ height: 1 }}>
           <Paper sx={[statisticsPanelSx, panelContentSx]}>
-            <Typography component="h2" variant="h6" sx={[statisticsHeadingSx, { mb: 4 }]}>
+            <Typography component="h2" variant="h6" sx={[statisticsHeadingSx, { mb: 2 }]}>
               {t('challenges.statisticsPage.opponents.mostPlayed')}
             </Typography>
             <OpponentTable items={opponents.mostPlayedOpponents} />
@@ -360,7 +367,7 @@ const StatisticsOpponents = ({ statistics }: { statistics: ChallengeUserStatisti
             ].map(({ title, items }) => (
               <Grid key={title} size={{ xs: 12, md: 6 }}>
                 <Paper sx={[statisticsPanelSx, panelContentSx, { height: 1 }]}>
-                  <Typography component="h2" variant="h6" sx={[statisticsHeadingSx, { mb: 4 }]}>
+                  <Typography component="h2" variant="h6" sx={[statisticsHeadingSx, { mb: 2 }]}>
                     {t('challenges.statisticsPage.opponents.' + title)}
                   </Typography>
                   <MatchList items={items} />

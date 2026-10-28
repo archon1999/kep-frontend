@@ -13,6 +13,7 @@ import {
   Typography,
 } from '@mui/material';
 import { useBreakpoints } from 'app/providers/BreakpointsProvider';
+import { getRankColor } from 'app/theme/colors/medals';
 import { useDuelsRatingPage } from 'modules/duels/application/hooks/useDuelsRatingPage';
 import DuelParticipant from 'modules/duels/ui/shared/components/DuelParticipant';
 import DuelRecord from 'modules/duels/ui/shared/components/DuelRecord';
@@ -99,13 +100,7 @@ const DuelsRatingPageTable = () => {
                     <TableCell align="center" sx={{ px: 1 }}>
                       <Typography
                         variant="metric"
-                        color={
-                          row.rowIndex === 1
-                            ? 'warning.main'
-                            : row.rowIndex === 3
-                              ? 'warning.dark'
-                              : 'text.secondary'
-                        }
+                        color={getRankColor(row.rowIndex)}
                         sx={{ fontSize: 20 }}
                       >
                         {String(row.rowIndex).padStart(2, '0')}

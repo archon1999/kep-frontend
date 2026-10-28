@@ -1,6 +1,8 @@
 import { useTranslation } from 'react-i18next';
-import { Typography } from '@mui/material';
+import { InputAdornment, Typography } from '@mui/material';
 import { useArenaListPage } from 'modules/arena/application/hooks/useArenaListPage';
+import KepIcon from 'shared/components/base/KepIcon';
+import DebouncedTextField from 'shared/components/common/DebouncedTextField';
 import { EventListSkeletons } from 'shared/components/sections/common/EventListCard';
 import {
   ListFeedback,
@@ -15,10 +17,28 @@ const ArenaListPageSection = () => {
   const { t } = useTranslation();
   return (
     <>
-      <ListToolbar caption={t('arena.listCaption')}>
+      <ListToolbar>
         <Typography variant="label" color="text.secondary">
           {data && !error ? t('arena.countLabel', { count: data.total }) : t('arena.title')}
         </Typography>
+        <DebouncedTextField
+          type="search"
+          size="small"
+          value={state.title}
+          onValueChange={(value) => setField('title', value)}
+          placeholder={t('arena.searchPlaceholder')}
+          slotProps={{
+            input: {
+              startAdornment: (
+                <InputAdornment position="start">
+                  <KepIcon name="search" fontSize={20} />
+                </InputAdornment>
+              ),
+            },
+            htmlInput: { 'aria-label': t('arena.searchPlaceholder') },
+          }}
+          sx={{ width: { xs: '100%', sm: 340 } }}
+        />
       </ListToolbar>
       <ListFeedback
         loadingContent={

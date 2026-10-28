@@ -136,6 +136,26 @@
     "noAttemptsHint": "Submitted solutions will appear here.",
     "score": "Score",
     "actions": "Actions",
-    "appliedFilters": "{{count}} filters applied"
+    "appliedFilters": "{{count}} filters applied",
+    "rating": {
+      "title": "Projects rating",
+      "leaderboard": "Rating",
+      "points": "Rating",
+      "place": "Global rank",
+      "completed": "Completed projects",
+      "passedTasks": "Passed tasks",
+      "completedCount": "Projects completed: {{count}}",
+      "maximum": "Maximum rating per project",
+      "levels": {
+        "junior": "Junior",
+        "juniorPlus": "Junior+",
+        "middle": "Middle"
+      },
+      "search": "Search participants",
+      "emptyTitle": "No rated participants yet",
+      "emptySearchTitle": "No matching participants",
+      "emptyDescription": "Pass project tasks to earn your first rating points.",
+      "emptySearch": "Try another username or name."
+    }
   }
 }

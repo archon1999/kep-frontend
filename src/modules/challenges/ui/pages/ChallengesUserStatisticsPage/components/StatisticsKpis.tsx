@@ -4,7 +4,7 @@ import { normalizeSupportedLocale } from 'app/locales/locale';
 import type { ChallengeUserStatistics } from 'modules/challenges/domain';
 import IconifyIcon from 'shared/components/base/IconifyIcon';
 import StatisticsMetric from 'shared/components/statistics/StatisticsMetric';
-import { formatDateTime } from 'shared/lib/dateTime';
+import { formatDateTime, formatDateTimePattern } from 'shared/lib/dateTime';
 import { createNumberFormatter } from 'shared/lib/numberFormat';
 
 const StatisticsKpis = ({ statistics }: { statistics: ChallengeUserStatistics }) => {
@@ -15,6 +15,17 @@ const StatisticsKpis = ({ statistics }: { statistics: ChallengeUserStatistics })
   );
   const { general, results, records } = statistics;
   const longest = records?.longestWinStreak;
+  const streakRange = !longest?.startAt
+    ? t('challenges.statisticsPage.noData')
+    : !longest.endAt
+      ? formatDateTime(longest.startAt, 'compactDateNoComma')
+      : `${formatDateTimePattern(
+          longest.startAt,
+          formatDateTimePattern(longest.startAt, 'YYYY') ===
+            formatDateTimePattern(longest.endAt, 'YYYY')
+            ? 'DD MMM'
+            : 'DD MMM YYYY',
+        )} – ${formatDateTime(longest.endAt, 'compactDateNoComma')}`;
   const kpis = [
     {
       title: t('challenges.statisticsPage.cards.totalChallenges'),
@@ -51,9 +62,7 @@ const StatisticsKpis = ({ statistics }: { statistics: ChallengeUserStatistics })
       value: longest?.count,
       icon: 'material-symbols:local-fire-department-outline-rounded',
       color: 'info',
-      detail: longest?.startAt
-        ? `${formatDateTime(longest.startAt, 'compactDateNoComma')} – ${formatDateTime(longest.endAt, 'compactDateNoComma')}`
-        : t('challenges.statisticsPage.noData'),
+      detail: streakRange,
     },
   ];
 

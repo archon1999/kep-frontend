@@ -62,6 +62,9 @@
     },
     "duelsRating": {
       "description": "Explore the KEP.uz duel leaderboard and compare participants’ ratings in head-to-head programming competitions."
+    },
+    "projectsRating": {
+      "description": "Explore the KEP.uz projects leaderboard. Compare participants by checked project results, completed projects, and successfully passed tasks."
     }
   }
 }

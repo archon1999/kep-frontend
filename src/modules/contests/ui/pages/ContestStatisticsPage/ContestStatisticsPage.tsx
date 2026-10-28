@@ -20,9 +20,11 @@ import ContestPageHeader from 'modules/contests/ui/shared/components/ContestPage
 import ContestPageLayout from 'modules/contests/ui/shared/components/ContestPageLayout';
 import ContestantView from 'modules/contests/ui/shared/components/ContestantView';
 import KepIcon from 'shared/components/base/KepIcon';
+import StatisticsBreakdown from 'shared/components/statistics/StatisticsBreakdown';
 import StatisticsChart from 'shared/components/statistics/StatisticsChart';
 import StatisticsMetric from 'shared/components/statistics/StatisticsMetric';
 import StatisticsSection from 'shared/components/statistics/StatisticsSection';
+import { StatisticsRowsSkeleton } from 'shared/components/statistics/StatisticsSkeleton';
 import type { KepIconName } from 'shared/config/icons';
 import useChartPalette from 'shared/hooks/useChartPalette';
 import { getColor } from 'shared/lib/echart-utils';
@@ -66,12 +68,10 @@ const ContestStatisticsPage = () => {
 
   const axisLabelColor = getColor(palette.text.secondary);
   const dividerColor = getColor(palette.divider);
-  const neutralColor = getColor(palette.text.disabled);
   const primaryColor = getColor(palette.primary.main);
   const successColor = getColor(palette.success.main);
   const warningColor = getColor(palette.warning.main);
   const errorColor = getColor(palette.error.main);
-  const surfaceColor = getColor(palette.background.default);
 
   const timelineOption: EChartsCoreOption | null = useMemo(() => {
     if (!statistics?.timeline?.length) return null;
@@ -182,77 +182,6 @@ const ContestStatisticsPage = () => {
     t,
   ]);
 
-  const verdictOption: EChartsCoreOption | null = useMemo(() => {
-    if (!statistics) return null;
-    const data = [
-      { value: statistics.verdicts.accepted, name: t('contests.verdicts.AC') },
-      { value: statistics.verdicts.wrongAnswer, name: t('contests.verdicts.WA') },
-      { value: statistics.verdicts.timeLimitExceeded, name: t('contests.verdicts.TLE') },
-      { value: statistics.verdicts.other, name: t('contests.verdicts.OTHER') },
-    ];
-    const totalVerdicts = data.reduce((total, item) => total + (item.value ?? 0), 0);
-    return {
-      textStyle: { fontFamily: theme.typography.fontFamily },
-      color: [successColor, errorColor, warningColor, neutralColor],
-      tooltip: { trigger: 'item', formatter: '{b}: {c} ({d}%)' },
-      legend: { bottom: 0, left: 'center', textStyle: { color: axisLabelColor } },
-      series: [
-        {
-          type: 'pie',
-          radius: ['52%', '72%'],
-          center: ['50%', '45%'],
-          itemStyle: {
-            borderRadius: 0,
-            borderColor: surfaceColor,
-            borderWidth: 2,
-          },
-          label: { show: false },
-          data,
-        },
-      ],
-      graphic: totalVerdicts
-        ? [
-            {
-              type: 'group',
-              left: 'center',
-              top: '45%',
-              children: [
-                {
-                  type: 'text',
-                  style: {
-                    text: formatCount(totalVerdicts) ?? '0',
-                    fill: axisLabelColor,
-                    fontSize: 20,
-                    fontWeight: 800,
-                  },
-                },
-                {
-                  type: 'text',
-                  top: 20,
-                  style: {
-                    text: t('contests.statisticsPage.attempts'),
-                    fill: axisLabelColor,
-                    fontSize: 12,
-                  },
-                },
-              ],
-            },
-          ]
-        : undefined,
-    };
-  }, [
-    theme.typography.fontFamily,
-    axisLabelColor,
-    errorColor,
-    formatCount,
-    neutralColor,
-    statistics,
-    successColor,
-    surfaceColor,
-    t,
-    warningColor,
-  ]);
-
   const badgeColors: Record<BadgeKey, string> = {
     sniper: getColor(palette.info.main),
     grinder: getColor(palette.warning.main),
@@ -304,10 +233,28 @@ const ContestStatisticsPage = () => {
         </Grid>
         <Grid size={{ xs: 12, md: 4 }}>
           <StatisticsSection title={t('contests.statisticsPage.verdicts')}>
-            <StatisticsChart
+            <StatisticsBreakdown
               label={t('contests.statisticsPage.verdicts')}
-              option={verdictOption}
               loading={isLoading}
+              totalLabel={t('contests.statisticsPage.attempts')}
+              items={[
+                {
+                  label: t('contests.verdicts.AC'),
+                  value: statistics?.verdicts.accepted ?? 0,
+                  color: successColor,
+                },
+                {
+                  label: t('contests.verdicts.WA'),
+                  value: statistics?.verdicts.wrongAnswer ?? 0,
+                  color: errorColor,
+                },
+                {
+                  label: t('contests.verdicts.TLE'),
+                  value: statistics?.verdicts.timeLimitExceeded ?? 0,
+                  color: warningColor,
+                },
+                { label: t('contests.verdicts.OTHER'), value: statistics?.verdicts.other ?? 0 },
+              ]}
             />
           </StatisticsSection>
         </Grid>
@@ -326,14 +273,14 @@ const ContestStatisticsPage = () => {
               label={t('contests.statisticsPage.problemAttempts')}
               option={problemsOption}
               loading={isLoading}
-              height={300}
+              height={232}
             />
           </StatisticsSection>
         </Grid>
         <Grid size={{ xs: 12, md: 4 }}>
           <StatisticsSection title={t('contests.statisticsPage.badges')}>
             {isLoading ? (
-              <Skeleton variant="rectangular" height={200} />
+              <StatisticsRowsSkeleton rows={4} />
             ) : badges.length ? (
               <Stack spacing={2} divider={<Divider />}>
                 {badges.map(({ key, badge }) => (
@@ -369,9 +316,9 @@ const ContestStatisticsPage = () => {
         <Grid size={{ xs: 12, md: 8 }}>
           <StatisticsSection title={t('contests.statisticsPage.firstSolves')}>
             {isLoading ? (
-              <Skeleton variant="rectangular" height={200} />
+              <StatisticsRowsSkeleton rows={5} />
             ) : firstSolves.length ? (
-              <Stack spacing={1.5} divider={<Divider />}>
+              <Stack spacing={1.25} divider={<Divider />}>
                 {firstSolves.map(({ problem, entry }) => (
                   <Stack key={problem} direction="row" gap={1.5} alignItems="center">
                     <Typography
@@ -402,7 +349,7 @@ const ContestStatisticsPage = () => {
         <Grid size={{ xs: 12, md: 4 }}>
           <StatisticsSection title={t('contests.statisticsPage.facts')}>
             {isLoading ? (
-              <Skeleton variant="rectangular" height={160} />
+              <StatisticsRowsSkeleton rows={3} />
             ) : statistics?.facts?.length ? (
               <Stack spacing={2} divider={<Divider />}>
                 {statistics.facts.map((fact, index) => (

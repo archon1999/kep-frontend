@@ -101,10 +101,10 @@
         "range": "Период истории рейтинга",
         "lastChange": "Изменение рейтинга в последнем вызове",
         "pointsUnit": "б.",
-        "ratedCount_one": "{{count}} завершённый поединок",
-        "ratedCount_few": "{{count}} завершённых поединка",
-        "ratedCount_many": "{{count}} завершённых поединков",
-        "ratedCount_other": "{{count}} завершённых поединков"
+        "ratedCount_one": "{{count}} рейтинговый вызов",
+        "ratedCount_few": "{{count}} рейтинговых вызова",
+        "ratedCount_many": "{{count}} рейтинговых вызовов",
+        "ratedCount_other": "{{count}} рейтингового вызова"
       },
       "details": {
         "title": "Подробная статистика",
@@ -187,7 +187,11 @@
         "perQuestion": "На каждый вопрос",
         "wholeChallenge": "На весь вызов",
         "questionsCount": "{{count}} вопросов",
-        "seconds": "{{count}} с"
+        "seconds": "{{count}} с",
+        "questionsCount_one": "{{count}} вопрос",
+        "questionsCount_few": "{{count}} вопроса",
+        "questionsCount_many": "{{count}} вопросов",
+        "questionsCount_other": "{{count}} вопроса"
       },
       "knowledge": {
         "difficulty": "По сложности",
@@ -196,7 +200,10 @@
         "topChapters": "Самые частые разделы",
         "solvedOf": "{{solved}} / {{seen}} верных ответов",
         "solveRate": "Доля верных ответов",
-        "questionsSeen": "Встреченных вопросов"
+        "questionsSeen": "Встреченных вопросов",
+        "seenShort": "Всего",
+        "solvedShort": "Решено",
+        "rateShort": "Доля"
       },
       "difficulty": {
         "easy": "Лёгкие",
@@ -211,7 +218,8 @@
         "ordering": "Упорядочивание",
         "classification": "Классификация",
         "codeInput": "Специальная проверка",
-        "problem": "Задача по программированию"
+        "problem": "Задача по программированию",
+        "chessPuzzle": "Шахматная задача"
       },
       "buckets": {
         "higher": "Рейтинг выше",
@@ -226,10 +234,10 @@
         "worstDefeats": "Самые тяжёлые поражения",
         "averageRating": "Средний рейтинг {{value}}",
         "record": "Победы / ничьи / поражения",
-        "matchCount_one": "{{count}} поединок",
-        "matchCount_few": "{{count}} поединка",
-        "matchCount_many": "{{count}} поединков",
-        "matchCount_other": "{{count}} поединков"
+        "matchCount_one": "{{count}} матч",
+        "matchCount_few": "{{count}} матча",
+        "matchCount_many": "{{count}} матчей",
+        "matchCount_other": "{{count}} матча"
       },
       "records": {
         "title": "Рекорды",
@@ -251,7 +259,11 @@
       "streakCount_one": "{{count}} поединок",
       "streakCount_few": "{{count}} поединка",
       "streakCount_many": "{{count}} поединков",
-      "streakCount_other": "{{count}} поединков"
+      "streakCount_other": "{{count}} поединков",
+      "arenaChallenges_one": "{{count}} соревнование на арене",
+      "arenaChallenges_few": "{{count}} соревнования на арене",
+      "arenaChallenges_many": "{{count}} соревнований на арене",
+      "arenaChallenges_other": "{{count}} соревнования на арене"
     },
     "authRequired": "Войдите, чтобы увидеть статистику вызовов.",
     "currentRank": "Текущий рейтинг",

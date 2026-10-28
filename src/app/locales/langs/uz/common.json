@@ -16,7 +16,10 @@
       "days": "{{count}} kun",
       "noData": "Bu davr uchun maʼlumot yoʻq.",
       "error": "Statistikani yuklab boʻlmadi.",
-      "retry": "Qayta urinish"
+      "retry": "Qayta urinish",
+      "total": "Jami",
+      "days_one": "{{count}} kun",
+      "days_other": "{{count}} kun"
     },
     "loading": "Yuklanmoqda...",
     "wins": "G'alabalar",

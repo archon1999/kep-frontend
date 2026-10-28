@@ -2,6 +2,7 @@ import { useMemo } from 'react';
 import { useTranslation } from 'react-i18next';
 import { Box, Stack, Tooltip, Typography } from '@mui/material';
 import { DataGrid, GridColDef } from '@mui/x-data-grid';
+import { getRankColor } from 'app/theme/colors/medals';
 import { useContestRatingChangesPage } from 'modules/contests/application/hooks/useContestRatingChangesPage';
 import { ContestantEntity } from 'modules/contests/domain/entities/contestant.entity';
 import ContestPageHeader from 'modules/contests/ui/shared/components/ContestPageHeader';
@@ -37,7 +38,7 @@ const ContestRatingChangesPage = () => {
         flex: 0.3,
         sortable: true,
         renderCell: ({ row }) => (
-          <Typography variant="body2" fontWeight={700}>
+          <Typography variant="body2" fontWeight={700} color={getRankColor(row.rank)}>
             {row.rank ?? '—'}
           </Typography>
         ),

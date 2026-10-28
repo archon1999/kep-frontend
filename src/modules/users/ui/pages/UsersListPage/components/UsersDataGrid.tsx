@@ -7,6 +7,7 @@ import {
   GridSortModel,
   GridValidRowModel,
 } from '@mui/x-data-grid';
+import { getRankColor } from 'app/theme/colors/medals';
 import { UsersListItem } from 'modules/users/domain/entities/user.entity';
 import UserPopover from 'modules/users/ui/shared/components/UserPopover';
 import CountryFlagIcon from 'shared/components/common/CountryFlagIcon';
@@ -80,7 +81,7 @@ const UsersDataGrid = ({
           <Stack direction="row" spacing={2} alignItems="center" sx={{ minWidth: 0 }}>
             {user.rowIndex !== undefined && (
               <Typography
-                color="primary"
+                color={getRankColor(user.rowIndex)}
                 fontWeight={800}
                 sx={{
                   minWidth: 34,

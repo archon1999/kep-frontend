@@ -3,6 +3,7 @@ import { useTranslation } from 'react-i18next';
 import { Link } from 'react-router';
 import { Alert, Avatar, Button, Skeleton, Tab, Tabs, useMediaQuery } from '@mui/material';
 import { resources } from 'app/routes/resources';
+import { getRankColor } from 'app/theme/colors/medals';
 import { useUsersList } from 'modules/users/application/queries';
 import UserPopover from 'modules/users/ui/shared/components/UserPopover';
 import CountryFlagIcon from 'shared/components/common/CountryFlagIcon';
@@ -49,7 +50,7 @@ const LeadersSection = ({ compact = false }: { compact?: boolean }) => {
     if (interacting || !visible || reducedMotion || isLoading || error) return;
     const timer = window.setTimeout(
       () => setTab((value) => (value + 1) % leaderboards.length),
-      7000,
+      5000,
     );
     return () => window.clearTimeout(timer);
   }, [tab, interacting, visible, reducedMotion, isLoading, error]);
@@ -156,7 +157,10 @@ const LeadersSection = ({ compact = false }: { compact?: boolean }) => {
                         streak={user.streak}
                         sx={{ width: '100%' }}
                       >
-                        <span className="kep-leader-rank">
+                        <span
+                          className="kep-leader-rank"
+                          style={{ color: getRankColor(index + 1, 'var(--kep-muted)') }}
+                        >
                           {String(index + 1).padStart(2, '0')}
                         </span>
                         <Avatar

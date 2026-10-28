@@ -10,6 +10,7 @@ import {
   TextField,
   Typography,
 } from '@mui/material';
+import { getRankColor } from 'app/theme/colors/medals';
 import { useContestContestants } from 'modules/contests/application/queries';
 import { ContestantEntity } from 'modules/contests/domain/entities/contestant.entity';
 import ContestantView from 'modules/contests/ui/shared/components/ContestantView';
@@ -66,7 +67,7 @@ const ContestantOptionContent = ({
     <Typography
       variant="body2"
       fontWeight={800}
-      color="text.secondary"
+      color={getRankColor(contestant.rank)}
       sx={{ width: 42, flexShrink: 0 }}
     >
       {contestant.rank ? `#${contestant.rank}` : '-'}

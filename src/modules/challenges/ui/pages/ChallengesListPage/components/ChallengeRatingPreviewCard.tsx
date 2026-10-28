@@ -2,6 +2,7 @@ import { useTranslation } from 'react-i18next';
 import { Link as RouterLink } from 'react-router';
 import { Box, Button, Skeleton, Stack, Typography } from '@mui/material';
 import { resources } from 'app/routes/resources';
+import { getRankColor } from 'app/theme/colors/medals';
 import { ChallengeRatingRow } from 'modules/challenges/domain';
 import { PageResult } from 'modules/challenges/domain/contracts/challenges.repository';
 import UserPopover from 'modules/users/ui/shared/components/UserPopover';
@@ -42,10 +43,7 @@ const ChallengeRatingPreviewCard = ({ ratingPreview, isLoading }: RatingPreviewC
                 borderColor: 'divider',
               }}
             >
-              <Typography
-                variant="metric"
-                sx={{ fontSize: 17, color: index < 3 ? 'warning.main' : 'text.secondary' }}
-              >
+              <Typography variant="metric" sx={{ fontSize: 17, color: getRankColor(index + 1) }}>
                 {String(index + 1).padStart(2, '0')}
               </Typography>
               <UserPopover username={row.username}>

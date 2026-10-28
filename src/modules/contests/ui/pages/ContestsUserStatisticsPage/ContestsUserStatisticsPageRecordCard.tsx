@@ -1,5 +1,6 @@
 import { Link as RouterLink } from 'react-router-dom';
-import { Button, Stack, Typography } from '@mui/material';
+import { Link, Stack, Typography } from '@mui/material';
+import { getRankColor } from 'app/theme/colors/medals';
 import KepIcon from 'shared/components/base/KepIcon';
 import StatisticsSection from 'shared/components/statistics/StatisticsSection';
 import type { KepIconName } from 'shared/config/icons';
@@ -12,6 +13,7 @@ export interface ContestsUserStatisticsPageRecordItem {
   contestTitle?: string;
   contestLink?: string;
   valueColor?: string;
+  rank?: number;
 }
 
 interface ContestsUserStatisticsPageRecordCardProps {
@@ -27,7 +29,7 @@ const ContestsUserStatisticsPageRecordCard = ({
 }: ContestsUserStatisticsPageRecordCardProps) => (
   <StatisticsSection title={title}>
     <Stack direction="column" spacing={2}>
-      <Stack direction="column" spacing={2.5}>
+      <Stack direction="column" spacing={2}>
         {items.map((item) => (
           <Stack
             key={item.label}
@@ -41,20 +43,23 @@ const ContestsUserStatisticsPageRecordCard = ({
               <Typography variant="label" color="text.secondary">
                 {item.label}
               </Typography>
-              <Typography variant="metric" fontSize={26} color={item.valueColor}>
+              <Typography
+                variant="metric"
+                fontSize={26}
+                color={getRankColor(item.rank, item.valueColor ?? 'text.primary')}
+              >
                 {item.value ?? emptyText}
               </Typography>
               {item.contestTitle ? (
                 item.contestLink ? (
-                  <Button
+                  <Link
                     component={RouterLink}
                     to={item.contestLink}
-                    size="small"
-                    variant="text"
-                    sx={{ px: 0, justifyContent: 'flex-start' }}
+                    underline="hover"
+                    sx={{ fontSize: 13, overflowWrap: 'anywhere' }}
                   >
                     {item.contestTitle}
-                  </Button>
+                  </Link>
                 ) : (
                   <Typography variant="body2" color="text.secondary">
                     {item.contestTitle}

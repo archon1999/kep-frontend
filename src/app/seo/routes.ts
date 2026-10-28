@@ -11,6 +11,7 @@ export const publicSeoRoutes = [
   { path: resources.ProblemsRating, key: 'problemsRating' },
   { path: resources.StudyPlans, key: 'studyPlans' },
   { path: resources.Projects, key: 'projects', paginated: true },
+  { path: resources.ProjectsRating, key: 'projectsRating', paginated: true },
   { path: resources.Tests, key: 'tests' },
   { path: resources.Contests, key: 'contests', paginated: true },
   { path: resources.ContestsRating, key: 'contestsRating' },

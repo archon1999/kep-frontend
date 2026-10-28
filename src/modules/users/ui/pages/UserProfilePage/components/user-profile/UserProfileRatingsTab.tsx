@@ -12,6 +12,7 @@ import { useContestRatingChanges } from 'modules/contests/application/queries';
 import ContestRatingChangesChart from 'modules/contests/ui/shared/components/ContestRatingChangesChart';
 import { useUserProblemsRating } from 'modules/problems/application/queries';
 import { difficultyColorByKey, difficultyOptions } from 'modules/problems/config/difficulty';
+import ProjectsUserRatingSection from 'modules/projects/ui/shared/components/ProjectsUserRatingSection';
 import { useUserRatings } from 'modules/users/application/queries';
 import ChallengesRatingChip from 'shared/components/rating/ChallengesRatingChip';
 import ContestsRatingChip from 'shared/components/rating/ContestsRatingChip';
@@ -149,7 +150,7 @@ const UserProfileRatingsTab = () => {
             title={t('challenges.title')}
             action={
               <ChallengesRatingChip
-                  title={ratingsQuery.data?.challengesRating?.title}
+                title={ratingsQuery.data?.challengesRating?.title}
                 size="medium"
               />
             }
@@ -178,6 +179,7 @@ const UserProfileRatingsTab = () => {
           </Box>
         </Box>
       </Box>
+      <ProjectsUserRatingSection username={username} />
     </Box>
   );
 };

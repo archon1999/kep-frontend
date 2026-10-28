@@ -136,6 +136,26 @@
     "noAttemptsHint": "Отправленные решения появятся здесь.",
     "score": "Результат",
     "actions": "Действия",
-    "appliedFilters": "Применено фильтров: {{count}}"
+    "appliedFilters": "Применено фильтров: {{count}}",
+    "rating": {
+      "title": "Рейтинг проектов",
+      "leaderboard": "Рейтинг",
+      "points": "Рейтинг",
+      "place": "Место",
+      "completed": "Завершено проектов",
+      "passedTasks": "Выполнено заданий",
+      "completedCount": "Завершено проектов: {{count}}",
+      "maximum": "Максимальный рейтинг за проект",
+      "levels": {
+        "junior": "Junior",
+        "juniorPlus": "Junior+",
+        "middle": "Middle"
+      },
+      "search": "Поиск участников",
+      "emptyTitle": "В рейтинге пока нет участников",
+      "emptySearchTitle": "Участники не найдены",
+      "emptyDescription": "Выполняйте задания проектов, чтобы получить первые баллы рейтинга.",
+      "emptySearch": "Попробуйте другой никнейм или имя."
+    }
   }
 }

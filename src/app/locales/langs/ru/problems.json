@@ -333,13 +333,17 @@
         "rating": "Рейтинг",
         "rank": "Место",
         "usersCount": "{{count}} пользователей",
-        "singleAttempt": "Решено с первой попытки"
+        "singleAttempt": "Решено с первой попытки",
+        "usersCount_one": "{{count}} участник",
+        "usersCount_few": "{{count}} участника",
+        "usersCount_many": "{{count}} участников",
+        "usersCount_other": "{{count}} участника"
       },
       "profile": {
         "languages": "Языки",
         "tags": "Теги",
         "topics": "Темы",
-        "byCategoryAndTags": "По категориям и тегам",
+        "byCategoryAndTags": "Категории и теги",
         "byTags": "По тегам"
       },
       "activity": {
@@ -351,7 +355,8 @@
         "overview": "{{solved}} решено из {{total}}"
       },
       "heatmap": {
-        "title": "Карта активности"
+        "title": "Календарь активности",
+        "last365Days": "Последние 365 дней"
       },
       "attempts": {
         "title": "Попытки до решения"
@@ -373,7 +378,11 @@
         "thursdayShort": "Чт",
         "fridayShort": "Пт",
         "saturdayShort": "Сб"
-      }
+      },
+      "attemptsCount_one": "{{count}} попытка",
+      "attemptsCount_few": "{{count}} попытки",
+      "attemptsCount_many": "{{count}} попыток",
+      "attemptsCount_other": "{{count}} попытки"
     },
     "studyPlans": {
       "title": "Учебные планы",

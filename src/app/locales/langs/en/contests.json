@@ -128,7 +128,15 @@
       "worthyOpponents": "Worthy opponents",
       "sharedContests": "{{count}} shared contests",
       "noData": "No data yet",
-      "noContestHistory": "No contest results have been recorded for this account yet."
+      "noContestHistory": "No contest results have been recorded for this account yet.",
+      "headToHead": "Head-to-head",
+      "versus": "vs",
+      "attemptsCount_one": "{{count}} attempt",
+      "attemptsCount_other": "{{count}} attempts",
+      "sharedContests_one": "{{count}} shared contest",
+      "sharedContests_other": "{{count}} shared contests",
+      "participants_one": "{{total}} participant",
+      "participants_other": "{{total}} participants"
     },
     "verdicts": {
       "AC": "Accepted",

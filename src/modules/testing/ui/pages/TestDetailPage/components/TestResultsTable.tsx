@@ -11,6 +11,7 @@ import {
   TableRow,
   Typography,
 } from '@mui/material';
+import { getRankColor } from 'app/theme/colors/medals';
 import { TestResultRow } from 'modules/testing/domain/contracts/testing.repository';
 import UserPopover from 'modules/users/ui/shared/components/UserPopover';
 import IconifyIcon from 'shared/components/base/IconifyIcon';
@@ -89,13 +90,7 @@ const TestResultsTable = ({
                     <TableCell>
                       <Typography
                         variant="metric"
-                        color={
-                          index === 0
-                            ? 'warning.main'
-                            : index === 2
-                              ? 'warning.dark'
-                              : 'text.secondary'
-                        }
+                        color={getRankColor(index + 1)}
                         sx={{ fontSize: 20 }}
                       >
                         {String(index + 1).padStart(2, '0')}

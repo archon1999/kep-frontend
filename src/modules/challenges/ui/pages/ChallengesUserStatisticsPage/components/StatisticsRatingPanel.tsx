@@ -45,7 +45,7 @@ const StatisticsRatingPanel = ({ statistics }: { statistics: ChallengeUserStatis
         justifyContent="space-between"
         alignItems="center"
         gap={2}
-        sx={{ mb: 4 }}
+        sx={{ mb: 2 }}
       >
         <Typography component="h2" variant="h6" sx={statisticsHeadingSx}>
           {t('challenges.statisticsPage.ratingHistory')}
@@ -142,7 +142,7 @@ const StatisticsRatingPanel = ({ statistics }: { statistics: ChallengeUserStatis
       </Stack>
       <ChallengeRatingChangesChart
         history={visibleHistory}
-        height={300}
+        height={232}
         rankBandOpacity={0}
         monochrome
         markerSize={0}

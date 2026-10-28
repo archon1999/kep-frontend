@@ -1,7 +1,10 @@
 import { useTranslation } from 'react-i18next';
+import { Link as RouterLink } from 'react-router';
 import { Alert, Box, Button, Stack } from '@mui/material';
+import { resources } from 'app/routes/resources';
 import { useProjectsListPage } from 'modules/projects/application/hooks/useProjectsListPage';
 import { getProjectCategory } from 'modules/projects/application/project-listing';
+import IconifyIcon from 'shared/components/base/IconifyIcon';
 import EmptyState from 'shared/components/common/EmptyState';
 import { FilterDrawerLayout, useFilterDrawer } from 'shared/components/common/FilterDrawer';
 import PageHeader from 'shared/components/sections/common/PageHeader';
@@ -54,7 +57,20 @@ const ProjectsListPage = () => {
         />
       }
     >
-      <PageHeader title={t('projects.title')} variant="detail" />
+      <PageHeader
+        title={t('projects.title')}
+        variant="detail"
+        actionComponent={
+          <Button
+            component={RouterLink}
+            to={resources.ProjectsRating}
+            variant="outlined"
+            startIcon={<IconifyIcon icon="mdi:podium" />}
+          >
+            {t('projects.rating.leaderboard')}
+          </Button>
+        }
+      />
       <Box>
         <ProjectsToolbar
           filters={activeFilters}

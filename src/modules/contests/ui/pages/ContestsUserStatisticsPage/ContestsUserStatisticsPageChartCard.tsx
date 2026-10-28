@@ -16,7 +16,7 @@ interface ContestsUserStatisticsPageChartCardProps {
 const ContestsUserStatisticsPageChartCard = ({
   title,
   option,
-  height = 280,
+  height = 232,
   emptyText,
   onEvents,
   extra,

@@ -88,6 +88,7 @@
     "login": "Tizimga kirish",
     "notFound": "Sahifa topilmadi",
     "forbidden": "Kirish taqiqlangan",
-    "games": "O‘yinlar"
+    "games": "O‘yinlar",
+    "projectsRating": "Loyihalar reytingi"
   }
 }

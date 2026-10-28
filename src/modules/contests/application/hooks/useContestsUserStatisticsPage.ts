@@ -66,6 +66,7 @@ export const useContestsUserStatisticsPage = () => {
   }) => ({
     ...card,
     value: card.entry ? `#${card.entry.rank}` : undefined,
+    rank: card.entry?.rank,
     contestTitle: card.entry?.contestTitle,
     contestLink: card.entry?.contestId
       ? getResourceById(resources.Contest, card.entry.contestId)
@@ -73,6 +74,7 @@ export const useContestsUserStatisticsPage = () => {
     subtitle: card.entry
       ? t('contests.statistics.participants', {
           total: numberFormatter.format(card.entry.participantsCount),
+          count: card.entry.participantsCount,
         })
       : undefined,
   });
@@ -95,6 +97,7 @@ export const useContestsUserStatisticsPage = () => {
     subtitle: card.entry
       ? t('contests.statistics.participants', {
           total: numberFormatter.format(card.entry.participantsCount),
+          count: card.entry.participantsCount,
         })
       : undefined,
   });

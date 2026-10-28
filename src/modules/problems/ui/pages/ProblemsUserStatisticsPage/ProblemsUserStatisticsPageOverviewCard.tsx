@@ -7,6 +7,7 @@ interface ProblemsUserStatisticsPageOverviewCardProps {
   label: string;
   value: string;
   subtitle?: string;
+  valueColor?: string;
 }
 
 const ProblemsUserStatisticsPageOverviewCard = ({
@@ -14,11 +15,13 @@ const ProblemsUserStatisticsPageOverviewCard = ({
   label,
   value,
   subtitle,
+  valueColor,
 }: ProblemsUserStatisticsPageOverviewCardProps) => (
   <StatisticsMetric
     label={label}
     value={value}
     subtitle={subtitle}
+    valueColor={valueColor}
     icon={<KepIcon name={icon as KepIconName} fontSize={20} />}
   />
 );

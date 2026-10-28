@@ -333,13 +333,15 @@
         "rating": "Reyting",
         "rank": "Oʻrin",
         "usersCount": "{{count}} foydalanuvchi",
-        "singleAttempt": "Bitta urinishda ishlangan"
+        "singleAttempt": "Bitta urinishda ishlangan",
+        "usersCount_one": "{{count}} nafar foydalanuvchi",
+        "usersCount_other": "{{count}} nafar foydalanuvchi"
       },
       "profile": {
         "languages": "Tillar",
         "tags": "Teglar",
         "topics": "Mavzular",
-        "byCategoryAndTags": "Kategoriyalar va teglar bo'yicha",
+        "byCategoryAndTags": "Kategoriyalar va teglar",
         "byTags": "Teglar bo'yicha"
       },
       "activity": {
@@ -351,7 +353,8 @@
         "overview": "{{solved}} / {{total}}"
       },
       "heatmap": {
-        "title": "Issiqlik xaritasi"
+        "title": "Faollik taqvimi",
+        "last365Days": "So‘nggi 365 kun"
       },
       "attempts": {
         "title": "Yechish uchun urinishlar"
@@ -373,7 +376,9 @@
         "thursdayShort": "Pay",
         "fridayShort": "Ju",
         "saturdayShort": "Sha"
-      }
+      },
+      "attemptsCount_one": "{{count}} ta urinish",
+      "attemptsCount_other": "{{count}} ta urinish"
     },
     "studyPlans": {
       "title": "O'quv rejalari",

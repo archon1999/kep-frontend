@@ -1,6 +1,7 @@
 import { memo, useEffect, useLayoutEffect, useMemo, useRef, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { Box, Stack, Tooltip, Typography, useMediaQuery } from '@mui/material';
+import { getRankColor } from 'app/theme/colors/medals';
 import type { ContestProblemEntity } from 'modules/contests/domain/entities/contest-problem.entity';
 import type { ReplayRow } from 'modules/contests/domain/entities/contest-replay.types';
 import type { ContestTypeInfo } from 'modules/contests/domain/entities/contest.entity';
@@ -128,7 +129,9 @@ const AnimatedRow = memo(
         }}
       >
         <Stack role="cell" direction="row" alignItems="center" gap={0.25}>
-          <Typography variant="metric">{row.rank}</Typography>
+          <Typography variant="metric" color={getRankColor(row.rank)}>
+            {row.rank}
+          </Typography>
           {direction !== 0 && (
             <Typography
               aria-hidden

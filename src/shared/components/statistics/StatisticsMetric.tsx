@@ -1,5 +1,6 @@
 import { ReactNode } from 'react';
 import { Box, Stack, Typography } from '@mui/material';
+import { statisticsMetricMinHeight } from 'app/theme/styles/statistics';
 import StatisticsSection from './StatisticsSection';
 
 export interface StatisticsMetricProps {
@@ -21,7 +22,9 @@ const StatisticsMetric = ({
   embedded,
   layout = 'stacked',
 }: StatisticsMetricProps) => (
-  <StatisticsSection sx={embedded ? { outline: 0, p: 0 } : undefined}>
+  <StatisticsSection
+    sx={embedded ? { outline: 0, p: 0 } : { minHeight: statisticsMetricMinHeight }}
+  >
     <Stack
       component="dl"
       spacing={1}
@@ -45,7 +48,7 @@ const StatisticsMetric = ({
           component="dt"
           variant="label"
           color="text.secondary"
-          sx={{ minHeight: layout === 'inline' ? undefined : '3em' }}
+          sx={{ fontSize: 11, lineHeight: 1.5, overflowWrap: 'anywhere' }}
         >
           {label}
         </Typography>
@@ -64,7 +67,7 @@ const StatisticsMetric = ({
         color={valueColor ?? 'text.primary'}
         sx={{
           m: 0,
-          fontSize: layout === 'inline' ? 28 : { xs: 28, md: 34 },
+          fontSize: layout === 'inline' ? 26 : { xs: 26, md: 30 },
           overflowWrap: 'anywhere',
         }}
       >
@@ -77,6 +80,7 @@ const StatisticsMetric = ({
           color="text.secondary"
           sx={{
             m: 0,
+            fontSize: 12,
             overflowWrap: 'anywhere',
             ...(layout === 'inline' && { gridColumn: '1 / -1' }),
           }}

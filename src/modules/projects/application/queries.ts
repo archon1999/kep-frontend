@@ -1,9 +1,24 @@
 import { toBackendLanguage } from 'app/locales/locale';
 import { useSettingsContext } from 'app/providers/SettingsProvider';
 import useSWR from 'swr';
-import { attemptsRepository, projectsRepository } from '../data-access';
+import { attemptsRepository, projectsRatingRepository, projectsRepository } from '../data-access';
 import type { ProjectAttemptsRepository } from '../domain/contracts/project-attempts.repository';
 import { Project, ProjectAttempt, ProjectAttemptLog } from '../domain/entities/project.entity';
+import type { ProjectsRatingParams } from '../domain/entities/projects-rating.types';
+import { projectsRatingKeys } from './keys';
+
+export const useProjectsRating = (params: ProjectsRatingParams) =>
+  useSWR(projectsRatingKeys.list(params), () => projectsRatingRepository.list(params), {
+    suspense: false,
+    keepPreviousData: true,
+  });
+
+export const useProjectUserRating = (username?: string) =>
+  useSWR(
+    username ? projectsRatingKeys.user(username) : null,
+    () => projectsRatingRepository.getUserRating(username!),
+    { suspense: false },
+  );
 
 const useProjectLanguage = () => {
   const { config } = useSettingsContext();

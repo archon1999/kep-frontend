@@ -101,8 +101,8 @@
         "range": "Reyting tarixi oraligʻi",
         "lastChange": "Oxirgi bellashuvdagi reyting oʻzgarishi",
         "pointsUnit": "ball",
-        "ratedCount_one": "{{count}} ta yakunlangan bellashuv",
-        "ratedCount_other": "{{count}} ta yakunlangan bellashuv"
+        "ratedCount_one": "{{count}} ta reytingli bellashuv",
+        "ratedCount_other": "{{count}} ta reytingli bellashuv"
       },
       "details": {
         "title": "Batafsil statistika",
@@ -183,7 +183,9 @@
         "perQuestion": "Har bir savol uchun",
         "wholeChallenge": "Butun bellashuv uchun",
         "questionsCount": "{{count}} ta savol",
-        "seconds": "{{count}} s"
+        "seconds": "{{count}} s",
+        "questionsCount_one": "{{count}} ta savol",
+        "questionsCount_other": "{{count}} ta savol"
       },
       "knowledge": {
         "difficulty": "Qiyinlik boʻyicha",
@@ -192,7 +194,10 @@
         "topChapters": "Eng koʻp uchragan boʻlimlar",
         "solvedOf": "{{solved}} / {{seen}} ta toʻgʻri javob",
         "solveRate": "Toʻgʻri javoblar ulushi",
-        "questionsSeen": "Uchragan savollar"
+        "questionsSeen": "Uchragan savollar",
+        "seenShort": "Jami",
+        "solvedShort": "Yechildi",
+        "rateShort": "Ulush"
       },
       "difficulty": {
         "easy": "Oson",
@@ -207,7 +212,8 @@
         "ordering": "Tartiblash",
         "classification": "Guruhlarga ajratish",
         "codeInput": "Maxsus tekshiruv",
-        "problem": "Dasturlash masalasi"
+        "problem": "Dasturlash masalasi",
+        "chessPuzzle": "Shaxmat masalasi"
       },
       "buckets": {
         "higher": "Reytingi yuqori",
@@ -222,8 +228,8 @@
         "worstDefeats": "Eng ogʻir magʻlubiyatlar",
         "averageRating": "Oʻrtacha reyting {{value}}",
         "record": "Gʻalabalar / durranglar / magʻlubiyatlar",
-        "matchCount_one": "{{count}} ta bellashuv",
-        "matchCount_other": "{{count}} ta bellashuv"
+        "matchCount_one": "{{count}} ta bahs",
+        "matchCount_other": "{{count}} ta bahs"
       },
       "records": {
         "title": "Rekordlar",
@@ -243,7 +249,9 @@
       "streakCurrent": "Joriy",
       "streakBest": "Eng yaxshi",
       "streakCount_one": "{{count}} ta bellashuv",
-      "streakCount_other": "{{count}} ta bellashuv"
+      "streakCount_other": "{{count}} ta bellashuv",
+      "arenaChallenges_one": "{{count}} ta arena bellashuvi",
+      "arenaChallenges_other": "{{count}} ta arena bellashuvi"
     },
     "authRequired": "Bellashuv statistikasini koʻrish uchun tizimga kiring.",
     "currentRank": "Joriy reyting",

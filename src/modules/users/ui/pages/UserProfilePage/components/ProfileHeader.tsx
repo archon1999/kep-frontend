@@ -1,5 +1,6 @@
 import { useTranslation } from 'react-i18next';
 import { Box, IconButton, Skeleton, Stack, Tooltip, Typography } from '@mui/material';
+import { getRankColor } from 'app/theme/colors/medals';
 import { contentGridSx, contentInsetSx } from 'app/theme/styles/content';
 import { UserDetails, UserRatings } from 'modules/users/domain/entities/user.entity';
 import KepIcon from 'shared/components/base/KepIcon';
@@ -187,7 +188,7 @@ const ProfileHeader = ({
                       {metric?.value ?? '—'}
                     </Typography>
                     {metric?.rank != null && (
-                      <Typography variant="caption" color="text.secondary">
+                      <Typography variant="caption" color={getRankColor(metric.rank)}>
                         #{metric.rank}
                       </Typography>
                     )}

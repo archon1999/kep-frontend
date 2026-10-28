@@ -1,7 +1,9 @@
 import { useTranslation } from 'react-i18next';
-import { Box, Skeleton, Typography } from '@mui/material';
+import { Box, Typography } from '@mui/material';
+import { statisticsChartHeight } from 'app/theme/styles/statistics';
 import * as echarts from 'echarts/core';
 import ReactEchart, { ReactEchartProps } from 'shared/components/base/ReactEchart';
+import { StatisticsChartSkeleton } from './StatisticsSkeleton';
 
 interface StatisticsChartProps {
   option: ReactEchartProps['option'] | null;
@@ -15,17 +17,16 @@ interface StatisticsChartProps {
 const StatisticsChart = ({
   option,
   label,
-  height = 280,
+  height = statisticsChartHeight,
   loading,
   emptyText,
   onEvents,
 }: StatisticsChartProps) => {
   const { t } = useTranslation();
-  if (loading)
-    return <Skeleton variant="rectangular" height={height} aria-label={t('common.loading')} />;
+  if (loading) return <StatisticsChartSkeleton height={height} />;
   if (!option)
     return (
-      <Box sx={{ minHeight: 120, display: 'grid', placeItems: 'center', p: 2 }}>
+      <Box sx={{ height, display: 'grid', placeItems: 'center', p: 2 }}>
         <Typography variant="body2" color="text.secondary">
           {emptyText ?? t('common.statistics.noData')}
         </Typography>

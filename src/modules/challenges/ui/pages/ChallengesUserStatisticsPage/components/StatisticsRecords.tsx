@@ -54,7 +54,13 @@ const StatisticsRecords = ({ statistics }: { statistics: ChallengeUserStatistics
             {highlights.map(({ label, entry, color }) => {
               const isMatch = entry && 'userScore' in entry;
               return (
-                <Stack key={label} direction="row" alignItems="center" spacing={1.5} sx={{ py: 2 }}>
+                <Stack
+                  key={label}
+                  direction="row"
+                  alignItems="center"
+                  spacing={1.5}
+                  sx={{ py: 1.25 }}
+                >
                   <Stack spacing={0.5} sx={{ flex: 1, minWidth: 0 }}>
                     <Typography variant="body2" fontWeight={600}>
                       {t(`challenges.statisticsPage.records.${label}`)}
@@ -130,7 +136,7 @@ const StatisticsRecords = ({ statistics }: { statistics: ChallengeUserStatistics
             }}
           >
             {streaks.map(({ label, data, color }) => (
-              <Stack key={label} spacing={0.75} sx={{ py: 2 }}>
+              <Stack key={label} spacing={0.75} sx={{ py: 1.25 }}>
                 <Stack
                   direction="row"
                   alignItems="baseline"
@@ -141,7 +147,8 @@ const StatisticsRecords = ({ statistics }: { statistics: ChallengeUserStatistics
                     {t(`challenges.statisticsPage.records.${label}`)}
                   </Typography>
                   <Typography
-                    variant="h4"
+                    variant="metric"
+                    fontSize={26}
                     fontWeight={500}
                     color={data ? color : 'text.disabled'}
                     sx={{ fontVariantNumeric: 'tabular-nums' }}

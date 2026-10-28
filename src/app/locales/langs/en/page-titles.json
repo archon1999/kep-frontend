@@ -88,6 +88,7 @@
     "login": "Login",
     "notFound": "Page not found",
     "forbidden": "Access denied",
-    "games": "Games"
+    "games": "Games",
+    "projectsRating": "Projects rating"
   }
 }

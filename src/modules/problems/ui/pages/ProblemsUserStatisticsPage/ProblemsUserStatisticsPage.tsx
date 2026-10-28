@@ -5,13 +5,13 @@ import {
   Box,
   Button,
   Grid,
-  LinearProgress,
   MenuItem,
   Select,
   ToggleButton,
   ToggleButtonGroup,
 } from '@mui/material';
 import { resources } from 'app/routes/resources';
+import { getRankColor } from 'app/theme/colors/medals';
 import { BarChart, HeatmapChart, LineChart } from 'echarts/charts';
 import {
   CalendarComponent,
@@ -40,6 +40,7 @@ import {
   ProblemsLanguagesPanel,
   ProblemsTagsPanel,
 } from './components/ProblemsStatisticsPanels';
+import ProblemsStatisticsSkeleton from './components/ProblemsStatisticsSkeleton';
 import {
   buildActivityOption,
   buildAttemptsOption,
@@ -122,11 +123,7 @@ const ProblemsUserStatisticsPage = () => {
   return (
     <FramedPage>
       <PageHeader title={t('problems.statisticsPage.title')} backTo={resources.Problems} />
-      {isLoading && (
-        <StatisticsSection>
-          <LinearProgress aria-label={t('common.loading')} />
-        </StatisticsSection>
-      )}
+      {isLoading && <ProblemsStatisticsSkeleton />}
       {error && (
         <Alert
           severity="error"
@@ -158,6 +155,7 @@ const ProblemsUserStatisticsPage = () => {
                 icon: 'users',
                 label: t('problems.statisticsPage.cards.rank'),
                 value: String(statistics.general?.rank ?? '—'),
+                valueColor: getRankColor(statistics.general?.rank, 'text.primary'),
                 subtitle: t('problems.statisticsPage.cards.usersCount', {
                   count: statistics.general?.usersCount ?? 0,
                 }),
@@ -264,7 +262,7 @@ const ProblemsUserStatisticsPage = () => {
                         label={t('problems.statisticsPage.heatmap.title')}
                         option={heatmapOption}
                         loading={heatmapLoading}
-                        height={220}
+                        height={180}
                       />
                     </Box>
                   </Box>
@@ -287,7 +285,7 @@ const ProblemsUserStatisticsPage = () => {
                   <StatisticsChart
                     label={t(`common.statistics.${chart.key}`)}
                     option={chart.option}
-                    height={300}
+                    height={232}
                   />
                 </StatisticsSection>
               </Grid>
@@ -297,7 +295,7 @@ const ProblemsUserStatisticsPage = () => {
                 <StatisticsChart
                   label={t('problems.statisticsPage.attempts.title')}
                   option={attemptsChartOption}
-                  height={300}
+                  height={232}
                 />
               </StatisticsSection>
             </Grid>

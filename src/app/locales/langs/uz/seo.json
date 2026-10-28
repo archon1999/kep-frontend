@@ -62,6 +62,9 @@
     },
     "duelsRating": {
       "description": "KEP.uz duellar reytingi jadvalida ishtirokchilarning yakkama-yakka dasturlash musobaqalaridagi reytinglarini solishtiring."
+    },
+    "projectsRating": {
+      "description": "KEP.uz loyihalari reytingi: ishtirokchilarning tekshirilgan natijalari, tugallangan loyihalari va bajarilgan vazifalarini solishtiring."
     }
   }
 }
