@@ -4,6 +4,8 @@ import { Components } from '@mui/material/styles';
 import type {} from '@mui/material/themeCssVarsAugmentation';
 import { PaletteColorKey } from 'app/theme/palette';
 import { cssVarRgba } from 'shared/lib/utils';
+import { controlMotionStyles, motion } from '../styles/transitions';
+import { designTokens } from '../tokens';
 import { LinkBehavior } from './Link';
 
 declare module '@mui/material/Button' {
@@ -148,12 +150,49 @@ const Button: Components<Omit<Theme, 'components'>>['MuiButton'] = {
       lineHeight: 1.429,
       ...outlineStyles(theme),
       ...textBtnStyles(theme),
+      ...(theme.preset === 'default' && {
+        borderRadius: 999,
+        fontWeight: 500,
+        ...controlMotionStyles,
+        '&.Mui-focusVisible': {
+          outline: `2px solid ${theme.vars.palette.primary.main}`,
+          outlineOffset: 3,
+        },
+        '& .MuiButton-endIcon': { transition: `transform 220ms ${motion.easing}` },
+        '@media (hover: hover) and (pointer: fine)': {
+          '&:hover .MuiButton-endIcon': { transform: 'translateX(3px)' },
+        },
+        '&.MuiButton-containedPrimary': {
+          background: designTokens.gradient,
+          color: 'var(--kep-accent-ink)',
+          border: '1px solid transparent',
+          boxShadow: 'none',
+          '&:hover': {
+            background: 'linear-gradient(110deg, var(--kep-ice), var(--kep-sand))',
+            boxShadow: `0 0 0 3px ${theme.vars.palette.background.default}, 0 0 0 4px ${theme.vars.palette.primary.main}`,
+          },
+          '&.Mui-disabled': {
+            background: theme.vars.palette.action.disabledBackground,
+            color: theme.vars.palette.text.disabled,
+            borderColor: theme.vars.palette.divider,
+            boxShadow: 'none',
+          },
+        },
+        [motion.reduced]: {
+          ...controlMotionStyles[motion.reduced],
+          '& .MuiButton-endIcon, &:hover .MuiButton-endIcon': {
+            transition: 'none',
+            transform: 'none',
+          },
+        },
+      }),
     }),
-    sizeLarge: {
+    sizeLarge: ({ theme }) => ({
       fontSize: '16px',
       padding: '10px 22px',
       lineHeight: 1.375,
-    },
+      ...(theme.preset === 'default' && { minHeight: 52, padding: '14px 22px' }),
+    }),
     sizeSmall: {
       padding: '6px 10px',
       lineHeight: 1.286,
@@ -195,6 +234,24 @@ const Button: Components<Omit<Theme, 'components'>>['MuiButton'] = {
 export const ButtonBase: Components<Omit<Theme, 'components'>>['MuiButtonBase'] = {
   defaultProps: {
     LinkComponent: LinkBehavior,
+  },
+  styleOverrides: {
+    root: ({ theme }) =>
+      theme.preset === 'default'
+        ? {
+            '&.MuiIconButton-root': {
+              ...controlMotionStyles,
+              '&.Mui-focusVisible': {
+                outline: `2px solid ${theme.vars.palette.primary.main}`,
+                outlineOffset: 3,
+              },
+            },
+            '&.MuiCardActionArea-root': {
+              transition: motion.interaction,
+              [motion.reduced]: { transition: 'none' },
+            },
+          }
+        : {},
   },
 };
 export default Button;

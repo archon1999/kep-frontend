@@ -5,8 +5,6 @@ import {
   Alert,
   Box,
   Button,
-  Card,
-  CardContent,
   Chip,
   Divider,
   Rating,
@@ -14,17 +12,22 @@ import {
   Stack,
   Typography,
 } from '@mui/material';
-import { toast } from 'sonner';
 import { useAuth } from 'app/providers/AuthProvider';
+import { contentInsetSx } from 'app/theme/styles/content';
 import { useCreateShopReview } from 'modules/shop/application/mutations';
 import { useShopOrders } from 'modules/shop/application/queries';
 import type { ShopOrder } from 'modules/shop/domain/entities/order.entity';
 import CountryFlagIcon from 'shared/components/common/CountryFlagIcon';
 import KepcoinValue from 'shared/components/common/KepcoinValue';
+import SectionHeader from 'shared/components/sections/common/SectionHeader';
 import { formatCalendarDateTime } from 'shared/lib/dateTime';
 import { formatInteger } from 'shared/lib/numberFormat';
+import { toast } from 'sonner';
 
-const statusColorMap: Record<ShopOrder['status'], 'default' | 'warning' | 'info' | 'success' | 'error'> = {
+const statusColorMap: Record<
+  ShopOrder['status'],
+  'default' | 'warning' | 'info' | 'success' | 'error'
+> = {
   PENDING: 'warning',
   PROCESSING: 'info',
   SHIPPED: 'info',
@@ -35,15 +38,15 @@ const statusColorMap: Record<ShopOrder['status'], 'default' | 'warning' | 'info'
 const formatOrderDate = (value: string) => formatCalendarDateTime(value);
 
 const PurchaseCardSkeleton = () => (
-  <Card variant="outlined">
-    <CardContent>
+  <Box>
+    <Box sx={contentInsetSx}>
       <Stack direction="column" spacing={2}>
         <Skeleton variant="text" width="40%" />
         <Skeleton variant="rounded" height={140} />
         <Skeleton variant="text" width="60%" />
       </Stack>
-    </CardContent>
-  </Card>
+    </Box>
+  </Box>
 );
 
 const shippingTypeLabelMap: Record<ShopOrder['shippingType'], string> = {
@@ -60,7 +63,10 @@ const UserProfilePurchasesTab = () => {
   const { trigger, isMutating } = useCreateShopReview();
   const [pendingRatings, setPendingRatings] = useState<Record<number, number | null>>({});
 
-  const emptyState = useMemo(() => !isLoading && !orders?.length && !error, [error, isLoading, orders]);
+  const emptyState = useMemo(
+    () => !isLoading && !orders?.length && !error,
+    [error, isLoading, orders],
+  );
 
   if (!isOwner) {
     return null;
@@ -84,23 +90,24 @@ const UserProfilePurchasesTab = () => {
   };
 
   return (
-    <Stack direction="column" spacing={2}>
+    <Stack direction="column" spacing={0}>
+      <SectionHeader title={t('users.profile.purchases.title')} />
       {isLoading ? (
         Array.from({ length: 3 }).map((_, index) => <PurchaseCardSkeleton key={index} />)
       ) : error ? (
         <Alert severity="error">{t('shop.loadError')}</Alert>
       ) : emptyState ? (
-        <Card variant="outlined">
-          <CardContent>
+        <Box>
+          <Box sx={contentInsetSx}>
             <Typography variant="body1" color="text.secondary">
               {t('users.profile.purchases.empty')}
             </Typography>
-          </CardContent>
-        </Card>
+          </Box>
+        </Box>
       ) : (
         orders?.map((order) => (
-          <Card key={order.id} variant="outlined">
-            <CardContent>
+          <Box key={order.id} sx={{ borderBottom: 1, borderColor: 'divider' }}>
+            <Box sx={contentInsetSx}>
               <Stack direction="column" spacing={2.5}>
                 <Stack
                   direction={{ xs: 'column', sm: 'row' }}
@@ -116,24 +123,34 @@ const UserProfilePurchasesTab = () => {
                       sx={{
                         width: 88,
                         height: 88,
-                        borderRadius: 2,
+                        borderRadius: 0,
                         objectFit: 'cover',
                         bgcolor: 'background.default',
                         border: (theme) => `1px solid ${theme.palette.divider}`,
                       }}
                     />
                     <Stack direction="column" spacing={0.5}>
-                      <Typography variant="h6" fontWeight={700}>
+                      <Typography variant="h6" fontWeight={500}>
                         {order.productTitle}
                       </Typography>
                       <Stack direction="row" spacing={1} flexWrap="wrap" useFlexGap>
-                        <Chip size="small" label={`${t('users.profile.purchases.color')}: ${order.colorName}`} />
-                        <Chip size="small" label={`${t('users.profile.purchases.size')}: ${order.sizeName}`} />
+                        <Chip
+                          size="small"
+                          label={`${t('users.profile.purchases.color')}: ${order.colorName}`}
+                        />
+                        <Chip
+                          size="small"
+                          label={`${t('users.profile.purchases.size')}: ${order.sizeName}`}
+                        />
                       </Stack>
                     </Stack>
                   </Stack>
 
-                  <Stack direction="column" spacing={1} alignItems={{ xs: 'flex-start', sm: 'flex-end' }}>
+                  <Stack
+                    direction="column"
+                    spacing={1}
+                    alignItems={{ xs: 'flex-start', sm: 'flex-end' }}
+                  >
                     <Chip
                       color={statusColorMap[order.status]}
                       label={t(`users.profile.purchases.statuses.${order.status}`)}
@@ -150,7 +167,13 @@ const UserProfilePurchasesTab = () => {
                       {t('users.profile.purchases.orderDate')}: {formatOrderDate(order.created)}
                     </Typography>
                     <Typography variant="body2">
-                      <Stack component="span" direction="row" spacing={0.75} alignItems="center" useFlexGap>
+                      <Stack
+                        component="span"
+                        direction="row"
+                        spacing={0.75}
+                        alignItems="center"
+                        useFlexGap
+                      >
                         <Typography component="span" variant="body2">
                           {t('users.profile.purchases.delivery')}:
                         </Typography>
@@ -217,8 +240,8 @@ const UserProfilePurchasesTab = () => {
                   </Stack>
                 </Stack>
               </Stack>
-            </CardContent>
-          </Card>
+            </Box>
+          </Box>
         ))
       )}
     </Stack>

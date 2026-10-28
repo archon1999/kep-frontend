@@ -5,6 +5,17 @@ import {
   ApiProblemsRatingListParams,
 } from 'shared/api/orval/generated/endpoints/index.schemas';
 import {
+  AttemptsListParams,
+  PageResult,
+  ProblemSolversParams,
+  ProblemsListParams,
+  ProblemsRatingHistoryParams,
+  ProblemsRatingParams,
+  ProblemsRepository,
+  ProblemsStatisticsParams,
+  RecommendationResolveParams,
+} from '../../domain/contracts/problems.repository.ts';
+import {
   AttemptDetail,
   AttemptListItem,
   PeriodRatingEntry,
@@ -27,17 +38,6 @@ import {
   StudyPlanDetail,
   StudyPlanListItem,
 } from '../../domain/entities/problem.entity.ts';
-import {
-  AttemptsListParams,
-  PageResult,
-  ProblemSolversParams,
-  ProblemsListParams,
-  ProblemsRatingHistoryParams,
-  ProblemsRatingParams,
-  ProblemsRepository,
-  ProblemsStatisticsParams,
-  RecommendationResolveParams,
-} from '../../domain/ports/problems.repository.ts';
 import { problemsApiClient } from '../api/problems.client.ts';
 import {
   mapAttemptDetail,
@@ -374,12 +374,13 @@ export class HttpProblemsRepository implements ProblemsRepository {
   }
 }
 
-const mapRatingFilter = (params: ProblemsRatingParams): ApiProblemsRatingListParams => ({
-  ordering: params.ordering,
-  page: params.page,
-  pageSize: params.pageSize,
-  pin_current_user: params.pinCurrentUser ? 'true' : undefined,
-} as any);
+const mapRatingFilter = (params: ProblemsRatingParams): ApiProblemsRatingListParams =>
+  ({
+    ordering: params.ordering,
+    page: params.page,
+    pageSize: params.pageSize,
+    pin_current_user: params.pinCurrentUser ? 'true' : undefined,
+  }) as any;
 
 const mapRatingHistoryFilter = (
   params: ProblemsRatingHistoryParams,

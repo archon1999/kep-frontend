@@ -4,8 +4,13 @@
     <meta charset="UTF-8" />
     <link rel="icon" type="image/svg+xml" href="/logo.svg" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <meta name="description" content="KEP.uz platform" />
-    <title>KEP.uz</title>
+    <!-- kep:metadata -->
+    <meta
+      name="description"
+      content="Practice algorithms, solve programming problems, build projects, and take part in contests, duels, and hackathons on KEP.uz."
+    />
+    <title>Home - KEP.uz</title>
+    <!-- /kep:metadata -->
     <script async src="https://www.googletagmanager.com/gtag/js?id=G-MBQPKFTEWV"></script>
     <script>
       window.dataLayer = window.dataLayer || [];
@@ -17,21 +22,28 @@
       gtag('js', new Date());
       gtag('config', 'G-MBQPKFTEWV');
     </script>
-    <link rel="preconnect" href="https://fonts.googleapis.com" />
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link
-      href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&family=Manrope:wght@400;500;600;700&family=Spline+Sans+Mono:wght@300;400;500;600;700&family=DM+Sans:wght@300;400;500;600;700&family=Inter:wght@300;400;500;600;700&family=Roboto:wght@300;400;500;600;700&display=swap"
-      rel="stylesheet"
+      rel="preload"
+      href="/assets/theme/open-sans-variable.woff2"
+      as="font"
+      type="font/woff2"
+      crossorigin
+    />
+    <link
+      rel="preload"
+      href="/assets/theme/alpha-lyrae.woff2"
+      as="font"
+      type="font/woff2"
+      crossorigin
     />
     <script>
       window.__kepSplashStartedAt = Date.now();
 
       (function () {
-        var defaultPrimaryColor = '#3d7cf4';
-        var darkPresets = ['default-dark', 'dracula', 'midnight', 'ember'];
+        var defaultPrimaryColor = '#93d7e2';
         var presetColors = {
-          'default-light': '#3d7cf4',
-          'default-dark': '#63a6ff',
+          default: '#93d7e2',
+          cobalt: '#3d7cf4',
           luxury: '#c4a15a',
           retro: '#ef6f6c',
           arctic: '#2aa7c9',
@@ -56,8 +68,16 @@
           }
         };
 
-        var storedMode = readValue('kep-mode', 'system');
-        var themePreset = readValue('themePreset', 'default-light');
+        var legacyPreset = readValue('themePreset', 'default');
+        var themePreset =
+          legacyPreset === 'flames'
+            ? 'default'
+            : legacyPreset === 'old-blue' ||
+                legacyPreset === 'default-light' ||
+                legacyPreset === 'default-dark'
+              ? 'cobalt'
+              : legacyPreset;
+        var storedMode = readValue('kep-mode', legacyPreset === 'default-light' ? 'light' : 'dark');
         var primaryColor = readValue(
           'primaryColor',
           presetColors[themePreset] || defaultPrimaryColor,
@@ -67,7 +87,7 @@
         var resolvedMode = storedMode === 'system' ? (prefersDark ? 'dark' : 'light') : storedMode;
 
         if (storedMode !== 'dark' && storedMode !== 'light' && storedMode !== 'system') {
-          resolvedMode = darkPresets.indexOf(themePreset) >= 0 ? 'dark' : 'light';
+          resolvedMode = legacyPreset === 'default-light' ? 'light' : 'dark';
         }
 
         document.documentElement.setAttribute('data-kep-color-scheme', resolvedMode);
@@ -91,13 +111,8 @@
         height: 100%;
         overflow: hidden !important;
         pointer-events: none;
-        background:
-          radial-gradient(
-            circle at 50% 44%,
-            color-mix(in srgb, var(--kep-splash-primary) 16%, transparent),
-            transparent 32%
-          ),
-          #f8fbff;
+        background: #f7f9fa;
+        color: #24343d;
         opacity: 1;
         transition:
           opacity 360ms ease,
@@ -105,13 +120,43 @@
       }
 
       html[data-kep-preload-mode='dark'] #loading-bg {
-        background:
-          radial-gradient(
-            circle at 50% 44%,
-            color-mix(in srgb, var(--kep-splash-primary) 20%, transparent),
-            transparent 34%
-          ),
-          #0f1014;
+        background: #090c12;
+        color: #edf1f4;
+      }
+      #loading-bg::before {
+        content: '';
+        position: absolute;
+        width: min(320px, calc(100vw - 48px));
+        height: 220px;
+        border: 1px solid color-mix(in srgb, currentColor 12%, transparent);
+        background: radial-gradient(
+            circle,
+            color-mix(in srgb, var(--kep-splash-primary) 24%, transparent) 1px,
+            transparent 1px
+          )
+          center / 12px 12px;
+        mask-image: linear-gradient(#000, #000);
+      }
+      #loading-bg::after {
+        content: '';
+        position: absolute;
+        top: calc(50% + 72px);
+        width: min(240px, calc(100vw - 100px));
+        height: 2px;
+        background: linear-gradient(90deg, #d8c697, var(--kep-splash-primary));
+        transform-origin: left;
+        animation: splash-line 1.6s ease-in-out infinite;
+      }
+      @keyframes splash-line {
+        0%,
+        100% {
+          transform: scaleX(0.2);
+          opacity: 0.5;
+        }
+        50% {
+          transform: scaleX(1);
+          opacity: 1;
+        }
       }
 
       #loading-bg.kep-splash-hidden {
@@ -120,11 +165,10 @@
       }
 
       #loading-bg svg {
-        width: 128px;
-        height: 128px;
-        filter: drop-shadow(
-          0 24px 60px color-mix(in srgb, var(--kep-splash-primary) 30%, transparent)
-        );
+        position: relative;
+        width: 72px;
+        height: 72px;
+        margin-bottom: 24px;
       }
 
       @keyframes animate-svg-fill-primary {
@@ -143,7 +187,7 @@
         }
 
         100% {
-          fill: color-mix(in srgb, var(--kep-splash-primary) 28%, #ab2a2a);
+          fill: color-mix(in srgb, var(--kep-splash-primary) 28%, #d8c697);
         }
       }
 
@@ -173,6 +217,17 @@
 
       .svg-elem-7 {
         animation: animate-svg-fill-accent 0.7s cubic-bezier(0.785, 0.135, 0.15, 0.86) 1.4s both;
+      }
+      @media (prefers-reduced-motion: reduce) {
+        #loading-bg,
+        #loading-bg::after,
+        #loading-bg path {
+          animation: none;
+          transition: none;
+        }
+        #loading-bg path {
+          fill: var(--kep-splash-primary);
+        }
       }
     </style>
   </head>

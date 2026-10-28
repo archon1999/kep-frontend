@@ -13,12 +13,12 @@ const tokenPattern =
   /(\/\/[^\n]*|\b(?:repeat|if|else)\b|\b(?:move|left|right|jump)\b|\b(?:blocked|crystal|ahead)\b|\b\d+\b|[{}])/g;
 
 const tokenColor = (token: string) => {
-  if (token.startsWith('//')) return '#788b99';
-  if (/^(repeat|if|else)$/.test(token)) return '#296fd8';
-  if (/^(move|left|right|jump)$/.test(token)) return '#087f73';
-  if (/^(blocked|crystal|ahead)$/.test(token)) return '#9b5c18';
-  if (/^\d+$/.test(token)) return '#9b5c18';
-  return '#596a78';
+  if (token.startsWith('//')) return 'text.secondary';
+  if (/^(repeat|if|else)$/.test(token)) return 'primary.main';
+  if (/^(move|left|right|jump)$/.test(token)) return 'success.main';
+  if (/^(blocked|crystal|ahead)$/.test(token)) return 'secondary.main';
+  if (/^\d+$/.test(token)) return 'secondary.main';
+  return 'text.primary';
 };
 
 const GameCodeEditor = ({ value, disabled, onChange }: GameCodeEditorProps) => {
@@ -78,9 +78,13 @@ const GameCodeEditor = ({ value, disabled, onChange }: GameCodeEditorProps) => {
         position: 'relative',
         height: editorHeight,
         overflow: 'hidden',
-        borderRadius: 1,
-        bgcolor: '#f7f9fb',
-        '&:focus-within': { boxShadow: 'inset 0 0 0 2px rgba(47, 124, 238, .3)' },
+        borderRadius: 0,
+        bgcolor: 'background.default',
+        '&:focus-within': {
+          outline: '2px solid',
+          outlineColor: 'primary.main',
+          outlineOffset: -2,
+        },
       }}
     >
       <Box
@@ -89,7 +93,7 @@ const GameCodeEditor = ({ value, disabled, onChange }: GameCodeEditorProps) => {
           position: 'absolute',
           inset: '0 auto 0 0',
           width: 44,
-          bgcolor: '#edf2f6',
+          bgcolor: 'background.elevation1',
           overflow: 'hidden',
         }}
       >
@@ -99,7 +103,7 @@ const GameCodeEditor = ({ value, disabled, onChange }: GameCodeEditorProps) => {
             pt: '12px',
             pr: 1,
             textAlign: 'right',
-            color: '#8a9ba9',
+            color: 'text.secondary',
             font: '13px/22px Consolas, monospace',
           }}
         >
@@ -123,7 +127,7 @@ const GameCodeEditor = ({ value, disabled, onChange }: GameCodeEditorProps) => {
           minWidth: 'calc(100% - 56px)',
           whiteSpace: 'pre',
           pointerEvents: 'none',
-          color: '#243847',
+          color: 'text.primary',
           font: '14px/22px Consolas, monospace',
         }}
       >
@@ -164,9 +168,9 @@ const GameCodeEditor = ({ value, disabled, onChange }: GameCodeEditorProps) => {
           bgcolor: 'transparent',
           color: 'transparent',
           WebkitTextFillColor: 'transparent',
-          caretColor: '#1d5fc5',
+          caretColor: 'primary.main',
           font: '14px/22px Consolas, monospace',
-          '&::selection': { bgcolor: 'rgba(47, 124, 238, .22)' },
+          '&::selection': { bgcolor: 'action.selected' },
           '&:disabled': { cursor: 'default' },
         }}
       />

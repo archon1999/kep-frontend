@@ -1,84 +1,80 @@
 import { useTranslation } from 'react-i18next';
-import { useNavigate } from 'react-router';
-import { Button, Card, CardContent, Skeleton, Stack, Typography } from '@mui/material';
-import Box from '@mui/material/Box';
+import { Link as RouterLink } from 'react-router';
+import { Box, Button, Skeleton, Stack, Typography } from '@mui/material';
 import { resources } from 'app/routes/resources';
 import { ChallengeRatingRow } from 'modules/challenges/domain';
-import { PageResult } from 'modules/challenges/domain/ports/challenges.repository.ts';
-import UserPopover from 'modules/users/ui/shared/components/UserPopover.tsx';
-import ChallengesRatingChip from 'shared/components/rating/ChallengesRatingChip.tsx';
+import { PageResult } from 'modules/challenges/domain/contracts/challenges.repository';
+import UserPopover from 'modules/users/ui/shared/components/UserPopover';
+import IconifyIcon from 'shared/components/base/IconifyIcon';
+import KepIcon from 'shared/components/base/KepIcon';
+import EmptyState from 'shared/components/common/EmptyState';
+import ChallengesRatingChip from 'shared/components/rating/ChallengesRatingChip';
 
 type RatingPreviewCardProps = {
   ratingPreview?: PageResult<ChallengeRatingRow>;
   isLoading: boolean;
 };
-
-const ChallengeRatingPreviewCard = ({
-  ratingPreview,
-  isLoading,
-}: RatingPreviewCardProps) => {
-  const { t } = useTranslation();
-  const navigate = useNavigate();
-
+const ChallengeRatingPreviewCard = ({ ratingPreview, isLoading }: RatingPreviewCardProps) => {
+  const { t, i18n } = useTranslation();
   return (
-    <Card variant="outlined" sx={{ borderRadius: 3, height: '100%' }}>
-      <CardContent sx={{ height: '100%' }}>
-        <Stack direction="row" alignItems="center" justifyContent="space-between" mb={2}>
-          <Stack spacing={0.25}>
-            <Typography variant="h6">{t('challenges.ratingPreview')}</Typography>
-            <Typography variant="body2" color="text.secondary">
-              {t('challenges.ratingPreviewSubtitle')}
-            </Typography>
-          </Stack>
-          <Button variant="text" onClick={() => navigate(resources.ChallengesRating)}>
-            {t('challenges.openRating')}
-          </Button>
-        </Stack>
-
-        <Stack spacing={1.5} direction="column">
-          {isLoading
-            ? Array.from({ length: 5 }).map((_, index) => (
-                <Skeleton key={index} variant="rectangular" height={52} sx={{ borderRadius: 2 }} />
-              ))
-            : (ratingPreview?.data ?? []).map((row, index) => (
-                <Card key={row.username} background={0}>
-                  <Stack paddingX={2} paddingY={1} direction="row">
-                    <Stack width={1} direction="row" spacing={1.25} alignItems="center">
-                      <Typography variant="body2" fontWeight={600}>
-                        #{index + 1}
-                      </Typography>
-                      <Stack
-                        width={1}
-                        spacing={1}
-                        direction="row"
-                        justifyContent="space-between"
-                        alignItems="center"
-                      >
-                        <Stack spacing={0.5} direction="column">
-                          <Box>
-                            <ChallengesRatingChip title={row.rankTitle} size="small" />
-                          </Box>
-
-                          <UserPopover username={row.username}>
-                            <Typography variant="subtitle2">{row.username}</Typography>
-                          </UserPopover>
-                        </Stack>
-
-                        <ChallengesRatingChip size="medium" title={row.rankTitle} rating={row.rating} />
-                      </Stack>
-                    </Stack>
-                  </Stack>
-                </Card>
-              ))}
-          {!isLoading && !ratingPreview?.data?.length && (
-            <Typography variant="body2" color="text.secondary">
-              {t('challenges.noRating')}
-            </Typography>
-          )}
-        </Stack>
-      </CardContent>
-    </Card>
+    <Box
+      component="section"
+      sx={{ p: { xs: 2.5, md: 3 }, borderBottom: 1, borderColor: 'divider' }}
+    >
+      <Stack direction="row" gap={1} alignItems="center" sx={{ mb: 2 }}>
+        <KepIcon name="ranking" color="primary.main" fontSize={20} />
+        <Typography component="h2" variant="subtitle1" fontWeight={700}>
+          {t('challenges.ratingPreview')}
+        </Typography>
+      </Stack>
+      {isLoading
+        ? Array.from({ length: 5 }, (_, index) => <Skeleton key={index} height={56} />)
+        : (ratingPreview?.data ?? []).map((row, index) => (
+            <Box
+              key={row.username}
+              sx={{
+                display: 'grid',
+                gridTemplateColumns: '28px minmax(0, 1fr) auto',
+                alignItems: 'center',
+                gap: 1,
+                py: 1.25,
+                borderBottom: 1,
+                borderColor: 'divider',
+              }}
+            >
+              <Typography
+                variant="metric"
+                sx={{ fontSize: 17, color: index < 3 ? 'warning.main' : 'text.secondary' }}
+              >
+                {String(index + 1).padStart(2, '0')}
+              </Typography>
+              <UserPopover username={row.username}>
+                <Typography variant="body2" fontWeight={600} sx={{ overflowWrap: 'anywhere' }}>
+                  {row.username}
+                </Typography>
+              </UserPopover>
+              <Stack direction="row" gap={0.5} alignItems="center">
+                <ChallengesRatingChip title={row.rankTitle} size="small" />
+                <Typography variant="metric" sx={{ fontSize: 17 }}>
+                  {row.rating.toLocaleString(i18n.language, { maximumFractionDigits: 1 })}
+                </Typography>
+              </Stack>
+            </Box>
+          ))}
+      {!isLoading && !ratingPreview?.data?.length && (
+        <EmptyState compact title={t('challenges.noRating')} />
+      )}
+      <Button
+        fullWidth
+        component={RouterLink}
+        to={resources.ChallengesRating}
+        variant="text"
+        sx={{ mt: 2 }}
+        endIcon={<IconifyIcon icon="solar:arrow-right-linear" fontSize={16} />}
+      >
+        {t('challenges.openRating')}
+      </Button>
+    </Box>
   );
 };
-
 export default ChallengeRatingPreviewCard;

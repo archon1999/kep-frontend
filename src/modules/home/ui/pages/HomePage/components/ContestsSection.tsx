@@ -1,218 +1,161 @@
 import { useMemo } from 'react';
 import { useTranslation } from 'react-i18next';
-import { Link as RouterLink } from 'react-router-dom';
-import {
-  Box,
-  Button,
-  CardActionArea,
-  Chip,
-  Paper,
-  Skeleton,
-  Stack,
-  Typography,
-} from '@mui/material';
+import { Link as RouterLink } from 'react-router';
+import { Alert, Box, Button, Chip, Stack, Typography } from '@mui/material';
 import { getResourceById, resources } from 'app/routes/resources';
 import { useContestsList } from 'modules/contests/application/queries';
 import { ContestListItem } from 'modules/contests/domain/entities/contest.entity';
+import { getContestTypeTitle } from 'modules/contests/ui/shared/utils/contestType';
 import IconifyIcon from 'shared/components/base/IconifyIcon';
-import KepIcon from 'shared/components/base/KepIcon';
-import { formatDateTime, isAfterNow, isBeforeNow } from 'shared/lib/dateTime';
-import { responsivePagePaddingSx } from 'shared/lib/styles';
-import { cssVarRgba } from 'shared/lib/utils';
+import EmptyState from 'shared/components/common/EmptyState';
+import MixedText from 'shared/components/common/MixedText';
+import PatternArtwork from 'shared/components/common/PatternArtwork';
+import EventListCard, {
+  EventDate,
+  EventListCardSkeleton,
+} from 'shared/components/sections/common/EventListCard';
+import { isAfterNow, isBeforeNow } from 'shared/lib/dateTime';
+import { createSafeHtml } from 'shared/lib/safeHtml';
 
-interface HomeContestCardProps {
-  contest: ContestListItem;
-}
-
-const HomeContestCard = ({ contest }: HomeContestCardProps) => {
+const HomeContestCard = ({ contest }: { contest: ContestListItem }) => {
   const { t } = useTranslation();
-
-  const isFinished = isBeforeNow(contest.finishTime);
-  const isUpcoming = isAfterNow(contest.startTime);
-
-  const statusLabel = isFinished
-    ? t('contests.status.finished', { date: formatDateTime(contest.finishTime, 'compactDateTime') })
-    : isUpcoming
-      ? t('contests.status.starts', { date: formatDateTime(contest.startTime, 'compactDateTime') })
-      : t('contests.status.live', { date: formatDateTime(contest.finishTime, 'compactDateTime') });
-
-  const statusColor: 'success' | 'warning' | 'default' = isFinished
-    ? 'default'
-    : isUpcoming
-      ? 'warning'
-      : 'success';
-
+  const finished = Boolean(contest.finishTime && isBeforeNow(contest.finishTime));
+  const upcoming = Boolean(contest.startTime && isAfterNow(contest.startTime));
+  const status = finished ? 'finished' : upcoming ? 'notStarted' : 'live';
   return (
-    <CardActionArea
-      component={RouterLink}
-      to={getResourceById(resources.Contest, contest.id)}
-      sx={{ display: 'block', width: 1, minWidth: 0, borderRadius: 3, overflow: 'hidden' }}
-    >
-      <Box
-        sx={(theme) => ({
-          position: 'relative',
-          p: { xs: 2, sm: 3.5 },
-          background: `linear-gradient(135deg, ${cssVarRgba(theme.vars.palette.primary.mainChannel, 0.08)}, ${cssVarRgba(theme.vars.palette.info.mainChannel, 0.06)})`,
-          borderRadius: 3,
-          border: `1px solid ${cssVarRgba(theme.vars.palette.primary.mainChannel, 0.1)}`,
-          overflow: 'hidden',
-        })}
-      >
-        <Box
-          sx={(theme) => ({
-            position: 'absolute',
-            inset: 0,
-            pointerEvents: 'none',
-            background: `radial-gradient(circle at 15% 20%, ${cssVarRgba(theme.vars.palette.primary.mainChannel, 0.12)}, transparent 38%), radial-gradient(circle at 85% 15%, ${cssVarRgba(theme.vars.palette.info.mainChannel, 0.08)}, transparent 42%)`,
-            '&::after': contest.logo
-              ? {
-                  content: '""',
-                  position: 'absolute',
-                  inset: 0,
-                  backgroundImage: `url(${contest.logo})`,
-                  backgroundSize: 'cover',
-                  backgroundPosition: 'center',
-                  opacity: 0.08,
-                  filter: 'saturate(0.6)',
-                }
-              : undefined,
-          })}
+    <EventListCard
+      id={contest.id}
+      title={contest.title}
+      titleComponent="h3"
+      href={getResourceById(resources.Contest, contest.id)}
+      category={contest.categoryTitle.replace(/([a-z])([A-Z])/g, '$1 $2')}
+      icon="mdi:code-tags"
+      actionLabel={t('contests.card.open')}
+      media={
+        <PatternArtwork
+          kind="competitions"
+          sx={{ width: 100, opacity: 0.65, display: { xs: 'none', sm: 'block' } }}
         />
-
-        <Stack direction="column" spacing={2} sx={{ position: 'relative', zIndex: 1 }}>
-          <Stack
-            direction={{ xs: 'column', sm: 'row' }}
-            spacing={1.5}
-            alignItems={{ xs: 'flex-start', sm: 'center' }}
-            justifyContent="space-between"
-            sx={{ minWidth: 0 }}
-          >
-            <Stack
-              direction="row"
-              spacing={1}
-              alignItems="center"
-              flex={1}
-              minWidth={0}
-              flexWrap="wrap"
-              useFlexGap
-            >
-              <KepIcon name="contest" fontSize={20} />
-              <Typography
-                variant="overline"
-                color="text.secondary"
-                fontWeight={800}
-                textTransform="uppercase"
-                sx={{ overflowWrap: 'anywhere' }}
-              >
-                {contest.categoryTitle}
-              </Typography>
-              <Chip
-                label={t(contest.isRated ? 'contests.rated' : 'contests.unrated')}
-                size="small"
-                color={contest.isRated ? 'success' : 'neutral'}
-                variant={contest.isRated ? 'filled' : 'soft'}
-                sx={{ fontWeight: 700 }}
+      }
+      badges={
+        <>
+          <Chip
+            size="small"
+            variant="status"
+            color={finished ? 'neutral' : upcoming ? 'warning' : 'success'}
+            icon={
+              <IconifyIcon
+                icon={
+                  finished
+                    ? 'mdi:check-circle-outline'
+                    : upcoming
+                      ? 'mdi:clock-outline'
+                      : 'mdi:access-point'
+                }
               />
-            </Stack>
-
-            <Chip
-              label={statusLabel}
-              color={statusColor}
-              variant="filled"
-              sx={{
-                maxWidth: '100%',
-                height: 'auto',
-                fontWeight: 700,
-                '& .MuiChip-label': {
-                  display: 'block',
-                  py: 0.5,
-                  whiteSpace: 'normal',
-                  overflowWrap: 'anywhere',
-                },
-              }}
-            />
-          </Stack>
-
-          <Stack direction="column" spacing={1}>
-            <Typography variant="h6" fontWeight={800} sx={{ wordBreak: 'break-word' }}>
-              {contest.title}
+            }
+            label={t('contests.statusShort.' + status)}
+          />
+          <Chip
+            size="small"
+            variant="status"
+            color={contest.isRated ? 'secondary' : 'default'}
+            icon={<IconifyIcon icon="mdi:star-four-points-outline" />}
+            label={t(contest.isRated ? 'contests.rated' : 'contests.unrated')}
+          />
+        </>
+      }
+      details={[
+        {
+          label: t('contests.typeLabel'),
+          icon: 'mdi:code-braces',
+          value: (
+            <Typography variant="body2" fontWeight={600}>
+              {getContestTypeTitle(contest.type, contest.typeInfo)}
             </Typography>
-          </Stack>
-
-          <Stack direction="row" spacing={2} flexWrap="wrap" useFlexGap>
-            <Stack direction="row" spacing={1} alignItems="center">
-              <KepIcon name="challenge-time" fontSize={18} />
-              <Typography variant="body2" color="text.secondary">
-                {contest.startTime
-                  ? t('contests.startsLabel', {
-                      date: formatDateTime(contest.startTime, 'compactDateTime'),
-                    })
-                  : t('contests.startsUnknown')}
-              </Typography>
-            </Stack>
-
-            <Stack direction="row" spacing={1} alignItems="center">
-              <KepIcon name="competition" fontSize={18} />
-              <Typography variant="body2" color="text.secondary">
-                {t('contests.type', { type: contest.type })}
-              </Typography>
-            </Stack>
-
-            <Stack direction="row" spacing={1} alignItems="center">
-              <IconifyIcon icon="mdi:account-group" fontSize={18} />
-              <Typography variant="body2" color="text.secondary">
-                {t('contests.registrantsLabel', { count: contest.registrantsCount })}
-              </Typography>
-            </Stack>
-          </Stack>
-        </Stack>
-      </Box>
-    </CardActionArea>
+          ),
+        },
+        {
+          label: t('contests.card.starts'),
+          icon: 'mdi:calendar-outline',
+          value: <EventDate value={contest.startTime} fallback={t('contests.startsUnknown')} />,
+        },
+        {
+          label: t('contests.card.ends'),
+          icon: 'mdi:clock-outline',
+          value: <EventDate value={contest.finishTime} />,
+        },
+      ]}
+      metrics={[
+        { label: t('contests.card.problems'), icon: 'mdi:code-tags', value: contest.problemsCount },
+        {
+          label: t('contests.card.registrations'),
+          icon: 'mdi:account-check-outline',
+          value: contest.registrantsCount,
+        },
+        ...(!upcoming
+          ? [
+              {
+                label: t('contests.card.contestants'),
+                icon: 'mdi:account-group-outline',
+                value: contest.contestantsCount,
+              },
+            ]
+          : []),
+      ]}
+    >
+      {contest.description && (
+        <Typography
+          component="div"
+          variant="body2"
+          color="text.secondary"
+          className="kep-dashboard-contest-description"
+          dangerouslySetInnerHTML={createSafeHtml(contest.description)}
+        />
+      )}
+    </EventListCard>
   );
 };
 
 const ContestsSection = () => {
   const { t } = useTranslation();
-  const params = useMemo(
-    () => ({
-      page: 1,
-      pageSize: 1,
-      status: '1',
-    }),
-    [],
-  );
-  const { data, isLoading } = useContestsList(params);
-
-  const latestContest = data?.data?.[0];
-
+  const params = useMemo(() => ({ page: 1, pageSize: 1, status: '1' }), []);
+  const { data, isLoading, error, mutate } = useContestsList(params);
+  const contest = data?.data?.[0];
   return (
-    <Paper>
-      <Stack direction="column" spacing={2.5} sx={responsivePagePaddingSx}>
-        <Stack direction="row" alignItems="center" justifyContent="space-between" spacing={1}>
-          <Typography variant="h5" sx={{ fontWeight: 700 }}>
-            {t('homePage.contests.title')}
-          </Typography>
-
-          <Button variant="text" color="primary" component={RouterLink} to={resources.Contests}>
-            {t('homePage.contests.viewAll')}
-          </Button>
-        </Stack>
-
-        {isLoading ? (
-          <Skeleton variant="rounded" height={196} />
-        ) : latestContest ? (
-          <HomeContestCard contest={latestContest} />
-        ) : (
-          <Stack direction="row" spacing={1.5} alignItems="center">
-            <IconifyIcon icon="mdi:calendar-blank" fontSize={22} color="text.disabled" />
-            <Typography variant="body2" color="text.secondary">
-              {t('homePage.contests.empty')}
-            </Typography>
-          </Stack>
-        )}
+    <section className="kep-dashboard-contest">
+      <Stack
+        direction="row"
+        alignItems="center"
+        justifyContent="space-between"
+        gap={1}
+        flexWrap="wrap"
+        sx={{ p: 'var(--kep-content-inset)', pb: 2, borderBottom: 1, borderColor: 'divider' }}
+      >
+        <Typography component="h2" variant="h5">
+          <MixedText>{t('homePage.contests.title')}</MixedText>
+        </Typography>
+        <Button component={RouterLink} to={resources.Contests} variant="text">
+          {t('homePage.contests.viewAll')}
+        </Button>
       </Stack>
-    </Paper>
+      {isLoading ? (
+        <EventListCardSkeleton description media />
+      ) : error ? (
+        <Alert
+          severity="error"
+          action={<Button onClick={() => void mutate()}>{t('common.retry')}</Button>}
+        >
+          {t('common.loadFailed')}
+        </Alert>
+      ) : contest ? (
+        <HomeContestCard contest={contest} />
+      ) : (
+        <Box sx={{ p: 3 }}>
+          <EmptyState compact title={t('homePage.contests.empty')} />
+        </Box>
+      )}
+    </section>
   );
 };
-
 export default ContestsSection;

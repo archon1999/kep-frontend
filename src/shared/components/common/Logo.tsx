@@ -1,35 +1,43 @@
-import { useEffect, useState } from 'react';
+import { MouseEventHandler, useId } from 'react';
 import { Link, SvgIcon, SvgIconProps, Typography, typographyClasses } from '@mui/material';
 import { useTheme } from '@mui/material/styles';
 import { useSettingsContext } from 'app/providers/SettingsProvider';
 import { rootPaths } from 'app/routes/route-config';
+import MixedText from './MixedText';
 
 interface LogoProps extends SvgIconProps {
   showName?: boolean;
   vibrant?: boolean;
+  onLinkClick?: MouseEventHandler<HTMLAnchorElement>;
 }
 
-const Logo = ({ sx, viewBox = '0 0 1000 1000', showName = true, vibrant = false, ...rest }: LogoProps) => {
-  const [id, setId] = useState('kep-logo');
+const Logo = ({
+  sx,
+  viewBox = '0 0 1000 1000',
+  showName = true,
+  vibrant = false,
+  onLinkClick,
+  ...rest
+}: LogoProps) => {
+  const id = useId().replace(/:/g, '');
   const theme = useTheme();
 
   const {
-    config: { navColor },
+    config: { navColor, themePreset },
   } = useSettingsContext();
 
   const palette = theme.vars.palette;
+  const isDefaultTheme = themePreset === 'default';
   const isVibrant = vibrant && navColor === 'vibrant';
   const color = isVibrant ? palette.secondary.main : palette.primary.main;
   const accent = isVibrant ? palette.success.main : palette.primary.light;
   const wordmarkTail = isVibrant ? palette.vibrant.text.secondary : palette.text.secondary;
 
-  useEffect(() => {
-    setId(`kep-logo-${Math.floor(Math.random() * 1000) + 1}`);
-  }, []);
-
   return (
     <Link
       href={rootPaths.root}
+      onClick={onLinkClick}
+      aria-label="KEP.uz"
       underline="none"
       sx={{
         display: 'flex',
@@ -46,6 +54,7 @@ const Logo = ({ sx, viewBox = '0 0 1000 1000', showName = true, vibrant = false,
         sx={{
           height: 32,
           width: 32,
+          ...(isDefaultTheme && { '& path': { fill: `url(#kep-gradient-${id})` } }),
           ...sx,
         }}
         {...rest}
@@ -95,6 +104,20 @@ const Logo = ({ sx, viewBox = '0 0 1000 1000', showName = true, vibrant = false,
           </g>
         </g>
         <defs>
+          {isDefaultTheme && (
+            <linearGradient
+              id={`kep-gradient-${id}`}
+              x1="0"
+              y1="0"
+              x2="1000"
+              y2="1000"
+              gradientUnits="userSpaceOnUse"
+            >
+              <stop stopColor="var(--kep-logo-sand, #eacc9c)" />
+              <stop offset="0.48" stopColor="var(--kep-logo-mid, #c8d5c1)" />
+              <stop offset="1" stopColor="var(--kep-logo-ice, #93d7e2)" />
+            </linearGradient>
+          )}
           <filter
             id={`filter0_d_${id}`}
             x="570.071"
@@ -299,18 +322,32 @@ const Logo = ({ sx, viewBox = '0 0 1000 1000', showName = true, vibrant = false,
               marginLeft: 1,
               marginBottom: 1.5,
             },
-            !isVibrant && {
-              background: ({ vars }) =>
-                `linear-gradient(100.06deg, ${color} 6.97%, ${accent} 27.63%, ${vars.palette.primary.main} 49.36%, ${wordmarkTail} 50.11%, ${wordmarkTail} 87.87%);`,
-              backgroundSize: '240% 100%',
-              backgroundPosition: ({ direction }) => (direction === 'rtl' ? 'left' : 'right'),
+            !isVibrant &&
+              !isDefaultTheme && {
+                background: ({ vars }) =>
+                  `linear-gradient(100.06deg, ${color} 6.97%, ${accent} 27.63%, ${vars.palette.primary.main} 49.36%, ${wordmarkTail} 50.11%, ${wordmarkTail} 87.87%);`,
+                backgroundSize: '240% 100%',
+                backgroundPosition: ({ direction }) => (direction === 'rtl' ? 'left' : 'right'),
+                WebkitBackgroundClip: 'text',
+                WebkitTextFillColor: 'transparent',
+                transition: 'background-position .3s cubic-bezier(0.8, 0.63, .5, 1)',
+              },
+            isDefaultTheme && {
+              background:
+                'linear-gradient(115deg, var(--kep-logo-sand) 0%, var(--kep-logo-mid) 48%, var(--kep-logo-ice) 100%)',
               WebkitBackgroundClip: 'text',
               WebkitTextFillColor: 'transparent',
-              transition: 'background-position .3s cubic-bezier(0.8, 0.63, .5, 1)',
+              fontFamily: "'Alpha Lyrae', 'Open Sans', sans-serif",
+              fontWeight: 500,
+              fontVariantLigatures: 'normal',
+              fontFeatureSettings: 'normal',
+              letterSpacing: '-0.045em',
+              fontSize: 34,
+              margin: '0 0 0 10px',
             },
           ]}
         >
-          KEP.uz
+          {isDefaultTheme ? <MixedText>KEP.uz</MixedText> : 'KEP.uz'}
         </Typography>
       )}
     </Link>

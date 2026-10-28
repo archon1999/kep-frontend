@@ -1,77 +1,57 @@
 import { useTranslation } from 'react-i18next';
-import { useParams } from 'react-router-dom';
-import { Box, Card } from '@mui/material';
-import { useDocumentTitle } from 'app/providers/DocumentTitleProvider';
-import { useHackathon, useHackathonProject } from 'modules/hackathons/application';
-import { HackathonAsyncState, HackathonDetailLayout } from 'modules/hackathons/ui/shared';
+import { Box, Button } from '@mui/material';
+import { useHackathonProjectPage } from 'modules/hackathons/application/hooks/useHackathonProjectPage';
+import { HackathonAsyncState } from 'modules/hackathons/ui/shared';
+import { WorkspaceRoot } from 'shared/components/sections/common/Workspace';
 import HackathonProjectWorkspace from './components/HackathonProjectWorkspace';
+import HackathonProjectWorkspaceHeader from './components/HackathonProjectWorkspaceHeader';
 
 const HackathonProjectPage = () => {
   const { t } = useTranslation();
-  const { id, symbol } = useParams();
   const {
-    data: hackathon,
-    isLoading: isHackathonLoading,
-    error: hackathonError,
-  } = useHackathon(id);
-  const { data: hackathonProject, isLoading, error, mutate } = useHackathonProject(id, symbol);
-  const project = hackathonProject?.project;
-  const canOpenWorkspace = Boolean(
-    hackathon && hackathon.id > 0 && hackathon.id === Number(id) && !hackathonError,
-  );
-  useDocumentTitle(
-    project?.title ? 'pageTitles.hackathonProject' : undefined,
-    project?.title ? { projectTitle: project.title } : undefined,
-  );
+    id,
+    project,
+    hackathon,
+    hackathonProject,
+    canOpenWorkspace,
+    isLoading,
+    error,
+    hasProjectError,
+    onRefresh,
+  } = useHackathonProjectPage();
+  if (project && hackathonProject && hackathon && canOpenWorkspace) {
+    return (
+      <HackathonProjectWorkspace
+        key={`${hackathon.id}:${hackathonProject.symbol}:${project.slug}`}
+        hackathonProject={hackathonProject}
+        hackathon={hackathon}
+        hasError={hasProjectError}
+        onRefresh={onRefresh}
+      />
+    );
+  }
 
   return (
-    <HackathonDetailLayout
-      hackathon={hackathon}
-      isLoading={isHackathonLoading}
-      error={hackathonError}
-      workspace
-    >
-      <Card
-        background={0}
-        sx={{ height: 1, display: 'flex', flexDirection: 'column', minHeight: 0, borderRadius: 3 }}
-      >
-        {project && canOpenWorkspace && error ? (
-          <Box sx={{ px: 3, py: 2, flexShrink: 0 }}>
-            <HackathonAsyncState error={error} />
-          </Box>
-        ) : null}
-
-        <Box sx={{ flex: 1, minHeight: 0, overflow: 'hidden' }}>
-          {project && hackathonProject && hackathon && canOpenWorkspace ? (
-            <HackathonProjectWorkspace
-              key={`${hackathon.id}:${hackathonProject.symbol}:${project.slug}`}
-              hackathonProject={hackathonProject}
-              hackathon={hackathon}
-              onRefresh={() => void mutate()}
-            />
-          ) : (
-            <Box sx={{ p: 3 }}>
-              <HackathonAsyncState
-                isLoading={isLoading || isHackathonLoading}
-                error={error || hackathonError}
-                isEmpty={!project || !canOpenWorkspace}
-                emptyTitle={t(
-                  canOpenWorkspace
-                    ? 'hackathons.projectUnavailableTitle'
-                    : 'hackathons.unavailableTitle',
-                )}
-                emptyMessage={t(
-                  canOpenWorkspace
-                    ? 'hackathons.projectUnavailableMessage'
-                    : 'hackathons.unavailableMessage',
-                )}
-                loadingHeight={320}
-              />
-            </Box>
+    <WorkspaceRoot>
+      <HackathonProjectWorkspaceHeader hackathonId={id} />
+      <Box component="main" sx={{ p: 3, overflowY: 'auto' }} aria-busy={isLoading}>
+        <HackathonAsyncState
+          isLoading={isLoading}
+          error={error}
+          isEmpty={!project || !canOpenWorkspace}
+          emptyTitle={t(
+            canOpenWorkspace ? 'hackathons.projectUnavailableTitle' : 'hackathons.unavailableTitle',
           )}
-        </Box>
-      </Card>
-    </HackathonDetailLayout>
+          emptyMessage={t(
+            canOpenWorkspace
+              ? 'hackathons.projectUnavailableMessage'
+              : 'hackathons.unavailableMessage',
+          )}
+          loadingHeight={320}
+        />
+        {error ? <Button onClick={onRefresh}>{t('common.retry')}</Button> : null}
+      </Box>
+    </WorkspaceRoot>
   );
 };
 

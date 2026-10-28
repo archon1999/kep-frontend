@@ -1,8 +1,8 @@
 import { ApiBlogListParams } from 'shared/api/orval/generated/endpoints/index.schemas';
+import { BlogRepository } from '../../domain/contracts/blog.repository';
+import { BlogPost, BlogUpsertPayload } from '../../domain/entities/blog.entity';
 import { blogApiClient } from '../api/blog.client';
 import { blogMappers, mapBlogComment, mapBlogPost, mapPageResult } from '../mappers/blog.mapper';
-import { BlogRepository } from '../../domain/ports/blog.repository';
-import { BlogPost, BlogUpsertPayload } from '../../domain/entities/blog.entity';
 
 const toFormData = (payload: BlogUpsertPayload) => {
   const formData = new FormData();
@@ -45,7 +45,9 @@ const toFormData = (payload: BlogUpsertPayload) => {
 export class HttpBlogRepository implements BlogRepository {
   async list(params?: ApiBlogListParams) {
     const response = await blogApiClient.list(params);
-    return mapPageResult<BlogPost>(response, (item) => mapBlogPost({ ...item, body: item.bodyShort ?? '' } as any));
+    return mapPageResult<BlogPost>(response, (item) =>
+      mapBlogPost({ ...item, body: item.bodyShort ?? '' } as any),
+    );
   }
 
   async mine(params?: Partial<ApiBlogListParams>) {

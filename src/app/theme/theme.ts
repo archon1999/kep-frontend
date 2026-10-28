@@ -1,6 +1,6 @@
 import type {} from '@mui/lab/themeAugmentation';
 import { TypographyVariantsOptions, createTheme as muiCreateTheme } from '@mui/material';
-import * as locales from '@mui/material/locale';
+import { enUS, ruRU } from '@mui/material/locale';
 import type {} from '@mui/material/themeCssVarsAugmentation';
 import type {} from '@mui/x-data-grid/themeAugmentation';
 import { FontFamily, SupportedLocales, ThemePreset } from 'app/config.ts';
@@ -10,7 +10,6 @@ import AppBar from './components/AppBar';
 import Autocomplete from './components/Autocomplete';
 import { Avatar, AvatarGroup } from './components/Avatar';
 import Backdrop from './components/Backdrop';
-import Breadcrumbs from './components/Breadcrumbs';
 import Button, { ButtonBase } from './components/Button';
 import ButtonGroup from './components/ButtonGroup';
 import Card from './components/Card';
@@ -22,10 +21,11 @@ import Dialog from './components/Dialog';
 import Divider from './components/Divider';
 import Drawer from './components/Drawer';
 import Fab from './components/Fab';
+import IconButton from './components/IconButton';
 import ImageList, { ImageListItem } from './components/ImageList';
 import Link from './components/Link';
 import List, { ListItemButton, ListItemIcon, ListItemText } from './components/List';
-import { MenuItem } from './components/Menu';
+import { Menu, MenuItem } from './components/Menu';
 import Pagination, { PaginationItem } from './components/Pagination';
 import Paper from './components/Paper';
 import Popover from './components/Popover';
@@ -34,6 +34,7 @@ import { CircularProgress, LinearProgress } from './components/Progress';
 import Radio from './components/Radio';
 import Rating from './components/Rating';
 import Select from './components/Select';
+import Skeleton from './components/Skeleton';
 import Stack from './components/Stack';
 import Stepper, {
   Step,
@@ -56,6 +57,7 @@ import ToggleButton, { ToggleButtonGroup } from './components/ToggleButton';
 import Toolbar from './components/Toolbar';
 import Tooltip from './components/Tooltip';
 import Typography from './components/Typography';
+import PickerPopper from './components/pickers/PickerPopper';
 import DateTimePicker from './components/pickers/date-time/DateTimePicker';
 import DesktopDateTimePicker from './components/pickers/date-time/DesktopDateTimePicker';
 import MobileDateTimePicker from './components/pickers/date-time/MobileDateTimePicker';
@@ -88,10 +90,9 @@ import shadows, { darkShadows } from './shadows';
 import sxConfig from './sxConfig';
 import createTypography from './typography';
 
-export type MuiSupportedLocales = keyof typeof locales;
-
 export const getMuiLocale = (locale: SupportedLocales) => {
-  return locales[locale.split('-').join('') as MuiSupportedLocales];
+  // MUI has no Uzbek locale; preserve its default strings for Uzbek.
+  return locale === 'ru-RU' ? ruRU : enUS;
 };
 
 export interface CreateThemeOptions {
@@ -119,12 +120,14 @@ export const createTheme = ({
 
   return muiCreateTheme(
     {
+      preset,
+      shape: { borderRadius: preset === 'default' ? 8 : 4 },
       cssVariables: { colorSchemeSelector: 'data-kep-color-scheme', cssVarPrefix },
       shadows: ['none', ...shadows],
       colorSchemes: {
         light: {
           palette: applyPrimaryOverride(
-            lightPalettes[preset] ?? lightPalettes['default-light'],
+            lightPalettes[preset] ?? lightPalettes['cobalt'],
             primaryColor,
             'light',
           ),
@@ -132,25 +135,27 @@ export const createTheme = ({
         },
         dark: {
           palette: applyPrimaryOverride(
-            darkPalettes[preset] ?? darkPalettes['default-dark'],
+            darkPalettes[preset] ?? darkPalettes['cobalt'],
             primaryColor,
             'dark',
           ),
           shadows: ['none', ...Array(shadows.length).fill(darkShadows[0])],
         },
       },
-      typography: typography ?? createTypography(fontFamily, fontSize),
+      typography: typography ?? createTypography(fontFamily, fontSize, preset),
       direction,
       unstable_sxConfig: sxConfig,
       mixins,
       components: {
         MuiAppBar: AppBar,
         MuiPaper: Paper,
+        MuiSkeleton: Skeleton,
         MuiCard: Card,
         MuiDivider: Divider,
         MuiAccordion: Accordion,
         MuiAccordionSummary: AccordionSummary,
         MuiButton: Button,
+        MuiIconButton: IconButton,
         MuiFab: Fab,
         MuiToggleButton: ToggleButton,
         MuiToggleButtonGroup: ToggleButtonGroup,
@@ -169,7 +174,6 @@ export const createTheme = ({
         MuiFormControlLabel: FormControlLabel,
         MuiAutocomplete: Autocomplete,
         // ----------
-        MuiBreadcrumbs: Breadcrumbs,
         MuiSelect: Select,
         MuiDialog: Dialog,
         MuiAlert: Alert,
@@ -186,6 +190,7 @@ export const createTheme = ({
         MuiListItemIcon: ListItemIcon,
         MuiListItemText: ListItemText,
         MuiMenuItem: MenuItem,
+        MuiMenu: Menu,
         MuiToolbar: Toolbar,
         MuiTooltip: Tooltip,
         MuiTabs: Tabs,
@@ -208,6 +213,7 @@ export const createTheme = ({
         MuiBackdrop: Backdrop,
         MuiPopover: Popover,
         MuiPopper: Popper,
+        MuiPickerPopper: PickerPopper,
         MuiDrawer: Drawer,
         MuiStepper: Stepper,
         MuiStep: Step,

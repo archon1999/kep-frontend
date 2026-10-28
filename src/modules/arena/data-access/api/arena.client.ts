@@ -3,7 +3,7 @@ import {
   ArenaChallengesFilters,
   ArenaListFilters,
   ArenaPlayersFilters,
-} from '../../domain/ports/arena.repository';
+} from '../../domain/contracts/arena.repository';
 
 export const arenaApiClient = {
   list: async (filters?: ArenaListFilters) => {

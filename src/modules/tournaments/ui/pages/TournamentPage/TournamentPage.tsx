@@ -1,41 +1,29 @@
-import { Box, Grid, Skeleton, Stack } from '@mui/material';
-import { useParams } from 'react-router';
-import { useDocumentTitle } from 'app/providers/DocumentTitleProvider';
-import { useTournament } from 'modules/tournaments/application';
-import { responsivePagePaddingSx } from 'shared/lib/styles';
+import { Grid, Skeleton, Stack } from '@mui/material';
+import { useTournamentPage } from 'modules/tournaments/application/hooks/useTournamentPage';
 import PageLoader from 'shared/components/loading/PageLoader';
+import FramedPage from 'shared/components/sections/common/FramedPage';
 import TournamentBracket from './components/TournamentBracket';
 import TournamentInfoCard from './components/TournamentInfoCard';
 
 const TournamentPage = () => {
-  const { id } = useParams();
-
-  const { data: tournament, isLoading } = useTournament(id);
-  useDocumentTitle(
-    tournament?.title ? 'pageTitles.tournament' : undefined,
-    tournament?.title
-      ? {
-          tournamentTitle: tournament.title,
-        }
-      : undefined,
-  );
+  const { tournament, isLoading } = useTournamentPage();
 
   if (isLoading && !tournament) {
     return <PageLoader />;
   }
 
   return (
-    <Box sx={responsivePagePaddingSx}>
-      <Stack direction="column" spacing={3}>
+    <FramedPage>
+      <Stack direction="column" spacing={0}>
         {isLoading || !tournament ? (
           <Stack direction="column" spacing={2}>
             <Skeleton variant="rounded" height={180} />
             <Skeleton variant="rounded" height={520} />
           </Stack>
         ) : (
-          <Grid container spacing={3}>
+          <Grid container spacing={0}>
             <Grid size={{ xs: 12 }}>
-              <Stack direction="column" spacing={3}>
+              <Stack direction="column" spacing={0}>
                 <TournamentInfoCard tournament={tournament} />
               </Stack>
             </Grid>
@@ -45,7 +33,7 @@ const TournamentPage = () => {
           </Grid>
         )}
       </Stack>
-    </Box>
+    </FramedPage>
   );
 };
 

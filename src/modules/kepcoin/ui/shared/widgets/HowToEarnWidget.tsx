@@ -1,10 +1,10 @@
 import { useMemo } from 'react';
 import { useTranslation } from 'react-i18next';
 import { Link as RouterLink } from 'react-router-dom';
-import { Button, Card, CardContent, Divider, Stack, Typography } from '@mui/material';
-import { alpha } from '@mui/material/styles';
+import { Box, Button, Divider, Stack, Typography } from '@mui/material';
 import DailyTasksMenu from 'app/layouts/main-layout/common/DailyTasksMenu';
 import { resources } from 'app/routes/resources';
+import { contentInsetSx } from 'app/theme/styles/content';
 import KepcoinValue from 'shared/components/common/KepcoinValue';
 
 const actionButtonSx = {
@@ -37,7 +37,7 @@ const HowToEarnWidget = () => {
             component={RouterLink}
             to={resources.ProblemsRating}
             size="small"
-            variant="outlined"
+            variant="text"
             sx={actionButtonSx}
           >
             {t('kepcoinPage.actions.openRating')}
@@ -53,7 +53,7 @@ const HowToEarnWidget = () => {
               component={RouterLink}
               to={resources.Arena}
               size="small"
-              variant="outlined"
+              variant="text"
               sx={actionButtonSx}
             >
               {t('kepcoinPage.actions.openArena')}
@@ -62,7 +62,7 @@ const HowToEarnWidget = () => {
               component={RouterLink}
               to={resources.Contests}
               size="small"
-              variant="outlined"
+              variant="text"
               sx={actionButtonSx}
             >
               {t('kepcoinPage.actions.openContests')}
@@ -78,7 +78,7 @@ const HowToEarnWidget = () => {
             component={RouterLink}
             to={resources.BlogCreate}
             size="small"
-            variant="outlined"
+            variant="text"
             sx={actionButtonSx}
           >
             {t('kepcoinPage.actions.writeBlog')}
@@ -93,7 +93,7 @@ const HowToEarnWidget = () => {
             component={RouterLink}
             to={resources.KepcoinEarn}
             size="small"
-            variant="outlined"
+            variant="text"
             sx={actionButtonSx}
           >
             {t('kepcoinPage.actions.openOneTimeTasks')}
@@ -105,43 +105,36 @@ const HowToEarnWidget = () => {
   );
 
   return (
-    <Card
-      sx={{
-        borderRadius: 2,
-        border: (theme) => `1px solid ${alpha(theme.palette.primary.main, 0.08)}`,
-        boxShadow: 'none',
-      }}
-    >
-      <CardContent sx={{ p: { xs: 2, md: 3 } }}>
+    <Box>
+      <Box>
         <Stack direction="column" spacing={2}>
-          <Typography variant="h6" fontWeight={700}>
-            {t('kepcoinPage.howToEarn.title')}
-          </Typography>
-          <Typography variant="body2" color="text.secondary">
-            {t('kepcoinPage.howToEarn.description')}
-          </Typography>
           <Stack
             direction="column"
-            spacing={1.5}
+            spacing={2}
+            sx={contentInsetSx}
             divider={<Divider flexItem sx={{ borderColor: 'divider' }} />}
           >
             {items.map((item) => (
               <Stack
                 key={`${item.value}-${item.label}`}
-                direction={{ xs: 'column', md: 'row' }}
+                direction="column"
                 spacing={2}
-                alignItems={{ xs: 'flex-start', md: 'center' }}
+                alignItems="flex-start"
                 justifyContent="space-between"
               >
-                <Stack direction="row" spacing={2} alignItems="center" flex={1}>
+                <Stack direction="row" spacing={2} alignItems="baseline" sx={{ width: 1 }}>
                   <KepcoinValue
                     label={item.value}
                     iconSize={18}
                     spacing={0.75}
-                    textVariant="body2"
+                    textVariant="metric"
                     fontWeight={700}
                     color="text.primary"
-                    sx={{ minWidth: 120 }}
+                    sx={{
+                      minWidth: 110,
+                      whiteSpace: 'nowrap',
+                      '& .MuiTypography-root': { fontSize: 18 },
+                    }}
                   />
                   <Typography variant="body2" color="text.secondary">
                     {item.label}
@@ -153,8 +146,8 @@ const HowToEarnWidget = () => {
             ))}
           </Stack>
         </Stack>
-      </CardContent>
-    </Card>
+      </Box>
+    </Box>
   );
 };
 

@@ -2,7 +2,6 @@
   "problems": {
     "title": "Задачи",
     "title2": "Набор задач",
-    "subtitle": "Решайте задачи по программированию, тренируйтесь и отслеживайте прогресс.",
     "filterTitle": "Фильтр",
     "filters": "Фильтры",
     "appliedFilters": "Выбрано фильтров: {{count}}",
@@ -34,10 +33,8 @@
     "statusUnknown": "Не определен",
     "statusSolved": "Решено",
     "statusUnsolved": "Не решено",
-    "titleColumn": "Название",
     "attempts": {
       "title": "Попытки",
-      "subtitle": "Все отправленные решения по задачам.",
       "myAttempts": "Мои попытки",
       "onlyMy": "Только мои",
       "refresh": "Обновить",
@@ -51,7 +48,6 @@
       "anyVerdict": "Любой вердикт",
       "testCaseNumber": "Номер теста",
       "testCaseNumberOperator": "Условие",
-      "empty": "Попыток не найдено.",
       "unknownVerdict": "Неизвестный вердикт",
       "backToProblems": "Назад к задачам",
       "columns": {
@@ -69,7 +65,6 @@
       "kb": "КБ",
       "modal": {
         "title": "Попытка №{{id}}",
-        "subtitle": "Отправил {{user}}",
         "unknownUser": "Неизвестный пользователь",
         "verdict": "Вердикт",
         "time": "Время",
@@ -77,9 +72,8 @@
         "size": "Размер",
         "submitted": "Отправлено",
         "purchaseAttempt": "Купить просмотр попытки",
-        "lockedDescription": "Потратьте Kepcoin, чтобы открыть код этой попытки.",
+        "lockedDescription": "Откройте исходный код этого решения за Kepcoin.",
         "loadError": "Не удалось загрузить детали попытки.",
-        "codePlaceholder": "Код появится после открытия попытки.",
         "errorTitle": "Сообщение об ошибке",
         "judgeSummary": "Сводка по баллам",
         "score": "Балл",
@@ -98,7 +92,7 @@
         "caseProtocolLine": "Тест {{number}}:",
         "subtaskLine": "{{id}} — {{score}} / {{maxScore}}",
         "failedTestTitle": "Проваленный тест #{{number}}",
-        "failedTestDescription": "Открыть входные данные не прошедшего теста.",
+        "failedTestDescription": "Посмотрите входные данные теста, на котором это решение не прошло проверку.",
         "viewTest": "Посмотреть тест",
         "purchaseTest": "Купить просмотр теста",
         "testUnavailable": "Проваленный тест доступен только для ваших попыток.",
@@ -107,6 +101,27 @@
         "previousAttempt": "Предыдущая попытка",
         "currentAttempt": "Текущая попытка",
         "invalidAttemptId": "Введите корректный ID попытки."
+      },
+      "verdictTitles": {
+        "inQueue": "В очереди",
+        "running": "Выполняется",
+        "judgementFailed": "Ошибка проверки",
+        "accepted": "Принято",
+        "wrongAnswer": "Неверный ответ",
+        "timeLimitExceeded": "Превышено время",
+        "runtimeError": "Ошибка выполнения",
+        "outputFormatError": "Ошибка формата вывода",
+        "memoryLimitExceeded": "Превышена память",
+        "rejected": "Отклонено",
+        "compilationError": "Ошибка компиляции",
+        "commandExecutingError": "Ошибка выполнения команды",
+        "idlenessLimitExceeded": "Превышено время ожидания",
+        "syntaxError": "Синтаксическая ошибка",
+        "checkerNotFound": "Проверяющая программа не найдена",
+        "onlyPython": "Разрешён только Python",
+        "objectNotFound": "Объект не найден",
+        "partial": "Частичное решение",
+        "notAvailableLanguage": "Язык недоступен"
       }
     },
     "emptyTitle": "Задачи не найдены",
@@ -149,7 +164,6 @@
     "unsolvedCount": "{{count}} нерешено",
     "rating": {
       "title": "Рейтинг задач",
-      "subtitle": "Смотрите сильнейших решателей по уровням сложности.",
       "ordering": {
         "solved": "Решено",
         "rating": "Рейтинг"
@@ -164,7 +178,6 @@
       "total": "{{count}} пользователей",
       "score": "Рейтинг {{value}}",
       "solved": "{{value}} решено",
-      "empty": "Рейтинг пуст.",
       "periodTitle": "Лучшие решатели",
       "period": {
         "today": "Сегодня",
@@ -178,7 +191,6 @@
     "ratingHistory": {
       "title": "История рейтинга задач",
       "breadcrumb": "История",
-      "subtitle": "Победители по дням, неделям и месяцам.",
       "period": {
         "daily": "Ежедневный",
         "weekly": "Еженедельный",
@@ -258,10 +270,8 @@
       "similarProblems": "Похожие задачи",
       "codeTab": "Код",
       "partialScoring": "Частичное оценивание",
-      "partialScoringDescription": "Эта задача оценивается по подзадачам.",
       "subtasksLabel": "Подзадачи",
       "subtaskProblem": "Подзадачная задача",
-      "statisticsTitle": "Статистика задачи",
       "attemptStatistics": "Распределение вердиктов",
       "languageStatistics": "Языки решений",
       "numberAttemptsSolve": "Попытки до решения",
@@ -276,21 +286,13 @@
       "usersUnsolved": "Не решили",
       "solved": "Решено",
       "solversTab": "Решившие",
-      "solversTitle": "Список решивших",
-      "solversSubtitle": "Посмотрите, кто решил эту задачу, кто закрыл её последним и у кого самый короткий accepted-код.",
-      "dataCockpitTitle": "Data Cockpit",
-      "dataCockpitSubtitle": "Премиальная панель по динамике задачи: давление вердиктов, мета языков и лучшие accepted-решения.",
-      "statisticsSubtitle": "Более простой обзор того, где задача сложна и как пользователи доходят до accepted.",
       "successRate": "Процент успеха",
       "dominantVerdict": "Доминирующий вердикт",
       "dominantLanguage": "Доминирующий язык",
       "firstAttemptSolveRate": "Решение с первой попытки",
       "totalAttempts": "Всего попыток",
       "dataCockpitAudience": "отслеживаемых пользователей",
-      "dataCockpitVerdictSubtitle": "Как распределяются вердикты по всем записанным попыткам.",
-      "dataCockpitLanguageSubtitle": "Какие языки доминируют в трафике по этой задаче.",
-      "dataCockpitAttemptsSubtitle": "Сколько попыток решившим обычно нужно до accepted.",
-      "dataCockpitLeaderboardSubtitle": "Переключайтесь между самыми быстрыми, экономными и короткими accepted-решениями.",
+      "dataCockpitAttemptsSubtitle": "Число попыток каждого решившего участника до первого принятого решения.",
       "fastestSolver": "Самый быстрый",
       "lowestMemory": "Минимум памяти",
       "shortestCode": "Самый короткий код",
@@ -298,24 +300,27 @@
       "attemptsToSolve": "Попыток до решения",
       "noSolvers": "Решивших пока нет.",
       "quickInsights": "Короткие выводы",
-      "quickInsightsSubtitle": "Самые важные сигналы и соотношения собраны в одном месте.",
       "acceptanceShare": "Доля accepted",
       "acceptanceShareSubtitle": "{{accepted}} accepted / {{total}} попыток",
       "verdictPressure": "Давление вердиктов",
       "languageLeaderShare": "Лидер по языку",
       "submissionPressure": "Нагрузка попыток",
       "halfSolvePoint": "Точка 50% решивших",
-      "halfSolvePointSubtitle": "Половина успешных пользователей получает accepted к этой попытке.",
+      "halfSolvePointSubtitle": "50% решивших участников получили Accepted не позднее этой попытки.",
       "ninetySolvePoint": "Точка 90% решивших",
-      "ninetySolvePointSubtitle": "Большинство успешных пользователей закрывает задачу к этой попытке.",
+      "ninetySolvePointSubtitle": "90% решивших участников получили Accepted не позднее этой попытки.",
       "solverSortLatest": "Последние",
       "solverSortRating": "Рейтинг",
-      "solverSortShortestCode": "Короткий код"
+      "solverSortShortestCode": "Короткий код",
+      "targetImageUnavailable": "Образец изображения недоступен.",
+      "targetImageMissing": "Образец изображения не предоставлен.",
+      "previewLabel": "Предпросмотр",
+      "targetLabel": "Образец",
+      "missingStatementTask": "Восстановите отсутствующее условие задачи."
     },
     "resultsCount": "Задач: {{count}}",
     "statisticsPage": {
       "title": "Статистика задач",
-      "subtitle": "Ваши тренды и сильные стороны в решении задач.",
       "viewAttempts": "Мои попытки",
       "authRequired": "Войдите, чтобы увидеть статистику.",
       "noData": "Нет данных.",
@@ -348,9 +353,6 @@
       "heatmap": {
         "title": "Карта активности"
       },
-      "time": {
-        "title": "Время решения"
-      },
       "attempts": {
         "title": "Попытки до решения"
       },
@@ -375,10 +377,7 @@
     },
     "studyPlans": {
       "title": "Учебные планы",
-      "subtitle": "Готовые треки, которые превращают большой раздел задач в понятный пошаговый путь.",
       "pageTitle": "Учебные планы",
-      "pageIntroTitle": "Структурированная практика",
-      "pageIntro": "Каждый учебный план собирает задачи в последовательный трек, чтобы пользователь мог начать без лишних догадок.",
       "backToProblems": "Назад к задачам",
       "backToPlans": "Назад к учебным планам",
       "navButton": "Смотреть все",
@@ -386,8 +385,7 @@
       "purchased": "Открыт",
       "daysCount": "{{count}} дн.",
       "problemsCount": "{{count}} задач",
-      "lockedTitle": "Этот трек пока закрыт",
-      "lockedDescription": "Откройте учебный план, чтобы увидеть структуру по дням и рекомендованный порядок.",
+      "lockedDescription": "Откройте план, чтобы посмотреть список задач по дням.",
       "metaTitle": "О треке",
       "priceLabel": "Стоимость открытия",
       "purchase": "Открыть учебный план",
@@ -396,13 +394,13 @@
       "progressSubtitle": "Решено {{solved}} из {{total}} задач",
       "completed": "Завершено",
       "trackTitle": "Трек по дням",
-      "trackSubtitle": "Идите по учебному плану по порядку или переходите к дню, который подходит вашему темпу.",
+      "trackSubtitle": "Следуйте рекомендуемому порядку или выберите другой учебный день.",
       "trackLockedSubtitle": "После открытия учебного плана здесь появятся дни и список задач.",
-      "lockedProblemsNotice": "Откройте учебный план, чтобы увидеть список задач на каждый день.",
       "dayLabel": "{{day}}-й день",
       "solve": "Решать",
       "likesLabel": "{{count}} лайк",
-      "dislikesLabel": "{{count}} дизлайк"
+      "dislikesLabel": "{{count}} дизлайк",
+      "empty": "Учебных планов пока нет."
     },
     "recommendation": {
       "title": "Подобрать мне путь",
@@ -414,25 +412,18 @@
       "planSuggestion": "Сейчас вам лучше всего подходит учебный план: {{title}}.",
       "questions": {
         "persona": "Какой вариант лучше всего описывает вас сейчас?",
-        "personaSubtitle": "Новичкам задаём меньше вопросов. Если у вас уже есть практика, уточняем немного подробнее.",
-        "language": "На каком языке вы хотите практиковаться?",
-        "languageSubtitle": "Используем это, чтобы рекомендация подходила под ваш текущий рабочий язык.",
         "beginnerGoal": "Что вам нужнее всего прямо сейчас?",
         "beginnerPace": "Каким должен быть старт?",
         "interviewLevel": "Какой уровень interview-задач вам ближе?",
         "interviewTopic": "Какой паттерн стоит повторить в первую очередь?",
         "contestLevel": "Какой у вас опыт в контестах?",
-        "contestFocus": "Какой формат практики нужен следующим?",
         "contestWeakness": "Какое направление тормозит вас сильнее всего?",
         "contestFormat": "На какой формат сделать акцент?"
       },
       "personas": {
         "beginner": "Только начинаю",
-        "beginnerHint": "Короткий путь, минимум вопросов и более лёгкий старт.",
         "interview": "Решаю LeetCode / interview-задачи",
-        "interviewHint": "Практика по паттернам в умеренном темпе.",
-        "contest": "Решаю контесты / олимпиадные задачи",
-        "contestHint": "Более детальная ветка с учётом опыта и слабых мест."
+        "contest": "Решаю контесты / олимпиадные задачи"
       },
       "languages": {
         "python": "Python",
@@ -441,9 +432,7 @@
       },
       "beginnerGoals": {
         "syntax": "Синтаксис и уверенность",
-        "syntaxHint": "Больше простых задач и быстрых первых побед.",
-        "problemSolving": "База по решению задач",
-        "problemSolvingHint": "Старт с простых паттернов и чуть большей вариативности."
+        "problemSolving": "База по решению задач"
       },
       "pace": {
         "light": "Лёгкий",
@@ -482,16 +471,6 @@
         "virtual": "Виртуальные контесты",
         "hard": "Сложные одиночные задачи"
       },
-      "results": {
-        "beginnerTitle": "Выбран стартовый трек",
-        "beginnerSyntaxSubtitle": "Первые шаги будут легче, понятнее и помогут быстрее набрать уверенность.",
-        "beginnerProblemSolvingSubtitle": "Первый набор смещён не только в сторону синтаксиса, но и базовых паттернов.",
-        "interviewTitle": "Выбран трек для interview-практики",
-        "interviewSubtitle": "Вы получите easy-to-medium ladder с приоритетом на ещё не решённые задачи.",
-        "contestTitle": "Выбран трек для роста в контестах",
-        "contestSubtitle": "Следующий набор смещён к нерешённым задачам рядом с вашим текущим comfort band.",
-        "contestUpsolveSubtitle": "Следующий набор смещён к более сложным нерешённым задачам для осмысленного апсолва."
-      },
       "answerLabels": {
         "beginner": "Новичок",
         "interview": "Interview",
@@ -522,6 +501,28 @@
         "virtual": "Виртуальные контесты",
         "hard": "Сложные одиночные"
       }
+    },
+    "workspace": {
+      "editor": "Редактор кода",
+      "consoleNavigation": "Входные данные и результаты",
+      "inputPlaceholder": "Введите данные для теста…",
+      "outputPlaceholder": "Запустите код, чтобы увидеть результат.",
+      "problemNavigation": "Задачи соревнования",
+      "resizePanels": "Изменить размер панелей"
+    },
+    "tagSummary": "Категории: {{categories}} · теги: {{tags}}",
+    "emptyCatalog": "Каталог пуст",
+    "sidebar": {
+      "solved": "Решено",
+      "explore": "Подборки задач",
+      "days_one": "день",
+      "days_few": "дня",
+      "days_many": "дней",
+      "days_other": "дня",
+      "problems_one": "задача",
+      "problems_few": "задачи",
+      "problems_many": "задач",
+      "problems_other": "задачи"
     }
   }
 }

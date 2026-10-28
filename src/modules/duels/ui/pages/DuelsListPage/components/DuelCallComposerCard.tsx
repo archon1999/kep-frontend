@@ -1,14 +1,8 @@
-import {
-  Button,
-  Card,
-  CardContent,
-  Stack,
-  Typography,
-} from '@mui/material';
 import { useTranslation } from 'react-i18next';
+import { Button, Card, CardContent, Stack, Typography } from '@mui/material';
 import { alpha } from '@mui/material/styles';
-import IconifyIcon from 'shared/components/base/IconifyIcon.tsx';
 import { DuelPreset, DuelTypeInfo } from 'modules/duels/domain/index.ts';
+import IconifyIcon from 'shared/components/base/IconifyIcon.tsx';
 import DuelCallComposerForm from './DuelCallComposerForm.tsx';
 
 type Props = {
@@ -36,17 +30,16 @@ const DuelCallComposerCard = ({
 
   return (
     <Card
-      variant="outlined"
+      variant="section"
       sx={(theme) => ({
-        borderRadius: 4,
+        borderRadius: 0,
         borderColor: alpha(theme.palette.primary.main, 0.12),
-        background: `linear-gradient(180deg, ${alpha(theme.palette.primary.main, 0.04)}, ${alpha(theme.palette.background.paper, 1)})`,
       })}
     >
       <CardContent sx={{ p: { xs: 2.5, md: 3 } }}>
         <Stack spacing={2.5}>
           <Stack spacing={0.75}>
-            <Typography variant="h6" fontWeight={900}>
+            <Typography variant="h6" fontWeight={600}>
               {t('duels.createCallTitle')}
             </Typography>
             <Typography variant="body2" color="text.secondary">

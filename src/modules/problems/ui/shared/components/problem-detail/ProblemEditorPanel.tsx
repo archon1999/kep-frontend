@@ -6,15 +6,14 @@ import Editor, { useMonaco } from '@monaco-editor/react';
 import {
   Box,
   Button,
-  Card,
-  CardContent,
   LinearProgress,
   MenuItem,
   Stack,
   TextField,
+  Tooltip,
   Typography,
 } from '@mui/material';
-import { alpha, useTheme } from '@mui/material/styles';
+import { useTheme } from '@mui/material/styles';
 import useMediaQuery from '@mui/material/useMediaQuery';
 import { useAuth } from 'app/providers/AuthProvider';
 import { resources } from 'app/routes/resources';
@@ -23,15 +22,15 @@ import {
   ProblemDetail,
   ProblemSampleTest,
 } from 'modules/problems/domain/entities/problem.entity';
+import type { SampleTestResult } from 'modules/problems/domain/entities/workspace.types';
 import { detectPastedLanguage } from 'modules/problems/lib/detectPastedLanguage';
 import KepIcon from 'shared/components/base/KepIcon';
-import ResponsiveTabs from 'shared/components/common/ResponsiveTabs';
-import Textarea from 'shared/components/common/Textarea';
-import AttemptVerdict from 'shared/components/problems/AttemptVerdict';
-import { VerdictKey } from 'shared/components/problems/attemptVerdict.utils';
+import { WorkspacePane, WorkspaceToolbar } from 'shared/components/sections/common/Workspace';
+import { useMonacoTheme } from 'shared/hooks/useMonacoTheme';
 import { useLoginHref } from 'shared/lib/authRedirect';
 import { toast } from 'sonner';
 import { VerticalHandle } from './PanelHandles';
+import ProblemConsole from './ProblemConsole';
 
 const getEditorLanguage = (lang: string) =>
   ({
@@ -65,13 +64,7 @@ interface ProblemEditorPanelProps {
   isRunning: boolean;
   isSubmitting: boolean;
   isCheckingSamples: boolean;
-  checkSamplesResult: Array<{
-    verdict?: VerdictKey;
-    verdictTitle?: string;
-    input?: string;
-    output?: string;
-    answer?: string;
-  }>;
+  checkSamplesResult: SampleTestResult[];
   editorTab: 'console' | 'samples';
   onEditorTabChange: (value: 'console' | 'samples') => void;
   canUseCheckSamples: boolean;
@@ -113,6 +106,7 @@ export const ProblemEditorPanel = (props: ProblemEditorPanelProps) => {
   const { currentUser } = useAuth();
   const { t } = useTranslation();
   const theme = useTheme();
+  const codeTheme = useMonacoTheme(editorTheme);
   const isCompact = useMediaQuery(theme.breakpoints.down('sm'));
   const loginHref = useLoginHref();
   const selectedLanguageInfo = problem?.availableLanguages?.find(
@@ -142,12 +136,6 @@ export const ProblemEditorPanel = (props: ProblemEditorPanelProps) => {
     onCodeChange(editorValue);
     onLangChange(detectedLang);
   };
-
-  useEffect(() => {
-    if (monaco) {
-      monaco.editor.setTheme(editorTheme);
-    }
-  }, [monaco, editorTheme]);
 
   useEffect(() => {
     const editor = editorRef.current;
@@ -238,64 +226,37 @@ export const ProblemEditorPanel = (props: ProblemEditorPanelProps) => {
 
   if (!currentUser) {
     return (
-      <Card
-        background={0}
-        sx={{ height: '100%', display: 'flex', alignItems: 'center', justifyContent: 'center' }}
-      >
-        <Card variant="outlined" sx={{ maxWidth: 520 }}>
-          <CardContent>
-            <Typography variant="h6" gutterBottom>
-              {t('problems.detail.signInToSolve')}
-            </Typography>
-            <Typography color="text.secondary" mb={2}>
-              {t('problems.detail.signInSubtitle')}
-            </Typography>
-            <Button component={RouterLink} to={loginHref} variant="contained">
-              {t('auth.login')}
-            </Button>
-          </CardContent>
-        </Card>
-      </Card>
+      <WorkspacePane sx={{ alignItems: 'center', justifyContent: 'center', p: 4 }}>
+        <Stack spacing={2} alignItems="flex-start" sx={{ maxWidth: 360 }}>
+          <KepIcon name="problem" sx={{ fontSize: 36, color: 'primary.main' }} />
+          <Typography variant="h5">{t('problems.detail.signInToSolve')}</Typography>
+          <Typography color="text.secondary">{t('problems.detail.signInSubtitle')}</Typography>
+          <Button component={RouterLink} to={loginHref} variant="contained">
+            {t('auth.login')}
+          </Button>
+        </Stack>
+      </WorkspacePane>
     );
   }
 
   return (
-    <Card
-      background={0}
-      sx={{
-        height: '100%',
-        display: 'flex',
-        flexDirection: 'column',
-        overflow: 'hidden',
-        position: 'relative',
-        ...(mobilePlain && {
-          border: { xs: 0, md: undefined },
-          borderRadius: { xs: 0, md: undefined },
-          boxShadow: { xs: 'none', md: undefined },
-        }),
-      }}
-    >
-      {isDisabled ? (
+    <WorkspacePane component="section" aria-label={t('problems.workspace.editor')}>
+      {isDisabled && (
         <Box
           sx={{
             position: 'absolute',
             inset: 0,
             zIndex: 3,
             backdropFilter: 'blur(2px)',
-            display: 'flex',
-            alignItems: 'center',
-            justifyContent: 'center',
-            textAlign: 'center',
+            display: 'grid',
+            placeItems: 'center',
             p: 3,
           }}
         >
-          <Stack spacing={1.5} alignItems="center" maxWidth={360}>
-            <Typography variant="subtitle1" fontWeight={700}>
-              {t('contests.problem.contestFinished')}
-            </Typography>
+          <Stack spacing={2} alignItems="center" maxWidth={360}>
+            <Typography variant="h6">{t('contests.problem.contestFinished')}</Typography>
             <Button
               variant="contained"
-              color="primary"
               component={RouterLink}
               to={upsolveHref ?? resources.Problems}
             >
@@ -303,89 +264,54 @@ export const ProblemEditorPanel = (props: ProblemEditorPanelProps) => {
             </Button>
           </Stack>
         </Box>
-      ) : null}
-      <Box
-        component="header"
-        sx={{
-          flexShrink: 0,
-          px: { xs: 1.5, sm: 2 },
-          py: { xs: 1, sm: 1.5 },
-          bgcolor: 'background.paper',
-        }}
-      >
-        <Stack
-          direction="row"
-          spacing={{ xs: 1, sm: 1.5 }}
-          alignItems="center"
-          flexWrap={{ xs: 'nowrap', sm: 'wrap' }}
-          useFlexGap
-        >
-          <TextField
-            select
-            size="small"
-            variant="outlined"
-            label={t('problems.detail.language')}
-            value={selectedLang}
-            onChange={(event) => onLangChange(event.target.value)}
-            disabled={isDisabled}
-            sx={{
-              flex: { xs: '1 1 0', sm: '0 0 auto' },
-              minWidth: { xs: 0, sm: 180 },
-              '& .MuiOutlinedInput-root': { borderRadius: 2 },
-            }}
+      )}
+      <WorkspaceToolbar component="header">
+        <Stack direction="row" alignItems="center" gap={1} sx={{ mr: 'auto', minWidth: 0 }}>
+          <KepIcon name="problem" sx={{ color: 'primary.main', fontSize: 18 }} />
+          <Typography
+            variant="label"
+            component="h2"
+            sx={{ display: { xs: 'none', sm: 'block' }, whiteSpace: 'nowrap' }}
           >
-            {problem?.availableLanguages?.map((lang) => (
-              <MenuItem key={lang.lang} value={lang.lang}>
-                {lang.langFull || lang.lang}
-              </MenuItem>
-            ))}
-          </TextField>
-
-          {sampleTests.length ? (
-            <TextField
-              select
-              size="small"
-              variant="outlined"
-              label={t('problems.detail.sample')}
-              value={selectedSampleIndex}
-              onChange={(event) => onSampleChange(Number(event.target.value))}
-              disabled={isDisabled}
-              sx={{
-                flex: { xs: '1 1 0', sm: '0 0 auto' },
-                minWidth: { xs: 0, sm: 140 },
-                '& .MuiOutlinedInput-root': { borderRadius: 2 },
-              }}
-            >
-              {sampleTests.map((_, index) => (
-                <MenuItem key={index} value={index}>
-                  #{index + 1}
-                </MenuItem>
-              ))}
-            </TextField>
-          ) : null}
-
+            {t('problems.workspace.editor')}
+          </Typography>
+        </Stack>
+        <TextField
+          select
+          size="small"
+          variant="outlined"
+          value={selectedLang}
+          onChange={(event) => onLangChange(event.target.value)}
+          disabled={isDisabled}
+          slotProps={{
+            select: {
+              inputProps: { 'aria-label': t('problems.detail.language') },
+              MenuProps: { slotProps: { paper: { variant: 'framed' } } },
+            },
+          }}
+          sx={{
+            minWidth: 140,
+            maxWidth: 230,
+            '& .MuiInputBase-root': { height: 36 },
+            '& .MuiSelect-select': { py: 0.5, fontSize: 13 },
+          }}
+        >
+          {problem?.availableLanguages?.map((lang) => (
+            <MenuItem key={lang.lang} value={lang.lang}>
+              {lang.langFull || lang.lang}
+            </MenuItem>
+          ))}
+        </TextField>
+        <Tooltip title={t('problems.detail.uploadFile')}>
           <Button
             component="label"
             variant="text"
             size="small"
-            startIcon={<KepIcon name="upload" width={18} height={18} />}
+            aria-label={t('problems.detail.uploadFile')}
             disabled={isDisabled}
-            sx={{
-              flex: { xs: '0 0 38px', sm: '0 0 auto' },
-              minWidth: { xs: 38, sm: 64 },
-              width: { xs: 38, sm: 'auto' },
-              minHeight: { xs: 38, sm: 'auto' },
-              px: { xs: 0, sm: 1 },
-              borderRadius: 2,
-              '& .MuiButton-startIcon': {
-                m: { xs: 0 },
-                mr: { sm: 0.75 },
-              },
-            }}
+            sx={{ minWidth: 36, width: 36, height: 36, p: 0 }}
           >
-            <Box component="span" sx={{ display: { xs: 'none', sm: 'inline' } }}>
-              {t('problems.detail.uploadFile')}
-            </Box>
+            <KepIcon name="upload" width={18} height={18} />
             <input
               hidden
               type="file"
@@ -395,40 +321,12 @@ export const ProblemEditorPanel = (props: ProblemEditorPanelProps) => {
               disabled={isDisabled}
             />
           </Button>
-        </Stack>
-      </Box>
-
-      <Box sx={{ flex: 1, minHeight: 0, overflow: 'hidden', px: { xs: 1, sm: 2 } }}>
+        </Tooltip>
+      </WorkspaceToolbar>
+      <Box sx={{ flex: 1, minHeight: 0, overflow: 'hidden' }}>
         <PanelGroup direction="vertical" style={{ height: '100%' }}>
-          <Panel defaultSize={isCompact ? 68 : 45} minSize={isCompact ? 45 : 25}>
-            <Box
-              sx={{
-                height: '100%',
-                border: mobilePlain ? { xs: 0, md: '1px solid' } : '1px solid',
-                borderColor: 'divider',
-                borderRadius: mobilePlain ? { xs: 0, md: 2 } : 2,
-                overflow: 'hidden',
-                position: 'relative',
-                background: (theme) =>
-                  theme.palette.mode === 'dark'
-                    ? `linear-gradient(140deg, ${alpha(theme.palette.primary.light, 0.26)}, ${alpha(
-                        theme.palette.background.default,
-                        0.24,
-                      )})`
-                    : `linear-gradient(140deg, ${alpha(theme.palette.primary.light, 0.07)}, ${alpha(
-                        theme.palette.background.paper,
-                        0.06,
-                      )})`,
-                ...(mobilePlain && {
-                  backgroundImage: { xs: 'none', md: undefined },
-                  bgcolor: { xs: 'background.paper', md: undefined },
-                }),
-                boxShadow: mobilePlain ? { xs: 'none', md: 2 } : (theme) => theme.shadows[2],
-                '& .monaco-editor, & .monaco-editor-background, & .margin': {
-                  backgroundColor: 'transparent !important',
-                },
-              }}
-            >
+          <Panel defaultSize={68} minSize={30}>
+            <Box sx={{ height: '100%', overflow: 'hidden', bgcolor: 'background.paper' }}>
               <Editor
                 language={getEditorLanguage(selectedLang)}
                 defaultValue={initialCode}
@@ -438,7 +336,7 @@ export const ProblemEditorPanel = (props: ProblemEditorPanelProps) => {
                 }}
                 onChange={(value) => {
                   if (isDisabled || typeof value !== 'string') return;
-                  onCodeChange(value ?? '');
+                  onCodeChange(value);
                   if (pendingPastedTextRef.current !== null) {
                     window.setTimeout(() => {
                       detectAndApplyPastedLanguage(value, pendingPastedTextRef.current);
@@ -451,251 +349,72 @@ export const ProblemEditorPanel = (props: ProblemEditorPanelProps) => {
                   fontSize: isCompact ? 13 : 14,
                   fontLigatures: true,
                   smoothScrolling: true,
-                  roundedSelection: true,
+                  roundedSelection: false,
                   wordWrap: isCompact ? 'on' : 'off',
                   scrollBeyondLastLine: false,
-                  lineHeight: isCompact ? 20 : 22,
-                  lineNumbersMinChars: isCompact ? 3 : 5,
-                  padding: { top: isCompact ? 8 : 0, bottom: isCompact ? 8 : 0 },
+                  lineHeight: 23,
+                  lineNumbersMinChars: isCompact ? 3 : 4,
+                  padding: { top: 18, bottom: 18 },
                   automaticLayout: true,
                   renderLineHighlight: 'all',
-                  scrollbar: {
-                    verticalScrollbarSize: isCompact ? 10 : 12,
-                    horizontalScrollbarSize: isCompact ? 10 : 12,
-                  },
-                  guides: {
-                    indentation: true,
-                    highlightActiveIndentation: true,
-                  },
+                  ariaLabel: t('problems.workspace.editor'),
+                  scrollbar: { verticalScrollbarSize: 8, horizontalScrollbarSize: 8 },
+                  guides: { indentation: true, highlightActiveIndentation: true },
                   readOnly: isDisabled,
                 }}
-                theme={editorTheme}
+                theme={codeTheme.theme}
+                beforeMount={codeTheme.beforeMount}
                 loading={<LinearProgress />}
                 height="100%"
               />
             </Box>
           </Panel>
-
           <VerticalHandle />
-
-          <Panel defaultSize={isCompact ? 32 : 55} minSize={isCompact ? 20 : 25}>
-            <Box
-              sx={{
-                height: '100%',
-                display: 'flex',
-                flexDirection: 'column',
-                border: mobilePlain ? { xs: 0, md: '1px solid' } : '1px solid',
-                borderColor: 'divider',
-                borderRadius: mobilePlain ? { xs: 0, md: 2 } : 2,
-                bgcolor: mobilePlain
-                  ? { xs: 'background.paper', md: 'transparent' }
-                  : (theme) => alpha(theme.palette.background.paper, 0.1),
-                boxShadow: mobilePlain ? { xs: 'none', md: 1 } : (theme) => theme.shadows[1],
-              }}
-            >
-              <Box sx={mobilePlain ? undefined : { display: { xs: 'none', sm: 'block' } }}>
-                <ResponsiveTabs
-                  value={editorTab}
-                  onChange={(value) => {
-                    if (isDisabled) return;
-                    onEditorTabChange(value);
-                  }}
-                  items={[
-                    {
-                      value: 'console',
-                      label: t('problems.detail.console'),
-                      disabled: isDisabled,
-                    },
-                    ...(showSampleResultsTab
-                      ? [
-                          {
-                            value: 'samples' as const,
-                            label: t('problems.detail.samplesResult'),
-                            disabled: isDisabled,
-                          },
-                        ]
-                      : []),
-                  ]}
-                  ariaLabel="editor output tabs"
-                  tabsProps={{
-                    variant: 'fullWidth',
-                    textColor: 'primary',
-                    indicatorColor: 'primary',
-                    sx: {
-                      px: 1,
-                      borderBottom: mobilePlain ? { xs: 0, md: '1px solid' } : '1px solid',
-                      borderColor: 'divider',
-                      '& .MuiTab-root': {
-                        minHeight: mobilePlain ? { xs: 40, sm: 0 } : 0,
-                        fontWeight: 600,
-                      },
-                    },
-                  }}
-                />
-              </Box>
-
-              <Box
-                sx={{
-                  p: { xs: 1, sm: 1.25 },
-                  flex: 1,
-                  overflow: 'auto',
-                }}
-              >
-                {!showSampleResultsTab || editorTab === 'console' ? (
-                  <Stack direction="column" spacing={1.5}>
-                    <Textarea
-                      minRows={3}
-                      label={t('problems.detail.customInput')}
-                      value={input}
-                      onChange={(event) => onInputChange(event.target.value)}
-                      disabled={isDisabled}
-                    />
-                    <Stack direction={{ xs: 'column', md: 'row' }} spacing={1.5}>
-                      <Textarea
-                        label={t('problems.detail.yourOutput')}
-                        minRows={4}
-                        value={output}
-                        InputProps={{ readOnly: true }}
-                      />
-                      <Textarea
-                        label={t('problems.detail.answer')}
-                        minRows={4}
-                        value={answer}
-                        InputProps={{ readOnly: true }}
-                      />
-                    </Stack>
-                  </Stack>
-                ) : (
-                  <Stack direction="column" spacing={1}>
-                    {checkSamplesResult.length === 0 ? (
-                      <Typography color="text.secondary">
-                        {t('problems.detail.noSamplesResult')}
-                      </Typography>
-                    ) : (
-                      checkSamplesResult.map((result, index) => (
-                        <Card key={index} variant="outlined">
-                          <CardContent>
-                            <Stack
-                              direction="row"
-                              alignItems="center"
-                              justifyContent="space-between"
-                            >
-                              <Typography variant="subtitle2">#{index + 1}</Typography>
-                              {result.verdict != null ? (
-                                <AttemptVerdict
-                                  verdict={result.verdict}
-                                  title={result.verdictTitle ?? t('problems.detail.samplesResult')}
-                                />
-                              ) : null}
-                            </Stack>
-                            {result.input ? (
-                              <Box mt={1}>
-                                <Typography variant="caption" color="text.secondary">
-                                  {t('problems.detail.customInput')}
-                                </Typography>
-                                <Typography
-                                  sx={{
-                                    fontFamily: 'monospace',
-                                    whiteSpace: 'pre-wrap',
-                                    p: 1,
-                                    borderRadius: 1,
-                                    bgcolor: 'background.paper',
-                                    border: '1px solid',
-                                    borderColor: 'divider',
-                                  }}
-                                >
-                                  {result.input}
-                                </Typography>
-                              </Box>
-                            ) : null}
-                            {result.output ? (
-                              <Box mt={1}>
-                                <Typography variant="caption" color="text.secondary">
-                                  {t('problems.detail.yourOutput')}
-                                </Typography>
-                                <Typography
-                                  sx={{
-                                    fontFamily: 'monospace',
-                                    whiteSpace: 'pre-wrap',
-                                    p: 1,
-                                    borderRadius: 1,
-                                    bgcolor: 'background.paper',
-                                    border: '1px solid',
-                                    borderColor: 'divider',
-                                  }}
-                                >
-                                  {result.output}
-                                </Typography>
-                              </Box>
-                            ) : null}
-                            {result.answer ? (
-                              <Box mt={1}>
-                                <Typography variant="caption" color="text.secondary">
-                                  {t('problems.detail.answer')}
-                                </Typography>
-                                <Typography
-                                  sx={{
-                                    fontFamily: 'monospace',
-                                    whiteSpace: 'pre-wrap',
-                                    p: 1,
-                                    borderRadius: 1,
-                                    bgcolor: 'background.paper',
-                                    border: '1px solid',
-                                    borderColor: 'divider',
-                                  }}
-                                >
-                                  {result.answer}
-                                </Typography>
-                              </Box>
-                            ) : null}
-                          </CardContent>
-                        </Card>
-                      ))
-                    )}
-                  </Stack>
-                )}
-              </Box>
-            </Box>
+          <Panel defaultSize={32} minSize={20}>
+            <ProblemConsole
+              input={input}
+              output={output}
+              answer={answer}
+              onInputChange={onInputChange}
+              sampleCount={sampleTests.length}
+              selectedSampleIndex={selectedSampleIndex}
+              onSampleChange={onSampleChange}
+              editorTab={editorTab}
+              onEditorTabChange={onEditorTabChange}
+              showSampleResultsTab={showSampleResultsTab}
+              isDisabled={isDisabled}
+              checkSamplesResult={checkSamplesResult}
+            />
           </Panel>
         </PanelGroup>
       </Box>
-
-      <Box
+      <Stack
         component="footer"
+        direction="row"
+        alignItems="center"
+        justifyContent="space-between"
+        gap={1}
         sx={{
-          display: { xs: 'none', sm: 'block' },
           flexShrink: 0,
-          px: { xs: 1.5, sm: 3 },
-          py: { xs: 1, sm: 1.25 },
-          borderTop: '1px solid',
+          px: 2.5,
+          py: 0.75,
+          borderTop: 1,
           borderColor: 'divider',
-          bgcolor: 'background.paper',
+          display: { xs: mobilePlain ? 'none' : 'flex', sm: 'flex' },
         }}
       >
-        <Stack
-          direction={{ xs: 'column', md: 'row' }}
-          spacing={1}
-          justifyContent="space-between"
-          sx={{ minWidth: 0 }}
-        >
+        <Typography variant="caption" color="text.secondary">
+          {selectedLanguageInfo?.langFull || selectedLang}
+        </Typography>
+        <Stack direction="row" gap={2}>
           <Typography variant="caption" color="text.secondary">
-            {t('problems.detail.language')}:{' '}
-            {selectedLanguageInfo?.langFull || selectedLanguageInfo?.lang || '--'}
+            {selectedLanguageInfo?.timeLimit ?? problem?.timeLimit ?? '--'} ms
           </Typography>
-          {selectedLanguageInfo ? (
-            <Stack direction="row" spacing={1.5} flexWrap="wrap" useFlexGap>
-              <Typography variant="caption" color="text.secondary">
-                {t('problems.detail.timeLimit')}:{' '}
-                {selectedLanguageInfo.timeLimit ?? problem?.timeLimit ?? '--'} ms
-              </Typography>
-              <Typography variant="caption" color="text.secondary">
-                {t('problems.detail.memoryLimit')}:{' '}
-                {selectedLanguageInfo.memoryLimit ?? problem?.memoryLimit ?? '--'} MB
-              </Typography>
-            </Stack>
-          ) : null}
+          <Typography variant="caption" color="text.secondary">
+            {selectedLanguageInfo?.memoryLimit ?? problem?.memoryLimit ?? '--'} MB
+          </Typography>
         </Stack>
-      </Box>
-    </Card>
+      </Stack>
+    </WorkspacePane>
   );
 };

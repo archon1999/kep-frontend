@@ -1,91 +1,74 @@
-import { Box, Divider, Paper, Skeleton, Stack } from '@mui/material';
+import { Box, Skeleton, Stack } from '@mui/material';
 
 const TestDetailSkeleton = () => (
   <Box
-    role="status"
     sx={{
       display: 'grid',
-      gridTemplateColumns: {
-        xs: 'minmax(0, 1fr)',
-        md: 'minmax(0, 1fr) 280px',
-        lg: 'minmax(0, 1fr) 300px',
-      },
-      gridTemplateAreas: {
-        xs: '"header" "start" "results"',
-        md: '"header start" "results start"',
-      },
-      columnGap: { md: 3, lg: 4 },
-      rowGap: 3,
+      gridTemplateColumns: { xs: 'minmax(0,1fr)', md: 'minmax(0,1fr) 320px' },
+      gridTemplateAreas: { xs: '"header" "start" "results"', md: '"header start" "results start"' },
       alignItems: 'start',
     }}
   >
-    <Stack gap={2} sx={{ gridArea: 'header' }} aria-hidden="true">
-      <Stack direction="row" gap={1.25} alignItems="center">
-        <Skeleton variant="rounded" width={32} height={32} />
-        <Skeleton width={160} height={22} />
-      </Stack>
-      <Skeleton width="75%" height={34} />
-      <Stack direction="row" gap={2} alignItems="center" flexWrap="wrap">
-        <Skeleton variant="rounded" width={52} height={24} />
-        <Skeleton width={68} height={18} />
-        <Skeleton width={64} height={18} />
-        <Skeleton width={88} height={18} />
-      </Stack>
-      <Skeleton width="95%" height={22} />
-      <Stack direction="row" gap={1}>
-        <Skeleton variant="rounded" width={140} height={24} />
-      </Stack>
-    </Stack>
-    <Paper
-      elevation={0}
-      aria-hidden="true"
-      sx={{ gridArea: 'start', p: 2.5, borderRadius: 4, bgcolor: 'background.elevation1' }}
+    <Stack
+      gap={3}
+      sx={{
+        gridArea: 'header',
+        p: 'var(--kep-content-inset)',
+        borderBottom: '1px solid var(--kep-line)',
+      }}
     >
-      <Skeleton width={128} height={22} sx={{ mb: 2 }} />
-      <Skeleton width={84} height={32} />
-      <Skeleton width={108} height={18} sx={{ mt: 0.5 }} />
-      <Skeleton variant="rounded" height={4} sx={{ mt: 1.5 }} />
-      <Stack direction="row" justifyContent="space-between" gap={1.5} sx={{ mt: 2 }}>
-        <Skeleton width={80} height={18} />
-        <Skeleton width={92} height={18} />
+      <Stack direction="row" gap={1.5} alignItems="center">
+        <Skeleton variant="rectangular" width={36} height={36} />
+        <Skeleton width={180} height={30} />
       </Stack>
-      <Divider sx={{ my: 2.5 }} />
-      <Stack direction="row" justifyContent="space-between" sx={{ mb: 2 }}>
-        <Skeleton width={40} height={22} />
-        <Skeleton width={34} height={22} />
+      <Stack direction="row" gap={3}>
+        {[0, 1, 2].map((i) => (
+          <Skeleton key={i} width="25%" height={70} />
+        ))}
       </Stack>
-      <Skeleton variant="rounded" sx={{ height: { xs: 44, md: 36 } }} />
-    </Paper>
-    <Box sx={{ gridArea: 'results', minWidth: 0 }} aria-hidden="true">
-      <Stack direction="row" gap={3} sx={{ borderBottom: 1, borderColor: 'divider', mb: 2 }}>
-        <Skeleton width={132} height={48} />
-        <Skeleton width={124} height={48} />
+      <Skeleton width="85%" height={54} />
+    </Stack>
+    <Stack
+      gap={3}
+      sx={{
+        gridArea: 'start',
+        alignSelf: 'stretch',
+        p: 'var(--kep-content-inset)',
+        borderInlineStart: { md: '1px solid var(--kep-line)' },
+        borderBottom: { xs: '1px solid var(--kep-line)', md: 0 },
+      }}
+    >
+      <Skeleton width="80%" height={32} />
+      <Skeleton width={130} height={60} />
+      <Skeleton variant="rectangular" height={3} />
+      <Skeleton width="60%" height={44} />
+      <Skeleton variant="rounded" height={38} />
+    </Stack>
+    <Box sx={{ gridArea: 'results', minWidth: 0 }}>
+      <Stack direction="row" gap={2} sx={{ px: 'var(--kep-content-inset)', py: 2 }}>
+        <Skeleton width={120} height={30} />
+        <Skeleton width={120} height={30} />
       </Stack>
-      <Stack
-        direction="row"
-        alignItems="center"
-        gap={2}
-        sx={{ height: 48, borderBottom: 1, borderColor: 'divider' }}
-      >
-        <Skeleton width={40} height={18} />
-        <Skeleton width={100} height={18} />
-        <Skeleton width={44} height={18} sx={{ ml: 'auto' }} />
-      </Stack>
-      {Array.from({ length: 4 }, (_, index) => (
+      <Skeleton variant="rectangular" height={48} />
+      {Array.from({ length: 5 }, (_, index) => (
         <Stack
           key={index}
           direction="row"
-          alignItems="center"
           gap={2}
-          sx={{ height: 56, borderBottom: index < 3 ? 1 : 0, borderColor: 'divider' }}
+          alignItems="center"
+          sx={{
+            px: 'var(--kep-content-inset)',
+            minHeight: 68,
+            borderBottom: '1px solid var(--kep-line)',
+          }}
         >
-          <Skeleton width={40} height={18} />
-          <Skeleton width={120} height={22} />
-          <Skeleton width={56} height={22} sx={{ ml: 'auto' }} />
+          <Skeleton width={24} height={24} />
+          <Skeleton variant="circular" width={28} height={28} />
+          <Skeleton width="35%" height={24} />
+          <Skeleton width={54} height={28} sx={{ ml: 'auto' }} />
         </Stack>
       ))}
     </Box>
   </Box>
 );
-
 export default TestDetailSkeleton;

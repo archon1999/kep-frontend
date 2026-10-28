@@ -3,6 +3,8 @@ import { Link as RouterLink } from 'react-router-dom';
 import { Box, Divider, Grid, IconButton, Paper, Stack, Tooltip, Typography } from '@mui/material';
 import { normalizeSupportedLocale } from 'app/locales/locale';
 import { getResourceById, resources } from 'app/routes/resources';
+import { statisticsHeadingSx } from 'app/theme/styles/statistics';
+import { statisticsInset, statisticsPanelSx } from 'app/theme/styles/statistics';
 import type {
   ChallengeStatisticsMatchRecord,
   ChallengeStatisticsRatingRecord,
@@ -11,7 +13,6 @@ import type {
 import IconifyIcon from 'shared/components/base/IconifyIcon';
 import { formatDateTime } from 'shared/lib/dateTime';
 import { createNumberFormatter } from 'shared/lib/numberFormat';
-import { statisticsInset, statisticsPanelSx } from './statisticsStyles';
 
 const panelSx = { p: statisticsInset, minWidth: 0 };
 type RecordEntry = ChallengeStatisticsRatingRecord | ChallengeStatisticsMatchRecord;
@@ -46,7 +47,7 @@ const StatisticsRecords = ({ statistics }: { statistics: ChallengeUserStatistics
     <Grid container spacing={0} component="section" sx={{ height: 1 }}>
       <Grid size={12}>
         <Paper sx={[statisticsPanelSx, panelSx]}>
-          <Typography component="h2" variant="h6" sx={{ mb: 3 }}>
+          <Typography component="h2" variant="h6" sx={[statisticsHeadingSx, { mb: 3 }]}>
             {t('challenges.statisticsPage.details.records')}
           </Typography>
           <Stack divider={<Divider />}>
@@ -117,7 +118,7 @@ const StatisticsRecords = ({ statistics }: { statistics: ChallengeUserStatistics
       </Grid>
       <Grid size={12}>
         <Paper sx={[statisticsPanelSx, panelSx]}>
-          <Typography component="h2" variant="h6" sx={{ mb: 3 }}>
+          <Typography component="h2" variant="h6" sx={[statisticsHeadingSx, { mb: 3 }]}>
             {t('challenges.statisticsPage.records.streaks')}
           </Typography>
           <Box

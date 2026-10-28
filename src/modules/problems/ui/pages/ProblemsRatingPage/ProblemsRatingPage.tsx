@@ -1,114 +1,30 @@
 import { useMemo } from 'react';
 import { useTranslation } from 'react-i18next';
 import { Link as RouterLink } from 'react-router-dom';
-import {
-  Button,
-  LinearProgress,
-  Stack,
-} from '@mui/material';
-import { GridSortModel } from '@mui/x-data-grid';
-import { useAuth } from 'app/providers/AuthProvider';
+import { Button, LinearProgress, Stack } from '@mui/material';
 import { resources } from 'app/routes/resources';
-import KepIcon from 'shared/components/base/KepIcon';
-import PageHeader from 'shared/components/sections/common/PageHeader';
-import useGridPagination from 'shared/hooks/useGridPagination';
-import { mergePinnedRows } from 'shared/lib/pinnedRows';
-import useRouteQueryState from 'shared/hooks/useRouteQueryState';
-import { stringParam } from 'shared/lib/queryParams';
-import { responsivePagePaddingSx } from 'shared/lib/styles';
-import { useProblemsRating } from 'modules/problems/application/queries';
+import { useProblemsRatingPage } from 'modules/problems/application/hooks/useProblemsRatingPage';
 import { difficultyOptions } from 'modules/problems/config/difficulty';
 import ProblemsRatingDataGrid from 'modules/problems/ui/shared/components/ProblemsRatingDataGrid';
+import KepIcon from 'shared/components/base/KepIcon';
+import FramedPage from 'shared/components/sections/common/FramedPage';
+import PageHeader from 'shared/components/sections/common/PageHeader';
 import ProblemsRatingPagePeriodRatings from './ProblemsRatingPagePeriodRatings.tsx';
 
-const sortFieldMap: Record<string, string> = {
-  rating: 'rating',
-  solved: 'solved',
-  beginner: 'beginner',
-  basic: 'basic',
-  normal: 'normal',
-  medium: 'medium',
-  advanced: 'advanced',
-  hard: 'hard',
-  extremal: 'extremal',
-};
-
-const orderingFieldMap = Object.fromEntries(
-  Object.entries(sortFieldMap).map(([field, ordering]) => [ordering, field]),
-) as Record<string, string>;
-
 const ProblemsRatingPage = () => {
-  const { t } = useTranslation();
-  const { currentUser } = useAuth();
-
   const {
+    currentUser,
     paginationModel,
     onPaginationModelChange,
-    pageParams: { page, pageSize },
-  } = useGridPagination({
-    querySync: {
-      pageKey: 'page',
-      pageSizeKey: 'pageSize',
-    },
-  });
-  const { state, setField } = useRouteQueryState({
-    defaults: {
-      ordering: '-rating',
-    },
-    schema: {
-      ordering: {
-        ...stringParam(),
-        param: 'ordering',
-      },
-    },
-  });
-
-  const sortModel = useMemo<GridSortModel>(() => {
-    const normalizedOrdering = state.ordering || '-rating';
-    const isDescending = normalizedOrdering.startsWith('-');
-    const orderingField = isDescending ? normalizedOrdering.slice(1) : normalizedOrdering;
-    const field = orderingFieldMap[orderingField] ?? 'rating';
-
-    return [{ field, sort: isDescending ? 'desc' : 'asc' }];
-  }, [state.ordering]);
-
-  const ordering = state.ordering || '-rating';
-
-  const {
-    data: ratingPage,
     isLoading,
     isValidating,
-  } = useProblemsRating({
-    ordering,
-    page,
-    pageSize,
-    pinCurrentUser: Boolean(currentUser?.username),
-  });
+    sortModel,
+    rows,
+    rowCount,
+    handleSortModelChange,
+  } = useProblemsRatingPage();
 
-  const rows = useMemo(
-    () =>
-      mergePinnedRows(
-        ratingPage?.data ?? [],
-        ratingPage?.pinnedRows,
-        (row) => row.user.username,
-      ),
-    [ratingPage?.data, ratingPage?.pinnedRows],
-  );
-  const rowCount = ratingPage?.total ?? 0;
-
-  const handleSortModelChange = (model: GridSortModel) => {
-    const currentSort = model[0];
-
-    if (!currentSort) {
-      setField('ordering', '-rating');
-      return;
-    }
-
-    const orderingField = sortFieldMap[currentSort.field] ?? currentSort.field;
-    const orderingPrefix = currentSort.sort === 'desc' ? '-' : '';
-
-    setField('ordering', `${orderingPrefix}${orderingField}`);
-  };
+  const { t } = useTranslation();
 
   const labels = useMemo(
     () => ({
@@ -125,13 +41,10 @@ const ProblemsRatingPage = () => {
   );
 
   return (
-    <Stack direction="column">
+    <FramedPage>
       <PageHeader
         title={t('problems.rating.title')}
-        breadcrumb={[
-          { label: t('problems.title'), url: resources.Problems },
-          { label: t('problems.rating.ordering.rating'), active: true },
-        ]}
+        backTo={resources.Problems}
         actionComponent={
           <Button
             component={RouterLink}
@@ -145,7 +58,7 @@ const ProblemsRatingPage = () => {
       />
 
       {isLoading || isValidating ? <LinearProgress /> : null}
-      <Stack direction="column" spacing={2} sx={responsivePagePaddingSx}>
+      <Stack direction="column" spacing={2} sx={{ minWidth: 0 }}>
         <ProblemsRatingDataGrid
           rows={rows}
           rowCount={rowCount}
@@ -160,7 +73,7 @@ const ProblemsRatingPage = () => {
 
         <ProblemsRatingPagePeriodRatings />
       </Stack>
-    </Stack>
+    </FramedPage>
   );
 };
 

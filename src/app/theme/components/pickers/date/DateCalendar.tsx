@@ -34,7 +34,8 @@ const DateCalendar: Components<Omit<Theme, 'components'>>['MuiDateCalendar'] = {
       calendarHeader: (props) => {
         const { currentMonth, onMonthChange, onViewChange, view } = props;
 
-        const selectNextMonth = () => onMonthChange(addDateTime(currentMonth, 1, 'month') ?? currentMonth);
+        const selectNextMonth = () =>
+          onMonthChange(addDateTime(currentMonth, 1, 'month') ?? currentMonth);
         const selectPreviousMonth = () =>
           onMonthChange(subtractDateTime(currentMonth, 1, 'month') ?? currentMonth);
         const toggleYearView = () => {
@@ -45,7 +46,10 @@ const DateCalendar: Components<Omit<Theme, 'components'>>['MuiDateCalendar'] = {
         };
 
         return (
-          <Stack direction="row" sx={{ justifyContent: 'space-between', alignItems: 'center', mb: 2 }}>
+          <Stack
+            direction="row"
+            sx={{ justifyContent: 'space-between', alignItems: 'center', mb: 2 }}
+          >
             <Button shape="square" color="neutral" onClick={selectPreviousMonth}>
               <IconifyIcon icon="material-symbols:chevron-left-rounded" sx={{ fontSize: 20 }} />
             </Button>
@@ -72,8 +76,9 @@ const DateCalendar: Components<Omit<Theme, 'components'>>['MuiDateCalendar'] = {
           sx={(theme) => ({
             height: 40,
             width: 40,
+            maxWidth: '14.2857%',
             borderRadius: theme.spacing(0.5),
-            flexShrink: 0,
+            flexShrink: 1,
             margin: 0,
             fontSize: theme.typography.body1.fontSize,
 
@@ -91,6 +96,8 @@ const DateCalendar: Components<Omit<Theme, 'components'>>['MuiDateCalendar'] = {
     root: ({ theme }) => ({
       padding: theme.spacing(3),
       width: 352,
+      maxWidth: '100%',
+      [theme.breakpoints.down('sm')]: { padding: theme.spacing(1.5) },
       maxHeight: 'max-content',
       height: 'max-content',
 
@@ -102,7 +109,7 @@ const DateCalendar: Components<Omit<Theme, 'components'>>['MuiDateCalendar'] = {
         [`& .${dayCalendarClasses.header}`]: {
           marginBottom: theme.spacing(2),
           background: theme.vars.palette.background.elevation2,
-          borderRadius: theme.spacing(1),
+          borderRadius: theme.preset === 'default' ? 0 : theme.spacing(1),
           justifyContent: 'space-between',
 
           [`& .${dayCalendarClasses.weekDayLabel}`]: {

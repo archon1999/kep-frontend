@@ -1,11 +1,44 @@
 {
   "homePage": {
+    "landingHeader": {
+      "navigation": "KEP bilan tanishing",
+      "platform": "Platforma",
+      "howItWorks": "Qanday ishlaydi",
+      "community": "Hamjamiyat",
+      "faq": "Savollar",
+      "closeMenu": "Menyuni yopish"
+    },
+    "dashboard": {
+      "calendar": "Taqvimni ochish",
+      "loading": "Bosh sahifa yuklanmoqda",
+      "welcome": "Xush kelibsiz, {{name}}.",
+      "description": "So‘nggi faoliyatingiz, yaqinlashayotgan musobaqalar va hamjamiyat yangiliklari.",
+      "rank": "#{{rank}}-o‘rin",
+      "unranked": "Hali reyting yo‘q",
+      "myAttempts": "Urinishlarim",
+      "shortcuts": "Tezkor havolalar",
+      "personal": "Faolligingiz va hamjamiyat",
+      "community": "Hamjamiyat faolligi",
+      "events": "Hozir platformada",
+      "news": "Hamjamiyat yangiliklari",
+      "shortcutsDescription": {
+        "projects": "Loyiha tuzing va fayllarini tekshiruvga yuboring.",
+        "recommend": "Darajangizga mos masalalar va o‘quv rejasini toping.",
+        "challenges": "Vaqtli savollarda boshqa ishtirokchi bilan bellashing."
+      },
+      "allActivity": "Barchasi",
+      "calendarHint": "Yaqinlashayotgan contest, arena va turnirlarni ko‘ring.",
+      "shortcutsTitle": {
+        "projects": "Loyihalar",
+        "recommend": "Menga tavsiya",
+        "challenges": "Bellashuvlar"
+      }
+    },
     "greeting": {
       "defaultName": "Mehmon",
       "goodMorning": "Xush kelibsiz, {{name}}!",
-      "loginPrompt": "Kiring va sayohatingizni davom ettiring.",
+      "loginPrompt": "Faoliyat va natijalaringizni ko‘rish uchun hisobga kiring.",
       "loginCta": "Kirish",
-      "subtitle": "Kecha boʻlgan yangiliklar.",
       "ordersCount": "Bugun sizda {{count}} ta buyurtma bor.",
       "stats": {
         "visitors": "Tashrif buyuruvchilar",
@@ -27,16 +60,15 @@
         "challenges": "Bellashuvlar"
       },
       "info": {
-        "skillsRating": "Bu reyting platformadagi koʻnikmalaringiz kuchini koʻrsatadi. Reyting yechilgan masalalar soni, kontestlar va bellashuvlar reytingiga bogʻliq.",
-        "activityRating": "Bu reyting soʻnggi 30 kun ichidagi faolligingizni koʻrsatadi. U toʻplangan kepcoinlar, har kuni tizimga kirish va bajarilgan kundalik vazifalarga bogʻliq.",
-        "contests": "Bu reyting kontestlardagi kuchingizni koʻrsatadi.",
-        "challenges": "Bu reyting bellashuvlardagi kuchingizni koʻrsatadi."
+        "skillsRating": "Yechilgan masalalar, masala reytingi, musobaqa va bellashuv reytinglari asosida hisoblanadi.",
+        "activityRating": "Oxirgi 30 kundagi faollik, bajarilgan kunlik topshiriqlar va Kepcoin daromadi asosida. Admin bonuslari hisoblanmaydi.",
+        "contests": "Reytingli dasturlash musobaqalaridagi natijalaringiz asosida.",
+        "challenges": "Reytingli savol-javob bellashuvlaridagi natijalaringiz asosida."
       },
       "percentile": "Siz foydalanuvchilarning {{percentile}}% dan yaxshiroqsiz"
     },
     "statistics": {
       "title": "Statistika",
-      "subtitle": "Oʻtgan yil",
       "changeLabel": "Oʻtgan yilga nisbatan",
       "cards": {
         "users": "Foydalanuvchilar",
@@ -52,13 +84,8 @@
     },
     "promos": {
       "blogCreate": {
-        "title": "KEP'da blog yarating va foydali hikoyalarni hamjamiyat qiymatiga aylantiring.",
-        "subtitle": "Foydali materiallar, yangiliklar va platforma bo'yicha ma'lumotlar ulashing. Kuchli bloglar reviewdan keyin Kepcoin reward olishi mumkin.",
         "availableNow": "Hozir mavjud",
-        "footerNote": "Avval draft yarating, keyin tayyor bo'lganda reviewga yuboring.",
-        "previewTitle": "Editor preview",
         "previewBadge": "Tavsiya etilgan jarayon",
-        "previewHeadline": "Amaliy hikoya yozing, kuchli teglar qo'shing va reviewga yuboring.",
         "previewTags": {
           "story": "Hamjamiyat hikoyasi",
           "reward": "Kepcoin reward",
@@ -80,17 +107,17 @@
         }
       },
       "kepCover": {
-        "activeSubtitle": "Eng kuchli coverlarga ovoz bering, live reytingni kuzating va to'liq KEP Cover sahifasini oching.",
-        "upcomingSubtitle": "Keyingi KEP Cover allaqachon rejalashtirilgan. Ovoz berish ochilishidan oldin cover photongizni yangilang.",
+        "activeSubtitle": "Muqovalarni ko‘ring, ovoz bering va natijalarni kuzating.",
+        "upcomingSubtitle": "Boshlanish sanasi va muqova qatnashish qoidalarini tekshiring.",
         "voteLimit": "Har bir foydalanuvchiga {{count}} ta ovoz"
       },
       "contest": {
-        "activeSubtitle": "Kontest hozir davom etmoqda. Masalalarni ishlash va jadvalni kuzatish uchun uni oching.",
-        "upcomingSubtitle": "Keyingi kontest yaqinlashmoqda. Kontestni oching va oldindan ro'yxatdan o'ting."
+        "activeSubtitle": "Musobaqa davom etmoqda. Masalalar yoki natijalar jadvalini oching.",
+        "upcomingSubtitle": "Boshlanish vaqti va ro‘yxatdan o‘tish ma’lumotlarini tekshiring."
       },
       "arena": {
-        "activeSubtitle": "Arena raundi hozir davom etmoqda. Kirib, live ishtirokchilar bilan bir tempda boring.",
-        "upcomingSubtitle": "Yangi arena raundi yaqin. Jadvalni ko'ring va keyingi startga tayyor turing.",
+        "activeSubtitle": "Arena davom etmoqda. Raqib topish uchun navbatga qo‘shiling.",
+        "upcomingSubtitle": "Arena mavzulari, savollar soni va boshlanish vaqtini tekshiring.",
         "roundTime": "Har raundga {{count}} soniya"
       },
       "actions": {
@@ -140,12 +167,14 @@
       "loginToLike": "Like bosish uchun tizimga kiring",
       "noImage": "Screenshot keyin qo'shiladi",
       "navigatorTitle": "Sahifa bo'yicha",
-      "loadMore": "Yana ko'rsatish"
+      "loadMore": "Yana ko'rsatish",
+      "changeType": {
+        "new": "Yangi",
+        "update": "Yangilangan"
+      }
     },
     "topUsers": {
       "title": "Top foydalanuvchilar",
-      "subtitle": "Har bir yoʻnalishdagi eng kuchli 3 ta ishtirokchi",
-      "empty": "Hozircha foydalanuvchilar topilmadi.",
       "viewAll": "Barcha foydalanuvchilar",
       "tabs": {
         "contests": "Kontestlar",
@@ -159,7 +188,13 @@
     "birthdays": {
       "title": "Tugʻilgan kunlar",
       "empty": "Yaqinlashayotgan tugʻilgan kunlar yoʻq.",
-      "dateUnknown": "Sana koʻrsatilmagan"
+      "dateUnknown": "Sana koʻrsatilmagan",
+      "today": "Bugun",
+      "tomorrow": "Ertaga",
+      "turns_one": "{{count}} yoshga to‘ladi",
+      "turns_other": "{{count}} yoshga to‘ladi",
+      "daysLeft_one": "kun qoldi",
+      "daysLeft_other": "kun qoldi"
     },
     "userActivity": {
       "title": "Foydalanuvchilar faolligi",
@@ -185,19 +220,23 @@
       "defaultLabel": "Faollik yangilanishi",
       "types": {
         "problemAttemptSummary": {
-          "description": "Jami {{total}} ta masaladan {{accepted}} tasi yechildi."
+          "description": "Jami {{total}} ta masaladan {{accepted}} tasi yechildi.",
+          "title": "Yechilgan masalalar"
         },
         "challengeSummary": {
           "description": "Bellashuv natijalari.",
           "wins": "Gʻalabalar: {{value}}",
           "draws": "Duranglar: {{value}}",
-          "losses": "Magʻlubiyatlar: {{value}}"
+          "losses": "Magʻlubiyatlar: {{value}}",
+          "title": "Bellashuv natijalari"
         },
         "projectAttemptSummary": {
-          "description": "Loyiha topshiriqlarining {{total}} tasidan {{checked}} tasi tekshirildi."
+          "description": "Loyiha topshiriqlarining {{total}} tasidan {{checked}} tasi tekshirildi.",
+          "title": "Loyiha urinishlari"
         },
         "testPassSummary": {
-          "description": "{{total}} ta testdan {{completed}} tasi yakunlandi va {{solved}} ta topshiriq yechildi."
+          "description": "{{total}} ta testdan {{completed}} tasi yakunlandi va {{solved}} ta topshiriq yechildi.",
+          "title": "Yakunlangan testlar"
         },
         "contestParticipation": {
           "description": "{{title}} kontestida ishtirok etdi.",
@@ -205,29 +244,238 @@
           "rating": "{{before}} → {{after}} reyting",
           "ratingChange": "Δ {{delta}}",
           "bonus": "Bonus: {{bonus}}",
-          "noRank": "—"
+          "noRank": "—",
+          "title": "Kontest ishtiroki"
         },
         "arenaParticipation": {
           "description": "{{title}} arenasi ishtirokchisi.",
           "points": "Ballar: {{points}}",
           "rank": "Oʻrin: {{rank}}",
-          "finishTime": "Tugash vaqti: {{time}}"
+          "finishTime": "Tugash vaqti: {{time}}",
+          "title": "Arena ishtiroki"
         },
         "dailyActivity": {
           "description": "Kunlik faollik (+{{value}}).",
-          "note": "Eslatma: {{note}}"
+          "note": "Eslatma: {{note}}",
+          "title": "Kunlik faollik"
         },
         "hardProblemSolved": {
           "description": "{{title}} ({{difficulty}}) masalasi yechildi.",
-          "problem": "Masala №{{id}}"
+          "problem": "Masala №{{id}}",
+          "title": "Masala yechildi"
         },
         "achievementUnlocked": {
-          "description": "{{message}}"
+          "description": "{{message}}",
+          "title": "Yangi yutuq"
         },
         "dailyTaskCompleted": {
           "description": "Kunlik topshiriq bajarildi ({{type}}).",
-          "task": "{{description}}"
+          "task": "{{description}}",
+          "title": "Kunlik topshiriq bajarildi"
         }
+      }
+    },
+    "landing": {
+      "language": "Dasturlash tili",
+      "example": "Namuna",
+      "codeSample": "Yechim namunasi",
+      "input": "Kiruvchi ma’lumot",
+      "output": "Natija",
+      "catalog": "Masalalar",
+      "rating": "Reyting",
+      "retry": "Qayta urinish",
+      "loadError": "Ma’lumot yuklanmadi. Qayta urinib ko‘ring.",
+      "empty": "Hozircha ma’lumot yo‘q.",
+      "allProblems": "Barcha masalalar",
+      "startSolving": "Masala yechishni boshlash",
+      "explore": "Ko‘rish",
+      "learning": "Mashq qilish",
+      "competition": "Bellashish",
+      "viewRating": "Reytingni ko‘rish",
+      "allUsers": "Barcha dasturchilar",
+      "read": "Batafsil o‘qish",
+      "previous": "Oldingi maqola",
+      "next": "Keyingi maqola",
+      "trust": "Masalalar, loyihalar, testlar va musobaqalar bitta hisobda.",
+      "hero": {
+        "eyebrow": "O‘YLA. YECH. YUKSAL.",
+        "title": "Dasturlash mashqlari,",
+        "highlight": "masalalardan loyihalargacha.",
+        "description": "Dasturlash masalalarini yeching, amaliy loyihalar tuzing va musobaqalarda bilimingizni sinang.",
+        "explorePlatform": "Platformani ko‘rish",
+        "tryWorkspace": "Masalani sinab ko‘ring",
+        "planLink": "Endi boshlayapsizmi? O‘quv rejasini tanlang"
+      },
+      "platform": {
+        "eyebrow": "PLATFORMA",
+        "title": "Mashq turini tanlang.",
+        "description": "Mustaqil mashq, o‘quv rejasi yoki musobaqani tanlang.",
+        "problems": {
+          "title": "Dasturlash masalalari",
+          "description": "Mavzu va reyting bo‘yicha masala tanlang, kod yozing va testlarda tekshiring.",
+          "action": "Masala yechish"
+        },
+        "plans": {
+          "title": "O‘quv rejalari",
+          "description": "Mavzu va kunlarga bo‘lingan masalalarni yeching, bajarilganlarini kuzating.",
+          "action": "O‘quv rejasini tanlash"
+        },
+        "contests": {
+          "title": "Musobaqalar",
+          "description": "Belgilangan vaqtda umumiy masalalar to‘plamini yeching va natijalarni solishtiring.",
+          "action": "Musobaqalarni ko‘rish"
+        },
+        "duels": {
+          "title": "Yakkama-yakka duellar",
+          "description": "Masalalar to‘plami va vaqtni kelishib, tanlangan baholash qoidalari bo‘yicha bellashing.",
+          "action": "Duellarni ko‘rish"
+        },
+        "projects": {
+          "title": "Amaliy loyihalar",
+          "description": "Loyiha talablarini bajaring, yechimni yuklang va topshiriqlar natijasini ko‘ring.",
+          "action": "Loyihalarni ko‘rish"
+        }
+      },
+      "journey": {
+        "eyebrow": "QANDAY ISHLAYDI",
+        "title": "Tanlang, yeching, yuboring.",
+        "choose": {
+          "title": "Masala tanlang",
+          "description": "Mavzu yoki reyting bo‘yicha masala tanlang."
+        },
+        "solve": {
+          "title": "Yozing va tekshiring",
+          "description": "Shart va misollarni o‘qing, so‘ng editorda yechim yozing."
+        },
+        "improve": {
+          "title": "Yuboring va o‘rganing",
+          "description": "Yechimni yuboring va natijaga qarab kerakli tuzatishlarni kiriting."
+        }
+      },
+      "languages": {
+        "eyebrow": "SIZNING VOSITALARINGIZ",
+        "title": "Qo‘llab-quvvatlangan dasturlash tillari.",
+        "description": "Mavjud dasturlash tillari masalaga bog‘liq. Yuborishdan oldin editor ro‘yxatini tekshiring."
+      },
+      "formats": {
+        "compare": "Turli formatlar. Rivojlanish uchun bitta joy.",
+        "format": "Format",
+        "compete": [
+          {
+            "items": [
+              "Rejalashtirilgan musobaqalar",
+              "Natijalar jadvali",
+              "Musobaqadan keyingi tahlil"
+            ]
+          },
+          {
+            "title": "Arenaga kiring",
+            "items": ["Bosqichli bellashuv", "Vaqtli savollar", "Jonli raqobat"]
+          },
+          {
+            "items": ["Yakkama-yakka format", "Aniq maqsad", "Raqobatli mashq"]
+          }
+        ],
+        "table": {
+          "practice": "Mashq",
+          "contest": "Musobaqa",
+          "duel": "Duel",
+          "pace": "Tezlik",
+          "pace0": "O‘z tezligingizda",
+          "pace1": "Belgilangan vaqt",
+          "pace2": "Raqib bilan poyga",
+          "goal": "Maqsad",
+          "goal0": "G‘oyani o‘rganish",
+          "goal1": "Masalalar to‘plamini yechish",
+          "goal2": "Raqib bilan bellashish",
+          "feedback": "Natija",
+          "feedback0": "Tekshiruv xulosasi",
+          "feedback1": "Yechimlar va jadval",
+          "feedback2": "Duel natijasi"
+        }
+      },
+      "events": {
+        "eyebrow": "KEP’DA HOZIR",
+        "title": "Yaqinlashayotgan va davom etayotgan tadbirlar.",
+        "description": "Tadbir sanalari, ro‘yxatdan o‘tish ma’lumotlari va joriy natijalar.",
+        "empty": "Yaqinlashayotgan tadbir ko‘rsatilmagan. O‘tgan musobaqalarni ko‘rishingiz mumkin."
+      },
+      "faq": {
+        "eyebrow": "SAVOL-JAVOB",
+        "title": "Ko‘p beriladigan savollar",
+        "description": "Birinchi yechimni yuborishdan oldin.",
+        "asideTitle": "O‘quv rejasidan boshlang.",
+        "asideDescription": "Mavzu va kunlarga bo‘lingan o‘quv rejasini tanlang.",
+        "items": [
+          {
+            "question": "Yangi boshlovchi sifatida nimadan boshlayman?",
+            "answer": "Past reytingli masala yoki boshlang‘ich reja tanlang. Shart va misollarni o‘qib, yechim yozing."
+          },
+          {
+            "question": "Qaysi dasturlash tillaridan foydalansam bo‘ladi?",
+            "answer": "Har bir masala editorida shu masala uchun ruxsat etilgan tillar ko‘rsatiladi."
+          },
+          {
+            "question": "Yechim yuborganimdan keyin nima bo‘ladi?",
+            "answer": "Tekshiruvchi kodni masala testlarida tekshirib Accepted yoki Wrong answer kabi natija qaytaradi."
+          },
+          {
+            "question": "Mos qiyinlik darajasini qanday tanlayman?",
+            "answer": "Mavzu va reyting filtrlaridan foydalaning. Avval osonroq masalalardan boshlang."
+          },
+          {
+            "question": "Musobaqa va duelning farqi nimada?",
+            "answer": "Contest ko‘p ishtirokchili musobaqa. Duelda ikki raqib masalalar to‘plami, vaqt va baholash turini tanlaydi."
+          },
+          {
+            "question": "Nima uchun hisobga kirish kerak?",
+            "answer": "Hisob orqali yechim yuborasiz, natijalarni saqlaysiz va musobaqalarda qatnashasiz."
+          }
+        ]
+      },
+      "leaders": {
+        "eyebrow": "HAMJAMIYAT",
+        "title": "Yetakchi ishtirokchilar.",
+        "description": "Ishtirokchilarni joriy reyting bo‘yicha ko‘ring."
+      },
+      "community": {
+        "eyebrow": "HAMJAMIYATDAN",
+        "title": "Maqolalar va hamjamiyat reytinglari.",
+        "description": "Hamjamiyat maqolalari va yetakchi ishtirokchilarni ko‘ring.",
+        "latestArticles": "So‘nggi maqolalar"
+      },
+      "final": {
+        "eyebrow": "KEYINGI QADAM",
+        "title": "Birinchi masalangizni tanlang.",
+        "description": "Katalogni ochib mavzu yoki qiyinlikni tanlang."
+      },
+      "footer": {
+        "description": "KEP.uz — dasturlash mashqlari, bilim testlari va musobaqalar.",
+        "practice": "Mashq qilish",
+        "compete": "Bellashish",
+        "community": "Hamjamiyat",
+        "menu": "Navigatsiyani ochish",
+        "blog": "Blog",
+        "updates": "Yangiliklar"
+      },
+      "workspace": {
+        "title": "KEP ish maydoni",
+        "pick": "Masala tanlang.",
+        "hint": "Shart va kod editorini ko‘rish uchun masalani oching.",
+        "fullWorkspace": "To‘liq ish maydonini ochish",
+        "editor": "Kod muharriri",
+        "continue": "Yechish uchun kiring",
+        "signInHint": "Kodni ishga tushirish va yuborish uchun hisobga kiring.",
+        "sample": "{{number}}-namuna",
+        "topics": {
+          "sorting": "Saralash",
+          "strings": "Satrlar",
+          "numbers": "Sonlar nazariyasi",
+          "matrix": "Simulyatsiya",
+          "graphs": "Graflar"
+        },
+        "starter": "Yechimingizni shu yerga yozing.",
+        "back": "Masalalar"
       }
     }
   }

@@ -1,175 +1,36 @@
-import { ReactNode, useMemo } from 'react';
+import { useId } from 'react';
 import { useTranslation } from 'react-i18next';
-import { Link as RouterLink, useNavigate } from 'react-router-dom';
-import {
-  Box,
-  Button,
-  Card,
-  CardContent,
-  Divider,
-  Skeleton,
-  Stack,
-  Typography,
-} from '@mui/material';
-import { getResourceById, getResourceByParams, resources } from 'app/routes/resources.ts';
-import {
+import { Link as RouterLink, useNavigate } from 'react-router';
+import { Alert, Box, Button, Paper, Skeleton, Stack, Tab, Tabs, Typography } from '@mui/material';
+import { getResourceById, getResourceByParams, resources } from 'app/routes/resources';
+import type {
   ProblemAttemptSummary,
+  ProblemContestPreview,
   ProblemListItem,
-} from 'modules/problems/domain/entities/problem.entity.ts';
+} from 'modules/problems/domain/entities/problem.entity';
 import IconifyIcon from 'shared/components/base/IconifyIcon';
-import ResponsiveTabs from 'shared/components/common/ResponsiveTabs';
-import { cssVarRgba } from 'shared/lib/utils';
+import EmptyState from 'shared/components/common/EmptyState';
+import MixedText from 'shared/components/common/MixedText';
+import { PointerSpotlight } from 'shared/components/motion/InteractionEffects';
 
 type ProblemTabValue = 'lastContest' | 'attempts' | 'mostViewed';
-
+type SourceState = { isLoading: boolean; error?: unknown; onRetry?: () => void };
 interface TabsCardProps {
   activeTab: string;
   onTabChange: (value: string) => void;
-  attempts: { isLoading: boolean; items: ProblemAttemptSummary[] };
-  lastContest: { isLoading: boolean; data: any };
-  mostViewed: { isLoading: boolean; items: ProblemListItem[] };
+  attempts: SourceState & { items: ProblemAttemptSummary[] };
+  lastContest: SourceState & { data?: ProblemContestPreview | null };
+  mostViewed: SourceState & { items: ProblemListItem[] };
 }
-
-interface TabConfig {
-  icon: string;
-  label: string;
-  value: ProblemTabValue;
-}
-
 interface ProblemRow {
   href: string;
   key: string | number;
-  symbol?: string | number;
+  symbol: string | number;
   title: string;
 }
 
-const getActiveTab = (activeTab: string): ProblemTabValue => {
-  if (activeTab === 'attempts' || activeTab === 'mostViewed') return activeTab;
-  return 'lastContest';
-};
-
-const EmptyState = ({ children }: { children: ReactNode }) => (
-  <Box
-    sx={(theme) => ({
-      borderRadius: 2,
-      border: '1px dashed',
-      borderColor: cssVarRgba(theme.vars.palette.primary.mainChannel, 0.2),
-      p: 2,
-    })}
-  >
-    <Typography variant="body2" color="text.secondary">
-      {children}
-    </Typography>
-  </Box>
-);
-
-const LoadingState = () => (
-  <Stack spacing={1.25}>
-    {Array.from({ length: 4 }).map((_, index) => (
-      <Stack key={index} direction="row" spacing={1} alignItems="center">
-        <Skeleton variant="text" width={34} />
-        <Skeleton variant="text" width="72%" />
-      </Stack>
-    ))}
-  </Stack>
-);
-
-const ProblemLinkRow = ({ index, row }: { index: number; row: ProblemRow }) => {
-  const symbol = row.symbol ?? index + 1;
-
-  return (
-    <Box
-      component={RouterLink}
-      to={row.href}
-      sx={(theme) => ({
-        display: 'flex',
-        alignItems: 'center',
-        gap: 1,
-        minWidth: 0,
-        py: 0.75,
-        color: 'text.primary',
-        textDecoration: 'none',
-        borderBottom: '1px solid',
-        borderBottomColor: cssVarRgba(theme.vars.palette.grey['500Channel'], 0.12),
-        '&:hover': {
-          color: 'primary.main',
-        },
-      })}
-    >
-      <Typography
-        variant="caption"
-        color="primary.main"
-        fontWeight={900}
-        sx={{ width: 34, flexShrink: 0 }}
-      >
-        {symbol}
-      </Typography>
-      <Typography variant="body2" fontWeight={700} noWrap>
-        {row.title}
-      </Typography>
-    </Box>
-  );
-};
-
-const RowsList = ({ rows }: { rows: ProblemRow[] }) => (
-  <Stack spacing={0.5}>
-    {rows.map((row, index) => (
-      <ProblemLinkRow key={row.key} index={index} row={row} />
-    ))}
-  </Stack>
-);
-
-const TabsNav = ({
-  activeTab,
-  onTabChange,
-  tabs,
-}: {
-  activeTab: ProblemTabValue;
-  onTabChange: (value: string) => void;
-  tabs: TabConfig[];
-}) => (
-  <ResponsiveTabs
-    value={activeTab}
-    onChange={onTabChange}
-    items={tabs.map((tab) => ({
-      value: tab.value,
-      label: tab.label,
-      icon: <IconifyIcon icon={tab.icon} />,
-      tabProps: {
-        iconPosition: 'start',
-      },
-    }))}
-    ariaLabel="problem summary tabs"
-    containerSx={{ flex: 1, minWidth: 0 }}
-    tabsProps={{
-      orientation: 'vertical',
-      variant: 'scrollable',
-      scrollButtons: false,
-      sx: {
-        '& .MuiTabs-list': {
-          gap: 1,
-        },
-        '& .MuiTabs-indicator': {
-          display: 'none',
-        },
-        '& .MuiTab-root': {
-          justifyContent: 'flex-start',
-          minHeight: 42,
-          borderRadius: 1.5,
-          fontWeight: 800,
-          textTransform: 'none',
-        },
-        '& .MuiTab-root.MuiTab-textColorPrimary.Mui-selected': {
-          bgcolor: 'primary.main',
-          color: 'primary.contrastText',
-        },
-        '& .MuiTab-root.Mui-selected .MuiTab-iconWrapper, & .MuiTab-root.Mui-selected svg': {
-          color: 'primary.contrastText',
-        },
-      },
-    }}
-  />
-);
+const previewRowCount = 10;
+const rowHeight = 48;
 
 const ProblemTabsCard = ({
   activeTab,
@@ -179,169 +40,228 @@ const ProblemTabsCard = ({
   mostViewed,
 }: TabsCardProps) => {
   const { t } = useTranslation();
+  const id = useId();
   const navigate = useNavigate();
-  const resolvedTab = getActiveTab(activeTab);
-
-  const tabs = useMemo<TabConfig[]>(
-    () => [
-      {
-        icon: 'mdi:trophy-outline',
-        label: t('problems.lastContestProblems'),
-        value: 'lastContest',
-      },
-      {
-        icon: 'mdi:history',
-        label: t('problems.lastAttempts'),
-        value: 'attempts',
-      },
-      {
-        icon: 'mdi:eye-outline',
-        label: t('problems.mostViewed'),
-        value: 'mostViewed',
-      },
-    ],
-    [t],
-  );
-
-  const renderAttempts = () => {
-    if (attempts.isLoading) return <LoadingState />;
-
-    if (!attempts.items.length) {
-      return <EmptyState>{t('problems.noAttempts')}</EmptyState>;
-    }
-
-    const rows = attempts.items.map((attempt) => ({
-      href: getResourceById(resources.Problem, attempt.problemId),
-      key: attempt.id,
-      symbol: attempt.problemId,
-      title: attempt.problemTitle,
-    }));
-
-    return (
-      <Stack spacing={1.5}>
-        <RowsList rows={rows} />
-
-        <Button
-          component={RouterLink}
-          to={resources.Attempts}
-          variant="text"
-          color="primary"
-          size="small"
-          endIcon={<IconifyIcon icon="mdi:arrow-right" />}
-          sx={{ alignSelf: 'flex-start', px: 0, textTransform: 'none' }}
-        >
-          {t('problems.attemptsButton')}
-        </Button>
-      </Stack>
-    );
+  const tab: ProblemTabValue =
+    activeTab === 'attempts' || activeTab === 'mostViewed' ? activeTab : 'lastContest';
+  const source = tab === 'attempts' ? attempts : tab === 'mostViewed' ? mostViewed : lastContest;
+  const tabs = [
+    { value: 'lastContest', label: t('problems.lastContestProblems') },
+    { value: 'attempts', label: t('problems.lastAttempts') },
+    { value: 'mostViewed', label: t('problems.mostViewed') },
+  ];
+  const rows: ProblemRow[] =
+    tab === 'attempts'
+      ? attempts.items.map((attempt) => ({
+          href: getResourceById(resources.Problem, attempt.problemId),
+          key: attempt.id,
+          symbol: attempt.problemId,
+          title: attempt.problemTitle,
+        }))
+      : tab === 'mostViewed'
+        ? mostViewed.items.map((problem) => ({
+            href: getResourceById(resources.Problem, problem.id),
+            key: problem.id,
+            symbol: problem.id,
+            title: problem.title,
+          }))
+        : (lastContest.data?.problems ?? []).map((problem) => ({
+            href: problem.symbol
+              ? getResourceByParams(resources.ContestProblem, {
+                  id: lastContest.data!.id,
+                  symbol: problem.symbol,
+                })
+              : getResourceById(resources.Contest, lastContest.data!.id),
+            key: problem.id,
+            symbol: problem.symbol ?? '—',
+            title: problem.title,
+          }));
+  const visibleRows = tab === 'lastContest' ? rows : rows.slice(0, previewRowCount);
+  const title =
+    tab === 'lastContest'
+      ? lastContest.data?.title
+      : tabs.find((item) => item.value === tab)?.label;
+  const emptyText =
+    tab === 'attempts'
+      ? t('problems.noAttempts')
+      : tab === 'mostViewed'
+        ? t('problems.noMostViewed')
+        : t('problems.noLastContest');
+  const href =
+    tab === 'attempts'
+      ? resources.Attempts
+      : lastContest.data
+        ? getResourceById(resources.Contest, lastContest.data.id)
+        : resources.Contests;
+  const pickOne = () => {
+    const problem = mostViewed.items[Math.floor(Math.random() * mostViewed.items.length)];
+    if (problem) navigate(getResourceById(resources.Problem, problem.id));
   };
-
-  const renderLastContest = () => {
-    if (lastContest.isLoading) return <LoadingState />;
-
-    if (!lastContest.data) {
-      return <EmptyState>{t('problems.noLastContest')}</EmptyState>;
-    }
-
-    const rows = (lastContest.data.problems ?? []).map((problem: any) => ({
-      href: getResourceByParams(resources.ContestProblem, {
-        id: lastContest.data.id,
-        symbol: problem.symbol,
-      }),
-      key: problem.id,
-      symbol: problem.symbol,
-      title: problem.title,
-    }));
-
-    return (
-      <Stack spacing={1.25}>
-        <Typography variant="subtitle2" fontWeight={900} noWrap>
-          {lastContest.data.title}
-        </Typography>
-
-        <RowsList rows={rows} />
-
-        <Button
-          component={RouterLink}
-          to={getResourceById(resources.Contest, lastContest.data.id)}
-          variant="text"
-          color="primary"
-          size="small"
-          endIcon={<IconifyIcon icon="mdi:arrow-right" />}
-          sx={{ alignSelf: 'flex-start', px: 0, textTransform: 'none' }}
-        >
-          {t('problems.goToContest')}
-        </Button>
-      </Stack>
-    );
-  };
-
-  const renderMostViewed = () => {
-    if (mostViewed.isLoading) return <LoadingState />;
-
-    if (!mostViewed.items.length) {
-      return <EmptyState>{t('problems.noMostViewed')}</EmptyState>;
-    }
-
-    const rows = mostViewed.items.map((problem) => ({
-      href: getResourceById(resources.Problem, problem.id),
-      key: problem.id,
-      symbol: problem.id,
-      title: problem.title,
-    }));
-
-    const handlePickOne = () => {
-      const problem = mostViewed.items[Math.floor(Math.random() * mostViewed.items.length)];
-      if (problem) {
-        navigate(getResourceById(resources.Problem, problem.id));
-      }
-    };
-
-    return (
-      <Stack spacing={1.5}>
-        <RowsList rows={rows} />
-
-        <Button
-          onClick={handlePickOne}
-          variant="text"
-          color="primary"
-          size="small"
-          endIcon={<IconifyIcon icon="mdi:shuffle-variant" />}
-          sx={{ alignSelf: 'flex-start', px: 0, textTransform: 'none' }}
-        >
-          {t('problems.pickOne')}
-        </Button>
-      </Stack>
-    );
-  };
-
-  const renderContent = () => {
-    if (resolvedTab === 'attempts') return renderAttempts();
-    if (resolvedTab === 'mostViewed') return renderMostViewed();
-    return renderLastContest();
-  };
-
   return (
-    <Card
-      variant="outlined"
-      sx={(theme) => ({
-        borderRadius: 3,
-        overflow: 'hidden',
-        background: `linear-gradient(135deg, ${cssVarRgba(theme.vars.palette.primary.lightChannel, 0.09)}, ${theme.vars.palette.background.paper} 48%)`,
-        borderColor: cssVarRgba(theme.vars.palette.primary.mainChannel, 0.14),
-      })}
-    >
-      <CardContent>
-        <Stack direction={{ xs: 'column', md: 'row' }} spacing={2.5} alignItems="stretch">
-          <Stack spacing={2} sx={{ flex: 1, minWidth: 0 }}>
-            <TabsNav activeTab={resolvedTab} onTabChange={onTabChange} tabs={tabs} />
-          </Stack>
-          <Divider flexItem orientation="vertical" sx={{ display: { xs: 'none', md: 'block' } }} />
-          <Box sx={{ flex: 1, minWidth: 0 }}>{renderContent()}</Box>
-        </Stack>
-      </CardContent>
-    </Card>
+    <Paper component={PointerSpotlight} variant="section" className="kep-problems-quick-access">
+      <Tabs
+        value={tab}
+        onChange={(_, value: string) => onTabChange(value)}
+        variant="scrollable"
+        allowScrollButtonsMobile
+        scrollButtons="auto"
+        aria-label={t('problems.sidebar.explore')}
+        sx={{
+          px: 1,
+          borderBottom: 1,
+          borderColor: 'divider',
+          '& .MuiTabs-list': { gap: 0 },
+          '& .MuiTab-root': {
+            minWidth: 0,
+            px: 1.25,
+            fontFamily: 'var(--kep-display-font)',
+            fontWeight: 500,
+            fontSize: 13,
+            borderRadius: 0,
+          },
+          '& .Mui-selected': { bgcolor: 'transparent', color: 'primary.main' },
+        }}
+      >
+        {tabs.map((item) => (
+          <Tab
+            key={item.value}
+            value={item.value}
+            label={
+              <span>
+                <MixedText>{item.label}</MixedText>
+              </span>
+            }
+            id={`${id}-${item.value}`}
+            aria-controls={`${id}-content`}
+          />
+        ))}
+      </Tabs>
+      <Box
+        role="tabpanel"
+        id={`${id}-content`}
+        aria-labelledby={`${id}-${tab}`}
+        aria-busy={source.isLoading}
+        sx={{ px: 'var(--kep-content-inset)', py: 2.5 }}
+      >
+        <Typography
+          component="h3"
+          variant="body2"
+          sx={{
+            minHeight: 24,
+            mb: 1.5,
+            fontFamily: 'var(--kep-display-font)',
+            fontSize: 17,
+            overflow: 'hidden',
+            whiteSpace: 'nowrap',
+            textOverflow: 'ellipsis',
+          }}
+          title={title}
+        >
+          {source.isLoading && tab === 'lastContest' ? (
+            <Skeleton width="70%" height={24} />
+          ) : (
+            title && <MixedText>{title}</MixedText>
+          )}
+        </Typography>
+        <Box sx={{ minHeight: previewRowCount * rowHeight }}>
+          {source.isLoading ? (
+            Array.from({ length: previewRowCount }, (_, index) => (
+              <Stack
+                key={index}
+                direction="row"
+                alignItems="center"
+                gap={1.5}
+                sx={{ height: rowHeight, borderBottom: 1, borderColor: 'divider' }}
+              >
+                <Skeleton width={34} height={20} />
+                <Skeleton width="70%" height={20} sx={{ flex: 1 }} />
+                <Skeleton width={14} height={16} />
+              </Stack>
+            ))
+          ) : source.error ? (
+            <Alert
+              severity="error"
+              action={
+                source.onRetry && <Button onClick={source.onRetry}>{t('common.retry')}</Button>
+              }
+            >
+              {t('common.loadFailed')}
+            </Alert>
+          ) : visibleRows.length ? (
+            visibleRows.map((row) => (
+              <Box
+                key={row.key}
+                component={RouterLink}
+                to={row.href}
+                sx={{
+                  display: 'grid',
+                  gridTemplateColumns: '34px minmax(0, 1fr) 14px',
+                  gap: 1.5,
+                  alignItems: 'center',
+                  minHeight: rowHeight,
+                  color: 'text.primary',
+                  textDecoration: 'none',
+                  borderBottom: 1,
+                  borderColor: 'divider',
+                  '&:hover, &:focus-visible': { color: 'primary.main' },
+                  '&:focus-visible': {
+                    outline: '2px solid',
+                    outlineColor: 'primary.main',
+                    outlineOffset: -2,
+                  },
+                }}
+              >
+                <Typography
+                  component="span"
+                  variant="metric"
+                  color="primary.main"
+                  sx={{ fontSize: 14 }}
+                >
+                  {row.symbol}
+                </Typography>
+                <Typography variant="body2" noWrap title={row.title} sx={{ fontSize: 13 }}>
+                  {row.title}
+                </Typography>
+                <IconifyIcon
+                  icon="mdi:arrow-top-right"
+                  sx={{ fontSize: 14, color: 'text.secondary' }}
+                />
+              </Box>
+            ))
+          ) : (
+            <EmptyState
+              compact
+              kind="search"
+              title={emptyText}
+              sx={{
+                minHeight: previewRowCount * rowHeight,
+                px: 0,
+                py: 2,
+                '& svg': { maxHeight: 110 },
+              }}
+            />
+          )}
+        </Box>
+        <Button
+          {...(tab === 'mostViewed' ? { onClick: pickOne } : { component: RouterLink, to: href })}
+          variant="text"
+          size="small"
+          disabled={source.isLoading || (tab === 'mostViewed' && !rows.length)}
+          endIcon={
+            <IconifyIcon icon={tab === 'mostViewed' ? 'mdi:shuffle-variant' : 'mdi:arrow-right'} />
+          }
+          sx={{ mt: 1.5, px: 0 }}
+        >
+          {t(
+            tab === 'mostViewed'
+              ? 'problems.pickOne'
+              : tab === 'attempts'
+                ? 'problems.attemptsButton'
+                : 'problems.goToContest',
+          )}
+        </Button>
+      </Box>
+    </Paper>
   );
 };
-
 export default ProblemTabsCard;

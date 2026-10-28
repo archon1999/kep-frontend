@@ -29,10 +29,10 @@ const MiniGameIntro = ({ id, title, description, action, onStart }: Props) => (
     <Box
       sx={{
         overflow: 'hidden',
-        bgcolor: '#203d5c',
+        bgcolor: 'background.elevation1',
         aspectRatio: '16 / 9',
         minWidth: 0,
-        borderRadius: 2,
+        borderRadius: 0,
       }}
     >
       <Box

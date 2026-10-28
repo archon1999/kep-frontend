@@ -27,10 +27,10 @@ const SettingsPanelProvider = ({ children }: PropsWithChildren) => {
   });
 
   const updateSettingsPanelConfig = (config: Partial<SettingsPanelConfig>) => {
-    setSettingsPanelConfig({
-      ...settingsPanelConfig,
+    setSettingsPanelConfig((previous) => ({
+      ...previous,
       ...config,
-    });
+    }));
   };
 
   return (

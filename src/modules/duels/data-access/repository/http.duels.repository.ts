@@ -4,27 +4,27 @@ import {
   DuelAcceptPayload,
   DuelCallsParams,
   DuelCounterPayload,
-  PageResult,
   DuelsListParams,
   DuelsRatingParams,
   DuelsRepository,
-} from '../../domain/ports/duels.repository.ts';
+  PageResult,
+} from '../../domain/contracts/duels.repository.ts';
 import {
   Duel,
   DuelInvitation,
   DuelPreset,
-  DuelTypeInfo,
   DuelResults,
+  DuelTypeInfo,
   DuelsRatingRow,
 } from '../../domain/index.ts';
 import { duelsApiClient } from '../api/duels.client.ts';
 import {
   mapDuel,
   mapDuelInvitation,
-  mapDuelsRatingRow,
   mapDuelPreset,
   mapDuelResults,
   mapDuelTypeInfo,
+  mapDuelsRatingRow,
   mapPageResult,
 } from '../mappers/duel.mapper.ts';
 

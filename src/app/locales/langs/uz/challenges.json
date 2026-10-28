@@ -1,10 +1,10 @@
 {
   "challenges": {
     "title": "Bellashuvlar",
-    "subtitle": "Tezkor bellashuv yarating yoki navbatga qoʻshiling.",
+    "subtitle": "Vaqtli savollarda boshqa ishtirokchi bilan bellashing.",
     "quickStartTitle": "Tez start",
-    "quickStartSubtitle": "Raqibni tez topish uchun presetni tanlang.",
-    "quickStartButton": "{{questionsCount}} ta savol -\u003e {{timeSeconds}} soniya",
+    "quickStartSubtitle": "Tayyor formatni tanlab raqib qidiring.",
+    "quickStartButton": "{{questionsCount}} ta savol -> {{timeSeconds}} soniya",
     "customChallenge": "Moslashgan bellashuv",
     "questions": "Savollar",
     "timeLimit": "Vaqt cheklovi",
@@ -19,7 +19,7 @@
     "viewRating": "Reytingni koʻrish",
     "noChallenges": "Bellashuvlar yoʻq.",
     "ratingPreview": "Eng kuchlilar",
-    "ratingPreviewSubtitle": "Hozirgi eng reytingli oʻyinchilar.",
+    "ratingPreviewSubtitle": "Bellashuv reytingi eng yuqori ishtirokchilar.",
     "openRating": "Reytingni ochish",
     "noRating": "Reyting boʻsh.",
     "callCreated": "Yaratildi {{time}}",
@@ -40,17 +40,12 @@
     "timeExpired": "Vaqt tugadi.",
     "answerPending": "Kutilmoqda",
     "answerNotPlayed": "O‘ynalmadi / erta tugadi",
-    "detailTitle": "Bellashuv tafsilotlari",
-    "detailSubtitle": "Oxirgi yangilanish {{time}}",
     "statusFinished": "Yakunlangan",
     "start": "Bellashuvni boshlash",
     "backToList": "Roʻyxatga qaytish",
     "finishedDescription": "Bellashuv yakunlandi. Natijalar yuqorida.",
     "waitingForStart": "Bellashuv ikki oʻyinchi tayyor boʻlganda boshlanadi.",
-    "blurError": "Bellashuv paytida brauzer fokusini boshqa narsaga oʻzgartirishga ruxsat berilmaydi.",
-    "questionNumber": "Savol #{{number}}",
-    "activeQuestion": "Faol savol #{{number}}",
-    "yourAnswer": "Javobingiz",
+    "blurError": "Bellashuv tugaguncha boshqa tab yoki oynaga o‘tmang.",
     "labels": "Yorliqlar",
     "pool": "Variantlar",
     "myRating": "Bellashuv reytingim",
@@ -58,7 +53,6 @@
     "submitAnswerError": "Javobni yuborib bo‘lmadi. Qayta urinib ko‘ring.",
     "notFound": "Bellashuv topilmadi.",
     "ratingTitle": "Bellashuvlar reytingi",
-    "ratingSubtitle": "Eng kuchli duelchilar.",
     "totalPlayers": "{{count}} oʻyinchi",
     "table": {
       "place": "O'rin",
@@ -70,7 +64,6 @@
     },
     "record": "{{wins}}G {{draws}}D {{losses}}M",
     "statisticsTitle": "Bellashuv statistikasi",
-    "statisticsSubtitle": "Shaxsiy maʻlumotlar va oxirgi oʻyinlar.",
     "statisticsPage": {
       "tabs": {
         "overview": "Umumiy",
@@ -81,7 +74,7 @@
       },
       "overview": {
         "title": "Bellashuvlar sarhisobi",
-        "subtitle": "Reytingingiz va natijalaringiz",
+        "subtitle": "Bellashuv reytingi va o‘yin natijalari.",
         "ratingPosition": "Reytingdagi oʻrin",
         "results": "Bellashuv natijalari",
         "questions": "Savollar boʻyicha natijalar",
@@ -106,18 +99,19 @@
         "all": "Barcha bellashuvlar",
         "recent": "Oxirgi 50 ta bellashuv",
         "range": "Reyting tarixi oraligʻi",
-        "ratedCount": "{{count}} ta yakunlangan bellashuv",
         "lastChange": "Oxirgi bellashuvdagi reyting oʻzgarishi",
-        "pointsUnit": "ball"
+        "pointsUnit": "ball",
+        "ratedCount_one": "{{count}} ta yakunlangan bellashuv",
+        "ratedCount_other": "{{count}} ta yakunlangan bellashuv"
       },
       "details": {
         "title": "Batafsil statistika",
         "knowledge": "Savollar va formatlar",
-        "knowledgeDescription": "Qiyinlik, mavzu va format boʻyicha toʻgʻri javoblar",
+        "knowledgeDescription": "Savollarga javob aniqligi: mavzu, qiyinlik va format bo‘yicha.",
         "opponents": "Raqiblar",
-        "opponentsDescription": "Oʻzaro natijalar va doimiy raqiblar",
+        "opponentsDescription": "Har bir raqibga qarshi natijalaringiz.",
         "records": "Shaxsiy rekordlar",
-        "recordsDescription": "Eng yaxshi natijalar va gʻalabalar ketma-ketligi"
+        "recordsDescription": "Eng yaxshi natijalar va eng uzun g‘alabalar seriyasi."
       },
       "rankPlace": "{{value}}-oʻrin",
       "ratingSummary": "Reyting sarhisobi",
@@ -167,10 +161,11 @@
         "weekdays": "Hafta kunlari boʻyicha faollik",
         "hours": "Soatlar boʻyicha faollik",
         "total": "Oxirgi 30 kunda {{count}} ta bellashuv",
-        "activeDays": "{{count}} ta faol kun",
         "year": "Yil",
         "less": "Kam",
-        "more": "Koʻp"
+        "more": "Koʻp",
+        "activeDays_one": "{{count}} faol kun",
+        "activeDays_other": "{{count}} faol kun"
       },
       "weekday": {
         "mon": "Du",
@@ -225,9 +220,10 @@
         "rivals": "Raqobatdoshlar",
         "bestVictories": "Eng yaxshi gʻalabalar",
         "worstDefeats": "Eng ogʻir magʻlubiyatlar",
-        "matchCount": "{{count}} ta bellashuv",
         "averageRating": "Oʻrtacha reyting {{value}}",
-        "record": "Gʻalabalar / durranglar / magʻlubiyatlar"
+        "record": "Gʻalabalar / durranglar / magʻlubiyatlar",
+        "matchCount_one": "{{count}} ta bellashuv",
+        "matchCount_other": "{{count}} ta bellashuv"
       },
       "records": {
         "title": "Rekordlar",
@@ -244,9 +240,10 @@
         "currentLossStreak": "Joriy magʻlubiyatlar ketma-ketligi",
         "open": "Bellashuvni koʻrish"
       },
-      "streakCount": "{{count}} ta bellashuv",
       "streakCurrent": "Joriy",
-      "streakBest": "Eng yaxshi"
+      "streakBest": "Eng yaxshi",
+      "streakCount_one": "{{count}} ta bellashuv",
+      "streakCount_other": "{{count}} ta bellashuv"
     },
     "authRequired": "Bellashuv statistikasini koʻrish uchun tizimga kiring.",
     "currentRank": "Joriy reyting",
@@ -269,7 +266,7 @@
       "wholeChallengeShort": "Umumiy"
     },
     "arenaWinners": "Arena gʻoliblari",
-    "arenaWinnersSubtitle": "Soʻnggi arenalardagi gʻoliblar.",
+    "arenaWinnersSubtitle": "So‘nggi arenalar g‘oliblari.",
     "viewArena": "Arenaga oʻtish",
     "noArenas": "Arena tarixi yoʻq.",
     "chessPuzzle": {
@@ -284,10 +281,23 @@
         "n": "Ot"
       }
     },
-    "perQuestionResults": "Savol boʻyicha natijalar",
-    "startDialogSubtitle": "Raqiblarni koʻrib chiqing va tayyor boʻlsangiz boshlang.",
+    "startDialogSubtitle": "Raqib va bellashuv sozlamalarini tekshirib, Boshlash tugmasini bosing.",
     "startDialogTitle": "Bellashuvni boshlaymizmi?",
     "finishDialogTitle": "Bellashuv yakunlandi",
-    "newRating": "Yangi reyting"
+    "newRating": "Yangi reyting",
+    "secondsShort": "{{seconds}}s",
+    "presetLabel": "{{questionsCount}} ta savol, {{timeSeconds}} soniya",
+    "customDescription": "Chaqiruv uchun savollar soni, vaqt va mavzularni tanlang.",
+    "allChapters": "Barcha mavzular",
+    "ratingSubtitle": "Bellashuv reytinglari va natijalari.",
+    "questionProgress": "{{total}} ta savoldan {{current}}-savol",
+    "recordLabels": {
+      "win": "G‘",
+      "draw": "D",
+      "loss": "M"
+    },
+    "matchScore": "Hisob",
+    "waitingForOpponent": "Raqib kutilmoqda",
+    "waitingForOpponentDescription": "Javoblaringiz qabul qilindi. Bellashuv tugashi bilan natija chiqadi."
   }
 }

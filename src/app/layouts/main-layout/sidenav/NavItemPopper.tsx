@@ -1,6 +1,7 @@
 import { PropsWithChildren, useEffect, useState } from 'react';
 import { useLocation } from 'react-router';
 import { Box, ClickAwayListener, Fade, Paper, Popper } from '@mui/material';
+import { overlayPaperStyles } from 'app/theme/styles/overlays';
 import SimpleBar from 'shared/components/base/SimpleBar';
 
 interface NavItemPopperProps {
@@ -61,6 +62,7 @@ const NavItemPopper = ({
               boxShadow: theme.vars.shadows[3],
               position: 'relative',
               borderRadius: 2,
+              ...(theme.preset === 'default' && overlayPaperStyles(theme)),
             })}
           >
             <ClickAwayListener onClickAway={handleClose}>

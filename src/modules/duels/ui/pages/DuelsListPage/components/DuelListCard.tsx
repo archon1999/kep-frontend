@@ -1,196 +1,211 @@
 import { useTranslation } from 'react-i18next';
-import { Button, Card, Chip, Skeleton, Stack, Typography } from '@mui/material';
-import { alpha } from '@mui/material/styles';
-import { Duel, DuelPlayer } from 'modules/duels/domain/index.ts';
-import UserPopover from 'modules/users/ui/shared/components/UserPopover.tsx';
-import IconifyIcon from 'shared/components/base/IconifyIcon.tsx';
-import ContestsRatingChip from 'shared/components/rating/ContestsRatingChip.tsx';
+import { Box, Button, Skeleton, Stack, Typography } from '@mui/material';
+import { contentInsetSx, interactiveContentSx } from 'app/theme/styles/content';
+import { Duel } from 'modules/duels/domain';
+import DuelParticipant from 'modules/duels/ui/shared/components/DuelParticipant';
+import IconifyIcon from 'shared/components/base/IconifyIcon';
+import MixedText from 'shared/components/common/MixedText';
 import { formatCalendarDateTime } from 'shared/lib/dateTime';
 
-type Props = {
-  duel: Duel;
-  onView?: () => void;
-};
-
-export const DuelListCardSkeleton = () => (
-  <Card
-    sx={{
-      p: { xs: 1.5, sm: 2 },
-      borderRadius: 2,
-      border: 0,
-      borderLeft: '5px solid',
-      borderLeftColor: 'divider',
-    }}
-  >
-    <Stack
-      direction={{ xs: 'column', md: 'row' }}
-      spacing={{ xs: 1.5, md: 2.5 }}
-      alignItems={{ xs: 'stretch', md: 'center' }}
-      justifyContent="space-between"
-    >
-      <Stack spacing={1} minWidth={0} flex={1}>
-        <Stack direction="row" spacing={1} alignItems="center">
-          <Skeleton variant="circular" width={20} height={20} />
-          <Skeleton variant="text" width={112} height={26} />
-          <Skeleton variant="text" width={20} />
-          <Skeleton variant="circular" width={20} height={20} />
-          <Skeleton variant="text" width={112} height={26} />
-          <Skeleton variant="rounded" width={42} height={24} sx={{ borderRadius: 999 }} />
-        </Stack>
-
-        <Stack direction="row" spacing={1} alignItems="center" flexWrap="wrap" useFlexGap>
-          <Skeleton variant="rounded" width={72} height={24} sx={{ borderRadius: 999 }} />
-          <Skeleton variant="rounded" width={96} height={24} sx={{ borderRadius: 999 }} />
-          <Skeleton variant="rounded" width={180} height={24} sx={{ borderRadius: 999 }} />
-          <Skeleton variant="text" width={132} />
-        </Stack>
-      </Stack>
-
-      <Stack direction="row" spacing={2} alignItems="center" justifyContent="space-between">
-        <Stack direction="row" spacing={0.75} alignItems="center" minWidth={96}>
-          <Skeleton variant="text" width={28} height={38} />
-          <Skeleton variant="text" width={14} />
-          <Skeleton variant="text" width={28} height={38} />
-        </Stack>
-        <Skeleton variant="rounded" width={96} height={32} sx={{ borderRadius: 999 }} />
-      </Stack>
-    </Stack>
-  </Card>
-);
-
-const formatDate = (value?: string | null) => (value ? formatCalendarDateTime(value, value) : '—');
-
-const statusTone = (status: Duel['status']) => {
-  if (status === -1) {
-    return { color: 'info' as const, label: 'duels.status.upcoming', accent: 'info.main' };
-  }
-  if (status === 0) {
-    return { color: 'success' as const, label: 'duels.status.running', accent: 'success.main' };
-  }
-  return { color: 'default' as const, label: 'duels.status.finished', accent: 'divider' };
-};
-
-const Participant = ({ player }: { player: DuelPlayer }) => {
-  const content = (
-    <Stack direction="row" spacing={0.75} alignItems="center" minWidth={0}>
-      <ContestsRatingChip title={player.ratingTitle} imgSize={20} />
-      <Typography variant="subtitle1" fontWeight={700} noWrap>
-        {player.displayName || player.username}
-      </Typography>
-      {player.isBot ? <Chip size="small" label="BOT" color="secondary" variant="outlined" /> : null}
-    </Stack>
-  );
-
-  return player.isBot ? content : <UserPopover username={player.username}>{content}</UserPopover>;
-};
-
-const DuelListCard = ({ duel, onView }: Props) => {
+type Props = { duel?: Duel; onView?: () => void; loading?: boolean };
+const DuelListCard = ({ duel, onView, loading = false }: Props) => {
   const { t } = useTranslation();
-  const tone = statusTone(duel.status);
-  const firstScore = duel.playerFirst.balls ?? 0;
-  const secondScore = duel.playerSecond?.balls ?? 0;
-  const scoresAreTied = !duel.playerSecond || firstScore === secondScore;
-  const firstScoreColor = scoresAreTied
-    ? 'text.primary'
-    : firstScore > secondScore
-      ? 'success.main'
-      : 'error.main';
-  const secondScoreColor = scoresAreTied
-    ? 'text.primary'
-    : secondScore > firstScore
-      ? 'success.main'
-      : 'error.main';
-
+  const status = duel?.status ?? 1;
+  const first = duel?.playerFirst.balls ?? 0,
+    second = duel?.playerSecond?.balls ?? 0;
+  const scoreColor = (score: number, other: number) =>
+    !duel?.playerSecond || first === second || status === -1
+      ? 'text.primary'
+      : score > other
+        ? 'success.main'
+        : 'error.main';
+  const statusKey =
+    status === 0
+      ? 'duels.status.running'
+      : status === -1
+        ? 'duels.status.upcoming'
+        : 'duels.status.finished';
   return (
-    <Card
-      sx={(theme) => ({
-        p: { xs: 1.5, sm: 2 },
-        borderRadius: 2,
-        border: 0,
-        borderLeft: '5px solid',
-        borderLeftColor: tone.accent,
-        bgcolor:
-          duel.status === 0
-            ? alpha(theme.palette.success.main, 0.06)
-            : theme.palette.background.paper,
-        transition: 'transform 0.2s ease, box-shadow 0.2s ease',
-        '&:hover': {
-          transform: 'translateY(-2px)',
-          boxShadow: theme.shadows[4],
-        },
-      })}
+    <Box
+      component="article"
+      className="kep-duel-list-row"
+      aria-busy={loading}
+      sx={{
+        ...contentInsetSx,
+        ...interactiveContentSx,
+        display: 'flex',
+        flexDirection: 'column',
+        gap: 2.5,
+        height: '100%',
+      }}
     >
       <Stack
-        direction={{ xs: 'column', md: 'row' }}
-        spacing={{ xs: 1.5, md: 2.5 }}
-        alignItems={{ xs: 'stretch', md: 'center' }}
+        direction="row"
         justifyContent="space-between"
+        alignItems="center"
+        gap={2}
+        sx={{ minHeight: 20 }}
       >
-        <Stack spacing={1} minWidth={0} flex={1}>
-          <Stack direction="row" spacing={1} alignItems="center" flexWrap="wrap" useFlexGap>
-            <Participant player={duel.playerFirst} />
-            <Typography variant="caption" color="text.secondary" fontWeight={800}>
-              VS
-            </Typography>
-            {duel.playerSecond ? (
-              <Participant player={duel.playerSecond} />
-            ) : (
-              <Chip size="small" label="BYE" variant="outlined" />
-            )}
-          </Stack>
-
-          <Stack direction="row" spacing={1} alignItems="center" flexWrap="wrap" useFlexGap>
-            <Chip size="small" label={t(tone.label)} color={tone.color} variant="outlined" />
-            {duel.duelType?.title ? (
-              <Chip size="small" label={duel.duelType.title} variant="soft" />
-            ) : null}
-            {duel.preset?.title ? (
-              <Chip size="small" label={duel.preset.title} variant="outlined" />
-            ) : null}
-            <Stack direction="row" spacing={0.5} alignItems="center">
-              <IconifyIcon
-                icon="mdi:calendar-clock"
-                width={16}
-                height={16}
-                color="text.secondary"
-              />
-              <Typography variant="caption" color="text.secondary">
-                {formatDate(duel.startTime)}
-              </Typography>
-            </Stack>
-          </Stack>
-        </Stack>
-
-        <Stack direction="row" spacing={2} alignItems="center" justifyContent="space-between">
+        {loading ? (
+          <Skeleton width={96} height={20} />
+        ) : (
+          <Typography variant="label" color="text.secondary">
+            {t('duels.duelNumber', { id: duel?.id })}
+          </Typography>
+        )}
+        {loading ? (
+          <Skeleton width={72} height={20} />
+        ) : (
           <Stack
             direction="row"
-            spacing={0.75}
-            alignItems="baseline"
-            minWidth={96}
-            justifyContent="center"
+            gap={0.75}
+            alignItems="center"
+            sx={{
+              color:
+                status === 0 ? 'success.main' : status === -1 ? 'primary.main' : 'text.secondary',
+            }}
           >
-            <Typography variant="h5" fontWeight={800} color={firstScoreColor}>
-              {firstScore}
+            <IconifyIcon
+              icon={
+                status === 1
+                  ? 'mdi:check-circle-outline'
+                  : status === 0
+                    ? 'mdi:circle-small'
+                    : 'mdi:clock-outline'
+              }
+              sx={{ fontSize: 15 }}
+            />
+            <Typography variant="caption">{t(statusKey)}</Typography>
+          </Stack>
+        )}
+      </Stack>
+      <Box
+        sx={{
+          display: 'grid',
+          gridTemplateColumns: 'minmax(0,1fr) auto minmax(0,1fr)',
+          gap: { xs: 1, sm: 2 },
+          alignItems: 'center',
+          minHeight: 60,
+        }}
+      >
+        {loading ? (
+          <Skeleton width="85%" height={48} />
+        ) : (
+          duel && <DuelParticipant player={duel.playerFirst} hideAvatarOnMobile />
+        )}
+        <Stack gap={0.5} alignItems="center" sx={{ minWidth: { xs: 82, sm: 112 } }}>
+          <Stack direction="row" gap={0.75} alignItems="baseline">
+            {loading ? (
+              <Skeleton width={90} height={36} />
+            ) : (
+              <>
+                <Typography
+                  variant="metric"
+                  color={scoreColor(first, second)}
+                  sx={{ fontSize: { xs: 25, sm: 30 } }}
+                >
+                  {status === -1 ? '—' : first}
+                </Typography>
+                <Typography component="span" color="text.disabled" sx={{ fontSize: 16 }}>
+                  :
+                </Typography>
+                <Typography
+                  variant="metric"
+                  color={scoreColor(second, first)}
+                  sx={{ fontSize: { xs: 25, sm: 30 } }}
+                >
+                  {status === -1 ? '—' : second}
+                </Typography>
+              </>
+            )}
+          </Stack>
+          <Typography
+            variant="label"
+            color="text.secondary"
+            sx={{ fontSize: 10, letterSpacing: '.08em' }}
+          >
+            {t('duels.points')}
+          </Typography>
+        </Stack>
+        <Box sx={{ display: 'flex', minWidth: 0, justifyContent: 'flex-end' }}>
+          {loading ? (
+            <Skeleton width="85%" height={48} />
+          ) : duel?.playerSecond ? (
+            <DuelParticipant player={duel.playerSecond} align="end" hideAvatarOnMobile />
+          ) : (
+            <Typography variant="body2" color="text.secondary">
+              {t('duels.noOpponent')}
             </Typography>
-            <Typography variant="body2" color="text.secondary" fontWeight={700}>
-              —
+          )}
+        </Box>
+      </Box>
+      <Box sx={{ minHeight: 42 }}>
+        {loading ? (
+          <>
+            <Skeleton width="70%" height={22} />
+            <Skeleton width="45%" height={18} />
+          </>
+        ) : (
+          <>
+            <Typography
+              component="h3"
+              sx={{
+                fontFamily: 'var(--kep-display-font)',
+                fontSize: 18,
+                lineHeight: 1.35,
+                fontWeight: 500,
+                overflowWrap: 'anywhere',
+              }}
+            >
+              <MixedText>{duel?.preset?.title ?? t('duels.title')}</MixedText>
             </Typography>
-            <Typography variant="h5" fontWeight={800} color={secondScoreColor}>
-              {secondScore}
+            {duel?.duelType?.title && (
+              <Typography
+                variant="caption"
+                color="text.secondary"
+                sx={{ display: 'block', mt: 0.5 }}
+              >
+                {duel.duelType.title}
+              </Typography>
+            )}
+          </>
+        )}
+      </Box>
+      <Stack
+        direction="row"
+        gap={1.5}
+        alignItems="center"
+        justifyContent="space-between"
+        sx={{ mt: 'auto', pt: 2, borderTop: '1px solid var(--kep-line)' }}
+      >
+        {loading ? (
+          <Skeleton width={145} height={20} />
+        ) : (
+          <Stack
+            direction="row"
+            gap={0.75}
+            alignItems="center"
+            sx={{ minWidth: 0, color: 'text.secondary' }}
+          >
+            <IconifyIcon icon="mdi:calendar-outline" sx={{ fontSize: 16, flexShrink: 0 }} />
+            <Typography variant="caption" sx={{ fontVariantNumeric: 'tabular-nums' }}>
+              {duel?.startTime ? formatCalendarDateTime(duel.startTime, duel.startTime) : '—'}
             </Typography>
           </Stack>
-          <Button
-            variant={duel.status === 0 ? 'contained' : 'outlined'}
-            size="small"
-            onClick={onView}
-            endIcon={<IconifyIcon icon="mdi:arrow-right" width={16} height={16} />}
-          >
-            {t('duels.openWorkspace')}
-          </Button>
-        </Stack>
+        )}
+        <Button
+          variant={status === 0 ? 'contained' : 'outlined'}
+          size="small"
+          disabled={loading}
+          onClick={onView}
+          endIcon={<IconifyIcon icon="mdi:arrow-right" />}
+          sx={{ flexShrink: 0 }}
+        >
+          {t('duels.viewDuel')}
+        </Button>
       </Stack>
-    </Card>
+    </Box>
   );
 };
-
+export const DuelListCardSkeleton = () => <DuelListCard loading />;
 export default DuelListCard;

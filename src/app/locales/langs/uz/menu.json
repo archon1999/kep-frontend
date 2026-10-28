@@ -1,5 +1,6 @@
 {
   "menu": {
+    "more": "Yana",
     "home": "Bosh sahifa",
     "practice": "Ishlash",
     "competitions": "Musobaqalar",
@@ -21,6 +22,20 @@
     "account": "Profil",
     "battles": "Janglar",
     "duels": "Duellar",
-    "kepperGame": "KEPPER o‘yini"
+    "kepperGame": "KEPPER o‘yini",
+    "descriptions": {
+      "practice": "Masalalar, amaliy loyihalar va bilim testlari.",
+      "battles": "Savol-javob bellashuvlari va dasturlash duellari.",
+      "competitions": "Contest, arena, turnir va hakatonlar.",
+      "practice-problems": "Masala yeching va kodingizni testlarda tekshiring.",
+      "practice-projects": "Talablar bo‘yicha loyiha tuzing va fayllarini yuboring.",
+      "practice-tests": "Mavzuli savollarga javob bering va natijangizni ko‘ring.",
+      "battles-challenges": "Vaqtli savollarda raqib bilan bellashing.",
+      "battles-duels": "Masalalar to‘plamida boshqa dasturchi bilan bellashing.",
+      "competitions-contests": "Vaqt chegarasi va umumiy natijalar jadvaliga ega dasturlash musobaqalari.",
+      "competitions-arena": "Ketma-ket savol-javob bellashuvlarida arena ochkolarini to‘plang.",
+      "competitions-tournaments": "Duellarda g‘alaba qozonib turnirning keyingi bosqichiga o‘ting.",
+      "competitions-hackathons": "Loyiha topshiriqlarini muddat ichida bajaring."
+    }
   }
 }

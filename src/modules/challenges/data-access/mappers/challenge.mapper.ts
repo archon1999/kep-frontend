@@ -1,5 +1,6 @@
-import { hydrateQuestion, mapQuestion } from 'modules/testing/data-access/mappers/test.mapper.ts';
-import { PageResult } from '../../domain/ports/challenges.repository.ts';
+import { mapQuestion } from 'modules/testing/data-access/mappers/test.mapper.ts';
+import { hydrateQuestion } from 'modules/testing/domain/utils/hydrate-question';
+import { PageResult } from '../../domain/contracts/challenges.repository.ts';
 import {
   Challenge,
   ChallengeCall,
@@ -13,8 +14,10 @@ import {
 
 export const extractList = <T = any>(payload: unknown): T[] => {
   if (Array.isArray(payload)) return payload;
-  if (Array.isArray((payload as { data?: unknown[] } | null)?.data)) return (payload as { data: T[] }).data;
-  if (Array.isArray((payload as { results?: unknown[] } | null)?.results)) return (payload as { results: T[] }).results;
+  if (Array.isArray((payload as { data?: unknown[] } | null)?.data))
+    return (payload as { data: T[] }).data;
+  if (Array.isArray((payload as { results?: unknown[] } | null)?.results))
+    return (payload as { results: T[] }).results;
   return [];
 };
 
@@ -26,7 +29,12 @@ const normalizePlayer = (payload: any): ChallengePlayer => ({
   rating: payload?.rating ?? 0,
   newRating: payload?.newRating ?? payload?.new_rating ?? payload?.rating ?? 0,
   rankTitle: payload?.rankTitle ?? payload?.rank_title ?? '',
-  newRankTitle: payload?.newRankTitle ?? payload?.new_rank_title ?? payload?.rankTitle ?? payload?.rank_title ?? '',
+  newRankTitle:
+    payload?.newRankTitle ??
+    payload?.new_rank_title ??
+    payload?.rankTitle ??
+    payload?.rank_title ??
+    '',
   delta: payload?.delta ?? 0,
 });
 
@@ -46,11 +54,19 @@ export const mapChallenge = (payload: any): Challenge => {
     playerFirst: normalizePlayer(payload?.playerFirst ?? payload?.player_first ?? {}),
     playerSecond: normalizePlayer(payload?.playerSecond ?? payload?.player_second ?? {}),
     finished: payload?.finished ?? payload?.finished_at ?? null,
-    questionsCount: payload?.questionsCount ?? payload?.questions_count ?? payload?.questions?.length ?? 0,
+    questionsCount:
+      payload?.questionsCount ?? payload?.questions_count ?? payload?.questions?.length ?? 0,
     timeSeconds: payload?.timeSeconds ?? payload?.time_seconds ?? 0,
-    remainingTimeSeconds: payload?.remainingTimeSeconds ?? payload?.remaining_time_seconds ?? payload?.timeSeconds ?? payload?.time_seconds ?? 0,
+    remainingTimeSeconds:
+      payload?.remainingTimeSeconds ??
+      payload?.remaining_time_seconds ??
+      payload?.timeSeconds ??
+      payload?.time_seconds ??
+      0,
     rated: Boolean(payload?.rated ?? payload?.is_rated ?? false),
-    questionTimeType: (payload?.questionTimeType ?? payload?.question_time_type ?? ChallengeQuestionTimeType.TimeToOne) as ChallengeQuestionTimeType,
+    questionTimeType: (payload?.questionTimeType ??
+      payload?.question_time_type ??
+      ChallengeQuestionTimeType.TimeToOne) as ChallengeQuestionTimeType,
     nextQuestion: payload?.nextQuestion ? mapChallengeQuestion(payload?.nextQuestion) : undefined,
     status: ChallengeStatus.NotStarted,
   };
@@ -85,7 +101,9 @@ export const mapChallengeCall = (payload: any): ChallengeCall => ({
   rankTitle: payload?.rankTitle ?? payload?.rank_title ?? '',
   timeSeconds: payload?.timeSeconds ?? payload?.time_seconds ?? 0,
   questionsCount: payload?.questionsCount ?? payload?.questions_count ?? 0,
-  questionTimeType: (payload?.questionTimeType ?? payload?.question_time_type ?? ChallengeQuestionTimeType.TimeToOne) as ChallengeQuestionTimeType,
+  questionTimeType: (payload?.questionTimeType ??
+    payload?.question_time_type ??
+    ChallengeQuestionTimeType.TimeToOne) as ChallengeQuestionTimeType,
   chapters: payload?.chapters ?? [],
   created: payload?.created ?? payload?.created_at ?? '',
 });
@@ -95,7 +113,12 @@ export const mapChallengeRating = (payload: any): ChallengeRatingRow => ({
   username: payload?.username ?? payload?.user?.username ?? '',
   avatar: payload?.avatar ?? payload?.user?.avatar ?? undefined,
   rating: payload?.rating ?? 0,
-  rankTitle: payload?.rankTitle ?? payload?.rank_title ?? payload?.user?.rankTitle ?? payload?.user?.rank_title ?? '',
+  rankTitle:
+    payload?.rankTitle ??
+    payload?.rank_title ??
+    payload?.user?.rankTitle ??
+    payload?.user?.rank_title ??
+    '',
   wins: payload?.wins ?? 0,
   draws: payload?.draws ?? 0,
   losses: payload?.losses ?? 0,

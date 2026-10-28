@@ -1,10 +1,10 @@
+import { PageResult } from '../../domain/contracts/kep-cover.repository';
 import {
-  ApiKepCoverSummary,
-  ApiKepCoverVoteState,
-  ApiPageResult,
-} from '../api/kep-cover.client';
-import { KepCoverContestSummary, KepCoverEntry, KepCoverVoteState } from '../../domain/entities/kep-cover.entity';
-import { PageResult } from '../../domain/ports/kep-cover.repository';
+  KepCoverContestSummary,
+  KepCoverEntry,
+  KepCoverVoteState,
+} from '../../domain/entities/kep-cover.entity';
+import { ApiKepCoverSummary, ApiKepCoverVoteState, ApiPageResult } from '../api/kep-cover.client';
 
 const mapEntry = (entry: any): KepCoverEntry => ({
   id: entry.id,

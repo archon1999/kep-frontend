@@ -1,24 +1,27 @@
 import useSWR from 'swr';
 import type { SWRConfiguration } from 'swr';
-import { HttpArenaRepository } from '../data-access/repository/http.arena.repository.ts';
+import { arenaRepository } from '../data-access';
 import {
   ArenaChallengesFilters,
   ArenaListFilters,
   ArenaPlayersFilters,
   ArenaRepository,
-} from '../domain/ports/arena.repository.ts';
-import { Arena } from '../domain/entities/arena.entity.ts';
+} from '../domain/contracts/arena.repository.ts';
+import { ArenaHighlight } from '../domain/entities/arena-highlight.entity.ts';
 import { ArenaPlayerStatistics } from '../domain/entities/arena-player-statistics.entity.ts';
 import { ArenaStatistics } from '../domain/entities/arena-statistics.entity.ts';
-import { ArenaHighlight } from '../domain/entities/arena-highlight.entity.ts';
+import { Arena } from '../domain/entities/arena.entity.ts';
 
-const arenaRepository: ArenaRepository = new HttpArenaRepository();
 const ARENA_HIGHLIGHT_REFRESH_INTERVAL_MS = 60000;
 
 export const useArenasList = (filters?: ArenaListFilters) =>
-  useSWR(filters ? ['arena-list', filters] : ['arena-list'], () => arenaRepository.listArenas(filters), {
-    keepPreviousData: true,
-  });
+  useSWR(
+    filters ? ['arena-list', filters] : ['arena-list'],
+    () => arenaRepository.listArenas(filters),
+    {
+      keepPreviousData: true,
+    },
+  );
 
 export const useArenaDetails = (arenaId?: string | number, options?: SWRConfiguration) =>
   useSWR<Arena>(
@@ -32,10 +35,14 @@ export const useArenaPlayers = (
   filters?: ArenaPlayersFilters,
   options?: SWRConfiguration,
 ) =>
-  useSWR(arenaId ? ['arena-players', arenaId, filters] : null, () => arenaRepository.listPlayers(arenaId!, filters), {
-    keepPreviousData: true,
-    ...options,
-  });
+  useSWR(
+    arenaId ? ['arena-players', arenaId, filters] : null,
+    () => arenaRepository.listPlayers(arenaId!, filters),
+    {
+      keepPreviousData: true,
+      ...options,
+    },
+  );
 
 export const useArenaChallenges = (
   arenaId?: string | number,
@@ -80,10 +87,7 @@ export const useArenaTopPlayers = (arenaId?: string | number, options?: SWRConfi
     options,
   );
 
-export const useArenaStatistics = (
-  arenaId?: string | number,
-  options?: SWRConfiguration,
-) =>
+export const useArenaStatistics = (arenaId?: string | number, options?: SWRConfiguration) =>
   useSWR<ArenaStatistics>(
     arenaId ? ['arena-statistics', arenaId] : null,
     () => arenaRepository.getArenaStatistics(arenaId!),
@@ -111,6 +115,5 @@ export const useArenaNextChallenge = (arenaId?: string | number, enabled = false
     },
   );
 
-export const arenaQueries = {
-  arenaRepository,
-};
+export const getNextArenaChallenge = (...args: Parameters<ArenaRepository['loadNextChallenge']>) =>
+  arenaRepository.loadNextChallenge(...args);

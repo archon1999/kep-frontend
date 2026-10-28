@@ -1,7 +1,9 @@
 import { useTranslation } from 'react-i18next';
-import { Alert, Box, Button, Stack, Typography, alpha } from '@mui/material';
+import { Alert, Button, Stack, Typography } from '@mui/material';
 import { useStaleClientContent, useUnexpectedErrorContent } from 'modules/errors/application';
-import Kepper from 'shared/components/common/Kepper';
+import MixedText from 'shared/components/common/MixedText';
+import PatternArtwork from 'shared/components/common/PatternArtwork';
+import StandalonePage from 'shared/components/sections/common/StandalonePage';
 import type { AppErrorKind } from '../utils/app-error';
 
 interface AppErrorPageProps {
@@ -24,34 +26,9 @@ const AppErrorPage = ({ kind }: AppErrorPageProps) => {
   };
 
   return (
-    <Box
-      sx={(theme) => ({
-        minHeight: '100vh',
-        display: 'flex',
-        alignItems: 'center',
-        justifyContent: 'center',
-        px: { xs: 2, sm: 4 },
-        py: { xs: 3, sm: 6 },
-        background: `linear-gradient(135deg, ${alpha(theme.palette.primary.main, 0.08)} 0%, ${alpha(
-          theme.palette.background.default,
-          0.96,
-        )} 55%, ${alpha(theme.palette.warning.main, isStaleClient ? 0.1 : 0.05)} 100%)`,
-      })}
-    >
-      <Stack
-        spacing={4}
-        sx={(theme) => ({
-          width: '100%',
-          maxWidth: 720,
-          p: { xs: 3, sm: 5 },
-          borderRadius: 6,
-          bgcolor: alpha(theme.palette.background.paper, 0.92),
-          border: `1px solid ${alpha(theme.palette.divider, 0.8)}`,
-          boxShadow: `0 24px 80px ${alpha(theme.palette.common.black, 0.18)}`,
-          backdropFilter: 'blur(16px)',
-        })}
-      >
-        <Kepper pose={isStaleClient ? 'coding' : 'debug'} size={128} />
+    <StandalonePage maxWidth={760}>
+      <Stack spacing={3} sx={{ p: { xs: 3, sm: 5 } }}>
+        <PatternArtwork kind={isStaleClient ? 'loading' : 'error'} sx={{ width: 240 }} />
         <Stack spacing={1.5}>
           <Typography
             variant="overline"
@@ -65,8 +42,16 @@ const AppErrorPage = ({ kind }: AppErrorPageProps) => {
               ? t('errors.staleClientLabel', { defaultValue: 'Yangi versiya mavjud' })
               : t('errors.unexpectedLabel', { defaultValue: 'Frontend xatoligi' })}
           </Typography>
-          <Typography variant="h3" sx={{ fontSize: { xs: '2rem', sm: '2.5rem' } }}>
-            {content.title}
+          <Typography
+            component="h1"
+            variant="h3"
+            sx={{
+              fontFamily: 'var(--kep-display-font)',
+              fontWeight: 500,
+              fontSize: { xs: '2rem', sm: '2.5rem' },
+            }}
+          >
+            <MixedText>{content.title}</MixedText>
           </Typography>
           <Typography variant="body1" sx={{ color: 'text.secondary', maxWidth: 560 }}>
             {content.description}
@@ -94,7 +79,7 @@ const AppErrorPage = ({ kind }: AppErrorPageProps) => {
           )}
         </Stack>
       </Stack>
-    </Box>
+    </StandalonePage>
   );
 };
 

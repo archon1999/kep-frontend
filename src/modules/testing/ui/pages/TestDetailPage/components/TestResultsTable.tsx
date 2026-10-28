@@ -1,8 +1,8 @@
 import { useTranslation } from 'react-i18next';
-import { Link as RouterLink } from 'react-router-dom';
 import {
-  Link,
+  Avatar,
   Skeleton,
+  Stack,
   Table,
   TableBody,
   TableCell,
@@ -11,9 +11,10 @@ import {
   TableRow,
   Typography,
 } from '@mui/material';
-import { getResourceByUsername, resources } from 'app/routes/resources';
-import { TestResultRow } from 'modules/testing/domain/ports/testing.repository';
+import { TestResultRow } from 'modules/testing/domain/contracts/testing.repository';
+import UserPopover from 'modules/users/ui/shared/components/UserPopover';
 import IconifyIcon from 'shared/components/base/IconifyIcon';
+import EmptyState from 'shared/components/common/EmptyState';
 
 interface TestResultsTableProps {
   title: string;
@@ -33,27 +34,17 @@ const TestResultsTable = ({
   const { t } = useTranslation();
 
   if (!loading && !results.length) {
-    return (
-      <Typography variant="body2" color="text.secondary" sx={{ py: 4 }}>
-        {t('tests.noResults')}
-      </Typography>
-    );
+    return <EmptyState compact kind="competitions" title={t('tests.noResults')} />;
   }
 
   return (
     <TableContainer sx={{ borderRadius: 0 }}>
       <Table
-        className="disable-edge-padding"
         size="small"
         aria-label={title}
         sx={{
-          '& .MuiTableCell-head': {
-            bgcolor: 'transparent',
-            color: 'text.secondary',
-            typography: 'caption',
-            fontWeight: 500,
-          },
-          '& tbody tr:last-child td': { borderBottom: 0 },
+          '& .MuiTableCell-root': { px: { xs: 2, md: 3 } },
+          '& tbody tr': { height: 68 },
         }}
       >
         <TableHead>
@@ -95,19 +86,37 @@ const TestResultsTable = ({
             : results.map((result, index) => (
                 <TableRow key={`${result.username}-${result.finished ?? ''}-${index}`}>
                   {ranked ? (
-                    <TableCell sx={{ fontVariantNumeric: 'tabular-nums' }}>{index + 1}</TableCell>
+                    <TableCell>
+                      <Typography
+                        variant="metric"
+                        color={
+                          index === 0
+                            ? 'warning.main'
+                            : index === 2
+                              ? 'warning.dark'
+                              : 'text.secondary'
+                        }
+                        sx={{ fontSize: 20 }}
+                      >
+                        {String(index + 1).padStart(2, '0')}
+                      </Typography>
+                    </TableCell>
                   ) : null}
                   <TableCell sx={{ py: 2, minWidth: 0 }}>
-                    <Link
-                      component={RouterLink}
-                      to={getResourceByUsername(resources.UserProfile, result.username)}
-                      underline="hover"
-                      variant="body2"
-                      color="text.primary"
-                      sx={{ fontWeight: 500, overflowWrap: 'anywhere' }}
-                    >
-                      {result.username}
-                    </Link>
+                    <UserPopover username={result.username}>
+                      <Stack direction="row" gap={1} alignItems="center" sx={{ minWidth: 0 }}>
+                        <Avatar alt="" sx={{ width: 28, height: 28, fontSize: 12 }}>
+                          {result.username[0]}
+                        </Avatar>
+                        <Typography
+                          variant="body2"
+                          color="text.primary"
+                          sx={{ fontWeight: 500, overflowWrap: 'anywhere' }}
+                        >
+                          {result.username}
+                        </Typography>
+                      </Stack>
+                    </UserPopover>
                     {!ranked ? (
                       <Typography
                         variant="caption"
@@ -139,17 +148,22 @@ const TestResultsTable = ({
                     )}
                     <Typography
                       component="span"
-                      variant="body2"
+                      variant="metric"
                       color={
                         questionsCount > 0 && result.result === questionsCount
                           ? 'success.main'
                           : 'text.primary'
                       }
-                      fontWeight={600}
+                      sx={{ fontSize: 22 }}
                     >
                       {result.result ?? '—'}
                     </Typography>
-                    <Typography component="span" variant="body2" color="text.secondary">
+                    <Typography
+                      component="span"
+                      variant="metric"
+                      color="text.secondary"
+                      sx={{ fontSize: 14 }}
+                    >
                       {' / '}
                       {questionsCount}
                     </Typography>

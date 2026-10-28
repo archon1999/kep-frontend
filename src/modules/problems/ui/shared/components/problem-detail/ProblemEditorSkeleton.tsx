@@ -3,7 +3,7 @@ import { Box, Card, Skeleton, Stack } from '@mui/material';
 const ProblemEditorSkeleton = () => {
   return (
     <Card
-      background={0}
+      variant="section"
       sx={{
         height: '100%',
         display: 'flex',
@@ -16,14 +16,14 @@ const ProblemEditorSkeleton = () => {
         sx={{
           flexShrink: 0,
           px: 3,
-          py: 1.5,
+          py: 0.75,
           borderBottom: '1px solid',
           borderColor: 'divider',
           bgcolor: 'background.paper',
         }}
       >
         <Stack direction={{ xs: 'column', md: 'row' }} spacing={1.5} alignItems="center">
-          <Skeleton variant="rounded" width={200} height={42} />
+          <Skeleton variant="rounded" width={200} height={30} />
           <Skeleton variant="rounded" width={140} height={42} />
         </Stack>
       </Box>

@@ -1,11 +1,4 @@
-import { usersApiClient } from '../api/users.client';
-import {
-  mapApiUserDetailToDomain,
-  mapApiUserRatingsToDomain,
-  mapApiUsersListToDomain,
-  mapCountriesToCodes,
-} from '../mappers/user.mapper';
-import { UsersRepository } from '../../domain/ports/users.repository';
+import { UsersRepository } from '../../domain/contracts/users.repository';
 import {
   UserDetails,
   UserRatings,
@@ -13,8 +6,20 @@ import {
   UsersListRequest,
   UsersListResponse,
 } from '../../domain/entities/user.entity';
+import { usersApiClient } from '../api/users.client';
+import {
+  mapApiUserDetailToDomain,
+  mapApiUserRatingsToDomain,
+  mapApiUsersListToDomain,
+  mapCountriesToCodes,
+} from '../mappers/user.mapper';
 
 export class HttpUsersRepository implements UsersRepository {
+  async setFollowing(username: string, following: boolean): Promise<void> {
+    if (following) await usersApiClient.follow(username);
+    else await usersApiClient.unfollow(username);
+  }
+
   async getUsers(params: UsersListRequest): Promise<UsersListResponse> {
     const response = await usersApiClient.list({
       // @ts-ignore

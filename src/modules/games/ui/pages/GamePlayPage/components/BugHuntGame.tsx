@@ -19,11 +19,11 @@ const renderCode = (line: string, selected: boolean) =>
     ? line
     : line.split(codeToken).map((part, index) => {
         const color = /^['"]/.test(part)
-          ? '#a6d9bd'
+          ? 'success.main'
           : /^\d+$/.test(part)
-            ? '#f5c677'
+            ? 'secondary.main'
             : /^(for|in|if|const|let|return|true|false)$/.test(part)
-              ? '#8ab4ff'
+              ? 'primary.main'
               : 'inherit';
         return (
           <Box component="span" key={`${index}-${part}`} sx={{ color }}>
@@ -223,20 +223,20 @@ const BugHuntGame = ({ best, onScore, audio }: MiniGameProps) => {
             sx={{
               px: { xs: 2.25, md: 3 },
               py: 1.25,
-              bgcolor: '#102333',
-              borderRadius: '8px 8px 0 0',
+              bgcolor: 'background.elevation1',
+              borderRadius: 0,
             }}
           >
-            <Typography variant="caption" sx={{ color: '#94b7d0', fontWeight: 700 }}>
+            <Typography variant="caption" sx={{ color: 'text.secondary', fontWeight: 700 }}>
               {t('gamesMinis.common.round', { current: index + 1, total: BUG_HUNT_ROUNDS })}
             </Typography>
             <Stack direction="row" alignItems="center" gap={{ xs: 1, sm: 2 }}>
               {streak > 0 && (
-                <Typography variant="caption" sx={{ color: '#ffc67a', fontWeight: 700 }}>
+                <Typography variant="caption" sx={{ color: 'secondary.main', fontWeight: 700 }}>
                   {t('gamesMinis.bugHunt.streak', { count: streak })}
                 </Typography>
               )}
-              <Typography variant="body2" sx={{ color: '#f6fbff', fontWeight: 700 }}>
+              <Typography variant="body2" sx={{ color: 'text.primary', fontWeight: 700 }}>
                 {t('gamesMinis.common.score', { score: bugHuntScore(correct) })}
               </Typography>
             </Stack>
@@ -245,8 +245,8 @@ const BugHuntGame = ({ best, onScore, audio }: MiniGameProps) => {
             direction={{ xs: 'column', md: 'row' }}
             sx={{
               minHeight: { md: 320 },
-              bgcolor: '#14293b',
-              borderRadius: '0 0 8px 8px',
+              bgcolor: 'background.default',
+              borderRadius: 0,
               overflow: 'hidden',
             }}
           >
@@ -267,7 +267,7 @@ const BugHuntGame = ({ best, onScore, audio }: MiniGameProps) => {
                   fontWeight: 650,
                   lineHeight: 1.36,
                   letterSpacing: '-0.012em',
-                  color: '#f6fbff',
+                  color: 'text.primary',
                 }}
               >
                 {t(`gamesMinis.bugHunt.questions.${question.id}.task`)}
@@ -275,7 +275,7 @@ const BugHuntGame = ({ best, onScore, audio }: MiniGameProps) => {
               <Box
                 sx={{
                   mt: 0.75,
-                  color: '#abc2d4',
+                  color: 'text.secondary',
                   display: {
                     xs:
                       selected === question.buggyLine && question.fix && selectedFix === null
@@ -299,7 +299,7 @@ const BugHuntGame = ({ best, onScore, audio }: MiniGameProps) => {
             <Box sx={{ flex: 1, minWidth: 0, display: 'flex' }}>
               <Box
                 sx={{
-                  bgcolor: '#102333',
+                  bgcolor: 'background.elevation1',
                   borderRadius: 0,
                   overflow: 'hidden',
                   boxShadow: 'none',
@@ -314,17 +314,17 @@ const BugHuntGame = ({ best, onScore, audio }: MiniGameProps) => {
                   sx={{
                     px: 1.5,
                     py: 0.75,
-                    bgcolor: '#102331',
-                    borderBottom: '1px solid #ffffff24',
+                    bgcolor: 'background.elevation2',
+                    borderBottom: '1px solid var(--kep-line)',
                   }}
                 >
-                  <Typography variant="caption" fontWeight={700} sx={{ color: 'grey.400' }}>
+                  <Typography variant="caption" fontWeight={700} sx={{ color: 'text.secondary' }}>
                     {question.language}
                   </Typography>
                   {codeOverflow && (
                     <Typography
                       variant="caption"
-                      sx={{ color: 'grey.400', fontSize: 11, whiteSpace: 'nowrap' }}
+                      sx={{ color: 'text.secondary', fontSize: 11, whiteSpace: 'nowrap' }}
                     >
                       <Box component="span" aria-hidden="true" sx={{ mr: 0.5 }}>
                         ↔
@@ -369,10 +369,12 @@ const BugHuntGame = ({ best, onScore, audio }: MiniGameProps) => {
                             ? 'success.contrastText'
                             : wrongLine
                               ? 'error.contrastText'
-                              : 'common.white',
-                          '&:hover':
-                            selected === null ? { bgcolor: 'rgba(74, 149, 232, 0.22)' } : {},
-                          '&:focus-visible': { outline: '2px solid white', outlineOffset: -2 },
+                              : 'text.primary',
+                          '&:hover': selected === null ? { bgcolor: 'action.hover' } : {},
+                          '&:focus-visible': {
+                            outline: '2px solid var(--kep-logo-ice)',
+                            outlineOffset: -2,
+                          },
                         }}
                       >
                         <Box
@@ -381,8 +383,8 @@ const BugHuntGame = ({ best, onScore, audio }: MiniGameProps) => {
                             fontFamily: 'monospace',
                             px: 1.5,
                             py: 1,
-                            color: correctLine || wrongLine ? 'inherit' : 'grey.400',
-                            borderRight: '1px solid #ffffff28',
+                            color: correctLine || wrongLine ? 'inherit' : 'text.secondary',
+                            borderRight: '1px solid var(--kep-line)',
                             minWidth: 44,
                             textAlign: 'right',
                           }}
@@ -488,13 +490,16 @@ const BugHuntGame = ({ best, onScore, audio }: MiniGameProps) => {
                 ml: { md: '292px' },
                 px: { xs: 2, md: 2.5 },
                 py: 2,
-                bgcolor: '#102333',
-                color: '#f6fbff',
+                bgcolor: 'background.elevation1',
+                color: 'text.primary',
                 borderRadius: 2,
               }}
             >
               <Box role="status">
-                <Typography fontWeight={700} sx={{ color: isCorrect ? '#8be4c6' : '#ffd19b' }}>
+                <Typography
+                  fontWeight={700}
+                  sx={{ color: isCorrect ? 'success.main' : 'warning.main' }}
+                >
                   {t(
                     isCorrect
                       ? 'gamesMinis.bugHunt.correct'
@@ -508,13 +513,13 @@ const BugHuntGame = ({ best, onScore, audio }: MiniGameProps) => {
                     },
                   )}
                 </Typography>
-                <Typography variant="body2" sx={{ mt: 0.5, color: '#c1d4e1' }}>
+                <Typography variant="body2" sx={{ mt: 0.5, color: 'text.secondary' }}>
                   {t(`gamesMinis.bugHunt.questions.${question.id}.explain`)}
                 </Typography>
                 {question.expectedOutput && !isCorrect && (
                   <Typography
                     variant="body2"
-                    sx={{ mt: 0.5, fontFamily: 'monospace', color: '#c1d4e1' }}
+                    sx={{ mt: 0.5, fontFamily: 'monospace', color: 'text.secondary' }}
                   >
                     {t('gamesMinis.bugHunt.expectedOutput', { output: question.expectedOutput })}
                   </Typography>

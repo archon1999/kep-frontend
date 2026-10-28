@@ -36,23 +36,25 @@ window.addEventListener('unhandledrejection', (event) => {
 ReactDOM.createRoot(document.getElementById('root')!).render(
   <React.StrictMode>
     <AppErrorBoundary>
-      <SWRConfiguration>
-        <SettingsProvider>
-          <VisionModeProvider>
-            <ThemeProvider>
-              <DateTimeLocalizationProvider>
-                <NotistackProvider>
-                  <BreakpointsProvider>
-                    <SettingsPanelProvider>
-                      <RouterProvider router={router} />
-                    </SettingsPanelProvider>
-                  </BreakpointsProvider>
-                </NotistackProvider>
-              </DateTimeLocalizationProvider>
-            </ThemeProvider>
-          </VisionModeProvider>
-        </SettingsProvider>
-      </SWRConfiguration>
+      <React.Suspense fallback={null}>
+        <SWRConfiguration>
+          <SettingsProvider>
+            <VisionModeProvider>
+              <ThemeProvider>
+                <DateTimeLocalizationProvider>
+                  <NotistackProvider>
+                    <BreakpointsProvider>
+                      <SettingsPanelProvider>
+                        <RouterProvider router={router} />
+                      </SettingsPanelProvider>
+                    </BreakpointsProvider>
+                  </NotistackProvider>
+                </DateTimeLocalizationProvider>
+              </ThemeProvider>
+            </VisionModeProvider>
+          </SettingsProvider>
+        </SWRConfiguration>
+      </React.Suspense>
     </AppErrorBoundary>
   </React.StrictMode>,
 );

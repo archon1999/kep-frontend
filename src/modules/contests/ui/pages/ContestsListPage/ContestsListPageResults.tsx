@@ -1,12 +1,18 @@
 import { useTranslation } from 'react-i18next';
-import { Box, Grid, Pagination, Skeleton, Stack, Typography } from '@mui/material';
+import { Box, Button, Grid, Stack } from '@mui/material';
 import { ContestListItem } from 'modules/contests/domain/entities/contest.entity';
-import ContestCard from 'modules/contests/ui/shared/components/ContestCard';
+import EmptyState from 'shared/components/common/EmptyState';
+import { RouteListPagination } from 'shared/components/sections/common/FramedListPage';
+import ContestListCard from './components/ContestListCard';
+import ContestListCardSkeleton from './components/ContestListCardSkeleton';
 
 interface ContestsListPageResultsProps {
   contests: ContestListItem[];
   isLoading: boolean;
-  showEmptyState: boolean;
+  hasError: boolean;
+  hasActiveFilters: boolean;
+  onClearFilters: () => void;
+  onRetry: () => void;
   page?: number;
   pagesCount?: number;
   skeletonCount: number;
@@ -16,7 +22,10 @@ interface ContestsListPageResultsProps {
 const ContestsListPageResults = ({
   contests,
   isLoading,
-  showEmptyState,
+  hasError,
+  hasActiveFilters,
+  onClearFilters,
+  onRetry,
   page = 1,
   pagesCount = 0,
   skeletonCount,
@@ -24,54 +33,59 @@ const ContestsListPageResults = ({
 }: ContestsListPageResultsProps) => {
   const { t } = useTranslation();
 
-  if (showEmptyState) {
+  if (hasError) {
     return (
-      <Box
-        sx={{
-          py: 8,
-          px: 3,
-          borderRadius: 3,
-          bgcolor: 'background.paper',
-          textAlign: 'center',
-        }}
-      >
-        <Typography variant="subtitle1" fontWeight={700}>
-          {t('contests.emptyTitle')}
-        </Typography>
-        <Typography variant="body2" color="text.secondary" sx={{ mt: 1 }}>
-          {t('contests.emptySubtitle')}
-        </Typography>
+      <Box role="alert">
+        <EmptyState
+          kind="error"
+          title={t('common.loadFailed')}
+          action={
+            <Button variant="outlined" onClick={onRetry}>
+              {t('common.retry')}
+            </Button>
+          }
+        />
       </Box>
     );
   }
 
+  if (!isLoading && contests.length === 0) {
+    return (
+      <EmptyState
+        kind={hasActiveFilters ? 'search' : 'competitions'}
+        title={t(hasActiveFilters ? 'contests.filteredEmptyTitle' : 'contests.emptyTitle')}
+        description={t(
+          hasActiveFilters ? 'contests.filteredEmptySubtitle' : 'contests.emptySubtitle',
+        )}
+        action={
+          hasActiveFilters ? (
+            <Button variant="outlined" onClick={onClearFilters}>
+              {t('problems.clearFilters')}
+            </Button>
+          ) : undefined
+        }
+        sx={{ borderBottom: 1, borderColor: 'divider' }}
+      />
+    );
+  }
+
   return (
-    <Stack direction="column" spacing={3}>
-      <Grid container spacing={3}>
+    <Stack direction="column" spacing={0}>
+      <Grid container spacing={0}>
         {isLoading
           ? Array.from({ length: skeletonCount }).map((_, idx) => (
               <Grid size={{ xs: 12 }} key={idx}>
-                <Skeleton variant="rounded" height={400} />
+                <ContestListCardSkeleton />
               </Grid>
             ))
           : contests.map((contest) => (
               <Grid size={{ xs: 12 }} key={contest.id}>
-                <ContestCard contest={contest} />
+                <ContestListCard contest={contest} />
               </Grid>
             ))}
       </Grid>
 
-      {pagesCount > 1 ? (
-        <Stack direction="row" justifyContent="center">
-          <Pagination
-            count={pagesCount}
-            page={page}
-            onChange={(_, value) => onPageChange(value)}
-            color="primary"
-            shape="rounded"
-          />
-        </Stack>
-      ) : null}
+      <RouteListPagination count={pagesCount} page={page} onChange={onPageChange} />
     </Stack>
   );
 };

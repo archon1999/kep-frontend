@@ -1,7 +1,7 @@
 import { useTranslation } from 'react-i18next';
 import { Box, Stack, TextField, Typography, useMediaQuery, useTheme } from '@mui/material';
+import { TestPassQuestion } from 'modules/testing/domain/entities/test-pass.types';
 import IconifyIcon from 'shared/components/base/IconifyIcon';
-import { TestPassQuestion } from '../types';
 import QuestionHeader from './QuestionHeader';
 
 interface CodeInputQuestionProps {
@@ -22,7 +22,7 @@ const CodeInputQuestion = ({ question, value, onChange }: CodeInputQuestionProps
         sx={{
           border: '1px solid',
           borderColor: 'divider',
-          borderRadius: 2,
+          borderRadius: 0,
           overflow: 'hidden',
           '&:focus-within': { borderColor: 'primary.main' },
         }}
@@ -34,7 +34,7 @@ const CodeInputQuestion = ({ question, value, onChange }: CodeInputQuestionProps
           sx={{
             px: 2,
             py: 1.25,
-            bgcolor: 'background.elevation1',
+            bgcolor: 'action.hover',
             borderBottom: '1px solid',
             borderColor: 'divider',
           }}
@@ -53,7 +53,7 @@ const CodeInputQuestion = ({ question, value, onChange }: CodeInputQuestionProps
           onChange={(event) => onChange(event.target.value)}
           fullWidth
           multiline
-          minRows={isSmallScreen ? 6 : 8}
+          minRows={isSmallScreen ? 7 : 10}
           maxRows={16}
           sx={{
             '& .MuiOutlinedInput-root .MuiOutlinedInput-notchedOutline': {

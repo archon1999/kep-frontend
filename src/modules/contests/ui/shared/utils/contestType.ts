@@ -1,20 +1,14 @@
-import { ContestType } from 'shared/api/orval/generated/endpoints/index.schemas.ts';
+import { ContestType } from 'modules/contests/domain/enums/contest.enums';
 import { ContestTypeInfo } from '../../../domain/entities/contest.entity.ts';
 
 type ContestTypeValue = ContestType | string | ContestTypeInfo | null | undefined;
 
-const contestTypeCode = (type?: ContestTypeValue) =>
-  typeof type === 'object' ? type?.code : type;
+const contestTypeCode = (type?: ContestTypeValue) => (typeof type === 'object' ? type?.code : type);
 
-const contestTypeInfo = (
-  type?: ContestTypeValue,
-  typeInfo?: ContestTypeInfo | null,
-) => typeInfo ?? (typeof type === 'object' ? type : undefined);
+const contestTypeInfo = (type?: ContestTypeValue, typeInfo?: ContestTypeInfo | null) =>
+  typeInfo ?? (typeof type === 'object' ? type : undefined);
 
-export const contestHasPenalties = (
-  type?: ContestTypeValue,
-  typeInfo?: ContestTypeInfo | null,
-) => {
+export const contestHasPenalties = (type?: ContestTypeValue, typeInfo?: ContestTypeInfo | null) => {
   const info = contestTypeInfo(type, typeInfo);
   if (typeof info?.hasPenalties === 'boolean') return info.hasPenalties;
 
@@ -29,10 +23,7 @@ export const contestHasPenalties = (
   );
 };
 
-export const contestHasBalls = (
-  type?: ContestTypeValue,
-  typeInfo?: ContestTypeInfo | null,
-) => {
+export const contestHasBalls = (type?: ContestTypeValue, typeInfo?: ContestTypeInfo | null) => {
   const info = contestTypeInfo(type, typeInfo);
   if (typeof info?.hasBalls === 'boolean') return info.hasBalls;
 
@@ -68,10 +59,7 @@ export const isAcmStyle = (type?: ContestTypeValue) => {
   );
 };
 
-export const getContestTypeTitle = (
-  type?: ContestTypeValue,
-  typeInfo?: ContestTypeInfo | null,
-) => {
+export const getContestTypeTitle = (type?: ContestTypeValue, typeInfo?: ContestTypeInfo | null) => {
   const info = contestTypeInfo(type, typeInfo);
   return info?.title || contestTypeCode(type) || '';
 };

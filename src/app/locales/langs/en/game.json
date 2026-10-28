@@ -2,13 +2,12 @@
   "game": {
     "chapter": "CODE ISLANDS · 10 CHALLENGES",
     "title": "KEPPER: Code Islands",
-    "subtitle": "Build a program and watch KEPPER bring it to life across floating islands.",
+    "subtitle": "Use commands, loops, and conditions to guide KEPPER through the levels.",
     "worldLabel": "Interactive 3D island with KEPPER",
     "levelSelector": "Choose an island",
     "scrollLevelsBack": "Previous islands",
     "scrollLevelsForward": "Next islands",
     "islandsCleared": "islands cleared",
-    "stageTitle": "Simulation",
     "stageReady": "Ready",
     "stageRunning": "Running",
     "stageCleared": "Cleared",
@@ -87,8 +86,10 @@
     "testCases": "Maps",
     "viewFailedMap": "View map {{scenario}}",
     "editorTitle": "KEPPER's program",
-    "editorCaption": "Commands are executed in order",
-    "modes": { "blocks": "Blocks", "code": "Code" },
+    "modes": {
+      "blocks": "Blocks",
+      "code": "Code"
+    },
     "commands": {
       "move": "Move",
       "left": "Turn left",
@@ -122,7 +123,6 @@
     "allTestsPassed": "All {{count}} map tests passed.",
     "nextLevel": "Next island →",
     "running": "KEPPER is following your commands…",
-    "runTip": "Press Run to test every map. Ctrl+Enter also works.",
     "syntaxError": "Check the command on line {{line}}. Use the game commands shown below the editor.",
     "unavailable": "This command unlocks on a later island.",
     "failures": {
@@ -131,8 +131,6 @@
       "unfinished": "Map {{scenario}}: KEPPER stopped before reaching the portal.",
       "limit": "Map {{scenario}}: the program ran too long. Shorten the loop."
     },
-    "rotateHint": "Drag to rotate · scroll to zoom",
-    "keyboardHint": "Ctrl+Enter to run",
     "localSave": "Progress saved on this device",
     "canvasFallback": "3D view is unavailable in this browser.",
     "tiles": {

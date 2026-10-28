@@ -1,6 +1,5 @@
 import { SxProps } from '@mui/material';
 import { resources } from './resources';
-import { rootPaths } from './route-config';
 
 export interface MenuItem {
   name: string;
@@ -15,32 +14,6 @@ export interface MenuItem {
 }
 
 export const clientMenu: MenuItem[] = [
-  {
-    name: 'Home',
-    key: 'menu.home',
-    path: rootPaths.root,
-    pathName: 'home',
-    icon: 'material-symbols:home-rounded',
-    active: true,
-  },
-  // {
-  //   name: 'Learn',
-  //   key: 'menu.learn',
-  //   pathName: 'learn',
-  //   icon: 'mdi:school-outline',
-  //   active: true,
-  //   items: [
-  //     {
-  //       name: 'Blog',
-  //       key: 'menu.blog',
-  //       path: resources.Blog,
-  //       pathName: 'learn-blog',
-  //       selectionPrefix: resources.Blog,
-  //       icon: 'mdi:notebook-outline',
-  //       active: true,
-  //     },
-  //   ],
-  // },
   {
     name: 'Practice',
     key: 'menu.practice',
@@ -150,49 +123,58 @@ export const clientMenu: MenuItem[] = [
     ],
   },
   {
-    name: 'Users',
-    key: 'menu.users',
-    path: resources.Users,
-    pathName: 'users',
-    selectionPrefix: resources.Users,
-    icon: 'mdi:account-multiple-outline',
+    name: 'More',
+    key: 'menu.more',
+    pathName: 'more',
+    icon: 'mdi:dots-horizontal',
     active: true,
-  },
-  // {
-  //   name: 'Kepcoin',
-  //   key: 'menu.kepcoin',
-  //   path: resources.Kepcoin,
-  //   pathName: 'kepcoin',
-  //   selectionPrefix: resources.Kepcoin,
-  //   icon: 'mdi:currency-usd-circle',
-  //   active: true,
-  // },
-  // {
-  //   name: 'Calendar',
-  //   key: 'menu.calendar',
-  //   path: resources.Calendar,
-  //   pathName: 'calendar',
-  //   selectionPrefix: resources.Calendar,
-  //   icon: 'material-symbols:calendar-month-outline',
-  //   active: true,
-  // },
-  {
-    name: 'Games',
-    key: 'menu.games',
-    path: resources.Games,
-    pathName: 'games',
-    selectionPrefix: resources.Games,
-    icon: 'mdi:gamepad-variant-outline',
-    active: true,
-  },
-  {
-    name: 'Shop',
-    key: 'menu.shop',
-    path: resources.Shop,
-    pathName: 'shop',
-    selectionPrefix: resources.Shop,
-    icon: 'mdi:store-outline',
-    active: true,
+    items: [
+      {
+        name: 'Users',
+        key: 'menu.users',
+        path: resources.Users,
+        pathName: 'users',
+        selectionPrefix: resources.Users,
+        icon: 'mdi:account-multiple-outline',
+        active: true,
+      },
+      {
+        name: 'Games',
+        key: 'menu.games',
+        path: resources.Games,
+        pathName: 'games',
+        selectionPrefix: resources.Games,
+        icon: 'mdi:gamepad-variant-outline',
+        active: true,
+      },
+      {
+        name: 'Kepcoin',
+        key: 'menu.kepcoin',
+        path: resources.Kepcoin,
+        pathName: 'kepcoin',
+        selectionPrefix: resources.Kepcoin,
+        icon: 'mdi:wallet-outline',
+        active: true,
+      },
+      {
+        name: 'Shop',
+        key: 'menu.shop',
+        path: resources.Shop,
+        pathName: 'shop',
+        selectionPrefix: resources.Shop,
+        icon: 'mdi:store-outline',
+        active: true,
+      },
+      {
+        name: 'Calendar',
+        key: 'menu.calendar',
+        path: resources.Calendar,
+        pathName: 'calendar',
+        selectionPrefix: resources.Calendar,
+        icon: 'material-symbols:calendar-month-outline',
+        active: true,
+      },
+    ],
   },
 ];
 

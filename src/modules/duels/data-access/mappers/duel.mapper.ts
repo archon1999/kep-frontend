@@ -1,4 +1,5 @@
 import { mapProblemDetail } from 'modules/problems/data-access/mappers/problems.mapper.ts';
+import { PageResult } from '../../domain/contracts/duels.repository.ts';
 import {
   Duel,
   DuelInvitation,
@@ -7,12 +8,11 @@ import {
   DuelPlayer,
   DuelPreset,
   DuelPresetProblem,
-  DuelTypeInfo,
   DuelProblem,
   DuelResults,
+  DuelTypeInfo,
   DuelsRatingRow,
 } from '../../domain/index.ts';
-import { PageResult } from '../../domain/ports/duels.repository.ts';
 
 const toNumber = (value: any) => (typeof value === 'number' ? value : Number(value) || 0);
 const toNullableNumber = (value: any) =>
@@ -46,7 +46,10 @@ export const mapDuelTypeInfo = (payload: any): DuelTypeInfo => ({
 export const mapDuelPreset = (payload: any): DuelPreset => ({
   id: payload?.id,
   type: payload?.type,
-  typeInfo: payload?.typeInfo || payload?.type_info ? mapDuelTypeInfo(payload?.typeInfo ?? payload?.type_info ?? {}) : undefined,
+  typeInfo:
+    payload?.typeInfo || payload?.type_info
+      ? mapDuelTypeInfo(payload?.typeInfo ?? payload?.type_info ?? {})
+      : undefined,
   difficulty: toNullableNumber(payload?.difficulty),
   difficultyDisplay: payload?.difficultyDisplay ?? payload?.difficulty_display,
   title: payload?.title,
@@ -102,9 +105,18 @@ export const mapDuel = (payload: any): Duel => ({
   viewerRole: payload?.viewerRole ?? payload?.viewer_role ?? 'spectator',
   canSubmitForDuel: Boolean(payload?.canSubmitForDuel ?? payload?.can_submit_for_duel ?? false),
   playerFirst: mapDuelPlayer(payload?.playerFirst ?? payload?.player_first ?? {}),
-  playerSecond: payload?.playerSecond || payload?.player_second ? mapDuelPlayer(payload?.playerSecond ?? payload?.player_second ?? {}) : null,
-  preset: payload?.preset || payload?.duelPreset ? mapDuelPreset(payload?.preset ?? payload?.duelPreset ?? {}) : null,
-  duelType: payload?.duelType || payload?.duel_type ? mapDuelTypeInfo(payload?.duelType ?? payload?.duel_type ?? {}) : null,
+  playerSecond:
+    payload?.playerSecond || payload?.player_second
+      ? mapDuelPlayer(payload?.playerSecond ?? payload?.player_second ?? {})
+      : null,
+  preset:
+    payload?.preset || payload?.duelPreset
+      ? mapDuelPreset(payload?.preset ?? payload?.duelPreset ?? {})
+      : null,
+  duelType:
+    payload?.duelType || payload?.duel_type
+      ? mapDuelTypeInfo(payload?.duelType ?? payload?.duel_type ?? {})
+      : null,
   problems: (payload?.problems ?? []).map(mapDuelProblem),
 });
 
@@ -119,17 +131,17 @@ export const mapDuelsRatingRow = (payload: any): DuelsRatingRow => ({
     username: payload?.user?.username ?? payload?.username ?? '',
     avatar: payload?.user?.avatar ?? payload?.avatar ?? '',
     contestsRating: toNullableNumber(
-      payload?.user?.contestsRating
-        ?? payload?.user?.contests_rating
-        ?? payload?.contestsRating
-        ?? payload?.contests_rating,
+      payload?.user?.contestsRating ??
+        payload?.user?.contests_rating ??
+        payload?.contestsRating ??
+        payload?.contests_rating,
     ),
     contestsRatingTitle:
-      payload?.user?.contestsRatingTitle
-      ?? payload?.user?.contests_rating_title
-      ?? payload?.contestsRatingTitle
-      ?? payload?.contests_rating_title
-      ?? '',
+      payload?.user?.contestsRatingTitle ??
+      payload?.user?.contests_rating_title ??
+      payload?.contestsRatingTitle ??
+      payload?.contests_rating_title ??
+      '',
   },
   duels: toNullableNumber(payload?.duels ?? payload?.count),
   wins: toNullableNumber(payload?.wins),
@@ -176,11 +188,9 @@ export const mapDuelInvitation = (payload: any): DuelInvitation => ({
   duelId: toNullableNumber(payload?.duelId ?? payload?.duel_id),
   isBot: Boolean(payload?.isBot ?? payload?.is_bot ?? false),
   canAccept: Boolean(payload?.canAccept ?? payload?.can_accept ?? false),
-  acceptDisabledReason:
-    payload?.acceptDisabledReason ?? payload?.accept_disabled_reason ?? null,
+  acceptDisabledReason: payload?.acceptDisabledReason ?? payload?.accept_disabled_reason ?? null,
   canConfirm: Boolean(payload?.canConfirm ?? payload?.can_confirm ?? false),
-  confirmDisabledReason:
-    payload?.confirmDisabledReason ?? payload?.confirm_disabled_reason ?? null,
+  confirmDisabledReason: payload?.confirmDisabledReason ?? payload?.confirm_disabled_reason ?? null,
   canCounter: Boolean(payload?.canCounter ?? payload?.can_counter ?? false),
   canReject: Boolean(payload?.canReject ?? payload?.can_reject ?? false),
   canCancel: Boolean(payload?.canCancel ?? payload?.can_cancel ?? false),

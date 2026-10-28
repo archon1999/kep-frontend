@@ -1,0 +1,67 @@
+{
+  "seo": {
+    "home": {
+      "description": "Practice algorithms, solve programming problems, build projects, and take part in contests, duels, and hackathons on KEP.uz."
+    },
+    "problems": {
+      "description": "Solve programming problems on KEP.uz. Filter by topic and difficulty, submit your code, and review the judge results."
+    },
+    "studyPlans": {
+      "description": "Build your algorithm skills with topic-based study plans and a sequence of programming problems on KEP.uz."
+    },
+    "projects": {
+      "description": "Build practical programming projects on KEP.uz, submit project files, and get feedback from automated checks."
+    },
+    "tests": {
+      "description": "Check your programming knowledge with topic-based tests on KEP.uz and review your results."
+    },
+    "contests": {
+      "description": "Browse KEP.uz programming contests, competition schedules, problem sets, standings, and rating changes."
+    },
+    "challenges": {
+      "description": "Compete in question-based challenges on KEP.uz and follow your challenge rating."
+    },
+    "duels": {
+      "description": "Solve a programming problem set against another participant in a KEP.uz duel."
+    },
+    "arena": {
+      "description": "Join timed question-based arenas on KEP.uz and follow the participants and standings."
+    },
+    "tournaments": {
+      "description": "Explore KEP.uz tournaments, follow match brackets, and see competition results."
+    },
+    "hackathons": {
+      "description": "Browse KEP.uz hackathons, explore project requirements, and follow submissions and standings."
+    },
+    "blog": {
+      "description": "Read programming articles, problem explanations, and community posts on the KEP.uz blog."
+    },
+    "users": {
+      "description": "Explore KEP.uz participant profiles, programming activity, achievements, and competition ratings."
+    },
+    "calendar": {
+      "description": "See upcoming programming contests, arenas, and tournaments in the KEP.uz competition calendar."
+    },
+    "games": {
+      "description": "Play logic, memory, and number games on KEP.uz and explore Keppy World."
+    },
+    "kepcoin": {
+      "description": "Learn how Kepcoin rewards work on KEP.uz and find ways to earn them through platform activities."
+    },
+    "shop": {
+      "description": "Explore rewards and items available for Kepcoin in the KEP.uz shop."
+    },
+    "problemsRating": {
+      "description": "Compare KEP.uz participants by their problem-solving rating and explore their public programming profiles."
+    },
+    "contestsRating": {
+      "description": "Explore the KEP.uz contest rating leaderboard and see participants’ results in rated programming competitions."
+    },
+    "challengesRating": {
+      "description": "Explore the KEP.uz challenge leaderboard and compare participants’ ratings in question-based competitions."
+    },
+    "duelsRating": {
+      "description": "Explore the KEP.uz duel leaderboard and compare participants’ ratings in head-to-head programming competitions."
+    }
+  }
+}

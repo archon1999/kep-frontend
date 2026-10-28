@@ -1,14 +1,14 @@
 {
   "tournaments": {
-    "subtitle": "Соревнуйтесь в сетке на выбывание и следите за результатами.",
+    "subtitle": "Побеждайте в дуэлях по программированию, чтобы проходить дальше по турнирной сетке.",
     "countLabel": "{{count}} турниров",
     "emptyTitle": "Турниров пока нет",
-    "emptySubtitle": "Следите за анонсами новых турниров.",
+    "emptySubtitle": "Нет турниров для отображения.",
     "startsOn": "Старт {{date}}",
     "players": "{{count}} участников",
     "type": "Тип: {{type}}",
     "bracketTitle": "Сетка на выбывание",
-    "bracketSubtitle": "Сетка на {{count}} участников с онлайн-результатами.",
+    "bracketSubtitle": "Участников: {{count}}. Победители проходят в следующий раунд.",
     "awaitingOpponent": "Ожидание соперника",
     "awaitingWinner": "Победитель предыдущей дуэли",
     "matchNumber": "Матч №{{number}}",
@@ -24,6 +24,16 @@
       "quarter": "Четвертьфиналы",
       "generic": "1/{{value}} финала"
     },
-    "emptyDescription": "Информация о турнире появится позже."
+    "emptyDescription": "Объявление о турнире ещё не добавлено.",
+    "heroBadge": "На пути к победе",
+    "viewTournament": "Открыть турнир",
+    "formatLabel": "Формат",
+    "startsLabel": "Начало",
+    "playersLabel": "Участники",
+    "loadError": "Не удалось загрузить турниры. Попробуйте ещё раз.",
+    "countLabel_one": "{{count}} турнир",
+    "countLabel_few": "{{count}} турнира",
+    "countLabel_many": "{{count}} турниров",
+    "countLabel_other": "Турниров: {{count}}"
   }
 }

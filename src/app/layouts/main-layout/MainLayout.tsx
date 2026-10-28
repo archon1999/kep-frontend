@@ -6,16 +6,20 @@ import Box from '@mui/material/Box';
 import Toolbar, { ToolbarOwnProps } from '@mui/material/Toolbar';
 import AppBar from 'app/layouts/main-layout/app-bar';
 import Sidenav from 'app/layouts/main-layout/sidenav';
+import { useAuth } from 'app/providers/AuthProvider';
 import { useSettingsContext } from 'app/providers/SettingsProvider';
 import { resources } from 'app/routes/resources';
 import { MenuItem, clientMenu } from 'app/routes/sitemap';
 import { getCanvasFrameStyles } from 'app/theme/styles/surfaceTreatments';
 import { sidenavVibrantStyle } from 'app/theme/styles/vibrantNav';
 import clsx from 'clsx';
+import SimpleBar from 'shared/components/base/SimpleBar';
 import VibrantBackground from 'shared/components/common/VibrantBackground';
 import { mainDrawerWidth } from 'shared/lib/constants';
+import { MainLayoutRoot } from './MainLayout.styles';
 import NavProvider from './NavProvider';
 import Footer from './footer';
+import LandingHeader from './landing/LandingHeader';
 import SidenavDrawerContent from './sidenav/SidenavDrawerContent';
 import SlimSidenav from './sidenav/SlimSidenav';
 import Topnav from './topnav';
@@ -34,6 +38,8 @@ const MainLayout = ({
 }: PropsWithChildren<MainLayoutProps>) => {
   const { t } = useTranslation();
   const isGameDetail = Boolean(useMatch(`${resources.Games}/:gameId`));
+  const isHome = Boolean(useMatch({ path: resources.Home, end: true }));
+  const { currentUser, isAuthLoading } = useAuth();
   const {
     config: {
       drawerWidth,
@@ -64,6 +70,24 @@ const MainLayout = ({
     }
     return 'appbar';
   }, [navigationMenuType, topnavType]);
+
+  if (isHome && !currentUser && !isAuthLoading) {
+    return (
+      <>
+        <a className="kep-landing-skip" href="#main-content">
+          {t('common.accessibility.skipToContent')}
+        </a>
+        <LandingHeader />
+        <main id="main-content" tabIndex={-1} className="kep-landing-main">
+          <div className="kep-landing-rails" aria-hidden="true" />
+          <SimpleBar autoHide={false}>
+            {children}
+            <Footer />
+          </SimpleBar>
+        </main>
+      </>
+    );
+  }
 
   return (
     <Box>
@@ -181,7 +205,6 @@ const MainLayout = ({
               })}
             >
               <Box sx={{ flex: '1 0 auto', minWidth: 0 }}>{children}</Box>
-              {!isGameDetail && <Footer />}
             </Box>
           </Box>
         </NavProvider>
@@ -190,4 +213,9 @@ const MainLayout = ({
   );
 };
 
-export default MainLayout;
+const MainLayoutView = (props: PropsWithChildren<MainLayoutProps>) => (
+  <MainLayoutRoot>
+    <MainLayout {...props} />
+  </MainLayoutRoot>
+);
+export default MainLayoutView;

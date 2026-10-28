@@ -74,7 +74,7 @@ const getSurfaceStyles = (
   const borderAlpha = isDark ? (emphasized ? 0.5 : 0.32) : emphasized ? 0.28 : 0.18;
   const base = {
     position: 'relative' as const,
-    borderRadius: 1.75,
+    borderRadius: 0,
     minHeight: 18,
     border: `1px solid ${alpha(theme.palette.divider, borderAlpha)}`,
     backgroundColor: theme.vars.palette.background.menuElevation1,
@@ -162,14 +162,13 @@ const SurfacePreview = ({
         position: 'relative',
         width: 1,
         height: 1,
-        borderRadius: 2.25,
+        borderRadius: 0,
         overflow: 'hidden',
         border: `1px solid ${alpha(theme.palette.divider, emphasized ? (isDark ? 0.54 : 0.92) : isDark ? 0.34 : 0.55)}`,
         background: `linear-gradient(180deg, ${theme.vars.palette.background.menuElevation1} 0%, ${theme.vars.palette.background.default} 100%)`,
-        boxShadow:
-          isDark
-            ? `0 18px 32px -26px ${alpha(theme.palette.common.black, 0.7)}, inset 0 1px 0 ${alpha(theme.palette.common.white, 0.06)}`
-            : `inset 0 1px 0 ${alpha(theme.palette.common.white, 0.7)}`,
+        boxShadow: isDark
+          ? `0 18px 32px -26px ${alpha(theme.palette.common.black, 0.7)}, inset 0 1px 0 ${alpha(theme.palette.common.white, 0.06)}`
+          : `inset 0 1px 0 ${alpha(theme.palette.common.white, 0.7)}`,
         '&::before': {
           content: '""',
           position: 'absolute',
@@ -230,7 +229,9 @@ const SurfacePreview = ({
           gap: 1,
         }}
       >
-        <Box sx={(theme) => getSurfaceStyles(theme, cardStyle, cardBackground, emphasized, isDark)} />
+        <Box
+          sx={(theme) => getSurfaceStyles(theme, cardStyle, cardBackground, emphasized, isDark)}
+        />
         <Box
           sx={(theme) => ({
             ...getSurfaceStyles(theme, cardStyle, cardBackground, false, isDark),

@@ -1,9 +1,7 @@
 import { ChangeEvent, useMemo } from 'react';
 import { useTranslation } from 'react-i18next';
 import { Box, InputAdornment, Stack } from '@mui/material';
-import { GridSortModel } from '@mui/x-data-grid';
-import { useAuth } from 'app/providers/AuthProvider';
-import { useUsersCountries, useUsersList } from 'modules/users/application/queries';
+import { FiltersState, useUsersListPage } from 'modules/users/application/hooks/useUsersListPage';
 import IconifyIcon from 'shared/components/base/IconifyIcon';
 import AppliedFilters from 'shared/components/common/AppliedFilters';
 import DebouncedTextField from 'shared/components/common/DebouncedTextField';
@@ -15,177 +13,38 @@ import {
 } from 'shared/components/common/FilterDrawer';
 import ResponsiveTabs from 'shared/components/common/ResponsiveTabs';
 import PageHeader from 'shared/components/sections/common/PageHeader';
-import useDebouncedValue from 'shared/hooks/useDebouncedValue';
-import useGridPagination from 'shared/hooks/useGridPagination';
-import useRouteQueryState from 'shared/hooks/useRouteQueryState';
-import { booleanFlagParam, enumParam, numberParam, stringParam } from 'shared/lib/queryParams';
-import { mergePinnedRows } from 'shared/lib/pinnedRows';
 import { getCountryAlpha2, getCountryLabel } from 'shared/utils/country';
 import UsersDataGrid from './UsersDataGrid';
 import UsersHeaderStatistics from './UsersHeaderStatistics';
 import UsersListFilterDrawer, { CountryOption } from './UsersListFilterDrawer';
 
-const tabOrderingMap = {
-  all: '-id',
-  skills: '-skills_rating',
-  activity: '-activity_rating',
-  contests: '-contests_rating__rating',
-  challenges: '-kepcoin',
-};
-
-const sortFieldMap: Record<string, string> = {
-  username: 'id',
-  skillsRating: 'skills_rating',
-  activityRating: 'activity_rating',
-  contestsRating: 'contests_rating__rating',
-  challengesRating: 'challenges_rating__rating',
-  streak: 'streak',
-  kepcoin: 'kepcoin',
-  lastSeen: 'last_seen',
-};
-
-type TabValue = keyof typeof tabOrderingMap;
-
-type FiltersState = {
-  search: string;
-  country: string;
-  ageFrom: string;
-  ageTo: string;
-  hasCountry: boolean;
-  hasCodeforces: boolean;
-  hasTelegram: boolean;
-};
-
-const AGE_RANGE: [number, number] = [0, 100];
 const filterDrawerWidth = DEFAULT_FILTER_DRAWER_WIDTH;
 
-const orderingFieldMap = Object.fromEntries(
-  Object.entries(sortFieldMap).map(([field, ordering]) => [ordering, field]),
-) as Record<string, string>;
-
-type UsersListQueryState = FiltersState & {
-  page: number;
-  tabValue: TabValue;
-  ordering: string;
-};
-
 const UsersListContainer = () => {
+  const {
+    currentUser,
+    state,
+    setField,
+    resetState,
+    paginationModel,
+    onPaginationModelChange,
+    countries,
+    isLoading,
+    isValidating,
+    filters,
+    sortModel,
+    hasActiveFilters,
+    rows,
+    rowCount,
+    handleTabChange,
+    handleClearFilters,
+    handleAgeRangeChange,
+    handleSortModelChange,
+    ageRange,
+  } = useUsersListPage();
+
   const { t, i18n } = useTranslation();
-  const { currentUser } = useAuth();
-  const { state, setField, patchState, resetState } = useRouteQueryState<UsersListQueryState>({
-    defaults: {
-      page: 1,
-      tabValue: 'skills',
-      search: '',
-      country: '',
-      ageFrom: '',
-      ageTo: '',
-      hasCountry: false,
-      hasCodeforces: false,
-      hasTelegram: false,
-      ordering: '',
-    },
-    schema: {
-      page: numberParam({ min: 1 }),
-      tabValue: {
-        ...enumParam(['all', 'skills', 'activity', 'contests', 'challenges'] as const),
-        param: 'tab',
-      },
-      search: {
-        ...stringParam(),
-        param: 'search',
-      },
-      country: {
-        ...stringParam(),
-        param: 'country',
-      },
-      ageFrom: {
-        ...stringParam(),
-        param: 'ageFrom',
-      },
-      ageTo: {
-        ...stringParam(),
-        param: 'ageTo',
-      },
-      hasCountry: {
-        ...booleanFlagParam(),
-        param: 'hasCountry',
-      },
-      hasCodeforces: {
-        ...booleanFlagParam(),
-        param: 'hasCodeforces',
-      },
-      hasTelegram: {
-        ...booleanFlagParam(),
-        param: 'hasTelegram',
-      },
-      ordering: {
-        ...stringParam(),
-        param: 'ordering',
-      },
-    },
-    historyByKey: {
-      tabValue: 'push',
-    },
-    pageResetKeys: [
-      'tabValue',
-      'ordering',
-      'search',
-      'country',
-      'ageFrom',
-      'ageTo',
-      'hasCountry',
-      'hasCodeforces',
-      'hasTelegram',
-    ],
-  });
-  const filters = useMemo(
-    () => ({
-      search: state.search,
-      country: state.country,
-      ageFrom: state.ageFrom,
-      ageTo: state.ageTo,
-      hasCountry: state.hasCountry,
-      hasCodeforces: state.hasCodeforces,
-      hasTelegram: state.hasTelegram,
-    }),
-    [
-      state.ageFrom,
-      state.ageTo,
-      state.country,
-      state.hasCodeforces,
-      state.hasCountry,
-      state.hasTelegram,
-      state.search,
-    ],
-  );
   const filterDrawer = useFilterDrawer();
-  const ageFilters = useMemo(
-    () => ({ ageFrom: filters.ageFrom, ageTo: filters.ageTo }),
-    [filters.ageFrom, filters.ageTo],
-  );
-  const debouncedAgeFilters = useDebouncedValue(ageFilters);
-  const { paginationModel, onPaginationModelChange, pageParams } =
-    useGridPagination({
-      initialPageSize: 10,
-      querySync: {
-        pageKey: 'page',
-        pageSizeKey: 'pageSize',
-      },
-    });
-  const sortModel = useMemo<GridSortModel>(() => {
-    if (!state.ordering) {
-      return [];
-    }
-
-    const isDescending = state.ordering.startsWith('-');
-    const orderingField = isDescending ? state.ordering.slice(1) : state.ordering;
-    const field = orderingFieldMap[orderingField] ?? orderingField;
-
-    return [{ field, sort: isDescending ? 'desc' : 'asc' }];
-  }, [state.ordering]);
-
-  const { data: countries } = useUsersCountries();
 
   const normalizeCountryCode = (code?: string) => code?.trim().toLowerCase() ?? '';
 
@@ -214,63 +73,6 @@ const UsersListContainer = () => {
   const countryOptionsByValue = useMemo(
     () => Object.fromEntries(countryOptions.map((country) => [country.value, country])),
     [countryOptions],
-  );
-
-  const ordering = useMemo(() => {
-    const currentSort = sortModel[0];
-
-    if (currentSort) {
-      const orderingField = sortFieldMap[currentSort.field] ?? currentSort.field;
-      return `${currentSort.sort === 'desc' ? '-' : ''}${orderingField}`;
-    }
-
-    return tabOrderingMap[state.tabValue];
-  }, [sortModel, state.tabValue]);
-
-  const queryParams = useMemo(
-    () => ({
-      page: pageParams.page,
-      pageSize: pageParams.pageSize,
-      ordering,
-      search: filters.search || undefined,
-      country: filters.country || undefined,
-      ageFrom: debouncedAgeFilters.ageFrom ? Number(debouncedAgeFilters.ageFrom) : undefined,
-      ageTo: debouncedAgeFilters.ageTo ? Number(debouncedAgeFilters.ageTo) : undefined,
-      hasCountry: filters.hasCountry || undefined,
-      hasCodeforces: filters.hasCodeforces || undefined,
-      hasTelegram: filters.hasTelegram || undefined,
-      pinCurrentUser: Boolean(currentUser?.username),
-    }),
-    [
-      pageParams.page,
-      pageParams.pageSize,
-      ordering,
-      filters,
-      debouncedAgeFilters,
-      currentUser?.username,
-    ],
-  );
-
-  const { data, isLoading, isValidating } = useUsersList(queryParams);
-
-  const hasActiveFilters = useMemo(
-    () =>
-      Boolean(
-        filters.country ||
-        filters.ageFrom ||
-        filters.ageTo ||
-        filters.hasCountry ||
-        filters.hasCodeforces ||
-        filters.hasTelegram,
-      ),
-    [
-      filters.ageFrom,
-      filters.ageTo,
-      filters.country,
-      filters.hasCodeforces,
-      filters.hasCountry,
-      filters.hasTelegram,
-    ],
   );
 
   const activeFilters = useMemo(() => {
@@ -336,17 +138,6 @@ const UsersListContainer = () => {
     setField,
     t,
   ]);
-
-  const rows = useMemo(
-    () =>
-      mergePinnedRows(data?.data ?? [], data?.pinnedRows, (row) => row.id ?? row.username),
-    [data?.data, data?.pinnedRows],
-  );
-  const rowCount = data?.total ?? 0;
-
-  const handleTabChange = (value: TabValue) => {
-    patchState({ tabValue: value, ordering: '' });
-  };
   const tabs = useMemo(
     () => [
       { label: t('users.tabs.all'), value: 'all' as const },
@@ -363,30 +154,6 @@ const UsersListContainer = () => {
       setField(field, event.target.value);
     };
 
-  const handleClearFilters = () => {
-    resetState(['country', 'ageFrom', 'ageTo', 'hasCountry', 'hasCodeforces', 'hasTelegram']);
-  };
-
-  const handleAgeRangeChange = (value: [number, number]) => {
-    patchState({
-      ageFrom: value[0] === AGE_RANGE[0] ? '' : String(value[0]),
-      ageTo: value[1] === AGE_RANGE[1] ? '' : String(value[1]),
-    });
-  };
-
-  const handleSortModelChange = (model: GridSortModel) => {
-    const currentSort = model[0];
-
-    if (!currentSort) {
-      setField('ordering', '');
-      return;
-    }
-
-    const orderingField = sortFieldMap[currentSort.field] ?? currentSort.field;
-    const orderingPrefix = currentSort.sort === 'desc' ? '-' : '';
-    setField('ordering', `${orderingPrefix}${orderingField}`);
-  };
-
   const columnLabels = {
     user: t('users.columns.user'),
     skills: t('users.columns.skills'),
@@ -399,16 +166,9 @@ const UsersListContainer = () => {
     emptyValue: t('users.emptyValue'),
   } as const;
 
-  const ageRange = useMemo<[number, number]>(
-    () => [
-      filters.ageFrom ? Number(filters.ageFrom) : AGE_RANGE[0],
-      filters.ageTo ? Number(filters.ageTo) : AGE_RANGE[1],
-    ],
-    [filters.ageFrom, filters.ageTo],
-  );
-
   return (
     <FilterDrawerLayout
+      anchorEl={filterDrawer.anchorEl}
       open={filterDrawer.open}
       drawerWidth={filterDrawerWidth}
       drawer={
@@ -439,19 +199,20 @@ const UsersListContainer = () => {
         />
       }
     >
-      <Stack direction="column" height={1} spacing={{ xs: 2.5, md: 3 }}>
+      <Stack direction="column" spacing={0}>
         <PageHeader
           title={t('users.title')}
-          paperSx={{ py: { xs: 2, md: 1.75 } }}
           sx={{ alignItems: { sm: 'center' } }}
           actionComponent={<UsersHeaderStatistics />}
         />
-        <Box sx={{ flex: 1, px: { xs: 3, md: 5 } }}>
+        <Box sx={{ minWidth: 0 }}>
           <>
             <Stack
               sx={{
                 gap: 2,
-                mb: 4,
+                p: 'var(--kep-content-inset)',
+                borderBottom: 1,
+                borderColor: 'divider',
                 alignItems: { md: 'center' },
                 justifyContent: 'space-between',
                 flexDirection: { xs: 'column', sm: 'row' },
@@ -505,7 +266,7 @@ const UsersListContainer = () => {
               </Stack>
             </Stack>
 
-            <Box sx={{ mb: activeFilters.length ? 3 : 0 }}>
+            <Box sx={{ px: 'var(--kep-content-inset)', py: activeFilters.length ? 2 : 0 }}>
               <AppliedFilters
                 filters={activeFilters}
                 summaryLabel={t('problems.appliedFilters', { count: activeFilters.length })}

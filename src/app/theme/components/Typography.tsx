@@ -5,6 +5,9 @@ const Typography: Components<Omit<Theme, 'components'>>['MuiTypography'] = {
   defaultProps: {
     variantMapping: {
       subtitle2: 'p',
+      pixel: 'span',
+      metric: 'span',
+      label: 'span',
     },
   },
 };

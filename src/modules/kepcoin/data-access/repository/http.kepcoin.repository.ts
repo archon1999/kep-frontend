@@ -1,8 +1,11 @@
-import type { KepcoinRepository, KepcoinHistoryParams } from '../../domain/ports/kepcoin.repository';
+import type {
+  KepcoinHistoryParams,
+  KepcoinRepository,
+} from '../../domain/contracts/kepcoin.repository';
 import type {
   AccountConnectionsResponse,
-  KepcoinHistoryResponse,
   KepcoinEarnHistoryItem,
+  KepcoinHistoryResponse,
   KepcoinSpendHistoryItem,
   KepcoinSummary,
   OneTimeTaskStartResponse,
@@ -24,12 +27,16 @@ export class HttpKepcoinRepository implements KepcoinRepository {
     };
   }
 
-  async getEarnHistory(params: KepcoinHistoryParams): Promise<KepcoinHistoryResponse<KepcoinEarnHistoryItem>> {
+  async getEarnHistory(
+    params: KepcoinHistoryParams,
+  ): Promise<KepcoinHistoryResponse<KepcoinEarnHistoryItem>> {
     const response = await kepcoinApiClient.listEarns(params);
     return mapApiEarnHistoryToDomain(response);
   }
 
-  async getSpendHistory(params: KepcoinHistoryParams): Promise<KepcoinHistoryResponse<KepcoinSpendHistoryItem>> {
+  async getSpendHistory(
+    params: KepcoinHistoryParams,
+  ): Promise<KepcoinHistoryResponse<KepcoinSpendHistoryItem>> {
     const response = await kepcoinApiClient.listSpends(params);
     return mapApiSpendHistoryToDomain(response);
   }

@@ -1,3 +1,10 @@
+import {
+  ArenaChallengesFilters,
+  ArenaListFilters,
+  ArenaPlayersFilters,
+  ArenaRepository,
+  PageResult,
+} from '../../domain/contracts/arena.repository.ts';
 import { ArenaChallenge } from '../../domain/entities/arena-challenge.entity.ts';
 import {
   ArenaHighlight,
@@ -8,13 +15,6 @@ import { ArenaPlayerStatistics } from '../../domain/entities/arena-player-statis
 import { ArenaPlayer } from '../../domain/entities/arena-player.entity.ts';
 import { ArenaStatistics } from '../../domain/entities/arena-statistics.entity.ts';
 import { Arena, ArenaStatus } from '../../domain/entities/arena.entity.ts';
-import {
-  ArenaChallengesFilters,
-  ArenaListFilters,
-  ArenaPlayersFilters,
-  ArenaRepository,
-  PageResult,
-} from '../../domain/ports/arena.repository.ts';
 import { arenaApiClient } from '../api/arena.client.ts';
 import { mapArenaPlayer } from '../mappers/arena-player.mapper.ts';
 import { mapArenaPlayerStatistics } from '../mappers/arena.mapper.ts';

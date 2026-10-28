@@ -1,7 +1,21 @@
-import { useEffect, useRef, useState } from 'react';
-import { Alert, Box, LinearProgress, Stack, Typography } from '@mui/material';
+import { useEffect, useId, useRef, useState } from 'react';
+import { useTranslation } from 'react-i18next';
+import {
+  Alert,
+  Box,
+  Button,
+  Dialog,
+  DialogActions,
+  DialogContent,
+  LinearProgress,
+  Stack,
+  TextField,
+  Typography,
+} from '@mui/material';
+import { overlayPaperStyles } from 'app/theme/styles/overlays';
 import * as katex from 'katex';
 import 'katex/dist/katex.min.css';
+import DialogHeader from 'shared/components/common/DialogHeader';
 
 declare global {
   interface Window {
@@ -166,11 +180,34 @@ const RichTextEditor = ({
   enableMathJax = false,
   mathJaxPromptText = 'MathJax formula',
 }: RichTextEditorProps) => {
+  const { t } = useTranslation();
+  const formulaId = useId();
   const hostRef = useRef<HTMLDivElement | null>(null);
   const quillRef = useRef<QuillInstance | null>(null);
   const onChangeRef = useRef(onChange);
   const [isLoading, setIsLoading] = useState(true);
   const [hasLoadError, setHasLoadError] = useState(false);
+  const [formulaIndex, setFormulaIndex] = useState<number | null>(null);
+  const [expression, setExpression] = useState('');
+  const [formulaError, setFormulaError] = useState(false);
+
+  const insertFormula = () => {
+    const quill = quillRef.current;
+    const formula = expression.trim();
+    if (!quill || formulaIndex === null || !formula) return;
+
+    try {
+      katex.renderToString(formula, { throwOnError: true });
+    } catch {
+      setFormulaError(true);
+      return;
+    }
+
+    quill.insertEmbed?.(formulaIndex, 'formula', formula, 'user');
+    quill.insertText?.(formulaIndex + 1, ' ', 'user');
+    quill.setSelection?.(formulaIndex + 2, 0, 'user');
+    setFormulaIndex(null);
+  };
 
   useEffect(() => {
     onChangeRef.current = onChange;
@@ -198,17 +235,12 @@ const RichTextEditor = ({
                     return;
                   }
 
-                  const expression = window.prompt(mathJaxPromptText);
-
-                  if (!expression?.trim()) {
-                    return;
-                  }
-
+                  // Capture the cursor before focus moves to the dialog.
                   const selection = quill.getSelection?.(true);
                   const index = selection?.index ?? Math.max((quill.getLength?.() ?? 1) - 1, 0);
-                  quill.insertEmbed?.(index, 'formula', expression.trim(), 'user');
-                  quill.insertText?.(index + 1, ' ', 'user');
-                  quill.setSelection?.(index + 2, 0, 'user');
+                  setExpression('');
+                  setFormulaError(false);
+                  setFormulaIndex(index);
                 },
               },
             }
@@ -276,16 +308,43 @@ const RichTextEditor = ({
       ) : (
         <Box
           sx={{
-            border: (theme) => `1px solid ${theme.palette.divider}`,
-            borderRadius: 1,
-            overflow: 'hidden',
+            border: (theme) => `1px solid ${theme.vars.palette.divider}`,
+            borderRadius: (theme) => (theme.preset === 'default' ? 0 : 1),
             bgcolor: 'background.paper',
+            '&:focus-within': { borderColor: 'primary.main' },
+            '& .ql-snow': { fontFamily: 'inherit', color: 'text.primary' },
             '& .ql-toolbar.ql-snow': {
               border: 0,
-              borderBottom: (theme) => `1px solid ${theme.palette.divider}`,
+              borderBottom: (theme) => `1px solid ${theme.vars.palette.divider}`,
               px: compact ? 1.25 : 2,
               py: compact ? 1 : 1.5,
               bgcolor: 'background.paper',
+            },
+            '& .ql-toolbar .ql-stroke': { stroke: (theme) => theme.vars.palette.text.secondary },
+            '& .ql-toolbar .ql-fill': { fill: (theme) => theme.vars.palette.text.secondary },
+            '& .ql-toolbar .ql-picker, & .ql-toolbar button': { color: 'text.secondary' },
+            '& .ql-toolbar button:focus-visible, & .ql-picker-label:focus-visible': {
+              outline: (theme) => `2px solid ${theme.vars.palette.primary.main}`,
+              outlineOffset: 2,
+            },
+            '& .ql-picker-label:hover, & .ql-picker-item:hover, & .ql-picker-item.ql-selected': {
+              color: 'primary.main',
+            },
+            '& .ql-picker.ql-expanded .ql-picker-label': {
+              color: 'text.primary',
+              borderColor: 'divider',
+            },
+            '& .ql-picker-options, & .ql-tooltip': (theme) => ({
+              bgcolor: 'background.paper',
+              color: 'text.primary',
+              borderColor: 'divider',
+              boxShadow: theme.shadows[8],
+              ...(theme.preset === 'default' ? overlayPaperStyles(theme) : {}),
+            }),
+            '& .ql-tooltip input[type="text"]': {
+              bgcolor: 'background.default',
+              color: 'text.primary',
+              borderColor: 'divider',
             },
             '& .ql-container.ql-snow': {
               border: 0,
@@ -331,6 +390,48 @@ const RichTextEditor = ({
           {hintText}
         </Typography>
       ) : null}
+      <Dialog
+        open={formulaIndex !== null}
+        onClose={() => setFormulaIndex(null)}
+        maxWidth="sm"
+        fullWidth
+        aria-labelledby={`${formulaId}-title`}
+      >
+        <DialogHeader
+          id={`${formulaId}-title`}
+          title={mathJaxPromptText}
+          onClose={() => setFormulaIndex(null)}
+        />
+        <DialogContent>
+          <TextField
+            autoFocus
+            fullWidth
+            multiline
+            minRows={3}
+            label={mathJaxPromptText}
+            value={expression}
+            onChange={(event) => {
+              setExpression(event.target.value);
+              setFormulaError(false);
+            }}
+            error={formulaError}
+            helperText={formulaError ? t('common.invalidFormula') : undefined}
+          />
+        </DialogContent>
+        <DialogActions>
+          <Button type="button" onClick={() => setFormulaIndex(null)}>
+            {t('common.cancel')}
+          </Button>
+          <Button
+            type="button"
+            variant="contained"
+            disabled={!expression.trim()}
+            onClick={insertFormula}
+          >
+            {t('common.confirm')}
+          </Button>
+        </DialogActions>
+      </Dialog>
     </Stack>
   );
 };

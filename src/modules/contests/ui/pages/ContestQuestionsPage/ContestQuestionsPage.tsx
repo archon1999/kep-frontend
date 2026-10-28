@@ -1,7 +1,6 @@
-import { useMemo, useState } from 'react';
 import { useTranslation } from 'react-i18next';
-import { useParams } from 'react-router-dom';
 import {
+  Alert,
   Box,
   Button,
   Card,
@@ -16,181 +15,114 @@ import {
   TextField,
   Typography,
 } from '@mui/material';
-import { useDocumentTitle } from 'app/providers/DocumentTitleProvider';
-import { responsivePagePaddingSx } from 'shared/lib/styles';
-import { createSafeHtml } from 'shared/lib/safeHtml';
-import {
-  contestsQueries,
-  useContest,
-  useContestProblems,
-  useContestQuestions,
-} from 'modules/contests/application/queries';
-import { ContestQuestion } from 'modules/contests/domain/entities/contest-question.entity';
-import { ContestStatus } from 'modules/contests/domain/entities/contest-status';
+import { useContestQuestionsPage } from 'modules/contests/application/hooks/useContestQuestionsPage';
 import ContestCountdownCard from 'modules/contests/ui/shared/components/ContestCountdownCard';
 import ContestPageHeader from 'modules/contests/ui/shared/components/ContestPageHeader';
+import ContestPageLayout from 'modules/contests/ui/shared/components/ContestPageLayout';
+import IconifyIcon from 'shared/components/base/IconifyIcon';
+import ContestQuestionItem from './components/ContestQuestionItem';
 
 const ContestQuestionsPage = () => {
-  const { id } = useParams<{ id: string }>();
-  const contestId = id ? Number(id) : undefined;
+  const {
+    contest,
+    isContestLoading,
+    contestError,
+    questions,
+    isQuestionsLoading,
+    sectionError,
+    handleSubmit,
+    contestId,
+    canAsk,
+    problemOptions,
+    question,
+    setQuestion,
+    isSubmitting,
+    submitError,
+    selectedProblem,
+    setSelectedProblem,
+  } = useContestQuestionsPage();
+
   const { t } = useTranslation();
 
-  const { data: contest, isLoading: isContestLoading } = useContest(contestId);
-  const canLoadContestProblems = Boolean(contest && contest.statusCode !== ContestStatus.NotStarted);
-  const { data: contestProblems = [] } = useContestProblems(
-    contestId,
-    undefined,
-    canLoadContestProblems,
-  );
-  useDocumentTitle(
-    contest?.title ? 'pageTitles.contestQuestions' : undefined,
-    contest?.title
-      ? {
-          contestTitle: contest.title,
-        }
-      : undefined,
-  );
-  const {
-    data: questions = [],
-    isLoading: isQuestionsLoading,
-    mutate,
-  } = useContestQuestions(contestId);
-
-  const [selectedProblem, setSelectedProblem] = useState<string>('');
-  const [question, setQuestion] = useState<string>('');
-  const canAsk =
-    contest?.userInfo?.isRegistered && contest?.statusCode === ContestStatus.Already;
-
-  const problemOptions = useMemo(
-    () =>
-      contestProblems.map((problem) => ({
-        value: problem.symbol,
-        label: `${problem.symbol}. ${problem.problem.title}`,
-      })),
-    [contestProblems],
-  );
-
-  const handleSubmit = async () => {
-    if (!contest?.id || !question.trim()) return;
-    await contestsQueries.contestsRepository.submitQuestion(contest.id, {
-      problem: selectedProblem || null,
-      question: question.trim(),
-    });
-    setQuestion('');
-    await mutate();
-  };
-
   return (
-    <Stack spacing={3} sx={responsivePagePaddingSx}>
-      <ContestPageHeader
-        title={contest?.title ?? t('contests.questions.title')}
-        contest={contest as any}
-        contestId={contestId}
-        isLoading={isContestLoading}
-      />
-
-      <Grid container spacing={3}>
-        <Grid size={{ xs: 12, md: 8 }}>
-          <Card variant="outlined" sx={{ borderRadius: 3 }}>
-            <CardContent>
-              <Stack spacing={2}>
-                <Typography variant="h6" fontWeight={700}>
-                  {t('contests.questions.title')}
-                </Typography>
-
-                {isQuestionsLoading ? (
-                  <Stack spacing={1.25}>
-                    {Array.from({ length: 3 }).map((_, index) => (
-                      <Box
-                        key={index}
-                        sx={{
-                          p: 2,
-                          borderRadius: 2,
-                          border: '1px solid',
-                          borderColor: 'divider',
-                          bgcolor: 'background.paper',
-                        }}
-                      >
-                        <Stack direction="row" spacing={1} justifyContent="space-between">
-                          <Skeleton variant="text" width="40%" />
-                          <Skeleton variant="text" width="20%" />
-                        </Stack>
-                        <Skeleton variant="text" width="80%" sx={{ mt: 1 }} />
-                        <Skeleton variant="text" width="65%" />
-                      </Box>
-                    ))}
-                  </Stack>
-                ) : questions.length === 0 ? (
-                  <Typography variant="body2" color="text.secondary">
-                    {t('contests.questions.empty')}
-                  </Typography>
-                ) : (
-                  <Stack spacing={1.5}>
-                    {questions.map((item: ContestQuestion, index) => (
-                      <Box
-                        key={`${item.username}-${index}`}
-                        sx={{
-                          p: 2,
-                          borderRadius: 2,
-                          border: '1px solid',
-                          borderColor: 'divider',
-                          bgcolor: 'background.paper',
-                        }}
-                      >
-                        <Stack direction="row" spacing={1} justifyContent="space-between">
-                          <Stack spacing={0.25}>
-                            <Typography variant="subtitle2" fontWeight={700}>
-                              {item.username}
-                            </Typography>
-                            <Typography variant="caption" color="text.secondary">
-                              {item.problemSymbol}. {item.problemTitle}
-                            </Typography>
-                          </Stack>
-                          <Typography variant="caption" color="text.secondary">
-                            {item.created ?? ''}
-                          </Typography>
-                        </Stack>
-
-                        <Typography variant="body2" sx={{ mt: 1, whiteSpace: 'pre-wrap' }}>
-                          {item.question}
-                        </Typography>
-
-                        {item.answer ? (
-                          <Box
-                            sx={{
-                              mt: 1,
-                              p: 1.25,
-                              borderRadius: 1.5,
-                              bgcolor: 'background.neutral',
-                            }}
-                          >
-                            <Typography variant="subtitle2" fontWeight={700}>
-                              {t('contests.questions.answer')}
-                            </Typography>
-                            <Typography
-                              variant="body2"
-                              component="div"
-                              sx={{ mt: 0.5 }}
-                              dangerouslySetInnerHTML={createSafeHtml(item.answer)}
-                            />
-                          </Box>
-                        ) : null}
-                      </Box>
-                    ))}
-                  </Stack>
-                )}
-              </Stack>
-            </CardContent>
-          </Card>
-
-          {canAsk ? (
-            <Card variant="outlined" sx={{ borderRadius: 3, mt: 2 }}>
-              <CardContent>
-                <Stack spacing={2}>
-                  <Typography variant="h6" fontWeight={700}>
+    <ContestPageLayout
+      flush
+      error={contestError || sectionError}
+      header={
+        <ContestPageHeader
+          title={contest?.title ?? t('contests.questions.title')}
+          contest={contest}
+          contestId={contestId}
+          isLoading={isContestLoading}
+        />
+      }
+    >
+      <Grid container spacing={0}>
+        <Grid size={{ xs: 12, md: 8 }} sx={{ minWidth: 0 }}>
+          <Stack
+            direction="row"
+            gap={1.25}
+            alignItems="center"
+            sx={{ p: 3, borderBottom: 1, borderColor: 'divider' }}
+          >
+            <IconifyIcon
+              icon="mdi:comment-question-outline"
+              sx={{ color: 'primary.main', fontSize: 20 }}
+            />
+            <Typography variant="label" component="h2">
+              {t('contests.questions.title')}
+            </Typography>
+            <Typography variant="metric" color="primary.main" sx={{ ml: 'auto', fontSize: 24 }}>
+              {isQuestionsLoading ? '—' : questions.length}
+            </Typography>
+          </Stack>
+          {isQuestionsLoading ? (
+            <Stack sx={{ p: 3 }} gap={2}>
+              {Array.from({ length: 3 }, (_, index) => (
+                <Skeleton key={index} variant="rectangular" height={140} />
+              ))}
+            </Stack>
+          ) : questions.length ? (
+            <Box component="ol" sx={{ m: 0, p: 0 }}>
+              {questions.map((item, index) => (
+                <ContestQuestionItem key={`${item.username}-${index}`} question={item} />
+              ))}
+            </Box>
+          ) : (
+            <Stack alignItems="center" gap={2} sx={{ px: 3, py: 8 }}>
+              <IconifyIcon
+                icon="mdi:comment-outline"
+                sx={{ fontSize: 32, color: 'primary.main' }}
+              />
+              <Typography color="text.secondary">{t('contests.questions.empty')}</Typography>
+            </Stack>
+          )}
+        </Grid>
+        <Grid
+          size={{ xs: 12, md: 4 }}
+          sx={{
+            minWidth: 0,
+            borderLeft: { md: '1px solid var(--kep-line)' },
+            borderTop: { xs: '1px solid var(--kep-line)', md: 0 },
+          }}
+        >
+          <ContestCountdownCard contest={contest} isLoading={isContestLoading} />
+          {canAsk && (
+            <Card variant="section">
+              <CardContent sx={{ p: 3 }}>
+                <Stack
+                  component="form"
+                  onSubmit={(event) => {
+                    event.preventDefault();
+                    void handleSubmit();
+                  }}
+                  spacing={2.5}
+                >
+                  <Typography variant="label" component="h2">
                     {t('contests.questions.ask')}
                   </Typography>
-                  <FormControl variant="standard" size="small" fullWidth>
+                  {submitError && <Alert severity="error">{t('contests.detail.dataError')}</Alert>}
+                  <FormControl variant="outlined" size="small" fullWidth>
                     <InputLabel id="contest-question-problem-label" shrink>
                       {t('contests.questions.problem')}
                     </InputLabel>
@@ -200,6 +132,7 @@ const ContestQuestionsPage = () => {
                       value={selectedProblem}
                       onChange={(event) => setSelectedProblem(event.target.value)}
                       displayEmpty
+                      MenuProps={{ slotProps: { paper: { variant: 'framed' } } }}
                     >
                       <MenuItem value="">{t('contests.questions.anyProblem')}</MenuItem>
                       {problemOptions.map((option) => (
@@ -209,29 +142,29 @@ const ContestQuestionsPage = () => {
                       ))}
                     </Select>
                   </FormControl>
-
                   <TextField
+                    variant="outlined"
                     label={t('contests.questions.question')}
                     multiline
-                    minRows={4}
+                    minRows={5}
                     value={question}
                     onChange={(event) => setQuestion(event.target.value)}
                   />
-
-                  <Button variant="contained" onClick={handleSubmit} disabled={!question.trim()}>
+                  <Button
+                    type="submit"
+                    variant="contained"
+                    disabled={isSubmitting || !question.trim()}
+                    endIcon={<IconifyIcon icon="mdi:arrow-top-right" />}
+                  >
                     {t('contests.questions.submit')}
                   </Button>
                 </Stack>
               </CardContent>
             </Card>
-          ) : null}
-        </Grid>
-
-        <Grid size={{ xs: 12, md: 4 }}>
-          <ContestCountdownCard contest={contest} isLoading={isContestLoading} />
+          )}
         </Grid>
       </Grid>
-    </Stack>
+    </ContestPageLayout>
   );
 };
 

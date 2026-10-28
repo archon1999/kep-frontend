@@ -2,34 +2,34 @@
   <g clip-path="url(#clip0_1246_654)">
     <path
             d="M695.348 250.014L389.334 556.027L278.057 556.027L278.057 444.75L584.07 138.736L695.348 138.736L695.348 250.014Z"
-            fill="url(#paint0_linear_1246_654)"/>
+            fill="url(#kep-brand-gradient)"/>
     <path
             d="M556.029 111.139L55.2802 611.888L-0.358614 556.249L-0.35861 444.971L444.752 -0.13878L556.029 -0.138781L556.029 55.5L556.029 111.139Z"
-            fill="url(#paint1_linear_1246_654)"/>
+            fill="url(#kep-brand-gradient)"/>
     <g filter="url(#filter0_d_1246_654)">
       <path
               d="M695.349 138.734L1000.65 445.141L1000.65 555.308L889.367 555.308L584.071 254.697L584.071 138.734L695.349 138.734Z"
-              fill="url(#paint2_linear_1246_654)"/>
+              fill="url(#kep-brand-gradient)"/>
       <path
               d="M695.349 138.734L1000.65 445.141L1000.65 555.308L889.367 555.308L584.071 254.697L584.071 138.734L695.349 138.734Z"
-              fill="url(#paint3_linear_1246_654)" fill-opacity="0.5"/>
+              fill="url(#kep-brand-gradient)" fill-opacity="0.5"/>
     </g>
     <g filter="url(#filter1_d_1246_654)">
       <path d="M1001.36 556.025L806.627 750.761L695.35 750.761L695.35 639.484L890.086 444.748H1001.36L1001.36 556.025Z"
-            fill="url(#paint4_linear_1246_654)"/>
+            fill="url(#kep-brand-gradient)"/>
     </g>
     <g filter="url(#filter2_d_1246_654)">
       <path d="M556.251 389.109L806.626 639.485L806.626 750.762L693.002 750.762L444.973 500.387L556.251 389.109Z"
-            fill="url(#paint5_linear_1246_654)"/>
+            fill="url(#kep-brand-gradient)"/>
       <path d="M556.251 389.109L806.626 639.485L806.626 750.762L693.002 750.762L444.973 500.387L556.251 389.109Z"
-            fill="url(#paint6_linear_1246_654)" fill-opacity="0.4"/>
+            fill="url(#kep-brand-gradient)" fill-opacity="0.4"/>
     </g>
     <g filter="url(#filter3_d_1246_654)">
       <path d="M444.975 1001.13L-0.13566 556.024L-0.135617 444.747L111.142 444.747L556.252 889.857V1001.13H444.975Z"
-            fill="url(#paint7_linear_1246_654)"/>
+            fill="url(#kep-brand-gradient)"/>
     </g>
   </g>
-  <defs>
+  <defs><linearGradient id="kep-brand-gradient" x1="0" y1="0" x2="1000" y2="1000" gradientUnits="userSpaceOnUse"><stop stop-color="#eacc9c"/><stop offset="0.48" stop-color="#c8d5c1"/><stop offset="1" stop-color="#93d7e2"/></linearGradient>
     <filter id="filter0_d_1246_654" x="570.071" y="132.734" width="436.574" height="436.574"
             filterUnits="userSpaceOnUse" color-interpolation-filters="sRGB">
       <feFlood flood-opacity="0" result="BackgroundImageFix"/>

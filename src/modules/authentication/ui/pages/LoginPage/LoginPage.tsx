@@ -1,20 +1,18 @@
-import { useCallback, useEffect, useMemo } from 'react';
-import { useLocation, useNavigate, useSearchParams } from 'react-router';
-import { toast } from 'sonner';
-import { defaultAuthCredentials } from 'app/config.ts';
-import { useAuth } from 'app/providers/AuthProvider';
-import { authPaths, rootPaths } from 'app/routes/route-config';
-import LoginForm, { type LoginFormValues } from 'shared/components/sections/authentications/default/LoginForm';
+import { useCallback, useMemo } from 'react';
 import { useTranslation } from 'react-i18next';
-import { useLoginUser } from 'modules/authentication/application';
+import { defaultAuthCredentials } from 'app/config.ts';
+import { authPaths, rootPaths } from 'app/routes/route-config';
+import { useLoginPage } from 'modules/authentication/application/hooks/useLoginPage';
+import LoginForm, {
+  type LoginFormValues,
+} from 'shared/components/sections/authentications/default/LoginForm';
+import { toast } from 'sonner';
 
 const LoginPage = () => {
+  const { setCurrentUser, refreshCurrentUser, navigate, location, searchParams, login } =
+    useLoginPage();
+
   const { t } = useTranslation();
-  const { setCurrentUser, refreshCurrentUser } = useAuth();
-  const navigate = useNavigate();
-  const location = useLocation();
-  const [searchParams] = useSearchParams();
-  const { trigger: login } = useLoginUser();
 
   const normalizeReturnUrl = useCallback((url?: string | null) => {
     const fallbackUrl = rootPaths.root;
@@ -55,33 +53,6 @@ const LoginPage = () => {
     return normalizeReturnUrl(searchParamUrl ?? stateUrl);
   }, [location.state, normalizeReturnUrl, searchParams]);
 
-  useEffect(() => {
-    const socialAuthError = searchParams.get('socialAuthError');
-
-    if (!socialAuthError) {
-      return;
-    }
-
-    const messageKey = `auth.socialErrors.${socialAuthError}`;
-    const fallbackMessage = t('auth.socialErrors.unknown');
-    const message = t(messageKey, { defaultValue: fallbackMessage });
-
-    toast.error(message);
-
-    const nextParams = new URLSearchParams(searchParams);
-    nextParams.delete('socialAuthError');
-    nextParams.delete('backend');
-    nextParams.delete('message');
-
-    navigate(
-      {
-        pathname: location.pathname,
-        search: nextParams.toString() ? `?${nextParams.toString()}` : '',
-      },
-      { replace: true },
-    );
-  }, [location.pathname, navigate, searchParams, t]);
-
   const handleLogin = async (data: LoginFormValues) => {
     try {
       const res = await login(data);
@@ -100,7 +71,8 @@ const LoginPage = () => {
         navigate(returnUrl, { replace: true });
       }
     } catch (error: any) {
-      const errorMessage = error?.data?.message || (error as Error)?.message || t('auth.loginError');
+      const errorMessage =
+        error?.data?.message || (error as Error)?.message || t('auth.loginError');
       toast.error(errorMessage);
       throw new Error(errorMessage);
     }

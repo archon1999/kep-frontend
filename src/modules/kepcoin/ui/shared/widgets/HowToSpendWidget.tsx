@@ -1,8 +1,8 @@
 import { useTranslation } from 'react-i18next';
 import { Link as RouterLink } from 'react-router-dom';
-import { Button, Card, CardContent, Divider, Stack, Typography } from '@mui/material';
-import { alpha } from '@mui/material/styles';
+import { Box, Button, Divider, Stack, Typography } from '@mui/material';
 import { getResourceById, resources } from 'app/routes/resources';
+import { contentInsetSx } from 'app/theme/styles/content';
 import KepcoinValue from 'shared/components/common/KepcoinValue';
 
 interface HowToSpendWidgetProps {
@@ -65,40 +65,36 @@ const HowToSpendWidget = ({ balance: _balance = 0 }: HowToSpendWidgetProps) => {
   ];
 
   return (
-    <Card
-      sx={{
-        borderRadius: 2,
-        border: (theme) => `1px solid ${alpha(theme.palette.primary.main, 0.08)}`,
-        boxShadow: 'none',
-      }}
-    >
-      <CardContent sx={{ p: { xs: 2, md: 3 } }}>
+    <Box>
+      <Box>
         <Stack direction="column" spacing={2}>
-          <Typography variant="h6" fontWeight={700}>
-            {t('kepcoinPage.howToSpend.title')}
-          </Typography>
           <Stack
             direction="column"
-            spacing={1.5}
+            spacing={2}
+            sx={contentInsetSx}
             divider={<Divider flexItem sx={{ borderColor: 'divider' }} />}
           >
             {items.map((item, index) => (
               <Stack
                 key={`${item.value}-${index}`}
-                direction={{ xs: 'column', md: 'row' }}
+                direction="column"
                 spacing={2}
-                alignItems={{ xs: 'flex-start', md: 'center' }}
+                alignItems="flex-start"
                 justifyContent="space-between"
               >
-                <Stack direction="row" spacing={2} alignItems="center" flex={1}>
+                <Stack direction="row" spacing={2} alignItems="baseline" sx={{ width: 1 }}>
                   <KepcoinValue
                     label={item.value}
                     iconSize={18}
                     spacing={0.75}
-                    textVariant="body2"
+                    textVariant="metric"
                     fontWeight={700}
                     color="text.primary"
-                    sx={{ minWidth: 120 }}
+                    sx={{
+                      minWidth: 110,
+                      whiteSpace: 'nowrap',
+                      '& .MuiTypography-root': { fontSize: 18 },
+                    }}
                   />
                   <Typography variant="body2" color="text.secondary">
                     {item.label}
@@ -109,7 +105,7 @@ const HowToSpendWidget = ({ balance: _balance = 0 }: HowToSpendWidgetProps) => {
                   component={RouterLink}
                   to={item.to}
                   size="small"
-                  variant="outlined"
+                  variant="text"
                   sx={actionButtonSx}
                 >
                   {item.action}
@@ -118,8 +114,8 @@ const HowToSpendWidget = ({ balance: _balance = 0 }: HowToSpendWidgetProps) => {
             ))}
           </Stack>
         </Stack>
-      </CardContent>
-    </Card>
+      </Box>
+    </Box>
   );
 };
 

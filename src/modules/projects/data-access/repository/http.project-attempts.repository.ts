@@ -1,10 +1,20 @@
+import { ProjectAttemptsRepository } from '../../domain/contracts/project-attempts.repository';
+import {
+  ProjectAttempt,
+  ProjectAttemptLog,
+  ProjectAttemptsPage,
+} from '../../domain/entities/project.entity';
 import { projectsApiClient } from '../api/projects.client.ts';
 import { mapAttemptLogToDomain, mapAttemptsPageToDomain } from '../mappers/project.mapper.ts';
-import { ProjectAttempt, ProjectAttemptLog, ProjectAttemptsPage } from '../../domain/entities/project.entity';
-import { ProjectAttemptsRepository } from '../../domain/ports/project-attempts.repository';
 
 export class HttpProjectAttemptsRepository implements ProjectAttemptsRepository {
-  async list(params: { projectId?: number; page?: number; pageSize?: number; hackathonId?: number; username?: string }): Promise<ProjectAttemptsPage> {
+  async list(params: {
+    projectId?: number;
+    page?: number;
+    pageSize?: number;
+    hackathonId?: number;
+    username?: string;
+  }): Promise<ProjectAttemptsPage> {
     const response = await projectsApiClient.listAttempts({
       project_id: params.projectId ? params.projectId.toString() : undefined,
       username: params.username,
@@ -17,7 +27,12 @@ export class HttpProjectAttemptsRepository implements ProjectAttemptsRepository 
     return mapAttemptsPageToDomain(response);
   }
 
-  async listAll(params: { projectId?: number; pageSize?: number; hackathonId?: number; username?: string }): Promise<ProjectAttempt[]> {
+  async listAll(params: {
+    projectId?: number;
+    pageSize?: number;
+    hackathonId?: number;
+    username?: string;
+  }): Promise<ProjectAttempt[]> {
     const pageSize = params.pageSize ?? 50;
     const attempts: ProjectAttempt[] = [];
     let page = 1;
@@ -43,8 +58,20 @@ export class HttpProjectAttemptsRepository implements ProjectAttemptsRepository 
     return mapAttemptLogToDomain(response);
   }
 
-  async submitAttempt(params: { slug: string; technology: string; file: File; hackathonId?: number; projectSymbol?: string }): Promise<void> {
-    await projectsApiClient.submitAttempt(params.slug, params.technology, params.file, params.hackathonId, params.projectSymbol);
+  async submitAttempt(params: {
+    slug: string;
+    technology: string;
+    file: File;
+    hackathonId?: number;
+    projectSymbol?: string;
+  }): Promise<void> {
+    await projectsApiClient.submitAttempt(
+      params.slug,
+      params.technology,
+      params.file,
+      params.hackathonId,
+      params.projectSymbol,
+    );
   }
 
   async rerun(attemptId: number): Promise<void> {

@@ -1,29 +1,15 @@
 import { ChangeEvent, MouseEvent, useMemo, useState } from 'react';
 import { useTranslation } from 'react-i18next';
-import { Link as RouterLink } from 'react-router';
-import {
-  Box,
-  Button,
-  InputAdornment,
-  Menu,
-  MenuItem,
-  Stack,
-  TextField,
-  Typography,
-} from '@mui/material';
+import { Box, Button, InputAdornment, MenuItem, Stack, TextField, Typography } from '@mui/material';
+import type { BlogFilterState } from 'modules/blog/domain/entities/blog-filter.types';
 import { BlogTopic } from 'modules/blog/domain/entities/blog.entity';
 import KepIcon from 'shared/components/base/KepIcon';
-import FilterButton from 'shared/components/common/FilterButton';
-import ResponsiveTabs from 'shared/components/common/ResponsiveTabs';
 import DebouncedTextField from 'shared/components/common/DebouncedTextField';
-import { cssVarRgba } from 'shared/lib/utils';
+import FilterButton from 'shared/components/common/FilterButton';
+import FilterPopover from 'shared/components/common/FilterPopover';
+import ResponsiveTabs from 'shared/components/common/ResponsiveTabs';
 
-export interface BlogFilterState {
-  title: string;
-  author: string;
-  orderBy: string;
-  topic: string;
-}
+export type { BlogFilterState } from 'modules/blog/domain/entities/blog-filter.types';
 
 interface BlogFiltersProps {
   filters: BlogFilterState;
@@ -33,8 +19,6 @@ interface BlogFiltersProps {
   hasActiveFilters?: boolean;
   onReset?: () => void;
   totalPosts?: number;
-  createHref?: string;
-  createLabel?: string;
 }
 
 const BlogFilters = ({
@@ -45,8 +29,6 @@ const BlogFilters = ({
   hasActiveFilters = false,
   onReset,
   totalPosts,
-  createHref,
-  createLabel,
 }: BlogFiltersProps) => {
   const { t } = useTranslation();
   const [filtersAnchorEl, setFiltersAnchorEl] = useState<null | HTMLElement>(null);
@@ -76,149 +58,85 @@ const BlogFilters = ({
       onChange({ ...filters, [field]: event.target.value ?? '' });
 
   return (
-    <Stack spacing={1.5}>
+    <Box>
       <Stack
-        sx={{
-          gap: 2,
-          alignItems: { lg: 'center' },
-          justifyContent: 'space-between',
-          flexDirection: { xs: 'column', lg: 'row' },
-        }}
+        direction="row"
+        alignItems="center"
+        flexWrap="wrap"
+        gap={1.5}
+        sx={{ px: 'var(--kep-content-inset)', py: 2, borderBottom: 1, borderColor: 'divider' }}
       >
-        <Box sx={{ minWidth: 0, width: { xs: 1, lg: 'auto' } }}>
-          <ResponsiveTabs
-            value={filters.topic}
-            onChange={handleTopicChange}
-            ariaLabel="blog topics"
-            items={[
-              {
-                value: '',
-                label: t('blog.topics.all', { defaultValue: 'All' }),
-                tabProps: { sx: { whiteSpace: 'nowrap' } },
-              },
-              ...topics.map((topic) => ({
-                value: String(topic.id),
-                label: topic.title,
-                tabProps: { sx: { whiteSpace: 'nowrap' } },
-              })),
-            ]}
-            tabsProps={{
-              variant: 'scrollable',
-              scrollButtons: true,
-              allowScrollButtonsMobile: true,
-              sx: {
-                minHeight: 0,
-                '& .MuiTabs-indicator': { display: 'none' },
-                '& .MuiTab-root': {
-                  minHeight: 0,
-                  minWidth: 'fit-content',
-                  mr: 1,
-                  px: 2,
-                  py: 1.25,
-                  borderRadius: 999,
-                  textTransform: 'none',
-                  border: (theme) => `1px solid ${theme.vars.palette.divider}`,
-                  backgroundColor: 'background.paper',
-                  fontWeight: 700,
-                  color: 'text.primary',
-                },
-                '& .Mui-selected': {
-                  color: 'primary.main !important',
-                  borderColor: 'primary.main',
-                  backgroundColor: (theme) =>
-                    cssVarRgba(theme.vars.palette.primary.mainChannel, 0.08),
-                },
-              },
-            }}
-          />
-        </Box>
-
-        <Stack
-          direction={{ xs: 'column', sm: 'row' }}
-          spacing={1}
-          sx={{ width: { xs: 1, lg: 'auto' } }}
-        >
-          <FilterButton
-            id="blog-filters-button"
-            onClick={handleFiltersToggle}
-            aria-haspopup="true"
-            aria-expanded={filtersOpen ? 'true' : undefined}
-            aria-controls={filtersOpen ? 'blog-filters-menu' : undefined}
-            label={t('blog.filtersTitle')}
-            badgeContent={advancedFiltersCount}
-            containerSx={{ width: { xs: 1, sm: 'auto' } }}
-            sx={{ width: { xs: 1, sm: 'auto' } }}
-          />
-
-          <DebouncedTextField
-            type="search"
-            variant="filled"
-            fullWidth
-            value={filters.title}
-            onValueChange={handleSearchChange}
-            placeholder={t('common.searchPlaceholder')}
-            slotProps={{
-              input: {
-                startAdornment: (
-                  <InputAdornment position="start">
-                    <KepIcon name="search" fontSize={18} />
-                  </InputAdornment>
-                ),
-              },
-            }}
-            sx={{
-              maxWidth: { sm: 240, md: 280 },
-              flexGrow: { xs: 1, sm: 0 },
-            }}
-          />
-
-          {createHref && createLabel ? (
-            <Button
-              component={RouterLink}
-              to={createHref}
-              variant="contained"
-              startIcon={<KepIcon name="upload" fontSize={18} />}
-            >
-              {createLabel}
-            </Button>
-          ) : null}
-        </Stack>
+        <DebouncedTextField
+          type="search"
+          size="small"
+          variant="outlined"
+          value={filters.title}
+          onValueChange={handleSearchChange}
+          placeholder={t('blog.searchPlaceholder')}
+          slotProps={{
+            htmlInput: { 'aria-label': t('blog.searchPlaceholder') },
+            input: {
+              startAdornment: (
+                <InputAdornment position="start">
+                  <KepIcon name="search" fontSize={18} />
+                </InputAdornment>
+              ),
+            },
+          }}
+          sx={{ width: { xs: '100%', sm: 280 } }}
+        />
+        <FilterButton
+          id="blog-filters-button"
+          onClick={handleFiltersToggle}
+          aria-haspopup="dialog"
+          aria-expanded={filtersOpen}
+          aria-controls={filtersOpen ? 'blog-filters-menu' : undefined}
+          label={t('blog.filtersTitle')}
+          badgeContent={advancedFiltersCount}
+        />
+        {hasActiveFilters && (
+          <Button variant="text" size="small" onClick={onReset}>
+            {t('blog.clearFilters')}
+          </Button>
+        )}
+        {typeof totalPosts === 'number' && (
+          <Typography variant="caption" color="text.secondary" sx={{ ml: 'auto' }}>
+            {t('blog.resultsCount', { count: totalPosts })}
+          </Typography>
+        )}
       </Stack>
-
-      {typeof totalPosts === 'number' ? (
-        <Typography variant="body2" color="text.secondary">
-          {t('blog.resultsCount', { count: totalPosts })}
-        </Typography>
-      ) : null}
-
-      <Menu
+      <Box sx={{ px: 'var(--kep-content-inset)', borderBottom: 1, borderColor: 'divider' }}>
+        <ResponsiveTabs
+          value={filters.topic}
+          onChange={handleTopicChange}
+          ariaLabel={t('blog.topics.title')}
+          items={[
+            { value: '', label: t('blog.topics.all') },
+            ...topics.map((topic) => ({ value: String(topic.id), label: topic.title })),
+          ]}
+          tabsProps={{
+            variant: 'scrollable',
+            scrollButtons: 'auto',
+            allowScrollButtonsMobile: true,
+            sx: {
+              minHeight: 52,
+              '& .MuiTab-root': { minHeight: 52, px: 2, fontSize: 13, whiteSpace: 'nowrap' },
+            },
+          }}
+        />
+      </Box>
+      <FilterPopover
         id="blog-filters-menu"
+        title={t('blog.filtersTitle')}
         anchorEl={filtersAnchorEl}
-        open={filtersOpen}
         onClose={handleFiltersClose}
-        anchorOrigin={{ vertical: 'bottom', horizontal: 'right' }}
-        transformOrigin={{ vertical: 'top', horizontal: 'right' }}
-        MenuListProps={{ disablePadding: true }}
-        PaperProps={{
-          sx: {
-            p: 2,
-            width: { xs: 'calc(100vw - 32px)', sm: 320 },
-            maxWidth: '100vw',
-          },
-        }}
+        onReset={onReset ?? (() => undefined)}
+        hasActiveFilters={hasActiveFilters}
+        resetLabel={t('blog.clearFilters')}
+        doneLabel={t('contests.filters.done')}
+        align="left"
       >
         <Stack direction="column" spacing={2}>
-          <Stack direction="row" alignItems="center" justifyContent="space-between">
-            <Typography variant="subtitle2" fontWeight={700} color="text.secondary">
-              {t('blog.filtersTitle')}
-            </Typography>
-            {hasActiveFilters && onReset ? (
-              <Button size="small" color="secondary" onClick={onReset}>
-                {t('blog.clearFilters')}
-              </Button>
-            ) : null}
-          </Stack>
-
           <TextField
             select
             variant="filled"
@@ -259,8 +177,8 @@ const BlogFilters = ({
             <MenuItem value="3">{t('blog.order.comments')}</MenuItem>
           </TextField>
         </Stack>
-      </Menu>
-    </Stack>
+      </FilterPopover>
+    </Box>
   );
 };
 

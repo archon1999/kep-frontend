@@ -1,5 +1,6 @@
-import { MouseEvent, useState } from 'react';
+import { MouseEvent, useId, useState } from 'react';
 import { useTranslation } from 'react-i18next';
+import { useNavigate } from 'react-router';
 import {
   ButtonProps,
   IconButton,
@@ -9,7 +10,6 @@ import {
   MenuItem,
   Tooltip,
 } from '@mui/material';
-import { useNavigate } from 'react-router';
 import IconifyIcon from 'shared/components/base/IconifyIcon';
 
 export interface AdminRowActionItem {
@@ -40,41 +40,35 @@ const getActionColor = (color?: ButtonProps['color']) => {
   return `${color}.main`;
 };
 
-const AdminRowActions = ({
-  editPath,
-  onDelete,
-  actions,
-  label,
-}: AdminRowActionsProps) => {
+const AdminRowActions = ({ editPath, onDelete, actions, label }: AdminRowActionsProps) => {
   const { t } = useTranslation();
+  const menuId = useId();
   const navigate = useNavigate();
   const [anchorEl, setAnchorEl] = useState<HTMLElement | null>(null);
   const open = Boolean(anchorEl);
   const resolvedLabel = label ?? t('admin.columns.actions');
 
-  const resolvedActions =
-    actions ??
-    [
-      ...(editPath
-        ? [
-            {
-              label: t('admin.actions.edit'),
-              icon: 'mdi:pencil-outline',
-              to: editPath,
-            },
-          ]
-        : []),
-      ...(onDelete
-        ? [
-            {
-              label: t('admin.actions.delete'),
-              icon: 'mdi:delete-outline',
-              color: 'error' as const,
-              onClick: onDelete,
-            },
-          ]
-        : []),
-    ];
+  const resolvedActions = actions ?? [
+    ...(editPath
+      ? [
+          {
+            label: t('admin.actions.edit'),
+            icon: 'mdi:pencil-outline',
+            to: editPath,
+          },
+        ]
+      : []),
+    ...(onDelete
+      ? [
+          {
+            label: t('admin.actions.delete'),
+            icon: 'mdi:delete-outline',
+            color: 'error' as const,
+            onClick: onDelete,
+          },
+        ]
+      : []),
+  ];
 
   const handleOpen = (event: MouseEvent<HTMLElement>) => {
     event.stopPropagation();
@@ -96,12 +90,22 @@ const AdminRowActions = ({
   return (
     <>
       <Tooltip title={resolvedLabel}>
-        <IconButton size="small" onClick={handleOpen} aria-label={resolvedLabel}>
+        <IconButton
+          id={`${menuId}-trigger`}
+          size="small"
+          onClick={handleOpen}
+          aria-label={resolvedLabel}
+          aria-haspopup="menu"
+          aria-controls={open ? menuId : undefined}
+          aria-expanded={open ? true : undefined}
+        >
           <IconifyIcon icon="mdi:dots-vertical" width={20} height={20} />
         </IconButton>
       </Tooltip>
 
       <Menu
+        id={menuId}
+        slotProps={{ list: { 'aria-labelledby': `${menuId}-trigger` } }}
         anchorEl={anchorEl}
         open={open}
         onClose={handleClose}
@@ -122,7 +126,7 @@ const AdminRowActions = ({
             <ListItemIcon sx={{ color: getActionColor(action.color), minWidth: 36 }}>
               <IconifyIcon icon={action.icon} width={20} height={20} />
             </ListItemIcon>
-            <ListItemText>{action.label}</ListItemText>
+            <ListItemText disableTypography>{action.label}</ListItemText>
           </MenuItem>
         ))}
       </Menu>

@@ -1,4 +1,8 @@
-import { ContestCategory, ContestParticipationType, ContestType } from 'shared/api/orval/generated/endpoints/index.schemas';
+import {
+  ContestCategory,
+  ContestParticipationType,
+  ContestType,
+} from 'modules/contests/domain/enums/contest.enums';
 
 export interface ContestAuthorEntity {
   username: string;

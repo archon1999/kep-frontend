@@ -1,19 +1,22 @@
 import { Theme } from '@mui/material';
 import { Components } from '@mui/material/styles';
-import DataGridPaginationAction from 'shared/components/pagination/DataGridPaginationAction';
-import TableLabelDisplayedRows from 'shared/components/pagination/TableLabelDisplayedRows';
+import CustomTablePaginationAction from 'shared/components/pagination/CustomTablePaginationAction';
 
 const TablePagination: Components<Omit<Theme, 'components'>>['MuiTablePagination'] = {
   defaultProps: {
     rowsPerPageOptions: [],
-    labelDisplayedRows: TableLabelDisplayedRows,
-    ActionsComponent: DataGridPaginationAction,
+    labelDisplayedRows: () => null,
+    ActionsComponent: CustomTablePaginationAction,
   },
   styleOverrides: {
     root: ({ theme }) => ({
       backgroundColor: theme.vars.palette.background.elevation1,
-      borderBottomLeftRadius: 16,
-      borderBottomRightRadius: 16,
+      borderBottomLeftRadius: theme.preset === 'default' ? 0 : 16,
+      borderBottomRightRadius: theme.preset === 'default' ? 0 : 16,
+      ...(theme.preset === 'default' && {
+        backgroundColor: 'transparent',
+        borderTop: `1px solid ${theme.vars.palette.divider}`,
+      }),
     }),
     toolbar: {
       paddingRight: '24px !important',
@@ -33,13 +36,7 @@ const TablePagination: Components<Omit<Theme, 'components'>>['MuiTablePagination
     input: {
       display: 'none',
     },
-    displayedRows: ({ theme }) => ({
-      lineHeight: 1.2,
-      display: 'none',
-      [theme.breakpoints.up('sm')]: {
-        display: 'block',
-      },
-    }),
+    displayedRows: { display: 'none' },
   },
 };
 

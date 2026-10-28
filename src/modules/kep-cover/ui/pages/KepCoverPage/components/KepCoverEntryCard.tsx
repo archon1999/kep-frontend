@@ -1,11 +1,10 @@
-import { Avatar, Box, Button, Chip, Paper, Stack, Typography } from '@mui/material';
 import { useTranslation } from 'react-i18next';
 import { Link as RouterLink } from 'react-router-dom';
-import { getResourceByUsername, resources } from 'app/routes/resources';
+import { Avatar, Box, Button, Chip, Paper, Stack, Typography } from '@mui/material';
+import type { KepCoverEntry } from 'modules/kep-cover/domain/entities/kep-cover.entity';
+import UserPopover from 'modules/users/ui/shared/components/UserPopover';
 import IconifyIcon from 'shared/components/base/IconifyIcon';
 import { useLoginHref } from 'shared/lib/authRedirect';
-import { cssVarRgba } from 'shared/lib/utils';
-import type { KepCoverEntry } from 'modules/kep-cover/domain/entities/kep-cover.entity';
 
 interface KepCoverEntryCardProps {
   entry: KepCoverEntry;
@@ -31,13 +30,7 @@ const KepCoverEntryCard = ({
   const fullName = [entry.user.firstName, entry.user.lastName].filter(Boolean).join(' ');
 
   return (
-    <Paper
-      sx={(theme) => ({
-        overflow: 'hidden',
-        borderRadius: 4,
-        background: `linear-gradient(180deg, ${cssVarRgba(theme.vars.palette.primary.mainChannel, 0.04)}, ${cssVarRgba(theme.vars.palette.primary.mainChannel, 0.01)})`,
-      })}
-    >
+    <Paper variant="panel" sx={{ overflow: 'hidden' }}>
       <Box
         sx={{
           position: 'relative',
@@ -80,20 +73,28 @@ const KepCoverEntryCard = ({
           alignItems="center"
           sx={{ position: 'absolute', left: 16, right: 16, bottom: 16, color: 'common.white' }}
         >
-          <Avatar src={entry.user.avatar} alt={entry.user.username} sx={{ width: 44, height: 44 }} />
+          <Avatar
+            src={entry.user.avatar}
+            alt={entry.user.username}
+            sx={{ width: 44, height: 44 }}
+          />
 
           <Stack minWidth={0} flex={1}>
-            <Typography
-              component={RouterLink}
-              to={getResourceByUsername(resources.UserProfile, entry.user.username)}
-              variant="subtitle1"
-              fontWeight={800}
-              color="inherit"
-              sx={{ textDecoration: 'none' }}
-              noWrap
+            <UserPopover
+              username={entry.user.username}
+              avatar={entry.user.avatar}
+              fullName={fullName}
             >
-              {entry.user.username}
-            </Typography>
+              <Typography
+                variant="subtitle1"
+                fontWeight={800}
+                color="inherit"
+                sx={{ textDecoration: 'none' }}
+                noWrap
+              >
+                {entry.user.username}
+              </Typography>
+            </UserPopover>
             {fullName ? (
               <Typography variant="body2" color="rgba(255,255,255,0.82)" noWrap>
                 {fullName}

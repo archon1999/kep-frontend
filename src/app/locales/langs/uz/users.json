@@ -47,10 +47,19 @@
       "empty": "Statistika hali mavjud emas"
     },
     "popover": {
-      "viewDetails": "Profilni koʻrish"
+      "viewDetails": "Profilni koʻrish",
+      "online": "Tarmoqda",
+      "offline": "Tarmoqda emas"
     },
     "emptyValue": "—",
     "profile": {
+      "identity": "Profil",
+      "editProfile": "Profilni tahrirlash",
+      "previewCover": "Muqovani ko‘rish",
+      "navigation": "Profil bo‘limlari",
+      "emptyBio": "Hozircha tavsif kiritilmagan.",
+      "noSkills": "Hozircha ko‘nikmalar kiritilmagan.",
+      "noDetails": "Hozircha ma’lumot kiritilmagan.",
       "tabs": {
         "about": "Oʻzi haqida",
         "ratings": "Reytinglar",
@@ -63,8 +72,8 @@
         "sectionTitle": "Shaxsiy",
         "title": "Shaxsiy maʻlumot",
         "fullName": "Toʻliq ismi",
-        "wasBorn": "Tugʻilgan",
-        "lives": "Yashaydi",
+        "wasBorn": "Tug‘ilgan sana",
+        "lives": "Joylashuv",
         "email": "Elektron manzil",
         "website": "Veb-sayt",
         "joined": "Roʻyhatdan oʻtgan",
@@ -133,7 +142,7 @@
         "size": "Razmer",
         "color": "Rang",
         "reviewTitle": "Buyurtmani baholang",
-        "reviewHint": "Yetkazib berish tugagach 1-5 yulduz bilan baho qoldiring.",
+        "reviewHint": "Yetkazib berilgan buyurtmaga 1 dan 5 gacha yulduz bilan baho bering.",
         "submitReview": "Review yuborish",
         "reviewSaved": "Review saqlandi",
         "starsRequired": "Avval yulduzlardan birini tanlang.",

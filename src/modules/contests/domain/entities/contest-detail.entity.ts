@@ -1,6 +1,6 @@
-import { ContestParticipationType, ContestType } from 'shared/api/orval/generated/endpoints/index.schemas';
-import { ContestListItem } from './contest.entity';
+import { ContestParticipationType, ContestType } from 'modules/contests/domain/enums/contest.enums';
 import { ContestStatus } from './contest-status';
+import { ContestListItem } from './contest.entity';
 
 export interface ContestUserInfo {
   isParticipated: boolean;

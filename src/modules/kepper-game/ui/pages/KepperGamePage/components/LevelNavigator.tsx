@@ -98,8 +98,6 @@ const LevelNavigator = ({
               width: { xs: 260, sm: 310 },
               maxHeight: 410,
               mt: 0.75,
-              bgcolor: (theme) => (theme.palette.mode === 'dark' ? '#192c42' : '#fff'),
-              boxShadow: '0 18px 42px rgba(13, 38, 67, .18)',
             },
           },
         }}

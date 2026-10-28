@@ -7,7 +7,6 @@ import { REFRESH } from 'app/reducers/SettingsReducer.ts';
 import { resources } from 'app/routes/resources.ts';
 import SettingPanelToggler from 'shared/components/settings-panel/SettingPanelToggler.tsx';
 import SettingsPanel from 'shared/components/settings-panel/SettingsPanel.tsx';
-import useIcons from 'shared/hooks/useIcons.tsx';
 import { useThemeMode } from 'shared/hooks/useThemeMode.tsx';
 import { addRecentPage } from 'shared/lib/recent-pages.ts';
 import {
@@ -17,22 +16,14 @@ import {
 
 const normalizeTitle = (title: string, fallback: string) =>
   title.replace(/ - KEP\.uz$/, '') || fallback;
-const SPLASH_MIN_VISIBLE_MS = 1400;
 const SPLASH_FADE_MS = 420;
 
 const hideInitialSplash = () => {
   const splash = document.getElementById('loading-bg');
   if (!splash) return undefined;
 
-  const splashStartedAt = (window as Window & { __kepSplashStartedAt?: number })
-    .__kepSplashStartedAt;
-  const elapsedMs = Date.now() - (splashStartedAt ?? Date.now());
-  const remainingMs = Math.max(SPLASH_MIN_VISIBLE_MS - elapsedMs, 0);
-
-  const timeoutId = window.setTimeout(() => {
-    splash.classList.add('kep-splash-hidden');
-    window.setTimeout(() => splash.remove(), SPLASH_FADE_MS);
-  }, remainingMs);
+  splash.classList.add('kep-splash-hidden');
+  const timeoutId = window.setTimeout(() => splash.remove(), SPLASH_FADE_MS);
 
   return () => window.clearTimeout(timeoutId);
 };
@@ -54,7 +45,6 @@ const App = () => {
   const isGameDetail = Boolean(useMatch(`${resources.Games}/:gameId`));
   const { mode } = useThemeMode();
   const { configDispatch } = useSettingsContext();
-  useIcons();
 
   useEffect(() => {
     window.scrollTo(0, 0);

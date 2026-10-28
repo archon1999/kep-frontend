@@ -1,21 +1,22 @@
 import { useEffect, useMemo, useState } from 'react';
-import { Box, Button, Chip, Divider, IconButton, Stack, Tooltip } from '@mui/material';
-import { Link as RouterLink } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
+import { Link as RouterLink } from 'react-router-dom';
+import { Box, Button, IconButton, Stack, Tooltip, Typography } from '@mui/material';
 import AppbarActionItems from 'app/layouts/main-layout/common/AppbarActionItems';
 import { getResourceById, resources } from 'app/routes/resources';
-import {
-  Duel,
-  DuelDetailPageNavigationProblem,
-} from 'modules/duels/domain/index.ts';
+import { Duel, DuelDetailPageNavigationProblem } from 'modules/duels/domain/index.ts';
 import IconifyIcon from 'shared/components/base/IconifyIcon';
 import Logo from 'shared/components/common/Logo.tsx';
+import MixedText from 'shared/components/common/MixedText';
+import { ScrambleText } from 'shared/components/motion/InteractionEffects';
+import { WorkspaceToolbar } from 'shared/components/sections/common/Workspace';
 import useRouteQueryState from 'shared/hooks/useRouteQueryState';
 import { stringParam } from 'shared/lib/queryParams';
 
 export type DuelDetailPageHeaderProps = {
   duel: Duel;
   timerText: string;
+  problems: DuelDetailPageNavigationProblem[];
   currentProblem: DuelDetailPageNavigationProblem | null;
   prevProblem: DuelDetailPageNavigationProblem | null;
   nextProblem: DuelDetailPageNavigationProblem | null;
@@ -74,7 +75,7 @@ export const useDuelDetailPageHeaderState = ({
   );
   const prevProblem = currentIndex > 0 ? navigationProblems[currentIndex - 1] : null;
   const currentProblem =
-    currentIndex >= 0 ? navigationProblems[currentIndex] : navigationProblems[0] ?? null;
+    currentIndex >= 0 ? navigationProblems[currentIndex] : (navigationProblems[0] ?? null);
   const nextProblem =
     currentIndex >= 0 && currentIndex < navigationProblems.length - 1
       ? navigationProblems[currentIndex + 1]
@@ -128,6 +129,7 @@ export const useDuelDetailPageHeaderState = ({
   return {
     duel,
     timerText,
+    problems: navigationProblems,
     currentProblem,
     prevProblem,
     nextProblem,
@@ -141,6 +143,7 @@ const DuelDetailPageHeader = ({
   currentProblem,
   prevProblem,
   nextProblem,
+  problems,
   hasCode,
   isRunning,
   isSubmitting,
@@ -151,136 +154,182 @@ const DuelDetailPageHeader = ({
   onSelectProblem,
 }: DuelDetailPageHeaderProps) => {
   const { t } = useTranslation();
-  const problemHref = currentProblem?.problemId
+  const originalHref = currentProblem?.problemId
     ? getResourceById(resources.Problem, currentProblem.problemId)
     : null;
-
+  const timerValue = duel.status === 1 ? timerText : timerText.slice(timerText.indexOf(': ') + 2);
   return (
     <Box
       component="header"
-      sx={{
-        px: { xs: 2, md: 3 },
-        py: 1.5,
-        display: 'flex',
-        alignItems: 'center',
-        gap: 2,
-      }}
+      className="kep-duel-workspace-header"
+      sx={{ flexShrink: 0, minWidth: 0, bgcolor: 'background.default' }}
     >
-      <Stack direction="row" spacing={1.5} alignItems="center" sx={{ minWidth: 0, flex: 1 }}>
-        <Logo showName={false} />
-
-        <Divider orientation="vertical" flexItem />
-
-        <Stack direction="row" alignItems="center" spacing={0.5} sx={{ minWidth: 0 }}>
-          {timerText ? (
-            <Chip
-              icon={<IconifyIcon icon="mdi:timer-outline" width={18} height={18} />}
-              label={timerText}
-              color="primary"
-              variant="soft"
-              size="medium"
-              sx={{
-                '& .MuiChip-label': {
-                  fontFamily:
-                    'Roboto Mono, ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace',
-                },
-              }}
-            />
-          ) : null}
-
-          <Button
-            component={RouterLink}
-            to={resources.Duels}
-            startIcon={<IconifyIcon icon="mdi:sword-cross" width={18} height={18} />}
-            variant="text"
-            color="primary"
-            sx={{ textTransform: 'none' }}
-          >
-            {t('duels.title')}
-          </Button>
-
-          <Divider orientation="vertical" flexItem sx={{ borderColor: 'rgba(255,255,255,0.18)' }} />
-
-          <Stack direction="row" spacing={0.5} alignItems="center">
-            <Tooltip title={t('contests.problem.prev')}>
-              <span style={{ display: 'inline-flex' }}>
-                <Button
-                  onClick={() => prevProblem && onSelectProblem(prevProblem.symbol)}
-                  variant="text"
-                  color="primary"
-                  disabled={!prevProblem || (prevProblem.isLocked && !prevProblem.unlockAt)}
-                  startIcon={<IconifyIcon icon="mdi:chevron-left" width={18} height={18} />}
-                />
-              </span>
-            </Tooltip>
-            <Tooltip title={t('contests.problem.next')}>
-              <span style={{ display: 'inline-flex' }}>
-                <Button
-                  onClick={() => nextProblem && onSelectProblem(nextProblem.symbol)}
-                  variant="text"
-                  color="primary"
-                  disabled={!nextProblem || (nextProblem.isLocked && !nextProblem.unlockAt)}
-                  endIcon={<IconifyIcon icon="mdi:chevron-right" width={18} height={18} />}
-                />
-              </span>
-            </Tooltip>
-            {duel.status === 1 && problemHref ? (
-              <Tooltip title={t('contests.problem.openOriginal')}>
-                <IconButton
-                  component={RouterLink}
-                  to={problemHref}
-                  color="primary"
-                  size="small"
-                >
-                  <IconifyIcon icon="mdi:open-in-new" width={18} height={18} />
-                </IconButton>
-              </Tooltip>
-            ) : null}
-          </Stack>
-        </Stack>
-      </Stack>
-
       <Stack
         direction="row"
-        spacing={1}
+        gap={{ xs: 1.25, md: 2.5 }}
         alignItems="center"
-        justifyContent="center"
-        sx={{ flex: 1, minWidth: 0 }}
+        sx={{ px: { xs: 1.5, md: 3 }, minHeight: 52, borderBottom: '1px solid var(--kep-line)' }}
       >
-        <Tooltip title={t('problems.detail.runHotkey')}>
-          <span style={{ display: 'inline-flex' }}>
-            <Button
-              variant="outlined"
-              color="primary"
-              onClick={onRun}
-              disabled={isRunning || !hasCode || isWorkspaceLocked}
-              startIcon={<IconifyIcon icon="mdi:play-circle-outline" width={20} height={20} />}
-            >
-              {t('problems.detail.run')}
-            </Button>
-          </span>
+        <Logo showName={false} />
+        <Tooltip title={t('common.backTo', { destination: t('duels.title') })}>
+          <IconButton
+            component={RouterLink}
+            to={resources.Duels}
+            size="small"
+            aria-label={t('common.backTo', { destination: t('duels.title') })}
+          >
+            <IconifyIcon icon="mdi:arrow-left" />
+          </IconButton>
         </Tooltip>
-
-        <Tooltip title={t('problems.detail.submitHotkey')}>
-          <span style={{ display: 'inline-flex' }}>
-            <Button
-              variant="contained"
-              color="primary"
-              onClick={onSubmit}
-              disabled={isSubmitting || !hasCode || isSubmitLocked}
-              startIcon={<IconifyIcon icon="mdi:send-outline" width={18} height={18} />}
+        <Typography
+          sx={{
+            fontFamily: 'var(--kep-display-font)',
+            fontSize: { xs: 16, md: 19 },
+            fontWeight: 500,
+            flex: 1,
+            minWidth: 0,
+          }}
+          noWrap
+        >
+          <MixedText>{t('duels.duelNumber', { id: duel.id })}</MixedText>
+        </Typography>
+        {timerText && (
+          <Tooltip title={timerText}>
+            <Stack
+              direction="row"
+              gap={0.75}
+              alignItems="center"
+              sx={{ flexShrink: 0, color: duel.status === 1 ? 'text.secondary' : 'primary.main' }}
             >
-              {t('problems.detail.submit')}
-            </Button>
-          </span>
-        </Tooltip>
+              <IconifyIcon
+                icon={duel.status === 1 ? 'mdi:check-circle-outline' : 'mdi:timer-outline'}
+                sx={{ fontSize: 18 }}
+              />
+              <Typography
+                variant={duel.status === 1 ? 'caption' : 'metric'}
+                sx={{ fontSize: duel.status === 1 ? 13 : { xs: 18, md: 22 }, whiteSpace: 'nowrap' }}
+              >
+                {timerValue}
+              </Typography>
+            </Stack>
+          </Tooltip>
+        )}
+        <Stack direction="row" gap={1} sx={{ display: { xs: 'none', md: 'flex' } }}>
+          <Tooltip title={t('problems.detail.runHotkey')}>
+            <span>
+              <Button
+                variant="outlined"
+                onClick={onRun}
+                disabled={isRunning || !hasCode || isWorkspaceLocked}
+                loading={isRunning}
+                startIcon={<IconifyIcon icon="mdi:play-outline" />}
+              >
+                {t('problems.detail.run')}
+              </Button>
+            </span>
+          </Tooltip>
+          <Tooltip title={t('problems.detail.submitHotkey')}>
+            <span>
+              <Button
+                variant="contained"
+                onClick={onSubmit}
+                disabled={isSubmitting || !hasCode || isSubmitLocked}
+                loading={isSubmitting}
+                endIcon={<IconifyIcon icon="mdi:arrow-top-right" />}
+              >
+                <ScrambleText>{t('problems.detail.submit')}</ScrambleText>
+              </Button>
+            </span>
+          </Tooltip>
+        </Stack>
+        <Box
+          sx={{
+            display: { xs: 'none', lg: 'block' },
+            pl: 2,
+            borderInlineStart: '1px solid var(--kep-line)',
+          }}
+        >
+          <AppbarActionItems type="slim" />
+        </Box>
       </Stack>
-
-      <Box sx={{ flex: 1, display: 'flex', justifyContent: 'flex-end' }}>
-        <AppbarActionItems type="slim" />
-      </Box>
+      <WorkspaceToolbar
+        component="nav"
+        aria-label={t('duels.workspaceNavigation')}
+        sx={{ minHeight: 40, py: 0, gap: 1 }}
+      >
+        <Box
+          sx={{
+            display: 'flex',
+            alignItems: 'center',
+            gap: 0.5,
+            minWidth: 0,
+            overflowX: 'auto',
+            flex: 1,
+            py: 0.5,
+          }}
+        >
+          {problems.map((problem) => (
+            <Button
+              key={problem.symbol}
+              size="small"
+              aria-pressed={problem.symbol === currentProblem?.symbol}
+              disabled={Boolean(problem.isLocked && !problem.unlockAt)}
+              onClick={() => onSelectProblem(problem.symbol)}
+              startIcon={
+                problem.isLocked ? (
+                  <IconifyIcon icon="mdi:lock-outline" sx={{ fontSize: 13 }} />
+                ) : undefined
+              }
+              sx={{
+                minWidth: 36,
+                borderRadius: 0,
+                fontFamily: 'var(--kep-display-font)',
+                fontSize: 14,
+                color:
+                  problem.symbol === currentProblem?.symbol ? 'primary.main' : 'text.secondary',
+                bgcolor:
+                  problem.symbol === currentProblem?.symbol ? 'action.selected' : 'transparent',
+              }}
+            >
+              {problem.symbol}
+            </Button>
+          ))}
+        </Box>
+        <Stack direction="row" gap={0.25} alignItems="center">
+          {[
+            { problem: prevProblem, icon: 'mdi:chevron-left', label: t('contests.problem.prev') },
+            { problem: nextProblem, icon: 'mdi:chevron-right', label: t('contests.problem.next') },
+          ].map((item) => (
+            <Tooltip key={item.icon} title={item.label}>
+              <span>
+                <IconButton
+                  size="small"
+                  aria-label={item.label}
+                  disabled={
+                    !item.problem || Boolean(item.problem.isLocked && !item.problem.unlockAt)
+                  }
+                  onClick={() => item.problem && onSelectProblem(item.problem.symbol)}
+                >
+                  <IconifyIcon icon={item.icon} />
+                </IconButton>
+              </span>
+            </Tooltip>
+          ))}
+          {duel.status === 1 && originalHref && (
+            <Tooltip title={t('contests.problem.openOriginal')}>
+              <IconButton
+                component={RouterLink}
+                to={originalHref}
+                size="small"
+                aria-label={t('contests.problem.openOriginal')}
+              >
+                <IconifyIcon icon="mdi:open-in-new" />
+              </IconButton>
+            </Tooltip>
+          )}
+        </Stack>
+      </WorkspaceToolbar>
     </Box>
   );
 };
-
 export default DuelDetailPageHeader;

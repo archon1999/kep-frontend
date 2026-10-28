@@ -9,11 +9,11 @@ import {
   Tooltip,
   Typography,
 } from '@mui/material';
+import type { HomeUserRatings } from 'modules/home/domain/entities/home.entity';
 import IconifyIcon from 'shared/components/base/IconifyIcon';
 import KepIcon from 'shared/components/base/KepIcon';
 import ChallengesRatingChip from 'shared/components/rating/ChallengesRatingChip';
 import ContestsRatingChip from 'shared/components/rating/ContestsRatingChip';
-import type { HomeUserRatings } from 'modules/home/domain/entities/home.entity';
 
 interface RanksSectionProps {
   ratings?: HomeUserRatings | null;
@@ -140,7 +140,11 @@ const RanksSection = ({ ratings, isLoading }: RanksSectionProps) => {
               </Stack>
 
               <Tooltip title={percentile}>
-                <LinearProgress variant="determinate" value={percentile ?? 0} />
+                <LinearProgress
+                  aria-label={t('homePage.ranks.percentile', { percentile: percentile ?? 0 })}
+                  variant="determinate"
+                  value={percentile ?? 0}
+                />
               </Tooltip>
             </Paper>
           );

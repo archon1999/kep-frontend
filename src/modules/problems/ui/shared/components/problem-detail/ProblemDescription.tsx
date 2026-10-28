@@ -1,4 +1,4 @@
-import { useEffect, useMemo, useState } from 'react';
+import { Suspense, lazy, useEffect, useMemo, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { Link as RouterLink } from 'react-router-dom';
 import Editor from '@monaco-editor/react';
@@ -10,7 +10,6 @@ import {
   Button,
   Card,
   CardContent,
-  CardHeader,
   Chip,
   Divider,
   FormControl,
@@ -37,12 +36,20 @@ import IconifyIcon from 'shared/components/base/IconifyIcon';
 import MathJaxView from 'shared/components/base/MathJaxView.tsx';
 import OnlyMeSwitch from 'shared/components/common/OnlyMeSwitch';
 import ResponsiveTabs from 'shared/components/common/ResponsiveTabs';
-import { useThemeMode } from 'shared/hooks/useThemeMode.tsx';
+import ContentLoading from 'shared/components/loading/ContentLoading';
+import { WorkspacePane } from 'shared/components/sections/common/Workspace';
+import { useMonacoTheme } from 'shared/hooks/useMonacoTheme';
 import ProblemsAttemptsTable from '../ProblemsAttemptsTable';
 import { ProblemBody } from './ProblemBody';
 import { ProblemFooter } from './ProblemFooter';
-import { ProblemSolversTab } from './ProblemSolversTab';
-import { ProblemStatisticsTab } from './ProblemStatisticsTab';
+import ProblemIntro from './ProblemIntro';
+
+const ProblemSolversTab = lazy(() =>
+  import('./ProblemSolversTab').then((module) => ({ default: module.ProblemSolversTab })),
+);
+const ProblemStatisticsTab = lazy(() =>
+  import('./ProblemStatisticsTab').then((module) => ({ default: module.ProblemStatisticsTab })),
+);
 
 type TabValue = 'description' | 'attempts' | 'stats' | 'solvers';
 
@@ -109,7 +116,7 @@ export const ProblemDescription = ({
   hideTabs = false,
 }: ProblemDescriptionProps) => {
   const { t, i18n } = useTranslation();
-  const themeMode = useThemeMode();
+  const codeTheme = useMonacoTheme();
   const { currentUser } = useAuth();
   const [solutionExpanded, setSolutionExpanded] = useState(false);
   const [selectedSolutionLang, setSelectedSolutionLang] = useState('');
@@ -175,140 +182,86 @@ export const ProblemDescription = ({
   }, [orderedSolutionCodes, selectedLanguage?.lang, selectedSolutionLang]);
 
   return (
-    <Card
-      background={0}
-      sx={{
-        height: '100%',
-        display: 'flex',
-        flexDirection: 'column',
-        position: 'relative',
-        overflow: 'hidden',
-        border: { xs: 0, md: undefined },
-        borderRadius: { xs: 0, md: undefined },
-        boxShadow: { xs: 'none', md: undefined },
-      }}
-    >
+    <WorkspacePane>
       {!hideTabs ? (
-        <CardHeader
-          sx={{ py: 0 }}
-          title={
-            <ResponsiveTabs
-              value={activeTab}
-              onChange={onTabChange}
-              ariaLabel="problem detail tabs"
-              items={[
-                {
-                  value: 'description',
-                  label: t('problems.detail.problemTab'),
-                  icon: <IconifyIcon icon="mdi:book-open-page-variant" />,
-                  tabProps: { iconPosition: 'start', sx: { fontWeight: 500 } },
-                },
-                {
-                  value: 'attempts',
-                  label: t('problems.detail.attemptsTab'),
-                  icon: <IconifyIcon icon="mdi:history" />,
-                  tabProps: { iconPosition: 'start', sx: { fontWeight: 500 } },
-                },
-                {
-                  value: 'stats',
-                  label: t('problems.detail.stats'),
-                  icon: <IconifyIcon icon="mdi:chart-bar" />,
-                  tabProps: { iconPosition: 'start', sx: { fontWeight: 500 } },
-                },
-                {
-                  value: 'solvers',
-                  label: t('problems.detail.solversTab'),
-                  icon: <IconifyIcon icon="mdi:account-group" />,
-                  tabProps: { iconPosition: 'start', sx: { fontWeight: 500 } },
-                },
-              ]}
-              tabsProps={{
-                variant: 'scrollable',
-                scrollButtons: 'auto',
-                textColor: 'primary',
-                indicatorColor: 'primary',
-              }}
-            />
-          }
-        />
+        <Box sx={{ px: 2.5, flexShrink: 0 }}>
+          <ResponsiveTabs
+            value={activeTab}
+            onChange={onTabChange}
+            ariaLabel={t('problems.detail.problemTab')}
+            items={[
+              {
+                value: 'description',
+                label: t('problems.detail.problemTab'),
+                icon: <IconifyIcon icon="mdi:book-open-page-variant" />,
+                tabProps: { iconPosition: 'start', sx: { fontWeight: 500 } },
+              },
+              {
+                value: 'attempts',
+                label: t('problems.detail.attemptsTab'),
+                icon: <IconifyIcon icon="mdi:history" />,
+                tabProps: { iconPosition: 'start', sx: { fontWeight: 500 } },
+              },
+              {
+                value: 'stats',
+                label: t('problems.detail.stats'),
+                icon: <IconifyIcon icon="mdi:chart-bar" />,
+                tabProps: { iconPosition: 'start', sx: { fontWeight: 500 } },
+              },
+              {
+                value: 'solvers',
+                label: t('problems.detail.solversTab'),
+                icon: <IconifyIcon icon="mdi:account-group" />,
+                tabProps: { iconPosition: 'start', sx: { fontWeight: 500 } },
+              },
+            ]}
+            tabsProps={{
+              variant: 'scrollable',
+              scrollButtons: 'auto',
+              textColor: 'primary',
+              indicatorColor: 'primary',
+              sx: { '& .MuiTab-root': { minHeight: 44, fontSize: 13 } },
+            }}
+          />
+        </Box>
       ) : null}
 
       {!hideTabs ? <Divider /> : null}
 
-      <CardContent
+      <Box
         sx={{
           flex: 1,
           minHeight: 0,
           overflowY: 'auto',
-          px: { xs: activeTab === 'attempts' ? 3 : 2, sm: 3 },
+          p: { xs: 2, md: 3 },
         }}
       >
         {activeTab === 'description' ? (
           <Stack direction="column" spacing={2}>
-            <Stack direction="column" spacing={1} flexWrap="wrap">
-              <Typography variant="h5" fontWeight={600}>
-                {problem.id}. {problem.title}
-              </Typography>
-
-              <Stack direction="row" spacing={1} flexWrap="wrap" useFlexGap>
-                <Chip
-                  label={problem.difficultyTitle}
-                  color={selectedDifficultyColor as any}
-                  size="medium"
-                />
-                <Chip
-                  label={
-                    <>
-                      <Box component="span" sx={{ display: { xs: 'none', md: 'inline' } }}>
-                        {t('problems.detail.timeLimit')}
-                      </Box>
-                      <Box component="span" sx={{ display: { xs: 'inline', md: 'none' } }}>
-                        {t('problems.detail.timeLimitShort')}
-                      </Box>
-                      {`: ${
-                        selectedLanguage?.timeLimit ??
-                        problem.timeLimit ??
-                        problem.availableLanguages?.[0]?.timeLimit ??
-                        0
-                      } ms`}
-                    </>
-                  }
-                  color="default"
-                  variant="filled"
-                  size="medium"
-                />
-                <Chip
-                  label={
-                    <>
-                      <Box component="span" sx={{ display: { xs: 'none', md: 'inline' } }}>
-                        {t('problems.detail.memoryLimit')}
-                      </Box>
-                      <Box component="span" sx={{ display: { xs: 'inline', md: 'none' } }}>
-                        {t('problems.detail.memoryLimitShort')}
-                      </Box>
-                      {`: ${
-                        selectedLanguage?.memoryLimit ??
-                        problem.memoryLimit ??
-                        problem.availableLanguages?.[0]?.memoryLimit ??
-                        0
-                      } MB`}
-                    </>
-                  }
-                  color="default"
-                  variant="filled"
-                  size="medium"
-                />
-                {problem.problemRating !== undefined && (
+            <ProblemIntro
+              symbol={String(problem.id)}
+              title={problem.title}
+              timeLimit={selectedLanguage?.timeLimit ?? problem.timeLimit ?? 0}
+              memoryLimit={selectedLanguage?.memoryLimit ?? problem.memoryLimit ?? 0}
+              metadata={
+                <>
                   <Chip
-                    label={problem.problemRating}
-                    color="default"
-                    variant="outlined"
-                    size="medium"
-                    icon={<IconifyIcon icon="mdi:speedometer" />}
+                    label={problem.difficultyTitle}
+                    color={selectedDifficultyColor as any}
+                    variant="status"
+                    size="small"
                   />
-                )}
-              </Stack>
-            </Stack>
+                  {problem.problemRating !== undefined && (
+                    <Chip
+                      label={problem.problemRating}
+                      variant="status"
+                      size="small"
+                      icon={<IconifyIcon icon="mdi:speedometer" />}
+                    />
+                  )}
+                </>
+              }
+            />
 
             <ProblemBody problem={problem} />
 
@@ -465,7 +418,8 @@ export const ProblemDescription = ({
                                     key={`solution-code-${problem.id}-${activeSolutionCode.lang}`}
                                     height="320px"
                                     language={getEditorLanguage(activeSolutionCode.lang)}
-                                    theme={themeMode.mode === 'dark' ? 'vs-dark' : 'vs'}
+                                    theme={codeTheme.theme}
+                                    beforeMount={codeTheme.beforeMount}
                                     value={activeSolutionCode.code}
                                     options={{
                                       readOnly: true,
@@ -687,6 +641,8 @@ export const ProblemDescription = ({
               </Tooltip>
             </Stack>
             <ProblemsAttemptsTable
+              surface="section"
+              paginationStyle="list"
               mobileCards={hideTabs}
               attempts={attempts}
               total={attemptsTotal}
@@ -700,11 +656,17 @@ export const ProblemDescription = ({
         ) : null}
 
         {activeTab === 'stats' ? (
-          <ProblemStatisticsTab problemId={problem.id} problem={problem} />
+          <Suspense fallback={<ContentLoading />}>
+            <ProblemStatisticsTab problemId={problem.id} problem={problem} />
+          </Suspense>
         ) : null}
 
-        {activeTab === 'solvers' ? <ProblemSolversTab problemId={problem.id} /> : null}
-      </CardContent>
+        {activeTab === 'solvers' ? (
+          <Suspense fallback={<ContentLoading />}>
+            <ProblemSolversTab problemId={problem.id} />
+          </Suspense>
+        ) : null}
+      </Box>
 
       {activeTab === 'description' ? (
         <Box
@@ -716,7 +678,7 @@ export const ProblemDescription = ({
             pb: { xs: 'max(12px, env(safe-area-inset-bottom))', sm: 1.75 },
             borderTop: '1px solid',
             borderColor: 'divider',
-            bgcolor: 'background.paper',
+            bgcolor: 'background.default',
           }}
         >
           <ProblemFooter
@@ -727,6 +689,6 @@ export const ProblemDescription = ({
           />
         </Box>
       ) : null}
-    </Card>
+    </WorkspacePane>
   );
 };

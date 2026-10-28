@@ -1,10 +1,10 @@
 import type { ComponentType } from 'react';
-import type { ContestType } from 'shared/api/orval/generated/endpoints/index.schemas';
 import {
   ContestProblemEntity,
   ContestProblemInfo,
 } from 'modules/contests/domain/entities/contest-problem.entity';
 import { ContestTypeInfo } from 'modules/contests/domain/entities/contest.entity';
+import type { ContestType } from 'modules/contests/domain/enums/contest.enums';
 
 export type ResultColor = 'default' | 'error' | 'info' | 'primary' | 'success' | 'warning';
 

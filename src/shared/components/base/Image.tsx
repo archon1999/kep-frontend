@@ -17,7 +17,7 @@ const Image = ({ src, ...props }: ImageProps) => {
 
   const imageSrc = !src ? undefined : typeof src === 'string' ? src : isDark ? src.dark : src.light;
 
-  return <Box component="img" src={imageSrc} {...props} />;
+  return <Box component="img" src={imageSrc} decoding="async" {...props} />;
 };
 
 export default Image;

@@ -2,19 +2,19 @@ import { useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import {
   Avatar,
+  Box,
   Button,
-  Card,
-  CardContent,
   List,
   ListItem,
   ListItemAvatar,
   ListItemText,
   Skeleton,
   Stack,
-  Typography,
 } from '@mui/material';
+import { contentInsetSx } from 'app/theme/styles/content';
 import { useUserFollowers } from 'modules/users/application/queries';
 import UserPopover from 'modules/users/ui/shared/components/UserPopover';
+import SectionHeader from 'shared/components/sections/common/SectionHeader';
 import UserFollowersDialog from './UserFollowersDialog';
 
 type UserFollowersCardProps = {
@@ -30,8 +30,8 @@ const UserFollowersCard = ({ username }: UserFollowersCardProps) => {
 
   if (isLoading) {
     return (
-      <Card variant="outlined">
-        <CardContent>
+      <Box>
+        <Box>
           <Skeleton variant="text" width="40%" />
           {Array.from({ length: 3 }).map((_, index) => (
             <Stack key={index} direction="row" spacing={1} alignItems="center" sx={{ mt: 1 }}>
@@ -39,8 +39,8 @@ const UserFollowersCard = ({ username }: UserFollowersCardProps) => {
               <Skeleton variant="text" width="70%" />
             </Stack>
           ))}
-        </CardContent>
-      </Card>
+        </Box>
+      </Box>
     );
   }
 
@@ -53,28 +53,17 @@ const UserFollowersCard = ({ username }: UserFollowersCardProps) => {
 
   return (
     <>
-      <Card variant="outlined">
-        <CardContent>
-          <Stack direction="row" justifyContent="space-between" alignItems="center" spacing={1}>
-            <Stack direction="row" spacing={1} alignItems="center">
-              <Typography variant="h6" fontWeight={700}>
-                {t('users.profile.followers.title')}
-              </Typography>
-              <Typography variant="caption" color="text.secondary">
-                {total}
-              </Typography>
-            </Stack>
-            <Button
-              size="small"
-              variant="text"
-              sx={{ px: 0.5 }}
-              onClick={() => setIsDialogOpen(true)}
-            >
-              {t('users.profile.followers.viewAll')}
-            </Button>
-          </Stack>
-
-          <List dense sx={{ mt: 1 }}>
+      <Box>
+        <Box>
+          <SectionHeader
+            title={`${t('users.profile.followers.title')} · ${total}`}
+            action={
+              <Button size="small" onClick={() => setIsDialogOpen(true)}>
+                {t('users.profile.followers.viewAll')}
+              </Button>
+            }
+          />
+          <List dense sx={{ ...contentInsetSx, py: 1 }}>
             {followers.map((follower) => {
               const fullName = [follower.firstName, follower.lastName].filter(Boolean).join(' ');
               const countryCode = follower.country?.toUpperCase();
@@ -104,8 +93,8 @@ const UserFollowersCard = ({ username }: UserFollowersCardProps) => {
               );
             })}
           </List>
-        </CardContent>
-      </Card>
+        </Box>
+      </Box>
 
       <UserFollowersDialog
         open={isDialogOpen}

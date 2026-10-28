@@ -29,6 +29,7 @@ declare module '@mui/material/styles' {
 const DateTimePicker: Components<Omit<Theme, 'components'>>['MuiDateTimePicker'] = {
   defaultProps: {
     enableAccessibleFieldDOMStructure: false,
+    desktopModeMediaQuery: '@media (min-width: 600px) and (pointer: fine)',
     slotProps: {
       desktopPaper: {
         variant: 'elevation',

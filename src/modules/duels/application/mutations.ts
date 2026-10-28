@@ -1,13 +1,11 @@
 import useSWRMutation from 'swr/mutation';
-import { HttpDuelsRepository } from '../data-access/repository/http.duels.repository.ts';
+import { duelsRepository } from '../data-access';
+import type { DuelsRepository } from '../domain/contracts/duels.repository';
 import {
   DuelAcceptPayload,
   DuelCounterPayload,
   DuelCreatePayload,
-} from '../domain/ports/duels.repository.ts';
-import { duelsQueries } from './queries.ts';
-
-const duelsRepository = new HttpDuelsRepository();
+} from '../domain/contracts/duels.repository.ts';
 
 export const useCreateDuelCall = () =>
   useSWRMutation('duel-calls-create', (_key, { arg }: { arg: DuelCreatePayload }) =>
@@ -17,10 +15,8 @@ export const useCreateDuelCall = () =>
 export const useAcceptDuelCall = () =>
   useSWRMutation(
     'duel-calls-accept',
-    (
-      _key,
-      { arg }: { arg: { id: number; payload: DuelAcceptPayload } },
-    ) => duelsRepository.acceptDuelCall(arg.id, arg.payload),
+    (_key, { arg }: { arg: { id: number; payload: DuelAcceptPayload } }) =>
+      duelsRepository.acceptDuelCall(arg.id, arg.payload),
   );
 
 export const useConfirmDuelCall = () =>
@@ -41,13 +37,9 @@ export const useCancelDuelCall = () =>
 export const useCounterDuelCall = () =>
   useSWRMutation(
     'duel-calls-counter',
-    (
-      _key,
-      { arg }: { arg: { id: number; payload: DuelCounterPayload } },
-    ) => duelsRepository.counterDuelCall(arg.id, arg.payload),
+    (_key, { arg }: { arg: { id: number; payload: DuelCounterPayload } }) =>
+      duelsRepository.counterDuelCall(arg.id, arg.payload),
   );
 
-export const duelsMutations = {
-  duelsRepository,
-  duelsQueries,
-};
+export const submitDuelSolution = (...args: Parameters<DuelsRepository['submitToDuel']>) =>
+  duelsRepository.submitToDuel(...args);

@@ -8,7 +8,6 @@ import {
   Button,
   Dialog,
   DialogContent,
-  DialogTitle,
   Divider,
   IconButton,
   LinearProgress,
@@ -19,7 +18,7 @@ import {
 import { useAuth } from 'app/providers/AuthProvider';
 import { useBreakpoints } from 'app/providers/BreakpointsProvider.tsx';
 import { getResourceById, resources } from 'app/routes/resources';
-import { problemsQueries } from 'modules/problems/application/queries';
+import { getAttemptDetails } from 'modules/problems/application/queries';
 import {
   AttemptDetail,
   AttemptLangs,
@@ -28,13 +27,14 @@ import {
 } from 'modules/problems/domain/entities/problem.entity';
 import UserPopover from 'modules/users/ui/shared/components/UserPopover';
 import IconifyIcon from 'shared/components/base/IconifyIcon';
+import DialogHeader from 'shared/components/common/DialogHeader';
 import KepcoinSpendConfirm from 'shared/components/common/KepcoinSpendConfirm';
 import KepcoinValue from 'shared/components/common/KepcoinValue';
 import ResponsiveTabs from 'shared/components/common/ResponsiveTabs';
 import AttemptLanguage from 'shared/components/problems/AttemptLanguage';
 import AttemptVerdict from 'shared/components/problems/AttemptVerdict';
 import { VerdictKey } from 'shared/components/problems/attemptVerdict.utils';
-import { useThemeMode } from 'shared/hooks/useThemeMode.tsx';
+import { useMonacoTheme } from 'shared/hooks/useMonacoTheme';
 import { toast } from 'sonner';
 
 const mapEditorLanguage = (lang?: string) => {
@@ -81,7 +81,7 @@ const AttemptCompareDialog = ({
   onClose,
 }: AttemptCompareDialogProps) => {
   const { t } = useTranslation();
-  const themeMode = useThemeMode();
+  const codeTheme = useMonacoTheme();
   const { up } = useBreakpoints();
   const upMd = up('md');
   const [previousAttemptId, setPreviousAttemptId] = useState('');
@@ -112,7 +112,7 @@ const AttemptCompareDialog = ({
         return currentDetail;
       }
 
-      return problemsQueries.problemsRepository.getAttempt(id);
+      return getAttemptDetails(id);
     },
     [currentDetail],
   );
@@ -177,17 +177,18 @@ const AttemptCompareDialog = ({
   };
 
   return (
-    <Dialog open={open} onClose={onClose} maxWidth="xl" fullWidth>
-      <DialogTitle>
-        <Stack direction="row" alignItems="center" justifyContent="space-between" spacing={1}>
-          <Typography variant="h6" fontWeight={700}>
-            {t('problems.attempts.modal.compareTitle', { id: baseAttempt?.id ?? '--' })}
-          </Typography>
-          <IconButton aria-label={t('common.close')} onClick={onClose} size="small">
-            <IconifyIcon icon="mdi:close" width={20} height={20} />
-          </IconButton>
-        </Stack>
-      </DialogTitle>
+    <Dialog
+      open={open}
+      onClose={onClose}
+      maxWidth="xl"
+      fullWidth
+      aria-labelledby="attempt-compare-title"
+    >
+      <DialogHeader
+        id="attempt-compare-title"
+        title={t('problems.attempts.modal.compareTitle', { id: baseAttempt?.id ?? '--' })}
+        onClose={onClose}
+      />
 
       <DialogContent dividers sx={{ p: 0 }}>
         <Box sx={{ p: 2 }}>
@@ -231,7 +232,8 @@ const AttemptCompareDialog = ({
             original={previousSourceCode}
             modified={currentSourceCode}
             language={editorLanguage}
-            theme={themeMode.mode === 'dark' ? 'vs-dark' : 'vs'}
+            theme={codeTheme.theme}
+            beforeMount={codeTheme.beforeMount}
             options={{
               readOnly: true,
               minimap: { enabled: false },
@@ -255,7 +257,7 @@ const AttemptDetailDialog = ({
   onAttemptUpdated,
 }: AttemptDetailDialogProps) => {
   const { t } = useTranslation();
-  const themeMode = useThemeMode();
+  const codeTheme = useMonacoTheme();
   const { currentUser } = useAuth();
   const [detail, setDetail] = useState<AttemptDetail | null>(null);
   const [isLoading, setIsLoading] = useState(false);
@@ -318,7 +320,7 @@ const AttemptDetailDialog = ({
 
     setIsLoading(true);
     try {
-      const data = await problemsQueries.problemsRepository.getAttempt(attempt.id);
+      const data = await getAttemptDetails(attempt.id);
       setDetail(data);
     } catch (error: any) {
       const fallbackMessage = t('problems.attempts.modal.loadError');
@@ -372,16 +374,23 @@ const AttemptDetailDialog = ({
 
   return (
     <>
-      <Dialog open={open} onClose={onClose} maxWidth="lg" fullWidth>
-        <DialogTitle>
-          <Stack direction="row" alignItems="center" justifyContent="space-between" spacing={1}>
-            <Stack spacing={0.25}>
-              <Typography variant="h6" fontWeight={700}>
-                {t('problems.attempts.modal.title', { id: baseAttempt?.id ?? '--' })}
-              </Typography>
-
+      <Dialog
+        open={open}
+        onClose={onClose}
+        maxWidth="lg"
+        fullWidth
+        fullScreen={!upMd}
+        aria-labelledby="attempt-detail-title"
+      >
+        <DialogHeader
+          id="attempt-detail-title"
+          title={t('problems.attempts.modal.title', { id: baseAttempt?.id ?? '--' })}
+          onClose={onClose}
+          actionsPlacement="end"
+          subtitle={
+            <>
               {upMd && (
-                <Stack direction="row" spacing={1}>
+                <Stack direction="row" spacing={1} flexWrap="wrap" useFlexGap>
                   <UserPopover username={baseAttempt?.user?.username ?? ''}>
                     <Typography fontWeight={700} color="primary">
                       {baseAttempt?.user?.username ?? '--'}
@@ -404,9 +413,10 @@ const AttemptDetailDialog = ({
                   )}
                 </Stack>
               )}
-            </Stack>
-
-            <Stack direction="row" spacing={1} alignItems="center">
+            </>
+          }
+          actions={
+            <>
               {canViewAttempt ? (
                 <Button
                   variant="outlined"
@@ -418,10 +428,12 @@ const AttemptDetailDialog = ({
                   {t('problems.attempts.modal.compare')}
                 </Button>
               ) : null}
+
               <AttemptLanguage
                 lang={baseAttempt?.lang || ''}
                 langFull={baseAttempt?.langFull || ''}
               />
+
               <AttemptVerdict
                 variant="filled"
                 verdict={verdictValue}
@@ -430,12 +442,9 @@ const AttemptDetailDialog = ({
                 balls={baseAttempt?.balls}
                 showBalls={isGraderAttempt}
               />
-              <IconButton aria-label={t('common.close')} onClick={onClose} size="small">
-                <IconifyIcon icon="mdi:close" width={20} height={20} />
-              </IconButton>
-            </Stack>
-          </Stack>
-        </DialogTitle>
+            </>
+          }
+        />
 
         <DialogContent dividers>
           <Stack direction="column" spacing={2.5}>
@@ -486,7 +495,7 @@ const AttemptDetailDialog = ({
                     fontFamily: 'monospace',
                     fontSize: 13,
                     p: 1.5,
-                    borderRadius: 1,
+                    borderRadius: 0,
                     bgcolor: 'background.paper',
                     border: '1px solid',
                     borderColor: 'divider',
@@ -502,7 +511,7 @@ const AttemptDetailDialog = ({
               sx={{
                 border: '1px solid',
                 borderColor: 'divider',
-                borderRadius: 2,
+                borderRadius: 0,
                 overflow: 'hidden',
                 position: 'relative',
                 minHeight: 200,
@@ -546,7 +555,8 @@ const AttemptDetailDialog = ({
                     value={detail.sourceCode ?? ''}
                     language={mapEditorLanguage(detail.lang)}
                     height="420px"
-                    theme={themeMode.mode === 'dark' ? 'vs-dark' : 'vs'}
+                    theme={codeTheme.theme}
+                    beforeMount={codeTheme.beforeMount}
                     options={{
                       readOnly: true,
                       minimap: { enabled: false },
@@ -577,7 +587,7 @@ const AttemptDetailDialog = ({
               <Box
                 sx={{
                   p: 2,
-                  borderRadius: 2,
+                  borderRadius: 0,
                   border: '1px dashed',
                   borderColor: 'divider',
                   bgcolor: 'background.default',

@@ -1,27 +1,7 @@
 import { ChipProps } from '@mui/material';
+import { Verdicts } from 'modules/problems/domain/entities/problem.entity';
 
-export enum Verdicts {
-  InQueue = -2,
-  Running,
-  JudgementFailed,
-  Accepted,
-  WrongAnswer,
-  TimeLimitExceeded,
-  RuntimeError,
-  OutputFormatError,
-  MemoryLimitExceeded,
-  Rejected,
-  CompilationError,
-  CommandExecutingError,
-  IdlenessLimitExceeded,
-  SyntaxError,
-  CheckerNotFound,
-  OnlyPython,
-  ObjectNotFound,
-  FakeAccepted,
-  PartialSolution,
-  NotAvailableLanguage,
-}
+export { Verdicts } from 'modules/problems/domain/entities/problem.entity';
 
 export type VerdictKey = Verdicts;
 

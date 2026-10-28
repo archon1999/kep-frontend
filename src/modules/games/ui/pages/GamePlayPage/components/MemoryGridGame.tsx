@@ -259,7 +259,7 @@ const MemoryGridGame = ({ best, onScore, audio }: MiniGameProps) => {
                 gap: { xs: 0.5, sm: 0.75 },
                 width: '100%',
                 p: { xs: 0.75, sm: 1 },
-                bgcolor: '#19344e',
+                bgcolor: 'background.elevation1',
                 borderRadius: 2,
               }}
             >
@@ -280,13 +280,13 @@ const MemoryGridGame = ({ best, onScore, audio }: MiniGameProps) => {
                     fontWeight: 650,
                     borderRadius: 0.75,
                     border: 0,
-                    color: activeCell === cell ? '#102638' : '#e6f2ff',
-                    bgcolor: activeCell === cell ? '#8be4d1' : '#2b4c68',
+                    color: activeCell === cell ? 'primary.contrastText' : 'text.primary',
+                    bgcolor: activeCell === cell ? 'primary.main' : 'background.elevation3',
                     boxShadow: 'none',
                     transition: 'background-color 120ms ease, transform 120ms ease',
                     transform: activeCell === cell ? 'scale(0.94)' : 'none',
                     '&:hover':
-                      phase === 'input' && activeCell !== cell ? { bgcolor: '#386486' } : {},
+                      phase === 'input' && activeCell !== cell ? { bgcolor: 'action.hover' } : {},
                     '&:focus-visible': {
                       outline: `3px solid ${theme.vars.palette.primary.main}`,
                       outlineOffset: 2,

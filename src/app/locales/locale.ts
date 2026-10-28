@@ -1,13 +1,13 @@
 import { SupportedLocales, initialConfig } from 'app/config.ts';
 import { getItemFromStore } from 'shared/lib/utils';
 
-export type I18nLanguage = 'enUS' | 'ruRU' | 'uzUZ';
+export type I18nLanguage = SupportedLocales;
 export type BackendLanguage = 'en' | 'ru' | 'uz';
 
 const I18N_LANGUAGE_BY_LOCALE: Record<SupportedLocales, I18nLanguage> = {
-  'en-US': 'enUS',
-  'ru-RU': 'ruRU',
-  'uz-UZ': 'uzUZ',
+  'en-US': 'en-US',
+  'ru-RU': 'ru-RU',
+  'uz-UZ': 'uz-UZ',
 };
 
 const BACKEND_LANGUAGE_BY_LOCALE: Record<SupportedLocales, BackendLanguage> = {

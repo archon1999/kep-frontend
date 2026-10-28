@@ -1,4 +1,5 @@
 import { PropsWithChildren, useMemo, useState } from 'react';
+import { useTranslation } from 'react-i18next';
 import { useNavigate } from 'react-router';
 import {
   Box,
@@ -22,6 +23,7 @@ import { getResourceByUsername, resources } from 'app/routes/resources';
 import { authPaths } from 'app/routes/route-config';
 import IconifyIcon from 'shared/components/base/IconifyIcon';
 import StatusAvatar from 'shared/components/base/StatusAvatar';
+import PatternArtwork from 'shared/components/common/PatternArtwork';
 import { useLoginHref } from 'shared/lib/authRedirect';
 
 interface ProfileMenuProps {
@@ -35,6 +37,7 @@ interface ProfileMenuItemProps extends MenuItemProps {
 }
 
 const ProfileMenu = ({ type = 'default' }: ProfileMenuProps) => {
+  const { t } = useTranslation();
   const navigate = useNavigate();
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
   const { up } = useBreakpoints();
@@ -70,7 +73,10 @@ const ProfileMenu = ({ type = 'default' }: ProfileMenuProps) => {
 
   const menuButton = (
     <Button
-      aria-label={`Open profile menu for ${username}`}
+      aria-label={t('common.accountMenu.title', { username })}
+      aria-expanded={open}
+      aria-controls={open ? 'account-menu' : undefined}
+      aria-haspopup="menu"
       title={username}
       color="neutral"
       variant="text"
@@ -133,7 +139,7 @@ const ProfileMenu = ({ type = 'default' }: ProfileMenuProps) => {
           vertical: 'bottom',
         }}
         sx={{
-          [`& .${paperClasses.root}`]: { minWidth: 320 },
+          [`& .${paperClasses.root}`]: { width: 360, maxWidth: 'calc(100vw - 32px)' },
           [`& .${listClasses.root}`]: { py: 0 },
         }}
       >
@@ -152,7 +158,7 @@ const ProfileMenu = ({ type = 'default' }: ProfileMenuProps) => {
             src={user.avatar ?? undefined}
             sx={{ width: 48, height: 48 }}
           />
-          <Box>
+          <Box sx={{ minWidth: 0, flex: 1, overflowWrap: 'anywhere' }}>
             <Typography
               variant="subtitle1"
               sx={{
@@ -163,34 +169,47 @@ const ProfileMenu = ({ type = 'default' }: ProfileMenuProps) => {
               {username}
             </Typography>
             {combinedName && (
-              <Typography variant="body2" sx={{ color: 'text.secondary' }}>
+              <Typography
+                variant="body2"
+                noWrap
+                title={combinedName}
+                sx={{ color: 'text.secondary' }}
+              >
                 {combinedName}
               </Typography>
             )}
           </Box>
+          <PatternArtwork
+            kind="profile"
+            sx={{
+              width: 64,
+              ml: 'auto',
+              '& .kep-pattern-signal': { animation: 'none', opacity: 1 },
+            }}
+          />
         </Stack>
         <Divider />
         <Box sx={{ py: 1 }}>
           <ProfileMenuItem href={profileHref} icon="solar:user-circle-bold" onClick={handleClose}>
-            Profile
+            {t('common.accountMenu.profile')}
           </ProfileMenuItem>
           <ProfileMenuItem
             href={resources.Settings}
             icon="solar:settings-linear"
             onClick={handleClose}
           >
-            Settings
+            {t('common.accountMenu.settings')}
           </ProfileMenuItem>
         </Box>
         <Divider />
         <Box sx={{ py: 1 }}>
           {currentUser ? (
             <ProfileMenuItem onClick={handleSignout} icon="material-symbols:logout-rounded">
-              Logout
+              {t('common.accountMenu.logout')}
             </ProfileMenuItem>
           ) : (
             <ProfileMenuItem href={loginHref} icon="material-symbols:login-rounded">
-              Sign In
+              {t('common.accountMenu.signIn')}
             </ProfileMenuItem>
           )}
         </Box>

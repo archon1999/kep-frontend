@@ -1,7 +1,13 @@
-import { sortContestProblems } from 'modules/contests/ui/shared/utils/sortContestProblems';
+import { sortContestProblems } from 'modules/contests/domain/utils/sort-contest-problems';
+import { ApiContestsListParams } from 'shared/api/orval/generated/endpoints/index.schemas';
 import {
-  ApiContestsListParams,
-} from 'shared/api/orval/generated/endpoints/index.schemas';
+  ContestContestantsParams,
+  ContestRegistrantsParams,
+  ContestStandingsParams,
+  ContestsRatingParams,
+  ContestsRepository,
+  PageResult,
+} from '../../domain/contracts/contests.repository';
 import { ContestDetail } from '../../domain/entities/contest-detail.entity';
 import { ContestProblemEntity } from '../../domain/entities/contest-problem.entity';
 import { ContestQuestion } from '../../domain/entities/contest-question.entity';
@@ -10,19 +16,11 @@ import { ContestRegistrant } from '../../domain/entities/contest-registrant.enti
 import { ContestStatistics } from '../../domain/entities/contest-statistics.entity';
 import { ContestCategoryEntity, ContestListItem } from '../../domain/entities/contest.entity';
 import { ContestFilter, ContestantEntity } from '../../domain/entities/contestant.entity';
-import {
-  ContestContestantsParams,
-  ContestRegistrantsParams,
-  ContestsRatingParams,
-  ContestStandingsParams,
-  ContestsRepository,
-  PageResult,
-} from '../../domain/ports/contests.repository';
 import { contestsApiClient } from '../api/contests.client';
-import { mapContestReplay } from '../mappers/contest-replay.mapper';
 import { mapContestDetail } from '../mappers/contest-detail.mapper';
 import { mapContestProblem } from '../mappers/contest-problem.mapper';
 import { mapContestQuestions } from '../mappers/contest-questions.mapper';
+import { mapContestReplay } from '../mappers/contest-replay.mapper';
 import {
   mapContestRatingChange,
   mapContestStatistics,

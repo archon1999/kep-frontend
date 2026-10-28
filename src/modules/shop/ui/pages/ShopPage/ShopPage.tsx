@@ -1,65 +1,69 @@
 import { useTranslation } from 'react-i18next';
-import { useNavigate } from 'react-router';
-import { Box, Stack, Typography } from '@mui/material';
-import { useAuth } from 'app/providers/AuthProvider';
-import { getResourceByUsername, resources } from 'app/routes/resources';
-import { useShopProducts } from 'modules/shop/application/queries';
-import { responsivePagePaddingSx } from 'shared/lib/styles';
-import { useSWRConfig } from 'swr';
+import { Link as RouterLink } from 'react-router';
+import { Alert, Box, Button, Stack } from '@mui/material';
+import { resources } from 'app/routes/resources';
+import { contentGridSx } from 'app/theme/styles/content';
+import { useShopPage } from 'modules/shop/application/hooks/useShopPage';
+import EmptyState from 'shared/components/common/EmptyState';
+import KepcoinValue from 'shared/components/common/KepcoinValue';
+import FramedPage from 'shared/components/sections/common/FramedPage';
+import PageHeader from 'shared/components/sections/common/PageHeader';
 import ShopProductCard, { ShopProductCardSkeleton } from './components/ShopProductCard';
 
 const ShopPage = () => {
+  const {
+    currentUser,
+    products,
+    isLoading,
+    error,
+    mutateProducts,
+    showEmptyState,
+    handlePurchaseSuccess,
+  } = useShopPage();
+
   const { t } = useTranslation();
-  const navigate = useNavigate();
-  const { currentUser } = useAuth();
-  const { mutate } = useSWRConfig();
-  const { data: products, isLoading, error, mutate: mutateProducts } = useShopProducts();
-
-  const showEmptyState = !isLoading && !products?.length && !error;
-
-  const handlePurchaseSuccess = async () => {
-    await Promise.all([mutateProducts?.(), mutate(['shop-orders'])]);
-
-    if (currentUser?.username) {
-      navigate(getResourceByUsername(resources.UserProfilePurchases, currentUser.username));
-    }
-  };
 
   return (
-    <Box sx={responsivePagePaddingSx}>
-      <Stack direction="column" spacing={3}>
-        <Typography variant="h4" fontWeight={700}>
-          {t('shop.title')}
-        </Typography>
-
-        {showEmptyState ? (
-          <Box
-            sx={{
-              py: 6,
-              px: 3,
-              borderRadius: 3,
-              border: (theme) => `1px dashed ${theme.palette.divider}`,
-              bgcolor: 'background.paper',
-              textAlign: 'center',
-            }}
+    <FramedPage>
+      <PageHeader
+        title={t('shop.title')}
+        subtitle={t('shop.subtitle')}
+        variant="detail"
+        actionComponent={
+          <Stack direction="row" alignItems="center" gap={2} flexWrap="wrap">
+            {currentUser && (
+              <KepcoinValue value={currentUser.kepcoin} iconSize={24} textVariant="metric" />
+            )}
+            <Button component={RouterLink} to={resources.Kepcoin} variant="outlined">
+              {t('menu.kepcoin')}
+            </Button>
+          </Stack>
+        }
+      />
+      <Stack direction="column" spacing={0}>
+        {error && (
+          <Alert
+            severity="error"
+            action={
+              <Button color="inherit" onClick={() => void mutateProducts()}>
+                {t('common.retry')}
+              </Button>
+            }
           >
-            <Typography variant="subtitle1" fontWeight={700}>
-              {t('shop.emptyTitle')}
-            </Typography>
-            <Typography variant="body2" color="text.secondary" sx={{ mt: 1 }}>
-              {t('shop.emptySubtitle')}
-            </Typography>
-          </Box>
+            {t('common.loadFailed')}
+          </Alert>
+        )}
+        {showEmptyState ? (
+          <EmptyState title={t('shop.emptyTitle')} description={t('shop.emptySubtitle')} />
         ) : (
           <Box
-            display="grid"
-            gap={3}
             sx={{
+              ...contentGridSx,
               gridTemplateColumns: {
                 xs: 'repeat(1, 1fr)',
                 sm: 'repeat(2, 1fr)',
                 md: 'repeat(3, 1fr)',
-                xl: 'repeat(4, 1fr)',
+                xl: 'repeat(3, 1fr)',
               },
             }}
           >
@@ -75,7 +79,7 @@ const ShopPage = () => {
           </Box>
         )}
       </Stack>
-    </Box>
+    </FramedPage>
   );
 };
 

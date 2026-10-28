@@ -1,5 +1,6 @@
-﻿import { useEffect, useMemo, useState } from 'react';
+import { useMemo } from 'react';
 import { useTranslation } from 'react-i18next';
+import { Link as RouterLink } from 'react-router';
 import {
   Button,
   Checkbox,
@@ -7,120 +8,79 @@ import {
   Dialog,
   DialogActions,
   DialogContent,
-  DialogTitle,
   Link,
   Stack,
   Typography,
 } from '@mui/material';
-import { DataGrid, GridColDef, GridRowSelectionModel, GridSortModel } from '@mui/x-data-grid';
-import { Link as RouterLink } from 'react-router';
-import AdminDataGridSkeletonLoadingOverlay from 'modules/admin/shared/ui/AdminDataGridSkeletonLoadingOverlay';
+import { DataGrid, GridColDef } from '@mui/x-data-grid';
 import { getResourceById, resources } from 'app/routes/resources';
-import UserPopover from 'modules/users/ui/shared/components/UserPopover';
 import AdminBatchActionsToolbar from 'modules/admin/shared/ui/AdminBatchActionsToolbar';
 import { AdminChoiceSelect } from 'modules/admin/shared/ui/AdminChoiceSelects';
-import AdminFiltersToolbar, { AdminActiveFilter } from 'modules/admin/shared/ui/AdminFiltersToolbar';
+import AdminDataGridSkeletonLoadingOverlay from 'modules/admin/shared/ui/AdminDataGridSkeletonLoadingOverlay';
+import AdminFiltersToolbar, {
+  AdminActiveFilter,
+} from 'modules/admin/shared/ui/AdminFiltersToolbar';
 import AdminListPageLayout from 'modules/admin/shared/ui/AdminListPageLayout';
 import AdminRowActions from 'modules/admin/shared/ui/AdminRowActions';
 import TextField from 'modules/admin/shared/ui/AdminTextField';
-import { getOrderingFromSortModel } from 'modules/admin/shared/utils/gridSorting';
+import { useAdminUsersListPage } from 'modules/admin/users/application/hooks/useAdminUsersListPage';
+import { AdminUser } from 'modules/admin/users/domain/types';
+import UserPopover from 'modules/users/ui/shared/components/UserPopover';
+import DataGridNoRowsOverlay, {
+  getDataGridNoRowsOverlaySlotProps,
+} from 'shared/components/common/DataGridNoRowsOverlay';
+import DialogHeader from 'shared/components/common/DialogHeader';
 import FilterDrawer, {
   DEFAULT_FILTER_DRAWER_WIDTH,
   useFilterDrawer,
 } from 'shared/components/common/FilterDrawer';
-import DataGridNoRowsOverlay, {
-  getDataGridNoRowsOverlaySlotProps,
-} from 'shared/components/common/DataGridNoRowsOverlay';
-import useGridPagination from 'shared/hooks/useGridPagination';
-import useStableGridRowCount from 'shared/hooks/useStableGridRowCount';
-import { useAdminUsers } from 'modules/admin/users/application/queries';
-import { usersAdminClient } from 'modules/admin/users/data-access/usersAdminClient';
-import { AdminUser } from 'modules/admin/users/domain/types';
+import { useConfirmationDialog } from 'shared/hooks/useConfirmationDialog';
 
 const AdminUsersListPage = () => {
-  const { t } = useTranslation();
-  const [search, setSearch] = useState('');
-  const [activeFilter, setActiveFilter] = useState('');
-  const [staffFilter, setStaffFilter] = useState('');
-  const [superuserFilter, setSuperuserFilter] = useState('');
-  const [canCreateProblemsFilter, setCanCreateProblemsFilter] = useState('');
-  const filterDrawer = useFilterDrawer();
-  const [rowSelectionModel, setRowSelectionModel] = useState<GridRowSelectionModel>({
-    type: 'include',
-    ids: new Set(),
-  });
-  const [isBatching, setIsBatching] = useState(false);
-  const [passwordDialogUser, setPasswordDialogUser] = useState<AdminUser | null>(null);
-  const [password, setPassword] = useState('');
-  const [isChangingPassword, setIsChangingPassword] = useState(false);
-  const [sortModel, setSortModel] = useState<GridSortModel>([{ field: 'id', sort: 'desc' }]);
-  const { paginationModel, onPaginationModelChange, pageParams, setPaginationModel } =
-    useGridPagination({
-      initialPageSize: 20,
-      querySync: {
-        pageKey: 'page',
-        pageSizeKey: 'pageSize',
-      },
-    });
-
-  useEffect(() => {
-    setPaginationModel((prev) => ({ ...prev, page: 0 }));
-  }, [
+  const { confirm, confirmationDialog } = useConfirmationDialog();
+  const {
+    paginationModel,
+    onPaginationModelChange,
+    data,
+    rowCount,
+    handleDelete,
+    handleActiveChange,
+    handleChangePassword,
+    handleBatchAction,
+    isGridLoading,
+    passwordDialogUser,
+    password,
+    setPassword,
+    isChangingPassword,
+    closePasswordDialog,
+    selectedIds,
+    isBatching,
+    resetRowSelection,
     search,
     activeFilter,
+    setActiveFilter,
     staffFilter,
+    setStaffFilter,
     superuserFilter,
+    setSuperuserFilter,
     canCreateProblemsFilter,
+    setCanCreateProblemsFilter,
     sortModel,
-    setPaginationModel,
-  ]);
+    setSortModel,
+    handleSearchChange,
+    rowSelectionModel,
+    setRowSelectionModel,
+    handleClearFilters,
+    openPasswordDialog,
+  } = useAdminUsersListPage(confirm);
 
-  const queryParams = useMemo(
-    () => ({
-      page: pageParams.page,
-      pageSize: pageParams.pageSize,
-      ordering: getOrderingFromSortModel(sortModel),
-      search,
-      isActive: activeFilter ? activeFilter === 'true' : undefined,
-      isStaff: staffFilter ? staffFilter === 'true' : undefined,
-      isSuperuser: superuserFilter ? superuserFilter === 'true' : undefined,
-      canCreateProblems: canCreateProblemsFilter ? canCreateProblemsFilter === 'true' : undefined,
-    }),
-    [
-      pageParams.page,
-      pageParams.pageSize,
-      sortModel,
-      search,
-      activeFilter,
-      staffFilter,
-      superuserFilter,
-      canCreateProblemsFilter,
-    ],
-  );
-
-  const { data, isLoading, isValidating, mutate } = useAdminUsers(queryParams);
-  const isGridLoading = isLoading || (isValidating && !data?.data);
-  const rowCount = useStableGridRowCount(data?.total, isGridLoading);
-
-  const handleSearchChange = (value: string) => setSearch(value);
-
-  const selectedIds = useMemo(
-    () => Array.from(rowSelectionModel.ids).map((id) => Number(id)).filter(Number.isFinite),
-    [rowSelectionModel],
-  );
-
-  const resetRowSelection = () => setRowSelectionModel({ type: 'include', ids: new Set() });
-
-  const handleClearFilters = () => {
-    setActiveFilter('');
-    setStaffFilter('');
-    setSuperuserFilter('');
-    setCanCreateProblemsFilter('');
-  };
+  const { t } = useTranslation();
+  const filterDrawer = useFilterDrawer();
 
   const activeFilters = useMemo<AdminActiveFilter[]>(() => {
     const items: AdminActiveFilter[] = [];
-    const booleanLabel = (value: string) => (value === 'true' ? t('admin.status.yes') : t('admin.status.no'));
+    const booleanLabel = (value: string) =>
+      value === 'true' ? t('admin.status.yes') : t('admin.status.no');
 
     if (activeFilter) {
       items.push({
@@ -156,73 +116,6 @@ const AdminUsersListPage = () => {
 
     return items;
   }, [activeFilter, canCreateProblemsFilter, staffFilter, superuserFilter, t]);
-
-  const handleDelete = async (user: AdminUser) => {
-    if (!window.confirm(t('admin.users.confirmDelete', { username: user.username }))) {
-      return;
-    }
-
-    await usersAdminClient.remove(user.id);
-    await mutate();
-  };
-
-  const handleActiveChange = async (user: AdminUser, isActive: boolean) => {
-    await usersAdminClient.update(user.id, { isActive: isActive });
-    await mutate();
-  };
-
-  const openPasswordDialog = (user: AdminUser) => {
-    setPasswordDialogUser(user);
-    setPassword('');
-  };
-
-  const closePasswordDialog = () => {
-    if (isChangingPassword) {
-      return;
-    }
-    setPasswordDialogUser(null);
-    setPassword('');
-  };
-
-  const handleChangePassword = async () => {
-    if (!passwordDialogUser || !password.trim()) {
-      return;
-    }
-
-    setIsChangingPassword(true);
-    try {
-      await usersAdminClient.changePassword(passwordDialogUser.id, { password });
-      closePasswordDialog();
-    } finally {
-      setIsChangingPassword(false);
-    }
-  };
-
-  const handleBatchAction = async (action: 'delete' | 'disable' | 'updateRatings') => {
-    if (selectedIds.length === 0) {
-      return;
-    }
-
-    const confirmKey =
-      action === 'delete'
-        ? 'admin.users.confirmBatchDelete'
-        : action === 'disable'
-          ? 'admin.users.confirmBatchDisable'
-          : 'admin.users.confirmBatchUpdateRatings';
-
-    if (!window.confirm(t(confirmKey, { count: selectedIds.length }))) {
-      return;
-    }
-
-    setIsBatching(true);
-    try {
-      await usersAdminClient.batch({ ids: selectedIds, action });
-      resetRowSelection();
-      await mutate();
-    } finally {
-      setIsBatching(false);
-    }
-  };
 
   const renderRating = (rating: number | string | undefined) => (
     <Typography color="primary" fontWeight={700} variant="body2">
@@ -397,123 +290,140 @@ const AdminUsersListPage = () => {
   );
 
   return (
-    <AdminListPageLayout
-      title={t('admin.users.title')}
-      createPath={resources.AdminUserCreate}
-      createLabel={t('admin.users.createButton')}
-      search={search}
-      onSearchChange={handleSearchChange}
-      searchPlaceholder={t('admin.users.searchPlaceholder')}
-      filterDrawerOpen={filterDrawer.open}
-      filterDrawerWidth={DEFAULT_FILTER_DRAWER_WIDTH}
-      filterDrawer={
-        <FilterDrawer
-          id="admin-users-filters-drawer"
-          open={filterDrawer.open}
-          onClose={filterDrawer.close}
-          drawerWidth={DEFAULT_FILTER_DRAWER_WIDTH}
-          hasActiveFilters={activeFilters.length > 0}
-          clearLabel={t('problems.clear')}
-          onClear={handleClearFilters}
-        >
-          {filterControls}
-        </FilterDrawer>
-      }
-      toolbar={
-        <AdminFiltersToolbar
-          id="admin-users"
+    <>
+      {confirmationDialog}
+      {
+        <AdminListPageLayout
+          title={t('admin.users.title')}
+          createPath={resources.AdminUserCreate}
+          createLabel={t('admin.users.createButton')}
           search={search}
           onSearchChange={handleSearchChange}
           searchPlaceholder={t('admin.users.searchPlaceholder')}
-          activeFilters={activeFilters}
-          onClearFilters={handleClearFilters}
-          filters={filterControls}
-          filtersOpen={filterDrawer.open}
-          onToggleFilters={filterDrawer.toggle}
-        />
-      }
-    >
-      <AdminBatchActionsToolbar
-        selectedCount={selectedIds.length}
-        selectedLabel={t('admin.selectedUsers')}
-        disabled={isBatching}
-        onClear={resetRowSelection}
-        actions={[
-          {
-            label: t('admin.actions.updateRatings'),
-            icon: 'mdi:chart-line',
-            onClick: () => handleBatchAction('updateRatings'),
-          },
-          {
-            label: t('admin.actions.disable'),
-            icon: 'mdi:account-off-outline',
-            color: 'warning',
-            onClick: () => handleBatchAction('disable'),
-          },
-          {
-            label: t('admin.actions.delete'),
-            icon: 'mdi:delete-outline',
-            color: 'error',
-            onClick: () => handleBatchAction('delete'),
-          },
-        ]}
-      />
-      <DataGrid
-        autoHeight
-        rows={data?.data ?? []}
-        rowCount={rowCount}
-        loading={isGridLoading}
-        slots={{
-          loadingOverlay: AdminDataGridSkeletonLoadingOverlay,
-          noRowsOverlay: DataGridNoRowsOverlay,
-        }}
-        localeText={{ noRowsLabel: t('common.dataGrid.noRows.adminUsers') }}
-        slotProps={getDataGridNoRowsOverlaySlotProps({
-          filtered: Boolean(search || activeFilters.length),
-        })}
-        columns={columns}
-        paginationModel={paginationModel}
-        onPaginationModelChange={onPaginationModelChange}
-        pageSizeOptions={[10, 20, 50]}
-        paginationMode="server"
-        sortModel={sortModel}
-        onSortModelChange={setSortModel}
-        sortingMode="server"
-        checkboxSelection
-        rowSelectionModel={rowSelectionModel}
-        onRowSelectionModelChange={setRowSelectionModel}
-        disableRowSelectionExcludeModel
-        disableRowSelectionOnClick
-      />
-      <Dialog open={Boolean(passwordDialogUser)} onClose={closePasswordDialog} fullWidth maxWidth="xs">
-        <DialogTitle>
-          {t('admin.users.changePasswordTitle', { username: passwordDialogUser?.username ?? '' })}
-        </DialogTitle>
-        <DialogContent>
-          <TextField
-            fullWidth
-            autoFocus
-            type="password"
-            label={t('admin.users.newPassword')}
-            value={password}
-            onChange={(event) => setPassword(event.target.value)}
-            margin="dense"
+          filterDrawerOpen={filterDrawer.open}
+          filterAnchorEl={filterDrawer.anchorEl}
+          filterDrawerWidth={DEFAULT_FILTER_DRAWER_WIDTH}
+          filterDrawer={
+            <FilterDrawer
+              id="admin-users-filters-drawer"
+              open={filterDrawer.open}
+              onClose={filterDrawer.close}
+              drawerWidth={DEFAULT_FILTER_DRAWER_WIDTH}
+              hasActiveFilters={activeFilters.length > 0}
+              clearLabel={t('problems.clear')}
+              onClear={handleClearFilters}
+            >
+              {filterControls}
+            </FilterDrawer>
+          }
+          toolbar={
+            <AdminFiltersToolbar
+              id="admin-users"
+              search={search}
+              onSearchChange={handleSearchChange}
+              searchPlaceholder={t('admin.users.searchPlaceholder')}
+              activeFilters={activeFilters}
+              onClearFilters={handleClearFilters}
+              filters={filterControls}
+              filtersOpen={filterDrawer.open}
+              onToggleFilters={filterDrawer.toggle}
+            />
+          }
+        >
+          <AdminBatchActionsToolbar
+            selectedCount={selectedIds.length}
+            selectedLabel={t('admin.selectedUsers')}
+            disabled={isBatching}
+            onClear={resetRowSelection}
+            actions={[
+              {
+                label: t('admin.actions.updateRatings'),
+                icon: 'mdi:chart-line',
+                onClick: () => handleBatchAction('updateRatings'),
+              },
+              {
+                label: t('admin.actions.disable'),
+                icon: 'mdi:account-off-outline',
+                color: 'warning',
+                onClick: () => handleBatchAction('disable'),
+              },
+              {
+                label: t('admin.actions.delete'),
+                icon: 'mdi:delete-outline',
+                color: 'error',
+                onClick: () => handleBatchAction('delete'),
+              },
+            ]}
           />
-        </DialogContent>
-        <DialogActions>
-          <Button color="secondary" onClick={closePasswordDialog} disabled={isChangingPassword}>
-            {t('admin.actions.cancel')}
-          </Button>
-          <Button
-            variant="contained"
-            onClick={handleChangePassword}
-            disabled={isChangingPassword || !password.trim()}
+          <DataGrid
+            autoHeight
+            rows={data?.data ?? []}
+            rowCount={rowCount}
+            loading={isGridLoading}
+            slots={{
+              loadingOverlay: AdminDataGridSkeletonLoadingOverlay,
+              noRowsOverlay: DataGridNoRowsOverlay,
+            }}
+            localeText={{ noRowsLabel: t('common.dataGrid.noRows.adminUsers') }}
+            slotProps={getDataGridNoRowsOverlaySlotProps({
+              filtered: Boolean(search || activeFilters.length),
+            })}
+            columns={columns}
+            paginationModel={paginationModel}
+            onPaginationModelChange={onPaginationModelChange}
+            pageSizeOptions={[10, 20, 50]}
+            paginationMode="server"
+            sortModel={sortModel}
+            onSortModelChange={setSortModel}
+            sortingMode="server"
+            checkboxSelection
+            rowSelectionModel={rowSelectionModel}
+            onRowSelectionModelChange={setRowSelectionModel}
+            disableRowSelectionExcludeModel
+            disableRowSelectionOnClick
+          />
+          <Dialog
+            aria-labelledby="admin-password-title"
+            open={Boolean(passwordDialogUser)}
+            onClose={closePasswordDialog}
+            fullWidth
+            maxWidth="xs"
           >
-            {t('admin.actions.save')}
-          </Button>
-        </DialogActions>
-      </Dialog>
-    </AdminListPageLayout>
+            <DialogHeader
+              id="admin-password-title"
+              title={t('admin.users.changePasswordTitle', {
+                username: passwordDialogUser?.username ?? '',
+              })}
+              onClose={closePasswordDialog}
+              closeDisabled={isChangingPassword}
+            />
+            <DialogContent>
+              <TextField
+                fullWidth
+                autoFocus
+                type="password"
+                label={t('admin.users.newPassword')}
+                value={password}
+                onChange={(event) => setPassword(event.target.value)}
+                margin="dense"
+              />
+            </DialogContent>
+            <DialogActions>
+              <Button color="secondary" onClick={closePasswordDialog} disabled={isChangingPassword}>
+                {t('admin.actions.cancel')}
+              </Button>
+              <Button
+                variant="contained"
+                onClick={handleChangePassword}
+                disabled={isChangingPassword || !password.trim()}
+              >
+                {t('admin.actions.save')}
+              </Button>
+            </DialogActions>
+          </Dialog>
+        </AdminListPageLayout>
+      }
+    </>
   );
 };
 

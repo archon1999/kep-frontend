@@ -13,6 +13,7 @@ import {
 } from '@mui/material';
 import type { HackathonProject, HackathonStanding } from 'modules/hackathons/domain';
 import { formatHackathonDuration } from 'modules/hackathons/ui/shared';
+import UserPopover from 'modules/users/ui/shared/components/UserPopover';
 
 interface HackathonStandingsTableProps {
   standings: HackathonStanding[];
@@ -80,16 +81,23 @@ const HackathonStandingsTable = ({ standings, projects }: HackathonStandingsTabl
         <TableBody>
           {standings.map((participant) => (
             <TableRow key={participant.username} hover>
-              <TableCell
-                align="center"
-                sx={{
-                  fontVariantNumeric: 'tabular-nums',
-                  fontWeight: 600,
-                  color: 'text.primary',
-                  px: { xs: 1, sm: 2 },
-                }}
-              >
-                {participant.rank}
+              <TableCell align="center" sx={{ px: { xs: 1, sm: 2 } }}>
+                <Typography
+                  variant="metric"
+                  fontSize={22}
+                  sx={{
+                    color:
+                      participant.rank === 1
+                        ? 'var(--kep-gold)'
+                        : participant.rank === 2
+                          ? 'var(--kep-silver)'
+                          : participant.rank === 3
+                            ? 'var(--kep-bronze)'
+                            : 'text.secondary',
+                  }}
+                >
+                  {String(participant.rank).padStart(2, '0')}
+                </Typography>
               </TableCell>
               <TableCell component="th" scope="row">
                 <Stack direction="row" spacing={1.5} alignItems="center">
@@ -106,15 +114,25 @@ const HackathonStandingsTable = ({ standings, projects }: HackathonStandingsTabl
                     {participant.username.charAt(0).toUpperCase()}
                   </Avatar>
                   <Stack direction="column" spacing={0.25} minWidth={0}>
-                    <Typography
-                      variant="subtitle2"
-                      color="text.primary"
-                      fontWeight={600}
-                      noWrap
-                      sx={{ maxWidth: '100%' }}
+                    <UserPopover
+                      username={participant.username}
+                      avatar={participant.userAvatar}
+                      fullName={participant.userFullName}
                     >
-                      {participant.username}
-                    </Typography>
+                      <Typography
+                        variant="subtitle2"
+                        color="text.primary"
+                        fontWeight={600}
+                        noWrap
+                        sx={{
+                          maxWidth: '100%',
+                          textDecoration: 'none',
+                          '&:hover': { color: 'primary.main' },
+                        }}
+                      >
+                        {participant.username}
+                      </Typography>
+                    </UserPopover>
                     {participant.userFullName ? (
                       <Typography
                         variant="caption"
@@ -135,7 +153,7 @@ const HackathonStandingsTable = ({ standings, projects }: HackathonStandingsTabl
                   textAlign: { xs: 'right', sm: singleProject ? 'center' : 'right' },
                 }}
               >
-                <Typography variant="subtitle2" color="text.primary" fontWeight={700}>
+                <Typography variant="metric" color="primary.main" fontSize={24}>
                   {participant.points ?? 0}
                 </Typography>
               </TableCell>

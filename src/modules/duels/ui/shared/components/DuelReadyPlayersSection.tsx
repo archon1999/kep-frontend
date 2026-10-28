@@ -1,3 +1,4 @@
+import { useTranslation } from 'react-i18next';
 import {
   Avatar,
   Button,
@@ -5,18 +6,15 @@ import {
   CardContent,
   CardHeader,
   Chip,
-  Pagination,
   Skeleton,
   Stack,
   Typography,
-  useTheme,
 } from '@mui/material';
 import Grid from '@mui/material/Grid';
-import { useTranslation } from 'react-i18next';
-import ContestsRatingChip from 'shared/components/rating/ContestsRatingChip.tsx';
-import { cssVarRgba } from 'shared/lib/utils.ts';
-import UserPopover from 'modules/users/ui/shared/components/UserPopover.tsx';
 import { DuelReadyPlayer } from 'modules/duels/domain/index.ts';
+import UserPopover from 'modules/users/ui/shared/components/UserPopover.tsx';
+import ContestsRatingChip from 'shared/components/rating/ContestsRatingChip.tsx';
+import { ListPagination } from 'shared/components/sections/common/FramedListPage';
 
 type Props = {
   players: DuelReadyPlayer[];
@@ -39,31 +37,35 @@ const ReadyPlayerCard = ({
   onChallenge: (player: DuelReadyPlayer) => void;
 }) => {
   const { t } = useTranslation();
-  const theme = useTheme();
 
   return (
     <Card
-      variant="outlined"
+      variant="panel"
       sx={{
         height: '100%',
-        borderRadius: 3,
-        borderColor: cssVarRgba(theme.vars.palette.primary.mainChannel, 0.2),
-        background: `linear-gradient(145deg, ${cssVarRgba(theme.vars.palette.primary.mainChannel, 0.08)}, ${cssVarRgba(theme.vars.palette.background.paperChannel, 0.98)})`,
       }}
     >
       <CardHeader
-        avatar={<Avatar src={player.avatar} sx={{ width: 46, height: 46 }}>{player.username?.slice(0, 1)}</Avatar>}
+        avatar={
+          <Avatar src={player.avatar} sx={{ width: 46, height: 46 }}>
+            {player.username?.slice(0, 1)}
+          </Avatar>
+        }
         title={
           <Stack spacing={0.35}>
             <UserPopover username={player.username}>
-              <Typography variant="subtitle1" fontWeight={800} color="text.primary">
+              <Typography variant="subtitle1" fontWeight={600} color="text.primary">
                 {player.username}
               </Typography>
             </UserPopover>
             {player.contestsRating || player.contestsRatingTitle ? (
               <Stack direction="row" spacing={0.75} alignItems="center" flexWrap="wrap">
                 <ContestsRatingChip title={player.contestsRatingTitle} imgSize={22} />
-                <Typography variant="caption" color="text.secondary" sx={{ textTransform: 'capitalize' }}>
+                <Typography
+                  variant="caption"
+                  color="text.secondary"
+                  sx={{ textTransform: 'capitalize' }}
+                >
                   {player.contestsRating ?? '—'} {player.contestsRatingTitle ?? ''}
                 </Typography>
               </Stack>
@@ -89,7 +91,12 @@ const ReadyPlayerCard = ({
         }
       />
       <CardContent sx={{ pt: 0 }}>
-        <Stack direction={{ xs: 'column', sm: 'row' }} justifyContent="space-between" alignItems={{ xs: 'flex-start', sm: 'center' }} spacing={1.5}>
+        <Stack
+          direction={{ xs: 'column', sm: 'row' }}
+          justifyContent="space-between"
+          alignItems={{ xs: 'flex-start', sm: 'center' }}
+          spacing={1.5}
+        >
           <Stack spacing={0.5}>
             <Typography variant="body2" color="text.secondary">
               {t('duels.readyPlayerDescription')}
@@ -128,7 +135,7 @@ const DuelReadyPlayersSection = ({
     <Stack spacing={3}>
       <Stack direction="row" justifyContent="space-between" alignItems="center" spacing={2}>
         <Stack spacing={0.5}>
-          <Typography variant="h6" fontWeight={800}>
+          <Typography variant="h6" fontWeight={600}>
             {t('duels.readyPlayersTitle')}
           </Typography>
           <Typography variant="body2" color="text.secondary">
@@ -178,15 +185,7 @@ const DuelReadyPlayersSection = ({
           ))}
       </Grid>
 
-      <Stack direction="row" justifyContent="center">
-        <Pagination
-          count={pageCount}
-          page={page}
-          onChange={(_, value) => onPageChange(value)}
-          color="primary"
-          shape="rounded"
-        />
-      </Stack>
+      <ListPagination count={pageCount} page={page} onChange={onPageChange} />
     </Stack>
   );
 };

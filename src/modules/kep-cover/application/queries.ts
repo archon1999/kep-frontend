@@ -1,18 +1,22 @@
 import useSWR from 'swr';
 import useSWRInfinite from 'swr/infinite';
 import { HttpKepCoverRepository } from '../data-access/repository/http.kep-cover.repository';
+import type { PageResult } from '../domain/contracts/kep-cover.repository';
 import type { KepCoverContestSummary, KepCoverEntry } from '../domain/entities/kep-cover.entity';
-import type { PageResult } from '../domain/ports/kep-cover.repository';
 
 const repository = new HttpKepCoverRepository();
 
 export const useKepCoverSummary = () =>
-  useSWR<KepCoverContestSummary>('kep-cover-summary', () => repository.getSummary(), { suspense: false });
+  useSWR<KepCoverContestSummary>('kep-cover-summary', () => repository.getSummary(), {
+    suspense: false,
+  });
 
 export const useKepCoverEntries = (pageSize = 12) => {
   type EntriesKey = readonly ['kep-cover-entries', number, number];
 
-  const { data, isLoading, isValidating, size, setSize, mutate } = useSWRInfinite<PageResult<KepCoverEntry>>(
+  const { data, error, isLoading, isValidating, size, setSize, mutate } = useSWRInfinite<
+    PageResult<KepCoverEntry>
+  >(
     (pageIndex: number, previousPageData: PageResult<KepCoverEntry> | null) => {
       if (previousPageData && pageIndex >= previousPageData.pagesCount) {
         return null;
@@ -20,7 +24,8 @@ export const useKepCoverEntries = (pageSize = 12) => {
 
       return ['kep-cover-entries', pageSize, pageIndex + 1] as const;
     },
-    ([, pageSizeParam, page]: EntriesKey) => repository.getEntries({ page, pageSize: pageSizeParam }),
+    ([, pageSizeParam, page]: EntriesKey) =>
+      repository.getEntries({ page, pageSize: pageSizeParam }),
     { suspense: false },
   );
 
@@ -44,6 +49,7 @@ export const useKepCoverEntries = (pageSize = 12) => {
 
   return {
     data: mergedPage,
+    error,
     isLoading,
     isLoadingMore,
     hasMore,

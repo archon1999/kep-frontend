@@ -7,7 +7,6 @@ import {
   DialogActions,
   DialogContent,
   DialogContentText,
-  DialogTitle,
   MenuItem,
   Stack,
   TextField,
@@ -20,6 +19,7 @@ import { CreateShopOrderPayload } from 'modules/shop/domain/entities/order.entit
 import { ShopProductColor, ShopProductSize } from 'modules/shop/domain/entities/product.entity';
 import { useUserSocial } from 'modules/users/application/queries';
 import IconifyIcon from 'shared/components/base/IconifyIcon';
+import DialogHeader from 'shared/components/common/DialogHeader';
 import KepcoinValue from 'shared/components/common/KepcoinValue';
 import { formatInteger } from 'shared/lib/numberFormat';
 import { toast } from 'sonner';
@@ -190,8 +190,14 @@ const ShopCheckoutModal = ({
 
   return (
     <>
-      <Dialog open={open} onClose={onClose} fullWidth maxWidth="xs">
-        <DialogTitle>{t('shop.checkout.title')}</DialogTitle>
+      <Dialog
+        aria-labelledby="shop-checkout-title"
+        open={open}
+        onClose={onClose}
+        fullWidth
+        maxWidth="xs"
+      >
+        <DialogHeader id="shop-checkout-title" title={t('shop.checkout.title')} onClose={onClose} />
         <DialogContent>
           <Stack spacing={2} mt={1}>
             <Typography variant="subtitle1" fontWeight={600}>
@@ -314,12 +320,18 @@ const ShopCheckoutModal = ({
       </Dialog>
 
       <Dialog
+        aria-labelledby="shop-confirm-title"
         open={Boolean(pendingPayload)}
         onClose={() => !isMutating && setPendingPayload(null)}
         fullWidth
         maxWidth="xs"
       >
-        <DialogTitle>{t('kepcoinSpend.confirmTitle')}</DialogTitle>
+        <DialogHeader
+          id="shop-confirm-title"
+          title={t('kepcoinSpend.confirmTitle')}
+          onClose={() => !isMutating && setPendingPayload(null)}
+          closeDisabled={isMutating}
+        />
         <DialogContent>
           <Stack spacing={2}>
             <DialogContentText>{t('kepcoinSpend.confirmDescription')}</DialogContentText>

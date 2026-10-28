@@ -1,20 +1,19 @@
-import { SyntheticEvent, useEffect, useMemo, useState } from 'react';
+import { useMemo } from 'react';
 import { useTranslation } from 'react-i18next';
-import { TabContext } from '@mui/lab';
-import { useLocation, useNavigate } from 'react-router';
+import { TabContext, TabPanel } from '@mui/lab';
+import { Avatar, Box, Stack, Typography } from '@mui/material';
+import { getResourceByUsername, resources } from 'app/routes/resources';
+import { useAccountSettingsPage } from 'modules/account-settings/application/hooks/useAccountSettingsPage';
 import {
-  Container,
-  Divider,
-  Drawer,
-  Paper,
-  Stack,
-} from '@mui/material';
-import { useTheme } from '@mui/material/styles';
-import { useBreakpoints } from 'app/providers/BreakpointsProvider';
-import { useNavContext } from 'app/layouts/main-layout/NavProvider';
-import SimpleBar from 'shared/components/base/SimpleBar.tsx';
+  AccountSettingsTab,
+  AccountSettingsTabValue,
+  accountSettingsTabRoutes,
+  getAccountSettingsTabValue,
+} from 'modules/account-settings/ui/shared';
+import ResponsiveTabs from 'shared/components/common/ResponsiveTabs';
+import FramedPage from 'shared/components/sections/common/FramedPage';
+import PageHeader from 'shared/components/sections/common/PageHeader';
 import {
-  AccountTabPanel,
   CareerSection,
   GeneralSettingsForm,
   NotificationsSettingsPanel,
@@ -27,33 +26,12 @@ import {
   TeamsSection,
   TechnologiesForm,
 } from '../../shared/components';
-import {
-  AccountSettingsTab,
-  AccountSettingsTabValue,
-  accountSettingsTabRoutes,
-  getAccountSettingsTabValue,
-} from 'modules/account-settings/ui/shared';
 
 const AccountSettingsPage = () => {
+  const { currentUser, location, navigate } = useAccountSettingsPage();
+
   const { t } = useTranslation();
-  const { down } = useBreakpoints();
-  const theme = useTheme();
-  const downMd = down('md');
-  const { topbarHeight } = useNavContext();
-  const location = useLocation();
-  const navigate = useNavigate();
-
-  const [showTabList, setShowTabList] = useState(true);
   const activeTab = getAccountSettingsTabValue(location.pathname);
-
-  useEffect(() => {
-    if (!downMd) {
-      setShowTabList(false);
-    } else {
-      setShowTabList(true);
-    }
-  }, [downMd]);
-
   const tabs: AccountSettingsTab[] = useMemo(
     () => [
       {
@@ -95,7 +73,7 @@ const AccountSettingsPage = () => {
         icon: 'material-symbols:trending-up',
         panelIcon: 'material-symbols:trending-up',
         render: (
-          <Stack direction="column" spacing={3}>
+          <Stack direction="column" spacing={0}>
             <SkillsForm />
             <TechnologiesForm />
           </Stack>
@@ -137,101 +115,94 @@ const AccountSettingsPage = () => {
     [t],
   );
 
-  const handleTabChange = (_: SyntheticEvent, newValue: string) => {
-    const nextTab = newValue as AccountSettingsTabValue;
-    const nextRoute = accountSettingsTabRoutes[nextTab] ?? accountSettingsTabRoutes.general;
-
-    if (location.pathname !== nextRoute) {
-      navigate(nextRoute);
-    }
+  const changeTab = (value: string) => {
+    const route = accountSettingsTabRoutes[value as AccountSettingsTabValue];
+    if (route && location.pathname !== route) navigate(route, { preventScrollReset: true });
   };
 
   return (
-    <Paper background={1}>
+    <FramedPage>
+      <PageHeader
+        title={t('pageTitles.accountSettings')}
+        subtitle={t('settings.pageSubtitle')}
+        variant="detail"
+        backTo={
+          currentUser
+            ? getResourceByUsername(resources.UserProfile, currentUser.username)
+            : undefined
+        }
+        backLabel={t('common.backTo', { destination: t('users.profile.identity') })}
+      />
       <TabContext value={activeTab}>
-        <Stack direction={downMd ? 'column' : 'row'} alignItems={downMd ? 'stretch' : 'flex-start'}>
-          {downMd ? (
-            <Drawer
-              hideBackdrop
-              anchor={theme.direction === 'rtl' ? 'right' : 'left'}
-              open={showTabList}
-              onClose={() => setShowTabList(false)}
-              ModalProps={{
-                keepMounted: true,
-                disablePortal: true,
-              }}
-              slotProps={{
-                paper: {
-                  sx: {
-                    bgcolor: 'background.elevation1',
-                    width: 1,
-                    overflow: 'hidden',
-                    pointerEvents: 'auto',
-                    height: ({ mixins }) => mixins.contentHeight(topbarHeight),
-                    top: ({ mixins }) => mixins.topOffset(topbarHeight, 1),
-                  },
-                },
-              }}
+        <Box
+          sx={{
+            display: 'grid',
+            gridTemplateColumns: { xs: 'minmax(0, 1fr)', md: '244px minmax(0, 1fr)' },
+            minHeight: { md: 640 },
+          }}
+        >
+          <Box
+            component="aside"
+            sx={{
+              minWidth: 0,
+              borderRightWidth: { xs: 0, md: 1 },
+              borderRightStyle: 'solid',
+              borderBottomWidth: { xs: 1, md: 0 },
+              borderBottomStyle: 'solid',
+              borderColor: 'divider',
+              bgcolor: 'background.default',
+            }}
+          >
+            <Stack
+              direction="row"
+              alignItems="center"
+              gap={1.5}
               sx={{
-                pointerEvents: 'none',
+                p: 3,
+                borderBottom: 1,
+                borderColor: 'divider',
+                display: { xs: 'none', md: 'flex' },
               }}
             >
-              <SimpleBar>
-                <SideTabList
-                  tabs={tabs}
-                  onChange={handleTabChange}
-                  onTabClick={() => setShowTabList(false)}
-                />
-              </SimpleBar>
-            </Drawer>
-          ) : (
-            <Paper
-              background={1}
-              sx={{
-                width: { md: 324, lg: 405 },
-                position: 'sticky',
-                top: ({ mixins }) => mixins.topOffset(topbarHeight),
-                height: ({ mixins }) => mixins.contentHeight(topbarHeight),
-              }}
+              <Avatar
+                src={currentUser?.avatar}
+                alt={currentUser?.username}
+                sx={{ width: 40, height: 40 }}
+              />
+              <Box sx={{ minWidth: 0 }}>
+                <Typography variant="label" color="text.secondary">
+                  {t('settings.account')}
+                </Typography>
+                <Typography variant="body2" sx={{ mt: 0.5, overflowWrap: 'anywhere' }}>
+                  @{currentUser?.username}
+                </Typography>
+              </Box>
+            </Stack>
+            <Box sx={{ display: { xs: 'none', md: 'block' } }}>
+              <SideTabList tabs={tabs} onChange={(_, value) => changeTab(value)} />
+            </Box>
+            <Box
+              sx={{ display: { xs: 'block', md: 'none' }, px: 'var(--kep-content-inset)', py: 2 }}
             >
-              <SimpleBar>
-                <SideTabList tabs={tabs} onChange={handleTabChange} />
-              </SimpleBar>
-            </Paper>
-          )}
-
-          {!downMd ? (
-            <Divider orientation="vertical" flexItem sx={{ borderStyle: 'dashed' }} />
-          ) : null}
-
-          <Paper sx={{ flex: 1, maxWidth: 1 }}>
-            <Container
-              maxWidth={false}
-              sx={{
-                px: { xs: 3, md: 5 },
-                py: 5,
-                maxWidth: { xs: 628, md: 660 },
-                overflowY: 'hidden',
-                height: downMd ? 1 : 'auto',
-              }}
-            >
-              {tabs.map((tab) => (
-                <AccountTabPanel
-                  key={tab.id}
-                  value={tab.value}
-                  title={tab.label}
-                  panelIcon={tab.panelIcon}
-                  description={tab.description}
-                  onOpenTabs={() => setShowTabList(true)}
-                >
-                  {tab.render}
-                </AccountTabPanel>
-              ))}
-            </Container>
-          </Paper>
-        </Stack>
+              <ResponsiveTabs
+                mobileBreakpoint="md"
+                value={activeTab}
+                onChange={changeTab}
+                items={tabs.map(({ value, label }) => ({ value, label }))}
+                ariaLabel={t('settings.navigation')}
+              />
+            </Box>
+          </Box>
+          <Box sx={{ minWidth: 0 }}>
+            {tabs.map((tab) => (
+              <TabPanel key={tab.value} value={tab.value} sx={{ p: 0 }}>
+                {tab.render}
+              </TabPanel>
+            ))}
+          </Box>
+        </Box>
       </TabContext>
-    </Paper>
+    </FramedPage>
   );
 };
 

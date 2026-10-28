@@ -1,16 +1,10 @@
-import {
-  Button,
-  Dialog,
-  DialogActions,
-  DialogContent,
-  DialogTitle,
-  Stack,
-  Typography,
-} from '@mui/material';
-import { DateTimePicker } from '@mui/x-date-pickers/DateTimePicker';
 import { useEffect, useMemo, useState } from 'react';
 import { useTranslation } from 'react-i18next';
+import { Button, Dialog, DialogActions, DialogContent, Stack } from '@mui/material';
+import { DateTimePicker } from '@mui/x-date-pickers/DateTimePicker';
 import { DuelInvitation } from 'modules/duels/domain/index.ts';
+import IconifyIcon from 'shared/components/base/IconifyIcon';
+import DialogHeader from 'shared/components/common/DialogHeader';
 import {
   DateTimePickerValue,
   formatDateTimePickerValue,
@@ -32,9 +26,7 @@ const START_TIME_STEP_MS = 5 * 60 * 1000;
 
 const getScheduleTimes = () => {
   const minimum = new Date(Date.now() + MIN_START_LEAD_MS);
-  const initial = new Date(
-    Math.ceil(minimum.getTime() / START_TIME_STEP_MS) * START_TIME_STEP_MS,
-  );
+  const initial = new Date(Math.ceil(minimum.getTime() / START_TIME_STEP_MS) * START_TIME_STEP_MS);
 
   return {
     minimum: parseDateTimePickerValue(minimum),
@@ -42,14 +34,7 @@ const getScheduleTimes = () => {
   };
 };
 
-const DuelScheduleDialog = ({
-  open,
-  mode,
-  invitation,
-  loading,
-  onClose,
-  onSubmit,
-}: Props) => {
+const DuelScheduleDialog = ({ open, mode, invitation, loading, onClose, onSubmit }: Props) => {
   const { t } = useTranslation();
   const isAccept = mode === 'accept';
   const [value, setValue] = useState<DateTimePickerValue>(null);
@@ -74,13 +59,22 @@ const DuelScheduleDialog = ({
       });
 
   return (
-    <Dialog open={open} onClose={onClose} maxWidth="xs" fullWidth>
-      <DialogTitle>{title}</DialogTitle>
-      <DialogContent>
-        <Stack spacing={2} mt={1}>
-          <Typography variant="body2" color="text.secondary">
-            {description}
-          </Typography>
+    <Dialog
+      aria-labelledby="duel-schedule-title"
+      open={open}
+      onClose={onClose}
+      maxWidth="xs"
+      fullWidth
+    >
+      <DialogHeader
+        id="duel-schedule-title"
+        title={title}
+        subtitle={description}
+        icon={<IconifyIcon icon="mdi:calendar-clock-outline" color="primary.main" />}
+        onClose={onClose}
+      />
+      <DialogContent sx={{ py: 3 }}>
+        <Stack spacing={2}>
           <DateTimePicker
             label={t('duels.startTime')}
             value={value}
@@ -97,17 +91,16 @@ const DuelScheduleDialog = ({
           />
         </Stack>
       </DialogContent>
-      <DialogActions sx={{ px: 3, pb: 2.5 }}>
-        <Button color="inherit" onClick={onClose}>
+      <DialogActions>
+        <Button color="inherit" onClick={onClose} autoFocus>
           {t('duels.cancel')}
         </Button>
         <Button
           variant="contained"
-          onClick={() =>
-            onSubmit(toBackendOffsetDateTime(formatDateTimePickerValue(value)))
-          }
+          onClick={() => onSubmit(toBackendOffsetDateTime(formatDateTimePickerValue(value)))}
           disabled={!value?.isValid() || loading}
-          sx={{ borderRadius: 999 }}
+          loading={loading}
+          endIcon={<IconifyIcon icon="mdi:arrow-right" />}
         >
           {isAccept ? t('duels.sendTimeProposal') : t('duels.sendCounterOffer')}
         </Button>

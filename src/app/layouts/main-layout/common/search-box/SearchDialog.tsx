@@ -1,5 +1,9 @@
+import { Suspense, lazy } from 'react';
+import { useTranslation } from 'react-i18next';
 import { Dialog, dialogClasses } from '@mui/material';
-import SearchResult from './SearchResult';
+import ContentLoading from 'shared/components/loading/ContentLoading';
+
+const SearchResult = lazy(() => import('./SearchResult'));
 
 interface SearchDialogProps {
   anchorEl: HTMLDivElement | HTMLButtonElement | null;
@@ -8,24 +12,26 @@ interface SearchDialogProps {
 
 const SearchDialog = ({ anchorEl, handleClose }: SearchDialogProps) => {
   const open = Boolean(anchorEl);
+  const { t } = useTranslation();
   return (
     <Dialog
       open={open}
       onClose={handleClose}
-      aria-labelledby="alert-dialog-title"
-      aria-describedby="alert-dialog-description"
+      aria-label={t('common.searchPlaceholder')}
       maxWidth="sm"
       sx={{
         [`& .${dialogClasses.paper}`]: {
-          bgcolor: 'background.menu',
           width: '100%',
-          borderRadius: 2,
           outline: 'none',
           overflow: 'hidden',
         },
       }}
     >
-      <SearchResult handleClose={handleClose} />
+      {open && (
+        <Suspense fallback={<ContentLoading />}>
+          <SearchResult handleClose={handleClose} />
+        </Suspense>
+      )}
     </Dialog>
   );
 };

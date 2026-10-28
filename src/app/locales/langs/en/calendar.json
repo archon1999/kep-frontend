@@ -1,7 +1,7 @@
 {
   "calendar": {
     "title": "Calendar",
-    "subtitle": "See upcoming training slots and events on the shared calendar.",
+    "subtitle": "Contest, arena, and tournament dates in one calendar.",
     "today": "Today",
     "monthView": "Month",
     "weekView": "Week",
@@ -9,8 +9,9 @@
     "eventType": "Type {{type}}",
     "loadError": "Could not load calendar events. Please try again soon.",
     "loading": "Loading calendar events...",
-    "emptyTitle": "No events scheduled",
-    "emptySubtitle": "New training times will appear here once they are published.",
-    "untitled": "Untitled event"
+    "untitled": "Untitled event",
+    "agenda": "In this period",
+    "periodEmpty": "No events in this period",
+    "periodEmptyHint": "Choose another date or return to today."
   }
 }

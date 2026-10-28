@@ -188,7 +188,7 @@ const IslandsChallenge = ({ challenge, pending, submit }: ChallengeProps<'code-i
     <Stack spacing={2}>
       <Box
         sx={{
-          bgcolor: '#214666',
+          bgcolor: 'background.elevation2',
           borderRadius: 2,
           p: 2,
           display: 'grid',
@@ -219,8 +219,13 @@ const IslandsChallenge = ({ challenge, pending, submit }: ChallengeProps<'code-i
                   borderRadius: 0.8,
                   display: 'grid',
                   placeItems: 'center',
-                  bgcolor: tile === '#' ? 'transparent' : tile === 'G' ? '#aee6d7' : '#e8f0f7',
-                  color: tile === 'K' ? '#c88922' : '#246ad3',
+                  bgcolor:
+                    tile === '#'
+                      ? 'transparent'
+                      : tile === 'G'
+                        ? 'success.lighter'
+                        : 'background.paper',
+                  color: tile === 'K' ? 'secondary.main' : 'primary.main',
                 }}
               >
                 {icon && <IconifyIcon icon={icon} width={22} />}

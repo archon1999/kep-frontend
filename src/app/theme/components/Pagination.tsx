@@ -1,6 +1,8 @@
 import { ComponentsVariants, PaginationProps, Theme, paginationItemClasses } from '@mui/material';
 import { Components, PaletteColor, PaletteColorChannel } from '@mui/material/styles';
 import { PaletteColorKey } from 'app/theme/palette';
+import { controlMotionStyles } from 'app/theme/styles/transitions';
+import { designTokens } from 'app/theme/tokens';
 import { VariantStyleProps } from 'app/types/mui';
 import IconifyIcon from 'shared/components/base/IconifyIcon';
 import { cssVarRgba } from 'shared/lib/utils';
@@ -76,6 +78,10 @@ const Pagination: Components<Omit<Theme, 'components'>>['MuiPagination'] = {
   defaultProps: {
     shape: 'rounded',
   },
+  styleOverrides: {
+    ul: ({ theme }) =>
+      theme.preset === 'default' ? { gap: 6, rowGap: 8, justifyContent: 'center' } : {},
+  },
 };
 
 export const PaginationItem: Components<Omit<Theme, 'components'>>['MuiPaginationItem'] = {
@@ -90,6 +96,44 @@ export const PaginationItem: Components<Omit<Theme, 'components'>>['MuiPaginatio
   },
   styleOverrides: {
     root: ({ theme }) => {
+      if (theme.preset === 'default')
+        return {
+          ...theme.typography.metric,
+          fontSize: '1rem',
+          minWidth: 40,
+          height: 40,
+          margin: 0,
+          paddingInline: 8,
+          border: `1px solid ${theme.vars.palette.divider}`,
+          borderRadius: 0,
+          backgroundColor: 'transparent',
+          color: theme.vars.palette.text.secondary,
+          ...controlMotionStyles,
+          '&:hover': {
+            backgroundColor: theme.vars.palette.action.hover,
+            borderColor: theme.vars.palette.primary.main,
+            color: theme.vars.palette.text.primary,
+          },
+          [`&.${paginationItemClasses.selected}, &.${paginationItemClasses.selected}:hover`]: {
+            background: designTokens.gradient,
+            borderColor: 'transparent',
+            color: 'var(--kep-accent-ink)',
+          },
+          [`&.${paginationItemClasses.focusVisible}`]: {
+            outline: `2px solid ${theme.vars.palette.primary.main}`,
+            outlineOffset: 3,
+          },
+          [`&.${paginationItemClasses.disabled}`]: {
+            opacity: 0.3,
+            borderColor: 'transparent',
+          },
+          [`&.${paginationItemClasses.ellipsis}`]: {
+            display: 'grid',
+            placeItems: 'center',
+            borderColor: 'transparent',
+          },
+        };
+
       return {
         variants: [
           {
@@ -121,11 +165,11 @@ export const PaginationItem: Components<Omit<Theme, 'components'>>['MuiPaginatio
         },
       };
     },
-    sizeSmall: {
-      height: 24,
-      minWidth: 24,
-      borderRadius: 6,
-    },
+    sizeSmall: ({ theme }) => ({
+      height: theme.preset === 'default' ? 32 : 24,
+      minWidth: theme.preset === 'default' ? 32 : 24,
+      borderRadius: theme.preset === 'default' ? 0 : 6,
+    }),
   },
 };
 export default Pagination;

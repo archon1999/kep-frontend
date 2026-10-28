@@ -1,170 +1,180 @@
 import { useMemo } from 'react';
-import { Avatar, Stack, Typography } from '@mui/material';
-import { DataGrid, GridColDef } from '@mui/x-data-grid';
 import { useTranslation } from 'react-i18next';
-import { useAuth } from 'app/providers/AuthProvider';
-import { useDuelsRating } from 'modules/duels/application/queries.ts';
-import { DuelsRatingPageTableRow } from 'modules/duels/domain/index.ts';
-import UserPopover from 'modules/users/ui/shared/components/UserPopover.tsx';
-import ContestsRatingChip from 'shared/components/rating/ContestsRatingChip.tsx';
-import useGridPagination from 'shared/hooks/useGridPagination';
-import useRouteQueryState from 'shared/hooks/useRouteQueryState';
-import useStableGridRowCount from 'shared/hooks/useStableGridRowCount';
-import { mergePinnedRows, rowMatchesUsername } from 'shared/lib/pinnedRows';
-import { stringParam } from 'shared/lib/queryParams';
-import { mapDuelsRatingPageTableRows } from 'modules/duels/data-access/mappers/duels-rating-page.mapper.ts';
+import {
+  Box,
+  Skeleton,
+  Stack,
+  Table,
+  TableBody,
+  TableCell,
+  TableContainer,
+  TableHead,
+  TableRow,
+  Typography,
+} from '@mui/material';
+import { useBreakpoints } from 'app/providers/BreakpointsProvider';
+import { useDuelsRatingPage } from 'modules/duels/application/hooks/useDuelsRatingPage';
+import DuelParticipant from 'modules/duels/ui/shared/components/DuelParticipant';
+import DuelRecord from 'modules/duels/ui/shared/components/DuelRecord';
+import { mapDuelsRatingPageTableRows } from 'modules/duels/ui/shared/helpers/duels-rating';
+import ContestsRatingChip from 'shared/components/rating/ContestsRatingChip';
+import {
+  ListFeedback,
+  RouteListPagination,
+} from 'shared/components/sections/common/FramedListPage';
+import { mergePinnedRows } from 'shared/lib/pinnedRows';
 
 const DuelsRatingPageTable = () => {
-  const { t } = useTranslation();
-  const { currentUser } = useAuth();
   const {
+    currentUser,
     paginationModel,
     onPaginationModelChange,
-    pageParams: { page, pageSize },
-  } = useGridPagination({
-    querySync: {
-      pageKey: 'page',
-      pageSizeKey: 'pageSize',
-    },
-  });
-  const { state } = useRouteQueryState({
-    defaults: {
-      ordering: '-wins',
-    },
-    schema: {
-      ordering: {
-        ...stringParam(),
-        param: 'ordering',
-      },
-    },
-  });
-  const ordering = state.ordering || '-wins';
-  const { data: ratingPage, isLoading } = useDuelsRating({
-    page,
-    pageSize,
-    ordering,
-    pinCurrentUser: Boolean(currentUser?.username),
-  });
+    ratingPage,
+    isLoading,
+    rowCount,
+    error,
+    retry,
+  } = useDuelsRatingPage();
+  const { t, i18n } = useTranslation();
+  const { down } = useBreakpoints();
+  const compact = down('md');
   const rows = useMemo(
     () =>
       mapDuelsRatingPageTableRows(
-        mergePinnedRows(
-          ratingPage?.data ?? [],
-          ratingPage?.pinnedRows,
-          (row) => row.user.username,
-        ),
+        mergePinnedRows(ratingPage?.data ?? [], ratingPage?.pinnedRows, (row) => row.user.username),
       ),
     [ratingPage?.data, ratingPage?.pinnedRows],
   );
-  const rowCount = useStableGridRowCount(ratingPage?.total, isLoading);
-
-  const columns: GridColDef<DuelsRatingPageTableRow>[] = useMemo(
-    () => [
-      {
-        field: 'rowIndex',
-        headerName: t('duels.table.place'),
-        width: 88,
-        headerAlign: 'center',
-        align: 'center',
-        sortable: false,
-        renderCell: ({ value }) => (
-          <Typography variant="subtitle1" fontWeight={900}>
-            #{value}
-          </Typography>
-        ),
-      },
-      {
-        field: 'username',
-        headerName: t('duels.table.username'),
-        flex: 1.2,
-        minWidth: 220,
-        sortable: false,
-        renderCell: ({ row }) => (
-          <UserPopover username={row.username} avatar={row.avatar}>
-            <Stack direction="row" spacing={1.25} alignItems="center" sx={{ minWidth: 0 }}>
-              <Avatar src={row.avatar} alt={row.username} sx={{ width: 42, height: 42 }} />
-              <Typography variant="subtitle2" fontWeight={800} noWrap>
-                {row.username}
-              </Typography>
-            </Stack>
-          </UserPopover>
-        ),
-      },
-      {
-        field: 'contestsRating',
-        headerName: t('duels.table.contestsRating'),
-        flex: 1,
-        minWidth: 220,
-        sortable: false,
-        renderCell: ({ row }) => (
-          <Stack direction="row" spacing={1.25} alignItems="center" sx={{ minWidth: 0 }}>
-            <ContestsRatingChip title={row.contestsRatingTitle} imgSize={26} />
-            <Stack spacing={0.1} sx={{ minWidth: 0 }}>
-              <Typography variant="subtitle2" fontWeight={800}>
-                {row.contestsRating ?? '--'}
-              </Typography>
-              <Typography
-                variant="caption"
-                color="text.secondary"
-                sx={{ textTransform: 'capitalize' }}
-                noWrap
-              >
-                {row.contestsRatingTitle ?? '--'}
-              </Typography>
-            </Stack>
-          </Stack>
-        ),
-      },
-      {
-        field: 'record',
-        headerName: t('duels.table.record'),
-        flex: 1,
-        minWidth: 220,
-        sortable: false,
-        renderCell: ({ row }) => (
-          <Stack spacing={0.35}>
-            <Typography variant="subtitle2" fontWeight={800}>
-              {row.duels} {t('duels.table.duels').toLowerCase()}
-            </Typography>
-            <Stack direction="row" spacing={1.25} alignItems="center" flexWrap="wrap" rowGap={0.5}>
-              <Typography color="success.main">{row.wins}W</Typography>
-              <Typography color="text.secondary">{row.draws}D</Typography>
-              <Typography color="error.main">{row.losses}L</Typography>
-            </Stack>
-          </Stack>
-        ),
-      },
-    ],
-    [t],
-  );
-
   return (
-    <DataGrid
-      autoHeight
-      disableRowSelectionOnClick
-      loading={isLoading}
-      rows={rows}
-      columns={columns}
-      getRowClassName={({ row }) =>
-        rowMatchesUsername(row, currentUser?.username) ? 'MuiDataGrid-row--currentUser' : ''
-      }
-      localeText={{ noRowsLabel: t('common.dataGrid.noRows.duelsRating') }}
-      rowCount={rowCount}
-      paginationModel={paginationModel}
-      onPaginationModelChange={onPaginationModelChange}
-      paginationMode="server"
-      pageSizeOptions={[10]}
-      disableColumnMenu
-      disableColumnFilter
-      disableColumnSelector
-      getRowHeight={() => 78}
-      sx={{
-        '& .MuiDataGrid-columnHeaderTitle': {
-          fontWeight: 800,
-        },
-      }}
-    />
+    <Box className="kep-duels-rating">
+      <TableContainer sx={{ overflowX: 'auto' }}>
+        <Table aria-label={t('duels.ratingTitle')} sx={{ minWidth: compact ? 320 : 680 }}>
+          <TableHead>
+            <TableRow>
+              <TableCell align="center" sx={{ width: compact ? 44 : 80, px: 1 }}>
+                {t('duels.table.place')}
+              </TableCell>
+              <TableCell>{t('duels.table.username')}</TableCell>
+              {!compact && <TableCell>{t('duels.table.contestsRating')}</TableCell>}
+              {!compact && <TableCell align="center">{t('duels.table.duels')}</TableCell>}
+              <TableCell sx={{ width: compact ? 132 : 200 }}>{t('duels.table.record')}</TableCell>
+            </TableRow>
+          </TableHead>
+          <TableBody>
+            {isLoading
+              ? Array.from({ length: paginationModel.pageSize }, (_, i) => (
+                  <TableRow key={i} sx={{ height: 88 }}>
+                    <TableCell sx={{ px: 1 }}>
+                      <Skeleton width={24} />
+                    </TableCell>
+                    <TableCell>
+                      <Skeleton width="80%" height={42} />
+                    </TableCell>
+                    {!compact && (
+                      <TableCell>
+                        <Skeleton width={100} />
+                      </TableCell>
+                    )}
+                    {!compact && (
+                      <TableCell>
+                        <Skeleton width={40} />
+                      </TableCell>
+                    )}
+                    <TableCell>
+                      <Skeleton width="90%" height={compact ? 42 : 24} />
+                    </TableCell>
+                  </TableRow>
+                ))
+              : !error &&
+                rows.map((row) => (
+                  <TableRow
+                    key={row.id}
+                    hover
+                    sx={{
+                      height: 88,
+                      bgcolor:
+                        row.username === currentUser?.username ? 'action.selected' : undefined,
+                    }}
+                  >
+                    <TableCell align="center" sx={{ px: 1 }}>
+                      <Typography
+                        variant="metric"
+                        color={
+                          row.rowIndex === 1
+                            ? 'warning.main'
+                            : row.rowIndex === 3
+                              ? 'warning.dark'
+                              : 'text.secondary'
+                        }
+                        sx={{ fontSize: 20 }}
+                      >
+                        {String(row.rowIndex).padStart(2, '0')}
+                      </Typography>
+                    </TableCell>
+                    <TableCell sx={{ minWidth: compact ? 128 : 200, py: 1.5 }}>
+                      <DuelParticipant
+                        compact={compact}
+                        player={{
+                          username: row.username,
+                          avatar: row.avatar,
+                          contestsRating: compact ? row.contestsRating : undefined,
+                          contestsRatingTitle: compact ? row.contestsRatingTitle : undefined,
+                        }}
+                      />
+                    </TableCell>
+                    {!compact && (
+                      <TableCell>
+                        <Stack direction="row" gap={1} alignItems="center">
+                          <ContestsRatingChip title={row.contestsRatingTitle} imgSize={24} />
+                          <Typography variant="metric" sx={{ fontSize: 19 }}>
+                            {row.contestsRating?.toLocaleString(i18n.language) ?? '—'}
+                          </Typography>
+                        </Stack>
+                      </TableCell>
+                    )}
+                    {!compact && (
+                      <TableCell align="center">
+                        <Typography variant="metric" sx={{ fontSize: 20 }}>
+                          {row.duels.toLocaleString(i18n.language)}
+                        </Typography>
+                      </TableCell>
+                    )}
+                    <TableCell sx={{ pr: { xs: 1, sm: 2 }, pl: 1 }}>
+                      <Stack gap={0.75}>
+                        <DuelRecord wins={row.wins} losses={row.losses} draws={row.draws} />
+                        {compact && (
+                          <Typography variant="caption" color="text.secondary">
+                            {row.duels.toLocaleString(i18n.language)} {t('duels.table.duels')}
+                          </Typography>
+                        )}
+                      </Stack>
+                    </TableCell>
+                  </TableRow>
+                ))}
+          </TableBody>
+        </Table>
+      </TableContainer>
+      {!isLoading && (
+        <ListFeedback
+          loading={false}
+          error={error}
+          empty={!rows.length}
+          emptyTitle={t('common.dataGrid.noRows.duelsRating')}
+          emptyMessage=""
+          errorMessage={t('duels.error')}
+          kind="competitions"
+          onRetry={() => void retry()}
+        />
+      )}
+      <Box sx={{ borderBottom: '1px solid var(--kep-line)' }}>
+        <RouteListPagination
+          page={paginationModel.page + 1}
+          count={Math.ceil(rowCount / paginationModel.pageSize)}
+          disabled={isLoading}
+          onChange={(page) => onPaginationModelChange({ ...paginationModel, page: page - 1 })}
+        />
+      </Box>
+    </Box>
   );
 };
-
 export default DuelsRatingPageTable;

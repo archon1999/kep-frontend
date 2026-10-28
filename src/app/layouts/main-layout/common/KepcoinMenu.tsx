@@ -1,5 +1,15 @@
 import { MouseEvent, useEffect, useMemo, useState } from 'react';
-import { Button, Link, Popover, Skeleton, Stack, Typography, paperClasses } from '@mui/material';
+import { useTranslation } from 'react-i18next';
+import {
+  Button,
+  Divider,
+  Link,
+  Popover,
+  Skeleton,
+  Stack,
+  Typography,
+  paperClasses,
+} from '@mui/material';
 import { useAuth } from 'app/providers/AuthProvider';
 import { resources } from 'app/routes/resources';
 import {
@@ -12,12 +22,14 @@ import axiosFetcher from 'shared/services/axios/axiosFetcher';
 import { wsService } from 'shared/services/websocket';
 import useSWR from 'swr';
 import useSWRMutation from 'swr/mutation';
+import ActivityMenuHeader from './ActivityMenuHeader';
 
 interface KepcoinMenuProps {
   type?: 'default' | 'slim';
 }
 
 const KepcoinMenu = ({ type = 'default' }: KepcoinMenuProps) => {
+  const { t } = useTranslation();
   const [todayStats, setTodayStats] = useState<TodayKepCoin | null>(null);
   const [anchorEl, setAnchorEl] = useState<HTMLElement | null>(null);
   const { currentUser, setCurrentUser } = useAuth();
@@ -89,8 +101,12 @@ const KepcoinMenu = ({ type = 'default' }: KepcoinMenuProps) => {
   return (
     <>
       <Button
-        aria-label="Kepcoin balance"
-        title="Kepcoin balance"
+        className="kepcoin-menu-trigger"
+        aria-label={t('common.kepcoinMenu.title')}
+        title={t('common.kepcoinMenu.title')}
+        aria-expanded={open}
+        aria-controls={open ? 'kepcoin-menu' : undefined}
+        aria-haspopup="dialog"
         onClick={handleOpen}
         color="neutral"
         variant={type === 'default' ? 'soft' : 'text'}
@@ -98,6 +114,8 @@ const KepcoinMenu = ({ type = 'default' }: KepcoinMenuProps) => {
       >
         <KepcoinValue
           value={formattedBalance}
+          animateValue
+          color="inherit"
           iconSize={type === 'slim' ? 18 : 22}
           spacing={1}
           fontWeight={600}
@@ -107,6 +125,7 @@ const KepcoinMenu = ({ type = 'default' }: KepcoinMenuProps) => {
       <Popover
         anchorEl={anchorEl}
         id="kepcoin-menu"
+        slotProps={{ paper: { role: 'dialog', 'aria-label': t('common.kepcoinMenu.title') } }}
         open={open}
         onClose={handleClose}
         transformOrigin={{
@@ -119,12 +138,25 @@ const KepcoinMenu = ({ type = 'default' }: KepcoinMenuProps) => {
         }}
         sx={{
           [`& .${paperClasses.root}`]: {
-            minWidth: 280,
+            width: 'min(360px, calc(100vw - 32px))',
             p: 0,
           },
         }}
       >
-        <Stack direction="row" spacing={2} sx={{ p: 2 }}>
+        <ActivityMenuHeader
+          title={t('common.kepcoinMenu.title')}
+          illustration="kepcoin"
+          onClose={handleClose}
+        />
+        <Divider />
+        <Stack
+          direction="row"
+          gap={2}
+          alignItems="center"
+          justifyContent="space-between"
+          flexWrap="wrap"
+          sx={{ p: 2.5 }}
+        >
           <KepcoinValue value={formattedBalance} iconSize={30} textVariant="h6" fontWeight={700} />
 
           <Button
@@ -134,10 +166,11 @@ const KepcoinMenu = ({ type = 'default' }: KepcoinMenuProps) => {
             color="primary"
             onClick={handleClose}
           >
-            Kepcoin sahifasiga o&apos;tish
+            {t('common.kepcoinMenu.view')}
           </Button>
         </Stack>
 
+        <Divider />
         {loadingToday ? (
           <Stack spacing={1} padding={2} direction="column">
             <Stack direction="row" justifyContent="space-between" alignItems="center">
@@ -167,7 +200,7 @@ const KepcoinMenu = ({ type = 'default' }: KepcoinMenuProps) => {
           <Stack spacing={1} padding={2} direction="column">
             <Stack direction="row" justifyContent="space-between" alignItems="center">
               <Typography variant="body2" color="text.secondary">
-                Bugun topilgan
+                {t('common.kepcoinMenu.earned')}
               </Typography>
               <KepcoinValue
                 value={todayStats ? todayStats.earn : '--'}
@@ -178,7 +211,7 @@ const KepcoinMenu = ({ type = 'default' }: KepcoinMenuProps) => {
             </Stack>
             <Stack direction="row" justifyContent="space-between" alignItems="center">
               <Typography variant="body2" color="text.secondary">
-                Bugun sarflangan
+                {t('common.kepcoinMenu.spent')}
               </Typography>
               <KepcoinValue
                 value={todayStats ? todayStats.spend : '--'}

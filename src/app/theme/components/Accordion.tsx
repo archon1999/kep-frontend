@@ -7,6 +7,7 @@ import {
 } from '@mui/material';
 import { Components } from '@mui/material/styles';
 import IconifyIcon from 'shared/components/base/IconifyIcon';
+import { motion } from '../styles/transitions';
 
 const Accordion: Components<Omit<Theme, 'components'>>['MuiAccordion'] = {
   defaultProps: {
@@ -17,11 +18,11 @@ const Accordion: Components<Omit<Theme, 'components'>>['MuiAccordion'] = {
     root: ({ theme }) => ({
       padding: 0,
       outline: 'none',
-      borderRadius: `${theme.spacing(1)} !important`,
+      borderRadius: theme.preset === 'default' ? '0 !important' : `${theme.spacing(1)} !important`,
 
-      '&:hover': {
-        backgroundColor: theme.vars.palette.background.elevation1,
-      },
+      ...(theme.preset !== 'default' && {
+        '&:hover': { backgroundColor: theme.vars.palette.background.elevation1 },
+      }),
       '&:before': {
         display: 'none',
       },
@@ -48,8 +49,18 @@ export const AccordionSummary: Components<Omit<Theme, 'components'>>['MuiAccordi
   styleOverrides: {
     root: ({ theme }) => ({
       gap: theme.spacing(1),
-      flexDirection: 'row-reverse',
+      flexDirection: theme.preset === 'default' ? 'row' : 'row-reverse',
       padding: theme.spacing(1),
+      ...(theme.preset === 'default' && {
+        minHeight: 52,
+        transition: motion.interaction,
+        '&:hover, &.Mui-focusVisible': { backgroundColor: theme.vars.palette.action.hover },
+        '&.Mui-focusVisible': {
+          outline: `2px solid ${theme.vars.palette.primary.main}`,
+          outlineOffset: -2,
+        },
+        [motion.reduced]: { transition: 'none' },
+      }),
 
       [`& .${accordionSummaryClasses.content}`]: {
         margin: 0,

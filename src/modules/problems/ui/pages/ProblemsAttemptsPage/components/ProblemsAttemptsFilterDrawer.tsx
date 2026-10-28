@@ -1,6 +1,11 @@
 import type { Dispatch, SetStateAction } from 'react';
 import { useTranslation } from 'react-i18next';
 import { Autocomplete, Avatar, Chip, MenuItem, Stack, Typography } from '@mui/material';
+import type {
+  AttemptsFilterState,
+  ProblemOption,
+  UserOption,
+} from 'modules/problems/application/attempts-filters';
 import {
   AttemptFilterOption,
   ProblemLanguageOption,
@@ -8,7 +13,6 @@ import {
 import FilterDrawer from 'shared/components/common/FilterDrawer.tsx';
 import VerdictSelect from 'shared/components/problems/VerdictSelect.tsx';
 import StyledTextField from 'shared/components/styled/StyledTextField.tsx';
-import type { AttemptsFilterState, ProblemOption, UserOption } from '../ProblemsAttemptsPage.tsx';
 
 interface ProblemsAttemptsFilterDrawerProps {
   open: boolean;

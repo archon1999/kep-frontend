@@ -1,5 +1,6 @@
 import { useTranslation } from 'react-i18next';
-import { Alert, Box, Skeleton, Stack, Typography } from '@mui/material';
+import { Alert, Box, Skeleton } from '@mui/material';
+import EmptyState from 'shared/components/common/EmptyState';
 
 interface HackathonAsyncStateProps {
   isLoading?: boolean;
@@ -19,24 +20,21 @@ const HackathonAsyncState = ({
   loadingHeight = 180,
 }: HackathonAsyncStateProps) => {
   const { t } = useTranslation();
-  if (error) return <Alert severity="error">{t('hackathons.loadError')}</Alert>;
+  if (error)
+    return (
+      <Box sx={{ p: 3 }}>
+        <Alert severity="error">{t('hackathons.loadError')}</Alert>
+      </Box>
+    );
   if (isLoading) return <Skeleton variant="rounded" height={loadingHeight} />;
   if (!isEmpty) return null;
 
   return (
-    <Box sx={{ px: 3, py: 6, textAlign: 'center' }}>
-      <Stack direction="column" spacing={1}>
-        <Typography variant="subtitle1" fontWeight={600}>
-          {emptyTitle ?? t('hackathons.emptyTitle')}
-        </Typography>
-        {emptyMessage ? (
-          <Typography variant="body2" color="text.secondary">
-            {emptyMessage}
-          </Typography>
-        ) : null}
-      </Stack>
-    </Box>
+    <EmptyState
+      kind="hackathon"
+      title={emptyTitle ?? t('hackathons.emptyTitle')}
+      description={emptyMessage}
+    />
   );
 };
-
 export default HackathonAsyncState;

@@ -1,14 +1,15 @@
-import { Button, Card, CardContent, CardHeader, Chip, LinearProgress, Stack, Typography } from '@mui/material';
 import { useTranslation } from 'react-i18next';
-import { toast } from 'sonner';
+import { Alert, Button, Chip, LinearProgress, Stack, Typography } from '@mui/material';
 import { useAuth } from 'app/providers/AuthProvider.tsx';
-import { useAccountConnections } from 'modules/kepcoin/application/queries.ts';
 import { useStartTask } from 'modules/kepcoin/application/mutations.ts';
+import { useAccountConnections } from 'modules/kepcoin/application/queries.ts';
+import { toast } from 'sonner';
+import SettingsSection from './SettingsSection';
 
 const ConnectedAccountsPanel = () => {
   const { t } = useTranslation();
   const { currentUser } = useAuth();
-  const { data, isLoading, mutate } = useAccountConnections();
+  const { data, isLoading, error: loadError, mutate } = useAccountConnections();
   const { trigger: startTask, isMutating } = useStartTask();
 
   const resolveTaskUrl = (url?: string) => {
@@ -46,59 +47,70 @@ const ConnectedAccountsPanel = () => {
     }
   };
 
+  if (loadError)
+    return (
+      <SettingsSection title={t('settings.connectedAccounts')}>
+        <Alert
+          severity="error"
+          action={<Button onClick={() => mutate()}>{t('common.retry')}</Button>}
+        >
+          {t('common.loadFailed')}
+        </Alert>
+      </SettingsSection>
+    );
+
   return (
-    <Card sx={{ outline: 'none', borderRadius: 3 }} background={1}>
-      <CardHeader
-        title={t('settings.connectedAccounts')}
-        subheader={t('settings.connectedAccountsSubtitle')}
-      />
-      <CardContent>
-        {isLoading || isMutating ? <LinearProgress sx={{ mb: 3 }} /> : null}
+    <SettingsSection
+      title={t('settings.connectedAccounts')}
+      description={t('settings.connectedAccountsSubtitle')}
+    >
+      {isLoading || isMutating ? <LinearProgress sx={{ mb: 3 }} /> : null}
 
-        <Stack direction="column" spacing={2}>
-          {(data?.connections ?? []).map((connection) => (
-            <Stack
-              key={connection.provider}
-              direction="row"
-              spacing={2}
-              alignItems="center"
-              justifyContent="space-between"
-              sx={{
-                p: 2,
-                borderRadius: 2.5,
-                bgcolor: 'background.level1',
-                border: '1px solid',
-                borderColor: 'divider',
-              }}
-            >
-              <Stack direction="column" spacing={0.5}>
-                <Typography variant="subtitle2">{connection.label}</Typography>
-                <Typography variant="body2" color="text.secondary">
-                  {connection.isLinked && connection.username
-                    ? connection.username
-                    : t('settings.connectedAccountsNotLinked')}
-                </Typography>
-              </Stack>
-
-              <Stack direction="row" spacing={1} alignItems="center">
-                <Chip
-                  size="small"
-                  color={connection.isLinked ? 'success' : 'default'}
-                  label={
-                    connection.isLinked
-                      ? t('settings.connectedAccountsLinked')
-                      : t('settings.connectedAccountsNotLinked')
-                  }
-                />
-                <Button variant="outlined" onClick={() => handleConnect(connection.taskSlug)}>
-                  {connection.isLinked ? t('settings.reconnect') : t('settings.connect')}
-                </Button>
-              </Stack>
+      <Stack direction="column" spacing={2}>
+        {(data?.connections ?? []).map((connection) => (
+          <Stack
+            key={connection.provider}
+            direction={{ xs: 'column', sm: 'row' }}
+            spacing={2}
+            alignItems={{ xs: 'stretch', sm: 'center' }}
+            justifyContent="space-between"
+            sx={{
+              py: 2,
+              borderBottom: 1,
+              borderColor: 'divider',
+            }}
+          >
+            <Stack direction="column" spacing={0.5}>
+              <Typography variant="subtitle2">{connection.label}</Typography>
+              <Typography variant="body2" color="text.secondary">
+                {connection.isLinked && connection.username
+                  ? connection.username
+                  : t('settings.connectedAccountsNotLinked')}
+              </Typography>
             </Stack>
-          ))}
-        </Stack>
-      </CardContent>
-    </Card>
+
+            <Stack direction="row" gap={1} flexWrap="wrap" alignItems="center">
+              <Chip
+                size="small"
+                color={connection.isLinked ? 'success' : 'default'}
+                label={
+                  connection.isLinked
+                    ? t('settings.connectedAccountsLinked')
+                    : t('settings.connectedAccountsNotLinked')
+                }
+              />
+              <Button
+                variant="outlined"
+                disabled={isMutating}
+                onClick={() => handleConnect(connection.taskSlug)}
+              >
+                {connection.isLinked ? t('settings.reconnect') : t('settings.connect')}
+              </Button>
+            </Stack>
+          </Stack>
+        ))}
+      </Stack>
+    </SettingsSection>
   );
 };
 

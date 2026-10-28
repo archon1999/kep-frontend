@@ -1,54 +1,78 @@
 import { useTranslation } from 'react-i18next';
-import { Card, CardContent, LinearProgress, Stack, Typography } from '@mui/material';
+import { Box, LinearProgress, Stack, Typography } from '@mui/material';
 import { ChallengeQuestionTimeType } from 'modules/challenges/domain';
+import KepIcon from 'shared/components/base/KepIcon';
 
 interface CountdownProps {
   secondsLeft: number;
   totalSeconds: number;
-  chapterTitle?: string;
-  chapterIcon?: string;
   mode: ChallengeQuestionTimeType;
+  compact?: boolean;
 }
-
 const ChallengeCountdown = ({
   secondsLeft,
   totalSeconds,
   mode,
+  compact = false,
 }: CountdownProps) => {
   const { t } = useTranslation();
-  const progress = totalSeconds
-    ? Math.max(0, Math.min(100, (secondsLeft / totalSeconds) * 100))
-    : 0;
-
-  const minutes = Math.floor(secondsLeft / 60)
+  const remaining = Math.max(0, secondsLeft);
+  const progress = totalSeconds ? Math.max(0, Math.min(100, (remaining / totalSeconds) * 100)) : 0;
+  const minutes = Math.floor(remaining / 60)
     .toString()
     .padStart(2, '0');
-  const seconds = Math.floor(secondsLeft % 60)
+  const seconds = Math.floor(remaining % 60)
     .toString()
     .padStart(2, '0');
-
+  const urgent = remaining <= Math.min(10, totalSeconds * 0.25);
+  const label = t(
+    mode === ChallengeQuestionTimeType.TimeToOne
+      ? 'challenges.timer.perQuestion'
+      : 'challenges.timer.wholeChallenge',
+  );
   return (
-    <Card variant="outlined">
-      <CardContent>
-        <Stack spacing={2} direction="column" alignItems="stretch">
-          <Stack direction="row" spacing={1} alignItems="center" justifyContent="space-between">
-            <Stack direction="column" spacing={0.25}>
-              <Typography variant="subtitle2" color="text.secondary">
-                {mode === ChallengeQuestionTimeType.TimeToOne
-                  ? t('challenges.timer.perQuestion')
-                  : t('challenges.timer.wholeChallenge')}
-              </Typography>
-              <Typography variant="h5" fontWeight={800}>
-                {minutes}:{seconds}
-              </Typography>
-            </Stack>
-          </Stack>
-
-          <LinearProgress variant="determinate" value={progress} />
+    <Box
+      title={label}
+      sx={{ minWidth: 0, width: compact ? { xs: 112, sm: 144 } : undefined, flexShrink: 0 }}
+    >
+      <Stack
+        direction="row"
+        justifyContent="space-between"
+        gap={2}
+        alignItems="center"
+        sx={{ mb: compact ? 0.5 : 1.5 }}
+      >
+        <Stack direction="row" gap={1} alignItems="center">
+          <KepIcon
+            name="challenge-time"
+            color={urgent ? 'error.main' : 'primary.main'}
+            fontSize={20}
+          />
+          <Typography
+            variant="caption"
+            color="text.secondary"
+            sx={{ display: compact ? 'none' : 'block' }}
+          >
+            {label}
+          </Typography>
         </Stack>
-      </CardContent>
-    </Card>
+        <Typography
+          role="timer"
+          aria-label={label}
+          variant="metric"
+          color={urgent ? 'error.main' : 'text.primary'}
+          sx={{ fontSize: compact ? 26 : 32 }}
+        >
+          {minutes}:{seconds}
+        </Typography>
+      </Stack>
+      <LinearProgress
+        aria-label={label}
+        variant="determinate"
+        value={progress}
+        color={urgent ? 'error' : 'primary'}
+      />
+    </Box>
   );
 };
-
 export default ChallengeCountdown;

@@ -1,15 +1,25 @@
 import { ChangeEvent, useEffect, useState } from 'react';
-import { Button, Card, CardContent, CardHeader, Grid, LinearProgress, MenuItem, Stack, TextField, Typography } from '@mui/material';
-import { DatePicker } from '@mui/x-date-pickers/DatePicker';
 import { useTranslation } from 'react-i18next';
+import {
+  Alert,
+  Button,
+  Grid,
+  LinearProgress,
+  MenuItem,
+  Stack,
+  TextField,
+  Typography,
+} from '@mui/material';
+import { DatePicker } from '@mui/x-date-pickers/DatePicker';
 import { useAuth } from 'app/providers/AuthProvider.tsx';
 import { useAccountProfileInfo, useUpdateProfileInfo } from 'modules/account-settings/application';
 import type { AccountProfileInfo } from 'modules/account-settings/domain';
-import { toast } from 'sonner';
 import { useUsersCountries } from 'modules/users/application/queries.ts';
 import CountryFlagIcon from 'shared/components/common/CountryFlagIcon.tsx';
 import { formatDateInputValue, parseDateTimePickerValue } from 'shared/lib/dateTime';
 import { getCountryLabel } from 'shared/utils/country.ts';
+import { toast } from 'sonner';
+import SettingsSection from './SettingsSection';
 
 const ProfileInformationForm = () => {
   const { t, i18n } = useTranslation();
@@ -17,7 +27,7 @@ const ProfileInformationForm = () => {
   const username = currentUser?.username;
 
   const { data: countries } = useUsersCountries();
-  const { data, isLoading, mutate } = useAccountProfileInfo(username);
+  const { data, isLoading, error: loadError, mutate } = useAccountProfileInfo(username);
   const { trigger, isMutating } = useUpdateProfileInfo();
 
   const [formState, setFormState] = useState<AccountProfileInfo | null>(null);
@@ -30,9 +40,10 @@ const ProfileInformationForm = () => {
     }
   }, [data]);
 
-  const handleChange = (field: keyof AccountProfileInfo) => (event: ChangeEvent<HTMLInputElement>) => {
-    setFormState((prev) => ({ ...prev!, [field]: event.target.value }));
-  };
+  const handleChange =
+    (field: keyof AccountProfileInfo) => (event: ChangeEvent<HTMLInputElement>) => {
+      setFormState((prev) => ({ ...prev!, [field]: event.target.value }));
+    };
 
   const handleDateChange = (value: ReturnType<typeof parseDateTimePickerValue>) => {
     setFormState((prev) => ({
@@ -57,107 +68,125 @@ const ProfileInformationForm = () => {
     }
   };
 
-  return (
-    <Card sx={{ outline: 'none', borderRadius: 3 }} background={1}>
-      <CardHeader title={t('settings.information')} />
-      <CardContent>
-        {isLoading || isMutating ? <LinearProgress sx={{ mb: 3 }} /> : null}
-        <Stack direction="column" spacing={3}>
-          <TextField
-            multiline
-            minRows={3}
-            label={t('settings.bio')}
-            value={formState?.bio || ''}
-            onChange={handleChange('bio')}
-            error={Boolean(errors?.bio?.length)}
-            helperText={errors?.bio?.[0]}
-          />
-          <Grid container spacing={2}>
-            <Grid size={{ xs: 12, md: 6 }}>
-              <DatePicker
-                label={t('settings.birthDate')}
-                value={parseDateTimePickerValue(formState?.dateOfBirth)}
-                onChange={handleDateChange}
-                format="DD.MM.YYYY"
-                views={['year', 'month', 'day']}
-                openTo="year"
-                disableFuture
-                slotProps={{
-                  field: { clearable: true },
-                  textField: {
-                    fullWidth: true,
-                    error: Boolean(errors?.dateOfBirth?.length),
-                    helperText: errors?.dateOfBirth?.[0],
-                  },
-                }}
-              />
-            </Grid>
-            <Grid size={{ xs: 12, md: 6 }}>
-              <TextField
-                fullWidth
-                label={t('settings.website')}
-                value={formState?.website || ''}
-                onChange={handleChange('website')}
-                error={Boolean(errors?.website?.length)}
-                helperText={errors?.website?.[0]}
-              />
-            </Grid>
-            <Grid size={{ xs: 12, md: 6 }}>
-              <TextField
-                select
-                fullWidth
-                label={t('settings.country')}
-                value={formState?.country || ''}
-                onChange={handleChange('country')}
-                disabled={!countryOptions.length}
-                error={Boolean(errors?.country?.length)}
-                helperText={errors?.country?.[0]}
-              >
-                {!countryOptions.length ? (
-                  <MenuItem value="" disabled>
-                    {t('common.loading')}
-                  </MenuItem>
-                ) : null}
-                {countryOptions.map((code) => (
-                  <MenuItem key={code} value={code}>
-                    <Stack direction="row" spacing={1} alignItems="center">
-                      <CountryFlagIcon code={code} size={18} />
-                      <Typography component="span">
-                        {getCountryLabel(code, i18n.language) || code.toUpperCase()}
-                      </Typography>
-                    </Stack>
-                  </MenuItem>
-                ))}
-              </TextField>
-            </Grid>
-            <Grid size={{ xs: 12, md: 6 }}>
-              <TextField
-                fullWidth
-                label={t('settings.region')}
-                value={formState?.region || ''}
-                onChange={handleChange('region')}
-                error={Boolean(errors?.region?.length)}
-                helperText={errors?.region?.[0]}
-              />
-            </Grid>
-          </Grid>
+  if (loadError)
+    return (
+      <SettingsSection title={t('settings.information')}>
+        <Alert
+          severity="error"
+          action={<Button onClick={() => mutate()}>{t('common.retry')}</Button>}
+        >
+          {t('common.loadFailed')}
+        </Alert>
+      </SettingsSection>
+    );
 
-          <Stack direction="row" spacing={2} justifyContent="flex-end">
-            <Button variant="outlined" color="secondary" onClick={handleReset} disabled={isLoading}>
-              {t('settings.reset')}
-            </Button>
-            <Button variant="contained" onClick={handleSave} disabled={!formState}>
-              {t('settings.save')}
-            </Button>
-          </Stack>
-          {errors && errors.email ? (
-            <Typography variant="caption" color="text.secondary">
-              {errors.email[0]}
-            </Typography>
-          ) : null}
+  return (
+    <SettingsSection title={t('settings.information')}>
+      {isLoading || isMutating ? <LinearProgress sx={{ mb: 3 }} /> : null}
+      <Stack direction="column" spacing={3}>
+        <TextField
+          multiline
+          minRows={3}
+          label={t('settings.bio')}
+          value={formState?.bio || ''}
+          onChange={handleChange('bio')}
+          error={Boolean(errors?.bio?.length)}
+          helperText={errors?.bio?.[0]}
+        />
+        <Grid container spacing={2}>
+          <Grid size={{ xs: 12, md: 6 }}>
+            <DatePicker
+              label={t('settings.birthDate')}
+              value={parseDateTimePickerValue(formState?.dateOfBirth)}
+              onChange={handleDateChange}
+              format="DD.MM.YYYY"
+              views={['year', 'month', 'day']}
+              openTo="year"
+              disableFuture
+              slotProps={{
+                field: { clearable: true },
+                textField: {
+                  fullWidth: true,
+                  error: Boolean(errors?.dateOfBirth?.length),
+                  helperText: errors?.dateOfBirth?.[0],
+                },
+              }}
+            />
+          </Grid>
+          <Grid size={{ xs: 12, md: 6 }}>
+            <TextField
+              fullWidth
+              label={t('settings.website')}
+              value={formState?.website || ''}
+              onChange={handleChange('website')}
+              error={Boolean(errors?.website?.length)}
+              helperText={errors?.website?.[0]}
+            />
+          </Grid>
+          <Grid size={{ xs: 12, md: 6 }}>
+            <TextField
+              select
+              fullWidth
+              label={t('settings.country')}
+              value={formState?.country || ''}
+              onChange={handleChange('country')}
+              disabled={!countryOptions.length}
+              error={Boolean(errors?.country?.length)}
+              helperText={errors?.country?.[0]}
+            >
+              {!countryOptions.length ? (
+                <MenuItem value="" disabled>
+                  {t('common.loading')}
+                </MenuItem>
+              ) : null}
+              {countryOptions.map((code) => (
+                <MenuItem key={code} value={code}>
+                  <Stack direction="row" spacing={1} alignItems="center">
+                    <CountryFlagIcon code={code} size={18} />
+                    <Typography component="span">
+                      {getCountryLabel(code, i18n.language) || code.toUpperCase()}
+                    </Typography>
+                  </Stack>
+                </MenuItem>
+              ))}
+            </TextField>
+          </Grid>
+          <Grid size={{ xs: 12, md: 6 }}>
+            <TextField
+              fullWidth
+              label={t('settings.region')}
+              value={formState?.region || ''}
+              onChange={handleChange('region')}
+              error={Boolean(errors?.region?.length)}
+              helperText={errors?.region?.[0]}
+            />
+          </Grid>
+        </Grid>
+
+        <Stack direction="row" spacing={2} justifyContent="flex-end">
+          <Button
+            variant="outlined"
+            color="secondary"
+            onClick={handleReset}
+            disabled={isLoading || isMutating}
+          >
+            {t('settings.reset')}
+          </Button>
+          <Button
+            variant="contained"
+            onClick={handleSave}
+            disabled={!formState || isLoading || isMutating}
+          >
+            {t('settings.save')}
+          </Button>
         </Stack>
-      </CardContent>
-    </Card>
+        {errors && errors.email ? (
+          <Typography variant="caption" color="text.secondary">
+            {errors.email[0]}
+          </Typography>
+        ) : null}
+      </Stack>
+    </SettingsSection>
   );
 };
 

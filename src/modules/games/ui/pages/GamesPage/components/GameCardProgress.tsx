@@ -1,6 +1,5 @@
 import { useTranslation } from 'react-i18next';
 import { Box, Stack, Typography } from '@mui/material';
-import { orange } from 'app/theme/palette/colors';
 import type { GameId } from 'modules/games/domain';
 import { gamesCatalog } from 'modules/games/ui/shared';
 import IconifyIcon from 'shared/components/base/IconifyIcon';
@@ -63,22 +62,21 @@ const GameCardProgress = ({ id, best }: Props) => {
           aria-valuenow={score}
           aria-valuemin={0}
           aria-valuemax={MAX_SCORE}
-          sx={(theme) => ({
+          sx={{
             flex: 1,
             minWidth: 0,
-            height: 7,
+            height: 3,
             overflow: 'hidden',
-            borderRadius: 6,
-            bgcolor: orange[100],
-            ...theme.applyStyles('dark', { bgcolor: orange[900] }),
-          })}
+            borderRadius: 0,
+            bgcolor: 'action.disabledBackground',
+          }}
         >
           <Box
             sx={{
               width: `${progress}%`,
               height: '100%',
               borderRadius: 'inherit',
-              bgcolor: orange[500],
+              bgcolor: 'primary.main',
               transition: 'width 300ms ease',
             }}
           />

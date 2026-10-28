@@ -1,4 +1,6 @@
 import { useEffect, useMemo, useState } from 'react';
+import { useTranslation } from 'react-i18next';
+import { useNavigate } from 'react-router-dom';
 import {
   Alert,
   Button,
@@ -7,20 +9,16 @@ import {
   Dialog,
   DialogActions,
   DialogContent,
-  DialogTitle,
   LinearProgress,
   Stack,
   Typography,
 } from '@mui/material';
-import { useTranslation } from 'react-i18next';
-import { useNavigate } from 'react-router-dom';
 import { getResourceById, resources } from 'app/routes/resources';
 import { useRecommendationResolve } from 'modules/problems/application/queries.ts';
-import type {
-  StudyPlanListItem,
-} from 'modules/problems/domain/entities/problem.entity.ts';
-import type { ProblemsListParams } from 'modules/problems/domain/ports/problems.repository.ts';
+import type { ProblemsListParams } from 'modules/problems/domain/contracts/problems.repository.ts';
+import type { StudyPlanListItem } from 'modules/problems/domain/entities/problem.entity.ts';
 import StudyPlanPreviewDialog from 'modules/problems/ui/shared/components/StudyPlanPreviewDialog.tsx';
+import DialogHeader from 'shared/components/common/DialogHeader';
 
 type StudyPlanAdvisorDialogProps = {
   open: boolean;
@@ -140,14 +138,24 @@ const ProblemStudyPlanAdvisorDialog = ({
   const progressValue = data?.progress.percent ?? 0;
 
   return (
-    <Dialog open={open} onClose={handleClose} fullWidth maxWidth="sm">
-      <DialogTitle>{t('problems.recommendation.title')}</DialogTitle>
+    <Dialog
+      aria-labelledby="study-plan-advisor-title"
+      open={open}
+      onClose={handleClose}
+      fullWidth
+      maxWidth="sm"
+    >
+      <DialogHeader
+        id="study-plan-advisor-title"
+        title={t('problems.recommendation.title')}
+        onClose={handleClose}
+      />
       <DialogContent sx={{ pt: 1 }}>
         <Stack spacing={2.5}>
           <LinearProgress
             variant={isLoading && !data ? 'indeterminate' : 'determinate'}
             value={progressValue}
-            sx={{ borderRadius: 999 }}
+            sx={{ height: 4, borderRadius: 0 }}
           />
 
           {error ? (
@@ -185,7 +193,7 @@ const ProblemStudyPlanAdvisorDialog = ({
 
               <Stack spacing={1.25}>
                 {data.question.options.map((option) => (
-                  <Card key={option.id} variant="outlined" sx={{ borderRadius: 2.5 }}>
+                  <Card key={option.id} variant="outlined" sx={{ borderRadius: 0 }}>
                     <CardActionArea
                       onClick={() => handleAnswer(data.question.id, option.id, option.label)}
                       sx={{
@@ -214,7 +222,7 @@ const ProblemStudyPlanAdvisorDialog = ({
 
           {data?.status === 'result' ? (
             <Stack spacing={2.5}>
-              <Card variant="outlined" sx={{ borderRadius: 3, p: 2.5 }}>
+              <Card variant="section" sx={{ borderRadius: 0, p: 0 }}>
                 <Typography variant="body2" color="text.secondary">
                   {data.why}
                 </Typography>

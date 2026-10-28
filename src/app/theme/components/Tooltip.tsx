@@ -1,5 +1,6 @@
 import { Theme, tooltipClasses } from '@mui/material';
 import { Components } from '@mui/material/styles';
+import { overlayPaperStyles } from 'app/theme/styles/overlays';
 
 const generateArrowStyles = (
   borderRadiusProperty: string,
@@ -115,27 +116,42 @@ const Tooltip: Components<Omit<Theme, 'components'>>['MuiTooltip'] = {
     enterTouchDelay: 0,
   },
   styleOverrides: {
-    popper: () =>
-      placements().reduce(
-        (styles, { placement, borderRadiusProperty, clipPath, positions }) => {
-          return {
-            ...styles,
-            [`&[data-popper-placement="${placement}"]`]: generateArrowStyles(
-              borderRadiusProperty,
-              clipPath,
-              positions,
-            ),
-          };
-        },
-        {},
-      ),
+    popper: ({ theme }) =>
+      theme.preset === 'default'
+        ? {}
+        : placements().reduce(
+            (styles, { placement, borderRadiusProperty, clipPath, positions }) => {
+              return {
+                ...styles,
+                [`&[data-popper-placement="${placement}"]`]: generateArrowStyles(
+                  borderRadiusProperty,
+                  clipPath,
+                  positions,
+                ),
+              };
+            },
+            {},
+          ),
     tooltip: ({ theme }) => ({
       backgroundColor: theme.vars.palette.grey[800],
       ...theme.typography.caption,
       padding: '8px 10px',
+      lineHeight: 1.5,
+      overflowWrap: 'anywhere',
+      ...(theme.preset === 'default' && {
+        ...overlayPaperStyles(theme),
+        maxWidth: 'min(320px, calc(100vw - 32px))',
+        backgroundImage: 'none',
+      }),
     }),
     arrow: ({ theme }) => ({
-      color: theme.vars.palette.grey[800],
+      color:
+        theme.preset === 'default'
+          ? theme.vars.palette.background.default
+          : theme.vars.palette.grey[800],
+      ...(theme.preset === 'default' && {
+        '&::before': { border: `1px solid ${theme.vars.palette.divider}` },
+      }),
     }),
   },
 };

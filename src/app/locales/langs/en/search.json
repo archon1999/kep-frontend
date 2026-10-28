@@ -4,15 +4,13 @@
   "search.recentEmpty": "No recent pages yet.",
   "search.minCharsHint": "Type at least 2 characters to start searching.",
   "search.resources": "Resources",
-  "search.noMatchingResources": "No matching sections were found.",
   "search.users": "Users",
-  "search.usersEmpty": "No users found.",
   "search.problems": "Problems",
-  "search.problemsEmpty": "No problems found.",
   "search.blogs": "Blog posts",
-  "search.blogsEmpty": "No blog posts found.",
   "search.contests": "Contests",
-  "search.contestsEmpty": "No contests found.",
   "search.noResults": "No results found for your query.",
-  "search.loading": "Searching..."
+  "search.loading": "Searching...",
+  "search.clearQuery": "Clear search",
+  "search.tryAnotherQuery": "Try a different title, username, or section name.",
+  "search.loadError": "Some results could not be loaded. Try again."
 }

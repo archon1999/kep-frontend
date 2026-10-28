@@ -1,4 +1,6 @@
 import { useMemo } from 'react';
+import { useTranslation } from 'react-i18next';
+import { useNavigate } from 'react-router-dom';
 import {
   Alert,
   Box,
@@ -9,22 +11,20 @@ import {
   Dialog,
   DialogActions,
   DialogContent,
-  DialogTitle,
   Skeleton,
   Stack,
   Typography,
-  alpha,
 } from '@mui/material';
-import { useTheme } from '@mui/material/styles';
-import { useTranslation } from 'react-i18next';
-import { useNavigate } from 'react-router-dom';
-import { useSWRConfig } from 'swr';
+import { useColorScheme } from '@mui/material/styles';
 import { getResourceById, resources } from 'app/routes/resources';
+import { getStudyPlanDetails } from 'modules/problems/application/queries';
+import { useStudyPlan } from 'modules/problems/application/queries.ts';
+import { getStudyPlanBranding } from 'modules/problems/ui/shared/utils/studyPlanBranding.ts';
 import MathJaxView from 'shared/components/base/MathJaxView.tsx';
+import DialogHeader from 'shared/components/common/DialogHeader';
 import KepcoinSpendConfirm from 'shared/components/common/KepcoinSpendConfirm.tsx';
 import KepcoinValue from 'shared/components/common/KepcoinValue.tsx';
-import { problemsQueries, useStudyPlan } from 'modules/problems/application/queries.ts';
-import { getStudyPlanBranding } from 'modules/problems/ui/shared/utils/studyPlanBranding.ts';
+import { useSWRConfig } from 'swr';
 
 type StudyPlanPreviewDialogProps = {
   open: boolean;
@@ -32,21 +32,20 @@ type StudyPlanPreviewDialogProps = {
   onClose: () => void;
 };
 
-const StudyPlanPreviewDialog = ({
-  open,
-  studyPlanId,
-  onClose,
-}: StudyPlanPreviewDialogProps) => {
+const StudyPlanPreviewDialog = ({ open, studyPlanId, onClose }: StudyPlanPreviewDialogProps) => {
   const { t } = useTranslation();
   const navigate = useNavigate();
-  const theme = useTheme();
+  const { mode, systemMode } = useColorScheme();
   const { mutate: mutateCache } = useSWRConfig();
   const {
     data: studyPlan,
     isLoading,
     mutate,
   } = useStudyPlan(open && studyPlanId ? studyPlanId : undefined);
-  const branding = getStudyPlanBranding(studyPlan ?? {}, theme.palette.mode);
+  const branding = getStudyPlanBranding(
+    studyPlan ?? {},
+    (mode === 'system' ? systemMode : mode) ?? 'light',
+  );
 
   const handleOpenPlan = () => {
     if (!studyPlanId) return;
@@ -58,7 +57,7 @@ const StudyPlanPreviewDialog = ({
     if (!studyPlanId) return;
 
     try {
-      const refreshedPlan = await problemsQueries.problemsRepository.getStudyPlan(studyPlanId);
+      const refreshedPlan = await getStudyPlanDetails(studyPlanId);
       await mutate(refreshedPlan, { revalidate: false });
       await mutateCache(
         ['study-plans'],
@@ -92,8 +91,14 @@ const StudyPlanPreviewDialog = ({
   }, [isLoading, studyPlan?.title, t]);
 
   return (
-    <Dialog open={open} onClose={onClose} fullWidth maxWidth="sm">
-      <DialogTitle>{dialogTitle}</DialogTitle>
+    <Dialog
+      aria-labelledby="study-plan-preview-title"
+      open={open}
+      onClose={onClose}
+      fullWidth
+      maxWidth="sm"
+    >
+      <DialogHeader id="study-plan-preview-title" title={dialogTitle} onClose={onClose} />
       <DialogContent dividers>
         {isLoading ? (
           <Stack spacing={2.5}>
@@ -110,12 +115,12 @@ const StudyPlanPreviewDialog = ({
         ) : (
           <Stack spacing={2.5}>
             <Card
+              variant="section"
               sx={{
-                borderRadius: 4,
+                borderRadius: 0,
                 overflow: 'hidden',
-                bgcolor: branding.surfaceColor,
+                bgcolor: 'transparent',
                 color: 'text.primary',
-                border: '1px solid',
                 borderColor: branding.borderColor,
               }}
             >
@@ -135,8 +140,8 @@ const StudyPlanPreviewDialog = ({
                         size="small"
                         label={t('problems.studyPlans.purchased')}
                         sx={{
-                          color: theme.palette.success.main,
-                          bgcolor: alpha(theme.palette.success.main, theme.palette.mode === 'dark' ? 0.18 : 0.1),
+                          color: 'success.main',
+                          bgcolor: 'action.hover',
                         }}
                       />
                     ) : null}
@@ -148,10 +153,7 @@ const StudyPlanPreviewDialog = ({
                     alignItems={{ xs: 'flex-start', sm: 'center' }}
                   >
                     <Box sx={{ flex: 1, minWidth: 0 }}>
-                      <Typography variant="h5" fontWeight={700}>
-                        {studyPlan.title}
-                      </Typography>
-                      <Stack direction="row" spacing={1} flexWrap="wrap" useFlexGap mt={1.5}>
+                      <Stack direction="row" spacing={1} flexWrap="wrap" useFlexGap>
                         {studyPlan.daysCount ? (
                           <Chip
                             size="small"
@@ -188,8 +190,8 @@ const StudyPlanPreviewDialog = ({
                           width: 112,
                           height: 112,
                           objectFit: 'contain',
+                          filter: branding.iconFilter,
                           flexShrink: 0,
-                          filter: 'drop-shadow(0 18px 28px rgba(15, 23, 42, 0.22))',
                         }}
                       />
                     ) : null}
@@ -214,16 +216,16 @@ const StudyPlanPreviewDialog = ({
             )}
 
             <Card
-              variant="outlined"
+              variant="section"
               sx={{
-                borderRadius: 3,
+                borderRadius: 0,
                 borderColor: branding.borderColor,
-                bgcolor: branding.surfaceColor,
+                bgcolor: 'transparent',
               }}
             >
               <CardContent>
                 <Stack spacing={1.75}>
-                  <Typography variant="subtitle1" fontWeight={700}>
+                  <Typography variant="subtitle1" fontWeight={600}>
                     {t('problems.studyPlans.metaTitle')}
                   </Typography>
 
@@ -260,18 +262,7 @@ const StudyPlanPreviewDialog = ({
               purchaseUrl={`/api/study-plans/${studyPlan.id}/purchase/`}
               onSuccess={handlePurchaseSuccess}
             >
-              <Box
-                sx={{
-                  px: 2.25,
-                  py: 1.05,
-                  borderRadius: 2,
-                  bgcolor: branding.accentColor,
-                  color: theme.palette.getContrastText(branding.accentColor),
-                  fontWeight: 600,
-                }}
-              >
-                {t('problems.studyPlans.purchase')}
-              </Box>
+              <Button variant="contained">{t('problems.studyPlans.purchase')}</Button>
             </KepcoinSpendConfirm>
           )
         ) : null}

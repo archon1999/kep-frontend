@@ -1,11 +1,11 @@
-import { ShopProduct } from '../../domain/entities/product.entity';
+import { ShopRepository } from '../../domain/contracts/shop.repository';
 import {
-  ShopOrder,
-  ShopReview,
   CreateShopOrderPayload,
   CreateShopReviewPayload,
+  ShopOrder,
+  ShopReview,
 } from '../../domain/entities/order.entity';
-import { ShopRepository } from '../../domain/ports/shop.repository';
+import { ShopProduct } from '../../domain/entities/product.entity';
 import { shopApiClient } from '../api/shop.client';
 import { mapApiOrderToDomain } from '../mappers/order.mapper';
 import { mapApiProductToDomain } from '../mappers/product.mapper';

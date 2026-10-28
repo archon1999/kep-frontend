@@ -1,8 +1,18 @@
 import { useTranslation } from 'react-i18next';
-import { Avatar, Box, Button, Chip, Dialog, DialogContent, Stack, Typography } from '@mui/material';
+import {
+  Box,
+  Button,
+  Chip,
+  Dialog,
+  DialogActions,
+  DialogContent,
+  Stack,
+  Typography,
+} from '@mui/material';
 import { Challenge } from 'modules/challenges/domain';
 import ChallengeUserChip from 'modules/challenges/ui/shared/components/ChallengeUserChip.tsx';
-import KepIcon from 'shared/components/base/KepIcon.tsx';
+import DialogHeader from 'shared/components/common/DialogHeader';
+import PatternArtwork from 'shared/components/common/PatternArtwork';
 
 type StartDialogProps = {
   open: boolean;
@@ -24,33 +34,21 @@ const ChallengeStartDialog = ({
   return (
     <Dialog
       open={open}
+      aria-labelledby="challenge-start-title"
       onClose={() => undefined}
       disableEscapeKeyDown
       fullWidth
       maxWidth="sm"
-      slotProps={{
-        backdrop: {
-          sx: {
-            backgroundColor: 'rgba(10, 16, 24, 0.72)',
-            backdropFilter: 'blur(6px)',
-          },
-        },
-      }}
     >
+      <DialogHeader
+        id="challenge-start-title"
+        title={t('challenges.startDialogTitle')}
+        subtitle={t('challenges.startDialogSubtitle')}
+      />
       <DialogContent sx={{ py: 4 }}>
         <Stack spacing={2.5}>
           <Stack direction="column" spacing={1} alignItems="center" textAlign="center">
-            <Avatar
-              sx={{ width: 56, height: 56, bgcolor: 'primary.lighter', color: 'primary.main' }}
-            >
-              <KepIcon name="challenge-time" fontSize={24} color="primary.main" />
-            </Avatar>
-            <Typography variant="h5" fontWeight={900}>
-              {t('challenges.startDialogTitle')}
-            </Typography>
-            <Typography variant="body2" color="text.secondary">
-              {t('challenges.startDialogSubtitle')}
-            </Typography>
+            <PatternArtwork kind="battles" sx={{ width: 180 }} />
           </Stack>
 
           <Stack direction="row" spacing={1} justifyContent="center" flexWrap="wrap" useFlexGap>
@@ -58,7 +56,7 @@ const ChallengeStartDialog = ({
               label={challenge.rated ? t('challenges.rated') : t('challenges.unrated')}
               variant="outlined"
             />
-            <Chip label={t('challenges.timeLimitShort', { seconds: challenge.timeSeconds })} />
+            <Chip label={t('challenges.secondsShort', { seconds: challenge.timeSeconds })} />
             <Chip label={t('challenges.questionsCount', { count: challenge.questionsCount })} />
             <Chip label={timerModeLabel} />
           </Stack>
@@ -76,7 +74,7 @@ const ChallengeStartDialog = ({
             </Box>
             <Typography
               variant="h6"
-              fontWeight={900}
+              fontWeight={600}
               color="primary.main"
               sx={{ justifySelf: 'center' }}
             >
@@ -86,14 +84,13 @@ const ChallengeStartDialog = ({
               <ChallengeUserChip player={challenge.playerSecond} align="right" />
             </Box>
           </Box>
-
-          <Stack direction="row" justifyContent="center">
-            <Button variant="contained" onClick={() => void onStart()} disabled={starting}>
-              {t('challenges.start')}
-            </Button>
-          </Stack>
         </Stack>
       </DialogContent>
+      <DialogActions>
+        <Button variant="contained" onClick={() => void onStart()} disabled={starting}>
+          {t('challenges.start')}
+        </Button>
+      </DialogActions>
     </Dialog>
   );
 };

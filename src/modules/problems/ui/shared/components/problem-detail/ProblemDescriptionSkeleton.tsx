@@ -1,9 +1,9 @@
-import { Card, CardContent, Divider, Skeleton, Stack, Box } from '@mui/material';
+import { Box, Card, CardContent, Divider, Skeleton, Stack } from '@mui/material';
 
 const ProblemDescriptionSkeleton = () => {
   return (
     <Card
-      background={0}
+      variant="section"
       sx={{
         height: '100%',
         display: 'flex',
@@ -13,7 +13,7 @@ const ProblemDescriptionSkeleton = () => {
       }}
     >
       <Box sx={{ px: 2.5, py: 1.25 }}>
-        <Stack direction="row" spacing={1.25} alignItems="center">
+        <Stack direction="row" spacing={1.25} alignItems="center" flexWrap="wrap" useFlexGap>
           <Skeleton variant="rounded" width={120} height={32} />
           <Skeleton variant="rounded" width={110} height={32} />
           <Skeleton variant="rounded" width={100} height={32} />

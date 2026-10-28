@@ -1,6 +1,6 @@
 import { useCallback, useMemo } from 'react';
-import { useSearchParams } from 'react-router-dom';
-import { QueryHistoryMode, QueryParamConfig } from 'shared/lib/queryParams';
+import { useSearchParams } from 'react-router';
+import type { QueryHistoryMode, QueryParamConfig } from '../lib/queryParams.ts';
 
 type QueryStateRecord = object;
 
@@ -30,11 +30,7 @@ const getDefaultPageKeys = <TState extends QueryStateRecord>(defaults: TState) =
   return [];
 };
 
-const areValuesEqual = <TValue,>(
-  config: QueryParamConfig<TValue>,
-  left: TValue,
-  right: TValue,
-) => {
+const areValuesEqual = <TValue>(config: QueryParamConfig<TValue>, left: TValue, right: TValue) => {
   if (typeof config.equals === 'function') {
     return config.equals(left, right);
   }
@@ -89,8 +85,7 @@ const useRouteQueryState = <TState extends QueryStateRecord>({
         return;
       }
 
-      const patch =
-        typeof patchArg === 'function' ? patchArg(state) : patchArg;
+      const patch = typeof patchArg === 'function' ? patchArg(state) : patchArg;
       const nextState = { ...state, ...patch } as TState;
       const changedKeys = (Object.keys(schema) as Array<keyof TState>).filter((key) => {
         const config = schema[key];
@@ -166,11 +161,7 @@ const useRouteQueryState = <TState extends QueryStateRecord>({
   );
 
   const setField = useCallback(
-    <TKey extends keyof TState>(
-      key: TKey,
-      value: TState[TKey],
-      options?: UpdateOptions,
-    ) => {
+    <TKey extends keyof TState>(key: TKey, value: TState[TKey], options?: UpdateOptions) => {
       patchState({ [key]: value } as unknown as Partial<TState>, options);
     },
     [patchState],

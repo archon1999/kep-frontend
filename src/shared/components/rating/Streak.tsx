@@ -3,6 +3,7 @@ import fire1 from 'shared/assets/images/icons/fire-1.webp';
 import fire2 from 'shared/assets/images/icons/fire-2.webp';
 import fire3 from 'shared/assets/images/icons/fire-3.webp';
 import fire4 from 'shared/assets/images/icons/fire-4.webp';
+import { ScrambleText } from 'shared/components/motion/InteractionEffects';
 
 const getStreakIcon = (streak: number, maxStreak: number) => {
   if (streak === 0) {
@@ -24,6 +25,7 @@ interface StreakProps extends StackProps {
   textVariant?: TypographyProps['variant'];
   fontWeight?: TypographyProps['fontWeight'];
   color?: TypographyProps['color'];
+  animateValue?: boolean;
 }
 
 const Streak = ({
@@ -34,6 +36,7 @@ const Streak = ({
   textVariant = 'body2',
   fontWeight = 700,
   color = 'text.primary',
+  animateValue = false,
   spacing = 0.75,
   alignItems = 'center',
   direction = 'row',
@@ -53,7 +56,7 @@ const Streak = ({
         sx={{ width: iconSize, height: iconSize }}
       />
       <Typography variant={textVariant} fontWeight={fontWeight} color={color}>
-        {displayValue}
+        {animateValue ? <ScrambleText>{String(displayValue)}</ScrambleText> : displayValue}
       </Typography>
     </Stack>
   );

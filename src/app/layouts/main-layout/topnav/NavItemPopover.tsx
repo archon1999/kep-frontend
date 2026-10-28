@@ -1,15 +1,8 @@
 import { Fragment, useEffect, useState } from 'react';
-import { NavLink, useLocation } from 'react-router';
-import {
-  Box,
-  List,
-  ListItemButton,
-  ListItemText,
-  Popover,
-  popoverClasses,
-} from '@mui/material';
-import { MenuItem } from 'app/routes/sitemap';
 import { useTranslation } from 'react-i18next';
+import { NavLink, useLocation } from 'react-router';
+import { Box, List, ListItemButton, ListItemText, Popover, popoverClasses } from '@mui/material';
+import { MenuItem } from 'app/routes/sitemap';
 import IconifyIcon from 'shared/components/base/IconifyIcon';
 import { useNavContext } from '../NavProvider';
 
@@ -58,7 +51,6 @@ const NavitemPopover = ({ anchorEl, open, handleClose, items, level }: NavItemPo
         pointerEvents: 'none',
         [`& .${popoverClasses.paper}`]: {
           pointerEvents: 'auto',
-          boxShadow: (theme) => theme.vars.shadows[3],
           minWidth: 235,
         },
       }}
@@ -74,7 +66,7 @@ const NavitemPopover = ({ anchorEl, open, handleClose, items, level }: NavItemPo
           component="nav"
           dense
           disablePadding
-          aria-labelledby="category-list"
+          aria-label={anchorEl?.textContent ?? undefined}
         >
           {items.map((item) => (
             <Fragment key={item.pathName}>

@@ -1,4 +1,4 @@
-import type { ClassificationGroup } from './types.ts';
+import type { ClassificationGroup } from 'modules/testing/domain/entities/test-pass.types';
 
 export interface DragLocation {
   groupIndex: number;

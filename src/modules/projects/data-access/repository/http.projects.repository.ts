@@ -1,7 +1,7 @@
+import { ProjectsRepository } from '../../domain/contracts/projects.repository';
+import { Project } from '../../domain/entities/project.entity';
 import { projectsApiClient } from '../api/projects.client.ts';
 import { mapProjectDetailToDomain, mapProjectListToDomain } from '../mappers/project.mapper.ts';
-import { Project } from '../../domain/entities/project.entity';
-import { ProjectsRepository } from '../../domain/ports/projects.repository';
 
 export class HttpProjectsRepository implements ProjectsRepository {
   async list(): Promise<Project[]> {

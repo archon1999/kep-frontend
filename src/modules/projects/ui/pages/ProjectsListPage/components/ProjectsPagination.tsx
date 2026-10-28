@@ -1,7 +1,7 @@
 import { useTranslation } from 'react-i18next';
-import { Link, Pagination, Stack, TablePagination } from '@mui/material';
-import { useBreakpoints } from 'app/providers/BreakpointsProvider';
-import { PROJECT_PAGE_SIZE } from '../project-listing';
+import { Box, Button, Stack } from '@mui/material';
+import { PROJECT_PAGE_SIZE } from 'modules/projects/application/project-listing';
+import { RouteListPagination } from 'shared/components/sections/common/FramedListPage';
 
 interface ProjectsPaginationProps {
   count: number;
@@ -10,7 +10,6 @@ interface ProjectsPaginationProps {
   onPageChange: (page: number) => void;
   onToggleShowAll: () => void;
 }
-
 const ProjectsPagination = ({
   count,
   page,
@@ -19,55 +18,28 @@ const ProjectsPagination = ({
   onToggleShowAll,
 }: ProjectsPaginationProps) => {
   const { t } = useTranslation();
-  const { up } = useBreakpoints();
-  const rowsPerPage = showAll ? Math.max(1, count) : PROJECT_PAGE_SIZE;
-
   return (
-    <TablePagination
-      component="div"
-      count={count}
-      page={page - 1}
-      showFirstButton
-      showLastButton
-      rowsPerPage={rowsPerPage}
-      rowsPerPageOptions={[]}
-      onPageChange={(_, nextPage) => onPageChange(nextPage + 1)}
-      ActionsComponent={() => (
-        <Stack
-          direction="row"
-          sx={{
-            alignItems: 'center',
-            justifyContent: 'space-between',
-            flex: 1,
-            ml: { sm: 1 },
-            flexWrap: { xs: 'wrap', sm: 'nowrap' },
-            rowGap: 1,
-          }}
-        >
-          <Link
-            component="button"
-            variant="caption"
-            onClick={onToggleShowAll}
-            sx={{ fontWeight: 700, flexShrink: 0, mt: { sm: 0.5 } }}
-          >
-            {t(showAll ? 'projects.viewLess' : 'projects.showAll')}
-          </Link>
-          <Pagination
-            color="primary"
-            variant="solid"
-            siblingCount={up('sm') ? 1 : 0}
-            showFirstButton={up('sm')}
-            showLastButton={up('sm')}
-            count={Math.max(1, Math.ceil(count / rowsPerPage))}
-            page={page}
-            onChange={(_, nextPage) => onPageChange(nextPage)}
-            sx={{ flexShrink: 0 }}
-          />
-        </Stack>
+    <Stack
+      direction="row"
+      alignItems="center"
+      flexWrap="wrap"
+      sx={{ px: 'var(--kep-content-inset)', py: 1 }}
+    >
+      {count > PROJECT_PAGE_SIZE && (
+        <Button variant="text" onClick={onToggleShowAll}>
+          {t(showAll ? 'projects.viewLess' : 'projects.showAll')}
+        </Button>
       )}
-      sx={{ bgcolor: 'background.paper' }}
-    />
+      {!showAll && (
+        <Box sx={{ flex: '1 1 240px' }}>
+          <RouteListPagination
+            page={page}
+            count={Math.ceil(count / PROJECT_PAGE_SIZE)}
+            onChange={onPageChange}
+          />
+        </Box>
+      )}
+    </Stack>
   );
 };
-
 export default ProjectsPagination;

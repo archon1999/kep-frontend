@@ -1,11 +1,14 @@
 import { useTranslation } from 'react-i18next';
 import { Avatar, Box, Divider, Skeleton, Stack, Typography } from '@mui/material';
 import { alpha } from '@mui/material/styles';
+import { statisticsHeadingSx } from 'app/theme/styles/statistics';
+import { ArenaPlayerStatistics } from 'modules/arena/domain/entities/arena-player-statistics.entity.ts';
 import UserPopover from 'modules/users/ui/shared/components/UserPopover';
 import IconifyIcon from 'shared/components/base/IconifyIcon.tsx';
 import ChallengeChip, { ChallengeChipTone } from 'shared/components/challenges/ChallengeChip.tsx';
 import ChallengesRatingChip from 'shared/components/rating/ChallengesRatingChip.tsx';
-import { ArenaPlayerStatistics } from 'modules/arena/domain/entities/arena-player-statistics.entity.ts';
+import StatisticsMetric from 'shared/components/statistics/StatisticsMetric';
+import ArenaPlayerResultsChart from './ArenaPlayerResultsChart';
 
 interface PlayerStatisticsCardProps {
   statistics?: ArenaPlayerStatistics;
@@ -17,35 +20,27 @@ const OverviewStat = ({
   icon,
   label,
   value,
+  subtitle,
   valueColor = 'text.primary',
   iconColor = 'warning.main',
 }: {
   icon: string;
   label: string;
   value: string | number;
+  subtitle?: string;
   valueColor?: string;
   iconColor?: string;
 }) => (
-  <Stack
-    spacing={1}
-    sx={{
-      minHeight: 92,
-      p: 1.5,
-      borderRadius: 2,
-      bgcolor: 'background.default',
-      justifyContent: 'space-between',
-    }}
-  >
-    <Stack direction="row" spacing={1} alignItems="center" minWidth={0}>
-      <IconifyIcon icon={icon} color={iconColor} fontSize={18} />
-      <Typography variant="body2" color="text.secondary" noWrap>
-        {label}
-      </Typography>
-    </Stack>
-    <Typography variant="h5" fontWeight={800} color={valueColor} sx={{ lineHeight: 1.1 }}>
-      {value}
-    </Typography>
-  </Stack>
+  <Box sx={{ p: 1.5, borderBottom: 1, borderColor: 'divider', minWidth: 0 }}>
+    <StatisticsMetric
+      embedded
+      label={label}
+      value={value}
+      subtitle={subtitle}
+      valueColor={valueColor}
+      icon={<IconifyIcon icon={icon} fontSize={18} color={iconColor} />}
+    />
+  </Box>
 );
 
 const buildOpponentMeta = (rankTitle?: string, rating?: number) => {
@@ -118,7 +113,11 @@ const ArenaPlayerStatisticsCard = ({
       </Avatar>
       <Stack direction="column" spacing={0.75} minWidth={0}>
         <Stack direction="row" spacing={1} alignItems="center" flexWrap="wrap" useFlexGap>
-          <Typography variant="h5" fontWeight={900} sx={{ lineHeight: 1.1 }}>
+          <Typography
+            variant="h6"
+            fontWeight={600}
+            sx={{ lineHeight: 1.3, overflowWrap: 'anywhere' }}
+          >
             {safeStats.username || username || t('arena.selectPlayer')}
           </Typography>
           {safeStats.rankTitle ? <ChallengesRatingChip title={safeStats.rankTitle} /> : null}
@@ -134,15 +133,7 @@ const ArenaPlayerStatisticsCard = ({
 
   return (
     <Stack direction="column" spacing={3}>
-      <Box
-        sx={(theme) => ({
-          p: { xs: 2, sm: 2.5 },
-          borderRadius: 3,
-          border: '1px solid',
-          borderColor: alpha(theme.palette.warning.main, 0.16),
-          background: `linear-gradient(135deg, ${alpha(theme.palette.warning.main, 0.08)} 0%, ${theme.palette.background.paper} 72%)`,
-        })}
-      >
+      <Box sx={{ py: 2, borderBottom: '1px solid', borderColor: 'divider' }}>
         <Stack direction={{ xs: 'column', md: 'row' }} spacing={2} justifyContent="space-between">
           {safeStats.username ? (
             <UserPopover username={safeStats.username} avatar={safeStats.avatar}>
@@ -165,14 +156,14 @@ const ArenaPlayerStatisticsCard = ({
               icon="mdi:chart-line"
               label={t('arena.performanceShort')}
               value={safeStats.performance}
-              valueColor="warning.dark"
+              valueColor="warning.main"
             />
             <OverviewStat
               icon="mdi:star-circle-outline"
               label={t('arena.columns.rating')}
               value={safeStats.rating}
               iconColor="info.main"
-              valueColor="info.dark"
+              valueColor="info.main"
             />
           </Box>
         </Stack>
@@ -185,7 +176,7 @@ const ArenaPlayerStatisticsCard = ({
           gridTemplateColumns: {
             xs: 'repeat(2, minmax(0, 1fr))',
             md: 'repeat(4, minmax(0, 1fr))',
-            lg: 'repeat(7, minmax(0, 1fr))',
+            lg: 'repeat(4, minmax(0, 1fr))',
           },
         }}
       >
@@ -198,13 +189,15 @@ const ArenaPlayerStatisticsCard = ({
           icon="mdi:trophy-outline"
           label={t('arena.statisticsLabels.wins')}
           value={safeStats.wins}
+          subtitle={`${safeStats.winRate}% ${t('arena.statisticsLabels.winRate')}`}
           iconColor="success.main"
-          valueColor="success.dark"
+          valueColor="success.main"
         />
         <OverviewStat
           icon="mdi:handshake-outline"
           label={t('arena.statisticsLabels.draws')}
           value={safeStats.draws}
+          subtitle={`${safeStats.drawRate}% ${t('arena.statisticsLabels.drawRate')}`}
           iconColor="text.secondary"
           valueColor="text.secondary"
         />
@@ -212,38 +205,24 @@ const ArenaPlayerStatisticsCard = ({
           icon="mdi:close-circle-outline"
           label={t('arena.statisticsLabels.losses')}
           value={safeStats.losses}
-          iconColor="error.main"
-          valueColor="error.main"
-        />
-        <OverviewStat
-          icon="mdi:trending-up"
-          label={t('arena.statisticsLabels.winRate')}
-          value={`${safeStats.winRate}%`}
-          iconColor="success.main"
-          valueColor="success.dark"
-        />
-        <OverviewStat
-          icon="mdi:swap-horizontal"
-          label={t('arena.statisticsLabels.drawRate')}
-          value={`${safeStats.drawRate}%`}
-          iconColor="text.secondary"
-          valueColor="text.secondary"
-        />
-        <OverviewStat
-          icon="mdi:trending-down"
-          label={t('arena.statisticsLabels.lossRate')}
-          value={`${safeStats.lossRate}%`}
+          subtitle={`${safeStats.lossRate}% ${t('arena.statisticsLabels.lossRate')}`}
           iconColor="error.main"
           valueColor="error.main"
         />
       </Box>
 
+      <Box sx={{ py: 2, borderBlock: 1, borderColor: 'divider' }}>
+        <Typography component="h2" sx={statisticsHeadingSx}>
+          {t('arena.columns.results')}
+        </Typography>
+        <ArenaPlayerResultsChart statistics={statistics} />
+      </Box>
       {safeStats.opponents.length ? (
         <Stack direction="column" spacing={1.5}>
           <Divider />
           <Stack direction="row" spacing={1} alignItems="center">
             <IconifyIcon icon="mdi:account-group-outline" color="warning.main" fontSize={20} />
-            <Typography variant="h6" fontWeight={800}>
+            <Typography component="h2" sx={statisticsHeadingSx}>
               {t('arena.opponents')}
             </Typography>
           </Stack>
@@ -257,9 +236,12 @@ const ArenaPlayerStatisticsCard = ({
                   alignItems="center"
                   justifyContent="space-between"
                   sx={{
+                    width: 1,
                     p: 1.5,
-                    borderRadius: 2,
-                    bgcolor: 'background.default',
+                    borderRadius: 0,
+                    bgcolor: 'transparent',
+                    borderBottom: '1px solid',
+                    borderColor: 'divider',
                   }}
                 >
                   <Stack direction="row" spacing={1.25} alignItems="center" minWidth={0}>
@@ -274,7 +256,7 @@ const ArenaPlayerStatisticsCard = ({
                         flexWrap="wrap"
                         useFlexGap
                       >
-                        <Typography fontWeight={800} noWrap>
+                        <Typography fontWeight={600} noWrap>
                           {opponent.username}
                         </Typography>
                       </Stack>
@@ -285,7 +267,7 @@ const ArenaPlayerStatisticsCard = ({
                     <Stack direction="row" spacing={0.75} alignItems="center">
                       <Typography
                         variant="body1"
-                        fontWeight={800}
+                        fontWeight={600}
                         color={getScoreColor(opponent.playerScore, opponent.opponentScore)}
                       >
                         {opponent.playerScore}
@@ -295,7 +277,7 @@ const ArenaPlayerStatisticsCard = ({
                       </Typography>
                       <Typography
                         variant="body1"
-                        fontWeight={800}
+                        fontWeight={600}
                         color={getScoreColor(opponent.opponentScore, opponent.playerScore)}
                       >
                         {opponent.opponentScore}
@@ -309,7 +291,11 @@ const ArenaPlayerStatisticsCard = ({
               return (
                 <Box key={`${safeStats.username}-${opponent.username}-${index}`}>
                   {opponent.username ? (
-                    <UserPopover username={opponent.username} avatar={opponent.avatar}>
+                    <UserPopover
+                      username={opponent.username}
+                      avatar={opponent.avatar}
+                      sx={{ width: 1 }}
+                    >
                       {rowContent}
                     </UserPopover>
                   ) : (

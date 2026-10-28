@@ -1,7 +1,7 @@
 import { useTranslation } from 'react-i18next';
-import { Stack, Typography } from '@mui/material';
+import { Box } from '@mui/material';
 import { GridOverlayProps, useGridRootProps } from '@mui/x-data-grid';
-import Kepper from 'shared/components/common/Kepper';
+import EmptyState from './EmptyState';
 
 const DEFAULT_MUI_NO_ROWS_LABEL = 'No rows';
 
@@ -15,6 +15,8 @@ export interface DataGridNoRowsOverlayProps extends GridOverlayProps {
 declare module '@mui/x-data-grid' {
   // eslint-disable-next-line @typescript-eslint/no-empty-object-type
   interface NoRowsOverlayPropsOverrides extends DataGridNoRowsOverlayProps {}
+  // eslint-disable-next-line @typescript-eslint/no-empty-object-type
+  interface NoResultsOverlayPropsOverrides extends DataGridNoRowsOverlayProps {}
 }
 
 export const hasDataGridActiveFilters = (filters: Record<string, unknown>) =>
@@ -56,11 +58,8 @@ const DataGridNoRowsOverlay = ({
     : (description ?? t('common.dataGrid.emptyState.description'));
 
   return (
-    <Stack
+    <Box
       {...props}
-      alignItems="center"
-      justifyContent="center"
-      spacing={1.5}
       sx={{
         height: '100%',
         minHeight: 260,
@@ -70,18 +69,26 @@ const DataGridNoRowsOverlay = ({
       }}
       aria-live="polite"
     >
-      <Kepper pose={filtered ? 'thinking' : 'confused'} size={112} />
-
-      <Stack spacing={0.5} alignItems="center" sx={{ maxWidth: 460 }}>
-        <Typography variant="subtitle1" fontWeight={600} color="text.secondary">
-          {resolvedTitle}
-        </Typography>
-        <Typography variant="body2" color="text.secondary">
-          {resolvedDescription}
-        </Typography>
-      </Stack>
-    </Stack>
+      <EmptyState
+        title={resolvedTitle}
+        description={resolvedDescription}
+        kind={filtered ? 'search' : 'empty'}
+        compact
+        sx={{ height: '100%' }}
+      />
+    </Box>
   );
 };
 
 export default DataGridNoRowsOverlay;
+
+export const DataGridNoResultsOverlay = (props: DataGridNoRowsOverlayProps) => {
+  const { t } = useTranslation();
+  return (
+    <DataGridNoRowsOverlay
+      title={t('common.dataGrid.emptyState.filteredTitle')}
+      {...props}
+      filtered
+    />
+  );
+};

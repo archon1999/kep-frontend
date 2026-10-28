@@ -1,13 +1,13 @@
 import { useTranslation } from 'react-i18next';
 import { MenuItem, Stack, formLabelClasses } from '@mui/material';
-import FilterDrawer from 'shared/components/common/FilterDrawer';
-import StyledTextField from 'shared/components/styled/StyledTextField';
 import {
   PROJECT_CATEGORY_META,
   PROJECT_CATEGORY_ORDER,
   PROJECT_STATUS_OPTIONS,
   ProjectListFilters,
-} from '../project-listing';
+} from 'modules/projects/application/project-listing';
+import FilterDrawer from 'shared/components/common/FilterDrawer';
+import StyledTextField from 'shared/components/styled/StyledTextField';
 
 interface ProjectsFilterDrawerProps {
   open: boolean;

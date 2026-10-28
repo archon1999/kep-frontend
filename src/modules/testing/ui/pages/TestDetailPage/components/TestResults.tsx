@@ -1,7 +1,7 @@
 import { useId, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { Alert, Box, Button, Tab, Tabs } from '@mui/material';
-import { TestResultRow } from 'modules/testing/domain/ports/testing.repository';
+import { TestResultRow } from 'modules/testing/domain/contracts/testing.repository';
 import TestResultsTable from './TestResultsTable';
 
 interface TestResultsProps {
@@ -33,7 +33,12 @@ const TestResults = ({
         variant="scrollable"
         scrollButtons="auto"
         allowScrollButtonsMobile
-        sx={{ borderBottom: 1, borderColor: 'divider', mb: 2 }}
+        aria-label={t('tests.resultsColumns.score')}
+        sx={{
+          borderBottom: '1px solid var(--kep-line)',
+          px: 'var(--kep-content-inset)',
+          '& .MuiTab-root': { fontFamily: 'var(--kep-display-font)', fontWeight: 500 },
+        }}
       >
         <Tab
           label={t('tests.bestAttempts')}

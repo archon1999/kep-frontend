@@ -1,9 +1,7 @@
 import { ReactElement, isValidElement, useState } from 'react';
 import { Box, Typography } from '@mui/material';
-import { alpha } from '@mui/material/styles';
 import IconifyIcon from 'shared/components/base/IconifyIcon';
 import Image from 'shared/components/base/Image';
-import useResolvedThemeMode from 'shared/hooks/useResolvedThemeMode';
 
 interface SettingsItemProps {
   label: string;
@@ -16,7 +14,6 @@ interface SettingsItemProps {
 
 const SettingsItem = ({ label, image, active }: SettingsItemProps) => {
   const [isHovered, setIsHovered] = useState(false);
-  const { isDark } = useResolvedThemeMode();
 
   const renderImage = () => {
     if (isValidElement(image)) {
@@ -53,59 +50,27 @@ const SettingsItem = ({ label, image, active }: SettingsItemProps) => {
       className="SettingsItem"
       onMouseEnter={() => setIsHovered(true)}
       onMouseLeave={() => setIsHovered(false)}
-      sx={[
-        (theme) => ({
-          bgcolor:
-            active || isHovered
-              ? alpha(theme.palette.primary.main, isDark ? 0.14 : 0.05)
-              : theme.vars.palette.background.menuElevation1,
-          backgroundImage:
-            isDark
-              ? `linear-gradient(180deg, ${alpha(theme.palette.common.white, active || isHovered ? 0.06 : 0.035)} 0%, transparent 100%)`
-              : `linear-gradient(180deg, ${alpha(theme.palette.common.white, active || isHovered ? 0.72 : 0.94)} 0%, transparent 100%)`,
-          position: 'relative',
-          borderRadius: 2.5,
-          p: 0.75,
-          transition: theme.transitions.create(['background-color', 'box-shadow'], {
-            duration: theme.transitions.duration.shorter,
-          }),
-          boxShadow:
-            active && isDark
-              ? `0 18px 34px -28px ${alpha(theme.palette.primary.main, 0.82)}, inset 0 1px 0 ${alpha(theme.palette.common.white, 0.06)}`
-              : active
-                ? `0 16px 34px -28px ${alpha(theme.palette.primary.main, 0.36)}, inset 0 1px 0 ${alpha(theme.palette.common.white, 0.72)}`
-                : isDark
-                  ? `inset 0 1px 0 ${alpha(theme.palette.common.white, 0.035)}`
-                  : `inset 0 1px 0 ${alpha(theme.palette.common.white, 0.74)}`,
-          '&::after': {
-            content: '""',
-            position: 'absolute',
-            inset: 0,
-            borderRadius: 'inherit',
-            pointerEvents: 'none',
-            border: `1px solid ${alpha(
-              active || isHovered ? theme.palette.primary.main : theme.palette.divider,
-              active || isHovered
-                ? isDark
-                  ? 0.42
-                  : 0.18
-                : isDark
-                  ? 0.36
-                  : 0.62,
-            )}`,
-          },
-        }),
-      ]}
+      sx={(theme) => ({
+        position: 'relative',
+        width: 1,
+        p: 1,
+        border: '1px solid',
+        borderRadius: 0,
+        borderColor: active ? 'primary.main' : 'divider',
+        bgcolor: active ? 'action.selected' : 'transparent',
+        transition: theme.transitions.create(['border-color', 'background-color']),
+        '&:hover': { borderColor: 'primary.main', bgcolor: 'action.hover' },
+      })}
     >
       <Box
         sx={[
           {
-            height: 76,
+            height: 64,
             width: 1,
             position: 'relative',
             mb: 1.25,
             backgroundColor: 'transparent',
-            borderRadius: 2,
+            borderRadius: 0,
             overflow: 'hidden',
           },
         ]}
@@ -118,10 +83,10 @@ const SettingsItem = ({ label, image, active }: SettingsItemProps) => {
           icon="material-symbols:check-circle-rounded"
           sx={{
             color: 'primary.main',
-            fontSize: 20,
+            fontSize: 16,
             position: 'absolute',
-            top: 3,
-            left: 3,
+            top: 6,
+            right: 6,
           }}
         />
       )}
@@ -129,7 +94,7 @@ const SettingsItem = ({ label, image, active }: SettingsItemProps) => {
         variant="subtitle2"
         sx={{
           textAlign: 'center',
-          lineHeight: 1.2,
+          lineHeight: 1.4,
           color: active || isHovered ? 'primary.main' : 'text.primary',
         }}
       >

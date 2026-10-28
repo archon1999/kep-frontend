@@ -1,8 +1,8 @@
 import { ReactNode } from 'react';
-import * as echarts from 'echarts/core';
 import type { EChartsCoreOption } from 'echarts/core';
-import { Card, CardContent, Stack, Typography } from '@mui/material';
-import ReactEchart, { type ReactEchartProps } from 'shared/components/base/ReactEchart';
+import { type ReactEchartProps } from 'shared/components/base/ReactEchart';
+import StatisticsChart from 'shared/components/statistics/StatisticsChart';
+import StatisticsSection from 'shared/components/statistics/StatisticsSection';
 
 interface ContestsUserStatisticsPageChartCardProps {
   title: string;
@@ -16,35 +16,20 @@ interface ContestsUserStatisticsPageChartCardProps {
 const ContestsUserStatisticsPageChartCard = ({
   title,
   option,
-  height = 320,
+  height = 280,
   emptyText,
   onEvents,
   extra,
 }: ContestsUserStatisticsPageChartCardProps) => (
-  <Card variant="outlined" sx={{ height: '100%', borderRadius: 3 }}>
-    <CardContent sx={{ height: '100%' }}>
-      <Stack direction="column" spacing={2} sx={{ height: '100%' }}>
-        <Stack direction="row" justifyContent="space-between" alignItems="center" spacing={1}>
-          <Typography variant="subtitle1" fontWeight={700}>
-            {title}
-          </Typography>
-          {extra}
-        </Stack>
-        {option ? (
-          <ReactEchart
-            echarts={echarts}
-            option={option}
-            style={{ width: '100%', height }}
-            onEvents={onEvents}
-          />
-        ) : (
-          <Typography variant="body2" color="text.secondary">
-            {emptyText}
-          </Typography>
-        )}
-      </Stack>
-    </CardContent>
-  </Card>
+  <StatisticsSection title={title} action={extra}>
+    <StatisticsChart
+      label={title}
+      option={option}
+      height={height}
+      emptyText={emptyText}
+      onEvents={onEvents}
+    />
+  </StatisticsSection>
 );
 
 export default ContestsUserStatisticsPageChartCard;

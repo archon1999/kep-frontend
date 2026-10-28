@@ -1,217 +1,209 @@
 import { useTranslation } from 'react-i18next';
-import { Card, CardContent, Divider, Stack, Typography } from '@mui/material';
+import { Box, Stack, Typography } from '@mui/material';
 import { Challenge, ChallengeStatus } from 'modules/challenges/domain';
-import ChallengeUserChip from 'modules/challenges/ui/shared/components/ChallengeUserChip.tsx';
-import KepIcon from 'shared/components/base/KepIcon.tsx';
-import ChallengeChip, { ChallengeChipTone } from 'shared/components/challenges/ChallengeChip.tsx';
-import ChallengesRatingChip from 'shared/components/rating/ChallengesRatingChip.tsx';
+import ChallengeUserChip from 'modules/challenges/ui/shared/components/ChallengeUserChip';
+import ChallengeChip, { ChallengeChipTone } from 'shared/components/challenges/ChallengeChip';
 
 interface ResultsCardProps {
   challenge: Challenge;
+  compact?: boolean;
 }
-
-const mapResultTone = (value: number): ChallengeChipTone => {
-  if (value === 1) return 'win';
-  if (value === -1) return 'draw';
-  return 'loss';
-};
-
-const getResultLabel = (value: number, isFinished: boolean) => {
-  if (value !== -1) return undefined;
-  return isFinished ? '-' : '...';
-};
-
-const formatDelta = (delta: number) => (delta > 0 ? `+${delta}` : String(delta));
-
-const getDeltaColor = (delta: number) => {
-  if (delta > 0) return 'success.main';
-  if (delta < 0) return 'error.main';
-  return 'text.secondary';
-};
-
-const RatingDelta = ({ delta }: { delta: number }) => (
-  <Stack
-    direction="row"
-    spacing={0.5}
-    alignItems="center"
-    sx={{ color: getDeltaColor(delta) }}
-  >
-    <KepIcon name="delta" fontSize={15} color="inherit" />
-    <Typography variant="caption" fontWeight={700} color="inherit">
-      {formatDelta(delta)}
-    </Typography>
-  </Stack>
-);
-
-const ChallengeResultsCard = ({ challenge }: ResultsCardProps) => {
-  const { t } = useTranslation();
-  const isFinished = challenge.status === ChallengeStatus.Finished;
-  const perQuestionResults = Array.from({ length: challenge.questionsCount }, (_, index) => ({
-    first: challenge.playerFirst.results?.[index] ?? -1,
-    second: challenge.playerSecond.results?.[index] ?? -1,
-  }));
-  const playerFirstView = isFinished
-    ? {
-        ...challenge.playerFirst,
-        rankTitle: challenge.playerFirst.newRankTitle || challenge.playerFirst.rankTitle,
-      }
-    : challenge.playerFirst;
-  const playerSecondView = isFinished
-    ? {
-        ...challenge.playerSecond,
-        rankTitle: challenge.playerSecond.newRankTitle || challenge.playerSecond.rankTitle,
-      }
-    : challenge.playerSecond;
-
-  const scoreTone = (value: number, opponent: number) => {
-    if (value > opponent) return 'success.main';
-    if (value < opponent) return 'error.main';
-    return 'text.secondary';
-  };
-
-  const getResultTitle = (value: number) => {
-    if (value === 1) return t('challenges.answerCorrect');
-    if (value === 0) return t('challenges.answerWrong');
-    return isFinished ? t('challenges.answerNotPlayed') : t('challenges.answerPending');
-  };
-
+const mapResultTone = (value: number): ChallengeChipTone =>
+  value === 1 ? 'win' : value === -1 ? 'draw' : 'loss';
+const ChallengeResultsCard = ({ challenge, compact = false }: ResultsCardProps) => {
+  const { t, i18n } = useTranslation();
+  const finished = challenge.status === ChallengeStatus.Finished;
+  const players = [challenge.playerFirst, challenge.playerSecond];
+  const getResultTitle = (value: number) =>
+    t(
+      value === 1
+        ? 'challenges.answerCorrect'
+        : value === 0
+          ? 'challenges.answerWrong'
+          : finished
+            ? 'challenges.answerNotPlayed'
+            : 'challenges.answerPending',
+    );
   return (
-    <Card
-      variant="outlined"
-      sx={{
-        position: 'relative',
-        overflow: 'hidden',
-        height: '100%',
-      }}
-    >
-      <CardContent sx={{ position: 'relative' }}>
-        <Stack spacing={2} direction="column">
-          <Stack
-            direction="row"
-            justifyContent="space-between"
-            spacing={1}
-            alignItems={{ xs: 'flex-start', sm: 'center' }}
-          >
-            <Stack spacing={1} direction="column" flex={1}>
-              <ChallengeUserChip
-                player={playerFirstView}
-                highlight={challenge.playerFirst.result > challenge.playerSecond.result}
-              />
-              <Stack direction="row" spacing={1} alignItems="center" flexWrap="wrap" useFlexGap>
-                <ChallengesRatingChip
-                  title={challenge.playerFirst.rankTitle}
-                  rating={challenge.playerFirst.rating}
-                />
-                {isFinished ? (
-                  <RatingDelta delta={challenge.playerFirst.delta} />
-                ) : null}
-              </Stack>
-            </Stack>
-
-            <Divider
-              orientation="vertical"
-              flexItem
-              sx={{ display: { xs: 'none', sm: 'block' } }}
-            />
-
+    <Box sx={{ minWidth: 0 }}>
+      {compact ? (
+        <Stack direction="column" gap={2}>
+          <Typography component="h2" variant="subtitle2" color="text.secondary">
+            {t('challenges.matchScore')}
+          </Typography>
+          {players.map((player, index) => (
             <Stack
-              spacing={1}
-              direction="column"
+              key={index}
+              direction="row"
               alignItems="center"
-              justifyContent="center"
-              px={{ xs: 1, sm: 2 }}
+              justifyContent="space-between"
+              gap={2}
             >
-              <Stack direction="row" alignItems="center" spacing={1}>
-                <Typography
-                  variant="h4"
-                  fontWeight={900}
-                  color={scoreTone(challenge.playerFirst.result, challenge.playerSecond.result)}
-                >
-                  {challenge.playerFirst.result}
-                </Typography>
-                <Typography variant="h6" fontWeight={800} color="text.secondary">
-                  :
-                </Typography>
-                <Typography
-                  variant="h4"
-                  fontWeight={900}
-                  color={scoreTone(challenge.playerSecond.result, challenge.playerFirst.result)}
-                >
-                  {challenge.playerSecond.result}
+              <Stack gap={0.5} sx={{ minWidth: 0 }}>
+                <ChallengeUserChip player={player} />
+                <Typography variant="caption" color="text.secondary">
+                  {player.rating.toLocaleString(i18n.language, { maximumFractionDigits: 1 })}
                 </Typography>
               </Stack>
+              <Typography variant="metric" sx={{ fontSize: 32 }}>
+                {player.result}
+              </Typography>
             </Stack>
-
-            <Divider
-              orientation="vertical"
-              flexItem
-              sx={{ display: { xs: 'none', sm: 'block' } }}
-            />
-
+          ))}
+        </Stack>
+      ) : (
+        <Box
+          sx={{
+            display: 'grid',
+            gridTemplateColumns: 'minmax(0, 1fr) auto minmax(0, 1fr)',
+            gap: { xs: 1.5, sm: 3 },
+            alignItems: 'center',
+          }}
+        >
+          {players.map((player, index) => (
             <Stack
-              spacing={1}
-              direction="column"
-              alignItems={{ xs: 'flex-start', sm: 'flex-end' }}
-              flex={1}
+              key={index}
+              gap={1}
+              sx={{ minWidth: 0, gridColumn: index === 0 ? 1 : 3, gridRow: 1 }}
             >
               <ChallengeUserChip
-                player={playerSecondView}
-                align="right"
-                highlight={challenge.playerSecond.result > challenge.playerFirst.result}
+                player={{
+                  ...player,
+                  rankTitle: finished ? player.newRankTitle || player.rankTitle : player.rankTitle,
+                }}
+                align={index === 0 ? 'left' : 'right'}
               />
               <Stack
                 direction="row"
-                spacing={1}
-                alignItems="center"
+                gap={1}
                 flexWrap="wrap"
                 useFlexGap
-                justifyContent={{ xs: 'flex-start', sm: 'flex-end' }}
+                justifyContent={index === 0 ? 'flex-start' : 'flex-end'}
               >
-                <ChallengesRatingChip
-                  title={challenge.playerSecond.rankTitle}
-                  rating={challenge.playerSecond.rating}
-                />
-
-                {isFinished ? (
-                  <RatingDelta delta={challenge.playerSecond.delta} />
-                ) : null}
+                <Typography
+                  variant="caption"
+                  color="text.secondary"
+                  title={t('challenges.table.rating')}
+                >
+                  {(finished ? player.newRating : player.rating).toLocaleString(i18n.language, {
+                    maximumFractionDigits: 1,
+                  })}
+                </Typography>
+                {finished && (
+                  <Typography
+                    variant="caption"
+                    fontWeight={700}
+                    title={t('challenges.statisticsPage.history.ratingChange')}
+                    color={
+                      player.delta > 0
+                        ? 'success.main'
+                        : player.delta < 0
+                          ? 'error.main'
+                          : 'text.secondary'
+                    }
+                  >
+                    {player.delta.toLocaleString(i18n.language, {
+                      maximumFractionDigits: 1,
+                      signDisplay: 'exceptZero',
+                    })}
+                  </Typography>
+                )}
               </Stack>
             </Stack>
+          ))}
+          <Stack direction="row" gap={1.5} alignItems="center" sx={{ gridColumn: 2, gridRow: 1 }}>
+            <Typography
+              variant="metric"
+              sx={{ fontSize: { xs: 32, sm: 48 } }}
+              color={
+                finished && players[0].result > players[1].result ? 'success.main' : 'text.primary'
+              }
+            >
+              {players[0].result}
+            </Typography>
+            <Typography component="span" variant="h6" color="text.disabled">
+              :
+            </Typography>
+            <Typography
+              variant="metric"
+              sx={{ fontSize: { xs: 32, sm: 48 } }}
+              color={
+                finished && players[1].result > players[0].result ? 'success.main' : 'text.primary'
+              }
+            >
+              {players[1].result}
+            </Typography>
           </Stack>
-
-          <Divider />
-
-          <Stack direction="column" spacing={1.25}>
-            <Stack direction="column" spacing={1} flexWrap="wrap" useFlexGap>
-              {perQuestionResults.map((result, index) => (
-                <Stack
-                  justifyContent="space-between"
-                  key={index}
-                  direction="row"
-                  alignItems="center"
-                  spacing={0.75}
-                >
-                  <ChallengeChip
-                    tone={mapResultTone(result.first)}
-                    label={getResultLabel(result.first, isFinished)}
-                    title={getResultTitle(result.first)}
-                  />
-                  <Typography variant="caption" fontWeight={700}>
-                    #{index + 1}
+        </Box>
+      )}
+      <Box sx={{ mt: 2.5, overflowX: 'auto' }}>
+        <Box
+          component="table"
+          aria-label={t('challenges.questions')}
+          sx={{
+            width: '100%',
+            minWidth: (compact ? 80 : 120) + challenge.questionsCount * (compact ? 22 : 36),
+            borderCollapse: 'collapse',
+            '& th, & td': {
+              p: compact ? 0.25 : 0.75,
+              textAlign: 'center',
+              borderTop: 1,
+              borderColor: 'divider',
+            },
+            '& th:first-of-type': { textAlign: 'left', width: compact ? 80 : 120, fontWeight: 500 },
+          }}
+        >
+          <thead>
+            <tr>
+              <th>
+                <Typography variant="caption" color="text.secondary">
+                  {t('challenges.questions')}
+                </Typography>
+              </th>
+              {Array.from({ length: challenge.questionsCount }, (_, index) => (
+                <th key={index} scope="col">
+                  <Typography variant="metric" color="text.secondary" sx={{ fontSize: 14 }}>
+                    {String(index + 1).padStart(2, '0')}
                   </Typography>
-                  <ChallengeChip
-                    tone={mapResultTone(result.second)}
-                    label={getResultLabel(result.second, isFinished)}
-                    title={getResultTitle(result.second)}
-                  />
-                </Stack>
+                </th>
               ))}
-            </Stack>
-          </Stack>
-        </Stack>
-      </CardContent>
-    </Card>
+            </tr>
+          </thead>
+          <tbody>
+            {players.map((player, playerIndex) => (
+              <tr key={playerIndex}>
+                <th scope="row">
+                  <Typography variant="caption" sx={{ overflowWrap: 'anywhere' }}>
+                    {player.username}
+                  </Typography>
+                </th>
+                {Array.from({ length: challenge.questionsCount }, (_, index) => {
+                  const value = player.results?.[index] ?? -1;
+                  const label = `${player.username}: ${getResultTitle(value)}`;
+                  return (
+                    <td key={index}>
+                      <ChallengeChip
+                        sx={
+                          compact
+                            ? { width: 22, height: 22, '& .MuiChip-label': { px: 0 } }
+                            : undefined
+                        }
+                        tone={mapResultTone(value)}
+                        label={
+                          value === 1 ? '\u2713' : value === 0 ? '\u00d7' : finished ? '-' : '...'
+                        }
+                        title={label}
+                        aria-label={label}
+                      />
+                    </td>
+                  );
+                })}
+              </tr>
+            ))}
+          </tbody>
+        </Box>
+      </Box>
+    </Box>
   );
 };
-
 export default ChallengeResultsCard;

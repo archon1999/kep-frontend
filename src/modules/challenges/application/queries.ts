@@ -1,5 +1,5 @@
 import useSWR from 'swr';
-import { HttpChallengesRepository } from '../data-access/repository/http.challenges.repository.ts';
+import { challengesRepository } from '../data-access';
 import {
   Challenge,
   ChallengeCall,
@@ -7,16 +7,13 @@ import {
   ChallengeRatingRow,
   ChallengeUserStatistics,
 } from '../domain';
-import { ChallengeRatingParams, PageResult } from '../domain/ports/challenges.repository.ts';
-
-const challengesRepository = new HttpChallengesRepository();
+import { ChallengeRatingParams, PageResult } from '../domain/contracts/challenges.repository.ts';
 
 export const useChallengeCalls = () =>
-  useSWR<ChallengeCall[]>(
-    'challenge-calls',
-    () => challengesRepository.getChallengeCalls(),
-    { refreshInterval: 5000, revalidateOnFocus: false },
-  );
+  useSWR<ChallengeCall[]>('challenge-calls', () => challengesRepository.getChallengeCalls(), {
+    refreshInterval: 5000,
+    revalidateOnFocus: false,
+  });
 
 export const useChallengesList = (params?: {
   page?: number;
@@ -56,22 +53,25 @@ export const useChallengeUserRating = (username?: string) =>
   );
 
 export const useChallengeUserStatistics = (username?: string) =>
-  useSWR<ChallengeUserStatistics | null>(username ? ['challenge-user-statistics', username] : null, () =>
-    challengesRepository.getUserStatistics(username!),
+  useSWR<ChallengeUserStatistics | null>(
+    username ? ['challenge-user-statistics', username] : null,
+    () => challengesRepository.getUserStatistics(username!),
   );
 
-export const useUserChallenges = (params?: { username?: string; page?: number; pageSize?: number }) =>
+export const useUserChallenges = (params?: {
+  username?: string;
+  page?: number;
+  pageSize?: number;
+}) =>
   useSWR<PageResult<Challenge>>(
     params?.username ? ['user-challenges', params.username, params.page, params.pageSize] : null,
-    () => challengesRepository.listUserChallenges({
-      username: params!.username!,
-      page: params?.page,
-      pageSize: params?.pageSize,
-    }),
+    () =>
+      challengesRepository.listUserChallenges({
+        username: params!.username!,
+        page: params?.page,
+        pageSize: params?.pageSize,
+      }),
   );
 
-export const useChallengeChapters = () => useSWR(['challenge-chapters'], () => challengesRepository.listChapters());
-
-export const challengesQueries = {
-  challengesRepository,
-};
+export const useChallengeChapters = () =>
+  useSWR(['challenge-chapters'], () => challengesRepository.listChapters());

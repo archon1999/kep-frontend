@@ -1,9 +1,5 @@
 import { Stack } from '@mui/material';
-import {
-  type Hackathon,
-  type HackathonProject,
-  type HackathonStanding,
-} from 'modules/hackathons/domain';
+import { type Hackathon, type HackathonProject } from 'modules/hackathons/domain';
 import { HackathonProjectsSection } from 'modules/hackathons/ui/shared';
 import HackathonSummaryCard from './HackathonSummaryCard';
 
@@ -12,9 +8,6 @@ interface HackathonOverviewContentProps {
   projects?: HackathonProject[];
   isProjectsLoading: boolean;
   projectsError?: unknown;
-  standings?: HackathonStanding[];
-  isStandingsLoading: boolean;
-  standingsError?: unknown;
 }
 
 const HackathonOverviewContent = ({
@@ -22,17 +15,9 @@ const HackathonOverviewContent = ({
   projects,
   isProjectsLoading,
   projectsError,
-  standings,
-  isStandingsLoading,
-  standingsError,
 }: HackathonOverviewContentProps) => (
-  <Stack direction="column" spacing={3}>
-    <HackathonSummaryCard
-      hackathon={hackathon}
-      standings={standings}
-      isStandingsLoading={isStandingsLoading}
-      standingsError={standingsError}
-    />
+  <Stack direction="column" spacing={0}>
+    <HackathonSummaryCard hackathon={hackathon} />
     <HackathonProjectsSection
       hackathonId={hackathon.id}
       projects={projects}

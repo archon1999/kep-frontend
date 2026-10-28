@@ -1,13 +1,14 @@
 import { useState } from 'react';
-import { Alert, Button, Stack, Typography } from '@mui/material';
 import { useTranslation } from 'react-i18next';
 import { useNavigate } from 'react-router';
-import { toast } from 'sonner';
+import { Alert, Button, Stack, Typography } from '@mui/material';
 import { getResourceById, resources } from 'app/routes/resources.ts';
-import { arenaQueries } from 'modules/arena/application/queries.ts';
+import { pauseArenaQueue, startArenaQueue } from 'modules/arena/application/mutations';
+import { getNextArenaChallenge } from 'modules/arena/application/queries';
+import { Arena, ArenaStatus } from 'modules/arena/domain/entities/arena.entity.ts';
 import IconifyIcon from 'shared/components/base/IconifyIcon.tsx';
 import { diffDateTime } from 'shared/lib/dateTime';
-import { Arena, ArenaStatus } from 'modules/arena/domain/entities/arena.entity.ts';
+import { toast } from 'sonner';
 
 interface QueueBannerProps {
   arena?: Arena;
@@ -18,12 +19,7 @@ interface QueueBannerProps {
 
 const ENDING_SOON_MS = 2 * 60 * 1000;
 
-const ArenaQueueBanner = ({
-  arena,
-  arenaId,
-  currentChallengeId,
-  onChanged,
-}: QueueBannerProps) => {
+const ArenaQueueBanner = ({ arena, arenaId, currentChallengeId, onChanged }: QueueBannerProps) => {
   const { t } = useTranslation();
   const navigate = useNavigate();
   const [isLoadingAction, setIsLoadingAction] = useState(false);
@@ -39,7 +35,7 @@ const ArenaQueueBanner = ({
 
     setIsLoadingAction(true);
     try {
-      const result = await arenaQueries.arenaRepository.loadNextChallenge(arenaId);
+      const result = await getNextArenaChallenge(arenaId);
       const challengeId = result?.challengeId ?? currentChallengeId;
 
       if (challengeId) {
@@ -62,9 +58,9 @@ const ArenaQueueBanner = ({
     setIsLoadingAction(true);
     try {
       if (arena.pause) {
-        await arenaQueries.arenaRepository.start(arenaId);
+        await startArenaQueue(arenaId);
       } else {
-        await arenaQueries.arenaRepository.pause(arenaId);
+        await pauseArenaQueue(arenaId);
       }
       await onChanged?.();
     } catch {

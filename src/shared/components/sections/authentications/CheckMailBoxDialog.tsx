@@ -1,21 +1,16 @@
+import { useTranslation } from 'react-i18next';
 import {
   Alert,
   Box,
+  Button,
   Dialog,
   DialogActions,
   DialogContent,
-  DialogContentText,
-  DialogTitle,
-  IconButton,
-  Link,
   Stack,
   Typography,
-  paperClasses,
 } from '@mui/material';
-import illustrationDark from 'shared/assets/images/illustrations/3-dark.webp';
-import illustration from 'shared/assets/images/illustrations/3.webp';
-import IconifyIcon from 'shared/components/base/IconifyIcon';
-import Image from 'shared/components/base/Image';
+import DialogHeader from 'shared/components/common/DialogHeader';
+import PatternArtwork from 'shared/components/common/PatternArtwork';
 
 interface CheckMailBoxDialogProps {
   open: boolean;
@@ -32,84 +27,48 @@ const CheckMailBoxDialog = ({
   time,
   handleSendAgain,
 }: CheckMailBoxDialogProps) => {
+  const { t } = useTranslation();
   return (
     <Dialog
       open={open}
       onClose={handleClose}
       fullWidth
-      sx={{
-        [`& .${paperClasses.root}`]: {
-          borderRadius: 4,
-          maxWidth: 515,
-        },
-      }}
+      maxWidth="xs"
+      aria-labelledby="check-mailbox-title"
     >
-      <DialogContent sx={{ textAlign: 'center', p: 5 }}>
-        <IconButton
-          aria-label="close"
-          onClick={handleClose}
-          sx={{
-            position: 'absolute',
-            right: 32,
-            top: 24,
-          }}
-        >
-          <IconifyIcon icon="material-symbols:close-rounded" sx={{ fontSize: 20 }} />
-        </IconButton>
-        {import.meta.env.PROD && (
-          <Alert
-            severity="info"
-            icon={<IconifyIcon icon="material-symbols:info-outline-rounded" />}
-            sx={{ mb: 6, mt: 5 }}
-          >
-            <Typography>
-              <Box
-                component="span"
-                sx={{
-                  fontWeight: 700,
-                }}
-              >
-                Note:
-              </Box>{' '}
-              This is a demo feature.
-            </Typography>
-          </Alert>
-        )}
-        <Stack
-          sx={{
-            justifyContent: 'center',
-            mb: 3,
-          }}
-        >
-          <Image
-            src={{ light: illustration, dark: illustrationDark }}
-            alt=""
-            width={320}
-            height={240}
-          />
+      <DialogHeader
+        id="check-mailbox-title"
+        title={t('auth.mailbox.title')}
+        onClose={handleClose}
+      />
+      <DialogContent>
+        <Stack spacing={2.5} alignItems="center" textAlign="center">
+          <PatternArtwork kind="auth" sx={{ width: 180, maxWidth: '100%' }} />
+          {import.meta.env.PROD && <Alert severity="info">{t('auth.mailbox.demo')}</Alert>}
+          <Typography variant="body2" color="text.secondary">
+            {t('auth.mailbox.description')}
+            <Box
+              component="span"
+              sx={{
+                display: 'block',
+                mt: 1,
+                color: 'text.primary',
+                fontWeight: 600,
+                overflowWrap: 'anywhere',
+              }}
+            >
+              {email}
+            </Box>
+          </Typography>
         </Stack>
-        <DialogTitle sx={{ typography: 'h5', fontWeight: 500 }}>Check your mailbox!</DialogTitle>
-        <DialogContentText sx={{ typography: 'body1', color: 'text.primary' }}>
-          An email containing a password reset link has been sent to your email address{' '}
-          <Box component="span" sx={{ fontWeight: 500 }}>
-            {email}
-          </Box>
-        </DialogContentText>
       </DialogContent>
-      <DialogActions sx={{ justifyContent: 'center', p: 5, pt: 0 }}>
-        <Typography
-          variant="caption"
-          sx={{
-            fontWeight: 500,
-            color: 'text.secondary',
-          }}
-        >
-          Didn’t receive the code?{' '}
-          <Link href="#!" onClick={handleSendAgain} sx={[time > 0 && { pointerEvents: 'none' }]}>
-            Send again
-            {time > 0 ? ` in ${time} s` : ''}
-          </Link>
+      <DialogActions>
+        <Typography variant="caption" color="text.secondary" sx={{ mr: 'auto' }}>
+          {t('auth.mailbox.notReceived')}
         </Typography>
+        <Button onClick={handleSendAgain} disabled={time > 0}>
+          {time > 0 ? t('auth.mailbox.resendIn', { seconds: time }) : t('auth.mailbox.resend')}
+        </Button>
       </DialogActions>
     </Dialog>
   );

@@ -1,4 +1,4 @@
-﻿import { AdminChoiceOption } from 'modules/admin/shared/helpers/types.ts';
+﻿import { AdminChoiceOption } from 'modules/admin/shared/domain/types.ts';
 
 export interface AdminContestProblem {
   id?: number;

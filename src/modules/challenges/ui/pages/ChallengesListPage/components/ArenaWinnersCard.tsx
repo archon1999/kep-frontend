@@ -1,95 +1,86 @@
 import { useTranslation } from 'react-i18next';
-import { useNavigate } from 'react-router';
-import { Button, Card, CardContent, Skeleton, Stack, Typography } from '@mui/material';
+import { Link as RouterLink } from 'react-router';
+import { Box, Button, Link, Skeleton, Stack, Typography } from '@mui/material';
 import { getResourceById, resources } from 'app/routes/resources';
-import { Arena } from 'modules/arena/domain/entities/arena.entity.ts';
-import { PageResult } from 'modules/arena/domain/ports/arena.repository.ts';
+import { PageResult } from 'modules/arena/domain/contracts/arena.repository';
+import { Arena } from 'modules/arena/domain/entities/arena.entity';
+import UserPopover from 'modules/users/ui/shared/components/UserPopover';
+import IconifyIcon from 'shared/components/base/IconifyIcon';
 import KepIcon from 'shared/components/base/KepIcon';
-import ChallengesRatingChip from 'shared/components/rating/ChallengesRatingChip.tsx';
+import PatternArtwork from 'shared/components/common/PatternArtwork';
 
-type ChallengesArenaWinnersCardProps = {
-  arenas?: PageResult<Arena>;
-  isLoading: boolean;
-};
-
-const ArenaWinnersCard = ({
-  arenas,
-  isLoading,
-}: ChallengesArenaWinnersCardProps) => {
+type ChallengesArenaWinnersCardProps = { arenas?: PageResult<Arena>; isLoading: boolean };
+const ArenaWinnersCard = ({ arenas, isLoading }: ChallengesArenaWinnersCardProps) => {
   const { t } = useTranslation();
-  const navigate = useNavigate();
-
   return (
-    <Card variant="outlined" sx={{ borderRadius: 3, height: '100%' }}>
-      <CardContent>
-        <Stack direction="row" alignItems="center" justifyContent="space-between" mb={2}>
-          <Stack spacing={0.25}>
-            <Typography variant="h6">{t('challenges.arenaWinners')}</Typography>
-            <Typography variant="body2" color="text.secondary">
-              {t('challenges.arenaWinnersSubtitle')}
-            </Typography>
-          </Stack>
-
-          <Button variant="text" onClick={() => navigate(resources.Arena)}>
-            {t('challenges.viewArena')}
-          </Button>
-        </Stack>
-
-        <Stack spacing={1.25} direction="column" sx={{ mt: 2 }}>
-          {isLoading
-            ? Array.from({ length: 4 }).map((_, index) => (
-                <Skeleton key={index} variant="rectangular" height={64} sx={{ borderRadius: 2 }} />
-              ))
-            : (arenas?.data ?? []).map((arena) => {
-                const winner: any = arena.winner ?? {};
-                return (
-                  <Card key={arena.id} background={0}>
-                    <Stack
-                      paddingX={2}
-                      paddingY={1.5}
-                      spacing={1}
-                      direction="row"
-                      alignItems="center"
-                      justifyContent="space-between"
-                    >
-                      <Stack spacing={0.25} direction="column">
-                        <Stack direction="row" spacing={0.75} alignItems="center">
-                          <KepIcon name="arena" fontSize={20} color="primary.main" />
-                          <Typography variant="subtitle2">{arena.title}</Typography>
-                        </Stack>
-                        {winner?.username ? (
-                          <Stack direction="row" spacing={0.75} alignItems="center">
-                            <Stack spacing={1} direction="row">
-                              <ChallengesRatingChip
-                                title={winner.rankTitle ?? winner.rank_title}
-                                size="small"
-                              />
-                              <Typography variant="body2">{winner.username}</Typography>
-                            </Stack>
-                          </Stack>
-                        ) : null}
-                      </Stack>
-                      <Button
-                        variant="outlined"
-                        size="small"
-                        onClick={() =>
-                          navigate(getResourceById(resources.ArenaTournament, arena.id))
-                        }
+    <Box component="section" sx={{ p: { xs: 2.5, md: 3 } }}>
+      <Stack direction="row" justifyContent="space-between" alignItems="center" gap={1}>
+        <Typography component="h2" variant="subtitle1" fontWeight={700}>
+          {t('challenges.arenaWinners')}
+        </Typography>
+        <PatternArtwork kind="competitions" sx={{ width: 84, flexShrink: 0 }} />
+      </Stack>
+      {isLoading
+        ? Array.from({ length: 5 }, (_, index) => <Skeleton key={index} height={64} />)
+        : (arenas?.data ?? []).slice(0, 5).map((arena) => {
+            const winner = arena.winner as { username?: string } | null;
+            return (
+              <Box
+                key={arena.id}
+                sx={{ py: 1.5, borderBottom: 1, borderColor: 'divider', overflowWrap: 'anywhere' }}
+              >
+                <Link
+                  component={RouterLink}
+                  to={getResourceById(resources.ArenaTournament, arena.id)}
+                  color="text.primary"
+                  underline="hover"
+                  fontWeight={600}
+                  variant="body2"
+                >
+                  {arena.title}
+                </Link>
+                {winner?.username && (
+                  <Stack direction="row" alignItems="center" gap={0.75} sx={{ mt: 0.5 }}>
+                    <KepIcon name="ranking" color="warning.main" fontSize={16} />
+                    <UserPopover username={winner.username}>
+                      <Typography
+                        component="button"
+                        type="button"
+                        variant="body2"
+                        color="text.secondary"
+                        sx={{
+                          border: 0,
+                          bgcolor: 'transparent',
+                          p: 0,
+                          textAlign: 'left',
+                          cursor: 'pointer',
+                          '&:hover': { color: 'primary.main' },
+                        }}
                       >
-                        {t('challenges.viewArena')}
-                      </Button>
-                    </Stack>
-                  </Card>
-                );
-              })}
-          {!isLoading && !arenas?.data?.length && (
-            <Typography variant="body2" color="text.secondary">
-              {t('challenges.noArenas')}
-            </Typography>
-          )}
-        </Stack>
-      </CardContent>
-    </Card>
+                        {winner.username}
+                      </Typography>
+                    </UserPopover>
+                  </Stack>
+                )}
+              </Box>
+            );
+          })}
+      {!isLoading && !arenas?.data?.length && (
+        <Typography variant="body2" color="text.secondary">
+          {t('challenges.noArenas')}
+        </Typography>
+      )}
+      <Button
+        fullWidth
+        component={RouterLink}
+        to={resources.Arena}
+        variant="text"
+        sx={{ mt: 2 }}
+        endIcon={<IconifyIcon icon="solar:arrow-right-linear" fontSize={16} />}
+      >
+        {t('challenges.viewArena')}
+      </Button>
+    </Box>
   );
 };
 export default ArenaWinnersCard;
