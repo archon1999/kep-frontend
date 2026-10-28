@@ -67,7 +67,7 @@ export const useThemeMode = () => {
 
   const resetTheme = useCallback(() => {
     runWithThemeTransition(() => {
-      setMode(null);
+      setMode('dark');
     });
   }, [runWithThemeTransition, setMode]);
 

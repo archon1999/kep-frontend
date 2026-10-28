@@ -1,7 +1,6 @@
 import type { FontFamily } from './fonts';
 
 const optionalFonts: Partial<Record<FontFamily, string>> = {
-  'Plus Jakarta Sans': 'Plus+Jakarta+Sans:wght@300;400;500;600;700;800',
   'DM Sans': 'DM+Sans:wght@300;400;500;600;700;800',
   Manrope: 'Manrope:wght@400;500;600;700;800',
 };

@@ -26,7 +26,7 @@ test('appearance stays independent of the preset, including system mode', () => 
 
 test('preload appearance agrees with settings migration before React mounts', () => {
   const html = readFileSync(new URL('../../../index.html', import.meta.url), 'utf8');
-  const script = [...html.matchAll(/<script>([\s\S]*?)<\/script>/g)].find((match) =>
+  const script = [...html.matchAll(/<script[^>]*>([\s\S]*?)<\/script>/g)].find((match) =>
     match[1].includes('__kepSplashStartedAt'),
   )?.[1];
   assert.ok(script);
@@ -44,7 +44,13 @@ test('preload appearance agrees with settings migration before React mounts', ()
         window: { matchMedia: () => ({ matches: true }) },
         localStorage: {
           getItem: (key: string) =>
-            key === 'themePreset' ? preset : key === 'kep-mode' ? (mode ?? null) : null,
+            key === 'kep-default-theme-applied-v1'
+              ? 'true'
+              : key === 'themePreset'
+                ? preset
+                : key === 'kep-mode'
+                  ? (mode ?? null)
+                  : null,
         },
         document: {
           documentElement: {

@@ -1,6 +1,7 @@
 import type { LoginPayload } from 'modules/authentication/domain';
 import { mainDrawerWidth } from 'shared/lib/constants.ts';
 import type { FontFamily } from './theme/fonts';
+import { defaultFontFamily } from './theme/fonts';
 import type { ThemePreset } from './theme/presets';
 
 export type ThemeMode = 'light' | 'dark' | 'system';
@@ -50,7 +51,7 @@ export const initialConfig: Config = {
   locale: 'en-US',
   themePreset: 'default',
   primaryColor: null,
-  fontFamily: 'Open Sans',
+  fontFamily: defaultFontFamily,
   fontSize: 16,
   backgroundPattern: 'none',
   cardStyle: 'default',

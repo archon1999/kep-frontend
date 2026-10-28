@@ -24,7 +24,7 @@
     </script>
     <link
       rel="preload"
-      href="/assets/theme/open-sans-variable.woff2"
+      href="/assets/theme/plus-jakarta-sans-variable.woff2"
       as="font"
       type="font/woff2"
       crossorigin
@@ -36,7 +36,7 @@
       type="font/woff2"
       crossorigin
     />
-    <script>
+    <script id="kep-theme-bootstrap">
       window.__kepSplashStartedAt = Date.now();
 
       (function () {
@@ -67,6 +67,22 @@
             return fallback;
           }
         };
+
+        // Apply the reference appearance once per browser. Keep this before
+        // React and the splash so stored legacy preferences never flash first.
+        if (readValue('kep-default-theme-applied-v1', false) !== true) {
+          try {
+            localStorage.setItem('themePreset', 'default');
+            localStorage.setItem('primaryColor', 'null');
+            localStorage.setItem('navColor', 'default');
+            localStorage.setItem('fontFamily', 'Plus Jakarta Sans');
+            localStorage.setItem('kep-mode', 'dark');
+            // Write the completion marker only after every preference succeeds.
+            localStorage.setItem('kep-default-theme-applied-v1', 'true');
+          } catch (error) {
+            // Storage may be blocked or full; the application keeps its defaults.
+          }
+        }
 
         var legacyPreset = readValue('themePreset', 'default');
         var themePreset =

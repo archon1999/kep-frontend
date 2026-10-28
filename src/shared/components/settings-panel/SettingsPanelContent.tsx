@@ -3,8 +3,7 @@ import { Box, Button } from '@mui/material';
 import { useSettingsPanelContext } from 'app/providers/SettingsPanelProvider';
 import { useSettingsContext } from 'app/providers/SettingsProvider';
 import { useVisionMode } from 'app/providers/VisionModeProvider';
-import { RESET, SET_PRIMARY_COLOR } from 'app/reducers/SettingsReducer';
-import { blue } from 'app/theme/palette/colors';
+import { RESET } from 'app/reducers/SettingsReducer';
 import IconifyIcon from 'shared/components/base/IconifyIcon';
 import { useThemeMode } from 'shared/hooks/useThemeMode';
 import NavColorPanel from './NavColorPanel';
@@ -40,7 +39,6 @@ const SettingsPanelContent = ({ tab }: { tab: SettingsPanelTab }) => {
   const handleReset = () => {
     resetTheme();
     configDispatch({ type: RESET });
-    configDispatch({ type: SET_PRIMARY_COLOR, payload: blue[500] });
     setMode('normal');
   };
 
