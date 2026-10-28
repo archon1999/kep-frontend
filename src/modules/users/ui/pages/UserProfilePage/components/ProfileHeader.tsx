@@ -1,5 +1,5 @@
 import { useTranslation } from 'react-i18next';
-import { Box, ButtonBase, Skeleton, Stack, Tooltip, Typography } from '@mui/material';
+import { Box, IconButton, Skeleton, Stack, Tooltip, Typography } from '@mui/material';
 import { contentGridSx, contentInsetSx } from 'app/theme/styles/content';
 import { UserDetails, UserRatings } from 'modules/users/domain/entities/user.entity';
 import KepIcon from 'shared/components/base/KepIcon';
@@ -35,54 +35,44 @@ const ProfileHeader = ({
   const status = user.isOnline ? t('homePage.userActivity.onlineNow') : user.lastSeen;
 
   return (
-    <Box component="header">
+    <Box component="header" sx={{ position: 'relative', isolation: 'isolate', overflow: 'hidden' }}>
       {user.coverPhoto && (
-        <ButtonBase
-          onClick={onPreviewCover}
-          aria-label={t('users.profile.previewCover')}
+        <Box
+          component="img"
+          src={user.coverPhoto}
+          alt=""
+          aria-hidden="true"
           sx={{
-            display: 'block',
+            position: 'absolute',
+            inset: 0,
+            zIndex: -2,
             width: 1,
-            height: { xs: 100, md: 144 },
-            overflow: 'hidden',
-            borderBottom: 1,
-            borderColor: 'divider',
-            '&:focus-visible': {
-              outline: '2px solid',
-              outlineColor: 'primary.main',
-              outlineOffset: -2,
-            },
+            height: 1,
+            objectFit: 'cover',
+            opacity: 0.12,
+            pointerEvents: 'none',
           }}
-        >
-          <Box
-            component="img"
-            src={user.coverPhoto}
-            alt=""
-            sx={{ display: 'block', width: 1, height: 1, objectFit: 'cover' }}
-          />
-        </ButtonBase>
+        />
       )}
+      <Box
+        aria-hidden
+        sx={{
+          position: 'absolute',
+          inset: 0,
+          zIndex: -1,
+          opacity: 0.18,
+          backgroundImage: 'radial-gradient(var(--kep-logo-ice) 1px, transparent 1px)',
+          backgroundSize: '12px 12px',
+          maskImage: 'linear-gradient(120deg, transparent 15%, black 100%)',
+          pointerEvents: 'none',
+        }}
+      />
       <Box
         sx={{
           ...contentInsetSx,
           py: { xs: 2.5, md: 3 },
-          position: 'relative',
-          isolation: 'isolate',
-          overflow: 'hidden',
         }}
       >
-        <Box
-          aria-hidden
-          sx={{
-            position: 'absolute',
-            inset: 0,
-            zIndex: -1,
-            opacity: 0.18,
-            backgroundImage: 'radial-gradient(var(--kep-logo-ice) 1px, transparent 1px)',
-            backgroundSize: '12px 12px',
-            maskImage: 'linear-gradient(120deg, transparent 15%, black 100%)',
-          }}
-        />
         <Stack direction="row" gap={{ xs: 2, md: 3 }} alignItems="center" sx={{ minWidth: 0 }}>
           <Tooltip title={status || ''}>
             <Box sx={{ flexShrink: 0 }}>
@@ -137,16 +127,35 @@ const ProfileHeader = ({
               )}
             </Stack>
           </Box>
+          {user.coverPhoto && (
+            <Tooltip title={t('users.profile.previewCover')}>
+              <IconButton
+                size="small"
+                onClick={onPreviewCover}
+                aria-label={t('users.profile.previewCover')}
+                sx={{ flexShrink: 0, alignSelf: 'flex-start', color: 'text.secondary' }}
+              >
+                <KepIcon name="view" fontSize={20} />
+              </IconButton>
+            </Tooltip>
+          )}
         </Stack>
       </Box>
       <Box
-        sx={{
-          ...contentGridSx,
-          borderTopWidth: 1,
-          borderTopStyle: 'solid',
-          borderColor: 'divider',
-          gridTemplateColumns: { xs: 'repeat(2, minmax(0, 1fr))', md: 'repeat(4, minmax(0, 1fr))' },
-        }}
+        sx={[
+          contentGridSx,
+          {
+            bgcolor: 'transparent',
+            '& > *': { bgcolor: 'transparent' },
+            borderTopWidth: 1,
+            borderTopStyle: 'solid',
+            borderColor: 'divider',
+            gridTemplateColumns: {
+              xs: 'repeat(2, minmax(0, 1fr))',
+              md: 'repeat(4, minmax(0, 1fr))',
+            },
+          },
+        ]}
       >
         {metrics.map(({ key, label, icon }) => {
           const metric = ratings?.[key];
