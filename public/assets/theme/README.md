@@ -12,7 +12,7 @@ so the interface does not depend on Framer at runtime.
 
 `hero-texture.webp` is a 960px-wide compressed derivative of `hero-texture.jpg` for the landing workspace backdrop.
 
-Alpha Lyrae supplies display/pixel typography. Open Sans supplies reading text and UI controls; its variable regular/italic files come from https://github.com/googlefonts/opensans/tree/main/fonts/variable and are distributed with OpenSans-OFL.txt.
+Alpha Lyrae supplies display/pixel typography. Plus Jakarta Sans is the default reading and interface font; its variable font comes from https://github.com/google/fonts/tree/main/ofl/plusjakartasans and is distributed with PlusJakartaSans-OFL.txt. Open Sans remains a selectable reading font and a fallback for unsupported glyphs; its variable regular/italic files come from https://github.com/googlefonts/opensans/tree/main/fonts/variable and are distributed with OpenSans-OFL.txt.
 This provenance record does not change the original assets' license terms.
 
 `footer-dot-pattern.png` is the unmodified gold halftone PNG attached by the user on 2026-10-21. The footer uses it as a luminance mask for the cyan/sand strip. `pixel-cross.svg` is a small code-authored vector matching the supplied menu-marker reference.

@@ -11,6 +11,7 @@ test('default font needs no third party CSS and optional fonts load only once', 
   const dom = new JSDOM('<html><head></head></html>');
   const document = dom.window.document;
   loadReadingFont('Open Sans', document);
+  loadReadingFont('Plus Jakarta Sans', document);
   assert.equal(document.querySelectorAll('link').length, 0);
   loadReadingFont('Manrope', document);
   loadReadingFont('Manrope', document);
