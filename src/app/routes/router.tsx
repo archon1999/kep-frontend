@@ -74,6 +74,7 @@ import {
 import { HomePage, UpdatesPage } from 'modules/home/ui/pages';
 import { KepCoverPage } from 'modules/kep-cover/ui/pages';
 import { KepcoinEarnPage, KepcoinPage } from 'modules/kepcoin/ui/pages';
+import { PlaygroundPage } from 'modules/playground';
 import {
   ProblemDetailPage,
   ProblemsAttemptsPage,
@@ -585,6 +586,11 @@ export const routes: RouteObject[] = [
             path: resources.Calendar,
             element: <CalendarPage />,
             handle: { titleKey: 'pageTitles.calendar' },
+          },
+          {
+            path: resources.Playground,
+            element: <PlaygroundPage />,
+            handle: { titleKey: 'pageTitles.playground' },
           },
           {
             path: resources.Hackathons,

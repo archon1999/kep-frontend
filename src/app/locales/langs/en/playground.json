@@ -1,0 +1,40 @@
+{
+  "playground": {
+    "title": "Code workspace",
+    "subtitle": "Write and run KEPLang. No account needed.",
+    "docs": "Language guide",
+    "examples": "Example",
+    "download": "Download code",
+    "run": "Run code",
+    "running": "Running…",
+    "editor": "KEPLang source code",
+    "input": "Standard input",
+    "output": "Output",
+    "empty": "Run your code to see the result here.",
+    "limits": "KEPLang 0.2.1 · 1.5 s CPU · 128 MB process / 64 MB VM heap · 64 KB output · 6 runs/min · Results expire after 5 minutes. Drafts stay in this browser.",
+    "example": {
+      "sum": "A + B",
+      "gcd": "Greatest common divisor",
+      "array": "Sort an array",
+      "map": "Word frequencies (map)",
+      "set": "Unique numbers (set)"
+    },
+    "status": {
+      "ready": "Ready",
+      "queued": "In queue",
+      "running": "Running",
+      "success": "Finished",
+      "compileError": "Compilation error",
+      "runtimeError": "Runtime error",
+      "timeLimit": "Time limit",
+      "memoryLimit": "Memory limit",
+      "expired": "Queue expired",
+      "failed": "Runner unavailable"
+    },
+    "errors": {
+      "busy": "The runner is busy or the rate limit was reached. Please try again shortly.",
+      "network": "Could not reach the runner. Check your connection and try again.",
+      "timeout": "The queue took too long. Please run your code again."
+    }
+  }
+}
