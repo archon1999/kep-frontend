@@ -2,6 +2,9 @@ import { type ReactNode, useCallback, useEffect, useState } from 'react';
 
 const types = new Set(['son', 'matn', 'mantiq', 'lugat', 'toplam']);
 const controls = new Set([
+  'agar',
+  'bolincha',
+  'toki',
   'to',
   'bosa',
   'bomasa',
@@ -15,6 +18,7 @@ const controls = new Set([
   'yalgan',
 ]);
 const calls = new Set([
+  'uqi',
   'al',
   'al_soz',
   'al_satr',

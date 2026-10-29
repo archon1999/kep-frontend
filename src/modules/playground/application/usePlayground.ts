@@ -18,7 +18,7 @@ const loadDrafts = () => {
 };
 const fallback: RunnerLanguage = {
   id: 'kep',
-  label: 'KEPLang 0.2.2',
+  label: 'KEPLang 0.3.0',
   extension: 'kep',
   editorLanguage: 'keplang',
   template: examples[0].code,
