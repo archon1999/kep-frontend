@@ -37,6 +37,7 @@ const pages = [
   'ShopPage',
   'CalendarPage',
   'GamesPage',
+  'PlaygroundPage',
 ];
 for (const page of pages) {
   const key = Object.keys(manifest).find((key) => key.endsWith(`/${page}.tsx`));

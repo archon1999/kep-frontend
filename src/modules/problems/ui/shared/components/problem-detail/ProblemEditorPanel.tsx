@@ -40,6 +40,7 @@ const getEditorLanguage = (lang: string) =>
     [AttemptLangs.JS]: 'javascript',
     [AttemptLangs.TS]: 'typescript',
     [AttemptLangs.RUST]: 'rust',
+    [AttemptLangs.KEP]: 'keplang',
   })[lang] ||
   lang ||
   'javascript';

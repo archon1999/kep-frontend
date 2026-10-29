@@ -1,22 +1,36 @@
 import { defineConfig } from 'orval';
 
-const OUTPUT_PATH = 'src/shared/api/orval';
+const schema = 'https://kep.uz/swagger/?format=openapi';
 
 export default defineConfig({
-  kepApi: {
-    input: 'https://kep.uz/swagger/?format=openapi',
+  // Scope this feature to its new contract. The legacy full schema contains
+  // duplicate operationIds and is maintained by its existing generator config.
+  keplangPlayground: {
+    input: {
+      target: schema,
+      override: {
+        transformer: (spec) => ({
+          ...spec,
+          paths: Object.fromEntries(
+            Object.entries(spec.paths ?? {}).filter(([path]) =>
+              path.startsWith('/api/playground/'),
+            ),
+          ),
+        }),
+      },
+      filters: { mode: 'include', schemas: ['Run', 'RunResult'] },
+    },
     output: {
-      target: `${OUTPUT_PATH}/endpoints.ts`,
-      schemas: `${OUTPUT_PATH}/schemas`,
+      mode: 'split',
+      target: 'src/shared/api/orval/generated/playground/index.ts',
       client: 'axios',
-      clean: true,
       override: {
         mutator: {
-          path: './src/shared/services/axios/axiosInstance',
-          name: 'axiosInstance',
-          default: true,
+          path: 'src/shared/api/http/axiosMutator.ts',
+          name: 'axiosMutator',
         },
       },
     },
+    hooks: { afterAllFilesWrite: 'prettier --write' },
   },
 });

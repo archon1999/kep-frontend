@@ -1,4 +1,5 @@
 import seo from './seo.json';
+import playground from './playground.json';
 import admin from './admin.json';
 import arena from './arena.json';
 import auth from './auth.json';
@@ -29,6 +30,7 @@ import tournaments from './tournaments.json';
 import users from './users.json';
 
 export const uzTranslation = {
+  ...playground,
   ...giveaways,
   ...game,
   ...games,

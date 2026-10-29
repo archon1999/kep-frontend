@@ -1,4 +1,5 @@
 import { registerEditorThemes } from 'app/theme/editor';
+import { registerKEPLang } from 'shared/lib/keplang';
 import { useThemeMode } from './useThemeMode';
 
 export const useMonacoTheme = (fallbackTheme?: string) => {
@@ -10,6 +11,9 @@ export const useMonacoTheme = (fallbackTheme?: string) => {
     theme: isDefaultTheme
       ? `kep-${isDark ? 'dark' : 'light'}`
       : (fallbackTheme ?? (isDark ? 'vs-dark' : 'vs')),
-    beforeMount: registerEditorThemes,
+    beforeMount: ((monaco) => {
+      registerEditorThemes(monaco);
+      registerKEPLang(monaco);
+    }) as typeof registerEditorThemes,
   };
 };

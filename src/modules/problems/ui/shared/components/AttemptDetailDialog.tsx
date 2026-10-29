@@ -39,6 +39,8 @@ import { toast } from 'sonner';
 
 const mapEditorLanguage = (lang?: string) => {
   switch (lang) {
+    case AttemptLangs.KEP:
+      return 'keplang';
     case AttemptLangs.PYTHON:
       return 'python';
     case AttemptLangs.CPP:
