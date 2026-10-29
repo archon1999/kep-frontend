@@ -12,8 +12,8 @@ export const examples = [
   },
   {
     id: 'map',
-    code: 'son n = al();\nlugat<matn, son> sanoq = lugat();\naylan i = 0 .. n {\n    matn soz = al_soz();\n    sanoq[soz] = qiymat(sanoq, soz, 0) + 1;\n}\nchiqar(qiymat(sanoq, "xiva", 0));\nchiqar(uzunligi(sanoq));\n',
-    input: '5\nxiva kep xiva salom xiva\n',
+    code: 'son n = al();\nlugat<matn, son> sanoq = lugat();\naylan i = 0 .. n {\n    matn soz = al_soz();\n    sanoq[soz] = qiymat(sanoq, soz, 0) + 1;\n}\nchiqar(qiymat(sanoq, "xorazm", 0));\nchiqar(uzunligi(sanoq));\n',
+    input: '5\nxorazm kep xorazm salom xorazm\n',
   },
   {
     id: 'set',
