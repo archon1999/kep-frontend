@@ -6,6 +6,12 @@ export const resources = {
   Forbidden: '/403',
 
   Admin: '/admin',
+  AdminCatalog: '/admin/catalog',
+  AdminManage: '/admin/manage',
+  AdminResource: '/admin/manage/:app/:model',
+  AdminResourceCreate: '/admin/manage/:app/:model/new',
+  AdminResourceEdit: '/admin/manage/:app/:model/:id',
+  AdminImportOrder: '/admin/import-order',
   AdminProblems: '/admin/problems',
   AdminProblemCreate: '/admin/problems/new',
   AdminProblemEdit: '/admin/problems/:id',

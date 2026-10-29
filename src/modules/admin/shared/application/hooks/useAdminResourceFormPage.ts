@@ -1,6 +1,7 @@
 import { useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useNavigate, useParams } from 'react-router';
+import { validationMessage } from 'modules/admin/domain/utils/validation';
 import type {
   AdminResourceOperationsConfig,
   AdminSimpleRow,
@@ -132,7 +133,7 @@ export const useAdminResourceFormPage = (
       }
       navigate(config.listPath);
     } catch (caughtError: any) {
-      setError(JSON.stringify(caughtError?.data ?? caughtError));
+      setError(validationMessage(caughtError) || t('admin.console.loadError'));
     } finally {
       setIsSaving(false);
     }

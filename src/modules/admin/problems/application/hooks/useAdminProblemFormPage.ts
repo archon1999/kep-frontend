@@ -2,6 +2,7 @@ import { useEffect, useMemo, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useNavigate, useParams } from 'react-router';
 import { resources } from 'app/routes/resources';
+import { validationMessage } from 'modules/admin/domain/utils/validation';
 import {
   createAdminProblem,
   removeAdminProblem,
@@ -256,7 +257,7 @@ export const useAdminProblemFormPage = (confirm: (message: string) => Promise<bo
       }
       navigate(resources.AdminProblems);
     } catch (caughtError: any) {
-      setError(JSON.stringify(caughtError?.data ?? caughtError));
+      setError(validationMessage(caughtError) || t('admin.console.loadError'));
     } finally {
       setIsSaving(false);
     }

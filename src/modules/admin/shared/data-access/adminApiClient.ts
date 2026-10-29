@@ -1,4 +1,4 @@
-﻿import { axiosMutator } from 'shared/api/http/axiosMutator.ts';
+﻿import { adminRequest as axiosMutator } from 'modules/admin/data-access/client/adminRequest';
 import {
   AdminBatchPayload,
   AdminBatchResponse,

@@ -89,6 +89,12 @@
     "notFound": "Страница не найдена",
     "forbidden": "Доступ запрещен",
     "games": "Игры",
-    "projectsRating": "Рейтинг проектов"
+    "projectsRating": "Рейтинг проектов",
+    "adminDashboard": "Панель администратора",
+    "adminCatalog": "Разделы администратора",
+    "adminResource": "Записи администратора",
+    "adminResourceCreate": "Новая запись",
+    "adminResourceEdit": "Редактирование записи",
+    "adminImportOrder": "Импорт заказа"
   }
 }

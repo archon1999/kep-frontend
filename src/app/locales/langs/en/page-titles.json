@@ -89,6 +89,12 @@
     "notFound": "Page not found",
     "forbidden": "Access denied",
     "games": "Games",
-    "projectsRating": "Projects rating"
+    "projectsRating": "Projects rating",
+    "adminDashboard": "Admin dashboard",
+    "adminCatalog": "Admin sections",
+    "adminResource": "Admin records",
+    "adminResourceCreate": "Create record",
+    "adminResourceEdit": "Edit record",
+    "adminImportOrder": "Import order"
   }
 }

@@ -89,6 +89,12 @@
     "notFound": "Sahifa topilmadi",
     "forbidden": "Kirish taqiqlangan",
     "games": "O‘yinlar",
-    "projectsRating": "Loyihalar reytingi"
+    "projectsRating": "Loyihalar reytingi",
+    "adminDashboard": "Admin boshqaruv paneli",
+    "adminCatalog": "Admin bo‘limlari",
+    "adminResource": "Admin yozuvlari",
+    "adminResourceCreate": "Yozuv yaratish",
+    "adminResourceEdit": "Yozuvni tahrirlash",
+    "adminImportOrder": "Buyurtmani kiritish"
   }
 }

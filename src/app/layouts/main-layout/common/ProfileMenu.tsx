@@ -190,6 +190,15 @@ const ProfileMenu = ({ type = 'default' }: ProfileMenuProps) => {
         </Stack>
         <Divider />
         <Box sx={{ py: 1 }}>
+          {(currentUser?.isSuperuser || currentUser?.isStaff) && (
+            <ProfileMenuItem
+              href={resources.Admin}
+              icon="mdi:shield-check-outline"
+              onClick={handleClose}
+            >
+              {t('admin.console.dashboard')}
+            </ProfileMenuItem>
+          )}
           <ProfileMenuItem href={profileHref} icon="solar:user-circle-bold" onClick={handleClose}>
             {t('common.accountMenu.profile')}
           </ProfileMenuItem>

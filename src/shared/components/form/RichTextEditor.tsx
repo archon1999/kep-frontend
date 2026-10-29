@@ -32,6 +32,7 @@ interface QuillInstance {
   on: (eventName: string, handler: () => void) => void;
   off?: (eventName: string, handler: () => void) => void;
   getLength?: () => number;
+  getContents: () => unknown;
   getSelection?: (focus?: boolean) => { index: number; length: number } | null;
   insertEmbed?: (index: number, type: string, value: unknown, source?: string) => void;
   insertText?: (index: number, text: string, source?: string) => void;
@@ -53,6 +54,7 @@ interface QuillConstructor {
 interface RichTextEditorProps {
   value: string;
   onChange: (value: string) => void;
+  onDocumentChange?: (value: { html: string; delta: string }) => void;
   loadErrorText?: string;
   hintText?: string;
   placeholder?: string;
@@ -172,6 +174,7 @@ const ensureQuillLoaded = () => {
 const RichTextEditor = ({
   value,
   onChange,
+  onDocumentChange,
   loadErrorText = 'Editor failed to load.',
   hintText,
   placeholder,
@@ -185,6 +188,7 @@ const RichTextEditor = ({
   const hostRef = useRef<HTMLDivElement | null>(null);
   const quillRef = useRef<QuillInstance | null>(null);
   const onChangeRef = useRef(onChange);
+  const onDocumentChangeRef = useRef(onDocumentChange);
   const [isLoading, setIsLoading] = useState(true);
   const [hasLoadError, setHasLoadError] = useState(false);
   const [formulaIndex, setFormulaIndex] = useState<number | null>(null);
@@ -211,7 +215,8 @@ const RichTextEditor = ({
 
   useEffect(() => {
     onChangeRef.current = onChange;
-  }, [onChange]);
+    onDocumentChangeRef.current = onDocumentChange;
+  }, [onChange, onDocumentChange]);
 
   useEffect(() => {
     let isMounted = true;
@@ -260,6 +265,10 @@ const RichTextEditor = ({
         handler = () => {
           const nextValue = normalizeEditorHtml(quill.root.innerHTML);
           onChangeRef.current(nextValue);
+          onDocumentChangeRef.current?.({
+            html: nextValue,
+            delta: JSON.stringify(quill.getContents()),
+          });
         };
         quill.on('text-change', handler);
         quillRef.current = quill;

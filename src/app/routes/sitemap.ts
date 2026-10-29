@@ -180,6 +180,22 @@ export const clientMenu: MenuItem[] = [
 
 export const adminMenu: MenuItem[] = [
   {
+    name: 'Dashboard',
+    key: 'admin.console.dashboard',
+    path: resources.Admin,
+    pathName: 'admin-dashboard',
+    icon: 'mdi:view-dashboard-outline',
+    active: true,
+  },
+  {
+    name: 'All sections',
+    key: 'admin.console.catalog',
+    path: resources.AdminCatalog,
+    pathName: 'admin-catalog',
+    icon: 'mdi:view-grid-outline',
+    active: true,
+  },
+  {
     name: 'Problems',
     key: 'admin.groups.problems',
     path: resources.AdminProblems,

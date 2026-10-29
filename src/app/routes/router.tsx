@@ -31,6 +31,13 @@ import {
   AdminProblemsListPage,
 } from 'modules/admin/problems/ui/pages';
 import {
+  AdminCatalogPage,
+  AdminDashboardPage,
+  AdminImportOrderPage,
+  AdminResourceFormPage,
+  AdminResourceListPage,
+} from 'modules/admin/ui/pages';
+import {
   AdminTeamFormPage,
   AdminTeamsListPage,
   AdminUserFormPage,
@@ -89,15 +96,16 @@ import { ShopPage } from 'modules/shop/ui/pages';
 import { TestDetailPage, TestPassPage, TestsListPage } from 'modules/testing/ui/pages';
 import { TournamentPage, TournamentsListPage } from 'modules/tournaments/ui/pages';
 import { UserProfilePage, UsersListPage } from 'modules/users/ui/pages';
+import AdminGuard from 'shared/components/guard/AdminGuard';
 import AuthGuard from 'shared/components/guard/AuthGuard';
 import SuperuserGuard from 'shared/components/guard/SuperuserGuard';
 import PageLoader from 'shared/components/loading/PageLoader';
 import { legacyRedirectRoutes } from './legacy-routes';
 import { resources } from './resources';
 import { authPaths, rootPaths } from './route-config';
-import { adminMenu } from './sitemap';
 
 const IS_PROD = import.meta.env.PROD;
+const AdminLayout = lazy(() => import('app/layouts/admin-layout/AdminLayout'));
 const GiveawayPage = lazy(() => import('modules/giveaways/ui/pages/GiveawayPage/GiveawayPage'));
 const GamesPage = lazy(() => import('modules/games/ui/pages/GamesPage/GamesPage'));
 const KeppyWorldPage = lazy(
@@ -133,166 +141,201 @@ export const routes: RouteObject[] = [
       {
         path: resources.Admin,
         element: (
-          <SuperuserGuard>
-            <MainLayout menuItems={adminMenu}>
+          <AdminGuard>
+            <AdminLayout>
               <SuspenseOutlet />
-            </MainLayout>
-          </SuperuserGuard>
+            </AdminLayout>
+          </AdminGuard>
         ),
         children: [
           {
             index: true,
-            element: <Navigate to={resources.AdminProblems} replace />,
+            element: <AdminDashboardPage />,
+            handle: { titleKey: 'pageTitles.adminDashboard' },
           },
           {
-            path: 'problems',
-            element: <AdminProblemsListPage />,
-            handle: { titleKey: 'pageTitles.adminProblems' },
+            path: 'catalog',
+            element: <AdminCatalogPage />,
+            handle: { titleKey: 'pageTitles.adminCatalog' },
           },
           {
-            path: 'problems/new',
-            element: <AdminProblemFormPage />,
-            handle: { titleKey: 'pageTitles.adminProblemCreate' },
+            path: 'manage/:app/:model',
+            element: <AdminResourceListPage />,
+            handle: { titleKey: 'pageTitles.adminResource' },
           },
           {
-            path: 'problems/attempts',
-            element: <AdminProblemAttemptsListPage />,
-            handle: { titleKey: 'pageTitles.adminProblemAttempts' },
+            path: 'manage/:app/:model/new',
+            element: <AdminResourceFormPage />,
+            handle: { titleKey: 'pageTitles.adminResourceCreate' },
           },
           {
-            path: 'problems/attempts/new',
-            element: <AdminProblemAttemptFormPage />,
-            handle: { titleKey: 'pageTitles.adminProblemAttemptCreate' },
+            path: 'manage/:app/:model/:id',
+            element: <AdminResourceFormPage />,
+            handle: { titleKey: 'pageTitles.adminResourceEdit' },
           },
           {
-            path: 'problems/attempts/:id',
-            element: <AdminProblemAttemptFormPage />,
-            handle: { titleKey: 'pageTitles.adminProblemAttemptEdit' },
+            path: 'import-order',
+            element: <AdminImportOrderPage />,
+            handle: { titleKey: 'pageTitles.adminImportOrder' },
           },
           {
-            path: 'problems/chapters',
-            element: <AdminProblemChaptersListPage />,
-            handle: { titleKey: 'pageTitles.adminProblemChapters' },
-          },
-          {
-            path: 'problems/chapters/new',
-            element: <AdminProblemChapterFormPage />,
-            handle: { titleKey: 'pageTitles.adminProblemChapterCreate' },
-          },
-          {
-            path: 'problems/chapters/:id',
-            element: <AdminProblemChapterFormPage />,
-            handle: { titleKey: 'pageTitles.adminProblemChapterEdit' },
-          },
-          {
-            path: 'problems/tags',
-            element: <AdminProblemTagsListPage />,
-            handle: { titleKey: 'pageTitles.adminProblemTags' },
-          },
-          {
-            path: 'problems/tags/new',
-            element: <AdminProblemTagFormPage />,
-            handle: { titleKey: 'pageTitles.adminProblemTagCreate' },
-          },
-          {
-            path: 'problems/tags/:id',
-            element: <AdminProblemTagFormPage />,
-            handle: { titleKey: 'pageTitles.adminProblemTagEdit' },
-          },
-          {
-            path: 'problems/:id',
-            element: <AdminProblemFormPage />,
-            handle: { titleKey: 'pageTitles.adminProblemEdit' },
-          },
-          {
-            path: 'contests',
-            element: <AdminContestsListPage />,
-            handle: { titleKey: 'pageTitles.adminContests' },
-          },
-          {
-            path: 'contests/new',
-            element: <AdminContestFormPage />,
-            handle: { titleKey: 'pageTitles.adminContestCreate' },
-          },
-          {
-            path: 'contests/questions',
-            element: <AdminContestQuestionsListPage />,
-            handle: { titleKey: 'pageTitles.adminContestQuestions' },
-          },
-          {
-            path: 'contests/questions/new',
-            element: <AdminContestQuestionFormPage />,
-            handle: { titleKey: 'pageTitles.adminContestQuestionCreate' },
-          },
-          {
-            path: 'contests/questions/:id',
-            element: <AdminContestQuestionFormPage />,
-            handle: { titleKey: 'pageTitles.adminContestQuestionEdit' },
-          },
-          {
-            path: 'contests/types',
-            element: <AdminContestTypesListPage />,
-            handle: { titleKey: 'pageTitles.adminContestTypes' },
-          },
-          {
-            path: 'contests/types/new',
-            element: <AdminContestTypeFormPage />,
-            handle: { titleKey: 'pageTitles.adminContestTypeCreate' },
-          },
-          {
-            path: 'contests/types/:id',
-            element: <AdminContestTypeFormPage />,
-            handle: { titleKey: 'pageTitles.adminContestTypeEdit' },
-          },
-          {
-            path: 'contests/filters',
-            element: <AdminContestFiltersListPage />,
-            handle: { titleKey: 'pageTitles.adminContestFilters' },
-          },
-          {
-            path: 'contests/filters/new',
-            element: <AdminContestFilterFormPage />,
-            handle: { titleKey: 'pageTitles.adminContestFilterCreate' },
-          },
-          {
-            path: 'contests/filters/:id',
-            element: <AdminContestFilterFormPage />,
-            handle: { titleKey: 'pageTitles.adminContestFilterEdit' },
-          },
-          {
-            path: 'contests/:id',
-            element: <AdminContestFormPage />,
-            handle: { titleKey: 'pageTitles.adminContestEdit' },
-          },
-          {
-            path: 'users',
-            element: <AdminUsersListPage />,
-            handle: { titleKey: 'pageTitles.adminUsers' },
-          },
-          {
-            path: 'users/new',
-            element: <AdminUserFormPage />,
-            handle: { titleKey: 'pageTitles.adminUserCreate' },
-          },
-          {
-            path: 'users/teams',
-            element: <AdminTeamsListPage />,
-            handle: { titleKey: 'pageTitles.adminTeams' },
-          },
-          {
-            path: 'users/teams/new',
-            element: <AdminTeamFormPage />,
-            handle: { titleKey: 'pageTitles.adminTeamCreate' },
-          },
-          {
-            path: 'users/teams/:id',
-            element: <AdminTeamFormPage />,
-            handle: { titleKey: 'pageTitles.adminTeamEdit' },
-          },
-          {
-            path: 'users/:id',
-            element: <AdminUserFormPage />,
-            handle: { titleKey: 'pageTitles.adminUserEdit' },
+            element: (
+              <SuperuserGuard>
+                <SuspenseOutlet />
+              </SuperuserGuard>
+            ),
+            children: [
+              {
+                path: 'problems',
+                element: <AdminProblemsListPage />,
+                handle: { titleKey: 'pageTitles.adminProblems' },
+              },
+              {
+                path: 'problems/new',
+                element: <AdminProblemFormPage />,
+                handle: { titleKey: 'pageTitles.adminProblemCreate' },
+              },
+              {
+                path: 'problems/attempts',
+                element: <AdminProblemAttemptsListPage />,
+                handle: { titleKey: 'pageTitles.adminProblemAttempts' },
+              },
+              {
+                path: 'problems/attempts/new',
+                element: <AdminProblemAttemptFormPage />,
+                handle: { titleKey: 'pageTitles.adminProblemAttemptCreate' },
+              },
+              {
+                path: 'problems/attempts/:id',
+                element: <AdminProblemAttemptFormPage />,
+                handle: { titleKey: 'pageTitles.adminProblemAttemptEdit' },
+              },
+              {
+                path: 'problems/chapters',
+                element: <AdminProblemChaptersListPage />,
+                handle: { titleKey: 'pageTitles.adminProblemChapters' },
+              },
+              {
+                path: 'problems/chapters/new',
+                element: <AdminProblemChapterFormPage />,
+                handle: { titleKey: 'pageTitles.adminProblemChapterCreate' },
+              },
+              {
+                path: 'problems/chapters/:id',
+                element: <AdminProblemChapterFormPage />,
+                handle: { titleKey: 'pageTitles.adminProblemChapterEdit' },
+              },
+              {
+                path: 'problems/tags',
+                element: <AdminProblemTagsListPage />,
+                handle: { titleKey: 'pageTitles.adminProblemTags' },
+              },
+              {
+                path: 'problems/tags/new',
+                element: <AdminProblemTagFormPage />,
+                handle: { titleKey: 'pageTitles.adminProblemTagCreate' },
+              },
+              {
+                path: 'problems/tags/:id',
+                element: <AdminProblemTagFormPage />,
+                handle: { titleKey: 'pageTitles.adminProblemTagEdit' },
+              },
+              {
+                path: 'problems/:id',
+                element: <AdminProblemFormPage />,
+                handle: { titleKey: 'pageTitles.adminProblemEdit' },
+              },
+              {
+                path: 'contests',
+                element: <AdminContestsListPage />,
+                handle: { titleKey: 'pageTitles.adminContests' },
+              },
+              {
+                path: 'contests/new',
+                element: <AdminContestFormPage />,
+                handle: { titleKey: 'pageTitles.adminContestCreate' },
+              },
+              {
+                path: 'contests/questions',
+                element: <AdminContestQuestionsListPage />,
+                handle: { titleKey: 'pageTitles.adminContestQuestions' },
+              },
+              {
+                path: 'contests/questions/new',
+                element: <AdminContestQuestionFormPage />,
+                handle: { titleKey: 'pageTitles.adminContestQuestionCreate' },
+              },
+              {
+                path: 'contests/questions/:id',
+                element: <AdminContestQuestionFormPage />,
+                handle: { titleKey: 'pageTitles.adminContestQuestionEdit' },
+              },
+              {
+                path: 'contests/types',
+                element: <AdminContestTypesListPage />,
+                handle: { titleKey: 'pageTitles.adminContestTypes' },
+              },
+              {
+                path: 'contests/types/new',
+                element: <AdminContestTypeFormPage />,
+                handle: { titleKey: 'pageTitles.adminContestTypeCreate' },
+              },
+              {
+                path: 'contests/types/:id',
+                element: <AdminContestTypeFormPage />,
+                handle: { titleKey: 'pageTitles.adminContestTypeEdit' },
+              },
+              {
+                path: 'contests/filters',
+                element: <AdminContestFiltersListPage />,
+                handle: { titleKey: 'pageTitles.adminContestFilters' },
+              },
+              {
+                path: 'contests/filters/new',
+                element: <AdminContestFilterFormPage />,
+                handle: { titleKey: 'pageTitles.adminContestFilterCreate' },
+              },
+              {
+                path: 'contests/filters/:id',
+                element: <AdminContestFilterFormPage />,
+                handle: { titleKey: 'pageTitles.adminContestFilterEdit' },
+              },
+              {
+                path: 'contests/:id',
+                element: <AdminContestFormPage />,
+                handle: { titleKey: 'pageTitles.adminContestEdit' },
+              },
+              {
+                path: 'users',
+                element: <AdminUsersListPage />,
+                handle: { titleKey: 'pageTitles.adminUsers' },
+              },
+              {
+                path: 'users/new',
+                element: <AdminUserFormPage />,
+                handle: { titleKey: 'pageTitles.adminUserCreate' },
+              },
+              {
+                path: 'users/teams',
+                element: <AdminTeamsListPage />,
+                handle: { titleKey: 'pageTitles.adminTeams' },
+              },
+              {
+                path: 'users/teams/new',
+                element: <AdminTeamFormPage />,
+                handle: { titleKey: 'pageTitles.adminTeamCreate' },
+              },
+              {
+                path: 'users/teams/:id',
+                element: <AdminTeamFormPage />,
+                handle: { titleKey: 'pageTitles.adminTeamEdit' },
+              },
+              {
+                path: 'users/:id',
+                element: <AdminUserFormPage />,
+                handle: { titleKey: 'pageTitles.adminUserEdit' },
+              },
+            ],
           },
         ],
       },
