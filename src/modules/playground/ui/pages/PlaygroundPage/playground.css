@@ -1,0 +1,468 @@
+.playground-page {
+  --playground-mono: 'JetBrains Mono', Consolas, monospace;
+}
+.playground-page .playground-title {
+  font-family: var(--kep-display-font);
+  font-weight: 500;
+  font-size: clamp(30px, 3vw, 42px);
+  line-height: 1.25;
+  letter-spacing: -0.04em;
+}
+.playground-heading-copy {
+  font-size: 14px !important;
+  line-height: 1.8 !important;
+  margin-top: 6px !important;
+}
+.playground-workspace {
+  position: relative;
+  isolation: isolate;
+  height: auto !important;
+  min-height: 0;
+  border: 1px solid var(--kep-line) !important;
+  border-radius: 14px !important;
+  overflow: hidden;
+  box-shadow: 0 24px 80px #00000024 !important;
+  transition:
+    border-color 0.25s,
+    box-shadow 0.3s !important;
+}
+.playground-workspace::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  z-index: 4;
+  border-radius: inherit;
+  padding: 1px;
+  pointer-events: none;
+  background: linear-gradient(
+    105deg,
+    transparent 15%,
+    var(--kep-logo-ice),
+    var(--kep-logo-sand),
+    transparent 85%
+  );
+  background-size: 220% 100%;
+  mask:
+    linear-gradient(#fff 0 0) content-box,
+    linear-gradient(#fff 0 0);
+  mask-composite: exclude;
+  opacity: 0;
+  transition: opacity 250ms ease;
+}
+.playground-workspace:is(
+    [data-busy='true'],
+    :has([data-playing='true']),
+    :has([data-typing='true'])
+  )::after {
+  opacity: 0.8;
+  animation: playground-frame 3s linear infinite;
+}
+@keyframes playground-frame {
+  from {
+    background-position: 220% 0;
+  }
+  to {
+    background-position: 0 0;
+  }
+}
+.playground-workspace:focus-within {
+  border-color: color-mix(in srgb, var(--kep-logo-ice) 60%, var(--kep-line)) !important;
+  box-shadow:
+    0 24px 80px #00000024,
+    0 0 0 3px color-mix(in srgb, var(--kep-logo-ice) 7%, transparent) !important;
+}
+.playground-controls {
+  gap: 12px !important;
+  flex-wrap: wrap;
+  padding: 18px 20px !important;
+}
+.playground-controls .MuiButton-root {
+  font-size: 13px;
+}
+.playground-controls .MuiInputBase-root {
+  font-size: 13px;
+}
+.playground-run {
+  min-width: 140px !important;
+}
+.playground-editor-pane {
+  min-width: 0;
+  border-right: 1px solid var(--kep-line);
+  position: relative;
+}
+.playground-filebar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 14px;
+  padding: 11px 18px;
+  border-bottom: 1px solid var(--kep-line);
+  background: color-mix(in srgb, var(--kep-text) 2%, transparent);
+}
+.playground-file-label {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  font: 12px var(--playground-mono);
+  color: var(--kep-text);
+}
+.playground-file-label small {
+  margin-left: 5px;
+  padding-left: 12px;
+  border-left: 1px solid var(--kep-line);
+  font: 11px var(--kep-reading-font);
+  color: var(--kep-muted);
+}
+.playground-file-dot,
+.playground-saved-dot {
+  display: inline-block;
+  width: 5px;
+  height: 5px;
+  border-radius: 50%;
+  background: var(--kep-logo-ice);
+  box-shadow: 0 0 10px color-mix(in srgb, var(--kep-logo-ice) 30%, transparent);
+}
+.playground-file-dot {
+  width: 7px;
+  height: 7px;
+}
+.playground-editor-pane[data-typing='true'] .playground-file-dot {
+  background: var(--kep-logo-sand);
+  box-shadow: 0 0 12px var(--kep-logo-ice);
+}
+.playground-replay {
+  font-size: 11px !important;
+  white-space: nowrap;
+}
+.playground-editor-surface {
+  position: relative;
+  isolation: isolate;
+}
+.playground-editor-surface[data-playing='true'] .monaco-editor .view-lines {
+  opacity: 0;
+}
+.playground-code-playback {
+  position: absolute;
+  inset: 0;
+  z-index: 2;
+  overflow: hidden;
+  margin: 0;
+  padding: 22px 20px 22px 55px;
+  pointer-events: none;
+  white-space: pre;
+  color: var(--kep-text);
+  font: 400 14px/27px var(--playground-mono);
+  font-variant-ligatures: none;
+  letter-spacing: 0;
+  tab-size: 4;
+}
+.playback-caret {
+  display: inline-block;
+  width: 2px;
+  height: 1.1em;
+  vertical-align: -0.17em;
+  background: var(--kep-logo-ice);
+  box-shadow: 0 0 10px var(--kep-logo-ice);
+  animation: playback-caret 700ms steps(2, start) infinite;
+}
+.playback-comment {
+  color: #8da1ac;
+}
+.playback-type {
+  color: #c8c2ea;
+}
+.playback-keyword {
+  color: #a2d5e5;
+}
+.playback-string {
+  color: #e2d3a2;
+}
+.playback-number {
+  color: #d7b694;
+}
+.playback-function {
+  color: #a8d4c0;
+}
+.playground-editor-pane[data-dark='false'] .playback-comment {
+  color: #667c85;
+}
+.playground-editor-pane[data-dark='false'] .playback-type {
+  color: #73599a;
+}
+.playground-editor-pane[data-dark='false'] .playback-keyword {
+  color: #246b8c;
+}
+.playground-editor-pane[data-dark='false'] .playback-string {
+  color: #8d6831;
+}
+.playground-editor-pane[data-dark='false'] .playback-number {
+  color: #8b613b;
+}
+.playground-editor-pane[data-dark='false'] .playback-function {
+  color: #27735a;
+}
+.playground-editor-footer {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 10px;
+  padding: 11px 17px;
+  border-top: 1px solid var(--kep-line);
+  font: 10px/1.7 var(--playground-mono);
+  color: var(--kep-muted);
+}
+.playground-editor-footer > span:first-child {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+.playground-editor-metrics {
+  display: flex;
+  align-items: center;
+  gap: 17px;
+  margin-left: auto;
+}
+.playground-editor-metrics .MuiTypography-root {
+  font: inherit;
+}
+.playground-console {
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
+  background: color-mix(in srgb, var(--kep-bg) 96%, var(--kep-logo-ice));
+}
+.playground-input-panel {
+  padding: 21px 24px 15px;
+  border-bottom: 1px solid var(--kep-line);
+  transition: background 0.25s;
+}
+.playground-input-panel:focus-within {
+  background: color-mix(in srgb, var(--kep-logo-ice) 3%, transparent);
+}
+.playground-stream-heading {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  min-height: 24px;
+  font: 500 13px/1.6 var(--kep-reading-font);
+  color: var(--kep-text);
+}
+.playground-stream-heading > span > span {
+  color: var(--kep-logo-ice);
+  margin-right: 6px;
+}
+.playground-stream-heading small {
+  font: 11px var(--playground-mono);
+  color: var(--kep-muted);
+}
+.playground-input-panel .MuiFormControl-root {
+  margin-top: 10px;
+}
+.playground-input-panel .MuiInputBase-root {
+  padding: 10px 0;
+  background: transparent;
+}
+.playground-input-panel .MuiInputBase-input {
+  font: 400 14px/1.85 var(--playground-mono);
+}
+.playground-input-panel fieldset {
+  border-color: transparent !important;
+}
+.playground-output-panel {
+  min-height: 260px;
+  display: flex;
+  flex: 1;
+  flex-direction: column;
+  gap: 13px;
+  padding: 20px 24px;
+}
+.playground-output-panel .MuiChip-root {
+  height: 25px;
+  font-size: 11px;
+}
+.playground-terminal-empty {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  min-height: 160px;
+  padding-block: 25px;
+}
+.playground-terminal-symbol {
+  position: relative;
+  flex: none;
+  display: grid;
+  place-items: center;
+  width: 48px;
+  height: 48px;
+  border: 1px solid var(--kep-line);
+  border-radius: 12px;
+  color: var(--kep-logo-ice);
+  background: linear-gradient(
+    135deg,
+    color-mix(in srgb, var(--kep-logo-ice) 7%, transparent),
+    transparent
+  );
+  font: 17px var(--playground-mono);
+}
+.playground-terminal-empty strong {
+  display: block;
+  font-size: 14px;
+  font-weight: 500;
+  line-height: 1.6;
+}
+.playground-terminal-empty p {
+  max-width: 30ch;
+  margin-top: 6px;
+  font-size: 12px;
+  color: var(--kep-muted);
+  line-height: 1.8;
+}
+.playground-execution-signal {
+  position: absolute;
+  bottom: 8px;
+  display: flex;
+  gap: 4px;
+  height: 7px;
+}
+.playground-execution-signal i {
+  width: 3px;
+  height: 7px;
+  border-radius: 2px;
+  background: var(--kep-logo-ice);
+  animation: playground-execute 900ms ease-in-out infinite alternate;
+}
+.playground-execution-signal i:nth-child(2) {
+  animation-delay: 150ms;
+}
+.playground-execution-signal i:nth-child(3) {
+  animation-delay: 300ms;
+}
+.playground-result,
+.playground-diagnostic {
+  margin: 0;
+  white-space: pre-wrap;
+  overflow-wrap: anywhere;
+  max-height: 300px;
+  overflow: auto;
+  font: 400 14px/1.9 var(--playground-mono);
+}
+.playground-result {
+  min-height: 140px;
+  animation: playground-result 0.28s ease both;
+}
+.playground-diagnostic {
+  color: var(--mui-palette-error-main);
+  font-size: 12px;
+}
+.playground-result-footer {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  margin-top: auto;
+  border-top: 1px solid var(--kep-line);
+  padding-top: 13px;
+}
+.playground-result-footer .MuiTypography-root {
+  font: 10px var(--playground-mono);
+}
+.playground-result-footer .MuiButton-root {
+  font-size: 11px;
+}
+.playground-stale {
+  padding: 9px 12px;
+  border-left: 2px solid var(--kep-logo-sand);
+  background: color-mix(in srgb, var(--kep-logo-sand) 5%, transparent);
+  font-size: 12px !important;
+  line-height: 1.75 !important;
+  color: var(--kep-muted);
+}
+.playground-shortcut {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  margin-left: auto;
+  font: 10px var(--playground-mono);
+  color: var(--kep-muted);
+}
+.playground-shortcut kbd {
+  padding: 3px 5px;
+  border: 1px solid var(--kep-line);
+  border-radius: 4px;
+  font: inherit;
+}
+@keyframes playback-caret {
+  to {
+    opacity: 0;
+  }
+}
+@keyframes playground-execute {
+  from {
+    transform: scaleY(0.5);
+    opacity: 0.4;
+  }
+  to {
+    transform: scaleY(1.3);
+    opacity: 1;
+  }
+}
+@keyframes playground-result {
+  from {
+    opacity: 0;
+    transform: translateY(5px);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+@media (max-width: 1199px) {
+  .playground-editor-pane {
+    border-right: 0;
+    border-bottom: 1px solid var(--kep-line);
+  }
+}
+@media (max-width: 600px) {
+  .playground-controls {
+    padding: 14px !important;
+    gap: 10px !important;
+  }
+  .playground-shortcut {
+    display: none;
+  }
+  .playground-filebar {
+    padding: 10px 13px;
+    gap: 8px;
+  }
+  .playground-file-label small {
+    display: none;
+  }
+  .playground-file-label {
+    font-size: 11px;
+    gap: 7px;
+  }
+  .playground-editor-footer {
+    padding-inline: 12px;
+    font-size: 9px;
+  }
+  .playground-editor-metrics {
+    gap: 12px;
+  }
+  .playground-input-panel,
+  .playground-output-panel {
+    padding: 17px;
+  }
+  .playground-title {
+    font-size: 30px !important;
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  .playground-page *,
+  .playground-page *:before,
+  .playground-page *:after {
+    animation: none !important;
+    transition: none !important;
+    scroll-behavior: auto !important;
+  }
+}

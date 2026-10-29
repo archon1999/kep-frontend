@@ -35,6 +35,22 @@
       "busy": "Runner band yoki so‘rov chegarasiga yetildi. Birozdan so‘ng qayta urinib ko‘ring.",
       "network": "Runner bilan bog‘lanib bo‘lmadi. Ulanishni tekshirib, qayta urinib ko‘ring.",
       "timeout": "Navbat uzoq davom etdi. Kodni qayta ishga tushiring."
-    }
+    },
+    "preview": "Yozilishini ko‘rish",
+    "stopPreview": "To‘xtatish",
+    "previewing": "Namuna yozilyapti…",
+    "editing": "Tahrirlanmoqda",
+    "saved": "Qoralama shu brauzerda",
+    "cursor": "{{line}}:{{column}}",
+    "customDraft": "Qoralamangiz",
+    "inputPlaceholder": "Kirish ma’lumotlarini yozing…",
+    "emptyTitle": "Natija shu yerda ko‘rinadi.",
+    "waitingTitle": "Natijani kutyapmiz.",
+    "waiting": "Kod serverdagi xavfsiz muhitda bajariladi.",
+    "noOutput": "(chiqish yo‘q)",
+    "stale": "Kod yoki kirish o‘zgardi. Bu — oldingi ishga tushirish natijasi.",
+    "copyOutput": "Natijani nusxalash",
+    "copied": "Nusxalandi",
+    "copyFailed": "Nusxalab bo‘lmadi"
   }
 }

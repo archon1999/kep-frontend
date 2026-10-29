@@ -11,6 +11,13 @@ export const normalizeFontFamily = (value: unknown): FontFamily =>
 
 export const fontFaces = [
   {
+    fontFamily: 'JetBrains Mono',
+    src: 'url("/assets/theme/jetbrains-mono.woff2") format("woff2")',
+    fontWeight: 400,
+    fontStyle: 'normal',
+    fontDisplay: 'swap',
+  },
+  {
     fontFamily: 'Plus Jakarta Sans',
     src: 'url("/assets/theme/plus-jakarta-sans-variable.woff2") format("woff2")',
     fontWeight: '200 800',

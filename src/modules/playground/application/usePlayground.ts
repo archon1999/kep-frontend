@@ -28,6 +28,7 @@ export const usePlayground = () => {
   const [draft, setDraft] = useState(loadDraft);
   const [result, setResult] = useState<RunResult | null>(null);
   const [busy, setBusy] = useState(false);
+  const [executedDraft, setExecutedDraft] = useState<{ code: string; input: string } | null>(null);
   const [error, setError] = useState<'busy' | 'network' | 'timeout' | null>(null);
   const controller = useRef<AbortController | null>(null);
   const byteLength = new TextEncoder().encode(draft.code).length;
@@ -54,6 +55,7 @@ export const usePlayground = () => {
     setBusy(true);
     setError(null);
     setResult(null);
+    setExecutedDraft({ ...draft });
     const deadline = Date.now() + 40000;
     try {
       let current = await startRun(draft, request.signal);
@@ -83,6 +85,11 @@ export const usePlayground = () => {
     result,
     busy,
     error,
+    resultIsStale: Boolean(
+      result &&
+      executedDraft &&
+      (draft.code !== executedDraft.code || draft.input !== executedDraft.input),
+    ),
     byteLength,
     valid,
     run,
@@ -93,6 +100,7 @@ export const usePlayground = () => {
       if (example) {
         setDraft({ code: example.code, input: example.input });
         setResult(null);
+        setExecutedDraft(null);
         setError(null);
       }
     },

@@ -35,6 +35,22 @@
       "busy": "The runner is busy or the rate limit was reached. Please try again shortly.",
       "network": "Could not reach the runner. Check your connection and try again.",
       "timeout": "The queue took too long. Please run your code again."
-    }
+    },
+    "preview": "Replay code",
+    "stopPreview": "Stop preview",
+    "previewing": "Example typing…",
+    "editing": "Editing",
+    "saved": "Draft saved in this browser",
+    "cursor": "Ln {{line}}, Col {{column}}",
+    "customDraft": "Your draft",
+    "inputPlaceholder": "Enter standard input…",
+    "emptyTitle": "Your result appears here.",
+    "waitingTitle": "Waiting for the result.",
+    "waiting": "Your code runs in the server sandbox.",
+    "noOutput": "(no output)",
+    "stale": "Code or input changed. This output belongs to the previous run.",
+    "copyOutput": "Copy output",
+    "copied": "Copied",
+    "copyFailed": "Could not copy"
   }
 }
