@@ -2,6 +2,7 @@ import type { Dispatch, SetStateAction } from 'react';
 import { useTranslation } from 'react-i18next';
 import { Link } from 'react-router';
 import {
+  Box,
   Button,
   Checkbox,
   Table,
@@ -30,16 +31,41 @@ export default function ResourceTable({
   onOrderingChange: (value: string) => void;
 }) {
   const { t } = useTranslation();
+  const widths = data.columns.map((column) => {
+    const kind = data.rows[0]?.cells[column.name]?.kind;
+    if (column.name === 'id') return 96;
+    if (kind === 'boolean') return 96;
+    if (kind === 'number') return 112;
+    if (kind === 'relation') return 176;
+    if (kind === 'date' || kind === 'datetime') return 192;
+    return /title|name|body|description/.test(column.name) ? 240 : 216;
+  });
+  const minimumWidth =
+    widths.reduce((sum, width) => sum + width, 128) + (data.actions.length ? 48 : 0);
   return (
-    <TableContainer>
+    <TableContainer
+      role="region"
+      tabIndex={0}
+      aria-label={resourceTitle(t, data.resource)}
+      sx={{ maxWidth: '100%', overflowX: 'auto', overscrollBehaviorX: 'contain' }}
+    >
       <Table
         size="small"
         aria-label={resourceTitle(t, data.resource)}
         sx={{
+          minWidth: minimumWidth,
+          tableLayout: 'fixed',
           '& td, & th': { px: 2, py: 1.5, borderColor: 'divider' },
           '& tbody tr:hover': { bgcolor: 'action.hover' },
         }}
       >
+        <colgroup>
+          {data.actions.length > 0 && <Box component="col" sx={{ width: 48 }} />}
+          {data.columns.map((column, index) => (
+            <Box component="col" key={column.name} sx={{ width: widths[index] }} />
+          ))}
+          <Box component="col" sx={{ width: 128 }} />
+        </colgroup>
         <TableHead>
           <TableRow>
             {data.actions.length > 0 && (
@@ -103,7 +129,7 @@ export default function ResourceTable({
                 </TableCell>
               )}
               {data.columns.map((column, index) => (
-                <TableCell key={column.name} sx={{ minWidth: 80, maxWidth: 340 }}>
+                <TableCell key={column.name}>
                   {index === 0 &&
                   !['secret', 'relation', 'link'].includes(row.cells[column.name]?.kind) ? (
                     <Button
