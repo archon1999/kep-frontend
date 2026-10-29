@@ -1,17 +1,17 @@
 {
   "playground": {
     "title": "Kod maydoni",
-    "subtitle": "KEPLangda yozing va ishga tushiring. Hisob talab qilinmaydi.",
+    "subtitle": "Tilni tanlang va kodni ishga tushiring. Akkaunt kerak emas.",
     "docs": "Til qo‘llanmasi",
     "examples": "Misol",
     "download": "Kodni yuklash",
     "run": "Ishga tushirish",
     "running": "Bajarilmoqda…",
-    "editor": "KEPLang manba kodi",
+    "editor": "Manba kodi",
     "input": "Kirish ma’lumotlari",
     "output": "Natija",
     "empty": "Natijani ko‘rish uchun kodni ishga tushiring.",
-    "limits": "KEPLang 0.2.2 · 1.5 s CPU · 128 MB jarayon / 64 MB VM xotira · 64 KB natija · daqiqasiga 6 marta · Natija 5 daqiqada o‘chadi. Qoralama shu brauzerda saqlanadi.",
+    "limits": "30 KB kod · 64 KB kirish/natija · daqiqasiga 6 marta · Natija 5 daqiqada o‘chadi. Har bir til qoralamasi brauzerda alohida saqlanadi.",
     "example": {
       "sum": "A + B",
       "gcd": "EKUB",
@@ -34,7 +34,9 @@
     "errors": {
       "busy": "Runner band yoki so‘rov chegarasiga yetildi. Birozdan so‘ng qayta urinib ko‘ring.",
       "network": "Runner bilan bog‘lanib bo‘lmadi. Ulanishni tekshirib, qayta urinib ko‘ring.",
-      "timeout": "Navbat uzoq davom etdi. Kodni qayta ishga tushiring."
+      "timeout": "Navbat uzoq davom etdi. Kodni qayta ishga tushiring.",
+      "expired": "Natija muddati tugadi. Kodni qayta ishga tushiring.",
+      "invalid": "Kod, kirish va tanlangan tilni tekshiring."
     },
     "preview": "Yozilishini ko‘rish",
     "stopPreview": "To‘xtatish",
@@ -51,6 +53,19 @@
     "stale": "Kod yoki kirish o‘zgardi. Bu — oldingi ishga tushirish natijasi.",
     "copyOutput": "Natijani nusxalash",
     "copied": "Nusxalandi",
-    "copyFailed": "Nusxalab bo‘lmadi"
+    "copyFailed": "Nusxalab bo‘lmadi",
+    "diagnostics": "Xatoliklar",
+    "noDiagnostics": "Kompilyatsiya va bajarish xatolari shu yerda ko‘rinadi.",
+    "privateRun": "Akkauntsiz · UTF-8",
+    "runShortcut": "Ishga tushirish (Ctrl+Enter / Ctrl+')",
+    "controls": "Kod maydoni boshqaruvi",
+    "splitPanels": "Yonma-yon panellar",
+    "stackPanels": "Ustma-ust panellar",
+    "languagesFailed": "Tillar ro‘yxatini yuklab bo‘lmadi. Qoralamangiz saqlangan.",
+    "validation": "Kod 1–30 000 UTF-8 bayt, kirish esa 65 536 baytgacha bo‘lishi kerak.",
+    "fileTooLarge": "Kod fayli 30 000 baytdan oshmasligi kerak.",
+    "fileFailed": "Kod faylini o‘qib bo‘lmadi.",
+    "storageUnavailable": "Brauzerda saqlab bo‘lmadi",
+    "programmingLanguage": "Dasturlash tili"
   }
 }

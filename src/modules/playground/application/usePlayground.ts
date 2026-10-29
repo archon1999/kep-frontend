@@ -1,116 +1,188 @@
 import { useEffect, useRef, useState } from 'react';
-import type { RunResult } from '../domain';
+import { playgroundRepository } from '../data-access';
+import type { Draft, RunRequest, RunResult, RunnerLanguage } from '../domain';
+import { decodeDrafts } from '../domain/utils/drafts';
 import { examples } from './examples';
-import { startRun } from './mutations';
-import { getRunResult } from './queries';
+import { useRunnerLanguages } from './queries';
+import { executeRunJob } from './run-job';
 
-const storageKey = 'kep:playground:kep:v1';
-const loadDraft = (): { code: string; input: string } => {
+const storageKey = 'kep:playground:drafts:v2';
+const legacyKey = 'kep:playground:kep:v1';
+const loadDrafts = () => {
   try {
-    const saved: unknown = JSON.parse(localStorage.getItem(storageKey) ?? 'null');
-    if (
-      saved &&
-      typeof saved === 'object' &&
-      'code' in saved &&
-      'input' in saved &&
-      typeof saved.code === 'string' &&
-      typeof saved.input === 'string'
-    ) {
-      return { code: saved.code.slice(0, 30000), input: saved.input.slice(0, 65536) };
-    }
+    return decodeDrafts(localStorage.getItem(storageKey), localStorage.getItem(legacyKey));
   } catch {
-    /* Storage can be unavailable in private browsing. */
+    return {};
   }
-  return { ...examples[0] };
+};
+const fallback: RunnerLanguage = {
+  id: 'kep',
+  label: 'KEPLang 0.2.2',
+  extension: 'kep',
+  editorLanguage: 'keplang',
+  template: examples[0].code,
+  timeLimit: 1500,
+  memoryLimit: 128,
 };
 
 export const usePlayground = () => {
-  const [draft, setDraft] = useState(loadDraft);
+  const catalogue = useRunnerLanguages();
+  const languages = catalogue.data ?? [fallback];
+  const [selectedLang, selectLang] = useState('kep');
+  const [drafts, setDrafts] = useState<Record<string, Draft>>(loadDrafts);
+  const language = languages.find((item) => item.id === selectedLang) ?? fallback;
+  const fileName = language.id === 'java' ? 'Main.java' : `main.${language.extension}`;
+  const draft = drafts[selectedLang] ?? { code: language.template, input: '3 5\n' };
   const [result, setResult] = useState<RunResult | null>(null);
   const [busy, setBusy] = useState(false);
-  const [executedDraft, setExecutedDraft] = useState<{ code: string; input: string } | null>(null);
-  const [error, setError] = useState<'busy' | 'network' | 'timeout' | null>(null);
+  const [draftStored, setDraftStored] = useState(true);
+  const [executed, setExecuted] = useState<RunRequest | null>(null);
+  const [error, setError] = useState<'busy' | 'network' | 'timeout' | 'expired' | 'invalid' | null>(
+    null,
+  );
   const controller = useRef<AbortController | null>(null);
+  const mounted = useRef(true);
   const byteLength = new TextEncoder().encode(draft.code).length;
   const inputBytes = new TextEncoder().encode(draft.input).length;
   const valid = byteLength > 0 && byteLength <= 30000 && inputBytes <= 65536;
-
+  const languageReady = Boolean(catalogue.data?.some((item) => item.id === selectedLang));
   useEffect(() => {
-    const timer = window.setTimeout(() => {
+    const timer = setTimeout(() => {
       try {
-        localStorage.setItem(storageKey, JSON.stringify(draft));
+        localStorage.setItem(storageKey, JSON.stringify(drafts));
+        setDraftStored(true);
       } catch {
-        /* Optional draft. */
+        setDraftStored(false);
       }
     }, 400);
-    return () => window.clearTimeout(timer);
-  }, [draft]);
-  useEffect(() => () => controller.current?.abort(), []);
-
+    return () => clearTimeout(timer);
+  }, [drafts]);
+  useEffect(() => {
+    mounted.current = true;
+    return () => {
+      mounted.current = false;
+      controller.current?.abort();
+    };
+  }, []);
+  const updateDraft = (value: Draft) =>
+    setDrafts((current) => ({ ...current, [selectedLang]: value }));
+  const clearResult = () => {
+    setResult(null);
+    setExecuted(null);
+    setError(null);
+  };
   const run = async () => {
-    if (busy || !valid) return;
-    controller.current?.abort();
+    if (controller.current || !valid || !languageReady) return;
     const request = new AbortController();
     controller.current = request;
+    const snapshot = { ...draft, lang: selectedLang };
     setBusy(true);
     setError(null);
     setResult(null);
-    setExecutedDraft({ ...draft });
-    const deadline = Date.now() + 40000;
+    setExecuted(snapshot);
+    const timer = setTimeout(
+      () => request.abort(new DOMException('Timeout', 'TimeoutError')),
+      100000,
+    );
     try {
-      let current = await startRun(draft, request.signal);
-      setResult(current);
-      while (current.status === 'queued' || current.status === 'running') {
-        if (Date.now() > deadline) {
-          setError('timeout');
-          break;
-        }
-        await new Promise<void>((resolve) => window.setTimeout(resolve, 800));
-        if (request.signal.aborted) return;
-        current = await getRunResult(current.id, request.signal);
-        setResult(current);
-      }
+      await executeRunJob(playgroundRepository, snapshot, request.signal, setResult);
     } catch (cause) {
-      if (!request.signal.aborted) {
+      if (request.signal.aborted) {
+        if (request.signal.reason?.name === 'TimeoutError') setError('timeout');
+      } else {
         const status = cause && typeof cause === 'object' && 'status' in cause ? cause.status : 0;
-        setError(status === 429 ? 'busy' : 'network');
+        setError(
+          status === 429
+            ? 'busy'
+            : status === 404
+              ? 'expired'
+              : status === 400
+                ? 'invalid'
+                : 'network',
+        );
       }
     } finally {
-      if (!request.signal.aborted) setBusy(false);
+      clearTimeout(timer);
+      if (controller.current === request) {
+        controller.current = null;
+        if (mounted.current) setBusy(false);
+      }
     }
   };
-
+  const changeLanguage = (id: string) => {
+    if (controller.current || !languages.some((item) => item.id === id)) return;
+    setDrafts((current) => ({ ...current, [selectedLang]: { ...draft } }));
+    selectLang(id);
+    clearResult();
+  };
   return {
     draft,
+    language,
+    fileName,
+    languages,
+    selectedLang,
     result,
     busy,
+    draftStored,
     error,
+    byteLength,
+    inputBytes,
+    valid,
+    languageReady,
+    languagesLoading: catalogue.isLoading,
+    catalogueError: Boolean(catalogue.error),
+    retryLanguages: () => void catalogue.mutate(),
     resultIsStale: Boolean(
       result &&
-      executedDraft &&
-      (draft.code !== executedDraft.code || draft.input !== executedDraft.input),
+      executed &&
+      (selectedLang !== executed.lang ||
+        draft.code !== executed.code ||
+        draft.input !== executed.input),
     ),
-    byteLength,
-    valid,
     run,
-    setCode: (code: string) => setDraft((value) => ({ ...value, code })),
-    setInput: (input: string) => setDraft((value) => ({ ...value, input })),
+    changeLanguage,
+    setCode: (code: string) =>
+      setDrafts((current) => ({
+        ...current,
+        [selectedLang]: { ...(current[selectedLang] ?? draft), code },
+      })),
+    setInput: (input: string) =>
+      setDrafts((current) => ({
+        ...current,
+        [selectedLang]: { ...(current[selectedLang] ?? draft), input },
+      })),
     selectExample: (id: string) => {
-      const example = examples.find((item) => item.id === id);
+      if (controller.current) return;
+      const example =
+        selectedLang === 'kep'
+          ? examples.find((item) => item.id === id)
+          : id === 'sum'
+            ? { code: language.template, input: '3 5\n' }
+            : undefined;
       if (example) {
-        setDraft({ code: example.code, input: example.input });
-        setResult(null);
-        setExecutedDraft(null);
-        setError(null);
+        updateDraft({ code: example.code, input: example.input });
+        clearResult();
       }
+    },
+    importCode: (id: string, code: string) => {
+      const target = languages.find((item) => item.id === id);
+      if (controller.current || !target) return false;
+      setDrafts((current) => ({
+        ...current,
+        [selectedLang]: { ...draft },
+        [id]: { code, input: current[id]?.input ?? draft.input },
+      }));
+      selectLang(id);
+      clearResult();
+      return true;
     },
     download: () => {
       const url = URL.createObjectURL(new Blob([draft.code], { type: 'text/plain;charset=utf-8' }));
       const anchor = document.createElement('a');
       anchor.href = url;
-      anchor.download = 'main.kep';
+      anchor.download = fileName;
       anchor.click();
-      window.setTimeout(() => URL.revokeObjectURL(url), 1000);
+      setTimeout(() => URL.revokeObjectURL(url), 1000);
     },
   };
 };

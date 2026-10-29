@@ -1,1 +1,4 @@
-export const playgroundKeys = { result: (id: string) => ['playground', 'run', id] as const };
+export const playgroundKeys = {
+  languages: ['playground', 'languages'] as const,
+  result: (id: string) => ['playground', 'run', id] as const,
+};

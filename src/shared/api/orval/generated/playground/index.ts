@@ -7,11 +7,20 @@
  */
 import { axiosMutator } from '../../../http/axiosMutator.ts';
 import type { BodyType } from '../../../http/axiosMutator.ts';
-import type { Run, RunResult } from './index.schemas.ts';
+import type { PublicLanguage, Run, RunResult } from './index.schemas.ts';
 
 type SecondParameter<T extends (...args: never) => unknown> = Parameters<T>[1];
 
 export const getSnippetsAPI = () => {
+  const apiPlaygroundLanguagesList = (
+    options?: SecondParameter<typeof axiosMutator<PublicLanguage[]>>,
+  ) => {
+    return axiosMutator<PublicLanguage[]>(
+      { url: `/api/playground/languages/`, method: 'GET' },
+      options,
+    );
+  };
+
   const apiPlaygroundRunsCreate = (
     run: BodyType<Run>,
     options?: SecondParameter<typeof axiosMutator<RunResult>>,
@@ -37,8 +46,11 @@ export const getSnippetsAPI = () => {
     );
   };
 
-  return { apiPlaygroundRunsCreate, apiPlaygroundRunsRead };
+  return { apiPlaygroundLanguagesList, apiPlaygroundRunsCreate, apiPlaygroundRunsRead };
 };
+export type ApiPlaygroundLanguagesListResult = NonNullable<
+  Awaited<ReturnType<ReturnType<typeof getSnippetsAPI>['apiPlaygroundLanguagesList']>>
+>;
 export type ApiPlaygroundRunsCreateResult = NonNullable<
   Awaited<ReturnType<ReturnType<typeof getSnippetsAPI>['apiPlaygroundRunsCreate']>>
 >;

@@ -2,6 +2,7 @@ import { useEffect, useId, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { Box, MenuItem, Select, Stack, Tab, Tabs, Typography } from '@mui/material';
 import type { SampleTestResult } from 'modules/problems/domain/entities/workspace.types';
+import { ConsoleTextArea } from 'shared/components/code-workspace/ConsoleTextArea';
 import ClipboardButton from 'shared/components/common/ClipboardButton';
 import AttemptVerdict from 'shared/components/problems/AttemptVerdict';
 import { WorkspacePane, WorkspaceToolbar } from 'shared/components/sections/common/Workspace';
@@ -121,16 +122,14 @@ const ProblemConsole = ({
       >
         {selected !== 'samples' ? (
           <>
-            <Box
-              component="textarea"
-              aria-label={labels[selected]}
+            <ConsoleTextArea
+              label={labels[selected]}
               value={values[selected]}
-              onChange={(event) => {
-                if (selected === 'input') onInputChange(event.target.value);
+              onChange={(value) => {
+                if (selected === 'input') onInputChange(value);
               }}
               readOnly={selected !== 'input'}
               disabled={isDisabled}
-              spellCheck={false}
               placeholder={
                 selected === 'output'
                   ? t('problems.workspace.outputPlaceholder')
@@ -138,26 +137,6 @@ const ProblemConsole = ({
                     ? t('problems.workspace.inputPlaceholder')
                     : undefined
               }
-              sx={{
-                display: 'block',
-                width: '100%',
-                height: '100%',
-                minHeight: 90,
-                boxSizing: 'border-box',
-                resize: 'none',
-                border: 0,
-                borderRadius: 0,
-                outline: 0,
-                p: 2.5,
-                pr: 6,
-                background: 'transparent',
-                color: 'text.primary',
-                fontFamily: 'Consolas, "Courier New", monospace',
-                fontSize: 14,
-                lineHeight: 1.7,
-                '&::placeholder': { color: 'text.disabled', opacity: 1 },
-                '&:focus-visible': { boxShadow: 'inset 0 0 0 1px var(--kep-logo-ice)' },
-              }}
             />
             <Box sx={{ position: 'absolute', top: 8, right: 8 }}>
               <ClipboardButton text={values[selected]} iconOnly />

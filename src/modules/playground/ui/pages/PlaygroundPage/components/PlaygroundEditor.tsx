@@ -1,14 +1,19 @@
 import { useEffect, useRef, useState } from 'react';
 import { useTranslation } from 'react-i18next';
-import Editor, { type OnMount } from '@monaco-editor/react';
+import { type OnMount } from '@monaco-editor/react';
 import { Box, Button, Typography, useMediaQuery } from '@mui/material';
+import type { RunnerLanguage } from 'modules/playground/domain';
 import IconifyIcon from 'shared/components/base/IconifyIcon';
+import { CodeEditor } from 'shared/components/code-workspace/CodeEditor';
 import { useMonacoTheme } from 'shared/hooks/useMonacoTheme';
 import { CodePlayback, useCodePlayback } from './CodePlayback';
 
 interface Props {
+  language: RunnerLanguage;
+  fileName: string;
   code: string;
   busy: boolean;
+  draftStored: boolean;
   byteLength: number;
   valid: boolean;
   sample: boolean;
@@ -18,8 +23,11 @@ interface Props {
 }
 
 export const PlaygroundEditor = ({
+  language,
+  fileName,
   code,
   busy,
+  draftStored,
   byteLength,
   valid,
   sample,
@@ -34,8 +42,6 @@ export const PlaygroundEditor = ({
   const [cursor, setCursor] = useState({ line: 1, column: 1 });
   const [typing, setTyping] = useState(false);
   const timer = useRef<number>(0);
-  const runRef = useRef(onRun);
-  runRef.current = onRun;
   const initialSample = useRef(sample);
   const initialCode = useRef(code);
   const disposeCursor = useRef<(() => void) | null>(null);
@@ -58,14 +64,16 @@ export const PlaygroundEditor = ({
     [],
   );
 
-  const mount: OnMount = (editor, monaco) => {
+  const mount: OnMount = (editor) => {
     disposeCursor.current?.();
     const subscription = editor.onDidChangeCursorPosition((event) => {
       setCursor({ line: event.position.lineNumber, column: event.position.column });
     });
-    disposeCursor.current = () => subscription.dispose();
-    editor.addCommand(monaco.KeyMod.CtrlCmd | monaco.KeyCode.Enter, () => runRef.current());
-    void document.fonts.ready.then(() => monaco.editor.remeasureFonts());
+    const focus = editor.onDidFocusEditorText(playback.stop);
+    disposeCursor.current = () => {
+      subscription.dispose();
+      focus.dispose();
+    };
     if (initialSample.current && code === initialCode.current && !document.hidden)
       playRef.current();
   };
@@ -80,18 +88,20 @@ export const PlaygroundEditor = ({
       <Box className="playground-filebar">
         <Box className="playground-file-label">
           <span className="playground-file-dot" aria-hidden="true" />
-          <span>main.kep</span>
-          <small>KEPLang</small>
+          <span>{fileName}</span>
+          <small>{language.label}</small>
         </Box>
-        <Button
-          size="small"
-          className="playground-replay"
-          disabled={busy || reduced || !sample}
-          onClick={playback.playing ? playback.stop : playback.play}
-          startIcon={<IconifyIcon icon={playback.playing ? 'mdi:stop' : 'mdi:play-outline'} />}
-        >
-          {t(playback.playing ? 'playground.stopPreview' : 'playground.preview')}
-        </Button>
+        {language.id === 'kep' && (
+          <Button
+            size="small"
+            className="playground-replay"
+            disabled={busy || reduced || !sample}
+            onClick={playback.playing ? playback.stop : playback.play}
+            startIcon={<IconifyIcon icon={playback.playing ? 'mdi:stop' : 'mdi:play-outline'} />}
+          >
+            {t(playback.playing ? 'playground.stopPreview' : 'playground.preview')}
+          </Button>
+        )}
       </Box>
       <Box
         className="playground-editor-surface"
@@ -101,11 +111,9 @@ export const PlaygroundEditor = ({
           if (event.key !== 'Tab') playback.stop();
         }}
       >
-        <Editor
-          height="460px"
-          language="keplang"
-          theme={editorTheme.theme}
-          beforeMount={editorTheme.beforeMount}
+        <CodeEditor
+          language={language.editorLanguage}
+          onRun={onRun}
           onMount={mount}
           value={code}
           onChange={(value) => {
@@ -116,27 +124,9 @@ export const PlaygroundEditor = ({
             onChange(value ?? '');
           }}
           options={{
-            minimap: { enabled: false },
-            fontFamily: '"JetBrains Mono", monospace',
-            fontSize: 14,
-            lineHeight: 27,
-            fontLigatures: false,
-            padding: { top: 22, bottom: 22 },
-            scrollBeyondLastLine: false,
-            automaticLayout: true,
-            tabSize: 4,
             ariaLabel: t('playground.editor'),
             readOnly: busy,
-            lineNumbersMinChars: 3,
-            renderLineHighlight: 'all',
             renderLineHighlightOnlyWhenFocus: true,
-            cursorSmoothCaretAnimation: reduced ? 'off' : 'on',
-            cursorBlinking: reduced ? 'solid' : 'smooth',
-            smoothScrolling: !reduced,
-            bracketPairColorization: { enabled: true },
-            guides: { indentation: true, bracketPairs: true },
-            overviewRulerLanes: 0,
-            scrollbar: { verticalScrollbarSize: 7, horizontalScrollbarSize: 7 },
           }}
         />
         {playback.playing && <CodePlayback prefix={playback.prefix} />}
@@ -149,7 +139,9 @@ export const PlaygroundEditor = ({
               ? 'playground.previewing'
               : typing
                 ? 'playground.editing'
-                : 'playground.saved',
+                : draftStored
+                  ? 'playground.saved'
+                  : 'playground.storageUnavailable',
           )}
         </span>
         <span className="playground-editor-metrics">
