@@ -35,6 +35,8 @@ export const registerKEPLang = (monaco: Monaco) => {
     types: ['son', 'matn', 'mantiq', 'lugat', 'toplam'],
     builtins: [
       'uqi',
+      'uqi_soz',
+      'uqi_satr',
       'al',
       'al_soz',
       'al_satr',

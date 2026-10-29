@@ -1,6 +1,11 @@
 export const examples = [
   { id: 'sum', code: 'son a = uqi();\nson b = uqi();\nchiqar(a + b);\n', input: '3 5\n' },
   {
+    id: 'io',
+    code: 'son n = uqi();\nmatn soz = uqi_soz();\nmatn qoldiq = uqi_satr();\nmatn satr = uqi_satr();\n\nchiqar(n, soz);\nchiqar("[" + qoldiq + "]");\nchiqar(satr);',
+    input: '3 salom qolgan matn\nXorazm shevasi\n',
+  },
+  {
     id: 'gcd',
     code: 'shundat ekub(son a, son b) -> son {\n    to b != 0 bolincha {\n        son r = a % b;\n        a = b;\n        b = r;\n    }\n    qaytar a;\n}\n\nson a = uqi();\nson b = uqi();\nchiqar(ekub(a, b));\n',
     input: '48 18\n',
@@ -12,7 +17,7 @@ export const examples = [
   },
   {
     id: 'map',
-    code: 'son n = uqi();\nlugat<matn, son> sanoq = lugat();\naylan i = 0 .. n {\n    matn soz = al_soz();\n    sanoq[soz] = qiymat(sanoq, soz, 0) + 1;\n}\nchiqar(qiymat(sanoq, "xorazm", 0));\nchiqar(uzunligi(sanoq));\n',
+    code: 'son n = uqi();\nlugat<matn, son> sanoq = lugat();\naylan i = 0 .. n {\n    matn soz = uqi_soz();\n    sanoq[soz] = qiymat(sanoq, soz, 0) + 1;\n}\nchiqar(qiymat(sanoq, "xorazm", 0));\nchiqar(uzunligi(sanoq));\n',
     input: '5\nxorazm kep xorazm salom xorazm\n',
   },
   {

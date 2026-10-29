@@ -14,6 +14,7 @@
     "limits": "30 KB source · 64 KB input/output · 6 runs/min · Results expire after 5 minutes. Each language has its own browser draft.",
     "example": {
       "sum": "A + B",
+      "io": "Words and lines",
       "gcd": "Greatest common divisor",
       "array": "Sort an array",
       "map": "Word frequencies (map)",

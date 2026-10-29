@@ -14,6 +14,7 @@
     "limits": "30 KB kod · 64 KB kirish/natija · daqiqasiga 6 marta · Natija 5 daqiqada o‘chadi. Har bir til qoralamasi brauzerda alohida saqlanadi.",
     "example": {
       "sum": "A + B",
+      "io": "So‘z va satr o‘qish",
       "gcd": "EKUB",
       "array": "Massivni saralash",
       "map": "So‘zlar sanog‘i (lug‘at)",

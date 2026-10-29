@@ -19,6 +19,8 @@ const controls = new Set([
 ]);
 const calls = new Set([
   'uqi',
+  'uqi_soz',
+  'uqi_satr',
   'al',
   'al_soz',
   'al_satr',
