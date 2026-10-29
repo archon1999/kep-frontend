@@ -24,6 +24,11 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v7
 
+      - name: Verify deployment transport and rollback
+        run: |
+          bash -n ops/ci-deploy-production.sh ops/deploy-production.sh
+          bash ops/tests/test-deployment.sh
+
       - name: Set up Node
         uses: actions/setup-node@v7
         with:
@@ -88,136 +93,20 @@ jobs:
     runs-on: ubuntu-latest
     timeout-minutes: 20
     steps:
+      - name: Checkout deployment scripts
+        uses: actions/checkout@v7
+
       - name: Download frontend build
         uses: actions/download-artifact@v8
         with:
           name: frontend-dist-${{ github.sha }}
           path: frontend-dist
 
-      - name: Copy frontend build to production
-        uses: appleboy/scp-action@v0.1.7
-        with:
-          host: ${{ secrets.HOST }}
-          username: ${{ secrets.USERNAME }}
-          key: ${{ secrets.SSH_PRIVATE_KEY }}
-          fingerprint: ${{ secrets.HOST_FINGERPRINT }}
-          port: ${{ secrets.PORT }}
-          source: frontend-dist
-          target: /tmp/kep-frontend-${{ github.sha }}
-          rm: true
-
-      - name: Deploy frontend to production
-        uses: appleboy/ssh-action@v1.0.3
-        with:
-          host: ${{ secrets.HOST }}
-          username: ${{ secrets.USERNAME }}
-          key: ${{ secrets.SSH_PRIVATE_KEY }}
-          fingerprint: ${{ secrets.HOST_FINGERPRINT }}
-          port: ${{ secrets.PORT }}
-          command_timeout: 15m
-          script: |
-            bash -seuo pipefail <<'DEPLOY_SCRIPT'
-            # Use direct connectivity instead of inherited server proxy settings.
-            unset HTTP_PROXY HTTPS_PROXY ALL_PROXY http_proxy https_proxy all_proxy
-            release_sha='${{ github.sha }}'
-            app_root='/home/KEP.uz/frontend'
-            compose_root='/home/KEP.uz/backend'
-            upload_root="/tmp/kep-frontend-${release_sha}"
-            rollback_root='/home/KEP.uz/.deploy-rollback/frontend'
-            rollback_dist="${rollback_root}/dist"
-            staging_dist=''
-            rollback_needed=0
-            old_image_available=0
-
-            rollback() {
-              exit_code=$?
-              trap - ERR
-              set +e
-
-              if [ "${rollback_needed}" -eq 1 ]; then
-                echo 'Frontend deployment failed; restoring the previous release.' >&2
-
-                if [ -d "${rollback_dist}" ]; then
-                  failed_dist="${rollback_root}/dist.failed-${release_sha}"
-                  rm -rf -- "${failed_dist}"
-                  if [ -d "${app_root}/dist" ]; then
-                    mv -- "${app_root}/dist" "${failed_dist}"
-                  fi
-                  mv -- "${rollback_dist}" "${app_root}/dist"
-                fi
-
-                if [ "${old_image_available}" -eq 1 ]; then
-                  docker image tag kep-frontend:rollback kep-frontend:latest
-                  cd "${compose_root}"
-                  docker compose up -d --no-deps --force-recreate frontend
-                fi
-              fi
-
-              if [ -n "${staging_dist}" ] && [ -d "${staging_dist}" ]; then
-                rm -rf -- "${staging_dist}"
-              fi
-
-              exit "${exit_code}"
-            }
-            trap rollback ERR
-
-            test -f "${upload_root}/frontend-dist/index.html"
-
-            git -C "${app_root}" fetch origin production
-            git -C "${app_root}" checkout production
-            git -C "${app_root}" pull --ff-only origin production
-            test "$(git -C "${app_root}" rev-parse HEAD)" = "${release_sha}"
-
-            install -d -m 700 "${rollback_root}"
-            staging_dist=$(mktemp -d "${app_root}/.dist-staging.XXXXXX")
-            cp -a "${upload_root}/frontend-dist/." "${staging_dist}/"
-            test -f "${staging_dist}/index.html"
-
-            if docker image inspect kep-frontend:latest >/dev/null 2>&1; then
-              docker image tag kep-frontend:latest kep-frontend:rollback
-              old_image_available=1
-            fi
-
-            rm -rf -- "${rollback_dist}"
-            if [ -d "${app_root}/dist" ]; then
-              mv -- "${app_root}/dist" "${rollback_dist}"
-            fi
-            mv -- "${staging_dist}" "${app_root}/dist"
-            staging_dist=''
-            rollback_needed=1
-
-            cd "${compose_root}"
-            docker compose build frontend
-            docker compose up -d --no-deps frontend
-
-            container_id=$(docker compose ps -q frontend)
-            test -n "${container_id}"
-
-            healthy=0
-            for attempt in $(seq 1 45); do
-              container_status=$(docker inspect --format '{{if .State.Health}}{{.State.Health.Status}}{{else}}{{.State.Status}}{{end}}' "${container_id}" 2>/dev/null || true)
-              if [ "${container_status}" = 'healthy' ]; then
-                healthy=1
-                break
-              fi
-              if [ "${container_status}" = 'exited' ] || [ "${container_status}" = 'dead' ]; then
-                break
-              fi
-              sleep 2
-            done
-
-            if [ "${healthy}" -ne 1 ]; then
-              docker logs --tail 100 "${container_id}" >&2 || true
-              false
-            fi
-
-            curl --fail --silent --show-error --max-time 10 \
-              http://127.0.0.1:18080/healthz >/dev/null
-
-            docker exec -i "${container_id}" sh -s < "${app_root}/docker/test-routes.sh"
-
-            rollback_needed=0
-            trap - ERR
-            rm -rf -- "${upload_root}"
-            echo "Frontend ${release_sha} deployed successfully."
-            DEPLOY_SCRIPT
+      - name: Deploy verified build over pinned OpenSSH
+        env:
+          DEPLOY_HOST: ${{ secrets.HOST }}
+          DEPLOY_USER: ${{ secrets.USERNAME }}
+          DEPLOY_SSH_KEY: ${{ secrets.SSH_PRIVATE_KEY }}
+          DEPLOY_FINGERPRINT: ${{ secrets.HOST_FINGERPRINT }}
+          DEPLOY_PORT: ${{ secrets.PORT }}
+        run: bash ops/ci-deploy-production.sh "${{ github.sha }}" frontend-dist
