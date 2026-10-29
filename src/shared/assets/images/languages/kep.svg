@@ -1,0 +1,6 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 144 144" fill="none">
+  <title>KEPLang</title>
+  <defs><linearGradient id="g" x1="20" y1="18" x2="127" y2="126" gradientUnits="userSpaceOnUse"><stop stop-color="#F0E2AF"/><stop offset="1" stop-color="#91D9EA"/></linearGradient></defs>
+  <path d="M12 72 48 36V57L33 72 48 87V108L12 72Z" fill="url(#g)"/>
+  <path fill-rule="evenodd" d="M57 28 74 11V61L108 27H132L87 72 132 117H108L74 83V133L57 116V28ZM72 63 63 72 72 81 81 72 72 63Z" fill="url(#g)"/>
+</svg>
