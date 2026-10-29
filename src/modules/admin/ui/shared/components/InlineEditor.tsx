@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { Link } from 'react-router';
 import {
@@ -14,6 +14,7 @@ import {
 } from '@mui/material';
 import { loadAdminInline } from 'modules/admin/application';
 import type { AdminInline, AdminInlineRow } from 'modules/admin/domain';
+import { inlineRowErrors } from 'modules/admin/domain/utils/inlineValidation';
 import IconifyIcon from 'shared/components/base/IconifyIcon';
 import { ListPagination } from 'shared/components/sections/common/FramedListPage';
 import { errorText, fieldTitle, resourceTitle } from '../helpers';
@@ -49,7 +50,20 @@ export default function InlineEditor({
   const [expanded, setExpanded] = useState<string | false>(
     section.rows.length === 1 ? section.rows[0].id! : false,
   );
-  const rows = [...page.rows, ...fresh].map((row) => changes[row.id ?? row.clientId!] ?? row);
+  const validation = inlineRowErrors(changes, errors);
+  const firstInvalid = Object.keys(validation)[0];
+  useEffect(() => {
+    if (firstInvalid) setExpanded(firstInvalid);
+  }, [firstInvalid, errors]);
+  const visible = [...page.rows, ...fresh];
+  const visibleIds = new Set(visible.map((row) => row.id ?? row.clientId));
+  const invalidOutsidePage = Object.values(changes).filter((row) => {
+    const id = row.id ?? row.clientId!;
+    return !visibleIds.has(id) && validation[id];
+  });
+  const rows = [...visible, ...invalidOutsidePage].map(
+    (row) => changes[row.id ?? row.clientId!] ?? row,
+  );
   const editable = !disabled && (section.permissions.change || section.permissions.add);
   const add = () => {
     const row = {
@@ -118,7 +132,7 @@ export default function InlineEditor({
             elevation={0}
             sx={{
               border: 1,
-              borderColor: 'divider',
+              borderColor: validation[id] ? 'error.main' : 'divider',
               borderRadius: '0 !important',
               bgcolor: 'transparent',
               '&:before': { display: 'none' },
@@ -207,6 +221,7 @@ export default function InlineEditor({
                       value={row.values[field.name]}
                       values={row.values}
                       selected={row.selectedOptions?.[field.name]}
+                      error={validation[id]?.[field.name]}
                       disabled={!editable || (Boolean(row.id) && !section.permissions.change)}
                       onChange={(value) =>
                         onChange({ ...row, values: { ...row.values, [field.name]: value } })
