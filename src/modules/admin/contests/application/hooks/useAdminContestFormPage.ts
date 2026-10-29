@@ -9,6 +9,7 @@ import {
 } from 'modules/admin/contests/application/mutations';
 import { useAdminContest, useAdminContestMeta } from 'modules/admin/contests/application/queries';
 import { AdminContestPayload, AdminContestProblem } from 'modules/admin/contests/domain/types';
+import { validationMessage } from 'modules/admin/domain/utils/validation';
 import type { AdminAutocompleteOption } from 'modules/admin/shared/domain/autocomplete.types';
 import { formatAdminEditTitle } from 'modules/admin/shared/utils/editTitle';
 import {
@@ -225,7 +226,7 @@ export const useAdminContestFormPage = (confirm: (message: string) => Promise<bo
       }
       navigate(resources.AdminContests);
     } catch (caughtError: any) {
-      setError(JSON.stringify(caughtError?.data ?? caughtError));
+      setError(validationMessage(caughtError) || t('admin.console.loadError'));
     } finally {
       setIsSaving(false);
     }

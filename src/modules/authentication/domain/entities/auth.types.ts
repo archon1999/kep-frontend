@@ -1,6 +1,7 @@
 import type { UserAuth } from 'shared/api/orval/generated/endpoints/index.schemas';
 
 export type AuthUser = UserAuth & {
+  isStaff?: boolean;
   id?: number | string;
   name?: string;
   email?: string;

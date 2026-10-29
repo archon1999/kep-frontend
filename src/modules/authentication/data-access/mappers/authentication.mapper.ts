@@ -4,6 +4,7 @@ type AuthApiPayload = AuthUser & {
   first_name?: string;
   last_name?: string;
   is_superuser?: boolean;
+  is_staff?: boolean;
 };
 
 export const mapAuthUserFromApi = (payload: AuthApiPayload): AuthUser => ({
@@ -11,4 +12,5 @@ export const mapAuthUserFromApi = (payload: AuthApiPayload): AuthUser => ({
   firstName: payload.firstName ?? payload.first_name,
   lastName: payload.lastName ?? payload.last_name,
   isSuperuser: payload.isSuperuser ?? payload.is_superuser,
+  isStaff: payload.isStaff ?? payload.is_staff,
 });

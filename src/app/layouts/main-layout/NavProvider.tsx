@@ -13,7 +13,7 @@ import { Breakpoint, ToolbarOwnProps, useTheme } from '@mui/material';
 import { useBreakpoints } from 'app/providers/BreakpointsProvider';
 import { useSettingsContext } from 'app/providers/SettingsProvider';
 import { COLLAPSE_NAVBAR, EXPAND_NAVBAR } from 'app/reducers/SettingsReducer';
-import { clientMenu, MenuItem } from 'app/routes/sitemap';
+import { MenuItem, clientMenu } from 'app/routes/sitemap';
 import { mainDrawerWidth } from 'shared/lib/constants';
 
 interface NavContextInterface {
@@ -32,9 +32,15 @@ const NavContext = createContext({} as NavContextInterface);
 interface NavProviderProps {
   menuItems?: MenuItem[];
   navLabel?: string;
+  topbarHeightOverride?: Partial<Record<Breakpoint, number>>;
 }
 
-const NavProvider = ({ children, menuItems = clientMenu, navLabel }: PropsWithChildren<NavProviderProps>) => {
+const NavProvider = ({
+  children,
+  menuItems = clientMenu,
+  navLabel,
+  topbarHeightOverride,
+}: PropsWithChildren<NavProviderProps>) => {
   const [openItems, setOpenItems] = useState([]);
   const [loaded, setLoaded] = useState(false);
   const [responsievSidenavCollapsed, setResponsiveSidenavCollapsed] = useState(false);
@@ -83,12 +89,13 @@ const NavProvider = ({ children, menuItems = clientMenu, navLabel }: PropsWithCh
   }, [navigationMenuType, topnavType, downMd]);
 
   const topbarHeight = useMemo(() => {
+    if (topbarHeightOverride) return topbarHeightOverride;
     if (navigationMenuType === 'sidenav') {
       return theme.mixins.topbar.default;
     } else {
       return theme.mixins.topbar[topnavType];
     }
-  }, [navigationMenuType, topnavType]);
+  }, [navigationMenuType, topnavType, topbarHeightOverride]);
 
   useEffect(() => {
     if (navigationMenuType === 'sidenav') {

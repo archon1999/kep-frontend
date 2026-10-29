@@ -64,7 +64,6 @@ const AdminListPageLayout = ({
             alignItems={{ md: 'flex-start' }}
             sx={{ width: { xs: 1, sm: 'auto' } }}
           >
-            {resolvedToolbar}
             <Button
               component={Link}
               to={createPath}
@@ -77,6 +76,9 @@ const AdminListPageLayout = ({
           </Stack>
         }
       />
+      <Box sx={{ p: { xs: 2, md: 3 }, borderBottom: 1, borderColor: 'divider' }}>
+        {resolvedToolbar}
+      </Box>
       <Box sx={{ flex: 1, minWidth: 0, '& .MuiDataGrid-root': { border: 0, borderRadius: 0 } }}>
         <Stack spacing={2}>{children}</Stack>
       </Box>
