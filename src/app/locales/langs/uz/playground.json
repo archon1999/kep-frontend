@@ -11,7 +11,7 @@
     "input": "Kirish ma’lumotlari",
     "output": "Natija",
     "empty": "Natijani ko‘rish uchun kodni ishga tushiring.",
-    "limits": "KEPLang 0.2.1 · 1.5 s CPU · 128 MB jarayon / 64 MB VM xotira · 64 KB natija · daqiqasiga 6 marta · Natija 5 daqiqada o‘chadi. Qoralama shu brauzerda saqlanadi.",
+    "limits": "KEPLang 0.2.2 · 1.5 s CPU · 128 MB jarayon / 64 MB VM xotira · 64 KB natija · daqiqasiga 6 marta · Natija 5 daqiqada o‘chadi. Qoralama shu brauzerda saqlanadi.",
     "example": {
       "sum": "A + B",
       "gcd": "EKUB",

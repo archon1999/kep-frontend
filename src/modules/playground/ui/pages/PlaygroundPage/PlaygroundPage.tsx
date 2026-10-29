@@ -68,7 +68,7 @@ const PlaygroundPage = () => {
       </Stack>
       <WorkspaceRoot>
         <WorkspaceToolbar sx={{ gap: 1.5, flexWrap: 'wrap', p: 2 }}>
-          <Chip label="KEPLang 0.2.1" variant="outlined" />
+          <Chip label="KEPLang 0.2.2" variant="outlined" />
           <TextField
             select
             size="small"

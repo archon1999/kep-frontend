@@ -2,7 +2,7 @@ export const examples = [
   { id: 'sum', code: 'son a = al();\nson b = al();\nchiqar(a + b);\n', input: '3 5\n' },
   {
     id: 'gcd',
-    code: 'shundat ekub(son a, son b) -> son {\n    toki b != 0 {\n        son r = a % b;\n        a = b;\n        b = r;\n    }\n    qaytar a;\n}\n\nson a = al();\nson b = al();\nchiqar(ekub(a, b));\n',
+    code: 'shundat ekub(son a, son b) -> son {\n    to b != 0 {\n        son r = a % b;\n        a = b;\n        b = r;\n    }\n    qaytar a;\n}\n\nson a = al();\nson b = al();\nchiqar(ekub(a, b));\n',
     input: '48 18\n',
   },
   {

@@ -11,7 +11,7 @@
     "input": "Standard input",
     "output": "Output",
     "empty": "Run your code to see the result here.",
-    "limits": "KEPLang 0.2.1 · 1.5 s CPU · 128 MB process / 64 MB VM heap · 64 KB output · 6 runs/min · Results expire after 5 minutes. Drafts stay in this browser.",
+    "limits": "KEPLang 0.2.2 · 1.5 s CPU · 128 MB process / 64 MB VM heap · 64 KB output · 6 runs/min · Results expire after 5 minutes. Drafts stay in this browser.",
     "example": {
       "sum": "A + B",
       "gcd": "Greatest common divisor",
