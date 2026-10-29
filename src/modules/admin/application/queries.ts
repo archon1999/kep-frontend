@@ -35,7 +35,7 @@ export const useAdminDetail = (key: string, id?: string) => {
   return useSWR(
     key ? adminKeys.detail(scope, key, id) : null,
     () => adminRepository.detail(key, id),
-    options,
+    { ...options, keepPreviousData: true },
   );
 };
 export const useAdminHistory = (key: string, id?: string, open = true) => {

@@ -2,6 +2,7 @@ import { useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { Link, useParams } from 'react-router';
 import { Button } from '@mui/material';
+import { useAuth } from 'app/providers/AuthProvider';
 import { resources } from 'app/routes/resources';
 import { useAdminDetail } from 'modules/admin/application';
 import FramedPage from 'shared/components/sections/common/FramedPage';
@@ -9,10 +10,24 @@ import { ConsoleError, ConsoleSkeleton } from '../../shared/components/ConsoleSt
 import RecordEditor from './components/RecordEditor';
 
 export default function AdminResourceFormPage() {
-  const { t } = useTranslation();
+  const { currentUser } = useAuth();
   const { app = '', model = '', id } = useParams();
+  const actor = currentUser?.id ?? currentUser?.username ?? 'anonymous';
+  const identity = JSON.stringify([
+    actor,
+    currentUser?.isSuperuser,
+    currentUser?.isStaff,
+    app,
+    model,
+    id,
+  ]);
+  return <ResourceForm key={identity} app={app} model={model} id={id} />;
+}
+
+function ResourceForm({ app, model, id }: { app: string; model: string; id?: string }) {
+  const { t } = useTranslation();
   const resourceKey = app + '.' + model;
-  const { data, isLoading, error, mutate } = useAdminDetail(resourceKey, id);
+  const { data, error, mutate } = useAdminDetail(resourceKey, id);
   const [reloading, setReloading] = useState(false);
   const reload = () => {
     setReloading(true);
@@ -20,7 +35,7 @@ export default function AdminResourceFormPage() {
       .catch(() => undefined)
       .finally(() => setReloading(false));
   };
-  if (error)
+  if (error && !data)
     return (
       <FramedPage>
         <ConsoleError error={error} retry={() => void mutate()} />
@@ -29,7 +44,7 @@ export default function AdminResourceFormPage() {
         </Button>
       </FramedPage>
     );
-  if (isLoading || reloading || !data)
+  if (reloading || !data)
     return (
       <FramedPage>
         <ConsoleSkeleton kind="form" header />
@@ -37,9 +52,10 @@ export default function AdminResourceFormPage() {
     );
   return (
     <RecordEditor
-      key={resourceKey + (id ?? 'new') + data.revision}
       resourceKey={resourceKey}
       initial={data}
+      metadataError={error}
+      retryMetadata={() => void mutate()}
       reload={reload}
     />
   );

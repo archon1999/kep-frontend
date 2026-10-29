@@ -44,10 +44,14 @@ export default function RecordEditor({
   resourceKey,
   initial,
   reload,
+  metadataError,
+  retryMetadata,
 }: {
   resourceKey: string;
   initial: AdminDetail;
   reload: () => void;
+  metadataError?: unknown;
+  retryMetadata: () => void;
 }) {
   const { t } = useTranslation();
   const navigate = useNavigate();
@@ -112,6 +116,7 @@ export default function RecordEditor({
   const editable = record.canSave;
   return (
     <FramedPage>
+      <ConsoleError error={metadataError} retry={retryMetadata} />
       <Box component="form" onSubmit={submit} noValidate aria-busy={saving}>
         <PageHeader
           title={

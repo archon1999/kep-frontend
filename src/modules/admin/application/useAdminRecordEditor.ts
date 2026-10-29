@@ -1,5 +1,6 @@
 import { useState } from 'react';
 import type { AdminDetail, AdminInlineRow, AdminValues } from 'modules/admin/domain';
+import { localizeAdminRecord } from 'modules/admin/domain/utils/recordDraft';
 import { saveAdminRecord } from './mutations';
 
 export const useAdminRecordEditor = (resourceKey: string, initial: AdminDetail) => {
@@ -55,7 +56,7 @@ export const useAdminRecordEditor = (resourceKey: string, initial: AdminDetail) 
     }
   };
   return {
-    record,
+    record: localizeAdminRecord(record, initial),
     values,
     files,
     inlines,
