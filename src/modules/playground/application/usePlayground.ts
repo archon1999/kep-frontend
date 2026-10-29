@@ -2,6 +2,7 @@ import { useEffect, useRef, useState } from 'react';
 import { playgroundRepository } from '../data-access';
 import type { Draft, RunRequest, RunResult, RunnerLanguage } from '../domain';
 import { decodeDrafts } from '../domain/utils/drafts';
+import { createDraftPersistence } from './draft-persistence';
 import { examples } from './examples';
 import { useRunnerLanguages } from './queries';
 import { executeRunJob } from './run-job';
@@ -42,20 +43,26 @@ export const usePlayground = () => {
   );
   const controller = useRef<AbortController | null>(null);
   const mounted = useRef(true);
+  const persistence = useRef<ReturnType<typeof createDraftPersistence> | null>(null);
   const byteLength = new TextEncoder().encode(draft.code).length;
   const inputBytes = new TextEncoder().encode(draft.input).length;
   const valid = byteLength > 0 && byteLength <= 30000 && inputBytes <= 65536;
   const languageReady = Boolean(catalogue.data?.some((item) => item.id === selectedLang));
   useEffect(() => {
-    const timer = setTimeout(() => {
-      try {
-        localStorage.setItem(storageKey, JSON.stringify(drafts));
-        setDraftStored(true);
-      } catch {
-        setDraftStored(false);
-      }
-    }, 400);
-    return () => clearTimeout(timer);
+    try {
+      persistence.current = createDraftPersistence(localStorage, storageKey, setDraftStored);
+    } catch {
+      setDraftStored(false);
+    }
+    const flush = () => persistence.current?.flush(false);
+    window.addEventListener('pagehide', flush);
+    return () => {
+      window.removeEventListener('pagehide', flush);
+      persistence.current?.dispose();
+    };
+  }, []);
+  useEffect(() => {
+    persistence.current?.schedule(drafts);
   }, [drafts]);
   useEffect(() => {
     mounted.current = true;

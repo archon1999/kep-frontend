@@ -47,8 +47,10 @@ export const PlaygroundEditor = ({
   const disposeCursor = useRef<(() => void) | null>(null);
   const playRef = useRef(playback.play);
   playRef.current = playback.play;
+  const canReplay = useRef(false);
+  canReplay.current = sample && language.id === 'kep';
   useEffect(() => {
-    if (playbackVersion > 0) playRef.current();
+    if (playbackVersion > 0 && canReplay.current) playRef.current();
   }, [playbackVersion]);
   useEffect(() => {
     if (busy) playback.stop();
