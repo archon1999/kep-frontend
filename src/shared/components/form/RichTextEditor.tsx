@@ -28,7 +28,9 @@ interface QuillInstance {
   root: HTMLDivElement;
   clipboard: {
     dangerouslyPasteHTML: (html: string) => void;
+    convert: (html: string) => unknown;
   };
+  setContents: (delta: unknown, source?: string) => void;
   on: (eventName: string, handler: () => void) => void;
   off?: (eventName: string, handler: () => void) => void;
   getLength?: () => number;
@@ -52,6 +54,8 @@ interface QuillConstructor {
 }
 
 interface RichTextEditorProps {
+  ariaLabel?: string;
+  ariaInvalid?: boolean;
   value: string;
   onChange: (value: string) => void;
   onDocumentChange?: (value: { html: string; delta: string }) => void;
@@ -172,6 +176,8 @@ const ensureQuillLoaded = () => {
 };
 
 const RichTextEditor = ({
+  ariaLabel,
+  ariaInvalid,
   value,
   onChange,
   onDocumentChange,
@@ -219,6 +225,39 @@ const RichTextEditor = ({
   }, [onChange, onDocumentChange]);
 
   useEffect(() => {
+    const quill = quillRef.current;
+    if (isLoading || !quill) return;
+    quill.root.setAttribute('role', 'textbox');
+    quill.root.setAttribute('aria-multiline', 'true');
+    quill.root.setAttribute('aria-label', ariaLabel || t('common.editorTools.content'));
+    quill.root.setAttribute('aria-invalid', String(Boolean(ariaInvalid)));
+    const toolbar = hostRef.current?.parentElement?.querySelector('.ql-toolbar');
+    const controls: Record<string, string> = {
+      bold: 'bold',
+      italic: 'italic',
+      underline: 'underline',
+      strike: 'strike',
+      blockquote: 'quote',
+      'code-block': 'code',
+      link: 'link',
+      clean: 'clear',
+      mathjax: 'formula',
+    };
+    toolbar?.querySelectorAll('button').forEach((button) => {
+      const tool = Object.keys(controls).find((name) => button.classList.contains('ql-' + name));
+      const label = tool
+        ? t(`common.editorTools.${controls[tool]}`)
+        : button.classList.contains('ql-list')
+          ? t(`common.editorTools.${button.value === 'ordered' ? 'numbered' : 'bulleted'}`)
+          : '';
+      if (label) {
+        button.setAttribute('aria-label', label);
+        button.title = label;
+      }
+    });
+  }, [ariaLabel, ariaInvalid, isLoading, t]);
+
+  useEffect(() => {
     let isMounted = true;
     let handler: (() => void) | null = null;
 
@@ -261,7 +300,8 @@ const RichTextEditor = ({
         });
         quillHolder.current = quill;
 
-        quill.clipboard.dangerouslyPasteHTML(normalizeEditorHtml(value));
+        // Importing content must not focus each editor and scroll a multi-editor form.
+        quill.setContents(quill.clipboard.convert(normalizeEditorHtml(value)), 'silent');
         handler = () => {
           const nextValue = normalizeEditorHtml(quill.root.innerHTML);
           onChangeRef.current(nextValue);
@@ -305,7 +345,7 @@ const RichTextEditor = ({
     const currentValue = normalizeEditorHtml(quill.root.innerHTML);
 
     if (currentValue !== nextValue) {
-      quill.clipboard.dangerouslyPasteHTML(nextValue);
+      quill.setContents(quill.clipboard.convert(nextValue), 'silent');
     }
   }, [value]);
 

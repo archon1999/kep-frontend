@@ -1,6 +1,5 @@
 import { useTranslation } from 'react-i18next';
 import { Stack } from '@mui/material';
-import SearchTextField from 'app/layouts/main-layout/common/search-box/SearchTextField';
 import {
   PROJECT_CATEGORY_META,
   PROJECT_SORT_OPTIONS,
@@ -10,6 +9,7 @@ import AppliedFilters, { AppliedFilterItem } from 'shared/components/common/Appl
 import DebouncedTextField from 'shared/components/common/DebouncedTextField';
 import FilterButton from 'shared/components/common/FilterButton';
 import ResponsiveTabs from 'shared/components/common/ResponsiveTabs';
+import SearchTextField from 'shared/components/common/SearchTextField';
 
 interface ProjectsToolbarProps {
   filters: ProjectListFilters;

@@ -407,8 +407,6 @@
       "needsAttention": "Work queue",
       "live": "Live data",
       "allClear": "No pending work",
-      "newUsers": "New users",
-      "last14Days": "Last 14 days",
       "quickCreate": "Create quickly",
       "availableSections": "{{count}} sections available",
       "exploreSections": "Browse all sections",
@@ -440,7 +438,7 @@
       "importOrderHelp": "Record an existing offline order. The order service applies the selected status and inventory rules.",
       "groups": {
         "practice": "Practice & learning",
-        "competitions": "Competitions",
+        "competitions": "Competitions & battles",
         "community": "Community",
         "economy": "Kepcoin & shop",
         "platform": "Platform content",
@@ -450,7 +448,7 @@
         "users": "Users",
         "problems": "Problems",
         "contests": "Contests",
-        "projects": "Projects"
+        "attempts": "Attempts"
       },
       "queues": {
         "judging": "Submissions awaiting judging",
@@ -767,7 +765,69 @@
         "file_accept": "Accepted formats",
         "canonical_link": "Canonical URL",
         "table_of_contents": "Table of contents"
-      }
+      },
+      "recordCount_one": "{{count}} record",
+      "recordCount_other": "{{count}} records"
+    },
+    "workspace": {
+      "selectedActions": "Actions for selected",
+      "openRecord": "Open record",
+      "compact": "Compact rows",
+      "comfortable": "Comfortable rows",
+      "columns": "Columns",
+      "resetColumns": "Reset columns",
+      "views": "Quick views",
+      "draft": "Draft",
+      "drafts": "In preparation",
+      "public": "Published",
+      "visible": "Visible",
+      "hidden": "Hidden",
+      "inactive": "Inactive",
+      "active": "Active",
+      "newRecord": "New record",
+      "fixFields": "Review the highlighted fields",
+      "editorSections": "Record sections",
+      "publicationSettings": "Publication & settings",
+      "statement": "Statement",
+      "relatedDraftHint": "Changes here are included when you save the record.",
+      "modified": "Changed",
+      "done": "Done",
+      "workspace": "Workspaces",
+      "supporting": "Related records & configuration",
+      "mainSections": "Main sections",
+      "allRecords": "All records",
+      "addFirst": "Create the first record",
+      "emptyRecords": "No records yet",
+      "newObject": "Create",
+      "searchSections": "Find a section or tool",
+      "sections": {
+        "content": "Content",
+        "settings": "Settings",
+        "media": "Images & files",
+        "advanced": "Advanced",
+        "details": "Details"
+      },
+      "inlines": {
+        "sample_tests": "Sample tests",
+        "available_languages": "Languages & limits",
+        "problems": "Problem set",
+        "questions": "Questions",
+        "tasks": "Tasks",
+        "available_technologies": "Technologies",
+        "tags": "Tags",
+        "topics": "Topics",
+        "groups": "Groups",
+        "attachments": "Attachments",
+        "educations": "Education",
+        "work_experiences": "Experience",
+        "technologies": "Technologies",
+        "skill_entries": "Skills"
+      },
+      "organization": "Tags & files",
+      "profile": "Profile",
+      "security": "Access & security",
+      "recordActions": "Actions for {{name}}",
+      "sort": "Sort"
     }
   }
 }

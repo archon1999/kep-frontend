@@ -11,8 +11,6 @@ import {
   Menu,
   MenuItem,
   Stack,
-  Tab,
-  Tabs,
   Typography,
 } from '@mui/material';
 import { useAuth } from 'app/providers/AuthProvider';
@@ -23,22 +21,13 @@ import type { AdminActionPreview, AdminDetail } from 'modules/admin/domain';
 import IconifyIcon from 'shared/components/base/IconifyIcon';
 import DialogHeader from 'shared/components/common/DialogHeader';
 import FramedPage from 'shared/components/sections/common/FramedPage';
-import PageHeader from 'shared/components/sections/common/PageHeader';
 import ActionDialog from '../../../shared/components/ActionDialog';
 import AuditList from '../../../shared/components/AuditList';
-import ConsoleCell from '../../../shared/components/ConsoleCell';
 import { ConsoleError, ConsoleSkeleton } from '../../../shared/components/ConsoleState';
-import InlineEditor from '../../../shared/components/InlineEditor';
 import PasswordDialog from '../../../shared/components/PasswordDialog';
-import PublicationChecks from '../../../shared/components/PublicationChecks';
-import SchemaField from '../../../shared/components/SchemaField';
-import {
-  actionTitle,
-  errorData,
-  fieldTitle,
-  getFieldErrors,
-  resourceTitle,
-} from '../../../shared/helpers';
+import WorkspaceHeader from '../../../shared/components/WorkspaceHeader';
+import { actionTitle, resourceTitle } from '../../../shared/helpers';
+import EditorWorkspace from './EditorWorkspace';
 
 export default function RecordEditor({
   resourceKey,
@@ -59,9 +48,8 @@ export default function RecordEditor({
   const { data: registry = [] } = useAdminRegistry();
   const resource = registry.find((item) => item.key === resourceKey);
   const editor = useAdminRecordEditor(resourceKey, initial);
-  const { record, values, dirty, saving, error } = editor;
+  const { record, dirty, saving, error } = editor;
   const path = resource?.path ?? `${resources.AdminManage}/${resourceKey.replace('.', '/')}`;
-  const [language, setLanguage] = useState('uz');
   const [preview, setPreview] = useState<AdminActionPreview | null>(null);
   const [actionError, setActionError] = useState<unknown>(null);
   const [preparing, setPreparing] = useState(false);
@@ -78,8 +66,6 @@ export default function RecordEditor({
     }
   });
   const history = useAdminHistory(resourceKey, record.id ?? undefined, historyOpen);
-  const fieldErrors = getFieldErrors(error);
-  const translated = record.fields.some((field) => /_(uz|ru|en)$/.test(field.name));
   const save = async (close = false) => {
     const result = await editor.save();
     if (!result) {
@@ -117,87 +103,73 @@ export default function RecordEditor({
   return (
     <FramedPage>
       <ConsoleError error={metadataError} retry={retryMetadata} />
-      <Box component="form" onSubmit={submit} noValidate aria-busy={saving}>
-        <PageHeader
+      <Box
+        component="form"
+        onSubmit={submit}
+        noValidate
+        aria-busy={saving}
+        onKeyDown={(event) => {
+          if ((event.ctrlKey || event.metaKey) && event.key.toLowerCase() === 's') {
+            event.preventDefault();
+            if (editable && !saving && (dirty || !record.id)) void save();
+          }
+        }}
+      >
+        <WorkspaceHeader
           title={
             record.id
               ? record.label
               : t('admin.console.createRecord', { name: resourceTitle(t, resource) })
           }
-          subtitle={record.id ? resourceTitle(t, resource) : undefined}
-          backTo={path}
-          backLabel={resourceTitle(t, resource)}
-          actionComponent={
-            <Stack direction="row" gap={1} flexWrap="wrap">
-              {record.publicPath && (
-                <Button
-                  component={Link}
-                  to={record.publicPath}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  color="neutral"
-                  startIcon={<IconifyIcon icon="mdi:open-in-new" />}
-                >
-                  {t('admin.console.viewOnSite')}
-                </Button>
-              )}
-              {record.id && (record.actions ?? []).some((action) => action.kind !== 'delete') && (
-                <Button
-                  variant="outlined"
-                  onClick={(event) => setActionAnchor(event.currentTarget)}
-                  loading={preparing}
-                  disabled={dirty || saving}
-                  endIcon={<IconifyIcon icon="mdi:chevron-down" />}
-                >
-                  {t('admin.columns.actions')}
-                </Button>
-              )}
-              {record.id && resourceKey === 'backend.user' && editable && (
-                <Button
-                  variant="outlined"
-                  onClick={() => setPasswordOpen(true)}
-                  disabled={dirty || saving}
-                  startIcon={<IconifyIcon icon="mdi:lock-reset" />}
-                >
-                  {t('admin.actions.changePassword')}
-                </Button>
-              )}
-              {record.id &&
-                resource &&
-                resource.editorPath !== resource.path &&
-                currentUser?.isSuperuser && (
-                  <Button
-                    component={Link}
-                    to={`${resource.editorPath}/${encodeURIComponent(record.id)}`}
-                    color="neutral"
-                    startIcon={<IconifyIcon icon="mdi:tune" />}
-                  >
-                    {t('admin.console.advancedTools')}
-                  </Button>
-                )}
-              {record.id && (
-                <Button
-                  variant="outlined"
-                  onClick={() => setHistoryOpen(true)}
-                  startIcon={<IconifyIcon icon="mdi:history" />}
-                >
-                  {t('admin.console.history')}
-                </Button>
-              )}
-              {editable && (
-                <Button
-                  type="submit"
-                  variant="contained"
-                  loading={saving}
-                  disabled={!dirty && Boolean(record.id)}
-                  startIcon={<IconifyIcon icon="mdi:content-save-outline" />}
-                >
-                  {t('admin.actions.save')}
-                </Button>
-              )}
+          subtitle={
+            <Stack direction="row" alignItems="center" gap={1}>
+              <span>{resourceTitle(t, resource)}</span>
+              <Typography variant="caption" color={dirty ? 'warning.main' : 'text.secondary'}>
+                {dirty
+                  ? t('admin.console.unsaved')
+                  : record.id
+                    ? '#' + (record.id.startsWith('gAAAA') ? '����' : record.id)
+                    : t('admin.workspace.newRecord')}
+              </Typography>
             </Stack>
           }
-        />
+          backTo={path}
+          backLabel={t('admin.actions.backToList')}
+        >
+          {record.publicPath && (
+            <Button
+              component={Link}
+              to={record.publicPath}
+              target="_blank"
+              rel="noopener noreferrer"
+              color="neutral"
+              startIcon={<IconifyIcon icon="mdi:open-in-new" />}
+            >
+              {t('admin.console.viewOnSite')}
+            </Button>
+          )}
+          {record.id && (
+            <Button
+              color="neutral"
+              onClick={(event) => setActionAnchor(event.currentTarget)}
+              loading={preparing}
+              endIcon={<IconifyIcon icon="mdi:dots-horizontal" />}
+            >
+              {t('admin.columns.actions')}
+            </Button>
+          )}
+          {editable && (
+            <Button
+              type="submit"
+              variant="contained"
+              loading={saving}
+              disabled={!dirty && Boolean(record.id)}
+              startIcon={<IconifyIcon icon="mdi:content-save-outline" />}
+            >
+              {t('admin.actions.save')}
+            </Button>
+          )}
+        </WorkspaceHeader>
         {saved && !dirty && (
           <Alert severity="success" sx={{ m: 2 }} onClose={() => setSaved(false)}>
             {t('admin.console.saved')}
@@ -214,148 +186,7 @@ export default function RecordEditor({
             {t('admin.console.reloadRecord')}
           </Button>
         )}
-        {Object.keys(fieldErrors).some((name) => /_(uz|ru|en)$/.test(name)) && (
-          <Alert severity="error" sx={{ mx: 3 }}>
-            {t('admin.console.checkLanguages')}
-          </Alert>
-        )}
-        {translated && (
-          <Tabs
-            value={language}
-            onChange={(_, value) => setLanguage(value)}
-            aria-label={t('admin.console.contentLanguage')}
-            variant="scrollable"
-            sx={{ px: { xs: 2, md: 3 }, borderBottom: 1, borderColor: 'divider' }}
-          >
-            {['uz', 'ru', 'en'].map((lang) => (
-              <Tab
-                key={lang}
-                value={lang}
-                label={
-                  <Stack direction="row" gap={1}>
-                    {t(`admin.console.languages.${lang}`)}
-                    {Object.keys(fieldErrors).some((name) => name.endsWith('_' + lang)) && (
-                      <IconifyIcon icon="mdi:alert-circle" sx={{ color: 'error.main' }} />
-                    )}
-                  </Stack>
-                }
-              />
-            ))}
-          </Tabs>
-        )}
-        <PublicationChecks checks={record.checks ?? []} />
-        {record.sections.map((section, index) => {
-          const fields = section.fields
-            .map((name) => record.fields.find((field) => field.name === name))
-            .filter(
-              (field) =>
-                field && (!/_(uz|ru|en)$/.test(field.name) || field.name.endsWith('_' + language)),
-            );
-          if (!fields.length) return null;
-          return (
-            <Box
-              component="section"
-              key={index}
-              sx={{ p: { xs: 2, md: 3 }, borderBottom: 1, borderColor: 'divider' }}
-            >
-              {section.title && (
-                <Typography component="h2" variant="h6" mb={2}>
-                  {t(
-                    `admin.console.sectionsNames.${section.title.toLowerCase().replace(/ /g, '_')}`,
-                    { defaultValue: section.title },
-                  )}
-                </Typography>
-              )}
-              <Box
-                sx={{
-                  display: 'grid',
-                  gridTemplateColumns: { xs: '1fr', md: 'repeat(2, minmax(0, 1fr))' },
-                  gap: { xs: 2.5, md: 3 },
-                }}
-              >
-                {fields.map(
-                  (field) =>
-                    field && (
-                      <Box
-                        key={field.name}
-                        sx={{
-                          minWidth: 0,
-                          gridColumn: [
-                            'richText',
-                            'textarea',
-                            'json',
-                            'relations',
-                            'file',
-                            'image',
-                          ].includes(field.kind)
-                            ? '1 / -1'
-                            : undefined,
-                        }}
-                      >
-                        <SchemaField
-                          resourceKey={resourceKey}
-                          recordId={record.id ?? undefined}
-                          field={field}
-                          value={values[field.name]}
-                          values={values}
-                          selected={record.selectedOptions[field.name]}
-                          error={fieldErrors[field.name]}
-                          disabled={saving || !editable}
-                          onChange={(value) => editor.setField(field.name, value)}
-                          onUpload={(file) => editor.setFile(field.name, file)}
-                        />
-                      </Box>
-                    ),
-                )}
-              </Box>
-            </Box>
-          );
-        })}
-        {Object.keys(record.readonly).length > 0 && (
-          <Box
-            component="section"
-            sx={{ p: { xs: 2, md: 3 }, borderBottom: 1, borderColor: 'divider' }}
-          >
-            <Typography component="h2" variant="h6" mb={2}>
-              {t('admin.console.recordInfo')}
-            </Typography>
-            <Box
-              component="dl"
-              sx={{
-                m: 0,
-                display: 'grid',
-                gridTemplateColumns: { xs: '1fr', md: 'repeat(2, minmax(0, 1fr))' },
-                gap: 2,
-              }}
-            >
-              {Object.entries(record.readonly).map(([name, cell]) => (
-                <Box key={name}>
-                  <Typography component="dt" variant="caption" color="text.secondary">
-                    {fieldTitle(t, { name, label: name.replace(/_/g, ' ') })}
-                  </Typography>
-                  <Box component="dd" sx={{ m: 0, mt: 0.5 }}>
-                    <ConsoleCell cell={cell} />
-                  </Box>
-                </Box>
-              ))}
-            </Box>
-          </Box>
-        )}
-        {record.inlines.map((section) => (
-          <InlineEditor
-            key={section.prefix + record.revision}
-            resourceKey={resourceKey}
-            recordId={record.id ?? undefined}
-            section={section}
-            changes={editor.inlines[section.prefix] ?? {}}
-            disabled={saving || !editable}
-            errors={
-              (errorData(error).inlines as Record<string, unknown> | undefined)?.[section.prefix]
-            }
-            onChange={(row) => editor.setInline(section.prefix, row)}
-            onUpload={editor.setFile}
-          />
-        ))}
+        <EditorWorkspace resourceKey={resourceKey} editor={editor} />
         <Stack
           direction="row"
           alignItems="center"
@@ -451,11 +282,42 @@ export default function RecordEditor({
         open={Boolean(actionAnchor)}
         onClose={() => setActionAnchor(null)}
       >
+        <MenuItem
+          onClick={() => {
+            setActionAnchor(null);
+            setHistoryOpen(true);
+          }}
+        >
+          <IconifyIcon icon="mdi:history" sx={{ mr: 1.5 }} />
+          {t('admin.console.history')}
+        </MenuItem>
+        {resourceKey === 'backend.user' && editable && (
+          <MenuItem
+            disabled={dirty || saving}
+            onClick={() => {
+              setActionAnchor(null);
+              setPasswordOpen(true);
+            }}
+          >
+            <IconifyIcon icon="mdi:lock-reset" sx={{ mr: 1.5 }} />
+            {t('admin.actions.changePassword')}
+          </MenuItem>
+        )}
+        {resource && resource.editorPath !== resource.path && currentUser?.isSuperuser && (
+          <MenuItem
+            component={Link}
+            to={`${resource.editorPath}/${encodeURIComponent(record.id ?? '')}`}
+          >
+            <IconifyIcon icon="mdi:tune" sx={{ mr: 1.5 }} />
+            {t('admin.console.advancedTools')}
+          </MenuItem>
+        )}
         {(record.actions ?? [])
           .filter((action) => action.kind !== 'delete')
           .map((action) => (
             <MenuItem
               key={action.name}
+              disabled={dirty || saving}
               onClick={() => {
                 setActionAnchor(null);
                 void prepareAction(action.name);

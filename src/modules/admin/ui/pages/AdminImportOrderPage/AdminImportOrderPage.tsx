@@ -5,8 +5,8 @@ import { Alert, Box, Button, Stack } from '@mui/material';
 import { resources } from 'app/routes/resources';
 import { importAdminOrder, useAdminWorkflow } from 'modules/admin/application';
 import type { AdminWorkflowForm } from 'modules/admin/domain';
+import WorkspaceHeader from 'modules/admin/ui/shared/components/WorkspaceHeader';
 import FramedPage from 'shared/components/sections/common/FramedPage';
-import PageHeader from 'shared/components/sections/common/PageHeader';
 import { ConsoleError, ConsoleSkeleton } from '../../shared/components/ConsoleState';
 import SchemaField from '../../shared/components/SchemaField';
 import { getFieldErrors } from '../../shared/helpers';
@@ -43,7 +43,7 @@ function ImportForm({ form }: { form: AdminWorkflowForm }) {
   const errors = getFieldErrors(error);
   return (
     <Box component="form" onSubmit={submit} noValidate>
-      <PageHeader
+      <WorkspaceHeader
         title={t('admin.console.importOrder')}
         backTo={listPath}
         backLabel={t('admin.console.orders')}

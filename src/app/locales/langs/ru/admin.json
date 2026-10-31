@@ -407,8 +407,6 @@
       "needsAttention": "Рабочая очередь",
       "live": "Актуальные данные",
       "allClear": "Нет ожидающих задач",
-      "newUsers": "Новые пользователи",
-      "last14Days": "За 14 дней",
       "quickCreate": "Быстрое создание",
       "availableSections": "Доступно разделов: {{count}}",
       "exploreSections": "Открыть все разделы",
@@ -440,7 +438,7 @@
       "importOrderHelp": "Добавьте существующий офлайн-заказ. Сервис применит выбранный статус и правила учёта остатков.",
       "groups": {
         "practice": "Практика и обучение",
-        "competitions": "Соревнования",
+        "competitions": "Соревнования и поединки",
         "community": "Сообщество",
         "economy": "Kepcoin и магазин",
         "platform": "Контент платформы",
@@ -450,7 +448,7 @@
         "users": "Пользователи",
         "problems": "Задачи",
         "contests": "Контесты",
-        "projects": "Проекты"
+        "attempts": "Попытки"
       },
       "queues": {
         "judging": "Посылки на проверку",
@@ -767,7 +765,71 @@
         "file_accept": "Форматы файлов",
         "canonical_link": "Канонический URL",
         "table_of_contents": "Оглавление"
-      }
+      },
+      "recordCount_one": "{{count}} запись",
+      "recordCount_few": "{{count}} записи",
+      "recordCount_many": "{{count}} записей",
+      "recordCount_other": "{{count}} записи"
+    },
+    "workspace": {
+      "selectedActions": "Действия с выбранными",
+      "openRecord": "Открыть запись",
+      "compact": "Компактные строки",
+      "comfortable": "Свободные строки",
+      "columns": "Столбцы",
+      "resetColumns": "Сбросить столбцы",
+      "views": "Быстрые фильтры",
+      "draft": "Черновик",
+      "drafts": "В подготовке",
+      "public": "Опубликовано",
+      "visible": "Видимые",
+      "hidden": "Скрытые",
+      "inactive": "Неактивные",
+      "active": "Активные",
+      "newRecord": "Новая запись",
+      "fixFields": "Проверьте выделенные поля",
+      "editorSections": "Разделы записи",
+      "publicationSettings": "Публикация и настройки",
+      "statement": "Условие",
+      "relatedDraftHint": "Изменения применятся при сохранении основной записи.",
+      "modified": "Изменено",
+      "done": "Готово",
+      "workspace": "Рабочие разделы",
+      "supporting": "Связанные записи и настройки",
+      "mainSections": "Основные разделы",
+      "allRecords": "Все записи",
+      "addFirst": "Создать первую запись",
+      "emptyRecords": "Записей пока нет",
+      "newObject": "Создать",
+      "searchSections": "Найти раздел или инструмент",
+      "sections": {
+        "content": "Содержание",
+        "settings": "Настройки",
+        "media": "Изображения и файлы",
+        "advanced": "Дополнительно",
+        "details": "Сведения"
+      },
+      "inlines": {
+        "sample_tests": "Примеры",
+        "available_languages": "Языки и ограничения",
+        "problems": "Задачи",
+        "questions": "Вопросы",
+        "tasks": "Задания",
+        "available_technologies": "Технологии",
+        "tags": "Теги",
+        "topics": "Темы",
+        "groups": "Группы",
+        "attachments": "Вложения",
+        "educations": "Образование",
+        "work_experiences": "Опыт работы",
+        "technologies": "Технологии",
+        "skill_entries": "Навыки"
+      },
+      "organization": "Теги и вложения",
+      "profile": "Профиль",
+      "security": "Доступ и безопасность",
+      "recordActions": "Действия: {{name}}",
+      "sort": "Порядок"
     }
   }
 }

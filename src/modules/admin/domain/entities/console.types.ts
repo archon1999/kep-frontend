@@ -1,3 +1,5 @@
+import type { UserActivityStatistics } from 'shared/types/userActivity';
+
 export type AdminValues = Record<string, unknown>;
 export interface AdminPermissions {
   view: boolean;
@@ -145,6 +147,7 @@ export interface AdminDashboard {
   }[];
   upcoming: { id: string; label: string; resource: string; at: string; path: string }[];
   activity: { date: string; value: number }[];
+  userActivity: UserActivityStatistics | null;
   audit: AdminAuditEntry[];
   resourceCount: number;
   generatedAt: string;

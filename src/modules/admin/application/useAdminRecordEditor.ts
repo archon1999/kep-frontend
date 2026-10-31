@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import type { AdminDetail, AdminInlineRow, AdminValues } from 'modules/admin/domain';
+import type { AdminDetail, AdminInlineRow, AdminOption, AdminValues } from 'modules/admin/domain';
 import { localizeAdminRecord } from 'modules/admin/domain/utils/recordDraft';
 import { saveAdminRecord } from './mutations';
 
@@ -7,12 +7,14 @@ export const useAdminRecordEditor = (resourceKey: string, initial: AdminDetail) 
   const [record, setRecord] = useState(initial);
   const [values, setValues] = useState(initial.values);
   const [files, setFiles] = useState<Record<string, unknown>>({});
+  const [chosenOptions, setChosenOptions] = useState<Record<string, AdminOption[]>>({});
   const [inlines, setInlines] = useState<Record<string, Record<string, AdminInlineRow>>>({});
   const [dirty, setDirty] = useState(false);
   const [saving, setSaving] = useState(false);
   const [error, setError] = useState<unknown>(null);
-  const setField = (name: string, value: unknown) => {
+  const setField = (name: string, value: unknown, selected?: AdminOption[]) => {
     setValues((current) => ({ ...current, [name]: value }));
+    if (selected) setChosenOptions((current) => ({ ...current, [name]: selected }));
     setDirty(true);
   };
   const setFile = (name: string, value: unknown) => {
@@ -45,6 +47,7 @@ export const useAdminRecordEditor = (resourceKey: string, initial: AdminDetail) 
       setRecord(result);
       setValues(result.values);
       setFiles({});
+      setChosenOptions({});
       setInlines({});
       setDirty(false);
       return result;
@@ -55,9 +58,11 @@ export const useAdminRecordEditor = (resourceKey: string, initial: AdminDetail) 
       setSaving(false);
     }
   };
+  const localized = localizeAdminRecord(record, initial);
   return {
-    record: localizeAdminRecord(record, initial),
+    record: localized,
     values,
+    selectedOptions: { ...localized.selectedOptions, ...chosenOptions },
     files,
     inlines,
     dirty,

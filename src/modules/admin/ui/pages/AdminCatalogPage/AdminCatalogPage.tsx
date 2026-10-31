@@ -1,22 +1,35 @@
 import { useState } from 'react';
 import { useTranslation } from 'react-i18next';
-import { Link } from 'react-router';
-import { Box, Button, Chip, InputAdornment, Stack, TextField, Typography } from '@mui/material';
+import { Link, useSearchParams } from 'react-router';
+import {
+  Box,
+  Button,
+  Chip,
+  IconButton,
+  Stack,
+  Tab,
+  Tabs,
+  Tooltip,
+  Typography,
+} from '@mui/material';
 import { resources } from 'app/routes/resources';
 import { useAdminRegistry } from 'modules/admin/application';
 import IconifyIcon from 'shared/components/base/IconifyIcon';
 import EmptyState from 'shared/components/common/EmptyState';
+import SearchTextField from 'shared/components/common/SearchTextField';
 import FramedPage from 'shared/components/sections/common/FramedPage';
-import PageHeader from 'shared/components/sections/common/PageHeader';
 import { ConsoleError, ConsoleSkeleton } from '../../shared/components/ConsoleState';
+import WorkspaceHeader from '../../shared/components/WorkspaceHeader';
 import { resourceTitle } from '../../shared/helpers';
+import { isPrimaryResource } from '../../shared/helpers/resourcePresentation';
 
+const groups = ['practice', 'competitions', 'community', 'economy', 'platform', 'system'];
 export default function AdminCatalogPage() {
   const { t } = useTranslation();
   const { data, isLoading, error, mutate } = useAdminRegistry();
   const [search, setSearch] = useState('');
-  const [group, setGroup] = useState('all');
-  const groups = ['practice', 'competitions', 'community', 'economy', 'platform', 'system'];
+  const [params, setParams] = useSearchParams();
+  const group = params.get('group') || 'all';
   const term = search.trim().toLocaleLowerCase();
   const rows = (data ?? []).filter(
     (item) =>
@@ -25,43 +38,46 @@ export default function AdminCatalogPage() {
   );
   return (
     <FramedPage>
-      <PageHeader
+      <WorkspaceHeader
         title={t('admin.console.catalog')}
         backTo={resources.Admin}
         backLabel={t('admin.console.dashboard')}
       />
-      <Stack spacing={2} sx={{ p: { xs: 2, md: 3 }, borderBottom: 1, borderColor: 'divider' }}>
-        <TextField
-          autoFocus
+      <Box sx={{ p: { xs: 2, md: 3 } }}>
+        <SearchTextField
+          fullWidth
+          size="small"
           value={search}
           onChange={(event) => setSearch(event.target.value)}
-          placeholder={t('admin.console.findSection')}
-          inputProps={{ 'aria-label': t('admin.console.findSection') }}
+          onClear={() => setSearch('')}
+          placeholder={t('admin.workspace.searchSections')}
           slotProps={{
-            input: {
-              startAdornment: (
-                <InputAdornment position="start">
-                  <IconifyIcon icon="mdi:magnify" />
-                </InputAdornment>
-              ),
-            },
+            htmlInput: { 'aria-label': t('admin.workspace.searchSections') },
           }}
         />
-        <Stack direction="row" gap={1} flexWrap="wrap">
-          {['all', ...groups].map((value) => (
-            <Chip
-              key={value}
-              label={t(
-                value === 'all' ? 'admin.console.allSections' : `admin.console.groups.${value}`,
-              )}
-              color={group === value ? 'primary' : 'neutral'}
-              variant="soft"
-              onClick={() => setGroup(value)}
-              sx={{ minHeight: 32 }}
-            />
-          ))}
-        </Stack>
-      </Stack>
+      </Box>
+      <Tabs
+        value={group}
+        onChange={(_, value) => setParams(value === 'all' ? {} : { group: value })}
+        variant="scrollable"
+        aria-label={t('admin.console.sections')}
+        sx={{
+          px: { xs: 2, md: 3 },
+          borderBottom: 1,
+          borderColor: 'divider',
+          '& .MuiTab-root': { fontSize: 13, minWidth: 0, px: 1.5 },
+        }}
+      >
+        {['all', ...groups].map((value) => (
+          <Tab
+            key={value}
+            value={value}
+            label={t(
+              value === 'all' ? 'admin.console.allSections' : `admin.console.groups.${value}`,
+            )}
+          />
+        ))}
+      </Tabs>
       <ConsoleError error={error} retry={() => void mutate()} />
       {isLoading ? (
         <ConsoleSkeleton kind="catalog" />
@@ -73,59 +89,123 @@ export default function AdminCatalogPage() {
           .map((value) => {
             const items = rows.filter((item) => item.group === value);
             if (!items.length) return null;
+            const primary = items.filter(isPrimaryResource);
+            const supporting = items.filter((item) => !isPrimaryResource(item));
             return (
               <Box
-                key={value}
                 component="section"
+                key={value}
                 sx={{ p: { xs: 2, md: 3 }, borderBottom: 1, borderColor: 'divider' }}
               >
-                <Typography component="h2" variant="h6" sx={{ mb: 2 }}>
-                  {t(`admin.console.groups.${value}`)}
-                </Typography>
-                <Box
-                  sx={{
-                    display: 'grid',
-                    gridTemplateColumns: {
-                      xs: '1fr',
-                      sm: 'repeat(2, minmax(0, 1fr))',
-                      xl: 'repeat(3, minmax(0, 1fr))',
-                    },
-                    gap: 1.5,
-                  }}
-                >
-                  {items.map((item) => (
-                    <Button
-                      key={item.key}
-                      component={Link}
-                      to={item.path}
-                      variant="outlined"
-                      color="neutral"
+                <Stack direction="row" gap={1} alignItems="center" mb={2}>
+                  <Typography component="h2" variant="subtitle1" fontWeight={650}>
+                    {t(`admin.console.groups.${value}`)}
+                  </Typography>
+                  <Typography variant="caption" color="text.secondary">
+                    {items.length}
+                  </Typography>
+                </Stack>
+                {primary.length > 0 && (
+                  <Box
+                    sx={{
+                      display: 'grid',
+                      gridTemplateColumns: {
+                        xs: '1fr',
+                        sm: 'repeat(2, minmax(0, 1fr))',
+                        xl: 'repeat(3, minmax(0, 1fr))',
+                      },
+                      gap: 1.5,
+                      mb: supporting.length ? 3 : 0,
+                    }}
+                  >
+                    {primary.map((item) => (
+                      <Stack
+                        key={item.key}
+                        direction="row"
+                        alignItems="center"
+                        gap={1.5}
+                        sx={{
+                          border: 1,
+                          borderColor: 'divider',
+                          borderRadius: 1,
+                          p: 2,
+                          '&:hover': { borderColor: 'primary.main', bgcolor: 'action.hover' },
+                        }}
+                      >
+                        <IconifyIcon
+                          icon={item.icon}
+                          sx={{ color: 'primary.main', fontSize: 24 }}
+                        />
+                        <Button
+                          component={Link}
+                          to={item.path}
+                          color="neutral"
+                          sx={{ flex: 1, p: 0, justifyContent: 'flex-start', textAlign: 'left' }}
+                        >
+                          {resourceTitle(t, item)}
+                        </Button>
+                        {item.permissions.add ? (
+                          <Tooltip title={t('admin.actions.create')}>
+                            <IconButton
+                              component={Link}
+                              to={item.path + '/new'}
+                              size="small"
+                              aria-label={t('admin.console.createRecord', {
+                                name: resourceTitle(t, item),
+                              })}
+                            >
+                              <IconifyIcon icon="mdi:plus" />
+                            </IconButton>
+                          </Tooltip>
+                        ) : !item.permissions.change ? (
+                          <Chip size="small" variant="soft" label={t('admin.console.readOnly')} />
+                        ) : null}
+                      </Stack>
+                    ))}
+                  </Box>
+                )}
+                {supporting.length > 0 && (
+                  <>
+                    <Typography variant="caption" color="text.secondary">
+                      {t('admin.workspace.supporting')}
+                    </Typography>
+                    <Box
                       sx={{
-                        borderRadius: 0,
-                        borderColor: 'divider',
-                        justifyContent: 'flex-start',
-                        textAlign: 'left',
-                        px: 2,
-                        py: 2,
-                        gap: 1.5,
-                        '&:hover': { borderColor: 'primary.main' },
+                        mt: 1,
+                        display: 'grid',
+                        gridTemplateColumns: {
+                          xs: '1fr',
+                          sm: 'repeat(2, minmax(0, 1fr))',
+                          xl: 'repeat(3, minmax(0, 1fr))',
+                        },
+                        columnGap: 3,
                       }}
                     >
-                      <IconifyIcon icon={item.icon} sx={{ color: 'primary.main', fontSize: 23 }} />
-                      <Box sx={{ flex: 1, minWidth: 0 }}>
-                        <Typography fontWeight={600}>{resourceTitle(t, item)}</Typography>
-                        <Typography variant="caption" color="text.secondary">
-                          {t(
-                            item.permissions.change
-                              ? 'admin.console.manageRecords'
-                              : 'admin.console.readOnly',
-                          )}
-                        </Typography>
-                      </Box>
-                      <IconifyIcon icon="mdi:arrow-top-right" />
-                    </Button>
-                  ))}
-                </Box>
+                      {supporting.map((item) => (
+                        <Button
+                          key={item.key}
+                          component={Link}
+                          to={item.path}
+                          color="neutral"
+                          endIcon={<IconifyIcon icon="mdi:chevron-right" sx={{ ml: 'auto' }} />}
+                          sx={{
+                            justifyContent: 'space-between',
+                            borderBottom: 1,
+                            borderColor: 'divider',
+                            borderRadius: 0,
+                            py: 1.25,
+                            px: 0,
+                            fontSize: 13,
+                            textAlign: 'left',
+                            fontWeight: 500,
+                          }}
+                        >
+                          {resourceTitle(t, item)}
+                        </Button>
+                      ))}
+                    </Box>
+                  </>
+                )}
               </Box>
             );
           })

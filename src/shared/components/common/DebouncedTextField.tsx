@@ -1,7 +1,7 @@
 import { ComponentType } from 'react';
 import { TextFieldProps } from '@mui/material';
-import StyledTextField from 'shared/components/styled/StyledTextField';
 import useDebouncedInput from 'shared/hooks/useDebouncedInput';
+import SearchTextField from './SearchTextField';
 
 type DebouncedTextFieldProps = Omit<TextFieldProps, 'value' | 'defaultValue' | 'onChange'> & {
   value: string;
@@ -14,7 +14,7 @@ const DebouncedTextField = ({
   value,
   onValueChange,
   delay = 300,
-  textFieldComponent: TextFieldComponent = StyledTextField,
+  textFieldComponent: TextFieldComponent = SearchTextField,
   onKeyDown,
   ...props
 }: DebouncedTextFieldProps) => {
@@ -23,6 +23,7 @@ const DebouncedTextField = ({
   return (
     <TextFieldComponent
       {...props}
+      {...(TextFieldComponent === SearchTextField ? { onClear: () => input.setValue('') } : {})}
       value={input.value}
       onChange={(event) => input.setValue(event.target.value)}
       onKeyDown={(event) => {

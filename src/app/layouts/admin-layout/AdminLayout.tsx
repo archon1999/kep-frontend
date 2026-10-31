@@ -10,6 +10,10 @@ import { resources } from 'app/routes/resources';
 import { adminMenu } from 'app/routes/sitemap';
 import { useAdminRegistry } from 'modules/admin/application';
 import { resourceTitle } from 'modules/admin/ui/shared/helpers';
+import {
+  isPrimaryResource,
+  primaryResources,
+} from 'modules/admin/ui/shared/helpers/resourcePresentation';
 import IconifyIcon from 'shared/components/base/IconifyIcon';
 import MixedText from 'shared/components/common/MixedText';
 
@@ -29,7 +33,9 @@ export default function AdminLayout({ children }: PropsWithChildren) {
   const { pathname } = useLocation();
   const { data = [] } = useAdminRegistry();
   const [mobileOpen, setMobileOpen] = useState(false);
-  const currentGroup = data.find((item) => pathname.startsWith(item.path))?.group;
+  const activePath = (path: string) => pathname === path || pathname.startsWith(path + '/');
+  const currentGroup = data.find((item) => activePath(item.path))?.group;
+  const defaultGroup = data.find(isPrimaryResource)?.group ?? data[0]?.group;
   const [expanded, setExpanded] = useState<string | null>(null);
   const close = () => setMobileOpen(false);
   const navigation = (
@@ -69,9 +75,13 @@ export default function AdminLayout({ children }: PropsWithChildren) {
         {t('admin.console.sections')}
       </Typography>
       {groups.map((group, index) => {
-        const items = data.filter((item) => item.group === group);
-        if (!items.length) return null;
-        const open = expanded === group || (expanded === null && currentGroup === group);
+        const all = data.filter((item) => item.group === group);
+        const items = all
+          .filter((item) => isPrimaryResource(item) || pathname.startsWith(item.path + '/'))
+          .sort((a, b) => primaryResources.indexOf(a.key) - primaryResources.indexOf(b.key));
+        if (!all.length) return null;
+        const open =
+          expanded === group || (expanded === null && (currentGroup ?? defaultGroup) === group);
         return (
           <Box key={group}>
             <Button
@@ -98,8 +108,8 @@ export default function AdminLayout({ children }: PropsWithChildren) {
                     component={Link}
                     to={item.path}
                     onClick={close}
-                    variant={pathname.startsWith(item.path) ? 'soft' : 'text'}
-                    color={pathname.startsWith(item.path) ? 'primary' : 'neutral'}
+                    variant={activePath(item.path) ? 'soft' : 'text'}
+                    color={activePath(item.path) ? 'primary' : 'neutral'}
                     sx={{
                       justifyContent: 'flex-start',
                       py: 0.8,
@@ -108,11 +118,27 @@ export default function AdminLayout({ children }: PropsWithChildren) {
                       textAlign: 'left',
                       lineHeight: 1.5,
                     }}
-                    aria-current={pathname.startsWith(item.path) ? 'page' : undefined}
+                    aria-current={activePath(item.path) ? 'page' : undefined}
                   >
                     {resourceTitle(t, item)}
                   </Button>
                 ))}
+                <Button
+                  component={Link}
+                  to={`${resources.AdminCatalog}?group=${group}`}
+                  size="small"
+                  color="neutral"
+                  onClick={close}
+                  endIcon={<IconifyIcon icon="mdi:arrow-right" />}
+                  sx={{
+                    justifyContent: 'flex-start',
+                    px: 1.5,
+                    fontSize: 12,
+                    color: 'text.secondary',
+                  }}
+                >
+                  {t('admin.console.allSections')} · {all.length}
+                </Button>
               </Stack>
             </Collapse>
           </Box>

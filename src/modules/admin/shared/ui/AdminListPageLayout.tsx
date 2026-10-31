@@ -2,13 +2,13 @@ import { ReactNode } from 'react';
 import { useTranslation } from 'react-i18next';
 import { Link } from 'react-router';
 import { Box, Button, Stack } from '@mui/material';
+import WorkspaceHeader from 'modules/admin/ui/shared/components/WorkspaceHeader';
 import IconifyIcon from 'shared/components/base/IconifyIcon';
 import {
   DEFAULT_FILTER_DRAWER_WIDTH,
   FilterDrawerLayout,
 } from 'shared/components/common/FilterDrawer';
 import FramedPage from 'shared/components/sections/common/FramedPage';
-import PageHeader from 'shared/components/sections/common/PageHeader';
 import AdminFiltersToolbar from './AdminFiltersToolbar';
 
 interface AdminListPageLayoutProps {
@@ -55,9 +55,9 @@ const AdminListPageLayout = ({
 
   const content = (
     <Stack direction="column" spacing={0}>
-      <PageHeader
+      <WorkspaceHeader
         title={title}
-        actionComponent={
+        children={
           <Stack
             direction={{ xs: 'column', md: 'row' }}
             spacing={1.25}

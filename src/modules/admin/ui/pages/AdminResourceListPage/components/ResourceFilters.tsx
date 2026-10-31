@@ -1,15 +1,6 @@
 import { useState } from 'react';
 import { useTranslation } from 'react-i18next';
-import {
-  Box,
-  Button,
-  Chip,
-  Collapse,
-  InputAdornment,
-  MenuItem,
-  Stack,
-  TextField,
-} from '@mui/material';
+import { Box, Button, Chip, Collapse, MenuItem, Stack, Tab, Tabs, TextField } from '@mui/material';
 import type { AdminList, AdminListQuery } from 'modules/admin/domain';
 import IconifyIcon from 'shared/components/base/IconifyIcon';
 import DebouncedTextField from 'shared/components/common/DebouncedTextField';
@@ -27,9 +18,59 @@ export default function ResourceFilters({ resourceKey, fields, query, onChange, 
   const { t } = useTranslation();
   const selected = query.filters ?? {};
   const count = Object.keys(selected).length + (query.queue ? 1 : 0);
-  const [open, setOpen] = useState(count > 0);
+  const [open, setOpen] = useState(false);
+  const viewFilter = fields.find((field) =>
+    ['hidden', 'in_the_pipeline', 'status', 'is_active'].includes(field.name),
+  );
+  const views =
+    viewFilter?.kind === 'boolean'
+      ? [
+          {
+            value: 'false',
+            label: t(
+              viewFilter.name === 'is_active'
+                ? 'admin.workspace.inactive'
+                : viewFilter.name === 'hidden'
+                  ? 'admin.workspace.visible'
+                  : 'admin.workspace.public',
+            ),
+          },
+          {
+            value: 'true',
+            label: t(
+              viewFilter.name === 'is_active'
+                ? 'admin.workspace.active'
+                : viewFilter.name === 'hidden'
+                  ? 'admin.workspace.hidden'
+                  : 'admin.workspace.drafts',
+            ),
+          },
+        ]
+      : viewFilter?.choices.length && viewFilter.choices.length <= 6
+        ? viewFilter.choices
+        : [];
   return (
     <Box sx={{ borderBottom: 1, borderColor: 'divider' }}>
+      {viewFilter && views.length > 0 && (
+        <Tabs
+          value={String(selected[viewFilter.name] ?? '')}
+          onChange={(_, value) => onChange('filter.' + viewFilter.name, value)}
+          variant="scrollable"
+          aria-label={t('admin.workspace.views')}
+          sx={{
+            px: { xs: 2, md: 3 },
+            borderBottom: 1,
+            borderColor: 'divider',
+            minHeight: 44,
+            '& .MuiTab-root': { minHeight: 44, fontSize: 13 },
+          }}
+        >
+          <Tab value="" label={t('admin.console.all')} />
+          {views.map((view) => (
+            <Tab key={String(view.value)} value={String(view.value)} label={view.label} />
+          ))}
+        </Tabs>
+      )}
       <Stack
         direction="row"
         flexWrap="wrap"
@@ -38,19 +79,11 @@ export default function ResourceFilters({ resourceKey, fields, query, onChange, 
         sx={{ p: { xs: 2, md: 3 } }}
       >
         <DebouncedTextField
-          textFieldComponent={TextField}
           size="small"
           value={query.search ?? ''}
           onValueChange={(value) => onChange('search', value)}
           placeholder={t('admin.searchPlaceholder')}
           slotProps={{
-            input: {
-              startAdornment: (
-                <InputAdornment position="start">
-                  <IconifyIcon icon="mdi:magnify" />
-                </InputAdornment>
-              ),
-            },
             htmlInput: { 'aria-label': t('admin.searchPlaceholder') },
           }}
           sx={{ minWidth: 150, flex: '1 1 200px' }}
@@ -67,20 +100,12 @@ export default function ResourceFilters({ resourceKey, fields, query, onChange, 
             {count > 0 ? ` · ${count}` : ''}
           </Button>
         )}
-        <TextField
-          select
-          size="small"
-          label={t('admin.console.pageSize')}
-          value={query.pageSize ?? 20}
-          onChange={(event) => onChange('pageSize', event.target.value)}
-          sx={{ width: 105 }}
-        >
-          {[20, 30, 50].map((value) => (
-            <MenuItem key={value} value={value}>
-              {value}
-            </MenuItem>
-          ))}
-        </TextField>
+        <Box sx={{ display: { xs: 'none', sm: 'block' } }}>
+          <PageSizeControl
+            value={query.pageSize ?? 20}
+            onChange={(value) => onChange('pageSize', value)}
+          />
+        </Box>
       </Stack>
       <Collapse in={open}>
         <Box
@@ -167,5 +192,31 @@ export default function ResourceFilters({ resourceKey, fields, query, onChange, 
         </Stack>
       )}
     </Box>
+  );
+}
+
+export function PageSizeControl({
+  value,
+  onChange,
+}: {
+  value: number;
+  onChange: (value: string) => void;
+}) {
+  const { t } = useTranslation();
+  return (
+    <TextField
+      select
+      size="small"
+      label={t('admin.console.pageSize')}
+      value={value}
+      onChange={(event) => onChange(event.target.value)}
+      sx={{ width: 105 }}
+    >
+      {[20, 30, 50].map((size) => (
+        <MenuItem key={size} value={size}>
+          {size}
+        </MenuItem>
+      ))}
+    </TextField>
   );
 }

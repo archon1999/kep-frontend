@@ -407,8 +407,6 @@
       "needsAttention": "Ishlar navbati",
       "live": "Joriy ma’lumotlar",
       "allClear": "Kutilayotgan ishlar yo‘q",
-      "newUsers": "Yangi foydalanuvchilar",
-      "last14Days": "Oxirgi 14 kun",
       "quickCreate": "Tezkor yaratish",
       "availableSections": "{{count}} ta bo‘lim mavjud",
       "exploreSections": "Barcha bo‘limlarni ochish",
@@ -440,7 +438,7 @@
       "importOrderHelp": "Mavjud oflayn buyurtmani kiriting. Tanlangan holat va ombor qoidalari buyurtma xizmati orqali qo‘llanadi.",
       "groups": {
         "practice": "Mashq va ta’lim",
-        "competitions": "Musobaqalar",
+        "competitions": "Musobaqalar va bellashuvlar",
         "community": "Hamjamiyat",
         "economy": "Kepcoin va do‘kon",
         "platform": "Platforma kontenti",
@@ -450,7 +448,7 @@
         "users": "Foydalanuvchilar",
         "problems": "Masalalar",
         "contests": "Kontestlar",
-        "projects": "Loyihalar"
+        "attempts": "Urinishlar"
       },
       "queues": {
         "judging": "Tekshirish kutilayotgan urinishlar",
@@ -768,6 +766,66 @@
         "canonical_link": "Asosiy URL",
         "table_of_contents": "Mundarija"
       }
+    },
+    "workspace": {
+      "selectedActions": "Tanlanganlar bilan amallar",
+      "openRecord": "Yozuvni ochish",
+      "compact": "Ixcham qatorlar",
+      "comfortable": "Keng qatorlar",
+      "columns": "Ustunlar",
+      "resetColumns": "Ustunlarni tiklash",
+      "views": "Tezkor filtrlar",
+      "draft": "Qoralama",
+      "drafts": "Tayyorlanmoqda",
+      "public": "Nashr qilingan",
+      "visible": "Ko‘rinadigan",
+      "hidden": "Yashirilgan",
+      "inactive": "Nofaol",
+      "active": "Faol",
+      "newRecord": "Yangi yozuv",
+      "fixFields": "Belgilangan maydonlarni tekshiring",
+      "editorSections": "Yozuv bo‘limlari",
+      "publicationSettings": "Nashr va sozlamalar",
+      "statement": "Masala sharti",
+      "relatedDraftHint": "Bu yerdagi o‘zgarishlar asosiy yozuv saqlanganda qo‘llanadi.",
+      "modified": "O‘zgartirildi",
+      "done": "Tayyor",
+      "workspace": "Ish bo‘limlari",
+      "supporting": "Bog‘langan yozuvlar va sozlamalar",
+      "mainSections": "Asosiy bo‘limlar",
+      "allRecords": "Barcha yozuvlar",
+      "addFirst": "Birinchi yozuvni yaratish",
+      "emptyRecords": "Hozircha yozuvlar yo‘q",
+      "newObject": "Yaratish",
+      "searchSections": "Bo‘lim yoki vositani topish",
+      "sections": {
+        "content": "Mazmun",
+        "settings": "Sozlamalar",
+        "media": "Rasm va fayllar",
+        "advanced": "Qo‘shimcha",
+        "details": "Ma’lumotlar"
+      },
+      "inlines": {
+        "sample_tests": "Namuna testlar",
+        "available_languages": "Tillar va cheklovlar",
+        "problems": "Masalalar",
+        "questions": "Savollar",
+        "tasks": "Vazifalar",
+        "available_technologies": "Texnologiyalar",
+        "tags": "Teglar",
+        "topics": "Mavzular",
+        "groups": "Guruhlar",
+        "attachments": "Ilovalar",
+        "educations": "Ta’lim",
+        "work_experiences": "Ish tajribasi",
+        "technologies": "Texnologiyalar",
+        "skill_entries": "Ko‘nikmalar"
+      },
+      "organization": "Teg va ilovalar",
+      "profile": "Profil",
+      "security": "Ruxsatlar va xavfsizlik",
+      "recordActions": "{{name}} uchun amallar",
+      "sort": "Saralash"
     }
   }
 }

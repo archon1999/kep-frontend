@@ -2,10 +2,10 @@ import { FormEvent, ReactNode, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { Link } from 'react-router';
 import { Box, Button, DialogActions, Drawer, Stack, Typography } from '@mui/material';
+import WorkspaceHeader from 'modules/admin/ui/shared/components/WorkspaceHeader';
 import IconifyIcon from 'shared/components/base/IconifyIcon';
 import DialogHeader from 'shared/components/common/DialogHeader';
 import FramedPage from 'shared/components/sections/common/FramedPage';
-import PageHeader from 'shared/components/sections/common/PageHeader';
 import { BackToListButtonProvider } from './BackToListButton';
 
 interface AdminFormPageLayoutProps {
@@ -41,11 +41,11 @@ export default function AdminFormPageLayout({
     <FramedPage>
       <BackToListButtonProvider listPath={listPath}>
         <Box component="form" id={formId} onSubmit={submit} aria-busy={isSaving}>
-          <PageHeader
+          <WorkspaceHeader
             title={title}
             backTo={listPath}
             backLabel={t('admin.actions.backToList')}
-            actionComponent={
+            children={
               <Button
                 type="submit"
                 variant="contained"
