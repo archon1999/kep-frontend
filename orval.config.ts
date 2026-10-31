@@ -1,6 +1,6 @@
 import { defineConfig } from 'orval';
 
-const schema = 'https://kep.uz/swagger/?format=openapi';
+const schema = process.env.KEP_OPENAPI_SCHEMA || 'https://kep.uz/swagger/?format=openapi';
 
 export default defineConfig({
   // Scope this feature to its new contract. The legacy full schema contains
@@ -18,7 +18,7 @@ export default defineConfig({
           ),
         }),
       },
-      filters: { mode: 'include', schemas: ['Run', 'RunResult'] },
+      filters: { mode: 'include', schemas: ['Run', 'RunResult', 'PublicLanguage'] },
     },
     output: {
       mode: 'split',

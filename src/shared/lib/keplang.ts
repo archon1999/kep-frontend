@@ -18,9 +18,25 @@ export const registerKEPLang = (monaco: Monaco) => {
     ],
   });
   monaco.languages.setMonarchTokensProvider('keplang', {
-    keywords: ['bosa', 'bomasa', 'toki', 'aylan', 'shundat', 'qaytar', 'toxta', 'davom', 'at'],
+    keywords: [
+      'agar',
+      'bosa',
+      'bomasa',
+      'to',
+      'toki',
+      'bolincha',
+      'aylan',
+      'shundat',
+      'qaytar',
+      'toxta',
+      'davom',
+      'at',
+    ],
     types: ['son', 'matn', 'mantiq', 'lugat', 'toplam'],
     builtins: [
+      'uqi',
+      'uqi_soz',
+      'uqi_satr',
       'al',
       'al_soz',
       'al_satr',

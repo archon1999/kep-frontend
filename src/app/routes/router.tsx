@@ -631,11 +631,6 @@ export const routes: RouteObject[] = [
             handle: { titleKey: 'pageTitles.calendar' },
           },
           {
-            path: resources.Playground,
-            element: <PlaygroundPage />,
-            handle: { titleKey: 'pageTitles.playground' },
-          },
-          {
             path: resources.Hackathons,
             element: <HackathonsListPage />,
             handle: { titleKey: 'pageTitles.hackathons' },
@@ -762,6 +757,11 @@ export const routes: RouteObject[] = [
         path: resources.Project,
         element: withSuspense(<ProjectDetailPage />),
         handle: { titleKey: 'pageTitles.project', fallbackTitleKey: 'pageTitles.projects' },
+      },
+      {
+        path: resources.Playground,
+        element: withSuspense(<PlaygroundPage />),
+        handle: { titleKey: 'pageTitles.playground' },
       },
       {
         path: resources.Problem,

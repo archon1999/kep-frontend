@@ -1,8 +1,7 @@
 import { ChangeEvent, useEffect, useRef } from 'react';
 import { useTranslation } from 'react-i18next';
-import { Panel, PanelGroup } from 'react-resizable-panels';
 import { Link as RouterLink } from 'react-router-dom';
-import Editor, { useMonaco } from '@monaco-editor/react';
+import { useMonaco } from '@monaco-editor/react';
 import {
   Box,
   Button,
@@ -13,8 +12,6 @@ import {
   Tooltip,
   Typography,
 } from '@mui/material';
-import { useTheme } from '@mui/material/styles';
-import useMediaQuery from '@mui/material/useMediaQuery';
 import { useAuth } from 'app/providers/AuthProvider';
 import { resources } from 'app/routes/resources';
 import {
@@ -25,25 +22,12 @@ import {
 import type { SampleTestResult } from 'modules/problems/domain/entities/workspace.types';
 import { detectPastedLanguage } from 'modules/problems/lib/detectPastedLanguage';
 import KepIcon from 'shared/components/base/KepIcon';
+import { CodeEditor, getEditorLanguage } from 'shared/components/code-workspace/CodeEditor';
+import { WorkspaceSplit } from 'shared/components/code-workspace/WorkspaceSplit';
 import { WorkspacePane, WorkspaceToolbar } from 'shared/components/sections/common/Workspace';
-import { useMonacoTheme } from 'shared/hooks/useMonacoTheme';
 import { useLoginHref } from 'shared/lib/authRedirect';
 import { toast } from 'sonner';
-import { VerticalHandle } from './PanelHandles';
 import ProblemConsole from './ProblemConsole';
-
-const getEditorLanguage = (lang: string) =>
-  ({
-    [AttemptLangs.PYTHON]: 'python',
-    [AttemptLangs.KOTLIN]: 'kotlin',
-    [AttemptLangs.CSHARP]: 'csharp',
-    [AttemptLangs.JS]: 'javascript',
-    [AttemptLangs.TS]: 'typescript',
-    [AttemptLangs.RUST]: 'rust',
-    [AttemptLangs.KEP]: 'keplang',
-  })[lang] ||
-  lang ||
-  'javascript';
 
 interface ProblemEditorPanelProps {
   problem?: ProblemDetail;
@@ -106,9 +90,6 @@ export const ProblemEditorPanel = (props: ProblemEditorPanelProps) => {
   } = props;
   const { currentUser } = useAuth();
   const { t } = useTranslation();
-  const theme = useTheme();
-  const codeTheme = useMonacoTheme(editorTheme);
-  const isCompact = useMediaQuery(theme.breakpoints.down('sm'));
   const loginHref = useLoginHref();
   const selectedLanguageInfo = problem?.availableLanguages?.find(
     (lang) => lang.lang === selectedLang,
@@ -325,11 +306,13 @@ export const ProblemEditorPanel = (props: ProblemEditorPanelProps) => {
         </Tooltip>
       </WorkspaceToolbar>
       <Box sx={{ flex: 1, minHeight: 0, overflow: 'hidden' }}>
-        <PanelGroup direction="vertical" style={{ height: '100%' }}>
-          <Panel defaultSize={68} minSize={30}>
+        <WorkspaceSplit
+          editor={
             <Box sx={{ height: '100%', overflow: 'hidden', bgcolor: 'background.paper' }}>
-              <Editor
-                language={getEditorLanguage(selectedLang)}
+              <CodeEditor
+                language={selectedLang}
+                fallbackTheme={editorTheme}
+                onRun={props.onRun}
                 defaultValue={initialCode}
                 onMount={(editor, mountedMonaco) => {
                   editorRef.current = editor;
@@ -347,31 +330,18 @@ export const ProblemEditorPanel = (props: ProblemEditorPanelProps) => {
                 }}
                 options={{
                   minimap: { enabled: false },
-                  fontSize: isCompact ? 13 : 14,
-                  fontLigatures: true,
-                  smoothScrolling: true,
                   roundedSelection: false,
-                  wordWrap: isCompact ? 'on' : 'off',
-                  scrollBeyondLastLine: false,
-                  lineHeight: 23,
-                  lineNumbersMinChars: isCompact ? 3 : 4,
-                  padding: { top: 18, bottom: 18 },
-                  automaticLayout: true,
-                  renderLineHighlight: 'all',
                   ariaLabel: t('problems.workspace.editor'),
                   scrollbar: { verticalScrollbarSize: 8, horizontalScrollbarSize: 8 },
                   guides: { indentation: true, highlightActiveIndentation: true },
                   readOnly: isDisabled,
                 }}
-                theme={codeTheme.theme}
-                beforeMount={codeTheme.beforeMount}
                 loading={<LinearProgress />}
                 height="100%"
               />
             </Box>
-          </Panel>
-          <VerticalHandle />
-          <Panel defaultSize={32} minSize={20}>
+          }
+          console={
             <ProblemConsole
               input={input}
               output={output}
@@ -386,8 +356,8 @@ export const ProblemEditorPanel = (props: ProblemEditorPanelProps) => {
               isDisabled={isDisabled}
               checkSamplesResult={checkSamplesResult}
             />
-          </Panel>
-        </PanelGroup>
+          }
+        />
       </Box>
       <Stack
         component="footer"

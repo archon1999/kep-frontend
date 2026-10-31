@@ -5,10 +5,38 @@
  * Test description
  * OpenAPI spec version: v1
  */
+export interface PublicLanguage {
+  /** @minLength 1 */
+  lang: string;
+  /** @minLength 1 */
+  label: string;
+  /** @minLength 1 */
+  extension: string;
+  /** @minLength 1 */
+  editorLanguage: string;
+  /** @minLength 1 */
+  codeTemplate: string;
+  timeLimit: number;
+  memoryLimit: number;
+}
+
 export type RunLang = (typeof RunLang)[keyof typeof RunLang];
 
 export const RunLang = {
   kep: 'kep',
+  py: 'py',
+  cpp: 'cpp',
+  c: 'c',
+  java: 'java',
+  js: 'js',
+  ts: 'ts',
+  rs: 'rs',
+  go: 'go',
+  kt: 'kt',
+  cs: 'cs',
+  php: 'php',
+  hs: 'hs',
+  r: 'r',
 } as const;
 
 export interface Run {
