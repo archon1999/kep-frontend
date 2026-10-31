@@ -1,7 +1,6 @@
 import { useMemo } from 'react';
 import { useTranslation } from 'react-i18next';
 import { Button, Stack } from '@mui/material';
-import SearchTextField from 'app/layouts/main-layout/common/search-box/SearchTextField.tsx';
 import { difficultyOptions } from 'modules/problems/config/difficulty';
 import { ProblemsListParams } from 'modules/problems/domain/contracts/problems.repository.ts';
 import {
@@ -14,6 +13,7 @@ import AppliedFilters from 'shared/components/common/AppliedFilters.tsx';
 import DebouncedTextField from 'shared/components/common/DebouncedTextField';
 import FilterButton from 'shared/components/common/FilterButton.tsx';
 import ResponsiveTabs from 'shared/components/common/ResponsiveTabs';
+import SearchTextField from 'shared/components/common/SearchTextField';
 import { problemStatusOptions } from './ProblemsFilterDrawer.tsx';
 
 const orderingOptions = [

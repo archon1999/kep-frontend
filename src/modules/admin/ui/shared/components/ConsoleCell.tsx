@@ -27,7 +27,7 @@ export default function ConsoleCell({ cell }: { cell?: AdminCell }) {
         component="img"
         src={cell.url}
         alt=""
-        sx={{ maxWidth: 180, maxHeight: 100, objectFit: 'contain' }}
+        sx={{ maxWidth: 64, maxHeight: 48, objectFit: 'contain', borderRadius: 0.5 }}
       />
     );
   if (cell.kind === 'link' && cell.url)
@@ -59,6 +59,7 @@ export default function ConsoleCell({ cell }: { cell?: AdminCell }) {
   return (
     <Box
       component="span"
+      title={text}
       sx={{
         fontFamily: cell.kind === 'number' ? 'var(--kep-display-font)' : undefined,
         fontFeatureSettings: cell.kind === 'number' ? '"ss01" 1' : undefined,

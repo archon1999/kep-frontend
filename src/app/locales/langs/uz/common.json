@@ -92,7 +92,22 @@
     "invalidFormula": "Formula yozilishini tekshirib, qayta urinib ko‘ring.",
     "languageMenu": {
       "title": "Til"
-    }
+    },
+    "editorTools": {
+      "content": "Mazmun",
+      "bold": "Qalin",
+      "italic": "Kursiv",
+      "underline": "Tagiga chizish",
+      "strike": "Ustidan chizish",
+      "quote": "Iqtibos",
+      "code": "Kod bloki",
+      "link": "Havola kiritish",
+      "clear": "Formatni tozalash",
+      "formula": "Formula kiritish",
+      "numbered": "Raqamli ro‘yxat",
+      "bulleted": "Belgili ro‘yxat"
+    },
+    "clearSearch": "Qidiruvni tozalash"
   },
   "notifications": {
     "unread": "O‘qilmagan",

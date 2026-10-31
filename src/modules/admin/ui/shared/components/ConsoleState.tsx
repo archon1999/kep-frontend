@@ -28,7 +28,7 @@ export const ConsoleSkeleton = ({
   kind = 'list',
   header = false,
 }: {
-  kind?: 'list' | 'dashboard' | 'form' | 'catalog';
+  kind?: 'list' | 'form' | 'catalog';
   header?: boolean;
 }) => (
   <Box sx={{ p: { xs: 2, md: 3 } }} aria-busy="true">
@@ -38,47 +38,52 @@ export const ConsoleSkeleton = ({
         <Skeleton width={120} height={42} />
       </Stack>
     )}
-    {kind === 'dashboard' ? (
+    {kind === 'form' ? (
       <Box
         sx={{
           display: 'grid',
-          gridTemplateColumns: { xs: '1fr 1fr', md: 'repeat(4, 1fr)' },
-          gap: 2,
-          mb: 3,
+          gridTemplateColumns: { xs: '1fr', lg: 'minmax(0, 1fr) 300px' },
+          gap: 3,
         }}
       >
-        {Array.from({ length: 4 }, (_, i) => (
-          <Skeleton key={i} variant="rectangular" height={112} />
-        ))}
+        <Box>
+          <Stack direction="row" spacing={2} mb={3}>
+            {[90, 90, 80, 80].map((width, index) => (
+              <Skeleton key={index} width={width} height={42} />
+            ))}
+          </Stack>
+          <Skeleton width="30%" height={22} sx={{ mb: 2 }} />
+          <Skeleton variant="rectangular" height={44} sx={{ mb: 3 }} />
+          <Skeleton width="24%" height={22} sx={{ mb: 1 }} />
+          <Skeleton variant="rectangular" height={220} />
+          <Skeleton width="30%" height={22} sx={{ my: 2 }} />
+          <Skeleton variant="rectangular" height={160} />
+        </Box>
+        <Box sx={{ borderLeft: { lg: '1px solid var(--kep-line)' }, px: 2 }}>
+          <Skeleton width="70%" height={24} sx={{ mb: 3 }} />
+          {[0, 1, 2].map((index) => (
+            <Skeleton key={index} variant="rectangular" height={44} sx={{ mb: 3 }} />
+          ))}
+        </Box>
       </Box>
-    ) : null}
-    {kind === 'form' || kind === 'catalog' || kind === 'dashboard' ? (
+    ) : kind === 'catalog' ? (
       <Box
         sx={{
           display: 'grid',
           gridTemplateColumns: {
             xs: '1fr',
             md: 'repeat(2, minmax(0, 1fr))',
-            xl: kind === 'catalog' ? 'repeat(3, minmax(0, 1fr))' : 'repeat(2, minmax(0, 1fr))',
+            xl: 'repeat(3, minmax(0, 1fr))',
           },
           gap: 3,
         }}
       >
-        {Array.from({ length: kind === 'form' ? 6 : 9 }, (_, index) => (
+        {Array.from({ length: 9 }, (_, index) => (
           <Box key={index}>
             <Skeleton width="38%" height={24} sx={{ mb: 1 }} />
-            <Skeleton
-              variant="rectangular"
-              height={kind === 'form' ? 48 : kind === 'catalog' ? 64 : 112}
-            />
+            <Skeleton variant="rectangular" height={64} />
           </Box>
         ))}
-        {kind === 'form' && (
-          <Box sx={{ gridColumn: '1 / -1' }}>
-            <Skeleton width="24%" height={24} sx={{ mb: 1 }} />
-            <Skeleton variant="rectangular" height={240} />
-          </Box>
-        )}
       </Box>
     ) : (
       <Stack spacing={0}>

@@ -1,5 +1,6 @@
 import { Suspense, lazy, useEffect, useId, useState } from 'react';
 import { useTranslation } from 'react-i18next';
+import { Link } from 'react-router';
 import {
   Autocomplete,
   Box,
@@ -14,13 +15,14 @@ import {
   TextField,
   Typography,
 } from '@mui/material';
-import { useAdminRelation } from 'modules/admin/application';
+import { useAdminRegistry, useAdminRelation } from 'modules/admin/application';
 import type { AdminField, AdminOption, AdminValues } from 'modules/admin/domain';
 import IconifyIcon from 'shared/components/base/IconifyIcon';
 import { errorText, fieldHelp, fieldTitle, formatFieldValue } from '../helpers';
 
 const RichTextEditor = lazy(() => import('shared/components/form/RichTextEditor'));
 interface Props {
+  pendingFile?: File | null;
   filterLookup?: boolean;
   resourceKey: string;
   field: AdminField;
@@ -31,7 +33,7 @@ interface Props {
   inline?: string;
   error?: unknown;
   disabled?: boolean;
-  onChange: (value: unknown) => void;
+  onChange: (value: unknown, selected?: AdminOption[]) => void;
   onUpload?: (file: File | null) => void;
 }
 
@@ -49,6 +51,8 @@ function RelationField({
   onChange,
 }: Props) {
   const { t } = useTranslation();
+  const { data: catalog = [] } = useAdminRegistry();
+  const relatedResource = catalog.find((resource) => resource.key === field.resource);
   const [open, setOpen] = useState(false);
   const [input, setInput] = useState('');
   const [search, setSearch] = useState('');
@@ -80,47 +84,84 @@ function RelationField({
     (id) => options.find((option) => String(option.value) === id) ?? { value: id, label: '#' + id },
   );
   return (
-    <Autocomplete
-      multiple={multiple}
-      limitTags={3}
-      open={open}
-      onOpen={() => setOpen(true)}
-      onClose={() => setOpen(false)}
-      disabled={disabled || field.readOnly}
-      options={options}
-      filterOptions={(items) => items}
-      getOptionLabel={(option) => option.label}
-      isOptionEqualToValue={(a, b) => String(a.value) === String(b.value)}
-      value={multiple ? active : (active[0] ?? null)}
-      loading={isLoading}
-      onInputChange={(_, next, reason) => {
-        if (reason === 'input' || reason === 'clear') setInput(next);
-      }}
-      onChange={(_, next) => {
-        const items = Array.isArray(next) ? next : next ? [next] : [];
-        setChosen(items);
-        onChange(multiple ? items.map((item) => item.value) : (items[0]?.value ?? null));
-      }}
-      noOptionsText={t('admin.console.noResults')}
-      loadingText={t('admin.console.loading')}
-      renderInput={(params) => (
-        <TextField
-          {...params}
-          label={fieldTitle(t, field)}
-          required={field.required && !multiple}
-          error={Boolean(error || lookupError)}
-          helperText={
-            errorText(error) || (lookupError ? t('admin.console.lookupError') : fieldHelp(t, field))
-          }
-        />
+    <Box>
+      <Autocomplete
+        size="small"
+        multiple={multiple}
+        limitTags={3}
+        open={open}
+        onOpen={() => setOpen(true)}
+        onClose={() => setOpen(false)}
+        disabled={disabled || field.readOnly}
+        options={options}
+        filterOptions={(items) => items}
+        getOptionLabel={(option) => option.label}
+        isOptionEqualToValue={(a, b) => String(a.value) === String(b.value)}
+        value={multiple ? active : (active[0] ?? null)}
+        loading={isLoading}
+        onInputChange={(_, next, reason) => {
+          if (reason === 'input' || reason === 'clear') setInput(next);
+        }}
+        onChange={(_, next) => {
+          const items = Array.isArray(next) ? next : next ? [next] : [];
+          setChosen(items);
+          onChange(multiple ? items.map((item) => item.value) : (items[0]?.value ?? null), items);
+        }}
+        noOptionsText={t('admin.console.noResults')}
+        loadingText={t('admin.console.loading')}
+        renderInput={(params) => (
+          <TextField
+            {...params}
+            label={fieldTitle(t, field)}
+            required={field.required && !multiple}
+            error={Boolean(error || lookupError)}
+            helperText={
+              errorText(error) ||
+              (lookupError ? t('admin.console.lookupError') : fieldHelp(t, field))
+            }
+          />
+        )}
+      />
+      {!filterLookup && relatedResource && !disabled && (
+        <Stack direction="row" justifyContent="flex-end" gap={1} sx={{ mt: 0.5 }}>
+          {!multiple && ids[0] && (
+            <Button
+              component={Link}
+              to={`${relatedResource.path}/${encodeURIComponent(ids[0])}`}
+              target="_blank"
+              rel="noopener noreferrer"
+              size="small"
+              color="neutral"
+              endIcon={<IconifyIcon icon="mdi:open-in-new" />}
+              sx={{ py: 0, fontSize: 11 }}
+            >
+              {t('admin.workspace.openRecord')}
+            </Button>
+          )}
+          {relatedResource.permissions.add && (
+            <Button
+              component={Link}
+              to={relatedResource.path + '/new'}
+              target="_blank"
+              rel="noopener noreferrer"
+              size="small"
+              color="neutral"
+              startIcon={<IconifyIcon icon="mdi:plus" />}
+              sx={{ py: 0, fontSize: 11 }}
+            >
+              {t('admin.actions.create')}
+            </Button>
+          )}
+        </Stack>
       )}
-    />
+    </Box>
   );
 }
 
-function UploadField({ field, value, disabled, error, onUpload, onChange }: Props) {
+function UploadField({ field, value, disabled, error, onUpload, onChange, pendingFile }: Props) {
   const { t } = useTranslation();
-  const [file, setFile] = useState<File | null>(null);
+  const [localFile, setFile] = useState<File | null>(null);
+  const file = pendingFile === undefined ? localFile : pendingFile;
   const [preview, setPreview] = useState('');
   const id = useId();
   const existing =
@@ -177,6 +218,7 @@ function UploadField({ field, value, disabled, error, onUpload, onChange }: Prop
                     setFile(next);
                     onUpload?.(next);
                   }
+                  event.target.value = '';
                 }}
               />
             </Button>
@@ -228,10 +270,20 @@ export default function SchemaField(props: Props) {
   if (field.kind === 'file' || field.kind === 'image') return <UploadField {...props} />;
   if (field.kind === 'boolean')
     return (
-      <Box sx={{ py: 1 }}>
+      <Box sx={{ py: 0.5 }}>
         <FormControlLabel
+          sx={{
+            m: 0,
+            display: 'flex',
+            flexDirection: 'row-reverse',
+            justifyContent: 'space-between',
+            gap: 1,
+            width: 1,
+            '& .MuiFormControlLabel-label': { fontSize: 13 },
+          }}
           control={
             <Switch
+              size="small"
               name={name}
               checked={Boolean(value)}
               onChange={(_, checked) => onChange(checked)}
@@ -245,7 +297,17 @@ export default function SchemaField(props: Props) {
     );
   if (field.kind === 'richText')
     return (
-      <Box role="group" aria-labelledby={labelId}>
+      <Box
+        role="group"
+        aria-labelledby={labelId}
+        aria-invalid={Boolean(error)}
+        tabIndex={error ? -1 : undefined}
+        sx={{
+          borderRadius: 1,
+          outline: error ? '1px solid' : undefined,
+          outlineColor: 'error.main',
+        }}
+      >
         <Typography id={labelId} variant="body2" fontWeight={600} mb={1}>
           {label}
           {field.required ? ' *' : ''}
@@ -255,6 +317,8 @@ export default function SchemaField(props: Props) {
         ) : (
           <Suspense fallback={<Skeleton variant="rectangular" height={220} />}>
             <RichTextEditor
+              ariaLabel={label}
+              ariaInvalid={Boolean(error)}
               value={richValue}
               onChange={field.format === 'quill' ? () => undefined : onChange}
               onDocumentChange={field.format === 'quill' ? onChange : undefined}
@@ -271,6 +335,7 @@ export default function SchemaField(props: Props) {
   return (
     <TextField
       fullWidth
+      size="small"
       name={name}
       label={label}
       required={field.required}
@@ -306,6 +371,11 @@ export default function SchemaField(props: Props) {
         )
       }
       slotProps={{
+        input:
+          /^(input|output|source_code|code_template|json)$/.test(field.name) ||
+          field.kind === 'json'
+            ? { sx: { fontFamily: 'monospace', fontSize: 13 } }
+            : undefined,
         inputLabel: ['datetime', 'date', 'time'].includes(field.kind)
           ? { shrink: true }
           : undefined,

@@ -9,12 +9,12 @@ export default function PublicationChecks({ checks }: { checks: AdminDetail['che
   return (
     <Box
       component="section"
-      sx={{ p: { xs: 2, md: 3 }, borderBottom: 1, borderColor: 'divider', bgcolor: 'action.hover' }}
+      sx={{ p: 2.5, borderBottom: 1, borderColor: 'divider', bgcolor: 'action.hover' }}
     >
       <Typography component="h2" variant="subtitle2" mb={1.5}>
         {t('admin.console.publicationChecks')}
       </Typography>
-      <Stack direction={{ xs: 'column', md: 'row' }} gap={{ xs: 1, md: 3 }} flexWrap="wrap">
+      <Stack direction="column" gap={1.5} flexWrap="wrap">
         {checks.map((check) => (
           <Stack key={check.key} direction="row" gap={1} alignItems="center">
             <IconifyIcon

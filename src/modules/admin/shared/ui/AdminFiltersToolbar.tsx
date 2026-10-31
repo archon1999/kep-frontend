@@ -1,10 +1,10 @@
 import { ReactNode, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { Button, Chip, Stack } from '@mui/material';
-import SearchTextField from 'app/layouts/main-layout/common/search-box/SearchTextField';
 import DebouncedTextField from 'shared/components/common/DebouncedTextField';
 import FilterButton from 'shared/components/common/FilterButton';
 import FilterPopover from 'shared/components/common/FilterPopover';
+import SearchTextField from 'shared/components/common/SearchTextField';
 
 export interface AdminActiveFilter {
   key: string;

@@ -92,7 +92,22 @@
     "invalidFormula": "Check the formula syntax and try again.",
     "languageMenu": {
       "title": "Language"
-    }
+    },
+    "editorTools": {
+      "content": "Content",
+      "bold": "Bold",
+      "italic": "Italic",
+      "underline": "Underline",
+      "strike": "Strikethrough",
+      "quote": "Quote",
+      "code": "Code block",
+      "link": "Insert link",
+      "clear": "Clear formatting",
+      "formula": "Insert formula",
+      "numbered": "Numbered list",
+      "bulleted": "Bulleted list"
+    },
+    "clearSearch": "Clear search"
   },
   "notifications": {
     "unread": "Unread",

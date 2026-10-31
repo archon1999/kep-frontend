@@ -1,20 +1,19 @@
-import { useState } from 'react';
 import { useTranslation } from 'react-i18next';
-import { Link, useParams, useSearchParams } from 'react-router';
-import { Box, Button, Chip, LinearProgress, Stack, Typography } from '@mui/material';
+import { Link, useParams } from 'react-router';
+import { Button, Chip, LinearProgress, Stack } from '@mui/material';
 import { useAuth } from 'app/providers/AuthProvider';
 import { resources } from 'app/routes/resources';
-import { previewAdminAction, useAdminList } from 'modules/admin/application';
-import type { AdminActionPreview } from 'modules/admin/domain';
+import { useAdminResourceList } from 'modules/admin/application/useAdminResourceList';
 import IconifyIcon from 'shared/components/base/IconifyIcon';
 import EmptyState from 'shared/components/common/EmptyState';
 import { ListPagination } from 'shared/components/sections/common/FramedListPage';
 import FramedPage from 'shared/components/sections/common/FramedPage';
-import PageHeader from 'shared/components/sections/common/PageHeader';
 import ActionDialog from '../../shared/components/ActionDialog';
 import { ConsoleError, ConsoleSkeleton } from '../../shared/components/ConsoleState';
-import { actionTitle, resourceTitle } from '../../shared/helpers';
-import ResourceFilters from './components/ResourceFilters';
+import ResourceActions from '../../shared/components/ResourceActions';
+import WorkspaceHeader from '../../shared/components/WorkspaceHeader';
+import { resourceTitle } from '../../shared/helpers';
+import ResourceFilters, { PageSizeControl } from './components/ResourceFilters';
 import ResourceTable from './components/ResourceTable';
 
 export default function AdminResourceListPage() {
@@ -25,54 +24,30 @@ export default function AdminResourceListPage() {
 function ResourceList({ resourceKey }: { resourceKey: string }) {
   const { t } = useTranslation();
   const { currentUser } = useAuth();
-  const [params, setParams] = useSearchParams();
-  const filters = Object.fromEntries(
-    Array.from(params.entries())
-      .filter(([key]) => key.startsWith('filter.'))
-      .map(([key, value]) => [key.slice(7), value]),
-  );
-  const query = {
-    queue: params.get('queue') || undefined,
-    search: params.get('search') || '',
-    page: Math.max(1, Number(params.get('page')) || 1),
-    pageSize: Number(params.get('pageSize')) || 20,
-    ordering: params.get('ordering') || '',
-    filters,
-  };
-  const { data, error, isLoading, isValidating, mutate } = useAdminList(resourceKey, query);
-  const [selected, setSelected] = useState<string[]>([]);
-  const [preview, setPreview] = useState<AdminActionPreview | null>(null);
-  const [actionError, setActionError] = useState<unknown>(null);
-  const [actionBusy, setActionBusy] = useState(false);
-  const update = (name: string, value: string) => {
-    setSelected([]);
-    setParams((previous) => {
-      const next = new URLSearchParams(previous);
-      if (value) next.set(name, value);
-      else next.delete(name);
-      if (name !== 'page') next.delete('page');
-      return next;
-    });
-  };
-  const prepare = async (action: string, ids = selected) => {
-    setActionBusy(true);
-    setActionError(null);
-    try {
-      setPreview(await previewAdminAction(resourceKey, action, ids));
-    } catch (failure) {
-      setActionError(failure);
-    } finally {
-      setActionBusy(false);
-    }
-  };
+  const {
+    data,
+    error,
+    isLoading,
+    isValidating,
+    mutate,
+    query,
+    update,
+    reset,
+    selected,
+    setSelected,
+    preview,
+    setPreview,
+    actionError,
+    actionBusy,
+    prepare,
+  } = useAdminResourceList(resourceKey);
   const permissions = data?.resource.permissions;
   return (
     <FramedPage>
-      <PageHeader
+      <WorkspaceHeader
         title={data ? resourceTitle(t, data.resource) : t('admin.console.loading')}
-        backTo={resources.AdminCatalog}
-        backLabel={t('admin.console.catalog')}
-        actionComponent={
+        icon={data?.resource.icon}
+        children={
           <Stack direction="row" gap={1} flexWrap="wrap">
             {resourceKey === 'marketplace.marketplaceorder' &&
               currentUser?.isSuperuser &&
@@ -104,16 +79,7 @@ function ResourceList({ resourceKey }: { resourceKey: string }) {
         fields={data?.filters ?? []}
         query={query}
         onChange={update}
-        onReset={() => {
-          const next = new URLSearchParams(params);
-          Array.from(next.keys())
-            .filter((key) => key.startsWith('filter.'))
-            .forEach((key) => next.delete(key));
-          next.delete('page');
-          next.delete('queue');
-          setParams(next);
-          setSelected([]);
-        }}
+        onReset={reset}
       />
       {isValidating && !isLoading && <LinearProgress sx={{ height: 2 }} />}
       <ConsoleError error={error || actionError} retry={() => void mutate()} />
@@ -136,17 +102,14 @@ function ResourceList({ resourceKey }: { resourceKey: string }) {
             label={t('admin.selectedRows', { count: selected.length })}
             onDelete={() => setSelected([])}
           />
-          {data?.actions.map((action) => (
-            <Button
-              key={action.name}
-              size="small"
-              color={action.dangerous ? 'error' : 'primary'}
-              loading={actionBusy}
-              onClick={() => void prepare(action.name)}
-            >
-              {actionTitle(t, action.name, action.label)}
-            </Button>
-          ))}
+          <ResourceActions
+            actions={data?.actions ?? []}
+            busy={actionBusy || isValidating}
+            onAction={(action) => void prepare(action)}
+          />
+          <Button size="small" color="neutral" onClick={() => setSelected([])}>
+            {t('admin.actions.clearSelection')}
+          </Button>
         </Stack>
       )}
       {isLoading ? (
@@ -157,10 +120,29 @@ function ResourceList({ resourceKey }: { resourceKey: string }) {
           <>
             {!data.rows.length ? (
               <EmptyState
-                title={t('admin.console.noResults')}
-                description={t('admin.console.tryFilters')}
+                title={t(
+                  query.search || query.queue || Object.keys(query.filters).length
+                    ? 'admin.console.noResults'
+                    : 'admin.workspace.emptyRecords',
+                )}
+                description={
+                  query.search || query.queue || Object.keys(query.filters).length
+                    ? t('admin.console.tryFilters')
+                    : undefined
+                }
                 action={
-                  <Button onClick={() => setParams({})}>{t('admin.console.resetFilters')}</Button>
+                  query.search || query.queue || Object.keys(query.filters).length ? (
+                    <Button onClick={reset}>{t('admin.console.resetFilters')}</Button>
+                  ) : permissions?.add ? (
+                    <Button
+                      component={Link}
+                      to={data.resource.path + '/new'}
+                      variant="contained"
+                      startIcon={<IconifyIcon icon="mdi:plus" />}
+                    >
+                      {t('admin.workspace.addFirst')}
+                    </Button>
+                  ) : undefined
                 }
               />
             ) : (
@@ -170,6 +152,8 @@ function ResourceList({ resourceKey }: { resourceKey: string }) {
                 setSelected={setSelected}
                 ordering={query.ordering}
                 onOrderingChange={(value) => update('ordering', value)}
+                onAction={(action, ids) => void prepare(action, ids)}
+                busy={actionBusy || isValidating}
               />
             )}
             <ListPagination
@@ -177,11 +161,23 @@ function ResourceList({ resourceKey }: { resourceKey: string }) {
               page={data.page}
               onChange={(value) => update('page', String(value))}
             />
-            <Box sx={{ px: { xs: 2, md: 3 }, py: 1.5, borderTop: 1, borderColor: 'divider' }}>
-              <Typography variant="caption" color="text.secondary">
-                {t('admin.console.recordCount', { count: data.total })}
-              </Typography>
-            </Box>
+            {(data.total > 20 || query.pageSize > 20) && (
+              <Stack
+                direction="row"
+                justifyContent="flex-end"
+                sx={{
+                  display: { xs: 'flex', sm: 'none' },
+                  px: 2,
+                  py: 1.5,
+                  borderTop: '1px solid var(--kep-line)',
+                }}
+              >
+                <PageSizeControl
+                  value={data.pageSize}
+                  onChange={(value) => update('pageSize', value)}
+                />
+              </Stack>
+            )}
           </>
         )
       )}

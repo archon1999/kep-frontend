@@ -130,15 +130,6 @@ export const clientMenu: MenuItem[] = [
     active: true,
     items: [
       {
-        name: 'Code workspace',
-        key: 'menu.playground',
-        path: resources.Playground,
-        pathName: 'playground',
-        selectionPrefix: resources.Playground,
-        icon: 'mdi:code-braces',
-        active: true,
-      },
-      {
         name: 'Users',
         key: 'menu.users',
         path: resources.Users,
@@ -181,6 +172,15 @@ export const clientMenu: MenuItem[] = [
         pathName: 'calendar',
         selectionPrefix: resources.Calendar,
         icon: 'material-symbols:calendar-month-outline',
+        active: true,
+      },
+      {
+        name: 'Editor',
+        key: 'menu.playground',
+        path: resources.Playground,
+        pathName: 'playground',
+        selectionPrefix: resources.Playground,
+        icon: 'mdi:code-braces',
         active: true,
       },
     ],
