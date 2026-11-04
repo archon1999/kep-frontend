@@ -1,6 +1,8 @@
+import { Suspense, lazy } from 'react';
 import { useTranslation } from 'react-i18next';
 import { NavLink, useLocation } from 'react-router';
-import { ListSubheader, Menu, MenuItem, styled } from '@mui/material';
+import { ListSubheader, Menu, MenuItem, Stack, styled } from '@mui/material';
+import { resources } from 'app/routes/resources';
 import { MenuItem as NavigationItem } from 'app/routes/sitemap';
 import IconifyIcon from 'shared/components/base/IconifyIcon';
 import { ScrambleText } from 'shared/components/motion/InteractionEffects';
@@ -8,6 +10,7 @@ import NavMenuIllustration from './NavMenuIllustration';
 import { navMenuStyles } from './nav-menu.styles';
 
 const NavigationMenu = styled(Menu)(() => navMenuStyles);
+const ContestMenuStatusChip = lazy(() => import('../common/ContestMenuStatusChip'));
 
 interface NavMenuProps {
   anchorEl: HTMLElement | null;
@@ -52,13 +55,18 @@ const NavMenu = ({ anchorEl, menu, onClose }: NavMenuProps) => {
         const selected =
           pathname === item.path ||
           Boolean(item.selectionPrefix && pathname.startsWith(item.selectionPrefix));
+        const isContests = item.path === resources.Contests;
+        const statusId = `navigation-status-${item.pathName}`;
+        const label = t(item.key || item.name);
         return (
           <MenuItem
             key={item.pathName}
             component={NavLink}
             to={item.path}
-            aria-label={t(item.key || item.name)}
-            aria-describedby={rich ? descriptionId : undefined}
+            aria-label={label}
+            aria-describedby={
+              rich ? (isContests ? `${descriptionId} ${statusId}` : descriptionId) : undefined
+            }
             selected={selected}
             onClick={onClose}
             className="kep-nav-menu-item"
@@ -69,7 +77,14 @@ const NavMenu = ({ anchorEl, menu, onClose }: NavMenuProps) => {
               </span>
             )}
             <span className="kep-nav-menu-copy">
-              <ScrambleText>{t(item.key || item.name)}</ScrambleText>
+              <Stack component="span" direction="row" alignItems="center" flexWrap="wrap" gap={1}>
+                <ScrambleText>{label}</ScrambleText>
+                {isContests && (
+                  <Suspense fallback={null}>
+                    <ContestMenuStatusChip id={statusId} />
+                  </Suspense>
+                )}
+              </Stack>
               {rich && (
                 <span className="kep-nav-menu-description" id={descriptionId}>
                   {t(`menu.descriptions.${item.pathName}`)}

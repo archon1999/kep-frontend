@@ -40,6 +40,7 @@
       "finished": "Завершён {{date}}"
     },
     "statusShort": {
+      "upcoming": "Скоро",
       "notStarted": "Не начался",
       "live": "Идёт",
       "finished": "Завершён"

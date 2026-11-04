@@ -1,4 +1,4 @@
-import { MouseEvent, useEffect, useMemo, useState } from 'react';
+import { MouseEvent, Suspense, lazy, useEffect, useMemo, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { NavLink, useLocation } from 'react-router';
 import { Box, Collapse } from '@mui/material';
@@ -10,11 +10,14 @@ import ListItemText, { listItemTextClasses } from '@mui/material/ListItemText';
 import { useBreakpoints } from 'app/providers/BreakpointsProvider';
 import { useSettingsContext } from 'app/providers/SettingsProvider';
 import { COLLAPSE_NAVBAR } from 'app/reducers/SettingsReducer';
+import { resources } from 'app/routes/resources';
 import { MenuItem } from 'app/routes/sitemap';
 import IconifyIcon from 'shared/components/base/IconifyIcon';
 import { cssVarRgba } from 'shared/lib/utils';
 import { useNavContext } from '../NavProvider';
 import NavItemPopper from './NavItemPopper';
+
+const ContestMenuStatusChip = lazy(() => import('../common/ContestMenuStatusChip'));
 
 interface NavItemProps {
   item: MenuItem;
@@ -149,12 +152,12 @@ const NavItem = ({ item, level }: NavItemProps) => {
               },
             },
             sidenavCollapsed && {
-                flexDirection: 'column',
-                justifyContent: 'flex-start',
-                alignItems: 'center',
-                textAlign: 'center',
-                p: 1,
-              },
+              flexDirection: 'column',
+              justifyContent: 'flex-start',
+              alignItems: 'center',
+              textAlign: 'center',
+              p: 1,
+            },
             (!sidenavCollapsed || level !== 0) && {
               minWidth: 180,
               flexDirection: 'row',
@@ -219,6 +222,11 @@ const NavItem = ({ item, level }: NavItemProps) => {
             >
               {t(item.key || item.name)}
             </ListItemText>
+            {item.path === resources.Contests && (
+              <Suspense fallback={null}>
+                <ContestMenuStatusChip />
+              </Suspense>
+            )}
             {hasNestedItems && expandIcon}
           </Box>
           {hasNestedItems && sidenavCollapsed && (
@@ -246,9 +254,7 @@ const NavItem = ({ item, level }: NavItemProps) => {
         </ListItemButton>
       </ListItem>
 
-      {hasNestedItems && !sidenavCollapsed && (
-        <NavItemCollapse item={item} level={level} />
-      )}
+      {hasNestedItems && !sidenavCollapsed && <NavItemCollapse item={item} level={level} />}
     </>
   );
 };

@@ -29,6 +29,13 @@ export const cardStyles: CSSObject[] = [
     },
   },
   {
+    '& [data-contest-highlight] .contest-card-masthead': {
+      boxShadow: 'inset 3px 0 var(--contest-phase-accent)',
+      background:
+        'linear-gradient(105deg, color-mix(in srgb, var(--contest-phase-accent) 12%, transparent), transparent 78%)',
+    },
+  },
+  {
     '&.kep-spotlight.contest-card-masthead::before, & .kep-spotlight.contest-card-masthead::before, &.kep-spotlight.contest-leaderboard-header::before, & .kep-spotlight.contest-leaderboard-header::before':
       {
         content: "''",

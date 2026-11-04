@@ -43,6 +43,7 @@ export interface HomePromoSourceItem {
 
 export interface HomePromoSlide {
   id: string;
+  contestId?: number;
   type: HomePromoSlideType;
   status: HomePromoSlideStatus;
   title: string;

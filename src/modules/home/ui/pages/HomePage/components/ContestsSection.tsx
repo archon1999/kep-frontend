@@ -1,11 +1,13 @@
-import { useMemo } from 'react';
 import { useTranslation } from 'react-i18next';
 import { Link as RouterLink } from 'react-router';
 import { Alert, Box, Button, Chip, Stack, Typography } from '@mui/material';
 import { getResourceById, resources } from 'app/routes/resources';
-import { useContestsList } from 'modules/contests/application/queries';
+import { useContestScheduleStatus } from 'modules/contests/application/hooks/useContestScheduleStatus';
+import { ContestStatus } from 'modules/contests/domain/entities/contest-status';
 import { ContestListItem } from 'modules/contests/domain/entities/contest.entity';
+import ContestStatusChip from 'modules/contests/ui/shared/components/ContestStatusChip';
 import { getContestTypeTitle } from 'modules/contests/ui/shared/utils/contestType';
+import { useHomeFeaturedContest } from 'modules/home/application/hooks/useHomeFeaturedContest';
 import IconifyIcon from 'shared/components/base/IconifyIcon';
 import EmptyState from 'shared/components/common/EmptyState';
 import MixedText from 'shared/components/common/MixedText';
@@ -14,14 +16,12 @@ import EventListCard, {
   EventDate,
   EventListCardSkeleton,
 } from 'shared/components/sections/common/EventListCard';
-import { isAfterNow, isBeforeNow } from 'shared/lib/dateTime';
 import { createSafeHtml } from 'shared/lib/safeHtml';
 
 const HomeContestCard = ({ contest }: { contest: ContestListItem }) => {
   const { t } = useTranslation();
-  const finished = Boolean(contest.finishTime && isBeforeNow(contest.finishTime));
-  const upcoming = Boolean(contest.startTime && isAfterNow(contest.startTime));
-  const status = finished ? 'finished' : upcoming ? 'notStarted' : 'live';
+  const status = useContestScheduleStatus(contest.startTime, contest.finishTime);
+  const upcoming = status === ContestStatus.NotStarted;
   return (
     <EventListCard
       id={contest.id}
@@ -39,23 +39,7 @@ const HomeContestCard = ({ contest }: { contest: ContestListItem }) => {
       }
       badges={
         <>
-          <Chip
-            size="small"
-            variant="status"
-            color={finished ? 'neutral' : upcoming ? 'warning' : 'success'}
-            icon={
-              <IconifyIcon
-                icon={
-                  finished
-                    ? 'mdi:check-circle-outline'
-                    : upcoming
-                      ? 'mdi:clock-outline'
-                      : 'mdi:access-point'
-                }
-              />
-            }
-            label={t('contests.statusShort.' + status)}
-          />
+          <ContestStatusChip status={status} />
           <Chip
             size="small"
             variant="status"
@@ -119,9 +103,7 @@ const HomeContestCard = ({ contest }: { contest: ContestListItem }) => {
 
 const ContestsSection = () => {
   const { t } = useTranslation();
-  const params = useMemo(() => ({ page: 1, pageSize: 1, status: '1' }), []);
-  const { data, isLoading, error, mutate } = useContestsList(params);
-  const contest = data?.data?.[0];
+  const { contest, isLoading, error, retry } = useHomeFeaturedContest();
   return (
     <section className="kep-dashboard-contest">
       <Stack
@@ -142,10 +124,7 @@ const ContestsSection = () => {
       {isLoading ? (
         <EventListCardSkeleton description media />
       ) : error ? (
-        <Alert
-          severity="error"
-          action={<Button onClick={() => void mutate()}>{t('common.retry')}</Button>}
-        >
+        <Alert severity="error" action={<Button onClick={retry}>{t('common.retry')}</Button>}>
           {t('common.loadFailed')}
         </Alert>
       ) : contest ? (
