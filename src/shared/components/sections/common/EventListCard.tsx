@@ -1,7 +1,7 @@
 import { ReactNode } from 'react';
 import { Link as RouterLink } from 'react-router';
 import { Box, Button, Chip, Grid, Link, Paper, Skeleton, Stack, Typography } from '@mui/material';
-import { listRuleStyles } from 'app/theme/styles/listPage';
+import { EventHighlight, getEventHighlightStyles, listRuleStyles } from 'app/theme/styles/listPage';
 import { contentEntranceStyles } from 'app/theme/styles/transitions';
 import IconifyIcon from 'shared/components/base/IconifyIcon';
 import { PointerSpotlight, ScrambleText } from 'shared/components/motion/InteractionEffects';
@@ -22,6 +22,7 @@ interface EventListCardProps {
   category: string;
   icon: string;
   actionLabel: string;
+  highlight?: EventHighlight;
   badges?: ReactNode;
   media?: ReactNode;
   children?: ReactNode;
@@ -64,6 +65,7 @@ const EventListCard = ({
   details,
   metrics,
   actionLabel,
+  highlight,
   loading = false,
 }: EventListCardProps) => (
   <Paper
@@ -82,12 +84,14 @@ const EventListCard = ({
   >
     <Box
       component={PointerSpotlight}
-      sx={{
+      data-event-highlight={highlight}
+      sx={(theme) => ({
         px: { xs: 2.5, md: 4 },
         py: { xs: 2.5, md: 3 },
         background:
           'linear-gradient(120deg, transparent 35%, color-mix(in srgb, var(--kep-logo-ice) 5%, transparent))',
-      }}
+        ...(highlight && getEventHighlightStyles(theme, highlight)),
+      })}
     >
       <Stack
         direction="row"

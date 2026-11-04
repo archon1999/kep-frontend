@@ -1,4 +1,4 @@
-import { MouseEvent, Suspense, lazy, useEffect, useMemo, useState } from 'react';
+import { MouseEvent, Suspense, lazy, useEffect, useId, useMemo, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { NavLink, useLocation } from 'react-router';
 import { Box, Collapse } from '@mui/material';
@@ -17,7 +17,7 @@ import { cssVarRgba } from 'shared/lib/utils';
 import { useNavContext } from '../NavProvider';
 import NavItemPopper from './NavItemPopper';
 
-const ContestMenuStatusChip = lazy(() => import('../common/ContestMenuStatusChip'));
+const ContestNavigationStatus = lazy(() => import('../common/ContestNavigationStatus'));
 
 interface NavItemProps {
   item: MenuItem;
@@ -31,6 +31,9 @@ interface NavItemCollapseProps {
 
 const NavItem = ({ item, level }: NavItemProps) => {
   const { t } = useTranslation();
+  const label = t(item.key || item.name);
+  const isCompetitions = item.pathName === 'competitions';
+  const contestStatusId = useId();
   const [anchorEl, setAnchorEl] = useState<HTMLDivElement | null>(null);
   const [openPopperMenu, setOpenPopperMenu] = useState(false);
   const { pathname } = useLocation();
@@ -122,6 +125,8 @@ const NavItem = ({ item, level }: NavItemProps) => {
           onMouseEnter={sidenavCollapsed ? handleMouseEnter : undefined}
           onMouseLeave={sidenavCollapsed ? handleClose : undefined}
           aria-expanded={openPopperMenu}
+          aria-label={isCompetitions ? label : undefined}
+          aria-describedby={isCompetitions ? contestStatusId : undefined}
           selected={
             pathname === item.path ||
             (item.selectionPrefix && pathname!.startsWith(item.selectionPrefix)) ||
@@ -220,11 +225,14 @@ const NavItem = ({ item, level }: NavItemProps) => {
                 },
               ]}
             >
-              {t(item.key || item.name)}
+              {label}
             </ListItemText>
-            {item.path === resources.Contests && (
+            {(isCompetitions || item.path === resources.Contests) && (
               <Suspense fallback={null}>
-                <ContestMenuStatusChip />
+                <ContestNavigationStatus
+                  id={isCompetitions ? contestStatusId : undefined}
+                  indicator={isCompetitions}
+                />
               </Suspense>
             )}
             {hasNestedItems && expandIcon}
