@@ -1,8 +1,9 @@
 import { useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { Link } from 'react-router';
-import { Button, Chip, LinearProgress, Paper, Skeleton, Typography } from '@mui/material';
+import { Box, Button, Chip, LinearProgress, Paper, Skeleton, Typography } from '@mui/material';
 import { getResourceById, resources } from 'app/routes/resources';
+import { getEventHighlightStyles } from 'app/theme/styles/listPage';
 import { useContestScheduleStatus } from 'modules/contests/application/hooks/useContestScheduleStatus';
 import { useContestTopContestants } from 'modules/contests/application/queries';
 import { ContestStatus } from 'modules/contests/domain/entities/contest-status';
@@ -45,16 +46,14 @@ const ContestListCard = ({ contest }: { contest: ContestListItem }) => {
       className="contest-editorial-card"
       data-contest-highlight={highlight}
       data-expanded={expanded}
-      sx={(theme) => ({
-        borderInline: 0,
-        borderTop: 0,
-        '--contest-phase-accent': live
-          ? theme.vars.palette.success.main
-          : theme.vars.palette.warning.main,
-      })}
+      sx={{ borderInline: 0, borderTop: 0 }}
     >
       <article aria-labelledby={`contest-title-${contest.id}`}>
-        <PointerSpotlight className="contest-card-masthead">
+        <Box
+          component={PointerSpotlight}
+          className="contest-card-masthead"
+          sx={highlight ? (theme) => getEventHighlightStyles(theme, highlight) : undefined}
+        >
           <header>
             <div className="contest-card-heading">
               <div className="contest-card-identity">
@@ -94,7 +93,7 @@ const ContestListCard = ({ contest }: { contest: ContestListItem }) => {
               </Link>
             </h2>
           </header>
-        </PointerSpotlight>
+        </Box>
         <div className="contest-card-rule" aria-hidden="true" />
         <div className={`contest-card-main ${finished ? '' : 'contest-card-main--solo'}`}>
           <div className="contest-announcement">

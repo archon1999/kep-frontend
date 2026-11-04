@@ -1,4 +1,4 @@
-import { MouseEvent, useEffect, useMemo, useState } from 'react';
+import { MouseEvent, Suspense, lazy, useEffect, useId, useMemo, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { NavLink, useLocation } from 'react-router';
 import { Button, Stack } from '@mui/material';
@@ -7,6 +7,8 @@ import clsx from 'clsx';
 import { ScrambleText } from 'shared/components/motion/InteractionEffects';
 import { useNavContext } from '../NavProvider';
 import NavMenu from './NavMenu';
+
+const ContestNavigationStatus = lazy(() => import('../common/ContestNavigationStatus'));
 
 interface TopnavItemsProps {
   type?: 'default' | 'slim';
@@ -18,6 +20,7 @@ const TopnavItems = ({ type = 'default' }: TopnavItemsProps) => {
   const [selectedMenu, setSelectedMenu] = useState<null | MenuItem>(null);
   const { pathname } = useLocation();
   const { menuItems } = useNavContext();
+  const contestStatusId = useId();
 
   const isMenuActive = useMemo(() => {
     const checkLink = (item: MenuItem): boolean => {
@@ -48,6 +51,8 @@ const TopnavItems = ({ type = 'default' }: TopnavItemsProps) => {
       direction="row"
     >
       {menuItems.map((menu) => {
+        const isCompetitions = menu.pathName === 'competitions';
+        const label = t(menu.key || menu.name);
         const buttonLinkProps =
           !menu.items && menu.path ? ({ component: NavLink, to: menu.path } as const) : {};
 
@@ -69,6 +74,8 @@ const TopnavItems = ({ type = 'default' }: TopnavItemsProps) => {
               setSelectedMenu(menu);
             }}
             aria-haspopup={menu.items ? 'menu' : undefined}
+            aria-label={isCompetitions ? label : undefined}
+            aria-describedby={isCompetitions ? contestStatusId : undefined}
             aria-expanded={menu.items ? selectedMenu === menu && !!anchorEl : undefined}
             aria-controls={
               selectedMenu === menu && anchorEl ? `navigation-menu-${menu.pathName}` : undefined
@@ -76,7 +83,12 @@ const TopnavItems = ({ type = 'default' }: TopnavItemsProps) => {
             disableRipple
             sx={{ px: 1.25, fontSize: 13, minHeight: 44 }}
           >
-            <ScrambleText>{t(menu.key || menu.name)}</ScrambleText>
+            <ScrambleText>{label}</ScrambleText>
+            {isCompetitions && (
+              <Suspense fallback={null}>
+                <ContestNavigationStatus id={contestStatusId} indicator />
+              </Suspense>
+            )}
           </Button>
         );
       })}

@@ -22,6 +22,7 @@ const HomeContestCard = ({ contest }: { contest: ContestListItem }) => {
   const { t } = useTranslation();
   const status = useContestScheduleStatus(contest.startTime, contest.finishTime);
   const upcoming = status === ContestStatus.NotStarted;
+  const live = status === ContestStatus.Already;
   return (
     <EventListCard
       id={contest.id}
@@ -31,6 +32,7 @@ const HomeContestCard = ({ contest }: { contest: ContestListItem }) => {
       category={contest.categoryTitle.replace(/([a-z])([A-Z])/g, '$1 $2')}
       icon="mdi:code-tags"
       actionLabel={t('contests.card.open')}
+      highlight={live ? 'live' : upcoming ? 'upcoming' : undefined}
       media={
         <PatternArtwork
           kind="competitions"

@@ -10,7 +10,7 @@ import NavMenuIllustration from './NavMenuIllustration';
 import { navMenuStyles } from './nav-menu.styles';
 
 const NavigationMenu = styled(Menu)(() => navMenuStyles);
-const ContestMenuStatusChip = lazy(() => import('../common/ContestMenuStatusChip'));
+const ContestNavigationStatus = lazy(() => import('../common/ContestNavigationStatus'));
 
 interface NavMenuProps {
   anchorEl: HTMLElement | null;
@@ -81,7 +81,7 @@ const NavMenu = ({ anchorEl, menu, onClose }: NavMenuProps) => {
                 <ScrambleText>{label}</ScrambleText>
                 {isContests && (
                   <Suspense fallback={null}>
-                    <ContestMenuStatusChip id={statusId} />
+                    <ContestNavigationStatus id={statusId} />
                   </Suspense>
                 )}
               </Stack>

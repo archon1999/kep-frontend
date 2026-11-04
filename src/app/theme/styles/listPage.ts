@@ -1,4 +1,15 @@
-import type { CSSObject } from '@mui/material/styles';
+import type { CSSObject, Theme } from '@mui/material/styles';
+
+export type EventHighlight = 'live' | 'upcoming';
+
+export const getEventHighlightStyles = (theme: Theme, highlight: EventHighlight): CSSObject => {
+  const accent = theme.vars.palette[highlight === 'live' ? 'success' : 'warning'].main;
+
+  return {
+    boxShadow: `inset 3px 0 ${accent}`,
+    background: `linear-gradient(105deg, color-mix(in srgb, ${accent} 12%, transparent), transparent 78%)`,
+  };
+};
 
 export const listFrameStyles: CSSObject = {
   position: 'relative',
