@@ -40,6 +40,7 @@
       "finished": "Yakunlangan {{date}}"
     },
     "statusShort": {
+      "upcoming": "Kutilmoqda",
       "notStarted": "Boshlanmagan",
       "live": "Boʻlib oʻtyapti",
       "finished": "Yakunlangan"

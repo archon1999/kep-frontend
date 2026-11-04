@@ -195,10 +195,10 @@ export const useLandingPageStatistics = () =>
     repository.getLandingPageStatistics(),
   );
 
-export const useHomePromos = () => {
+export const useHomePromos = (refreshInterval = 0) => {
   const { t, i18n } = useTranslation();
 
-  return useHomeSWR<HomePromoSlide[]>(homeKeys.detail(`promos-${i18n.language}`), async () => {
+  const fetchPromos = async () => {
     const promos = await repository.getPromos();
 
     const mappedPromos: HomePromoSlide[] = promos.map((promo): HomePromoSlide => {
@@ -247,6 +247,7 @@ export const useHomePromos = () => {
       if (promo.type === 'contest') {
         return {
           id: `contest-${promo.id}-${promo.status}`,
+          contestId: promo.id,
           type: 'contest',
           status: promo.status,
           title: promo.title,
@@ -328,7 +329,13 @@ export const useHomePromos = () => {
     });
 
     return mappedPromos;
-  });
+  };
+
+  return useSWR<HomePromoSlide[]>(
+    homeKeys.detail(`promos-${i18n.language}`),
+    fetchPromos,
+    { suspense: false, refreshInterval },
+  );
 };
 
 export const homeQueries = {

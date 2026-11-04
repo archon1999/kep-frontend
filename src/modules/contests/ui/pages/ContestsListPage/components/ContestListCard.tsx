@@ -3,22 +3,26 @@ import { useTranslation } from 'react-i18next';
 import { Link } from 'react-router';
 import { Button, Chip, LinearProgress, Paper, Skeleton, Typography } from '@mui/material';
 import { getResourceById, resources } from 'app/routes/resources';
+import { useContestScheduleStatus } from 'modules/contests/application/hooks/useContestScheduleStatus';
 import { useContestTopContestants } from 'modules/contests/application/queries';
+import { ContestStatus } from 'modules/contests/domain/entities/contest-status';
 import { ContestListItem } from 'modules/contests/domain/entities/contest.entity';
+import ContestStatusChip from 'modules/contests/ui/shared/components/ContestStatusChip';
 import { getContestTypeTitle } from 'modules/contests/ui/shared/utils/contestType';
 import UserPopover from 'modules/users/ui/shared/components/UserPopover';
 import IconifyIcon from 'shared/components/base/IconifyIcon';
 import { PointerSpotlight, ScrambleText } from 'shared/components/motion/InteractionEffects';
-import { diffDateTime, formatDateTime, isAfterNow, isBeforeNow } from 'shared/lib/dateTime';
+import { diffDateTime, formatDateTime } from 'shared/lib/dateTime';
 import { createSafeHtml } from 'shared/lib/safeHtml';
 
 const ContestListCard = ({ contest }: { contest: ContestListItem }) => {
   const { t } = useTranslation();
   const [expanded, setExpanded] = useState(false);
-  const finished = Boolean(contest.finishTime && isBeforeNow(contest.finishTime));
-  const upcoming = Boolean(contest.startTime && isAfterNow(contest.startTime));
-  const live = !finished && !upcoming;
-  const status = finished ? 'finished' : upcoming ? 'notStarted' : 'live';
+  const status = useContestScheduleStatus(contest.startTime, contest.finishTime);
+  const finished = status === ContestStatus.Finished;
+  const upcoming = status === ContestStatus.NotStarted;
+  const live = status === ContestStatus.Already;
+  const highlight = live ? 'live' : upcoming ? 'upcoming' : undefined;
   const { data: leaders, isLoading, error } = useContestTopContestants(contest.id, finished);
   const visibleLeaders = (leaders ?? []).filter((row) => row.username || row.teamName).slice(0, 3);
   const href = getResourceById(resources.Contest, contest.id);
@@ -38,9 +42,16 @@ const ContestListCard = ({ contest }: { contest: ContestListItem }) => {
   return (
     <Paper
       variant="panel"
-      className={`contest-editorial-card contest-editorial-card--${status}`}
+      className="contest-editorial-card"
+      data-contest-highlight={highlight}
       data-expanded={expanded}
-      sx={{ borderInline: 0, borderTop: 0 }}
+      sx={(theme) => ({
+        borderInline: 0,
+        borderTop: 0,
+        '--contest-phase-accent': live
+          ? theme.vars.palette.success.main
+          : theme.vars.palette.warning.main,
+      })}
     >
       <article aria-labelledby={`contest-title-${contest.id}`}>
         <PointerSpotlight className="contest-card-masthead">
@@ -55,22 +66,7 @@ const ContestListCard = ({ contest }: { contest: ContestListItem }) => {
                 <span className="contest-card-id">/{String(contest.id).padStart(3, '0')}</span>
               </div>
               <div className="contest-card-badges">
-                <Chip
-                  variant="status"
-                  color={live ? 'success' : upcoming ? 'warning' : 'default'}
-                  icon={
-                    <IconifyIcon
-                      icon={
-                        finished
-                          ? 'mdi:check-circle-outline'
-                          : upcoming
-                            ? 'mdi:clock-outline'
-                            : 'mdi:access-point'
-                      }
-                    />
-                  }
-                  label={t(`contests.statusShort.${status}`)}
-                />
+                <ContestStatusChip status={status} />
                 <Chip
                   variant="status"
                   color={contest.isRated ? 'secondary' : 'default'}
@@ -175,6 +171,7 @@ const ContestListCard = ({ contest }: { contest: ContestListItem }) => {
         {live && (
           <LinearProgress
             className="contest-card-progress"
+            color="success"
             variant="determinate"
             value={progress}
             aria-label={t('contests.statusShort.live')}
