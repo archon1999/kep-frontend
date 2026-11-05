@@ -1,9 +1,7 @@
 import { useTranslation } from 'react-i18next';
-import { Box, Chip, chipClasses } from '@mui/material';
-import { visuallyHidden } from '@mui/utils';
+import { Chip, chipClasses } from '@mui/material';
 import { ContestStatus } from 'modules/contests/domain/entities/contest-status';
 import { useFeaturedContestPromo } from 'modules/home/application/hooks/useFeaturedContestPromo';
-import IconifyIcon from 'shared/components/base/IconifyIcon';
 
 const ContestNavigationStatus = ({
   id,
@@ -22,29 +20,28 @@ const ContestNavigationStatus = ({
 
   if (indicator) {
     return (
-      <Box
-        component="span"
+      <Chip
         id={id}
+        component="span"
+        size="small"
+        variant="soft"
+        color={color}
+        label={t(live ? 'menu.contestBadge.live' : 'menu.contestBadge.new')}
         title={label}
         sx={{
-          display: 'inline-grid',
-          placeItems: 'center',
-          width: 20,
-          height: 20,
+          height: 18,
           flexShrink: 0,
           ml: 0.75,
-          borderRadius: '50%',
-          color: `${color}.dark`,
-          bgcolor: (theme) =>
-            `color-mix(in srgb, ${theme.vars.palette[color].main} 15%, transparent)`,
-          fontSize: 14,
+          borderRadius: '4px',
+          [`& .${chipClasses.label}`]: {
+            px: 0.625,
+            fontSize: 9,
+            fontWeight: 700,
+            letterSpacing: '0.06em',
+            textTransform: 'uppercase',
+          },
         }}
-      >
-        <IconifyIcon icon={live ? 'mdi:access-point' : 'mdi:clock-outline'} aria-hidden="true" />
-        <Box component="span" sx={visuallyHidden}>
-          {label}
-        </Box>
-      </Box>
+      />
     );
   }
 
