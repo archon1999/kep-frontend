@@ -5,6 +5,10 @@
     "home": "Bosh sahifa",
     "practice": "Ishlash",
     "competitions": "Musobaqalar",
+    "contestBadge": {
+      "new": "Yangi",
+      "live": "Jonli"
+    },
     "learn": "Oʻrganish",
     "blog": "Blog",
     "users": "Foydalanuvchilar",

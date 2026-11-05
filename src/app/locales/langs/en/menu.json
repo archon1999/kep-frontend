@@ -6,6 +6,10 @@
     "practice": "Practice",
     "battles": "Battles",
     "competitions": "Competitions",
+    "contestBadge": {
+      "new": "New",
+      "live": "Live"
+    },
     "learn": "Learn",
     "blog": "Blog",
     "users": "Users",
