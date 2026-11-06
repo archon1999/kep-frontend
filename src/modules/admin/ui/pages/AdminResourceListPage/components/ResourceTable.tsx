@@ -2,7 +2,6 @@ import { type Dispatch, type SetStateAction, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { Link } from 'react-router';
 import {
-  Avatar,
   Box,
   Button,
   Checkbox,
@@ -22,10 +21,10 @@ import {
 } from '@mui/material';
 import { useAdminRegistry } from 'modules/admin/application';
 import type { AdminList, AdminRow } from 'modules/admin/domain';
-import UserPopover from 'modules/users/ui/shared/components/UserPopover';
 import IconifyIcon from 'shared/components/base/IconifyIcon';
 import ConsoleCell from '../../../shared/components/ConsoleCell';
 import ResourceActions from '../../../shared/components/ResourceActions';
+import UserIdentityCell from '../../../shared/components/UserIdentityCell';
 import { fieldTitle, recordPath, resourceTitle } from '../../../shared/helpers';
 import { listPresentation, semanticColor } from '../../../shared/helpers/resourcePresentation';
 import { relatedRecordLinks } from '../../../shared/helpers/resourceRelations';
@@ -82,23 +81,11 @@ export default function ResourceTable({
       onChange={() => toggle(row.id)}
     />
   );
-  const identity = (row: AdminRow) => (
-    <Box sx={{ minWidth: 0 }}>
-      {data.resource.key === 'backend.user' ? (
-        <UserPopover
-          username={String(row.cells.username?.value ?? row.label)}
-          fullName={row.cells.get_full_name?.display}
-        >
-          <Stack direction="row" alignItems="center" spacing={1}>
-            <Avatar sx={{ width: 30, height: 30, fontSize: 13 }}>
-              {row.label.slice(0, 1).toUpperCase()}
-            </Avatar>
-            <Typography variant="body2" fontWeight={650}>
-              {row.label}
-            </Typography>
-          </Stack>
-        </UserPopover>
-      ) : (
+  const identity = (row: AdminRow) =>
+    data.resource.key === 'backend.user' ? (
+      <UserIdentityCell row={row} />
+    ) : (
+      <Box sx={{ minWidth: 0 }}>
         <Typography
           component={Link}
           to={recordPath(data.resource, row.id)}
@@ -117,26 +104,28 @@ export default function ResourceTable({
         >
           {row.cells[presentation.identity]?.display || row.label}
         </Typography>
-      )}
-      <Stack
-        direction="row"
-        spacing={1}
-        alignItems="center"
-        sx={{ mt: 0.25, color: 'text.secondary', minWidth: 0 }}
-      >
-        {row.cells.id?.kind !== 'secret' && !row.id.startsWith('gAAAA') && (
-          <Typography variant="caption" sx={{ flexShrink: 0, fontVariantNumeric: 'tabular-nums' }}>
-            #{row.id}
-          </Typography>
-        )}
-        {presentation.secondary && (
-          <Typography variant="caption" noWrap>
-            {row.cells[presentation.secondary]?.display}
-          </Typography>
-        )}
-      </Stack>
-    </Box>
-  );
+        <Stack
+          direction="row"
+          spacing={1}
+          alignItems="center"
+          sx={{ mt: 0.25, color: 'text.secondary', minWidth: 0 }}
+        >
+          {row.cells.id?.kind !== 'secret' && !row.id.startsWith('gAAAA') && (
+            <Typography
+              variant="caption"
+              sx={{ flexShrink: 0, fontVariantNumeric: 'tabular-nums' }}
+            >
+              #{row.id}
+            </Typography>
+          )}
+          {presentation.secondary && (
+            <Typography variant="caption" noWrap>
+              {row.cells[presentation.secondary]?.display}
+            </Typography>
+          )}
+        </Stack>
+      </Box>
+    );
   const cell = (row: AdminRow, name: string) => {
     const value = row.cells[name];
     if (value?.kind === 'verdict')
