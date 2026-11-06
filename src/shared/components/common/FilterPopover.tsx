@@ -15,6 +15,7 @@ interface FilterPopoverProps {
   resetLabel: ReactNode;
   doneLabel: string;
   align?: 'left' | 'right';
+  maxHeight?: number | string;
 }
 
 const FilterPopover = ({
@@ -27,6 +28,7 @@ const FilterPopover = ({
   resetLabel,
   doneLabel,
   align = 'left',
+  maxHeight,
   children,
 }: PropsWithChildren<FilterPopoverProps>) => {
   const { t } = useTranslation();
@@ -44,7 +46,7 @@ const FilterPopover = ({
           variant: 'framed',
           role: 'dialog',
           'aria-labelledby': `${id}-title`,
-          sx: filterPopoverStyles,
+          sx: [filterPopoverStyles, ...(maxHeight ? [{ maxHeight }] : [])],
         },
       }}
     >

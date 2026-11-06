@@ -12,7 +12,10 @@ const Content = styled(Box)(() => ({
 }));
 
 /** The shared page boundary, including the side rails and closing edge. */
-const FramedPage = ({ children }: PropsWithChildren) => {
+const FramedPage = ({
+  children,
+  fillHeight = false,
+}: PropsWithChildren<{ fillHeight?: boolean }>) => {
   const { topbarHeight } = useNavContext();
   return (
     <Box
@@ -20,12 +23,20 @@ const FramedPage = ({ children }: PropsWithChildren) => {
         width: '100%',
         minWidth: 0,
         height: theme.mixins.contentHeight(topbarHeight),
-        overflowY: 'auto',
+        overflowY: fillHeight ? 'hidden' : 'auto',
         scrollbarGutter: 'stable',
       })}
     >
-      <Frame>
-        <Content>{children}</Content>
+      <Frame sx={fillHeight ? { height: 'calc(100% - 40px)' } : undefined}>
+        <Content
+          sx={
+            fillHeight
+              ? { height: '100%', display: 'flex', flexDirection: 'column', minHeight: 0 }
+              : undefined
+          }
+        >
+          {children}
+        </Content>
       </Frame>
     </Box>
   );

@@ -9,12 +9,14 @@ import {
   Stack,
   Tab,
   Tabs,
+  Tooltip,
   Typography,
   useMediaQuery,
   useTheme,
 } from '@mui/material';
 import type { useAdminRecordEditor } from 'modules/admin/application/useAdminRecordEditor';
 import IconifyIcon from 'shared/components/base/IconifyIcon';
+import CountryFlagIcon from 'shared/components/common/CountryFlagIcon';
 import DialogHeader from 'shared/components/common/DialogHeader';
 import ConsoleCell from '../../../shared/components/ConsoleCell';
 import EditorFields from '../../../shared/components/EditorFields';
@@ -320,13 +322,19 @@ export default function EditorWorkspace({
                   <Tab
                     key={lang}
                     value={lang}
+                    aria-label={t('admin.form.languages.' + lang)}
                     label={
-                      <Stack direction="row" alignItems="center" gap={0.5}>
-                        {lang.toUpperCase()}
-                        {Object.keys(fieldErrors).some((name) => name.endsWith('_' + lang)) && (
-                          <IconifyIcon icon="mdi:alert-circle" color="error.main" />
-                        )}
-                      </Stack>
+                      <Tooltip title={t('admin.form.languages.' + lang)}>
+                        <Stack direction="row" alignItems="center" gap={0.5}>
+                          <CountryFlagIcon
+                            code={lang === 'en' ? 'GB' : lang.toUpperCase()}
+                            size={22}
+                          />
+                          {Object.keys(fieldErrors).some((name) => name.endsWith('_' + lang)) && (
+                            <IconifyIcon icon="mdi:alert-circle" color="error.main" />
+                          )}
+                        </Stack>
+                      </Tooltip>
                     }
                   />
                 ))}

@@ -17,18 +17,64 @@ export const primaryResources = [
   'backend.attempt',
   'projects.projectattempt',
   'contests.contestquestion',
+  'tournaments.duel',
+  'achievements.achievement',
+  'daily_tasks.dailytasks',
+  'kepcoin_tasks.onetimetask',
+  'kepcoin.userkepcoinearn',
+  'home.calendarevent',
+  'home.kepcovercontest',
+  'giveaways.giveaway',
+  'notifications.notification',
 ];
 export const isPrimaryResource = (resource: Pick<AdminResource, 'key'>) =>
   primaryResources.includes(resource.key);
 
 const preferred: Record<string, string[]> = {
-  'backend.problem': ['difficulty', 'problem_rating', 'hidden', 'author'],
-  'backend.user': ['kepcoin', 'streak', 'get_last_seen'],
-  'backend.contest': ['type', 'start_time', 'finish_time'],
+  'backend.problem': [
+    'difficulty',
+    'problem_rating',
+    'hidden',
+    'author',
+    'time_limit',
+    'memory_limit',
+    'created',
+  ],
+  'backend.user': [
+    'kepcoin',
+    'streak',
+    'is_active',
+    'contests_rating',
+    'challenges_rating',
+    'skills_rating',
+    'activity_rating',
+    'get_last_seen',
+  ],
+  'backend.contest': ['type', 'start_time', 'finish_time', 'is_rated', 'private', 'creator'],
   'projects.project': ['in_the_pipeline', 'level', 'purchase_kepcoin_value', 'file_accept'],
   'testing.test': ['difficulty', 'duration', 'get_questions_count', 'hidden'],
   'blog.blog': ['status', 'author', 'published_at'],
   'backend.attempt': ['get_verdict_html', 'user', 'created'],
+  'challenges.challenge': [
+    'player_second',
+    'time_seconds',
+    'questions_count',
+    'question_time_type',
+    'rated',
+    'finished',
+  ],
+  'contests.contestquestion': ['contest', 'user', 'status', 'contest_problem', 'created', 'answer'],
+  'daily_tasks.userdailytaskcompletion': ['daily_date', 'daily_progress', 'daily_task', 'created'],
+  'achievements.userachievementprogress': ['achievement', 'progress', 'done', 'completed_at'],
+  'achievements.competitionprize': [
+    'prize_title',
+    'competition_type',
+    'competition_id',
+    'prize_type',
+    'kepcoin_value',
+    'money_value',
+    'currency',
+  ],
 };
 
 export function listPresentation(data: AdminList) {
@@ -45,7 +91,12 @@ export function listPresentation(data: AdminList) {
   const columns = [...(preferred[data.resource.key] ?? []), ...available].filter(
     (name, index, all) => available.includes(name) && all.indexOf(name) === index,
   );
-  return { identity, secondary, columns, defaults: columns.slice(0, 4) };
+  return {
+    identity,
+    secondary,
+    columns,
+    defaults: columns.slice(0, preferred[data.resource.key]?.length ?? 6),
+  };
 }
 
 export interface EditorGroup {

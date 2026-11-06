@@ -7,6 +7,7 @@ import {
   IconButton,
   ListItemIcon,
   ListItemText,
+  ListSubheader,
   Menu,
   MenuItem,
   Tooltip,
@@ -14,6 +15,7 @@ import {
 import type { AdminAction } from 'modules/admin/domain';
 import IconifyIcon from 'shared/components/base/IconifyIcon';
 import { actionTitle } from '../helpers';
+import { actionIcon } from '../helpers/actionIcon';
 
 export default function ResourceActions({
   actions,
@@ -22,6 +24,9 @@ export default function ResourceActions({
   editPath,
   compact = false,
   recordLabel,
+  links = [],
+  onPassword,
+  onReply,
 }: {
   actions: AdminAction[];
   onAction: (name: string) => void;
@@ -29,6 +34,9 @@ export default function ResourceActions({
   editPath?: string;
   compact?: boolean;
   recordLabel?: string;
+  links?: { label: string; to: string; icon: string }[];
+  onPassword?: () => void;
+  onReply?: () => void;
 }) {
   const { t } = useTranslation();
   const [anchor, setAnchor] = useState<HTMLElement | null>(null);
@@ -69,34 +77,68 @@ export default function ResourceActions({
             <ListItemText>{t('admin.workspace.openRecord')}</ListItemText>
           </MenuItem>
         )}
-        {actions.flatMap((action, index) => [
-          ...(action.dangerous && index > 0 ? [<Divider key={action.name + '-divider'} />] : []),
+        {onPassword && (
           <MenuItem
-            key={action.name}
             onClick={() => {
               setAnchor(null);
-              onAction(action.name);
+              onPassword();
             }}
-            sx={{ color: action.dangerous ? 'error.main' : undefined }}
           >
-            <ListItemIcon sx={{ color: 'inherit' }}>
-              <IconifyIcon
-                icon={
-                  action.dangerous
-                    ? 'mdi:delete-outline'
-                    : action.kind === 'export'
-                      ? 'mdi:download-outline'
-                      : 'mdi:flash-outline'
-                }
-              />
+            <ListItemIcon>
+              <IconifyIcon icon="mdi:form-textbox-password" />
             </ListItemIcon>
-            <ListItemText>
-              {editPath && action.kind === 'delete'
-                ? t('admin.actions.delete')
-                : actionTitle(t, action.name, action.label)}
-            </ListItemText>
-          </MenuItem>,
-        ])}
+            <ListItemText>{t('admin.actions.changePassword')}</ListItemText>
+          </MenuItem>
+        )}
+        {onReply && (
+          <MenuItem
+            onClick={() => {
+              setAnchor(null);
+              onReply();
+            }}
+          >
+            <ListItemIcon>
+              <IconifyIcon icon="mdi:reply-outline" />
+            </ListItemIcon>
+            <ListItemText>{t('admin.workspace.reply')}</ListItemText>
+          </MenuItem>
+        )}
+        {links.length > 0 && (
+          <ListSubheader sx={{ lineHeight: '30px', fontSize: 11 }}>
+            {t('admin.workspace.relatedRecords')}
+          </ListSubheader>
+        )}
+        {links.map((link) => (
+          <MenuItem key={link.to} component={Link} to={link.to} onClick={() => setAnchor(null)}>
+            <ListItemIcon>
+              <IconifyIcon icon={link.icon} />
+            </ListItemIcon>
+            <ListItemText>{link.label}</ListItemText>
+          </MenuItem>
+        ))}
+        {(links.length > 0 || onPassword || onReply) && actions.length > 0 && <Divider />}
+        {[...actions]
+          .sort((a, b) => Number(a.kind === 'delete') - Number(b.kind === 'delete'))
+          .flatMap((action, index) => [
+            ...(action.dangerous && index > 0 ? [<Divider key={action.name + '-divider'} />] : []),
+            <MenuItem
+              key={action.name}
+              onClick={() => {
+                setAnchor(null);
+                onAction(action.name);
+              }}
+              sx={{ color: action.dangerous ? 'error.main' : undefined }}
+            >
+              <ListItemIcon sx={{ color: 'inherit' }}>
+                <IconifyIcon icon={actionIcon(action)} />
+              </ListItemIcon>
+              <ListItemText>
+                {editPath && action.kind === 'delete'
+                  ? t('admin.actions.delete')
+                  : actionTitle(t, action.name, action.label)}
+              </ListItemText>
+            </MenuItem>,
+          ])}
       </Menu>
     </>
   );

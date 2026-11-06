@@ -24,9 +24,12 @@ import FramedPage from 'shared/components/sections/common/FramedPage';
 import ActionDialog from '../../../shared/components/ActionDialog';
 import AuditList from '../../../shared/components/AuditList';
 import { ConsoleError, ConsoleSkeleton } from '../../../shared/components/ConsoleState';
+import ContestReplyDialog from '../../../shared/components/ContestReplyDialog';
 import PasswordDialog from '../../../shared/components/PasswordDialog';
 import WorkspaceHeader from '../../../shared/components/WorkspaceHeader';
 import { actionTitle, resourceTitle } from '../../../shared/helpers';
+import { actionIcon } from '../../../shared/helpers/actionIcon';
+import { relatedRecordLinks } from '../../../shared/helpers/resourceRelations';
 import EditorWorkspace from './EditorWorkspace';
 
 export default function RecordEditor({
@@ -56,6 +59,7 @@ export default function RecordEditor({
   const [actionAnchor, setActionAnchor] = useState<HTMLElement | null>(null);
   const [historyOpen, setHistoryOpen] = useState(false);
   const [passwordOpen, setPasswordOpen] = useState(false);
+  const [replyOpen, setReplyOpen] = useState(false);
   const [saved, setSaved] = useState(false);
   const [leavingAfterSave, setLeavingAfterSave] = useState(false);
   const blocker = useBlocker(dirty && !saving && !leavingAfterSave);
@@ -101,13 +105,14 @@ export default function RecordEditor({
   };
   const editable = record.canSave;
   return (
-    <FramedPage>
+    <FramedPage fillHeight>
       <ConsoleError error={metadataError} retry={retryMetadata} />
       <Box
         component="form"
         onSubmit={submit}
         noValidate
         aria-busy={saving}
+        sx={{ display: 'flex', flexDirection: 'column', flex: 1, minHeight: 0 }}
         onKeyDown={(event) => {
           if ((event.ctrlKey || event.metaKey) && event.key.toLowerCase() === 's') {
             event.preventDefault();
@@ -158,6 +163,16 @@ export default function RecordEditor({
               {t('admin.columns.actions')}
             </Button>
           )}
+          {record.id && editable && resourceKey === 'contests.contestquestion' && (
+            <Button
+              variant="contained"
+              disabled={dirty || saving}
+              onClick={() => setReplyOpen(true)}
+              startIcon={<IconifyIcon icon="mdi:reply-outline" />}
+            >
+              {t('admin.workspace.reply')}
+            </Button>
+          )}
           {editable && (
             <Button
               type="submit"
@@ -165,6 +180,7 @@ export default function RecordEditor({
               loading={saving}
               disabled={!dirty && Boolean(record.id)}
               startIcon={<IconifyIcon icon="mdi:content-save-outline" />}
+              sx={{ display: { xs: 'none', sm: 'inline-flex' } }}
             >
               {t('admin.actions.save')}
             </Button>
@@ -186,7 +202,9 @@ export default function RecordEditor({
             {t('admin.console.reloadRecord')}
           </Button>
         )}
-        <EditorWorkspace resourceKey={resourceKey} editor={editor} />
+        <Box sx={{ flex: 1, minHeight: 0, overflowY: 'auto', overscrollBehavior: 'contain' }}>
+          <EditorWorkspace resourceKey={resourceKey} editor={editor} />
+        </Box>
         <Stack
           direction="row"
           alignItems="center"
@@ -201,6 +219,7 @@ export default function RecordEditor({
             borderTop: 1,
             borderColor: 'divider',
             boxShadow: '0 -6px 20px rgb(0 0 0 / 4%)',
+            flexShrink: 0,
           }}
         >
           {record.id && record.permissions.delete && (
@@ -303,6 +322,18 @@ export default function RecordEditor({
             {t('admin.actions.changePassword')}
           </MenuItem>
         )}
+        {record.id &&
+          relatedRecordLinks(resourceKey, record.id, registry).map((link) => (
+            <MenuItem
+              key={link.to}
+              component={Link}
+              to={link.to}
+              onClick={() => setActionAnchor(null)}
+            >
+              <IconifyIcon icon={link.icon} sx={{ mr: 1.5 }} />
+              {resourceTitle(t, link.resource)}
+            </MenuItem>
+          ))}
         {resource && resource.editorPath !== resource.path && currentUser?.isSuperuser && (
           <MenuItem
             component={Link}
@@ -323,6 +354,7 @@ export default function RecordEditor({
                 void prepareAction(action.name);
               }}
             >
+              <IconifyIcon icon={actionIcon(action)} sx={{ mr: 1.5 }} />
               {actionTitle(t, action.name, action.label)}
             </MenuItem>
           ))}
@@ -344,9 +376,19 @@ export default function RecordEditor({
       {record.id && resourceKey === 'backend.user' && (
         <PasswordDialog
           id={record.id}
+          username={String(record.values.username ?? '')}
           open={passwordOpen}
           onClose={(changed) => {
             setPasswordOpen(false);
+            if (changed) reload();
+          }}
+        />
+      )}
+      {record.id && replyOpen && (
+        <ContestReplyDialog
+          id={record.id}
+          onClose={(changed) => {
+            setReplyOpen(false);
             if (changed) reload();
           }}
         />

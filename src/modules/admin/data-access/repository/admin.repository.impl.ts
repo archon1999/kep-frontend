@@ -75,11 +75,11 @@ export const adminRepository: AdminRepository = {
       method: 'POST',
       data: { action, ids },
     }),
-  execute: (key, token) =>
+  execute: (key, token, input = {}) =>
     axiosMutator({
       url: endpoint(key) + 'actions/execute/',
       method: 'POST',
-      data: { token, confirmed: true },
+      data: { ...input, token, confirmed: true },
     }),
   workflow: () => axiosMutator({ url: base + 'workflows/legacy-order/' }),
   importOrder: (command) =>
