@@ -38,6 +38,7 @@ export interface AdminField {
   max?: number;
 }
 export interface AdminCell {
+  avatar?: string | null;
   total?: number;
   value: unknown;
   display: string;
