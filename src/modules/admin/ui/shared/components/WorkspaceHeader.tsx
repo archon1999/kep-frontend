@@ -28,7 +28,7 @@ export default function WorkspaceHeader({
       flexWrap="wrap"
       gap={2}
       alignItems={{ sm: 'center' }}
-      sx={{ px: { xs: 2, md: 3 }, py: 2.5, borderBottom: 1, borderColor: 'divider' }}
+      sx={{ px: { xs: 2, md: 3 }, py: 2, borderBottom: 1, borderColor: 'divider', flexShrink: 0 }}
     >
       <Stack
         direction="row"

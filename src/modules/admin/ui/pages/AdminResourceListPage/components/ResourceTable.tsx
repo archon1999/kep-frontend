@@ -2,6 +2,7 @@ import { type Dispatch, type SetStateAction, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { Link } from 'react-router';
 import {
+  Avatar,
   Box,
   Button,
   Checkbox,
@@ -19,12 +20,15 @@ import {
   Tooltip,
   Typography,
 } from '@mui/material';
+import { useAdminRegistry } from 'modules/admin/application';
 import type { AdminList, AdminRow } from 'modules/admin/domain';
+import UserPopover from 'modules/users/ui/shared/components/UserPopover';
 import IconifyIcon from 'shared/components/base/IconifyIcon';
 import ConsoleCell from '../../../shared/components/ConsoleCell';
 import ResourceActions from '../../../shared/components/ResourceActions';
 import { fieldTitle, recordPath, resourceTitle } from '../../../shared/helpers';
 import { listPresentation, semanticColor } from '../../../shared/helpers/resourcePresentation';
+import { relatedRecordLinks } from '../../../shared/helpers/resourceRelations';
 
 export default function ResourceTable({
   data,
@@ -34,6 +38,8 @@ export default function ResourceTable({
   onOrderingChange,
   onAction,
   busy,
+  onPassword,
+  onReply,
 }: {
   data: AdminList;
   selected: string[];
@@ -42,11 +48,14 @@ export default function ResourceTable({
   onOrderingChange: (value: string) => void;
   onAction: (action: string, ids: string[]) => void;
   busy?: boolean;
+  onPassword?: (row: AdminRow) => void;
+  onReply?: (row: AdminRow) => void;
 }) {
   const { t } = useTranslation();
+  const { data: catalog = [] } = useAdminRegistry();
   const presentation = listPresentation(data);
   const [customColumns, setColumns] = useState<string[] | null>(null);
-  const [dense, setDense] = useState(false);
+  const [dense, setDense] = useState(true);
   const [anchor, setAnchor] = useState<HTMLElement | null>(null);
   const [sortAnchor, setSortAnchor] = useState<HTMLElement | null>(null);
   const names = (customColumns ?? presentation.defaults).filter((name) =>
@@ -57,6 +66,13 @@ export default function ResourceTable({
     setSelected((current) =>
       current.includes(id) ? current.filter((value) => value !== id) : [...current, id],
     );
+  const rowActions = (row: AdminRow) =>
+    data.actions.filter((action) => {
+      if (data.resource.key !== 'backend.user') return true;
+      if (action.name === 'enable') return row.cells.is_active?.value === false;
+      if (action.name === 'disable_action') return row.cells.is_active?.value !== false;
+      return true;
+    });
   const select = (row: AdminRow) => (
     <Checkbox
       disabled={busy}
@@ -68,24 +84,40 @@ export default function ResourceTable({
   );
   const identity = (row: AdminRow) => (
     <Box sx={{ minWidth: 0 }}>
-      <Typography
-        component={Link}
-        to={recordPath(data.resource, row.id)}
-        sx={{
-          display: '-webkit-box',
-          WebkitLineClamp: 2,
-          WebkitBoxOrient: 'vertical',
-          overflow: 'hidden',
-          color: 'text.primary',
-          textDecoration: 'none',
-          fontWeight: 650,
-          fontSize: 14,
-          lineHeight: 1.6,
-          '&:hover': { color: 'primary.main' },
-        }}
-      >
-        {row.cells[presentation.identity]?.display || row.label}
-      </Typography>
+      {data.resource.key === 'backend.user' ? (
+        <UserPopover
+          username={String(row.cells.username?.value ?? row.label)}
+          fullName={row.cells.get_full_name?.display}
+        >
+          <Stack direction="row" alignItems="center" spacing={1}>
+            <Avatar sx={{ width: 30, height: 30, fontSize: 13 }}>
+              {row.label.slice(0, 1).toUpperCase()}
+            </Avatar>
+            <Typography variant="body2" fontWeight={650}>
+              {row.label}
+            </Typography>
+          </Stack>
+        </UserPopover>
+      ) : (
+        <Typography
+          component={Link}
+          to={recordPath(data.resource, row.id)}
+          sx={{
+            display: '-webkit-box',
+            WebkitLineClamp: 2,
+            WebkitBoxOrient: 'vertical',
+            overflow: 'hidden',
+            color: 'text.primary',
+            textDecoration: 'none',
+            fontWeight: 650,
+            fontSize: 14,
+            lineHeight: 1.6,
+            '&:hover': { color: 'primary.main' },
+          }}
+        >
+          {row.cells[presentation.identity]?.display || row.label}
+        </Typography>
+      )}
       <Stack
         direction="row"
         spacing={1}
@@ -107,6 +139,8 @@ export default function ResourceTable({
   );
   const cell = (row: AdminRow, name: string) => {
     const value = row.cells[name];
+    if (value?.kind === 'verdict')
+      return <ConsoleCell cell={value} name={name} resourceKey={data.resource.key} />;
     const color = value && semanticColor(name, value.display);
     if (color)
       return (
@@ -136,7 +170,7 @@ export default function ResourceTable({
           )}
         />
       );
-    return <ConsoleCell cell={value} />;
+    return <ConsoleCell cell={value} name={name} resourceKey={data.resource.key} />;
   };
   const identityColumn = data.columns.find((column) => column.name === presentation.identity);
   const heading = (column: AdminList['columns'][number]) =>
@@ -278,11 +312,37 @@ export default function ResourceTable({
             },
             '& td': { fontSize: 13 },
             '& tbody tr:hover': { bgcolor: 'action.hover' },
+            '& td:first-of-type, & th:first-of-type': {
+              position: 'sticky',
+              left: 0,
+              zIndex: 2,
+              bgcolor: 'background.default',
+            },
+            ...(data.actions.length > 0
+              ? {
+                  '& td:nth-of-type(2), & th:nth-of-type(2)': {
+                    position: 'sticky',
+                    left: 48,
+                    zIndex: 2,
+                    bgcolor: 'background.default',
+                    borderRight: 1,
+                    borderRightColor: 'divider',
+                  },
+                }
+              : {}),
+            '& td:last-of-type, & th:last-of-type': {
+              position: 'sticky',
+              right: 0,
+              zIndex: 2,
+              bgcolor: 'background.default',
+              borderLeft: 1,
+              borderLeftColor: 'divider',
+            },
           }}
         >
           <colgroup>
             {data.actions.length > 0 && <Box component="col" sx={{ width: 48 }} />}
-            <Box component="col" sx={{ width: columns.length > 3 ? '30%' : '40%' }} />
+            <Box component="col" sx={{ width: 240 }} />
             {columns.map((column) => (
               <Box component="col" key={column.name} />
             ))}
@@ -326,9 +386,24 @@ export default function ResourceTable({
                     compact
                     recordLabel={row.label}
                     editPath={recordPath(data.resource, row.id)}
-                    actions={data.actions}
+                    actions={rowActions(row)}
                     busy={busy}
                     onAction={(action) => onAction(action, [row.id])}
+                    onReply={
+                      data.resource.key === 'contests.contestquestion' &&
+                      data.resource.permissions.change
+                        ? () => onReply?.(row)
+                        : undefined
+                    }
+                    onPassword={
+                      data.resource.key === 'backend.user' && data.resource.permissions.change
+                        ? () => onPassword?.(row)
+                        : undefined
+                    }
+                    links={relatedRecordLinks(data.resource.key, row.id, catalog).map((link) => ({
+                      ...link,
+                      label: resourceTitle(t, link.resource),
+                    }))}
                   />
                 </TableCell>
               </TableRow>
@@ -354,9 +429,24 @@ export default function ResourceTable({
                 compact
                 recordLabel={row.label}
                 editPath={recordPath(data.resource, row.id)}
-                actions={data.actions}
+                actions={rowActions(row)}
                 busy={busy}
                 onAction={(action) => onAction(action, [row.id])}
+                onReply={
+                  data.resource.key === 'contests.contestquestion' &&
+                  data.resource.permissions.change
+                    ? () => onReply?.(row)
+                    : undefined
+                }
+                onPassword={
+                  data.resource.key === 'backend.user' && data.resource.permissions.change
+                    ? () => onPassword?.(row)
+                    : undefined
+                }
+                links={relatedRecordLinks(data.resource.key, row.id, catalog).map((link) => ({
+                  ...link,
+                  label: resourceTitle(t, link.resource),
+                }))}
               />
             </Stack>
             {columns.length > 0 && (

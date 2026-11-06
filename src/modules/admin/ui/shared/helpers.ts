@@ -14,14 +14,14 @@ export const fieldTitle = (t: TFunction, field: Pick<AdminField, 'name' | 'label
   const label = t(`admin.console.fields.${name}`, {
     defaultValue: field.label.replace(/ \[(uz|ru|en)\]$/i, ''),
   });
-  return suffix ? `${label} · ${suffix.toUpperCase()}` : label;
+  return label;
 };
 export const actionTitle = (t: TFunction, name: string, fallback: string) =>
   t(`admin.console.actionNames.${name}`, {
     defaultValue: fallback.replace(/%\(verbose_name_plural\)s/g, ''),
   });
 export const fieldHelp = (t: TFunction, field: Pick<AdminField, 'name' | 'help'>) =>
-  t(`admin.console.hints.${field.name.replace(/_(uz|ru|en)$/, '')}`, { defaultValue: field.help });
+  t(`admin.console.hints.${field.name.replace(/_(uz|ru|en)$/, '')}`, { defaultValue: '' });
 export const recordPath = (resource: Pick<AdminResource, 'path'>, id: string) =>
   `${resource.path}/${encodeURIComponent(id)}`;
 

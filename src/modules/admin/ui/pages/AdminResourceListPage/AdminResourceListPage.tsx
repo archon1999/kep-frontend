@@ -1,16 +1,22 @@
+import { useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { Link, useParams } from 'react-router';
-import { Button, Chip, LinearProgress, Stack } from '@mui/material';
+import { Box, Button, Chip, LinearProgress, Stack, Typography } from '@mui/material';
 import { useAuth } from 'app/providers/AuthProvider';
 import { resources } from 'app/routes/resources';
+import { useAdminRegistry } from 'modules/admin/application';
 import { useAdminResourceList } from 'modules/admin/application/useAdminResourceList';
 import IconifyIcon from 'shared/components/base/IconifyIcon';
 import EmptyState from 'shared/components/common/EmptyState';
+import KepcoinValue from 'shared/components/common/KepcoinValue';
 import { ListPagination } from 'shared/components/sections/common/FramedListPage';
 import FramedPage from 'shared/components/sections/common/FramedPage';
 import ActionDialog from '../../shared/components/ActionDialog';
 import { ConsoleError, ConsoleSkeleton } from '../../shared/components/ConsoleState';
+import ContestReplyDialog from '../../shared/components/ContestReplyDialog';
+import PasswordDialog from '../../shared/components/PasswordDialog';
 import ResourceActions from '../../shared/components/ResourceActions';
+import ResourceRelatedTabs from '../../shared/components/ResourceRelatedTabs';
 import WorkspaceHeader from '../../shared/components/WorkspaceHeader';
 import { resourceTitle } from '../../shared/helpers';
 import ResourceFilters, { PageSizeControl } from './components/ResourceFilters';
@@ -24,6 +30,9 @@ export default function AdminResourceListPage() {
 function ResourceList({ resourceKey }: { resourceKey: string }) {
   const { t } = useTranslation();
   const { currentUser } = useAuth();
+  const { data: catalog = [] } = useAdminRegistry();
+  const [passwordId, setPasswordId] = useState<string | null>(null);
+  const [replyId, setReplyId] = useState<string | null>(null);
   const {
     data,
     error,
@@ -42,11 +51,16 @@ function ResourceList({ resourceKey }: { resourceKey: string }) {
     prepare,
   } = useAdminResourceList(resourceKey);
   const permissions = data?.resource.permissions;
+  const shownResource = data?.resource ?? catalog.find((item) => item.key === resourceKey);
   return (
     <FramedPage>
       <WorkspaceHeader
-        title={data ? resourceTitle(t, data.resource) : t('admin.console.loading')}
-        icon={data?.resource.icon}
+        title={
+          shownResource
+            ? resourceTitle(t, shownResource)
+            : t(error ? 'admin.console.unavailable' : 'admin.console.loading')
+        }
+        icon={shownResource?.icon}
         children={
           <Stack direction="row" gap={1} flexWrap="wrap">
             {resourceKey === 'marketplace.marketplaceorder' &&
@@ -74,6 +88,27 @@ function ResourceList({ resourceKey }: { resourceKey: string }) {
           </Stack>
         }
       />
+      <ResourceRelatedTabs resourceKey={resourceKey} />
+      {Boolean(data?.summary?.length) && (
+        <Stack
+          direction="row"
+          gap={3}
+          sx={{ px: { xs: 2, md: 3 }, py: 2, borderBottom: 1, borderColor: 'divider' }}
+        >
+          {data!.summary!.map((metric) => (
+            <Box key={metric.key}>
+              <Typography variant="caption" color="text.secondary">
+                {t('admin.workspace.totals.' + metric.key)}
+              </Typography>
+              {metric.key === 'users' ? (
+                <Typography fontWeight={650}>{metric.value}</Typography>
+              ) : (
+                <KepcoinValue value={metric.value} iconSize={20} />
+              )}
+            </Box>
+          ))}
+        </Stack>
+      )}
       <ResourceFilters
         resourceKey={resourceKey}
         fields={data?.filters ?? []}
@@ -154,6 +189,8 @@ function ResourceList({ resourceKey }: { resourceKey: string }) {
                 onOrderingChange={(value) => update('ordering', value)}
                 onAction={(action, ids) => void prepare(action, ids)}
                 busy={actionBusy || isValidating}
+                onPassword={(row) => setPasswordId(row.id)}
+                onReply={(row) => setReplyId(row.id)}
               />
             )}
             <ListPagination
@@ -190,6 +227,26 @@ function ResourceList({ resourceKey }: { resourceKey: string }) {
           void mutate();
         }}
       />
+      {passwordId && (
+        <PasswordDialog
+          id={passwordId}
+          username={data?.rows.find((row) => row.id === passwordId)?.label}
+          open
+          onClose={(changed) => {
+            setPasswordId(null);
+            if (changed) void mutate();
+          }}
+        />
+      )}
+      {replyId && (
+        <ContestReplyDialog
+          id={replyId}
+          onClose={(changed) => {
+            setReplyId(null);
+            if (changed) void mutate();
+          }}
+        />
+      )}
     </FramedPage>
   );
 }

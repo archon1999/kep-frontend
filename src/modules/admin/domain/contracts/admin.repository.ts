@@ -30,6 +30,7 @@ export interface AdminRepository {
   execute(
     key: string,
     token: string,
+    input?: { message?: string },
   ): Promise<{ count: number; action: string; messages: string[] }>;
   workflow(): Promise<AdminWorkflowForm>;
   importOrder(command: AdminSave): Promise<AdminDetail>;

@@ -1,9 +1,20 @@
 import { useState } from 'react';
 import { useTranslation } from 'react-i18next';
-import { Box, Button, Chip, Collapse, MenuItem, Stack, Tab, Tabs, TextField } from '@mui/material';
+import {
+  Box,
+  Button,
+  Chip,
+  InputAdornment,
+  MenuItem,
+  Stack,
+  Tab,
+  Tabs,
+  TextField,
+} from '@mui/material';
 import type { AdminList, AdminListQuery } from 'modules/admin/domain';
 import IconifyIcon from 'shared/components/base/IconifyIcon';
 import DebouncedTextField from 'shared/components/common/DebouncedTextField';
+import FilterPopover from 'shared/components/common/FilterPopover';
 import SchemaField from '../../../shared/components/SchemaField';
 import { fieldTitle } from '../../../shared/helpers';
 
@@ -18,7 +29,8 @@ export default function ResourceFilters({ resourceKey, fields, query, onChange, 
   const { t } = useTranslation();
   const selected = query.filters ?? {};
   const count = Object.keys(selected).length + (query.queue ? 1 : 0);
-  const [open, setOpen] = useState(false);
+  const [anchorEl, setAnchorEl] = useState<HTMLElement | null>(null);
+  const open = Boolean(anchorEl);
   const viewFilter = fields.find((field) =>
     ['hidden', 'in_the_pipeline', 'status', 'is_active'].includes(field.name),
   );
@@ -51,6 +63,17 @@ export default function ResourceFilters({ resourceKey, fields, query, onChange, 
         : [];
   return (
     <Box sx={{ borderBottom: 1, borderColor: 'divider' }}>
+      {resourceKey === 'daily_tasks.userdailytaskcompletion' && (
+        <Tabs
+          value={query.queue || ''}
+          onChange={(_, value) => onChange('queue', value)}
+          aria-label={t('admin.workspace.views')}
+          sx={{ px: { xs: 2, md: 3 } }}
+        >
+          <Tab value="" label={t('admin.workspace.individualCompletions')} />
+          <Tab value="dailyCompleted" label={t('admin.workspace.completedDays')} />
+        </Tabs>
+      )}
       {viewFilter && views.length > 0 && (
         <Tabs
           value={String(selected[viewFilter.name] ?? '')}
@@ -85,6 +108,13 @@ export default function ResourceFilters({ resourceKey, fields, query, onChange, 
           placeholder={t('admin.searchPlaceholder')}
           slotProps={{
             htmlInput: { 'aria-label': t('admin.searchPlaceholder') },
+            input: {
+              startAdornment: (
+                <InputAdornment position="start">
+                  <IconifyIcon icon="mdi:magnify" />
+                </InputAdornment>
+              ),
+            },
           }}
           sx={{ minWidth: 150, flex: '1 1 200px' }}
         />
@@ -93,7 +123,9 @@ export default function ResourceFilters({ resourceKey, fields, query, onChange, 
             variant={open ? 'soft' : 'outlined'}
             color="neutral"
             aria-expanded={open}
-            onClick={() => setOpen((value) => !value)}
+            aria-haspopup="dialog"
+            aria-controls={open ? 'admin-resource-filters' : undefined}
+            onClick={(event) => setAnchorEl(event.currentTarget)}
             startIcon={<IconifyIcon icon="mdi:tune" />}
           >
             {t('admin.console.filters')}
@@ -107,17 +139,21 @@ export default function ResourceFilters({ resourceKey, fields, query, onChange, 
           />
         </Box>
       </Stack>
-      <Collapse in={open}>
+      <FilterPopover
+        id="admin-resource-filters"
+        maxHeight="min(680px, calc(100dvh - 32px))"
+        title={t('admin.console.filters')}
+        anchorEl={anchorEl}
+        onClose={() => setAnchorEl(null)}
+        onReset={onReset}
+        hasActiveFilters={count > 0}
+        resetLabel={t('admin.console.resetFilters')}
+        doneLabel={t('contests.filters.done')}
+      >
         <Box
           sx={{
-            px: { xs: 2, md: 3 },
-            pb: 2.5,
             display: 'grid',
-            gridTemplateColumns: {
-              xs: '1fr',
-              sm: 'repeat(2, minmax(0, 1fr))',
-              xl: 'repeat(3, minmax(0, 1fr))',
-            },
+            gridTemplateColumns: 'minmax(0, 1fr)',
             gap: 2,
           }}
         >
@@ -163,7 +199,7 @@ export default function ResourceFilters({ resourceKey, fields, query, onChange, 
             ),
           )}
         </Box>
-      </Collapse>
+      </FilterPopover>
       {count > 0 && (
         <Stack direction="row" gap={1} flexWrap="wrap" sx={{ px: { xs: 2, md: 3 }, pb: 2 }}>
           {query.queue && (

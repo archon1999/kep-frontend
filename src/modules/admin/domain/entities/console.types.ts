@@ -38,11 +38,14 @@ export interface AdminField {
   max?: number;
 }
 export interface AdminCell {
+  total?: number;
   value: unknown;
   display: string;
   kind: string;
   resource?: string;
   url?: string;
+  username?: string | null;
+  title?: string;
 }
 export interface AdminRow {
   id: string;
@@ -71,6 +74,7 @@ export interface AdminList {
   page: number;
   pageSize: number;
   pagesCount: number;
+  summary?: { key: string; value: number }[];
 }
 export interface AdminInlineRow {
   label?: string;
@@ -119,6 +123,7 @@ export interface AdminSave {
   files?: Record<string, unknown>;
 }
 export interface AdminActionPreview {
+  recipients?: number | null;
   token: string;
   action: AdminAction;
   count: number;

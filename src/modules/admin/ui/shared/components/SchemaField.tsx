@@ -19,6 +19,7 @@ import { useAdminRegistry, useAdminRelation } from 'modules/admin/application';
 import type { AdminField, AdminOption, AdminValues } from 'modules/admin/domain';
 import IconifyIcon from 'shared/components/base/IconifyIcon';
 import { errorText, fieldHelp, fieldTitle, formatFieldValue } from '../helpers';
+import DateField from './DateField';
 
 const RichTextEditor = lazy(() => import('shared/components/form/RichTextEditor'));
 interface Props {
@@ -268,6 +269,18 @@ export default function SchemaField(props: Props) {
       : String(value ?? '');
   if (field.kind === 'relation' || field.kind === 'relations') return <RelationField {...props} />;
   if (field.kind === 'file' || field.kind === 'image') return <UploadField {...props} />;
+  if (['date', 'datetime', 'time'].includes(field.kind))
+    return (
+      <DateField
+        field={field}
+        label={label}
+        value={value}
+        error={Boolean(error)}
+        help={help}
+        disabled={disabled}
+        onChange={onChange}
+      />
+    );
   if (field.kind === 'boolean')
     return (
       <Box sx={{ py: 0.5 }}>
@@ -342,17 +355,7 @@ export default function SchemaField(props: Props) {
       disabled={disabled || field.readOnly}
       error={Boolean(error)}
       helperText={help}
-      type={
-        field.kind === 'number'
-          ? 'number'
-          : field.kind === 'secret'
-            ? 'password'
-            : field.kind === 'datetime'
-              ? 'datetime-local'
-              : ['date', 'time'].includes(field.kind)
-                ? field.kind
-                : 'text'
-      }
+      type={field.kind === 'number' ? 'number' : field.kind === 'secret' ? 'password' : 'text'}
       multiline={['textarea', 'json', 'array'].includes(field.kind)}
       minRows={field.kind === 'json' ? 5 : 3}
       select={select}
@@ -376,9 +379,6 @@ export default function SchemaField(props: Props) {
           field.kind === 'json'
             ? { sx: { fontFamily: 'monospace', fontSize: 13 } }
             : undefined,
-        inputLabel: ['datetime', 'date', 'time'].includes(field.kind)
-          ? { shrink: true }
-          : undefined,
         htmlInput: {
           maxLength: field.maxLength,
           min: field.min,

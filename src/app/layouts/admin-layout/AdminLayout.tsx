@@ -76,9 +76,19 @@ export default function AdminLayout({ children }: PropsWithChildren) {
       </Typography>
       {groups.map((group, index) => {
         const all = data.filter((item) => item.group === group);
+        const hasPrimary = all.some(isPrimaryResource);
         const items = all
-          .filter((item) => isPrimaryResource(item) || pathname.startsWith(item.path + '/'))
-          .sort((a, b) => primaryResources.indexOf(a.key) - primaryResources.indexOf(b.key));
+          .filter(
+            (item) =>
+              isPrimaryResource(item) || activePath(item.path) || (!hasPrimary && all.length <= 5),
+          )
+          .sort((a, b) => {
+            const rank = (key: string) => {
+              const index = primaryResources.indexOf(key);
+              return index < 0 ? primaryResources.length : index;
+            };
+            return rank(a.key) - rank(b.key);
+          });
         if (!all.length) return null;
         const open =
           expanded === group || (expanded === null && (currentGroup ?? defaultGroup) === group);

@@ -16,10 +16,12 @@ import { ConsoleError } from './ConsoleState';
 
 export default function PasswordDialog({
   id,
+  username,
   open,
   onClose,
 }: {
   id: string;
+  username?: string;
   open: boolean;
   onClose: (changed?: boolean) => void;
 }) {
@@ -64,10 +66,14 @@ export default function PasswordDialog({
       <DialogHeader
         id="admin-password-title"
         title={t('admin.actions.changePassword')}
+        subtitle={username}
         onClose={close}
         closeDisabled={busy}
       />
       <Stack component="form" onSubmit={submit}>
+        {username && (
+          <input name="username" autoComplete="username" value={username} readOnly hidden />
+        )}
         <DialogContent>
           {done ? (
             <Alert severity="success">{t('admin.console.saved')}</Alert>
