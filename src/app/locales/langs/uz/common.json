@@ -107,7 +107,13 @@
       "numbered": "Raqamli ro‘yxat",
       "bulleted": "Belgili ro‘yxat"
     },
-    "clearSearch": "Qidiruvni tozalash"
+    "clearSearch": "Qidiruvni tozalash",
+    "session": {
+      "expired": "Sessiyani tekshirish kerak. Qayta kiring yoki ulanishni takrorlang.",
+      "signIn": "Qayta kirish",
+      "unavailable": "Hisob xizmati vaqtincha ishlamayapti",
+      "retryDescription": "Sessiyani tekshirib bo‘lmadi. Hisob ma’lumotlari o‘chirilmagan. Qayta urinib ko‘ring."
+    }
   },
   "notifications": {
     "unread": "O‘qilmagan",

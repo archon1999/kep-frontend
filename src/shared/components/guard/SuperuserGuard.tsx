@@ -4,9 +4,10 @@ import { useAuth } from 'app/providers/AuthProvider';
 import { resources } from 'app/routes/resources';
 import PageLoader from 'shared/components/loading/PageLoader';
 import { getLoginRedirectTo, getReturnUrlFromLocation } from 'shared/lib/authRedirect';
+import AuthUnavailable from './AuthUnavailable';
 
 const SuperuserGuard = ({ children }: PropsWithChildren) => {
-  const { currentUser, isAuthLoading } = useAuth();
+  const { currentUser, isAuthLoading, authError } = useAuth();
   const location = useLocation();
 
   if (isAuthLoading) {
@@ -20,16 +21,11 @@ const SuperuserGuard = ({ children }: PropsWithChildren) => {
   if (currentUser) {
     return <Navigate to={resources.Forbidden} />;
   }
+  if (authError) return <AuthUnavailable />;
 
   const returnUrl = getReturnUrlFromLocation(location);
 
-  return (
-    <Navigate
-      to={getLoginRedirectTo(returnUrl)}
-      replace
-      state={{ from: location }}
-    />
-  );
+  return <Navigate to={getLoginRedirectTo(returnUrl)} replace state={{ from: location }} />;
 };
 
 export default SuperuserGuard;

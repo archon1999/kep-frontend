@@ -41,6 +41,7 @@ interface ChessPuzzleQuestionProps {
     answer: unknown;
     isFinish?: boolean;
     forceFail?: boolean;
+    source?: 'answer' | 'timeout' | 'finish';
   }) => Promise<void> | void;
 }
 
@@ -167,6 +168,7 @@ const ChallengeChessPuzzleQuestion = forwardRef<
             result,
           },
           forceFail,
+          source: forceFail ? 'timeout' : 'answer',
         });
 
         clearProgress();

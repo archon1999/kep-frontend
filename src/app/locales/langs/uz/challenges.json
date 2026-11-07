@@ -306,6 +306,16 @@
     },
     "matchScore": "Hisob",
     "waitingForOpponent": "Raqib kutilmoqda",
-    "waitingForOpponentDescription": "Javoblaringiz qabul qilindi. Bellashuv tugashi bilan natija chiqadi."
+    "waitingForOpponentDescription": "Javoblaringiz qabul qilindi. Bellashuv tugashi bilan natija chiqadi.",
+    "ratingPending": "Natija hisoblanmoqda",
+    "ratingPendingDescription": "Ikkala o‘yinchi ham tugatdi. Natija va reyting saqlanmoqda.",
+    "connectionInterrupted": "Ulanish uzildi. Oxirgi javobingiz saqlangan bo‘lishi mumkin. Davom etishdan oldin qayta sinxronlang.",
+    "ratingReason": {
+      "repeatOpponent": "Reytingsiz: bir raqib bilan 12 soat ichidagi dastlabki uchta o‘yin reytingga ta’sir qiladi.",
+      "inactivePlayer": "Reytingsiz: o‘yinchilardan birining hisobi faol emas.",
+      "notRated": "Bu challenge reytingga ta’sir qilmaydi."
+    },
+    "compatibleQuestionsUnavailable": "Ikkala o‘yinchining tiliga mos savollar yetarli emas. Boshqa bo‘lim yoki kamroq savol tanlang.",
+    "acceptCallError": "Hozir bu chaqiruvni qabul qilib bo‘lmaydi. Navbatni yangilab, qayta urinib ko‘ring."
   }
 }

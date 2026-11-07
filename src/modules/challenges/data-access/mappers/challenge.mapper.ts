@@ -24,10 +24,10 @@ export const extractList = <T = any>(payload: unknown): T[] => {
 const normalizePlayer = (payload: any): ChallengePlayer => ({
   username: payload?.username ?? '',
   avatar: payload?.avatar ?? undefined,
-  result: payload?.result ?? 0,
-  results: payload?.results ?? [],
-  rating: payload?.rating ?? 0,
-  newRating: payload?.newRating ?? payload?.new_rating ?? payload?.rating ?? 0,
+  result: Number(payload?.result ?? 0),
+  results: [...(payload?.results ?? [])],
+  rating: Number(payload?.rating ?? 0),
+  newRating: Number(payload?.newRating ?? payload?.new_rating ?? payload?.rating ?? 0),
   rankTitle: payload?.rankTitle ?? payload?.rank_title ?? '',
   newRankTitle:
     payload?.newRankTitle ??
@@ -35,12 +35,13 @@ const normalizePlayer = (payload: any): ChallengePlayer => ({
     payload?.rankTitle ??
     payload?.rank_title ??
     '',
-  delta: payload?.delta ?? 0,
+  delta: Number(payload?.delta ?? 0),
 });
 
 const mapChallengeQuestion = (payload: any): ChallengeQuestion => {
   const questionPayload = payload?.question ?? payload;
   const number = payload?.number ?? payload?.questionNumber ?? questionPayload?.number ?? 0;
+  if (!payload?.question && !questionPayload?.id) return { number };
   const question = hydrateQuestion(mapQuestion({ ...questionPayload, number }));
   return {
     number,
@@ -49,6 +50,7 @@ const mapChallengeQuestion = (payload: any): ChallengeQuestion => {
 };
 
 export const mapChallenge = (payload: any): Challenge => {
+  const nextQuestion = payload?.nextQuestion ?? payload?.next_question;
   const challenge: Challenge = {
     id: payload?.id,
     playerFirst: normalizePlayer(payload?.playerFirst ?? payload?.player_first ?? {}),
@@ -64,14 +66,18 @@ export const mapChallenge = (payload: any): Challenge => {
       payload?.time_seconds ??
       0,
     rated: Boolean(payload?.rated ?? payload?.is_rated ?? false),
+    ratingPending: Boolean(payload?.ratingPending ?? payload?.rating_pending),
+    ratingReason: payload?.ratingReason ?? payload?.rating_reason,
+    questionDeadline: payload?.questionDeadline ?? payload?.question_deadline,
+    serverTime: payload?.serverTime ?? payload?.server_time,
     questionTimeType: (payload?.questionTimeType ??
       payload?.question_time_type ??
       ChallengeQuestionTimeType.TimeToOne) as ChallengeQuestionTimeType,
-    nextQuestion: payload?.nextQuestion ? mapChallengeQuestion(payload?.nextQuestion) : undefined,
+    nextQuestion: nextQuestion ? mapChallengeQuestion(nextQuestion) : undefined,
     status: ChallengeStatus.NotStarted,
   };
 
-  if (challenge.finished || (challenge.nextQuestion?.number ?? 0) > challenge.questionsCount) {
+  if (challenge.finished && !challenge.ratingPending) {
     challenge.status = ChallengeStatus.Finished;
   } else if ((challenge.nextQuestion?.number ?? 0) === 0) {
     challenge.status = ChallengeStatus.NotStarted;
@@ -79,7 +85,7 @@ export const mapChallenge = (payload: any): Challenge => {
     challenge.status = ChallengeStatus.Already;
   }
 
-  if (challenge.nextQuestion?.number && challenge.nextQuestion.number > 0) {
+  if (!challenge.finished && challenge.nextQuestion?.number && challenge.nextQuestion.number > 0) {
     for (let i = challenge.nextQuestion.number - 1; i < challenge.questionsCount; i += 1) {
       if (challenge.playerFirst.results[i] === 1) {
         challenge.playerFirst.result -= 1;

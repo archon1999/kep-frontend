@@ -26,14 +26,15 @@ export class AuthenticationRepositoryImpl implements AuthenticationRepository {
     return axiosFetcher([apiEndpoints.logout, { method: 'post' }]) as Promise<void>;
   }
 
-  getCurrentUser(): Promise<AuthUser | null> {
-    return axiosFetcher([
-      apiEndpoints.profile,
-      {},
-      { disableThrowError: true },
-    ]).then((response) => (response ? mapAuthUserFromApi(response as AuthUser) : null)) as Promise<
-      AuthUser | null
-    >;
+  async getCurrentUser(): Promise<AuthUser | null> {
+    try {
+      const response = await axiosFetcher(apiEndpoints.profile);
+      return response ? mapAuthUserFromApi(response as AuthUser) : null;
+    } catch (error) {
+      const status = (error as { status?: number }).status;
+      if (status === 401 || status === 403) return null;
+      throw error;
+    }
   }
 }
 

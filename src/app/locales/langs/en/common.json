@@ -107,7 +107,13 @@
       "numbered": "Numbered list",
       "bulleted": "Bulleted list"
     },
-    "clearSearch": "Clear search"
+    "clearSearch": "Clear search",
+    "session": {
+      "expired": "Your session needs attention. Sign in again or retry to reconnect.",
+      "signIn": "Sign in again",
+      "unavailable": "Account service is temporarily unavailable",
+      "retryDescription": "We could not verify your session. Your account data has not been reset. Please retry."
+    }
   },
   "notifications": {
     "unread": "Unread",

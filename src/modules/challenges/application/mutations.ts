@@ -1,3 +1,5 @@
+import { useTranslation } from 'react-i18next';
+import { toast } from 'sonner';
 import useSWRMutation from 'swr/mutation';
 import { challengesRepository } from '../data-access';
 import {
@@ -23,11 +25,29 @@ export const useDeleteChallengeCall = () =>
     challengesRepository.deleteChallengeCall(arg),
   );
 
-export const useAcceptChallengeCall = () =>
-  useSWRMutation<ChallengeStartResponse, Error, string, number>(
+export const useAcceptChallengeCall = () => {
+  const { t } = useTranslation();
+  const mutation = useSWRMutation<ChallengeStartResponse, Error, string, number>(
     'accept-challenge-call',
     (_, { arg }) => challengesRepository.acceptChallengeCall(arg),
   );
+  const trigger = async (id: number) => {
+    try {
+      return await mutation.trigger(id);
+    } catch (error) {
+      const code = (error as { data?: { code?: string } }).data?.code;
+      toast.error(
+        t(
+          code === 'not_enough_compatible_questions'
+            ? 'challenges.compatibleQuestionsUnavailable'
+            : 'challenges.acceptCallError',
+        ),
+      );
+      return undefined;
+    }
+  };
+  return { ...mutation, trigger };
+};
 
 export const useStartChallenge = () =>
   useSWRMutation<void, Error, string, number>('start-challenge', (_, { arg }) =>
