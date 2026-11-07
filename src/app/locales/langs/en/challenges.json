@@ -306,6 +306,16 @@
     },
     "matchScore": "Match score",
     "waitingForOpponent": "Waiting for your opponent",
-    "waitingForOpponentDescription": "Your answers are in. The result will appear when the challenge ends."
+    "waitingForOpponentDescription": "Your answers are in. The result will appear when the challenge ends.",
+    "ratingPending": "Calculating the result",
+    "ratingPendingDescription": "Both players have finished. Your result and rating are being saved.",
+    "connectionInterrupted": "Connection interrupted. Your last answer may already be saved. Retry to sync before continuing.",
+    "ratingReason": {
+      "repeatOpponent": "Unrated: only the first three games against the same opponent in 12 hours affect rating.",
+      "inactivePlayer": "Unrated: one of the players has an inactive account.",
+      "notRated": "This challenge does not affect rating."
+    },
+    "compatibleQuestionsUnavailable": "There are not enough questions for both players’ languages. Choose another chapter or fewer questions.",
+    "acceptCallError": "This call cannot be accepted right now. Refresh the queue and try again."
   }
 }

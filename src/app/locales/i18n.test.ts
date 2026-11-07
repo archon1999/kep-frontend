@@ -65,6 +65,11 @@ test('legacy locale preferences resolve to standard language codes and native pl
       'notifications.challengeFinishedDescription',
       'common.dailyTasks.subtitle',
       'problems.detail.targetImageMissing',
+      'common.session.expired',
+      'common.session.unavailable',
+      'challenges.ratingPending',
+      'challenges.ratingReason.repeatOpponent',
+      'challenges.compatibleQuestionsUnavailable',
     ]) {
       assert.equal(
         instance.exists(key, { fallbackLng: false }),

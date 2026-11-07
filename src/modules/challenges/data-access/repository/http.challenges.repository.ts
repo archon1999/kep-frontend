@@ -105,12 +105,18 @@ export class HttpChallengesRepository implements ChallengesRepository {
     payload: ChallengeAnswerPayload,
   ): Promise<ChallengeCheckResponse> {
     const response = await challengesApiClient.submitAnswer(challengeId, {
+      question_number: payload.questionNumber,
+      source: payload.source ?? (payload.isFinish ? 'finish' : 'answer'),
       answer: this.mapChallengeAnswer(payload.answer),
       finish: payload.isFinish,
       force_fail: payload.forceFail,
     });
     return {
       success: Boolean(response?.success ?? response?.ok ?? response?.isCorrect),
+      accepted: response?.accepted !== false,
+      code: response?.code,
+      timedOut: Boolean(response?.timedOut ?? response?.timed_out),
+      nextQuestionNumber: response?.nextQuestionNumber ?? response?.next_question_number,
     };
   }
 

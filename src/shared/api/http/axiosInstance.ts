@@ -1,7 +1,11 @@
-import axios, { type AxiosInstance, type AxiosRequestHeaders, type InternalAxiosRequestConfig } from 'axios';
 import { getStoredLocale, toBackendLanguage } from 'app/locales/locale.ts';
 import { apiEndpoints } from 'app/routes/route-config';
-import { getCurrentReturnUrl, getLoginRedirectPath } from 'shared/lib/authRedirect';
+import axios, {
+  type AxiosInstance,
+  type AxiosRequestHeaders,
+  type InternalAxiosRequestConfig,
+} from 'axios';
+import { SESSION_REQUIRED_EVENT } from 'shared/services/axios/session';
 
 const baseURL = import.meta.env.VITE_API_URL || '';
 const basicAuthLogin = import.meta.env.VITE_BASIC_AUTH_LOGIN;
@@ -72,14 +76,16 @@ instance.interceptors.response.use(
     const pathname = requestUrl.startsWith('http')
       ? new URL(requestUrl).pathname
       : requestUrl.split('?')[0];
-    const shouldRedirectToLogin =
-      status === 401 &&
+    const requiresSession =
+      (status === 401 || status === 403) &&
       typeof window !== 'undefined' &&
-      !window.location.pathname.startsWith(apiEndpoints.login.replace('/api', '').replace(/\/$/, '')) &&
+      !window.location.pathname.startsWith(
+        apiEndpoints.login.replace('/api', '').replace(/\/$/, ''),
+      ) &&
       !authBootstrapEndpoints.has(pathname);
 
-    if (shouldRedirectToLogin) {
-      window.location.assign(getLoginRedirectPath(getCurrentReturnUrl()));
+    if (requiresSession) {
+      window.dispatchEvent(new CustomEvent(SESSION_REQUIRED_EVENT, { detail: { status } }));
     }
 
     return Promise.reject({

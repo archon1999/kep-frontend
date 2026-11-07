@@ -1,6 +1,6 @@
 import { useEffect, useRef } from 'react';
 import { useTranslation } from 'react-i18next';
-import { Box, Button } from '@mui/material';
+import { Alert, Box, Button } from '@mui/material';
 import { useChallengeDetailPage } from 'modules/challenges/application/hooks/useChallengeDetailPage';
 import { ChallengeQuestionTimeType, ChallengeStatus } from 'modules/challenges/domain';
 import { QuestionType } from 'modules/testing/domain';
@@ -22,6 +22,9 @@ const ChallengeDetailPage = () => {
     mutate,
     starting,
     submitting,
+    submissionError,
+    sessionExpired,
+    recoverChallenge,
     question,
     blurProtectionActive,
     handlePageExit,
@@ -70,7 +73,15 @@ const ChallengeDetailPage = () => {
   ]);
 
   useEffect(() => {
-    if (!timerRunning || secondsLeft > 0) return;
+    if (
+      !timerRunning ||
+      secondsLeft > 0 ||
+      submitting ||
+      sessionExpired ||
+      submissionError ||
+      error
+    )
+      return;
 
     if (challenge?.questionTimeType === ChallengeQuestionTimeType.TimeToAll) {
       void handleTimeExpired();
@@ -79,7 +90,16 @@ const ChallengeDetailPage = () => {
 
     setTimerRunning(false);
     questionCardRef.current?.submit({ force: true });
-  }, [timerRunning, secondsLeft, challenge?.questionTimeType, handleTimeExpired]);
+  }, [
+    timerRunning,
+    secondsLeft,
+    challenge?.questionTimeType,
+    handleTimeExpired,
+    submitting,
+    sessionExpired,
+    submissionError,
+    error,
+  ]);
 
   useEffect(() => {
     if (!challenge || challenge.status !== ChallengeStatus.Already) return;
@@ -203,6 +223,14 @@ const ChallengeDetailPage = () => {
 
   return (
     <FramedPage>
+      {(error || submissionError) && (
+        <Alert
+          severity="warning"
+          action={<Button onClick={() => void recoverChallenge()}>{t('common.retry')}</Button>}
+        >
+          {t('challenges.connectionInterrupted')}
+        </Alert>
+      )}
       <Box
         sx={{
           minHeight: hideBackgroundContent ? '70vh' : undefined,
@@ -216,6 +244,7 @@ const ChallengeDetailPage = () => {
           questionCardRef={questionCardRef}
           onSubmit={handleSubmit}
           submitting={submitting}
+          interactionDisabled={sessionExpired || submissionError || Boolean(error)}
           secondsLeft={secondsLeft}
         />
 

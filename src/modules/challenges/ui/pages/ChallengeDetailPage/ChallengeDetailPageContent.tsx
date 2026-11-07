@@ -22,8 +22,10 @@ type ChallengeDetailPageContentProps = {
     answer: unknown;
     isFinish?: boolean;
     forceFail?: boolean;
+    source?: 'answer' | 'timeout' | 'finish';
   }) => Promise<void>;
   submitting: boolean;
+  interactionDisabled?: boolean;
   secondsLeft: number;
 };
 const ChallengeDetailPageContent = ({
@@ -34,6 +36,7 @@ const ChallengeDetailPageContent = ({
   questionCardRef,
   onSubmit,
   submitting,
+  interactionDisabled = false,
   secondsLeft,
 }: ChallengeDetailPageContentProps) => {
   const { t } = useTranslation();
@@ -124,17 +127,25 @@ const ChallengeDetailPageContent = ({
                 questionNumber={challenge.nextQuestion?.number}
                 question={question}
                 onSubmit={onSubmit}
-                disabled={submitting}
+                disabled={submitting || interactionDisabled}
                 isSubmitting={submitting}
                 toolbar={questionToolbar}
               />
             ) : (
               <Stack gap={2} sx={{ p: 'var(--kep-content-inset)' }}>
                 <Typography component="h2" variant="h6">
-                  {t('challenges.waitingForOpponent')}
+                  {t(
+                    challenge.ratingPending
+                      ? 'challenges.ratingPending'
+                      : 'challenges.waitingForOpponent',
+                  )}
                 </Typography>
                 <Typography color="text.secondary">
-                  {t('challenges.waitingForOpponentDescription')}
+                  {t(
+                    challenge.ratingPending
+                      ? 'challenges.ratingPendingDescription'
+                      : 'challenges.waitingForOpponentDescription',
+                  )}
                 </Typography>
               </Stack>
             )}

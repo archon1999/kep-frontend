@@ -13,6 +13,7 @@ import {
 import { useChallengeDetail } from 'modules/challenges/application/queries.ts';
 import { ChallengeQuestionTimeType, ChallengeStatus } from 'modules/challenges/domain';
 import { ChallengePenaltyReason } from 'modules/challenges/domain/contracts/challenges.repository.ts';
+import { useScopedAsyncTask } from 'shared/hooks/useScopedAsyncTask';
 import { useLoginRedirect } from 'shared/lib/authRedirect';
 import { toast } from 'sonner';
 
@@ -56,7 +57,7 @@ export const useChallengeDetailPage = () => {
 
   const { t } = useTranslation();
 
-  const { currentUser } = useAuth();
+  const { currentUser, sessionExpired, refreshCurrentUser } = useAuth();
 
   const redirectToLogin = useLoginRedirect();
 
@@ -64,7 +65,12 @@ export const useChallengeDetailPage = () => {
 
   const { trigger: startChallenge, isMutating: starting } = useStartChallenge();
 
-  const { trigger: submitAnswer, isMutating: submitting } = useSubmitChallengeAnswer();
+  const { trigger: submitAnswer } = useSubmitChallengeAnswer();
+  const questionScope = `${id}:${challenge?.nextQuestion?.number ?? 0}`;
+  const { run: runAnswer, isPending: submitting } = useScopedAsyncTask(questionScope);
+  const handledQuestionRef = useRef<string | null>(null);
+  const [submissionError, setSubmissionError] = useState(false);
+  const deadlineRef = useRef<{ scope: string; at: number } | null>(null);
 
   const { trigger: applyAntiCheatPenalty } = useApplyChallengeAntiCheatPenalty();
 
@@ -82,8 +88,6 @@ export const useChallengeDetailPage = () => {
 
   const finishHandledRef = useRef(false);
 
-  const timeExpiredHandledRef = useRef(false);
-
   const penaltyInFlightRef = useRef<string | null>(null);
 
   const reconciledPenaltyRef = useRef<string | null>(null);
@@ -91,6 +95,7 @@ export const useChallengeDetailPage = () => {
   const [secondsLeft, setSecondsLeft] = useState(0);
 
   const [timerRunning, setTimerRunning] = useState(false);
+  const [timerScope, setTimerScope] = useState<string | null>(null);
 
   const [startDialogOpen, setStartDialogOpen] = useState(false);
 
@@ -105,11 +110,24 @@ export const useChallengeDetailPage = () => {
 
   const hasActiveQuestion = Boolean(question);
 
-  const blurProtectionActive = challenge?.status === ChallengeStatus.Already && hasActiveQuestion;
+  const blurProtectionActive =
+    challenge?.status === ChallengeStatus.Already &&
+    hasActiveQuestion &&
+    !sessionExpired &&
+    !error &&
+    !submissionError;
 
   const getActiveAntiCheatPenalty = useCallback(
     (reason: ChallengePenaltyReason): PendingAntiCheatPenalty | null => {
-      if (!challenge || challenge.status !== ChallengeStatus.Already || !question) return null;
+      if (
+        !challenge ||
+        challenge.status !== ChallengeStatus.Already ||
+        !question ||
+        sessionExpired ||
+        error ||
+        submissionError
+      )
+        return null;
       if (!challenge.nextQuestion?.number) return null;
 
       return {
@@ -118,7 +136,7 @@ export const useChallengeDetailPage = () => {
         reason,
       };
     },
-    [challenge, question],
+    [challenge, question, sessionExpired, error, submissionError],
   );
 
   const runAntiCheatPenalty = useCallback(
@@ -169,66 +187,49 @@ export const useChallengeDetailPage = () => {
   );
 
   useEffect(() => {
-    timeExpiredHandledRef.current = false;
-  }, [challenge?.id]);
-
-  useEffect(() => {
-    if (!challenge || challenge.status !== ChallengeStatus.Already || !hasActiveQuestion) {
-      setTimerRunning(false);
-      return;
-    }
-
-    if (challenge.questionTimeType === ChallengeQuestionTimeType.TimeToOne) {
-      setSecondsLeft(challenge.timeSeconds);
-      setTimerRunning(true);
-    } else {
-      setSecondsLeft(challenge.remainingTimeSeconds ?? challenge.timeSeconds);
-      setTimerRunning(true);
-    }
-  }, [
-    challenge?.id,
-    challenge?.status,
-    challenge?.nextQuestion?.number,
-    challenge?.questionTimeType,
-    challenge?.remainingTimeSeconds,
-    challenge?.timeSeconds,
-    hasActiveQuestion,
-  ]);
-
-  const handleTimeExpired = useCallback(async () => {
     if (
       !challenge ||
       challenge.status !== ChallengeStatus.Already ||
-      !question ||
-      timeExpiredHandledRef.current
+      !hasActiveQuestion ||
+      sessionExpired ||
+      error ||
+      submissionError
     ) {
+      setTimerRunning(false);
       return;
     }
-
-    timeExpiredHandledRef.current = true;
-    setTimerRunning(false);
-    toast.error(t('challenges.timeExpired'));
-
-    try {
-      await submitAnswer({
-        challengeId: challenge.id,
-        payload: {
-          answer: null,
-          isFinish: true,
-        },
-      });
-
-      await mutate();
-    } catch {
-      timeExpiredHandledRef.current = false;
-    }
-  }, [challenge, mutate, question, submitAnswer, t]);
-
-  useEffect(() => {
-    if (!timerRunning || secondsLeft <= 0) return;
-    const interval = setInterval(() => setSecondsLeft((prev) => Math.max(prev - 1, 0)), 1000);
+    const deadline =
+      challenge.questionDeadline && challenge.serverTime
+        ? Date.now() + Date.parse(challenge.questionDeadline) - Date.parse(challenge.serverTime)
+        : Date.now() + (challenge.remainingTimeSeconds ?? challenge.timeSeconds) * 1000;
+    // A poll or rerender must never restart the same question's clock.
+    const previous = deadlineRef.current;
+    deadlineRef.current = {
+      scope: questionScope,
+      at: previous?.scope === questionScope ? Math.min(previous.at, deadline) : deadline,
+    };
+    const tick = () =>
+      setSecondsLeft(
+        Math.max(0, Math.ceil(((deadlineRef.current?.at ?? Date.now()) - Date.now()) / 1000)),
+      );
+    tick();
+    setTimerScope(questionScope);
+    setTimerRunning(true);
+    const interval = setInterval(tick, 250);
     return () => clearInterval(interval);
-  }, [timerRunning, secondsLeft]);
+  }, [
+    challenge?.id,
+    challenge?.status,
+    challenge?.questionDeadline,
+    challenge?.serverTime,
+    challenge?.remainingTimeSeconds,
+    challenge?.timeSeconds,
+    questionScope,
+    hasActiveQuestion,
+    sessionExpired,
+    error,
+    submissionError,
+  ]);
 
   useEffect(() => {
     if (!challenge) return;
@@ -300,26 +301,78 @@ export const useChallengeDetailPage = () => {
     setStartDialogOpen(false);
   };
 
-  const handleSubmit = async (payload: {
-    answer: unknown;
-    isFinish?: boolean;
-    forceFail?: boolean;
-  }) => {
-    if (!challenge) return;
+  const handleSubmit = useCallback(
+    async (payload: {
+      answer: unknown;
+      isFinish?: boolean;
+      forceFail?: boolean;
+      source?: 'answer' | 'timeout' | 'finish';
+    }) => {
+      const number = challenge?.nextQuestion?.number;
+      if (
+        !challenge ||
+        !number ||
+        sessionExpired ||
+        error ||
+        submissionError ||
+        handledQuestionRef.current === questionScope
+      )
+        return;
+      await runAnswer(
+        () =>
+          submitAnswer({
+            challengeId: challenge.id,
+            payload: { ...payload, questionNumber: number },
+          }),
+        {
+          onSuccess: async (result) => {
+            if (result?.code === 'not_expired') deadlineRef.current = null;
+            if (result?.accepted) {
+              handledQuestionRef.current = questionScope;
+              if (result.timedOut) toast.error(t('challenges.timeExpired'));
+              else if (result.success) toast.success(t('challenges.answerCorrect'));
+              else toast.error(t('challenges.answerWrong'));
+            }
+            await mutate();
+          },
+          onError: () => {
+            setSubmissionError(true);
+            setTimerRunning(false);
+            toast.error(t('challenges.submitAnswerError'));
+          },
+        },
+      );
+    },
+    [
+      challenge,
+      sessionExpired,
+      error,
+      submissionError,
+      questionScope,
+      runAnswer,
+      submitAnswer,
+      mutate,
+      t,
+    ],
+  );
+
+  const handleTimeExpired = useCallback(
+    () =>
+      handleSubmit({
+        answer: null,
+        isFinish: challenge?.questionTimeType === ChallengeQuestionTimeType.TimeToAll,
+        source: 'timeout',
+      }),
+    [challenge?.questionTimeType, handleSubmit],
+  );
+
+  const recoverChallenge = async () => {
     try {
-      const result = await submitAnswer({ challengeId: challenge.id, payload });
-
-      if (result?.success !== undefined) {
-        const message = result.success
-          ? t('challenges.answerCorrect')
-          : t('challenges.answerWrong');
-        const notify = result.success ? toast.success : toast.error;
-        notify(message);
-      }
-
+      if (sessionExpired && !(await refreshCurrentUser())) return;
       await mutate();
+      setSubmissionError(false);
     } catch {
-      toast.error(t('challenges.submitAnswerError'));
+      setSubmissionError(true);
     }
   };
 
@@ -372,6 +425,9 @@ export const useChallengeDetailPage = () => {
     mutate,
     starting,
     submitting,
+    submissionError,
+    sessionExpired,
+    recoverChallenge,
     question,
     blurProtectionActive,
     handlePageExit,
@@ -386,7 +442,7 @@ export const useChallengeDetailPage = () => {
     timerModeLabel,
     blurDialogOpen,
     setBlurDialogOpen,
-    timerRunning,
+    timerRunning: timerRunning && timerScope === questionScope,
     setTimerRunning,
     secondsLeft,
     startDialogOpen,

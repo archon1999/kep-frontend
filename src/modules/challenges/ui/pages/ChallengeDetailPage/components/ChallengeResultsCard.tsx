@@ -14,6 +14,12 @@ const ChallengeResultsCard = ({ challenge, compact = false }: ResultsCardProps) 
   const { t, i18n } = useTranslation();
   const finished = challenge.status === ChallengeStatus.Finished;
   const players = [challenge.playerFirst, challenge.playerSecond];
+  const unratedReason =
+    challenge.ratingReason === 'repeat_opponent'
+      ? 'challenges.ratingReason.repeatOpponent'
+      : challenge.ratingReason === 'inactive_player'
+        ? 'challenges.ratingReason.inactivePlayer'
+        : 'challenges.ratingReason.notRated';
   const getResultTitle = (value: number) =>
     t(
       value === 1
@@ -26,6 +32,11 @@ const ChallengeResultsCard = ({ challenge, compact = false }: ResultsCardProps) 
     );
   return (
     <Box sx={{ minWidth: 0 }}>
+      {finished && !challenge.rated && (
+        <Typography variant="body2" color="text.secondary" sx={{ mb: 2 }}>
+          {t(unratedReason)}
+        </Typography>
+      )}
       {compact ? (
         <Stack direction="column" gap={2}>
           <Typography component="h2" variant="subtitle2" color="text.secondary">

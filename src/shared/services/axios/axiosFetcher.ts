@@ -18,33 +18,19 @@ const axiosFetcher = async (
   },
 ): Promise<any> => {
   const [url, config, extraConfig] = Array.isArray(args) ? args : [args];
-  let interceptors: null | number = null;
-
-  interceptors = axiosInstance.interceptors.response.use(
-    (response) => response,
-    (error) => {
-      if (extraConfig?.disableThrowError) {
-        return Promise.resolve(null);
-      }
-      throw error;
-    },
-  );
-
-  const res = await axiosInstance({
-    url,
-    method: config?.method || 'get',
-    data: extraArg?.arg,
-    ...config,
-  })
-    .then((response) => (response.data?.data ? response.data.data : response.data))
-    .finally(() => {
-      if (interceptors) {
-        axiosInstance.interceptors.response.eject(interceptors);
-        interceptors = null;
-      }
+  try {
+    const response = await axiosInstance({
+      url,
+      method: config?.method || 'get',
+      data: extraArg?.arg,
+      ...config,
     });
-
-  return res;
+    return response.data?.data ?? response.data;
+  } catch (error) {
+    // Error suppression belongs to this request, never the shared Axios instance.
+    if (extraConfig?.disableThrowError) return null;
+    throw error;
+  }
 };
 
 export default axiosFetcher;

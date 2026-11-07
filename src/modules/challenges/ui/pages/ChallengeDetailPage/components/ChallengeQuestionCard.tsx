@@ -36,6 +36,7 @@ interface QuestionCardProps {
     answer: unknown;
     isFinish?: boolean;
     forceFail?: boolean;
+    source?: 'answer' | 'timeout' | 'finish';
   }) => Promise<void> | void;
 }
 
@@ -107,7 +108,7 @@ const ChallengeQuestionCard = forwardRef<QuestionCardHandle, QuestionCardProps>(
     };
 
     const handleSubmit = (options?: { isFinish?: boolean; force?: boolean }) => {
-      if (!question) return;
+      if (!question || disabled || isSubmitting) return;
       if (question.type === QuestionType.ChessPuzzle) {
         if (options?.force) {
           chessQuestionRef.current?.forceFail();
@@ -119,7 +120,11 @@ const ChallengeQuestionCard = forwardRef<QuestionCardHandle, QuestionCardProps>(
 
       if (isEmpty && !options?.force) return;
 
-      onSubmit?.({ answer, isFinish: options?.isFinish });
+      onSubmit?.({
+        answer,
+        isFinish: options?.isFinish,
+        source: options?.force ? 'timeout' : 'answer',
+      });
     };
 
     const renderQuestion = () => {

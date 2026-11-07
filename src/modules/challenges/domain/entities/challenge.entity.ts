@@ -12,6 +12,10 @@ export interface Challenge {
   timeSeconds: number;
   remainingTimeSeconds: number;
   rated: boolean;
+  ratingPending?: boolean;
+  ratingReason?: string;
+  questionDeadline?: string | null;
+  serverTime?: string;
   questionTimeType: ChallengeQuestionTimeType;
   nextQuestion?: ChallengeQuestion;
   status: ChallengeStatus;

@@ -1,6 +1,6 @@
+import { getStoredLocale, toBackendLanguage } from 'app/locales/locale.ts';
 import { instance } from 'shared/api/http/axiosInstance.ts';
 import { getCsrfToken } from 'shared/api/http/csrf.ts';
-import { getStoredLocale, toBackendLanguage } from 'app/locales/locale.ts';
 
 export interface ChallengeListParams {
   page?: number;
@@ -85,7 +85,11 @@ export const challengesApiClient = {
     const response = await instance.get('/api/challenge-calls/');
     return response.data;
   },
-  createChallengeCall: async (payload: { timeSeconds: number; questionsCount: number; chapters?: number[] }) => {
+  createChallengeCall: async (payload: {
+    timeSeconds: number;
+    questionsCount: number;
+    chapters?: number[];
+  }) => {
     const response = await instance.post('/api/challenge-calls/new/', {
       time_seconds: payload.timeSeconds,
       questions_count: payload.questionsCount,
@@ -123,7 +127,13 @@ export const challengesApiClient = {
   },
   submitAnswer: async (
     challengeId: number,
-    body: { answer: unknown; finish?: boolean; force_fail?: boolean },
+    body: {
+      question_number: number;
+      source?: 'answer' | 'timeout' | 'finish';
+      answer: unknown;
+      finish?: boolean;
+      force_fail?: boolean;
+    },
   ) => {
     const response = await instance.post(`/api/challenges/${challengeId}/check-answer/`, body);
     return response.data;

@@ -33,6 +33,8 @@ export interface ChessChallengeAnswer {
 }
 
 export interface ChallengeAnswerPayload {
+  questionNumber: number;
+  source?: 'answer' | 'timeout' | 'finish';
   answer: unknown | ChessChallengeAnswer;
   isFinish?: boolean;
   forceFail?: boolean;
@@ -45,6 +47,10 @@ export interface ChallengeStartResponse {
 
 export interface ChallengeCheckResponse {
   success: boolean;
+  accepted: boolean;
+  code?: string;
+  timedOut?: boolean;
+  nextQuestionNumber?: number;
 }
 
 export interface ChessMovePayload {
