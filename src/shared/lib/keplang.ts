@@ -36,7 +36,6 @@ export const registerKEPLang = (monaco: Monaco) => {
       'ni',
       'dab',
       'ol',
-      'bu',
     ],
     types: ['son', 'matn', 'mantiq', 'lugat', 'toplam', 'kasr', 'belgi'],
     builtins: [
@@ -82,6 +81,7 @@ export const registerKEPLang = (monaco: Monaco) => {
         [/'(?:[^'\\]|\\.)*'/, 'string'],
         [/\b(?:rast|yalgan)\b/, 'keyword'],
         [/\b(?:son|kasr|belgi)(?=\s*\()/, 'predefined'],
+        [/\bb\b(?=\s*\.)/, 'predefined'],
         [
           /[a-zA-Z_]\w*/,
           {
