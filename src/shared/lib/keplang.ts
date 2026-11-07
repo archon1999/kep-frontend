@@ -82,6 +82,7 @@ export const registerKEPLang = (monaco: Monaco) => {
         [/\b(?:rast|yalgan)\b/, 'keyword'],
         [/\b(?:son|kasr|belgi)(?=\s*\()/, 'predefined'],
         [/\bb\b(?=\s*\.)/, 'predefined'],
+        [/\b[a-zA-Z_]\w*(?=\s*\([\w\s,]*\)\s*ni\b)/, 'type.identifier'],
         [
           /[a-zA-Z_]\w*/,
           {

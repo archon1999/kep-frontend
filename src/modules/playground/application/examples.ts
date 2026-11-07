@@ -1,6 +1,11 @@
 export const examples = [
   { id: 'sum', code: 'son a = uqi();\nson b = uqi();\nchiqar(a + b);\n', input: '3 5\n' },
   {
+    id: 'macros',
+    code: 'input ni uqi dab ol;\nsikl(n) ni aylan 0 .. n dab ol;\nkvadrat(x) ni ((x) * (x)) dab ol;\n\nson n = input();\nsikl(n) {\n    son x = input();\n    chiqar(kvadrat(x));\n}\n',
+    input: '3\n2 3 4\n',
+  },
+  {
     id: 'io',
     code: 'son n = uqi();\nmatn soz = uqi_soz();\nmatn qoldiq = uqi_satr();\nmatn satr = uqi_satr();\n\nchiqar(n, soz);\nchiqar("[" + qoldiq + "]");\nchiqar(satr);',
     input: '3 salom qolgan matn\nXorazm shevasi\n',
