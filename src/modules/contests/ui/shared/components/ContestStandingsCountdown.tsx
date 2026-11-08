@@ -2,12 +2,14 @@ import { useEffect, useMemo, useRef, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { Link as RouterLink } from 'react-router-dom';
 import {
+  Box,
   Button,
   Card,
   CardContent,
   Dialog,
   DialogActions,
   DialogContent,
+  LinearProgress,
   Stack,
   Typography,
 } from '@mui/material';
@@ -16,73 +18,29 @@ import { ContestDetail } from 'modules/contests/domain/entities/contest-detail.e
 import { ContestStatus } from 'modules/contests/domain/entities/contest-status';
 import DialogHeader from 'shared/components/common/DialogHeader';
 import { getCountdownParts, getDateTimeValue } from 'shared/lib/dateTime';
+import { countdownStyles } from './ContestStandingsCountdown.styles';
 
 interface ContestStandingsCountdownProps {
   contest?: ContestDetail | null;
 }
 
-const DigitBox = ({ digit }: { digit: string }) => (
-  <Typography
-    variant="metric"
-    sx={{
-      minWidth: { xs: 22, md: 32 },
-      fontSize: { xs: 30, md: 42 },
-      lineHeight: 1.15,
-      textAlign: 'center',
-    }}
-  >
-    {digit}
-  </Typography>
-);
-
-const TimeUnit = ({ label, value }: { label: string; value: number }) => {
-  const digits = String(value).padStart(2, '0').split('');
-
-  return (
-    <Stack
-      spacing={{ xs: 0.4, md: 1 }}
-      alignItems="center"
-      sx={{ flex: { xs: 1, md: '0 0 auto' }, minWidth: { xs: 0, md: 'auto' } }}
-    >
-      <Stack
-        direction="row"
-        spacing={{ xs: 0.5, sm: 0.75, md: 1 }}
-        sx={{ width: { xs: '100%', md: 'auto' } }}
-      >
-        {digits.map((digit, idx) => (
-          <DigitBox key={`${label}-${idx}`} digit={digit} />
-        ))}
-      </Stack>
-      <Typography
-        variant="caption"
-        sx={{
-          letterSpacing: { xs: 0, md: 0.4 },
-          fontSize: { xs: '0.58rem', sm: '0.65rem', md: undefined },
-          lineHeight: { xs: 1, md: undefined },
-          fontWeight: { xs: 700, md: undefined },
-          textTransform: 'uppercase',
-        }}
-      >
-        {label}
-      </Typography>
-    </Stack>
-  );
-};
-
-const MobileSeparator = () => (
-  <Typography
-    aria-hidden="true"
-    sx={{
-      display: { xs: 'block', md: 'none' },
-      mt: { xs: 1.05, sm: 1.4 },
-      fontSize: { xs: 20, sm: 26 },
-      fontWeight: 800,
-      lineHeight: 1,
-      color: 'text.secondary',
-    }}
-  >
-    :
-  </Typography>
+const TimeUnit = ({
+  label,
+  value,
+  accent = false,
+}: {
+  label: string;
+  value: number;
+  accent?: boolean;
+}) => (
+  <Stack sx={countdownStyles.unit}>
+    <Typography variant="metric" sx={[countdownStyles.digits, accent && countdownStyles.seconds]}>
+      {String(value).padStart(2, '0')}
+    </Typography>
+    <Typography variant="pixel" component="span" sx={countdownStyles.unitLabel}>
+      {label}
+    </Typography>
+  </Stack>
 );
 
 const ContestStandingsCountdown = ({ contest }: ContestStandingsCountdownProps) => {
@@ -158,42 +116,46 @@ const ContestStandingsCountdown = ({ contest }: ContestStandingsCountdownProps) 
   const problemsLink = getResourceByParams(resources.ContestProblems, { id: contest.id });
   const standingsLink = getResourceByParams(resources.ContestStandings, { id: contest.id });
   const showCard = safePhase === ContestStatus.Already;
+  const startTimeMs = getDateTimeValue(startDate);
+  const durationMs = startTimeMs && finishDate ? getDateTimeValue(finishDate) - startTimeMs : 0;
+  const elapsed =
+    Number.isFinite(durationMs) && durationMs > 0
+      ? Math.min(100, Math.max(0, 100 - (remainingMs / durationMs) * 100))
+      : undefined;
+  const isClosing = remainingMs > 0 && remainingMs <= 5 * 60 * 1000;
 
   return (
     <>
       {showCard ? (
-        <Card variant="section">
-          <CardContent sx={{ px: { xs: 1.25, sm: 2, md: 3 }, py: { xs: 1.5, md: 2 } }}>
-            <Stack spacing={{ xs: 1, md: 2 }} alignItems="center">
-              <Typography
-                variant="label"
-                sx={{
-                  color: { xs: 'text.primary', md: 'text.secondary' },
-                  letterSpacing: { xs: 0.2, md: 0.6 },
-                  fontSize: { xs: '0.68rem', md: undefined },
-                  lineHeight: { xs: 1, md: undefined },
-                  fontWeight: { xs: 800, md: undefined },
-                  textTransform: 'uppercase',
-                }}
-              >
-                {t('contests.countdownCard.ends')}
-              </Typography>
-
-              <Stack
-                direction="row"
-                spacing={{ xs: 0.75, sm: 1.25, md: 3 }}
-                alignItems="flex-start"
-                justifyContent={{ xs: 'space-between', md: 'center' }}
-                sx={{ width: { xs: '100%', md: 'auto' }, minWidth: 0 }}
-              >
-                <TimeUnit label={t('contests.timeLabels.hour')} value={hours} />
-                <MobileSeparator />
-                <TimeUnit label={t('contests.timeLabels.minute')} value={minutes} />
-                <MobileSeparator />
-                <TimeUnit label={t('contests.timeLabels.second')} value={seconds} />
-              </Stack>
-            </Stack>
+        <Card
+          variant="section"
+          sx={[
+            countdownStyles.panel,
+            isClosing && { '--countdown-accent': 'var(--mui-palette-warning-main)' },
+          ]}
+        >
+          <CardContent sx={countdownStyles.content}>
+            <Box
+              role="timer"
+              aria-live="off"
+              aria-label={t('contests.countdownCard.ends')}
+              sx={countdownStyles.clock}
+            >
+              <TimeUnit label={t('contests.timeLabels.hour')} value={hours} />
+              <Box aria-hidden="true" sx={countdownStyles.separator} />
+              <TimeUnit label={t('contests.timeLabels.minute')} value={minutes} />
+              <Box aria-hidden="true" sx={countdownStyles.separator} />
+              <TimeUnit label={t('contests.timeLabels.second')} value={seconds} accent />
+            </Box>
           </CardContent>
+          {elapsed !== undefined && (
+            <LinearProgress
+              variant="determinate"
+              value={elapsed}
+              aria-label={t('contests.countdownCard.elapsed')}
+              sx={countdownStyles.progress}
+            />
+          )}
         </Card>
       ) : null}
 
