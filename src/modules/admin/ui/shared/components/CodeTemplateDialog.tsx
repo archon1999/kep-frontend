@@ -1,4 +1,4 @@
-import { Suspense, lazy, useState } from 'react';
+import { Suspense, lazy, useRef, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import {
   Box,
@@ -42,10 +42,31 @@ export default function CodeTemplateDialog({
 }) {
   const { t } = useTranslation();
   const [code, setCode] = useState(String(row.values.code_template ?? ''));
+  const editor = useRef<{ getValue: () => string } | null>(null);
   const [extra, setExtra] = useState(extraField ? row.values[extraField.name] : null);
   const lang = String(row.values.lang || 'text');
+  const apply = () => {
+    onApply({
+      code_template: editor.current?.getValue() ?? code,
+      ...(extraField ? { [extraField.name]: extra } : {}),
+    });
+    onClose();
+  };
   return (
-    <Dialog open fullWidth maxWidth="lg" aria-labelledby="code-template-title" onClose={onClose}>
+    <Dialog
+      open
+      fullWidth
+      maxWidth="lg"
+      aria-labelledby="code-template-title"
+      onClose={onClose}
+      onKeyDownCapture={(event) => {
+        if ((event.ctrlKey || event.metaKey) && event.key.toLowerCase() === 's') {
+          event.preventDefault();
+          event.stopPropagation();
+          if (!disabled) apply();
+        }
+      }}
+    >
       <DialogHeader
         id="code-template-title"
         title={t('admin.console.fields.code_template')}
@@ -70,6 +91,9 @@ export default function CodeTemplateDialog({
               language={lang}
               value={code}
               onChange={(value) => setCode(value ?? '')}
+              onMount={(instance) => {
+                editor.current = instance;
+              }}
               options={{ readOnly: disabled, ariaLabel: t('admin.console.fields.code_template') }}
             />
           </Suspense>
@@ -96,13 +120,7 @@ export default function CodeTemplateDialog({
           {t(disabled ? 'common.close' : 'admin.actions.cancel')}
         </Button>
         {!disabled && (
-          <Button
-            variant="contained"
-            onClick={() => {
-              onApply({ code_template: code, ...(extraField ? { [extraField.name]: extra } : {}) });
-              onClose();
-            }}
-          >
+          <Button variant="contained" onClick={apply}>
             {t('admin.workspace.apply')}
           </Button>
         )}
