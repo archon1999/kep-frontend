@@ -709,7 +709,7 @@
         "time_limit": "Лимит времени",
         "memory_limit": "Лимит памяти",
         "difficulty": "Сложность",
-        "problem_rating": "Рейтинг задачи",
+        "problem_rating": "Рейтинг",
         "rating": "Рейтинг",
         "kepcoin": "Kepcoin",
         "streak": "Серия",
@@ -900,13 +900,40 @@
         "get_questions_count": "Вопросы",
         "get_tags": "Теги",
         "get_body": "Просмотр вопроса",
-        "chapters__chapter": "Раздел"
+        "chapters__chapter": "Раздел",
+        "limits": "TL / ML",
+        "solvers": "Решили"
       },
       "recordCount_one": "{{count}} запись",
       "recordCount_few": "{{count}} записи",
       "recordCount_many": "{{count}} записей",
       "recordCount_other": "{{count}} записи",
-      "unavailable": "Раздел недоступен"
+      "unavailable": "Раздел недоступен",
+      "rowActionNames": {
+        "make_hidden": "Опубликовать задачу",
+        "make_unhidden": "Скрыть задачу"
+      },
+      "singular": {
+        "backend_problem": "Задача",
+        "backend_user": "Пользователь",
+        "backend_contest": "Контест",
+        "projects_project": "Проект",
+        "testing_test": "Тест",
+        "challenges_challenge": "Вызов",
+        "testing_question": "Вопрос",
+        "backend_attempt": "Посылка",
+        "blog_blog": "Статья",
+        "blog_news": "Новость",
+        "home_systemupdate": "Обновление",
+        "tournaments_tournament": "Турнир",
+        "tournaments_duel": "Дуэль",
+        "achievements_achievement": "Достижение",
+        "marketplace_product": "Товар",
+        "marketplace_marketplaceorder": "Заказ",
+        "home_calendarevent": "Событие",
+        "backend_chapter": "Глава",
+        "backend_tag": "Тег"
+      }
     },
     "workspace": {
       "selectedActions": "Действия с выбранными",
@@ -928,7 +955,6 @@
       "editorSections": "Разделы записи",
       "publicationSettings": "Публикация и настройки",
       "statement": "Условие",
-      "relatedDraftHint": "Изменения применятся при сохранении основной записи.",
       "modified": "Изменено",
       "done": "Готово",
       "workspace": "Рабочие разделы",
@@ -981,7 +1007,21 @@
         "users": "Пользователи"
       },
       "actionCompleted": "Действие выполнено",
-      "replySent": "Ответ отправлен"
+      "replySent": "Ответ отправлен",
+      "editRecord": "Изменить: {{name}}",
+      "preview": "Предпросмотр",
+      "apply": "Применить",
+      "editRating": "Изменить рейтинг",
+      "editRatingFor": "Изменить рейтинг: {{name}}",
+      "ratingSaved": "Рейтинг сохранён",
+      "solvedUsers": "Пользователи, решившие задачу",
+      "unsolvedUsers": "Пользователи, которые пытались, но ещё не решили задачу",
+      "milliseconds": "мс",
+      "megabytes": "МБ",
+      "inheritLimit": "По умолчанию",
+      "addTag": "Добавить тег",
+      "addAttachment": "Добавить файл",
+      "download": "Скачать"
     }
   }
 }

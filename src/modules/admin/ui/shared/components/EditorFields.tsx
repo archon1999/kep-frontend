@@ -57,6 +57,7 @@ export default function EditorFields({
           <SchemaField
             {...props}
             field={field}
+            textRows={pairedTextareas && field.kind === 'textarea' ? 8 : undefined}
             value={values[field.name]}
             values={values}
             selected={selectedOptions?.[field.name]}

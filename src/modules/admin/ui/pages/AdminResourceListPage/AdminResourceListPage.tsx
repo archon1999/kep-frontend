@@ -15,6 +15,7 @@ import ActionDialog from '../../shared/components/ActionDialog';
 import { ConsoleError, ConsoleSkeleton } from '../../shared/components/ConsoleState';
 import ContestReplyDialog from '../../shared/components/ContestReplyDialog';
 import PasswordDialog from '../../shared/components/PasswordDialog';
+import ProblemRatingDialog from '../../shared/components/ProblemRatingDialog';
 import ResourceActions from '../../shared/components/ResourceActions';
 import ResourceRelatedTabs from '../../shared/components/ResourceRelatedTabs';
 import WorkspaceHeader from '../../shared/components/WorkspaceHeader';
@@ -32,6 +33,7 @@ function ResourceList({ resourceKey }: { resourceKey: string }) {
   const { currentUser } = useAuth();
   const { data: catalog = [] } = useAdminRegistry();
   const [passwordId, setPasswordId] = useState<string | null>(null);
+  const [ratingId, setRatingId] = useState<string | null>(null);
   const [replyId, setReplyId] = useState<string | null>(null);
   const {
     data,
@@ -191,6 +193,7 @@ function ResourceList({ resourceKey }: { resourceKey: string }) {
                 busy={actionBusy || isValidating}
                 onPassword={(row) => setPasswordId(row.id)}
                 onReply={(row) => setReplyId(row.id)}
+                onRating={(row) => setRatingId(row.id)}
               />
             )}
             <ListPagination
@@ -234,6 +237,15 @@ function ResourceList({ resourceKey }: { resourceKey: string }) {
           open
           onClose={(changed) => {
             setPasswordId(null);
+            if (changed) void mutate();
+          }}
+        />
+      )}
+      {ratingId && (
+        <ProblemRatingDialog
+          id={ratingId}
+          onClose={(changed) => {
+            setRatingId(null);
             if (changed) void mutate();
           }}
         />

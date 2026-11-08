@@ -302,13 +302,10 @@ export default function EditorWorkspace({
             <Stack
               direction="row"
               alignItems="center"
-              justifyContent="space-between"
+              justifyContent="flex-end"
               gap={1}
               sx={{ px: { xs: 2, md: 3 }, pt: 2 }}
             >
-              <Typography variant="caption" color="text.secondary">
-                {t('admin.console.contentLanguage')}
-              </Typography>
               <Tabs
                 value={language}
                 onChange={(_, value) => selectLanguage(value)}
@@ -384,6 +381,7 @@ export default function EditorWorkspace({
                   hidden={tab !== inlineTab(inline.prefix)}
                 >
                   <InlineEditor
+                    key={`${record.revision}:${inline.prefix}`}
                     resourceKey={resourceKey}
                     recordId={record.id ?? undefined}
                     section={inline}

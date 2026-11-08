@@ -39,7 +39,7 @@ export interface AdminField {
 }
 export interface AdminCell {
   avatar?: string | null;
-  total?: number;
+  total?: number | null;
   value: unknown;
   display: string;
   kind: string;
@@ -61,7 +61,7 @@ export interface AdminAction {
 }
 export interface AdminList {
   resource: AdminResource;
-  columns: { name: string; label: string; sortable: boolean }[];
+  columns: { name: string; label: string; sortable: boolean; sortField?: string }[];
   filters: {
     name: string;
     label: string;
