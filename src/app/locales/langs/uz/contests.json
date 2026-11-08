@@ -201,6 +201,7 @@
       "second": "Soniya"
     },
     "countdownCard": {
+      "elapsed": "Kontestning oʻtgan vaqti",
       "starts": "Kontest boshlanishiga",
       "ends": "Kontest yakunlanishiga",
       "finished": "Kontest yakunlandi",

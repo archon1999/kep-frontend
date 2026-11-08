@@ -183,6 +183,7 @@
       "second": "Second"
     },
     "countdownCard": {
+      "elapsed": "Contest time elapsed",
       "starts": "Contest starts in",
       "ends": "Contest ends in",
       "finished": "Contest finished",
