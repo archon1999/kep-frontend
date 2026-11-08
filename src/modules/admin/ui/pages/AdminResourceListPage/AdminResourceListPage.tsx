@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import { useTranslation } from 'react-i18next';
-import { Link, useParams } from 'react-router';
+import { Link } from 'react-router';
 import { Box, Button, Chip, LinearProgress, Stack, Typography } from '@mui/material';
 import { useAuth } from 'app/providers/AuthProvider';
 import { resources } from 'app/routes/resources';
@@ -12,9 +12,11 @@ import KepcoinValue from 'shared/components/common/KepcoinValue';
 import { ListPagination } from 'shared/components/sections/common/FramedListPage';
 import FramedPage from 'shared/components/sections/common/FramedPage';
 import ActionDialog from '../../shared/components/ActionDialog';
+import AdminResourceRoute from '../../shared/components/AdminResourceRoute';
 import { ConsoleError, ConsoleSkeleton } from '../../shared/components/ConsoleState';
 import ContestReplyDialog from '../../shared/components/ContestReplyDialog';
 import PasswordDialog from '../../shared/components/PasswordDialog';
+import ProblemRatingDialog from '../../shared/components/ProblemRatingDialog';
 import ResourceActions from '../../shared/components/ResourceActions';
 import ResourceRelatedTabs from '../../shared/components/ResourceRelatedTabs';
 import WorkspaceHeader from '../../shared/components/WorkspaceHeader';
@@ -23,8 +25,11 @@ import ResourceFilters, { PageSizeControl } from './components/ResourceFilters';
 import ResourceTable from './components/ResourceTable';
 
 export default function AdminResourceListPage() {
-  const { app = '', model = '' } = useParams();
-  return <ResourceList key={app + '.' + model} resourceKey={app + '.' + model} />;
+  return (
+    <AdminResourceRoute>
+      {(resource) => <ResourceList key={resource.key} resourceKey={resource.key} />}
+    </AdminResourceRoute>
+  );
 }
 
 function ResourceList({ resourceKey }: { resourceKey: string }) {
@@ -32,6 +37,7 @@ function ResourceList({ resourceKey }: { resourceKey: string }) {
   const { currentUser } = useAuth();
   const { data: catalog = [] } = useAdminRegistry();
   const [passwordId, setPasswordId] = useState<string | null>(null);
+  const [ratingId, setRatingId] = useState<string | null>(null);
   const [replyId, setReplyId] = useState<string | null>(null);
   const {
     data,
@@ -191,6 +197,7 @@ function ResourceList({ resourceKey }: { resourceKey: string }) {
                 busy={actionBusy || isValidating}
                 onPassword={(row) => setPasswordId(row.id)}
                 onReply={(row) => setReplyId(row.id)}
+                onRating={(row) => setRatingId(row.id)}
               />
             )}
             <ListPagination
@@ -234,6 +241,15 @@ function ResourceList({ resourceKey }: { resourceKey: string }) {
           open
           onClose={(changed) => {
             setPasswordId(null);
+            if (changed) void mutate();
+          }}
+        />
+      )}
+      {ratingId && (
+        <ProblemRatingDialog
+          id={ratingId}
+          onClose={(changed) => {
+            setRatingId(null);
             if (changed) void mutate();
           }}
         />

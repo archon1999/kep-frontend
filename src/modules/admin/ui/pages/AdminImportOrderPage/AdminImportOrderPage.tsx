@@ -11,7 +11,7 @@ import { ConsoleError, ConsoleSkeleton } from '../../shared/components/ConsoleSt
 import SchemaField from '../../shared/components/SchemaField';
 import { getFieldErrors } from '../../shared/helpers';
 
-const listPath = resources.AdminManage + '/marketplace/marketplaceorder';
+const listPath = resources.AdminOrders;
 export default function AdminImportOrderPage() {
   const { data, error, isLoading } = useAdminWorkflow();
   return (

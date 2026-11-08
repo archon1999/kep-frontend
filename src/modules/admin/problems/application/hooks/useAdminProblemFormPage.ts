@@ -1,7 +1,7 @@
 import { useEffect, useMemo, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useNavigate, useParams } from 'react-router';
-import { resources } from 'app/routes/resources';
+import { advancedAdminResources as resources } from 'app/routes/resources';
 import { validationMessage } from 'modules/admin/domain/utils/validation';
 import {
   createAdminProblem,

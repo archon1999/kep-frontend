@@ -1,6 +1,5 @@
 import { useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
-import { Link } from 'react-router';
 import {
   Alert,
   Box,
@@ -24,6 +23,7 @@ import { errorText, fieldTitle, resourceTitle } from '../helpers';
 import ConsoleCell from './ConsoleCell';
 import { ConsoleError } from './ConsoleState';
 import EditorFields from './EditorFields';
+import ProblemInlineRows from './ProblemInlineRows';
 
 interface Props {
   resourceKey: string;
@@ -79,14 +79,18 @@ export default function InlineEditor({
   const invalidLanguage = Object.keys(validation[firstInvalid] ?? {})
     .find((name) => /_(uz|ru|en)$/.test(name))
     ?.slice(-2);
+  const specialized =
+    resourceKey === 'backend.problem' &&
+    ['available_languages', 'tags', 'topics', 'groups', 'attachments'].includes(section.prefix);
   const simple =
-    section.fields.length <= 3 &&
-    !section.fields.some(
-      (field) =>
-        /_(uz|ru|en)$/.test(field.name) ||
-        ['richText', 'file', 'image', 'json'].includes(field.kind),
-    ) &&
-    !section.readonlyFields.length;
+    specialized ||
+    (section.fields.length <= 3 &&
+      !section.fields.some(
+        (field) =>
+          /_(uz|ru|en)$/.test(field.name) ||
+          ['richText', 'file', 'image', 'json'].includes(field.kind),
+      ) &&
+      !section.readonlyFields.length);
   useEffect(() => {
     if (firstInvalid && !simple) setActiveId(firstInvalid);
     if (invalidLanguage) setLanguage(invalidLanguage);
@@ -189,9 +193,6 @@ export default function InlineEditor({
           <Typography component="h2" variant="subtitle1" fontWeight={650}>
             {title}
           </Typography>
-          <Typography variant="caption" color="text.secondary">
-            {t('admin.workspace.relatedDraftHint')}
-          </Typography>
         </Box>
         {section.permissions.add && !disabled && (
           <Button
@@ -200,7 +201,17 @@ export default function InlineEditor({
             startIcon={<IconifyIcon icon="mdi:plus" />}
             onClick={add}
           >
-            {t('admin.console.addRow')}
+            {t(
+              specialized
+                ? section.prefix === 'available_languages'
+                  ? 'admin.actions.addLanguage'
+                  : section.prefix === 'attachments'
+                    ? 'admin.workspace.addAttachment'
+                    : section.prefix === 'tags'
+                      ? 'admin.workspace.addTag'
+                      : 'admin.console.addRow'
+                : 'admin.console.addRow',
+            )}
           </Button>
         )}
       </Stack>
@@ -222,102 +233,128 @@ export default function InlineEditor({
           </Typography>
           {section.permissions.add && !disabled && (
             <Button onClick={add} size="small">
-              {t('admin.console.addRow')}
+              {t(
+                specialized
+                  ? section.prefix === 'available_languages'
+                    ? 'admin.actions.addLanguage'
+                    : section.prefix === 'attachments'
+                      ? 'admin.workspace.addAttachment'
+                      : section.prefix === 'tags'
+                        ? 'admin.workspace.addTag'
+                        : 'admin.console.addRow'
+                  : 'admin.console.addRow',
+              )}
             </Button>
           )}
         </Stack>
       )}
-      <Stack gap={simple ? 2 : 0}>
-        {rows.map((row, index) => {
-          const id = row.id ?? row.clientId!;
-          return (
-            <Box
-              key={id}
-              sx={{
-                border: simple ? 1 : 0,
-                borderBottom: 1,
-                borderColor: validation[id] ? 'error.main' : 'divider',
-                borderRadius: simple ? 1 : 0,
-                p: simple ? 2 : 0,
-                py: simple ? 2 : 1.5,
-                opacity: row.delete ? 0.5 : 1,
-              }}
-            >
-              <Stack
-                direction="row"
-                alignItems="center"
-                gap={1.5}
-                mb={simple && !row.delete ? 2 : 0}
+      {specialized ? (
+        <ProblemInlineRows
+          section={section}
+          rows={rows}
+          recordId={recordId}
+          files={files}
+          validation={validation}
+          canEdit={canEdit}
+          onChange={onChange}
+          onUpload={onUpload}
+          remove={(row) =>
+            (section.permissions.delete || !row.id) && !disabled ? remove(row) : null
+          }
+        />
+      ) : (
+        <Stack gap={simple ? 2 : 0}>
+          {rows.map((row, index) => {
+            const id = row.id ?? row.clientId!;
+            return (
+              <Box
+                key={id}
+                sx={{
+                  border: simple ? 1 : 0,
+                  borderBottom: 1,
+                  borderColor: validation[id] ? 'error.main' : 'divider',
+                  borderRadius: simple ? 1 : 0,
+                  p: simple ? 2 : 0,
+                  py: simple ? 2 : 1.5,
+                  opacity: row.delete ? 0.5 : 1,
+                }}
               >
-                <Typography
-                  variant="caption"
-                  sx={{
-                    minWidth: 28,
-                    color: 'text.secondary',
-                    fontFamily: 'var(--kep-display-font)',
-                    fontFeatureSettings: '"ss01" 1',
-                  }}
+                <Stack
+                  direction="row"
+                  alignItems="center"
+                  gap={1.5}
+                  mb={simple && !row.delete ? 2 : 0}
                 >
-                  {String((page.page - 1) * 30 + index + 1).padStart(2, '0')}
-                </Typography>
-                <Box sx={{ flex: 1, minWidth: 0 }}>
                   <Typography
-                    variant="body2"
-                    noWrap
-                    fontWeight={600}
-                    sx={{ textDecoration: row.delete ? 'line-through' : undefined }}
+                    variant="caption"
+                    sx={{
+                      minWidth: 28,
+                      color: 'text.secondary',
+                      fontFamily: 'var(--kep-display-font)',
+                      fontFeatureSettings: '"ss01" 1',
+                    }}
                   >
-                    {section.prefix === 'sample_tests'
-                      ? t('admin.form.sections.sampleTests')
-                      : summary(row, language) || t('admin.console.newRow')}
+                    {String((page.page - 1) * 30 + index + 1).padStart(2, '0')}
                   </Typography>
-                  {!simple && (
-                    <Typography variant="caption" color="text.secondary" noWrap>
-                      {section.fields
-                        .slice(0, 3)
-                        .filter(
-                          (field) => !field.name.endsWith('_ru') && !field.name.endsWith('_en'),
-                        )
-                        .map((field) => {
-                          const value =
-                            row.selectedOptions?.[field.name]
-                              ?.map((item) => item.label)
-                              .join(', ') || row.values[field.name];
-                          return typeof value === 'string' || typeof value === 'number'
-                            ? `${fieldTitle(t, field)}: ${String(value)
-                                .replace(/<[^>]+>/g, '')
-                                .slice(0, 60)}`
-                            : null;
-                        })
-                        .filter(Boolean)
-                        .join(' · ')}
+                  <Box sx={{ flex: 1, minWidth: 0 }}>
+                    <Typography
+                      variant="body2"
+                      noWrap
+                      fontWeight={600}
+                      sx={{ textDecoration: row.delete ? 'line-through' : undefined }}
+                    >
+                      {section.prefix === 'sample_tests'
+                        ? t('admin.form.sections.sampleTests')
+                        : summary(row, language) || t('admin.console.newRow')}
                     </Typography>
+                    {!simple && (
+                      <Typography variant="caption" color="text.secondary" noWrap>
+                        {section.fields
+                          .slice(0, 3)
+                          .filter(
+                            (field) => !field.name.endsWith('_ru') && !field.name.endsWith('_en'),
+                          )
+                          .map((field) => {
+                            const value =
+                              row.selectedOptions?.[field.name]
+                                ?.map((item) => item.label)
+                                .join(', ') || row.values[field.name];
+                            return typeof value === 'string' || typeof value === 'number'
+                              ? `${fieldTitle(t, field)}: ${String(value)
+                                  .replace(/<[^>]+>/g, '')
+                                  .slice(0, 60)}`
+                              : null;
+                          })
+                          .filter(Boolean)
+                          .join(' · ')}
+                      </Typography>
+                    )}
+                  </Box>
+                  {validation[id] && (
+                    <IconifyIcon icon="mdi:alert-circle-outline" sx={{ color: 'error.main' }} />
                   )}
-                </Box>
-                {validation[id] && (
-                  <IconifyIcon icon="mdi:alert-circle-outline" sx={{ color: 'error.main' }} />
-                )}
-                {changes[id] && !row.delete && (
-                  <Chip
-                    size="small"
-                    variant="soft"
-                    color="warning"
-                    label={t('admin.workspace.modified')}
-                    sx={{ display: { xs: 'none', sm: 'inline-flex' } }}
-                  />
-                )}
-                {!simple && !row.delete && (
-                  <Button size="small" onClick={() => setActiveId(id)}>
-                    {t(canEdit(row) ? 'admin.actions.edit' : 'admin.console.view')}
-                  </Button>
-                )}
-                {(section.permissions.delete || !row.id) && !disabled && remove(row)}
-              </Stack>
-              {simple && !row.delete && fields(row)}
-            </Box>
-          );
-        })}
-      </Stack>
+                  {changes[id] && !row.delete && (
+                    <Chip
+                      size="small"
+                      variant="soft"
+                      color="warning"
+                      label={t('admin.workspace.modified')}
+                      sx={{ display: { xs: 'none', sm: 'inline-flex' } }}
+                    />
+                  )}
+                  {!simple && !row.delete && (
+                    <Button size="small" onClick={() => setActiveId(id)}>
+                      {t(canEdit(row) ? 'admin.actions.edit' : 'admin.console.view')}
+                    </Button>
+                  )}
+                  {(section.permissions.delete || !row.id) && !disabled && remove(row)}
+                </Stack>
+                {simple && !row.delete && fields(row)}
+              </Box>
+            );
+          })}
+        </Stack>
+      )}
       {page.pagesCount > 1 && (
         <ListPagination
           count={page.pagesCount}
@@ -377,16 +414,6 @@ export default function InlineEditor({
               gap={1.5}
               sx={{ p: 2.5, borderTop: 1, borderColor: 'divider' }}
             >
-              {active.id && section.path && (
-                <Button
-                  component={Link}
-                  to={`${section.path}/${encodeURIComponent(active.id)}`}
-                  color="neutral"
-                  endIcon={<IconifyIcon icon="mdi:open-in-new" />}
-                >
-                  {t('admin.workspace.openRecord')}
-                </Button>
-              )}
               <Box sx={{ flex: 1 }} />
               <Button variant="contained" onClick={() => setActiveId(null)}>
                 {t('admin.workspace.done')}

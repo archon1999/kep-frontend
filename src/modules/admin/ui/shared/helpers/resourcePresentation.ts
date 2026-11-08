@@ -34,10 +34,10 @@ const preferred: Record<string, string[]> = {
   'backend.problem': [
     'difficulty',
     'problem_rating',
+    'solvers',
     'hidden',
     'author',
-    'time_limit',
-    'memory_limit',
+    'limits',
     'created',
   ],
   'backend.user': [

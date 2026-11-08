@@ -1,15 +1,7 @@
 import { FC, useEffect, useRef } from 'react';
 import { Box, BoxProps } from '@mui/material';
+import { clearMath, hasMathMarkup, typesetMath } from 'shared/lib/mathJax';
 import { sanitizeRichHtml } from 'shared/lib/safeHtml';
-
-declare global {
-  interface Window {
-    MathJax?: {
-      typesetPromise?: (elements?: Element[]) => Promise<void>;
-      typesetClear?: (elements?: Element[]) => void;
-    };
-  }
-}
 
 interface MathJaxViewProps extends BoxProps {
   rawHtml: string | null | undefined;
@@ -21,17 +13,18 @@ const MathJaxView: FC<MathJaxViewProps> = ({ rawHtml, ...props }) => {
   useEffect(() => {
     if (!ref.current) return;
 
-    ref.current.innerHTML = sanitizeRichHtml(rawHtml);
-
-    const mj = window.MathJax;
-
-    if (!mj || !mj.typesetPromise) return;
-
-    if (mj.typesetClear) {
-      mj.typesetClear([ref.current]);
-    }
-
-    mj.typesetPromise([ref.current]).catch(() => {});
+    // A new detached generation prevents a slow typeset from modifying newer
+    // content or a Quill editor. Only this read-only subtree is ever typeset.
+    const content = document.createElement('div');
+    content.innerHTML = sanitizeRichHtml(rawHtml);
+    ref.current.replaceChildren(content);
+    let active = true;
+    if (hasMathMarkup(rawHtml))
+      void typesetMath(content, () => active && content.isConnected).catch(() => {});
+    return () => {
+      active = false;
+      void clearMath(content);
+    };
   }, [rawHtml]);
 
   return <Box ref={ref} {...props} />;

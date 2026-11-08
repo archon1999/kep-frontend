@@ -18,7 +18,7 @@ import {
   TableRow,
 } from '@mui/material';
 import { DateTimePicker } from '@mui/x-date-pickers/DateTimePicker';
-import { resources } from 'app/routes/resources';
+import { advancedAdminResources as resources } from 'app/routes/resources';
 import { useAdminContestFormPage } from 'modules/admin/contests/application/hooks/useAdminContestFormPage';
 import { AdminContestPayload } from 'modules/admin/contests/domain/types';
 import type { AdminAutocompleteOption } from 'modules/admin/shared/domain/autocomplete.types';

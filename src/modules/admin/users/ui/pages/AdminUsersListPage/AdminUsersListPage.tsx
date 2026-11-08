@@ -13,7 +13,7 @@ import {
   Typography,
 } from '@mui/material';
 import { DataGrid, GridColDef } from '@mui/x-data-grid';
-import { getResourceById, resources } from 'app/routes/resources';
+import { getResourceById, advancedAdminResources as resources } from 'app/routes/resources';
 import AdminBatchActionsToolbar from 'modules/admin/shared/ui/AdminBatchActionsToolbar';
 import { AdminChoiceSelect } from 'modules/admin/shared/ui/AdminChoiceSelects';
 import AdminDataGridSkeletonLoadingOverlay from 'modules/admin/shared/ui/AdminDataGridSkeletonLoadingOverlay';

@@ -6,6 +6,7 @@ import {
   Button,
   Checkbox,
   Chip,
+  IconButton,
   Menu,
   MenuItem,
   Stack,
@@ -39,6 +40,7 @@ export default function ResourceTable({
   busy,
   onPassword,
   onReply,
+  onRating,
 }: {
   data: AdminList;
   selected: string[];
@@ -49,6 +51,7 @@ export default function ResourceTable({
   busy?: boolean;
   onPassword?: (row: AdminRow) => void;
   onReply?: (row: AdminRow) => void;
+  onRating?: (row: AdminRow) => void;
 }) {
   const { t } = useTranslation();
   const { data: catalog = [] } = useAdminRegistry();
@@ -128,6 +131,38 @@ export default function ResourceTable({
     );
   const cell = (row: AdminRow, name: string) => {
     const value = row.cells[name];
+    if (name === 'problem_rating' && data.resource.key === 'backend.problem')
+      return (
+        <Stack
+          direction="row"
+          alignItems="center"
+          gap={0.5}
+          sx={{
+            color: 'primary.main',
+            fontVariantNumeric: 'tabular-nums',
+            '& .rating-edit': { opacity: 0 },
+            '&:hover .rating-edit, &:focus-within .rating-edit': { opacity: 1 },
+            '@media (hover: none)': { '& .rating-edit': { opacity: 1 } },
+          }}
+        >
+          <Typography variant="body2" fontWeight={600}>
+            {value?.display || '—'}
+          </Typography>
+          {data.resource.permissions.change && onRating && (
+            <Tooltip title={t('admin.workspace.editRating')}>
+              <IconButton
+                className="rating-edit"
+                size="small"
+                aria-label={t('admin.workspace.editRatingFor', { name: row.label })}
+                disabled={busy}
+                onClick={() => onRating(row)}
+              >
+                <IconifyIcon icon="mdi:pencil-outline" sx={{ fontSize: 16 }} />
+              </IconButton>
+            </Tooltip>
+          )}
+        </Stack>
+      );
     if (value?.kind === 'verdict')
       return <ConsoleCell cell={value} name={name} resourceKey={data.resource.key} />;
     const color = value && semanticColor(name, value.display);
@@ -162,12 +197,22 @@ export default function ResourceTable({
     return <ConsoleCell cell={value} name={name} resourceKey={data.resource.key} />;
   };
   const identityColumn = data.columns.find((column) => column.name === presentation.identity);
+  const sortName = (column: AdminList['columns'][number]) =>
+    column.sortField ||
+    (column.name === presentation.identity &&
+    data.columns.some((item) => item.name === 'id' && item.sortable)
+      ? 'id'
+      : column.name);
   const heading = (column: AdminList['columns'][number]) =>
     column.sortable ? (
       <TableSortLabel
-        active={ordering.replace('-', '') === column.name}
+        active={ordering.replace('-', '') === sortName(column)}
         direction={ordering.startsWith('-') ? 'desc' : 'asc'}
-        onClick={() => onOrderingChange(ordering === column.name ? '-' + column.name : column.name)}
+        onClick={() =>
+          onOrderingChange(
+            ordering === sortName(column) ? '-' + sortName(column) : sortName(column),
+          )
+        }
       >
         {fieldTitle(t, column)}
       </TableSortLabel>
@@ -257,18 +302,22 @@ export default function ResourceTable({
       </Menu>
       <Menu anchorEl={sortAnchor} open={Boolean(sortAnchor)} onClose={() => setSortAnchor(null)}>
         {data.columns
-          .filter((column) => column.sortable)
+          .filter(
+            (column) => column.sortable && (column.name !== 'id' || presentation.identity === 'id'),
+          )
           .map((column) => (
             <MenuItem
               key={column.name}
-              selected={ordering.replace('-', '') === column.name}
+              selected={ordering.replace('-', '') === sortName(column)}
               onClick={() => {
-                onOrderingChange(ordering === column.name ? '-' + column.name : column.name);
+                onOrderingChange(
+                  ordering === sortName(column) ? '-' + sortName(column) : sortName(column),
+                );
                 setSortAnchor(null);
               }}
             >
               {fieldTitle(t, column)}
-              {ordering.replace('-', '') === column.name && (
+              {ordering.replace('-', '') === sortName(column) && (
                 <IconifyIcon
                   icon={ordering.startsWith('-') ? 'mdi:arrow-down' : 'mdi:arrow-up'}
                   sx={{ ml: 1 }}
@@ -291,7 +340,7 @@ export default function ResourceTable({
           size="small"
           sx={{
             tableLayout: 'fixed',
-            minWidth: 330 + columns.length * 100,
+            minWidth: 330 + columns.length * 120,
             '& td, & th': { borderColor: 'divider', py: dense ? 1 : 1.75, px: 1.5 },
             '& th': {
               fontSize: 12,
@@ -373,6 +422,7 @@ export default function ResourceTable({
                 <TableCell>
                   <ResourceActions
                     compact
+                    resource={data.resource}
                     recordLabel={row.label}
                     editPath={recordPath(data.resource, row.id)}
                     actions={rowActions(row)}
@@ -416,6 +466,7 @@ export default function ResourceTable({
               <Box sx={{ flex: 1, minWidth: 0 }}>{identity(row)}</Box>
               <ResourceActions
                 compact
+                resource={data.resource}
                 recordLabel={row.label}
                 editPath={recordPath(data.resource, row.id)}
                 actions={rowActions(row)}

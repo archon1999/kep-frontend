@@ -34,6 +34,7 @@ import {
   AdminCatalogPage,
   AdminDashboardPage,
   AdminImportOrderPage,
+  AdminLegacyResourceRedirect,
   AdminResourceFormPage,
   AdminResourceListPage,
 } from 'modules/admin/ui/pages';
@@ -101,6 +102,7 @@ import AdminGuard from 'shared/components/guard/AdminGuard';
 import AuthGuard from 'shared/components/guard/AuthGuard';
 import SuperuserGuard from 'shared/components/guard/SuperuserGuard';
 import PageLoader from 'shared/components/loading/PageLoader';
+import { adminLegacyAliases } from './admin-routes';
 import { legacyRedirectRoutes } from './legacy-routes';
 import { resources } from './resources';
 import { authPaths, rootPaths } from './route-config';
@@ -160,18 +162,54 @@ export const routes: RouteObject[] = [
             handle: { titleKey: 'pageTitles.adminCatalog' },
           },
           {
-            path: 'manage/:app/:model',
+            path: ':resourceSlug',
             element: <AdminResourceListPage />,
             handle: { titleKey: 'pageTitles.adminResource' },
           },
           {
-            path: 'manage/:app/:model/new',
+            path: ':resourceSlug/new',
             element: <AdminResourceFormPage />,
             handle: { titleKey: 'pageTitles.adminResourceCreate' },
           },
           {
-            path: 'manage/:app/:model/:id',
+            path: ':resourceSlug/:id',
             element: <AdminResourceFormPage />,
+            handle: { titleKey: 'pageTitles.adminResourceEdit' },
+          },
+          ...adminLegacyAliases.flatMap(({ path, key }) => [
+            {
+              path,
+              element: <AdminLegacyResourceRedirect resourceKey={key} />,
+              handle: { titleKey: 'pageTitles.adminResource' },
+            },
+            {
+              path: path + '/new',
+              element: <AdminLegacyResourceRedirect resourceKey={key} create />,
+              handle: { titleKey: 'pageTitles.adminResourceCreate' },
+            },
+            {
+              path: path + '/:id',
+              element: <AdminLegacyResourceRedirect resourceKey={key} />,
+              handle: { titleKey: 'pageTitles.adminResourceEdit' },
+            },
+          ]),
+          {
+            path: 'manage',
+            element: <Navigate to={resources.AdminCatalog} replace />,
+          },
+          {
+            path: 'manage/:app/:model',
+            element: <AdminLegacyResourceRedirect />,
+            handle: { titleKey: 'pageTitles.adminResource' },
+          },
+          {
+            path: 'manage/:app/:model/new',
+            element: <AdminLegacyResourceRedirect create />,
+            handle: { titleKey: 'pageTitles.adminResourceCreate' },
+          },
+          {
+            path: 'manage/:app/:model/:id',
+            element: <AdminLegacyResourceRedirect />,
             handle: { titleKey: 'pageTitles.adminResourceEdit' },
           },
           {
@@ -180,12 +218,17 @@ export const routes: RouteObject[] = [
             handle: { titleKey: 'pageTitles.adminImportOrder' },
           },
           {
+            path: 'advanced',
             element: (
               <SuperuserGuard>
                 <SuspenseOutlet />
               </SuperuserGuard>
             ),
             children: [
+              {
+                index: true,
+                element: <Navigate to={resources.AdminCatalog} replace />,
+              },
               {
                 path: 'problems',
                 element: <AdminProblemsListPage />,

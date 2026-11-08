@@ -709,7 +709,7 @@
         "time_limit": "Time limit",
         "memory_limit": "Memory limit",
         "difficulty": "Difficulty",
-        "problem_rating": "Problem rating",
+        "problem_rating": "Rating",
         "rating": "Rating",
         "kepcoin": "Kepcoin",
         "streak": "Streak",
@@ -900,11 +900,38 @@
         "get_questions_count": "Questions",
         "get_tags": "Tags",
         "get_body": "Question preview",
-        "chapters__chapter": "Chapter"
+        "chapters__chapter": "Chapter",
+        "limits": "TL / ML",
+        "solvers": "Solved"
       },
       "recordCount_one": "{{count}} record",
       "recordCount_other": "{{count}} records",
-      "unavailable": "Section unavailable"
+      "unavailable": "Section unavailable",
+      "rowActionNames": {
+        "make_hidden": "Publish problem",
+        "make_unhidden": "Hide problem"
+      },
+      "singular": {
+        "backend_problem": "Problem",
+        "backend_user": "User",
+        "backend_contest": "Contest",
+        "projects_project": "Project",
+        "testing_test": "Test",
+        "challenges_challenge": "Challenge",
+        "testing_question": "Question",
+        "backend_attempt": "Submission",
+        "blog_blog": "Article",
+        "blog_news": "News item",
+        "home_systemupdate": "Update",
+        "tournaments_tournament": "Tournament",
+        "tournaments_duel": "Duel",
+        "achievements_achievement": "Achievement",
+        "marketplace_product": "Product",
+        "marketplace_marketplaceorder": "Order",
+        "home_calendarevent": "Event",
+        "backend_chapter": "Chapter",
+        "backend_tag": "Tag"
+      }
     },
     "workspace": {
       "selectedActions": "Actions for selected",
@@ -926,7 +953,6 @@
       "editorSections": "Record sections",
       "publicationSettings": "Publication & settings",
       "statement": "Statement",
-      "relatedDraftHint": "Changes here are included when you save the record.",
       "modified": "Changed",
       "done": "Done",
       "workspace": "Workspaces",
@@ -979,7 +1005,21 @@
         "users": "Users"
       },
       "actionCompleted": "Action completed",
-      "replySent": "Answer sent"
+      "replySent": "Answer sent",
+      "editRecord": "Edit {{name}}",
+      "preview": "Preview",
+      "apply": "Apply",
+      "editRating": "Edit rating",
+      "editRatingFor": "Edit rating for {{name}}",
+      "ratingSaved": "Rating saved",
+      "solvedUsers": "Users who solved this problem",
+      "unsolvedUsers": "Users who tried but have not solved this problem",
+      "milliseconds": "ms",
+      "megabytes": "MB",
+      "inheritLimit": "Default",
+      "addTag": "Add tag",
+      "addAttachment": "Add file",
+      "download": "Download"
     }
   }
 }

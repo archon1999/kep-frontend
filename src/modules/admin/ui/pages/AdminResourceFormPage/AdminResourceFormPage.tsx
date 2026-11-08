@@ -3,30 +3,39 @@ import { useTranslation } from 'react-i18next';
 import { Link, useParams } from 'react-router';
 import { Button } from '@mui/material';
 import { useAuth } from 'app/providers/AuthProvider';
-import { resources } from 'app/routes/resources';
 import { useAdminDetail } from 'modules/admin/application';
+import type { AdminResource } from 'modules/admin/domain';
 import FramedPage from 'shared/components/sections/common/FramedPage';
+import AdminResourceRoute from '../../shared/components/AdminResourceRoute';
 import { ConsoleError, ConsoleSkeleton } from '../../shared/components/ConsoleState';
 import RecordEditor from './components/RecordEditor';
 
 export default function AdminResourceFormPage() {
   const { currentUser } = useAuth();
-  const { app = '', model = '', id } = useParams();
+  const { id } = useParams();
   const actor = currentUser?.id ?? currentUser?.username ?? 'anonymous';
-  const identity = JSON.stringify([
-    actor,
-    currentUser?.isSuperuser,
-    currentUser?.isStaff,
-    app,
-    model,
-    id,
-  ]);
-  return <ResourceForm key={identity} app={app} model={model} id={id} />;
+  return (
+    <AdminResourceRoute form>
+      {(resource) => (
+        <ResourceForm
+          key={JSON.stringify([
+            actor,
+            currentUser?.isSuperuser,
+            currentUser?.isStaff,
+            resource.key,
+            id,
+          ])}
+          resource={resource}
+          id={id}
+        />
+      )}
+    </AdminResourceRoute>
+  );
 }
 
-function ResourceForm({ app, model, id }: { app: string; model: string; id?: string }) {
+function ResourceForm({ resource, id }: { resource: AdminResource; id?: string }) {
   const { t } = useTranslation();
-  const resourceKey = app + '.' + model;
+  const resourceKey = resource.key;
   const { data, error, mutate } = useAdminDetail(resourceKey, id);
   const [reloading, setReloading] = useState(false);
   const reload = () => {
@@ -39,7 +48,7 @@ function ResourceForm({ app, model, id }: { app: string; model: string; id?: str
     return (
       <FramedPage>
         <ConsoleError error={error} retry={() => void mutate()} />
-        <Button component={Link} to={resources.AdminManage + '/' + app + '/' + model} sx={{ m: 2 }}>
+        <Button component={Link} to={resource.path} sx={{ m: 2 }}>
           {t('admin.actions.cancel')}
         </Button>
       </FramedPage>

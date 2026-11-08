@@ -15,7 +15,6 @@ interface Props {
   busy: boolean;
   draftStored: boolean;
   byteLength: number;
-  valid: boolean;
   sample: boolean;
   playbackVersion: number;
   onChange: (value: string) => void;
@@ -29,7 +28,6 @@ export const PlaygroundEditor = ({
   busy,
   draftStored,
   byteLength,
-  valid,
   sample,
   playbackVersion,
   onChange,
@@ -148,7 +146,7 @@ export const PlaygroundEditor = ({
         </span>
         <span className="playground-editor-metrics">
           <span>{t('playground.cursor', cursor)}</span>
-          <Typography component="span" color={valid ? 'text.secondary' : 'error'}>
+          <Typography component="span" color={byteLength > 30000 ? 'error' : 'text.secondary'}>
             {byteLength} / 30000 B
           </Typography>
         </span>

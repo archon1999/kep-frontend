@@ -64,7 +64,9 @@ const PlaygroundPage = () => {
         </Alert>
       )}
       {model.error && <Alert severity="warning">{t(`playground.errors.${model.error}`)}</Alert>}
-      {!model.valid && <Alert severity="warning">{t('playground.validation')}</Alert>}
+      {(model.byteLength > 30000 || model.inputBytes > 65536) && (
+        <Alert severity="warning">{t('playground.validation')}</Alert>
+      )}
       <Box component="main" id="main-content" className="runner-main">
         <WorkspaceSplit
           direction={!compact && sideBySide ? 'horizontal' : 'vertical'}
@@ -80,7 +82,6 @@ const PlaygroundPage = () => {
               busy={model.busy}
               draftStored={model.draftStored}
               byteLength={model.byteLength}
-              valid={model.valid}
               sample={sample}
               playbackVersion={playbackVersion}
               onChange={model.setCode}

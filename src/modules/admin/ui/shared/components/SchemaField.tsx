@@ -1,6 +1,5 @@
-import { Suspense, lazy, useEffect, useId, useState } from 'react';
+import { useEffect, useId, useState } from 'react';
 import { useTranslation } from 'react-i18next';
-import { Link } from 'react-router';
 import {
   Autocomplete,
   Box,
@@ -8,22 +7,26 @@ import {
   Checkbox,
   FormControlLabel,
   FormHelperText,
+  InputAdornment,
   MenuItem,
-  Skeleton,
   Stack,
   Switch,
   TextField,
   Typography,
 } from '@mui/material';
-import { useAdminRegistry, useAdminRelation } from 'modules/admin/application';
+import { useAdminRelation } from 'modules/admin/application';
 import type { AdminField, AdminOption, AdminValues } from 'modules/admin/domain';
 import IconifyIcon from 'shared/components/base/IconifyIcon';
+import AttemptLanguage from 'shared/components/problems/AttemptLanguage';
 import { errorText, fieldHelp, fieldTitle, formatFieldValue } from '../helpers';
 import DateField from './DateField';
+import RichContentField from './RichContentField';
 
-const RichTextEditor = lazy(() => import('shared/components/form/RichTextEditor'));
 interface Props {
   pendingFile?: File | null;
+  textRows?: number;
+  suffix?: string;
+  placeholder?: string;
   filterLookup?: boolean;
   resourceKey: string;
   field: AdminField;
@@ -52,8 +55,6 @@ function RelationField({
   onChange,
 }: Props) {
   const { t } = useTranslation();
-  const { data: catalog = [] } = useAdminRegistry();
-  const relatedResource = catalog.find((resource) => resource.key === field.resource);
   const [open, setOpen] = useState(false);
   const [input, setInput] = useState('');
   const [search, setSearch] = useState('');
@@ -123,38 +124,6 @@ function RelationField({
           />
         )}
       />
-      {!filterLookup && relatedResource && !disabled && (
-        <Stack direction="row" justifyContent="flex-end" gap={1} sx={{ mt: 0.5 }}>
-          {!multiple && ids[0] && (
-            <Button
-              component={Link}
-              to={`${relatedResource.path}/${encodeURIComponent(ids[0])}`}
-              target="_blank"
-              rel="noopener noreferrer"
-              size="small"
-              color="neutral"
-              endIcon={<IconifyIcon icon="mdi:open-in-new" />}
-              sx={{ py: 0, fontSize: 11 }}
-            >
-              {t('admin.workspace.openRecord')}
-            </Button>
-          )}
-          {relatedResource.permissions.add && (
-            <Button
-              component={Link}
-              to={relatedResource.path + '/new'}
-              target="_blank"
-              rel="noopener noreferrer"
-              size="small"
-              color="neutral"
-              startIcon={<IconifyIcon icon="mdi:plus" />}
-              sx={{ py: 0, fontSize: 11 }}
-            >
-              {t('admin.actions.create')}
-            </Button>
-          )}
-        </Stack>
-      )}
     </Box>
   );
 }
@@ -188,6 +157,12 @@ function UploadField({ field, value, disabled, error, onUpload, onChange, pendin
         alignItems="center"
         sx={{ mt: 1, p: 2, border: 1, borderColor: error ? 'error.main' : 'divider' }}
       >
+        {field.kind !== 'image' && (
+          <IconifyIcon
+            icon="mdi:file-document-outline"
+            sx={{ fontSize: 26, color: 'text.secondary' }}
+          />
+        )}
         {field.kind === 'image' && (preview || existing?.url) && (
           <Box
             component="img"
@@ -200,7 +175,19 @@ function UploadField({ field, value, disabled, error, onUpload, onChange, pendin
           <Typography variant="body2" noWrap>
             {file?.name || existing?.name?.split('/').slice(-1)[0] || t('admin.console.noFile')}
           </Typography>
-          <Stack direction="row" gap={1} mt={0.5}>
+          <Stack direction="row" flexWrap="wrap" gap={1} mt={0.5}>
+            {existing?.url && (
+              <Button
+                component="a"
+                href={existing.url}
+                target="_blank"
+                rel="noopener noreferrer"
+                size="small"
+                startIcon={<IconifyIcon icon="mdi:download" />}
+              >
+                {t('admin.workspace.download')}
+              </Button>
+            )}
             <Button
               component="label"
               size="small"
@@ -263,10 +250,6 @@ export default function SchemaField(props: Props) {
         ? t('admin.console.arrayHelp')
         : '');
   const name = field.name;
-  const richValue =
-    field.format === 'quill' && value && typeof value === 'object'
-      ? String((value as { html?: string }).html ?? '')
-      : String(value ?? '');
   if (field.kind === 'relation' || field.kind === 'relations') return <RelationField {...props} />;
   if (field.kind === 'file' || field.kind === 'image') return <UploadField {...props} />;
   if (['date', 'datetime', 'time'].includes(field.kind))
@@ -325,21 +308,14 @@ export default function SchemaField(props: Props) {
           {label}
           {field.required ? ' *' : ''}
         </Typography>
-        {disabled || field.readOnly ? (
-          <TextField fullWidth multiline minRows={5} value={richValue} disabled />
-        ) : (
-          <Suspense fallback={<Skeleton variant="rectangular" height={220} />}>
-            <RichTextEditor
-              ariaLabel={label}
-              ariaInvalid={Boolean(error)}
-              value={richValue}
-              onChange={field.format === 'quill' ? () => undefined : onChange}
-              onDocumentChange={field.format === 'quill' ? onChange : undefined}
-              compact
-              minHeight={180}
-            />
-          </Suspense>
-        )}
+        <RichContentField
+          value={value}
+          label={label}
+          quill={field.format === 'quill'}
+          invalid={Boolean(error)}
+          disabled={disabled || field.readOnly}
+          onChange={onChange}
+        />
         {help && <FormHelperText error={Boolean(error)}>{help}</FormHelperText>}
       </Box>
     );
@@ -357,7 +333,9 @@ export default function SchemaField(props: Props) {
       helperText={help}
       type={field.kind === 'number' ? 'number' : field.kind === 'secret' ? 'password' : 'text'}
       multiline={['textarea', 'json', 'array'].includes(field.kind)}
-      minRows={field.kind === 'json' ? 5 : 3}
+      rows={props.textRows}
+      minRows={props.textRows ? undefined : field.kind === 'json' ? 5 : 3}
+      placeholder={props.placeholder}
       select={select}
       value={multiple ? (value ?? []) : formatFieldValue(value, field.kind)}
       onChange={(event) =>
@@ -374,11 +352,16 @@ export default function SchemaField(props: Props) {
         )
       }
       slotProps={{
-        input:
-          /^(input|output|source_code|code_template|json)$/.test(field.name) ||
-          field.kind === 'json'
-            ? { sx: { fontFamily: 'monospace', fontSize: 13 } }
-            : undefined,
+        input: {
+          endAdornment: props.suffix ? (
+            <InputAdornment position="end">{props.suffix}</InputAdornment>
+          ) : undefined,
+          sx:
+            /^(input|output|source_code|code_template|json)$/.test(field.name) ||
+            field.kind === 'json'
+              ? { fontFamily: 'monospace', fontSize: 13 }
+              : undefined,
+        },
         htmlInput: {
           maxLength: field.maxLength,
           min: field.min,
@@ -386,7 +369,11 @@ export default function SchemaField(props: Props) {
           step: field.kind === 'number' ? 'any' : undefined,
           autoComplete: field.kind === 'secret' ? 'new-password' : undefined,
         },
-        select: multiple ? { multiple: true } : undefined,
+        select: multiple
+          ? { multiple: true }
+          : name === 'lang'
+            ? { sx: { display: 'flex', alignItems: 'center', gap: 1 } }
+            : undefined,
       }}
     >
       {select && !field.required && <MenuItem value="">—</MenuItem>}
@@ -397,11 +384,20 @@ export default function SchemaField(props: Props) {
             </MenuItem>
           ))
         : field.choices?.map((item) => (
-            <MenuItem key={String(item.value)} value={String(item.value)}>
+            <MenuItem
+              key={String(item.value)}
+              value={String(item.value)}
+              sx={name === 'lang' ? { gap: 1 } : undefined}
+            >
               {multiple && (
                 <Checkbox
                   checked={Array.isArray(value) && value.map(String).includes(String(item.value))}
                 />
+              )}
+              {name === 'lang' && (
+                <Box component="span" aria-hidden="true" sx={{ display: 'inline-flex' }}>
+                  <AttemptLanguage lang={String(item.value)} langFull={item.label} size={20} />
+                </Box>
               )}
               {field.name === 'usable_password'
                 ? t(`admin.console.passwordModes.${item.value}`, { defaultValue: item.label })

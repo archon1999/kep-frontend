@@ -17,7 +17,7 @@ import type { AdminActionPreview } from 'modules/admin/domain';
 import IconifyIcon from 'shared/components/base/IconifyIcon';
 import DialogHeader from 'shared/components/common/DialogHeader';
 import { toast } from 'sonner';
-import { actionTitle } from '../helpers';
+import { actionTitle, rowActionTitle } from '../helpers';
 import { actionIcon } from '../helpers/actionIcon';
 import { ConsoleError } from './ConsoleState';
 
@@ -74,7 +74,15 @@ export default function ActionDialog({
     >
       <DialogHeader
         id="admin-action-title"
-        title={preview ? actionTitle(t, preview.action.name, preview.action.label) : ''}
+        title={
+          preview
+            ? (preview.count === 1 ? rowActionTitle : actionTitle)(
+                t,
+                preview.action.name,
+                preview.action.label,
+              )
+            : ''
+        }
         onClose={close}
         closeDisabled={busy}
       />

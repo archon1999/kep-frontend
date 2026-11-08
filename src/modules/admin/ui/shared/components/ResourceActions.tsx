@@ -12,9 +12,9 @@ import {
   MenuItem,
   Tooltip,
 } from '@mui/material';
-import type { AdminAction } from 'modules/admin/domain';
+import type { AdminAction, AdminResource } from 'modules/admin/domain';
 import IconifyIcon from 'shared/components/base/IconifyIcon';
-import { actionTitle } from '../helpers';
+import { actionTitle, editRecordTitle, rowActionTitle } from '../helpers';
 import { actionIcon } from '../helpers/actionIcon';
 
 export default function ResourceActions({
@@ -27,6 +27,7 @@ export default function ResourceActions({
   links = [],
   onPassword,
   onReply,
+  resource,
 }: {
   actions: AdminAction[];
   onAction: (name: string) => void;
@@ -37,6 +38,7 @@ export default function ResourceActions({
   links?: { label: string; to: string; icon: string }[];
   onPassword?: () => void;
   onReply?: () => void;
+  resource?: Pick<AdminResource, 'key' | 'singular'>;
 }) {
   const { t } = useTranslation();
   const [anchor, setAnchor] = useState<HTMLElement | null>(null);
@@ -74,7 +76,7 @@ export default function ResourceActions({
             <ListItemIcon>
               <IconifyIcon icon="mdi:pencil-outline" />
             </ListItemIcon>
-            <ListItemText>{t('admin.workspace.openRecord')}</ListItemText>
+            <ListItemText>{editRecordTitle(t, resource)}</ListItemText>
           </MenuItem>
         )}
         {onPassword && (
@@ -135,7 +137,9 @@ export default function ResourceActions({
               <ListItemText>
                 {editPath && action.kind === 'delete'
                   ? t('admin.actions.delete')
-                  : actionTitle(t, action.name, action.label)}
+                  : editPath
+                    ? rowActionTitle(t, action.name, action.label)
+                    : actionTitle(t, action.name, action.label)}
               </ListItemText>
             </MenuItem>,
           ])}

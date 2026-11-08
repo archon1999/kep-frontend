@@ -27,7 +27,7 @@ import { ConsoleError, ConsoleSkeleton } from '../../../shared/components/Consol
 import ContestReplyDialog from '../../../shared/components/ContestReplyDialog';
 import PasswordDialog from '../../../shared/components/PasswordDialog';
 import WorkspaceHeader from '../../../shared/components/WorkspaceHeader';
-import { actionTitle, resourceTitle } from '../../../shared/helpers';
+import { resourceTitle, rowActionTitle } from '../../../shared/helpers';
 import { actionIcon } from '../../../shared/helpers/actionIcon';
 import { relatedRecordLinks } from '../../../shared/helpers/resourceRelations';
 import EditorWorkspace from './EditorWorkspace';
@@ -355,7 +355,7 @@ export default function RecordEditor({
               }}
             >
               <IconifyIcon icon={actionIcon(action)} sx={{ mr: 1.5 }} />
-              {actionTitle(t, action.name, action.label)}
+              {rowActionTitle(t, action.name, action.label)}
             </MenuItem>
           ))}
       </Menu>

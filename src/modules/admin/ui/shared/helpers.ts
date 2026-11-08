@@ -8,6 +8,18 @@ export const resourceTitle = (t: TFunction, resource?: Pick<AdminResource, 'key'
         defaultValue: resource.name,
       })
     : t('admin.title');
+export const editRecordTitle = (
+  t: TFunction,
+  resource?: Pick<AdminResource, 'key' | 'singular'>,
+) => {
+  if (!resource) return t('admin.actions.edit');
+  const singular = t(`admin.console.singular.${resource.key.replace('.', '_')}`, {
+    defaultValue: resource.singular,
+  });
+  return t('admin.workspace.editRecord', {
+    name: singular.charAt(0).toLocaleUpperCase() + singular.slice(1),
+  });
+};
 export const fieldTitle = (t: TFunction, field: Pick<AdminField, 'name' | 'label'>) => {
   const suffix = field.name.match(/_(uz|ru|en)$/)?.[1];
   const name = suffix ? field.name.slice(0, -3) : field.name;
@@ -20,6 +32,12 @@ export const actionTitle = (t: TFunction, name: string, fallback: string) =>
   t(`admin.console.actionNames.${name}`, {
     defaultValue: fallback.replace(/%\(verbose_name_plural\)s/g, ''),
   });
+export const rowActionTitle = (t: TFunction, name: string, fallback: string) =>
+  name === 'delete_selected'
+    ? t('admin.actions.delete')
+    : t(`admin.console.rowActionNames.${name}`, {
+        defaultValue: actionTitle(t, name, fallback),
+      });
 export const fieldHelp = (t: TFunction, field: Pick<AdminField, 'name' | 'help'>) =>
   t(`admin.console.hints.${field.name.replace(/_(uz|ru|en)$/, '')}`, { defaultValue: '' });
 export const recordPath = (resource: Pick<AdminResource, 'path'>, id: string) =>

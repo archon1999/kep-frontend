@@ -709,7 +709,7 @@
         "time_limit": "Vaqt chegarasi",
         "memory_limit": "Xotira chegarasi",
         "difficulty": "Qiyinlik",
-        "problem_rating": "Masala reytingi",
+        "problem_rating": "Reyting",
         "rating": "Reyting",
         "kepcoin": "Kepcoin",
         "streak": "Ketma-ketlik",
@@ -900,9 +900,36 @@
         "get_questions_count": "Savollar",
         "get_tags": "Teglar",
         "get_body": "Savol ko‘rinishi",
-        "chapters__chapter": "Bo‘lim"
+        "chapters__chapter": "Bo‘lim",
+        "limits": "TL / ML",
+        "solvers": "Yechganlar"
       },
-      "unavailable": "Bo‘limga kirish imkoni yo‘q"
+      "unavailable": "Bo‘limga kirish imkoni yo‘q",
+      "rowActionNames": {
+        "make_hidden": "Masalani chop etish",
+        "make_unhidden": "Masalani yashirish"
+      },
+      "singular": {
+        "backend_problem": "Masala",
+        "backend_user": "Foydalanuvchi",
+        "backend_contest": "Kontest",
+        "projects_project": "Loyiha",
+        "testing_test": "Test",
+        "challenges_challenge": "Bellashuv",
+        "testing_question": "Savol",
+        "backend_attempt": "Urinish",
+        "blog_blog": "Maqola",
+        "blog_news": "Yangilik",
+        "home_systemupdate": "Yangilanish",
+        "tournaments_tournament": "Turnir",
+        "tournaments_duel": "Duel",
+        "achievements_achievement": "Yutuq",
+        "marketplace_product": "Mahsulot",
+        "marketplace_marketplaceorder": "Buyurtma",
+        "home_calendarevent": "Tadbir",
+        "backend_chapter": "Bob",
+        "backend_tag": "Teg"
+      }
     },
     "workspace": {
       "selectedActions": "Tanlanganlar bilan amallar",
@@ -924,7 +951,6 @@
       "editorSections": "Yozuv bo‘limlari",
       "publicationSettings": "Nashr va sozlamalar",
       "statement": "Masala sharti",
-      "relatedDraftHint": "Bu yerdagi o‘zgarishlar asosiy yozuv saqlanganda qo‘llanadi.",
       "modified": "O‘zgartirildi",
       "done": "Tayyor",
       "workspace": "Ish bo‘limlari",
@@ -977,7 +1003,21 @@
         "users": "Foydalanuvchilar"
       },
       "actionCompleted": "Amal bajarildi",
-      "replySent": "Javob yuborildi"
+      "replySent": "Javob yuborildi",
+      "editRecord": "{{name}}: tahrirlash",
+      "preview": "Ko‘rish",
+      "apply": "Qo‘llash",
+      "editRating": "Reytingni tahrirlash",
+      "editRatingFor": "{{name}} reytingini tahrirlash",
+      "ratingSaved": "Reyting saqlandi",
+      "solvedUsers": "Masalani yechgan foydalanuvchilar",
+      "unsolvedUsers": "Uringan, lekin hali yecholmagan foydalanuvchilar",
+      "milliseconds": "ms",
+      "megabytes": "MB",
+      "inheritLimit": "Standart",
+      "addTag": "Teg qo‘shish",
+      "addAttachment": "Fayl qo‘shish",
+      "download": "Yuklab olish"
     }
   }
 }

@@ -1,8 +1,9 @@
 import { useTranslation } from 'react-i18next';
 import { Link as RouterLink } from 'react-router';
-import { Box, Chip, LinearProgress, Link, Stack, Typography } from '@mui/material';
-import { resources } from 'app/routes/resources';
+import { Box, Chip, LinearProgress, Link, Stack, Tooltip, Typography } from '@mui/material';
+import { adminResourcePath } from 'app/routes/admin-routes';
 import { getRankColor } from 'app/theme/colors/medals';
+import { useAdminRegistry } from 'modules/admin/application';
 import type { AdminCell } from 'modules/admin/domain';
 import UserPopover from 'modules/users/ui/shared/components/UserPopover';
 import IconifyIcon from 'shared/components/base/IconifyIcon';
@@ -25,9 +26,112 @@ export default function ConsoleCell({
   resourceKey?: string;
 }) {
   const { t } = useTranslation();
+  if (cell?.kind === 'problemLimits')
+    return (
+      <Stack gap={0.5} sx={{ fontVariantNumeric: 'tabular-nums' }}>
+        {[
+          {
+            icon: 'mdi:timer-outline',
+            name: 'time_limit',
+            value: cell.value,
+            unit: t('admin.workspace.milliseconds'),
+          },
+          {
+            icon: 'mdi:memory',
+            name: 'memory_limit',
+            value: cell.total,
+            unit: t('admin.workspace.megabytes'),
+          },
+        ].map((limit) => (
+          <Tooltip key={limit.name} title={t('admin.console.fields.' + limit.name)}>
+            <Stack direction="row" alignItems="center" gap={0.75}>
+              <IconifyIcon icon={limit.icon} sx={{ color: 'text.secondary', fontSize: 16 }} />
+              <Typography variant="body2" sx={{ fontSize: 12, whiteSpace: 'nowrap' }}>
+                {limit.value == null ? '—' : `${limit.value} ${limit.unit}`}
+              </Typography>
+            </Stack>
+          </Tooltip>
+        ))}
+      </Stack>
+    );
+  if (cell?.kind === 'problemSolvers')
+    return (
+      <Stack
+        direction="row"
+        alignItems="center"
+        gap={0.75}
+        sx={{ fontVariantNumeric: 'tabular-nums' }}
+      >
+        <Tooltip title={t('admin.workspace.solvedUsers')}>
+          <Stack
+            direction="row"
+            alignItems="center"
+            gap={0.4}
+            aria-label={`${t('admin.workspace.solvedUsers')}: ${cell.value}`}
+            sx={{ color: 'success.main' }}
+          >
+            <IconifyIcon icon="mdi:check" sx={{ fontSize: 15 }} />
+            <Typography variant="body2" fontWeight={600}>
+              {String(cell.value ?? 0)}
+            </Typography>
+          </Stack>
+        </Tooltip>
+        <Typography variant="caption" color="text.disabled">
+          /
+        </Typography>
+        <Tooltip title={t('admin.workspace.unsolvedUsers')}>
+          <Stack
+            direction="row"
+            alignItems="center"
+            gap={0.4}
+            aria-label={`${t('admin.workspace.unsolvedUsers')}: ${cell.total}`}
+            sx={{ color: 'error.main' }}
+          >
+            <IconifyIcon icon="mdi:close" sx={{ fontSize: 15 }} />
+            <Typography variant="body2" fontWeight={600}>
+              {cell.total ?? 0}
+            </Typography>
+          </Stack>
+        </Tooltip>
+      </Stack>
+    );
   if (cell?.kind === 'secret') return <Typography color="text.secondary">••••••••</Typography>;
   if (!cell || cell.value === null || cell.value === '')
     return <Typography color="text.disabled">—</Typography>;
+  if (cell.kind === 'date' || cell.kind === 'datetime') {
+    const value = String(cell.value);
+    const date = formatDateTime(value, 'compactDate', '');
+    if (!date) return <Typography color="text.disabled">—</Typography>;
+    return (
+      <Tooltip
+        title={formatDateTime(value, cell.kind === 'date' ? 'fullDate' : 'compactDateTimeNoComma')}
+      >
+        <Stack
+          component="time"
+          dateTime={value}
+          direction="row"
+          alignItems="center"
+          gap={0.75}
+          sx={{ fontVariantNumeric: 'tabular-nums', whiteSpace: 'nowrap' }}
+        >
+          <IconifyIcon
+            icon="mdi:calendar-blank-outline"
+            sx={{ fontSize: 16, color: 'text.disabled' }}
+          />
+          <Box>
+            <Typography variant="body2" sx={{ fontSize: 12 }}>
+              {date}
+            </Typography>
+            {cell.kind === 'datetime' && (
+              <Typography variant="caption" color="text.secondary">
+                {formatDateTime(value, 'time')}
+              </Typography>
+            )}
+          </Box>
+        </Stack>
+      </Tooltip>
+    );
+  }
   if (name === 'rank') {
     const rank = Number(cell.value);
     return (
@@ -122,26 +226,14 @@ export default function ConsoleCell({
         {cell.display || cell.url}
       </Link>
     );
-  if (cell.kind === 'relation' && cell.resource)
-    return (
-      <Link
-        component={RouterLink}
-        to={`${resources.AdminManage}/${cell.resource.replace('.', '/')}/${encodeURIComponent(String(cell.value))}`}
-        underline="hover"
-      >
-        {cell.display}
-      </Link>
-    );
+  if (cell.kind === 'relation' && cell.resource) return <RelationLink cell={cell} />;
   if (cell.kind === 'file' && cell.url)
     return (
       <Link href={cell.url} target="_blank" rel="noopener noreferrer">
         {cell.display.split('/').slice(-1)[0]} <IconifyIcon icon="mdi:open-in-new" />
       </Link>
     );
-  const text =
-    cell.kind === 'date' || cell.kind === 'datetime'
-      ? formatDateTime(String(cell.value), cell.kind === 'date' ? 'compactDate' : 'compactDateTime')
-      : cell.display;
+  const text = cell.display;
   return (
     <Box
       component="span"
@@ -159,5 +251,18 @@ export default function ConsoleCell({
     >
       {text || '—'}
     </Box>
+  );
+}
+
+function RelationLink({ cell }: { cell: AdminCell }) {
+  const { data: catalog = [] } = useAdminRegistry();
+  return (
+    <Link
+      component={RouterLink}
+      to={`${adminResourcePath(cell.resource!, catalog)}/${encodeURIComponent(String(cell.value))}`}
+      underline="hover"
+    >
+      {cell.display}
+    </Link>
   );
 }

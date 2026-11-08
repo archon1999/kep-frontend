@@ -74,7 +74,7 @@ export default function ResourceFilters({ resourceKey, fields, query, onChange, 
           <Tab value="dailyCompleted" label={t('admin.workspace.completedDays')} />
         </Tabs>
       )}
-      {viewFilter && views.length > 0 && (
+      {resourceKey !== 'backend.problem' && viewFilter && views.length > 0 && (
         <Tabs
           value={String(selected[viewFilter.name] ?? '')}
           onChange={(_, value) => onChange('filter.' + viewFilter.name, value)}

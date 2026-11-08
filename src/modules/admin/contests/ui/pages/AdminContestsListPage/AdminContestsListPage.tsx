@@ -3,7 +3,7 @@ import { useTranslation } from 'react-i18next';
 import { Link as RouterLink } from 'react-router';
 import { Checkbox, Chip, Link, Stack, Typography } from '@mui/material';
 import { DataGrid, GridColDef } from '@mui/x-data-grid';
-import { getResourceById, resources } from 'app/routes/resources';
+import { getResourceById, advancedAdminResources as resources } from 'app/routes/resources';
 import { useAdminContestsListPage } from 'modules/admin/contests/application/hooks/useAdminContestsListPage';
 import { AdminContest } from 'modules/admin/contests/domain/types';
 import AdminBatchActionsToolbar from 'modules/admin/shared/ui/AdminBatchActionsToolbar';
