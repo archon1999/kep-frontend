@@ -2,13 +2,14 @@ import { useTranslation } from 'react-i18next';
 import { Link as RouterLink } from 'react-router-dom';
 import {
   Box,
-  Button,
   Card,
   CardContent,
   Chip,
   Grid,
+  Link,
   Skeleton,
   Stack,
+  Tooltip,
   Typography,
 } from '@mui/material';
 import { getResourceByParams, resources } from 'app/routes/resources';
@@ -18,6 +19,7 @@ import ContestPageHeader from 'modules/contests/ui/shared/components/ContestPage
 import ContestPageLayout from 'modules/contests/ui/shared/components/ContestPageLayout';
 import { contestHasBalls } from 'modules/contests/ui/shared/utils/contestType';
 import IconifyIcon from 'shared/components/base/IconifyIcon';
+import MixedText from 'shared/components/common/MixedText';
 
 const ContestProblemsPage = () => {
   const { contest, isContestLoading, contestError, problems, error, contestId, canLoad, loading } =
@@ -77,6 +79,8 @@ const ContestProblemsPage = () => {
                     : problem.isAttempted
                       ? 'error.main'
                       : 'primary.main';
+                  const solved = problem.solved ?? 0;
+                  const unsolved = Math.max(0, (problem.attemptUsersCount ?? 0) - solved);
                   return (
                     <Stack
                       component="li"
@@ -114,44 +118,126 @@ const ContestProblemsPage = () => {
                               '&:hover': { color: 'primary.main' },
                             }}
                           >
-                            {problem.problem.title}
+                            <MixedText>{problem.problem.title}</MixedText>
                           </Typography>
-                          <Typography variant="body2" color="text.secondary">
-                            {problem.problem.timeLimit} ms · {problem.problem.memoryLimit} MB
-                          </Typography>
+                          <Stack
+                            direction="row"
+                            gap={1.5}
+                            useFlexGap
+                            flexWrap="wrap"
+                            color="text.secondary"
+                          >
+                            {[
+                              {
+                                label: t('problems.detail.timeLimit'),
+                                value: problem.problem.timeLimit + ' ms',
+                                icon: 'mdi:timer-outline',
+                              },
+                              {
+                                label: t('problems.detail.memoryLimit'),
+                                value: problem.problem.memoryLimit + ' MB',
+                                icon: 'mdi:memory',
+                              },
+                            ].map((limit) => (
+                              <Tooltip key={limit.icon} title={limit.label}>
+                                <Stack
+                                  direction="row"
+                                  gap={0.6}
+                                  alignItems="center"
+                                  aria-label={limit.label + ': ' + limit.value}
+                                >
+                                  <IconifyIcon
+                                    icon={limit.icon}
+                                    aria-hidden="true"
+                                    sx={{ fontSize: 16 }}
+                                  />
+                                  <Typography
+                                    variant="metric"
+                                    component="span"
+                                    sx={{ fontSize: 14, lineHeight: 1.4, whiteSpace: 'nowrap' }}
+                                  >
+                                    {limit.value}
+                                  </Typography>
+                                </Stack>
+                              </Tooltip>
+                            ))}
+                          </Stack>
                         </Stack>
                       </Stack>
-                      <Stack direction="row" gap={1} alignItems="center" useFlexGap flexWrap="wrap">
+                      <Stack direction="row" gap={2} alignItems="center" useFlexGap flexWrap="wrap">
                         {contestHasBalls(contest?.type, contest?.typeInfo) && (
                           <Chip variant="status" size="small" label={problem.ball ?? '—'} />
                         )}
-                        <Chip
-                          icon={<IconifyIcon icon="mdi:check-circle-outline" />}
-                          variant="status"
-                          size="small"
-                          color="success"
-                          label={problem.solved ?? 0}
-                        />
-                        <Chip
-                          icon={<IconifyIcon icon="mdi:close-circle-outline" />}
-                          variant="status"
-                          size="small"
-                          color="error"
-                          label={Math.max(
-                            0,
-                            (problem.attemptUsersCount ?? 0) - (problem.solved ?? 0),
-                          )}
-                        />
-                        <Button
-                          component={RouterLink}
-                          to={href}
-                          variant="outlined"
-                          size="small"
-                          endIcon={<IconifyIcon icon="mdi:arrow-right" />}
-                          sx={{ ml: { xs: 'auto', sm: 0.5 } }}
-                        >
-                          {t('contests.detail.solve')}
-                        </Button>
+                        {[
+                          {
+                            label: t('contests.solvedShort', { solved }),
+                            value: solved,
+                            color: 'success.main',
+                            icon: 'mdi:check-circle-outline',
+                          },
+                          {
+                            label: t('contests.unsolvedShort', { unsolved }),
+                            value: unsolved,
+                            color: 'error.main',
+                            icon: 'mdi:close-circle-outline',
+                          },
+                        ].map((stat) => (
+                          <Tooltip key={stat.icon} title={stat.label}>
+                            <Stack
+                              component="span"
+                              direction="row"
+                              gap={0.75}
+                              alignItems="center"
+                              aria-label={stat.label}
+                              sx={{ color: stat.color }}
+                            >
+                              <IconifyIcon
+                                icon={stat.icon}
+                                aria-hidden="true"
+                                sx={{ fontSize: 18 }}
+                              />
+                              <Typography
+                                variant="metric"
+                                component="span"
+                                sx={{ fontSize: 18, lineHeight: 1.4 }}
+                              >
+                                {stat.value}
+                              </Typography>
+                            </Stack>
+                          </Tooltip>
+                        ))}
+                        <Tooltip title={t('contests.detail.solve')}>
+                          <Link
+                            component={RouterLink}
+                            to={href}
+                            underline="none"
+                            aria-label={`${t('contests.detail.solve')}: ${problem.problem.title}`}
+                            sx={{
+                              ml: { xs: 'auto', sm: 0.5 },
+                              width: 40,
+                              height: 40,
+                              flexShrink: 0,
+                              display: 'grid',
+                              placeItems: 'center',
+                              border: 1,
+                              borderColor: 'divider',
+                              borderRadius: '50%',
+                              color: 'text.secondary',
+                              '&:hover': { color: 'primary.main', borderColor: 'primary.main' },
+                              '&:focus-visible': {
+                                outline: '2px solid',
+                                outlineColor: 'primary.main',
+                                outlineOffset: 3,
+                              },
+                            }}
+                          >
+                            <IconifyIcon
+                              icon="mdi:arrow-top-right"
+                              aria-hidden="true"
+                              sx={{ fontSize: 23 }}
+                            />
+                          </Link>
+                        </Tooltip>
                       </Stack>
                     </Stack>
                   );
