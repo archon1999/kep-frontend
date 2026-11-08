@@ -1,8 +1,9 @@
 import { useTranslation } from 'react-i18next';
 import { Link as RouterLink } from 'react-router';
 import { Box, Chip, LinearProgress, Link, Stack, Tooltip, Typography } from '@mui/material';
-import { resources } from 'app/routes/resources';
+import { adminResourcePath } from 'app/routes/admin-routes';
 import { getRankColor } from 'app/theme/colors/medals';
+import { useAdminRegistry } from 'modules/admin/application';
 import type { AdminCell } from 'modules/admin/domain';
 import UserPopover from 'modules/users/ui/shared/components/UserPopover';
 import IconifyIcon from 'shared/components/base/IconifyIcon';
@@ -225,16 +226,7 @@ export default function ConsoleCell({
         {cell.display || cell.url}
       </Link>
     );
-  if (cell.kind === 'relation' && cell.resource)
-    return (
-      <Link
-        component={RouterLink}
-        to={`${resources.AdminManage}/${cell.resource.replace('.', '/')}/${encodeURIComponent(String(cell.value))}`}
-        underline="hover"
-      >
-        {cell.display}
-      </Link>
-    );
+  if (cell.kind === 'relation' && cell.resource) return <RelationLink cell={cell} />;
   if (cell.kind === 'file' && cell.url)
     return (
       <Link href={cell.url} target="_blank" rel="noopener noreferrer">
@@ -259,5 +251,18 @@ export default function ConsoleCell({
     >
       {text || '—'}
     </Box>
+  );
+}
+
+function RelationLink({ cell }: { cell: AdminCell }) {
+  const { data: catalog = [] } = useAdminRegistry();
+  return (
+    <Link
+      component={RouterLink}
+      to={`${adminResourcePath(cell.resource!, catalog)}/${encodeURIComponent(String(cell.value))}`}
+      underline="hover"
+    >
+      {cell.display}
+    </Link>
   );
 }

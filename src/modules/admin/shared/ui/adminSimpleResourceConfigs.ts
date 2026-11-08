@@ -1,4 +1,4 @@
-import { getResourceById, resources } from 'app/routes/resources';
+import { getResourceById, advancedAdminResources as resources } from 'app/routes/resources';
 import type { AdminSimpleResourceConfig } from './AdminSimpleResourcePages';
 
 const deleteBatchAction = (confirmKey: string) => ({

@@ -8,6 +8,9 @@ export const AdminResourceListPage = lazy(
 export const AdminResourceFormPage = lazy(
   () => import('./AdminResourceFormPage/AdminResourceFormPage'),
 );
+export const AdminLegacyResourceRedirect = lazy(
+  () => import('./AdminLegacyResourceRedirect/AdminLegacyResourceRedirect'),
+);
 export const AdminImportOrderPage = lazy(
   () => import('./AdminImportOrderPage/AdminImportOrderPage'),
 );

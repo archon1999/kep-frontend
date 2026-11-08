@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import { useTranslation } from 'react-i18next';
-import { Link, useParams } from 'react-router';
+import { Link } from 'react-router';
 import { Box, Button, Chip, LinearProgress, Stack, Typography } from '@mui/material';
 import { useAuth } from 'app/providers/AuthProvider';
 import { resources } from 'app/routes/resources';
@@ -12,6 +12,7 @@ import KepcoinValue from 'shared/components/common/KepcoinValue';
 import { ListPagination } from 'shared/components/sections/common/FramedListPage';
 import FramedPage from 'shared/components/sections/common/FramedPage';
 import ActionDialog from '../../shared/components/ActionDialog';
+import AdminResourceRoute from '../../shared/components/AdminResourceRoute';
 import { ConsoleError, ConsoleSkeleton } from '../../shared/components/ConsoleState';
 import ContestReplyDialog from '../../shared/components/ContestReplyDialog';
 import PasswordDialog from '../../shared/components/PasswordDialog';
@@ -24,8 +25,11 @@ import ResourceFilters, { PageSizeControl } from './components/ResourceFilters';
 import ResourceTable from './components/ResourceTable';
 
 export default function AdminResourceListPage() {
-  const { app = '', model = '' } = useParams();
-  return <ResourceList key={app + '.' + model} resourceKey={app + '.' + model} />;
+  return (
+    <AdminResourceRoute>
+      {(resource) => <ResourceList key={resource.key} resourceKey={resource.key} />}
+    </AdminResourceRoute>
+  );
 }
 
 function ResourceList({ resourceKey }: { resourceKey: string }) {

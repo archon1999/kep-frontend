@@ -1,6 +1,7 @@
 import { useTranslation } from 'react-i18next';
 import { Link } from 'react-router';
 import { Box, Button, Chip, IconButton, Stack, Tooltip, Typography } from '@mui/material';
+import { adminResourcePath } from 'app/routes/admin-routes';
 import { resources } from 'app/routes/resources';
 import { useAdminDashboard, useAdminRegistry } from 'modules/admin/application';
 import IconifyIcon from 'shared/components/base/IconifyIcon';
@@ -218,7 +219,7 @@ export default function AdminDashboardPage() {
                             <Typography
                               component={Link}
                               key={row.id}
-                              to={`${resources.AdminManage}/${queue.resource.replace('.', '/')}/${encodeURIComponent(row.id)}`}
+                              to={`${adminResourcePath(queue.resource, catalog)}/${encodeURIComponent(row.id)}`}
                               variant="caption"
                               noWrap
                               sx={{

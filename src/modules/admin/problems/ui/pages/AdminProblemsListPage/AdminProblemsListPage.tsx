@@ -10,7 +10,7 @@ import {
   Typography,
 } from '@mui/material';
 import { DataGrid, GridColDef } from '@mui/x-data-grid';
-import { getResourceById, resources } from 'app/routes/resources';
+import { getResourceById, advancedAdminResources as resources } from 'app/routes/resources';
 import {
   problemRatingRange,
   useAdminProblemsListPage,

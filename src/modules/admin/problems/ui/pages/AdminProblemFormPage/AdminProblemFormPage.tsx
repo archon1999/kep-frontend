@@ -19,7 +19,7 @@ import {
   TableRow,
   Typography,
 } from '@mui/material';
-import { resources } from 'app/routes/resources';
+import { advancedAdminResources as resources } from 'app/routes/resources';
 import { useAdminProblemFormPage } from 'modules/admin/problems/application/hooks/useAdminProblemFormPage';
 import { AdminProblemPayload } from 'modules/admin/problems/domain/types';
 import type { AdminLanguageCode } from 'modules/admin/shared/domain/language.types';

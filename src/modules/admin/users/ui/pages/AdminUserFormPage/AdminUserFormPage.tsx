@@ -2,7 +2,7 @@ import { ChangeEvent } from 'react';
 import { useTranslation } from 'react-i18next';
 import { Alert, CircularProgress, FormControlLabel, Stack, Switch } from '@mui/material';
 import { DateTimePicker } from '@mui/x-date-pickers/DateTimePicker';
-import { resources } from 'app/routes/resources';
+import { advancedAdminResources as resources } from 'app/routes/resources';
 import AdminFormPageLayout from 'modules/admin/shared/ui/AdminFormPageLayout';
 import AdminFormSection from 'modules/admin/shared/ui/AdminFormSection';
 import TextField from 'modules/admin/shared/ui/AdminTextField';
