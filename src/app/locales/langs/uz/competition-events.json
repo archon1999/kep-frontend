@@ -1,0 +1,273 @@
+{
+  "competitionEvents": {
+    "editions": "Musobaqalar tarixi",
+    "sectionsLabel": "Sahifa bo‘limlari",
+    "sections": {
+      "schedule": "Jadval",
+      "prizes": "Mukofotlar",
+      "nominations": "Nominatsiyalar",
+      "results": "Natijalar",
+      "rules": "Qoidalar",
+      "sources": "Manbalar",
+      "tracks": "Yo‘nalishlar"
+    },
+    "online": "Onlayn",
+    "offline": "Oflayn",
+    "rounds": "Bosqichlar",
+    "scoring": "Sport dasturlash formati",
+    "each": "har bir g‘olib",
+    "place": "{{rank}}-o‘rin",
+    "places": "{{from}}–{{to}}-o‘rinlar",
+    "problemCount": "{{count}} ta masala",
+    "openRound": "Bosqichni ochish",
+    "fullStandings": "To‘liq natijalar",
+    "startsIn": "Boshlanishiga",
+    "endsIn": "Yakuniga",
+    "countdown": "Keyingi bosqich vaqti",
+    "days": "Kun",
+    "hours": "Soat",
+    "minutes": "Daqiqa",
+    "seconds": "Soniya",
+    "finalDay": "Final kuni dasturi",
+    "viewSchedule": "Jadvalni ko‘rish",
+    "viewResults": "Final natijalari",
+    "readRules": "Nizom bilan tanishish",
+    "tracksLabel": "Ikki yo‘nalish",
+    "stages": {
+      "qualifier1": "1-saralash",
+      "qualifier2": "2-saralash",
+      "final": "Final",
+      "cpQualifier": "Sport dasturlash · saralash",
+      "ctfQualifier": "CTF · saralash",
+      "cpFinal": "Sport dasturlash · final",
+      "ctfFinal": "CTF · final"
+    },
+    "groups": {
+      "seniorSchool": "10–11-sinf o‘quvchilari",
+      "juniorSchool": "5–9-sinf o‘quvchilari",
+      "eachTrack": "Har bir yo‘nalish uchun",
+      "top20": "Top-20",
+      "cp": "Sport dasturlash",
+      "ctf": "Kiberxavfsizlik · CTF",
+      "finalStandings": "Final jadvali"
+    },
+    "sources": {
+      "finalAnnouncement": "Final anonsi va arxivi",
+      "qualifier1": "Birinchi saralash arxivi",
+      "qualifier2": "Ikkinchi saralash arxivi",
+      "organizer": "REVO Global rasmiy sahifasi",
+      "recap": "Tashkilotchilar hisoboti",
+      "cpFinal": "CP final natijalari",
+      "ctfFinal": "CTF final natijalari"
+    },
+    "events": {
+      "junior2024": {
+        "title": "KEP Junior Algorithmics 2024",
+        "summary": "Ikki onlayn saralash va Xorazmdagi final. Musobaqa bosqichlari, mukofotlari va natijalari.",
+        "venue": "Xorazm",
+        "fundLabel": "Sovrin jamg‘armasi",
+        "finalistsLabel": "Saralashdan finalga yo‘llanma",
+        "eligibility": "Musobaqa 2023–2024 o‘quv yilida maktab o‘quvchisi bo‘lgan yoshlar uchun tashkil etilgan.",
+        "rules": {
+          "eligibility": {
+            "title": "Maktab o‘quvchilari",
+            "body": "Final sovrinlari 5–9 va 10–11-sinflar uchun alohida taqsimlangan. Rasmiy ishtirokchi ro‘yxatdan o‘tish formasini to‘ldirishi talab qilingan."
+          },
+          "selection": {
+            "title": "Ikki imkoniyat",
+            "body": "Birinchi saralashdan 25, ikkinchisidan yana 15 ishtirokchi finalga tanlangan. Birinchi turdan o‘tganlar ikkinchi turda norasmiy qatnashgan."
+          },
+          "scoring": {
+            "title": "ACM20M baholash",
+            "body": "Avval yechilgan masalalar soni, tenglikda esa jarima vaqti hisobga olingan. Har ikki saralash va final 3 soatdan davom etgan."
+          },
+          "fairPlay": {
+            "title": "Mustaqil yechimlar",
+            "body": "Yechimlar plagiatga tekshirilgan. Har bir bosqichning anonsi, masalalari va natijalari KEP.uz arxivida saqlangan."
+          }
+        },
+        "day": {
+          "checkIn": {
+            "title": "Ro‘yxatga olish",
+            "place": "2-qavat · Coworking"
+          },
+          "arena": {
+            "title": "Mini konkurs · Arena",
+            "place": "2-qavat · Coworking"
+          },
+          "lunch": {
+            "title": "Tushlik",
+            "place": "1-qavat · Oshxona"
+          },
+          "competition": {
+            "title": "Asosiy tur · Contest",
+            "place": "2-qavat · Coworking"
+          },
+          "preparation": {
+            "title": "G‘oliblarni aniqlash va sovg‘alarni tayyorlash",
+            "place": "2-qavat · Katta zal"
+          },
+          "awards": {
+            "title": "Taqdirlash marosimi",
+            "place": "2-qavat · Katta zal"
+          }
+        },
+        "nominations": {
+          "youngCoder": {
+            "title": "Eng yaxshi yosh ishtirokchi"
+          },
+          "femaleCoder": {
+            "title": "Eng yaxshi qiz ishtirokchi"
+          },
+          "bestSolution": {
+            "title": "Eng yaxshi yechim"
+          },
+          "alKhorezmiy": {
+            "title": "Al-Xorazmiy nominatsiyasi"
+          },
+          "sensation": {
+            "title": "Musobaqa sensatsiyasi"
+          },
+          "raffle": {
+            "title": "Tasodifiy sovrin"
+          }
+        }
+      },
+      "revo2025": {
+        "title": "REVO CUP 2025",
+        "context": "REVO DAY · REVO Globalning 5 yilligi",
+        "summary": "Sport dasturlash va kiberxavfsizlik bo‘yicha REVO CUP 2025. Onlayn saralashlar, Urganchdagi final, mukofotlar va natijalar.",
+        "venue": "IT Park · Urganch",
+        "fundLabel": "Ikki yo‘nalishning sovrin jamg‘armasi",
+        "finalistsLabel": "Har bir yo‘nalishda finalchi",
+        "fundNote": "Sport dasturlash, CTF va qo‘shimcha sovrinlarning umumiy jamg‘armasi.",
+        "eligibility": "Talabalar, maktab o‘quvchilari, dasturchilar va kiberxavfsizlikka qiziquvchilar individual tarzda qatnashgan.",
+        "rules": {
+          "tracks": {
+            "title": "CP va CTF",
+            "body": "CP algoritmik masalalarni yechishga, CTF esa kiberxavfsizlik topshiriqlariga bag‘ishlangan. Har bir yo‘nalishning o‘z saralashi va finali bo‘lgan."
+          },
+          "selection": {
+            "title": "Har yo‘nalishdan Top-40",
+            "body": "Onlayn saralashlar KEP.uz’da o‘tkazilgan. Har bir yo‘nalishdan 40 nafar finalchi tanlangan. Bir ishtirokchi ikkala finalda ham qatnasha olgan."
+          },
+          "scoring": {
+            "title": "Yo‘nalishga mos baholash",
+            "body": "CP natijalari ACM mezonlari bo‘yicha aniqlangan. CTF’da topshiriqlar uchun ball berilgan, yakuniy tartibni to‘liq natijalar jadvalidan ko‘rish mumkin."
+          },
+          "fairPlay": {
+            "title": "Individual ishtirok",
+            "body": "AI’dan foydalanish, kod yoki flag almashish taqiqlangan. Tashkilotchilar yechimlarni tekshirgan va qoidabuzarlarni diskvalifikatsiya qilgan."
+          }
+        },
+        "tracks": {
+          "cp": "Algoritmik masalalar, ACM baholash va Urganchdagi finalga 40 ta yo‘llanma.",
+          "ctf": "Kiberxavfsizlik topshiriqlari, flaglar va Top-40 uchun alohida final."
+        }
+      },
+      "revo2026": {
+        "title": "REVO CUP 2026",
+        "context": "GDG Urgench DevFest 2026",
+        "summary": "Ikki onlayn saralash va 12-dekabrda Urganchdagi final. Mukofotlar va nominatsiyalar uchun 100 000 000 So'm.",
+        "venue": "Urganch · Oflayn final 12-dekabr",
+        "fundLabel": "Umumiy mukofot jamg‘armasi",
+        "finalistsLabel": "Oflayn final ishtirokchilari",
+        "fundNote": "84 000 000 So'm Top-20 uchun, 16 000 000 So'm qo‘shimcha nominatsiyalar uchun.",
+        "eligibility": "Individual musobaqa ACM (ICPC) formatida o‘tkaziladi. Top-120 finalchi 12-dekabrda Urganchdagi oflayn finalda shaxsan qatnashadi.",
+        "nominations": {
+          "firstBlood": {
+            "title": "First Blood",
+            "body": "Finaldagi 12 masalaning har biri uchun 500 000 So'm. Top-20’dan tashqarida birinchi AC olgan ishtirokchi yutadi."
+          },
+          "female": {
+            "title": "Best Female Coder",
+            "body": "Top-20’dan tashqarida eng yuqori o‘rinni egallagan qiz ishtirokchi."
+          },
+          "youngest": {
+            "title": "Youngest Rising Star",
+            "body": "Kamida bitta AC olgan eng yosh finalchi. Tug‘ilgan sana teng bo‘lsa, yuqori o‘rin ustun."
+          },
+          "veteran": {
+            "title": "Veteran Coder",
+            "body": "Kamida bitta AC olgan eng katta yoshli finalchi. Tug‘ilgan sana teng bo‘lsa, yuqori o‘rin ustun."
+          },
+          "solution": {
+            "title": "Best Solution",
+            "body": "J, K yoki L masalasining AC yechimlari orasidan murakkablik, vaqt, xotira va kod tozaligi bo‘yicha hakamlar tanlaydi."
+          },
+          "lastMinute": {
+            "title": "Last Minute Hero",
+            "body": "16:15–16:30 oralig‘ida AC olib, yakuniy jadvalda eng ko‘p pog‘ona ko‘tarilgan ishtirokchi."
+          },
+          "persistent": {
+            "title": "Persistent Coder",
+            "body": "Bitta masalani eng ko‘p xato urinishdan keyin AC qilgan ishtirokchi. Urinishlar sonini sun’iy ko‘paytirish diskvalifikatsiyaga sabab bo‘ladi."
+          }
+        },
+        "rules": {
+          "scoring": {
+            "title": "Ko‘proq AC — yuqoriroq o‘rin",
+            "body": "Avval yechilgan masalalar soni taqqoslanadi. Tenglikda umumiy jarima vaqti kamroq ishtirokchi ustun bo‘ladi."
+          },
+          "penalty": {
+            "title": "Har xato urinish uchun 20 daqiqa",
+            "body": "AC olingan daqiqaga undan oldingi har bir jarimali urinish uchun 20 daqiqa qo‘shiladi. Yechilmagan masalaga jarima yozilmaydi."
+          },
+          "compilation": {
+            "title": "Compilation Error istisnosi",
+            "body": "CE natijasi qaytgan yuborishlar uchun 20 daqiqalik jarima qo‘shilmaydi."
+          },
+          "freeze": {
+            "title": "16:00 da jadval muzlatiladi",
+            "body": "Oxirgi 30 daqiqaning urinishlari yashirin qabul qilinadi. 16:30–19:00 oralig‘ida Sport zalidagi yopilish marosimida natijalar ochiladi."
+          },
+          "fairPlay": {
+            "title": "Mustaqil ishlash va anti-plagiat",
+            "body": "Kod almashish, boshqa ishtirokchi bilan muloqot va tashqi yordam taqiqlangan. ChatGPT, Claude, Copilot kabi generativ AI’dan foydalanish mumkin emas. Yechimlar MOSS / AST orqali tekshiriladi."
+          },
+          "identity": {
+            "title": "Finalda shaxsni tasdiqlash",
+            "body": "13:00–13:30 dagi brifingda pasport yoki ID-karta taqdim etiladi. Profil ma’lumotlari hujjatga mos kelishi shart."
+          },
+          "payment": {
+            "title": "Mukofotlar 5 bank ish kunida",
+            "body": "Natijalar tasdiqlangach, mukofotlar g‘olibning bank kartasi yoki hisob raqamiga 5 bank ish kuni ichida o‘tkaziladi. Qonunda belgilangan soliqlar ushlab qolinadi."
+          },
+          "appeal": {
+            "title": "Savol va apellyatsiyalar",
+            "body": "Texnik yoki baholash bo‘yicha e’tirozlar musobaqa davomida Clarifications orqali beriladi. Nizomda belgilanmagan holatlarda tashkiliy qo‘mita va bosh hakamlar qarori yakuniy."
+          }
+        },
+        "day": {
+          "checkIn": {
+            "title": "DevFest ro‘yxatga olish va finalchilar check-in",
+            "place": "Kirish zali"
+          },
+          "opening": {
+            "title": "GDG Urgench DevFest ochilishi va keynote sessiyalari",
+            "place": "Sport zali"
+          },
+          "briefing": {
+            "title": "Tushlik, KYC, xonalarga joylashish va texnik brifing",
+            "place": "O‘quv binosidagi seminar xonalari"
+          },
+          "competition": {
+            "title": "Oflayn final · 12 masala · 16:00 da freeze",
+            "place": "O‘quv binosidagi seminar xonalari"
+          },
+          "awards": {
+            "title": "Yopilish marosimi, unfreeze va taqdirlash",
+            "place": "Sport zali"
+          }
+        }
+      }
+    },
+    "editionTitles": {
+      "junior2024": "KEP Junior Algorithmics 2024",
+      "revo2025": "REVO CUP 2025",
+      "revo2026": "REVO CUP 2026"
+    },
+    "currency": "So'm",
+    "nominationWinners": "Nominatsiya g‘oliblari"
+  }
+}

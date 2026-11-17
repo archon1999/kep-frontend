@@ -63,6 +63,9 @@ export const resources = {
   ProblemsUserStatistics: '/problems/user-statistics',
 
   Contests: '/contests',
+  KepJuniorAlgorithmics2024: '/kep-junior-algorithmics-2024',
+  RevoCup2025: '/revo-cup-2025',
+  RevoCup2026: '/revo-cup-2026',
   ContestsRating: '/contests/rating',
   Contest: '/contests/:id',
   ContestStandings: '/contests/:id/standings',
