@@ -1,5 +1,3 @@
-import seo from './seo.json';
-import playground from './playground.json';
 import admin from './admin.json';
 import arena from './arena.json';
 import auth from './auth.json';
@@ -7,22 +5,25 @@ import blog from './blog.json';
 import calendar from './calendar.json';
 import challenges from './challenges.json';
 import common from './common.json';
+import competitionEvents from './competition-events.json';
 import contests from './contests.json';
 import duels from './duels.json';
-import giveaways from './giveaways.json';
 import game from './game.json';
-import games from './games.json';
-import keppyWorld from './keppy-world.json';
 import gamesMinis from './games-minis.json';
+import games from './games.json';
+import giveaways from './giveaways.json';
 import hackathons from './hackathons.json';
 import homePage from './home-page.json';
 import kepCover from './kep-cover.json';
 import kepcoinPage from './kepcoin-page.json';
+import keppyWorld from './keppy-world.json';
 import menu from './menu.json';
 import pageTitles from './page-titles.json';
+import playground from './playground.json';
 import problems from './problems.json';
 import projects from './projects.json';
 import search from './search.json';
+import seo from './seo.json';
 import settings from './settings.json';
 import shop from './shop.json';
 import tests from './tests.json';
@@ -30,6 +31,7 @@ import tournaments from './tournaments.json';
 import users from './users.json';
 
 export const ruTranslation = {
+  ...competitionEvents,
   ...playground,
   ...giveaways,
   ...game,

@@ -65,6 +65,18 @@
     },
     "projectsRating": {
       "description": "Explore the KEP.uz projects leaderboard. Compare participants by checked project results, completed projects, and successfully passed tasks."
+    },
+    "kepJuniorAlgorithmics2024": {
+      "title": "KEP Junior Algorithmics 2024",
+      "description": "Two online qualifiers and an on-site final in Khorezm. Competition rounds, prizes and results."
+    },
+    "revoCup2025": {
+      "title": "REVO CUP 2025",
+      "description": "REVO CUP 2025 brought together competitive programming and cybersecurity. Explore its online qualifiers, Urgench finals, prizes and results."
+    },
+    "revoCup2026": {
+      "title": "REVO CUP 2026",
+      "description": "Two online qualifiers and a final in Urgench on 12 December. 100,000,000 UZS in main prizes and special awards."
     }
   }
 }

@@ -65,6 +65,18 @@
     },
     "projectsRating": {
       "description": "KEP.uz loyihalari reytingi: ishtirokchilarning tekshirilgan natijalari, tugallangan loyihalari va bajarilgan vazifalarini solishtiring."
+    },
+    "kepJuniorAlgorithmics2024": {
+      "title": "KEP Junior Algorithmics 2024",
+      "description": "Ikki onlayn saralash va Xorazmdagi final. Musobaqa bosqichlari, mukofotlari va natijalari."
+    },
+    "revoCup2025": {
+      "title": "REVO CUP 2025",
+      "description": "Sport dasturlash va kiberxavfsizlik bo‘yicha REVO CUP 2025. Onlayn saralashlar, Urganchdagi final, mukofotlar va natijalar."
+    },
+    "revoCup2026": {
+      "title": "REVO CUP 2026",
+      "description": "Ikki onlayn saralash va 12-dekabrda Urganchdagi final. Mukofotlar va nominatsiyalar uchun 100 000 000 So'm."
     }
   }
 }

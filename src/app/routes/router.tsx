@@ -110,6 +110,16 @@ import { authPaths, rootPaths } from './route-config';
 const IS_PROD = import.meta.env.PROD;
 const AdminLayout = lazy(() => import('app/layouts/admin-layout/AdminLayout'));
 const GiveawayPage = lazy(() => import('modules/giveaways/ui/pages/GiveawayPage/GiveawayPage'));
+const KepJuniorAlgorithmics2024Page = lazy(
+  () =>
+    import('modules/contests/ui/pages/KepJuniorAlgorithmics2024Page/KepJuniorAlgorithmics2024Page'),
+);
+const RevoCup2025Page = lazy(
+  () => import('modules/contests/ui/pages/RevoCup2025Page/RevoCup2025Page'),
+);
+const RevoCup2026Page = lazy(
+  () => import('modules/contests/ui/pages/RevoCup2026Page/RevoCup2026Page'),
+);
 const GamesPage = lazy(() => import('modules/games/ui/pages/GamesPage/GamesPage'));
 const KeppyWorldPage = lazy(
   () => import('modules/keppy-world/ui/pages/KeppyWorldPage/KeppyWorldPage'),
@@ -400,6 +410,21 @@ export const routes: RouteObject[] = [
             path: resources.Updates,
             element: <UpdatesPage />,
             handle: { titleKey: 'pageTitles.updates' },
+          },
+          {
+            path: resources.KepJuniorAlgorithmics2024,
+            element: <KepJuniorAlgorithmics2024Page />,
+            handle: { titleKey: 'competitionEvents.events.junior2024.title' },
+          },
+          {
+            path: resources.RevoCup2025,
+            element: <RevoCup2025Page />,
+            handle: { titleKey: 'competitionEvents.events.revo2025.title' },
+          },
+          {
+            path: resources.RevoCup2026,
+            element: <RevoCup2026Page />,
+            handle: { titleKey: 'competitionEvents.events.revo2026.title' },
           },
           {
             path: resources.Users,

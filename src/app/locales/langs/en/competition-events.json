@@ -1,0 +1,273 @@
+{
+  "competitionEvents": {
+    "editions": "Competition editions",
+    "sectionsLabel": "Page sections",
+    "sections": {
+      "schedule": "Schedule",
+      "prizes": "Prizes",
+      "nominations": "Special awards",
+      "results": "Results",
+      "rules": "Rules",
+      "sources": "Sources",
+      "tracks": "Tracks"
+    },
+    "online": "Online",
+    "offline": "On-site",
+    "rounds": "Rounds",
+    "scoring": "Competitive programming format",
+    "each": "winner",
+    "place": "Place {{rank}}",
+    "places": "Places {{from}}–{{to}}",
+    "problemCount": "{{count}} problems",
+    "openRound": "Open round",
+    "fullStandings": "Full standings",
+    "startsIn": "Starts in",
+    "endsIn": "Ends in",
+    "countdown": "Next round countdown",
+    "days": "Days",
+    "hours": "Hours",
+    "minutes": "Minutes",
+    "seconds": "Seconds",
+    "finalDay": "Final day programme",
+    "viewSchedule": "View schedule",
+    "viewResults": "Final standings",
+    "readRules": "Read the rules",
+    "tracksLabel": "Two tracks",
+    "stages": {
+      "qualifier1": "Qualifier 1",
+      "qualifier2": "Qualifier 2",
+      "final": "Final",
+      "cpQualifier": "Competitive programming · qualifier",
+      "ctfQualifier": "CTF · qualifier",
+      "cpFinal": "Competitive programming · final",
+      "ctfFinal": "CTF · final"
+    },
+    "groups": {
+      "seniorSchool": "School grades 10–11",
+      "juniorSchool": "School grades 5–9",
+      "eachTrack": "Prizes in each track",
+      "top20": "Top 20",
+      "cp": "Competitive programming",
+      "ctf": "Cybersecurity · CTF",
+      "finalStandings": "Final standings"
+    },
+    "sources": {
+      "finalAnnouncement": "Final announcement and archive",
+      "qualifier1": "First qualifier archive",
+      "qualifier2": "Second qualifier archive",
+      "organizer": "REVO Global official event page",
+      "recap": "Organisers’ event report",
+      "cpFinal": "CP final standings",
+      "ctfFinal": "CTF final standings"
+    },
+    "events": {
+      "junior2024": {
+        "title": "KEP Junior Algorithmics 2024",
+        "summary": "Two online qualifiers and an on-site final in Khorezm. Competition rounds, prizes and results.",
+        "venue": "Khorezm",
+        "fundLabel": "Prize fund",
+        "finalistsLabel": "Final places from the qualifiers",
+        "eligibility": "The event was organised for participants who were school students during the 2023–2024 academic year.",
+        "rules": {
+          "eligibility": {
+            "title": "For school students",
+            "body": "Final prizes were divided into grades 5–9 and grades 10–11. Official participation required completing the registration form."
+          },
+          "selection": {
+            "title": "Two opportunities to qualify",
+            "body": "The first qualifier selected 25 finalists, and the second selected another 15. Participants already qualified competed unofficially in the second round."
+          },
+          "scoring": {
+            "title": "ACM20M scoring",
+            "body": "More solved problems ranked first, with lower penalty breaking ties. Both qualifiers and the final lasted three hours."
+          },
+          "fairPlay": {
+            "title": "Independent solutions",
+            "body": "Submissions were checked for plagiarism. Announcements, problems and standings remain available in the KEP.uz archive."
+          }
+        },
+        "day": {
+          "checkIn": {
+            "title": "Registration",
+            "place": "Floor 2 · Coworking"
+          },
+          "arena": {
+            "title": "Mini competition · Arena",
+            "place": "Floor 2 · Coworking"
+          },
+          "lunch": {
+            "title": "Lunch",
+            "place": "Floor 1 · Dining room"
+          },
+          "competition": {
+            "title": "Main contest round",
+            "place": "Floor 2 · Coworking"
+          },
+          "preparation": {
+            "title": "Confirming winners and preparing prizes",
+            "place": "Floor 2 · Main hall"
+          },
+          "awards": {
+            "title": "Award ceremony",
+            "place": "Floor 2 · Main hall"
+          }
+        },
+        "nominations": {
+          "youngCoder": {
+            "title": "Best young participant"
+          },
+          "femaleCoder": {
+            "title": "Best female participant"
+          },
+          "bestSolution": {
+            "title": "Best solution"
+          },
+          "alKhorezmiy": {
+            "title": "Al-Khorezmiy award"
+          },
+          "sensation": {
+            "title": "Breakthrough performance"
+          },
+          "raffle": {
+            "title": "Random raffle"
+          }
+        }
+      },
+      "revo2025": {
+        "title": "REVO CUP 2025",
+        "context": "REVO DAY · REVO Global’s fifth anniversary",
+        "summary": "REVO CUP 2025 brought together competitive programming and cybersecurity. Explore its online qualifiers, Urgench finals, prizes and results.",
+        "venue": "IT Park · Urgench",
+        "fundLabel": "Prize fund across both tracks",
+        "finalistsLabel": "Finalists in each track",
+        "fundNote": "The combined fund for competitive programming, CTF and special awards.",
+        "eligibility": "Students, school pupils, developers and cybersecurity enthusiasts competed individually.",
+        "rules": {
+          "tracks": {
+            "title": "CP and CTF",
+            "body": "Competitive programming focused on algorithms, while CTF covered cybersecurity tasks. Each track had its own qualifier and final."
+          },
+          "selection": {
+            "title": "Top 40 in each track",
+            "body": "Qualifiers ran online on KEP.uz. Each track selected 40 finalists, and one participant could compete in both finals."
+          },
+          "scoring": {
+            "title": "Scoring by track",
+            "body": "CP used ACM scoring. CTF awarded points for tasks. The complete final order is available in each track’s standings."
+          },
+          "fairPlay": {
+            "title": "Individual competition",
+            "body": "AI assistance, code sharing and flag sharing were prohibited. Organisers reviewed submissions and disqualified rule violations."
+          }
+        },
+        "tracks": {
+          "cp": "Algorithmic problems, ACM scoring and 40 places in the Urgench final.",
+          "ctf": "Cybersecurity tasks, flags and a separate final for the Top 40."
+        }
+      },
+      "revo2026": {
+        "title": "REVO CUP 2026",
+        "context": "GDG Urgench DevFest 2026",
+        "summary": "Two online qualifiers and a final in Urgench on 12 December. 100,000,000 UZS in main prizes and special awards.",
+        "venue": "Urgench · On-site final on 12 December",
+        "fundLabel": "Total prize fund",
+        "finalistsLabel": "On-site finalists",
+        "fundNote": "84,000,000 UZS for the Top 20 and 16,000,000 UZS for special awards.",
+        "eligibility": "An individual competition using ACM (ICPC) scoring. The Top 120 finalists must attend the on-site final in Urgench on 12 December.",
+        "nominations": {
+          "firstBlood": {
+            "title": "First Blood",
+            "body": "500,000 UZS for each of the 12 final problems. The earliest accepted solution outside the Top 20 wins."
+          },
+          "female": {
+            "title": "Best Female Coder",
+            "body": "The highest-ranked female finalist outside the Top 20."
+          },
+          "youngest": {
+            "title": "Youngest Rising Star",
+            "body": "The youngest finalist with at least one AC. Equal birth dates are resolved by higher final rank."
+          },
+          "veteran": {
+            "title": "Veteran Coder",
+            "body": "The oldest finalist with at least one AC. Equal birth dates are resolved by higher final rank."
+          },
+          "solution": {
+            "title": "Best Solution",
+            "body": "Judges choose an accepted solution to J, K or L based on algorithmic complexity, runtime, memory and code quality."
+          },
+          "lastMinute": {
+            "title": "Last Minute Hero",
+            "body": "The finalist gaining the most places through an AC during 16:15–16:30."
+          },
+          "persistent": {
+            "title": "Persistent Coder",
+            "body": "The finalist who reaches AC after the most failed attempts on one problem. Artificial submission spam leads to disqualification."
+          }
+        },
+        "rules": {
+          "scoring": {
+            "title": "More ACs rank higher",
+            "body": "Participants are ranked first by solved problems. Equal solve counts are decided by lower total penalty."
+          },
+          "penalty": {
+            "title": "20 minutes per penalised attempt",
+            "body": "For each solved problem, add its acceptance minute and 20 minutes for each earlier penalised attempt. Unsolved problems add no penalty."
+          },
+          "compilation": {
+            "title": "Compilation Error exemption",
+            "body": "Submissions returning CE do not incur the 20-minute penalty."
+          },
+          "freeze": {
+            "title": "Standings freeze at 16:00",
+            "body": "Submissions in the final 30 minutes are hidden from the public standings. Results are revealed during the 16:30–19:00 closing ceremony in the sports hall."
+          },
+          "fairPlay": {
+            "title": "Independent work and plagiarism checks",
+            "body": "Code sharing, communication with other contestants and external assistance are prohibited. Generative AI tools such as ChatGPT, Claude and Copilot are not allowed. MOSS / AST analysis checks submissions."
+          },
+          "identity": {
+            "title": "Identity verification at the final",
+            "body": "Bring a passport or ID card to the 13:00–13:30 briefing. Profile information must match the identity document."
+          },
+          "payment": {
+            "title": "Payment within five banking days",
+            "body": "After results are approved, prizes are transferred to winners’ bank cards or accounts within five banking days. Applicable taxes are withheld."
+          },
+          "appeal": {
+            "title": "Questions and appeals",
+            "body": "Submit technical and judging appeals through Clarifications during the contest. The organising committee and chief judges decide cases not covered by the regulations."
+          }
+        },
+        "day": {
+          "checkIn": {
+            "title": "DevFest registration and finalist check-in",
+            "place": "Entrance hall"
+          },
+          "opening": {
+            "title": "GDG Urgench DevFest opening and keynote sessions",
+            "place": "Sports hall"
+          },
+          "briefing": {
+            "title": "Lunch, identity checks, room allocation and technical briefing",
+            "place": "Seminar rooms in the teaching building"
+          },
+          "competition": {
+            "title": "On-site final · 12 problems · freeze at 16:00",
+            "place": "Seminar rooms in the teaching building"
+          },
+          "awards": {
+            "title": "Closing ceremony, standings unfreeze and awards",
+            "place": "Sports hall"
+          }
+        }
+      }
+    },
+    "editionTitles": {
+      "junior2024": "KEP Junior Algorithmics 2024",
+      "revo2025": "REVO CUP 2025",
+      "revo2026": "REVO CUP 2026"
+    },
+    "currency": "UZS",
+    "nominationWinners": "Special award winners"
+  }
+}
