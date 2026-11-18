@@ -1,4 +1,23 @@
-# KEP.uz Frontend
+<picture><source media="(prefers-color-scheme: dark)" srcset="assets/banner.svg"><img src="assets/banner-light.svg" alt="KEP.uz — programming platform" width="100%"></picture>
+
+# KEP.uz · programming workspace
+
+Problems, code, submissions, contests and learning in a connected platform.
+
+[Website](https://kep.uz/) · [Architecture & platform data](https://github.com/archon1999/engineering-portfolio/blob/main/projects/kep.md) · [Local setup](#local-setup) · [Quality gates](#quality-gates)
+
+[![CI](https://github.com/archon1999/kep-frontend/actions/workflows/deploy.yaml/badge.svg?branch=production)](https://github.com/archon1999/kep-frontend/actions/workflows/deploy.yaml)
+
+Founded and built by [Nazarbek Baltabaev](https://github.com/archon1999). This repository is the public React client; Django services and the online-judge runtime are separate parts of the platform.
+
+## Engineering boundaries
+
+| Layer | Responsibility |
+| --- | --- |
+| `app` | Routes, providers, layouts and application composition |
+| `modules` | Product features, application hooks and domain contracts |
+| `shared` | UI primitives, transport, localization and shared infrastructure |
+| API integration | Generated OpenAPI clients, repository implementations and DTO mapping |
 
 Production web client for [KEP.uz](https://kep.uz), an Uzbek competitive-programming and learning platform. The application covers problems and submissions, contests, courses, tests, projects, duels, arena, challenges, tournaments, hackathons, community content, profiles, and KEPcoin features.
 
@@ -6,7 +25,7 @@ Production web client for [KEP.uz](https://kep.uz), an Uzbek competitive-program
 
 - React 19, TypeScript 5, and Vite 7
 - Material UI 7 for the component system
-- React Router 7 for routing
+- React Router 8 for routing
 - TanStack Query and SWR for server state
 - Axios with cookie-based authentication and CSRF protection
 - Orval-generated API clients from the backend OpenAPI schema
