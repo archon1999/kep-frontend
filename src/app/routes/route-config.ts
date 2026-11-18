@@ -14,6 +14,8 @@ export const apiEndpoints = {
   login: '/api/login/',
   logout: '/api/logout/',
   profile: '/api/me',
+  oauthAuthorize: '/api/oauth/authorize/',
+  revoSetPassword: '/api/auth/revo/set-password/',
   getUsers: '/users',
   setLanguage: '/api/set-language/',
 } as const;

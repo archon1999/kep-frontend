@@ -15,6 +15,7 @@ const authBootstrapEndpoints = new Set([
   apiEndpoints.profile,
   apiEndpoints.login,
   apiEndpoints.logout,
+  apiEndpoints.revoSetPassword,
 ]);
 
 const getBasicAuthHeader = () => {

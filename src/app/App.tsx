@@ -1,4 +1,4 @@
-import { useEffect, useLayoutEffect } from 'react';
+import { Suspense, lazy, useEffect, useLayoutEffect } from 'react';
 import { Outlet, useLocation, useMatch } from 'react-router';
 import AuthProvider, { useAuth } from 'app/providers/AuthProvider.tsx';
 import DocumentTitleProvider from 'app/providers/DocumentTitleProvider.tsx';
@@ -17,6 +17,20 @@ import {
 const normalizeTitle = (title: string, fallback: string) =>
   title.replace(/ - KEP\.uz$/, '') || fallback;
 const SPLASH_FADE_MS = 420;
+
+const FirstPasswordDialog = lazy(
+  () => import('modules/authentication/ui/shared/components/FirstPasswordDialog'),
+);
+
+const AccountSetupDialog = () => {
+  const { currentUser, sessionExpired } = useAuth();
+  if (sessionExpired || !currentUser?.requiresPasswordSetup) return null;
+  return (
+    <Suspense fallback={null}>
+      <FirstPasswordDialog key={currentUser.id} user={currentUser} />
+    </Suspense>
+  );
+};
 
 const hideInitialSplash = () => {
   const splash = document.getElementById('loading-bg');
@@ -55,6 +69,7 @@ const App = () => {
   }, []);
 
   useEffect(() => {
+    if (pathname === resources.Login) return;
     const fullPath = `${pathname}${search}${hash}`;
     const pageTitle = normalizeTitle(document.title, fullPath);
 
@@ -73,6 +88,7 @@ const App = () => {
       <InitialSplashController />
       <DocumentTitleProvider>
         <Outlet />
+        <AccountSetupDialog />
         {!isGameDetail && <SettingsPanel />}
         {!isGameDetail && <SettingPanelToggler />}
       </DocumentTitleProvider>

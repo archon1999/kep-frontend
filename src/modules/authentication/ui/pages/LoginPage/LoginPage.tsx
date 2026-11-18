@@ -1,7 +1,7 @@
 import { useCallback, useMemo } from 'react';
 import { useTranslation } from 'react-i18next';
 import { defaultAuthCredentials } from 'app/config.ts';
-import { authPaths, rootPaths } from 'app/routes/route-config';
+import { apiEndpoints, authPaths, rootPaths } from 'app/routes/route-config';
 import { useLoginPage } from 'modules/authentication/application/hooks/useLoginPage';
 import LoginForm, {
   type LoginFormValues,
@@ -29,9 +29,10 @@ const LoginPage = () => {
     try {
       const baseUrl = typeof window !== 'undefined' ? window.location.origin : 'http://localhost';
       const parsedUrl = new URL(sanitizedUrl, baseUrl);
+      if (parsedUrl.origin !== baseUrl || parsedUrl.pathname.startsWith('//')) return fallbackUrl;
       sanitizedUrl = `${parsedUrl.pathname}${parsedUrl.search}${parsedUrl.hash}`;
     } catch {
-      sanitizedUrl = sanitizedUrl.startsWith('/') ? sanitizedUrl : `/${sanitizedUrl}`;
+      return fallbackUrl;
     }
 
     if (sanitizedUrl.startsWith(authPaths.login)) {
@@ -68,7 +69,11 @@ const LoginPage = () => {
 
         toast.success(welcomeText);
 
-        navigate(returnUrl, { replace: true });
+        if (new URL(returnUrl, window.location.origin).pathname === apiEndpoints.oauthAuthorize) {
+          window.location.replace(returnUrl);
+        } else {
+          navigate(returnUrl, { replace: true });
+        }
       }
     } catch (error: any) {
       const errorMessage =

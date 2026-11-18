@@ -7,9 +7,15 @@ export type AuthUser = UserAuth & {
   email?: string;
   avatar?: string | null;
   designation?: string;
+  requiresPasswordSetup?: boolean;
 };
 
 export interface LoginPayload {
   username: string;
+  password: string;
+}
+
+export interface FirstPasswordPayload {
+  sub: string;
   password: string;
 }

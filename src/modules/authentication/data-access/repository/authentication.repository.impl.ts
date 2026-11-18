@@ -1,10 +1,16 @@
 import { apiEndpoints } from 'app/routes/route-config';
 import axiosFetcher from 'shared/services/axios/axiosFetcher';
-import type { AuthUser, AuthenticationRepository, LoginPayload } from '../../domain';
+import type {
+  AuthUser,
+  AuthenticationRepository,
+  FirstPasswordPayload,
+  LoginPayload,
+} from '../../domain';
 import { mapAuthUserFromApi } from '../mappers';
 
 const createBasicAuthHeader = ({ username, password }: LoginPayload) => {
-  const token = btoa(`${username}:${password}`);
+  const bytes = new TextEncoder().encode(`${username}:${password}`);
+  const token = btoa(Array.from(bytes, (byte) => String.fromCharCode(byte)).join(''));
 
   return `Basic ${token}`;
 };
@@ -24,6 +30,14 @@ export class AuthenticationRepositoryImpl implements AuthenticationRepository {
 
   logout(): Promise<void> {
     return axiosFetcher([apiEndpoints.logout, { method: 'post' }]) as Promise<void>;
+  }
+
+  async setFirstPassword(payload: FirstPasswordPayload): Promise<AuthUser> {
+    const response = await axiosFetcher([
+      apiEndpoints.revoSetPassword,
+      { method: 'post', data: payload },
+    ]);
+    return mapAuthUserFromApi(response);
   }
 
   async getCurrentUser(): Promise<AuthUser | null> {
