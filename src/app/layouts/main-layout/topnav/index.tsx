@@ -45,7 +45,15 @@ const Topnav = () => {
       <Toolbar
         className="kep-topnav-inner"
         variant="appbar"
-        sx={{ px: { xs: 2, sm: 3, md: 5 }, position: 'relative' }}
+        sx={(theme) => ({
+          px: { xs: 2, sm: 3, md: 5 },
+          position: 'relative',
+          [theme.breakpoints.between(defaultTopnavMinWidth, 1440)]: {
+            '&.kep-topnav-inner .nav-items': { marginInlineStart: '8px', gap: '2px' },
+            '&.kep-topnav-inner .kep-nav-item': { paddingInline: '6px' },
+            '&.kep-topnav-inner .action-items': { gap: '3px' },
+          },
+        })}
       >
         <Box
           sx={{
