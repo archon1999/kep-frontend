@@ -65,7 +65,7 @@ export const EventNavigation = ({
   <Box component="nav" className="event-nav" aria-label={model.common('sectionsLabel')}>
     {sections.map((section) => (
       <Button variant="text" component="a" href={`#${section}`} key={section}>
-        {model.common(`sections.${section}`)}
+        {model.sectionTitle(section)}
       </Button>
     ))}
   </Box>

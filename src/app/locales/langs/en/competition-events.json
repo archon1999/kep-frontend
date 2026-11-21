@@ -14,6 +14,7 @@
     "online": "Online",
     "offline": "On-site",
     "rounds": "Rounds",
+    "specialGift": "Special gift",
     "scoring": "Competitive programming format",
     "each": "winner",
     "place": "Place {{rank}}",
@@ -168,16 +169,20 @@
       "revo2026": {
         "title": "REVO CUP 2026",
         "context": "GDG Urgench DevFest 2026",
-        "summary": "Two online qualifiers and a final in Urgench on 12 December. 100,000,000 UZS in main prizes and special awards.",
+        "summary": "Competitive programming with online qualifiers on 28–29 November and a final in Urgench on 12 December.",
+        "register": "Register for the contest",
+        "sections": {
+          "nominations": "Special gifts"
+        },
         "venue": "Urgench · On-site final on 12 December",
         "fundLabel": "Total prize fund",
         "finalistsLabel": "On-site finalists",
-        "fundNote": "84,000,000 UZS for the Top 20 and 16,000,000 UZS for special awards.",
+        "fundNote": "84,000,000 UZS for the Top 20.",
         "eligibility": "An individual competition using ACM (ICPC) scoring. The Top 120 finalists must attend the on-site final in Urgench on 12 December.",
         "nominations": {
           "firstBlood": {
             "title": "First Blood",
-            "body": "500,000 UZS for each of the 12 final problems. The earliest accepted solution outside the Top 20 wins."
+            "body": "For each final problem, the gift goes to the first contestant outside the Top 20 to get an accepted solution."
           },
           "female": {
             "title": "Best Female Coder",
@@ -231,7 +236,7 @@
           },
           "payment": {
             "title": "Payment within five banking days",
-            "body": "After results are approved, prizes are transferred to winners’ bank cards or accounts within five banking days. Applicable taxes are withheld."
+            "body": "After results are approved, cash prizes are transferred to winners’ bank cards or accounts within five banking days. Applicable taxes are withheld."
           },
           "appeal": {
             "title": "Questions and appeals",

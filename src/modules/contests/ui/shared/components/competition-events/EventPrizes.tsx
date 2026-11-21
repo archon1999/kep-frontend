@@ -21,7 +21,7 @@ const nominationIcons: Record<string, string> = {
 };
 
 export const EventPrizes = ({ model }: { model: CompetitionEventModel }) => {
-  const { event, common, copy, formatters } = model;
+  const { event, common, copy, sectionTitle, formatters } = model;
   return (
     <>
       <EventSection id="prizes" title={common('sections.prizes')}>
@@ -95,7 +95,7 @@ export const EventPrizes = ({ model }: { model: CompetitionEventModel }) => {
         </Box>
       </EventSection>
       {event.nominations && (
-        <EventSection id="nominations" title={common('sections.nominations')}>
+        <EventSection id="nominations" title={sectionTitle('nominations')}>
           <Box className="event-nominations">
             {event.nominations.map((nomination) => (
               <Box className="event-nomination" key={nomination.key}>
@@ -113,16 +113,21 @@ export const EventPrizes = ({ model }: { model: CompetitionEventModel }) => {
                       {copy(`nominations.${nomination.key}.body`)}
                     </Typography>
                   )}
-                  <Typography
-                    variant="metric"
-                    sx={{ color: 'secondary.main', fontSize: 28, mt: 2, display: 'block' }}
-                  >
-                    {formatters.number.format(nomination.amount)}{' '}
-                    <Typography component="span" variant="body2">
-                      {common('currency')}
-                      {nomination.quantity ? ` × ${nomination.quantity}` : ''}
+                  {nomination.amount === undefined ? (
+                    <Typography variant="subtitle2" color="secondary.main" sx={{ mt: 2 }}>
+                      {common('specialGift')}
                     </Typography>
-                  </Typography>
+                  ) : (
+                    <Typography
+                      variant="metric"
+                      sx={{ color: 'secondary.main', fontSize: 28, mt: 2, display: 'block' }}
+                    >
+                      {formatters.number.format(nomination.amount)}{' '}
+                      <Typography component="span" variant="body2">
+                        {common('currency')}
+                      </Typography>
+                    </Typography>
+                  )}
                 </Box>
               </Box>
             ))}

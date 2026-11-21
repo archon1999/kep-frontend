@@ -43,6 +43,8 @@ export const useCompetitionEvent = (id: CompetitionEventId) => {
   const copy = (key: string) => t(`competitionEvents.events.${id}.${key}`);
   const common = (key: string, values?: Record<string, string | number>) =>
     t(`competitionEvents.${key}`, values);
+  const sectionTitle = (key: string) =>
+    t([`competitionEvents.events.${id}.sections.${key}`, `competitionEvents.sections.${key}`]);
 
   return {
     event,
@@ -51,6 +53,7 @@ export const useCompetitionEvent = (id: CompetitionEventId) => {
     ),
     copy,
     common,
+    sectionTitle,
     archived,
     live,
     currentStage,

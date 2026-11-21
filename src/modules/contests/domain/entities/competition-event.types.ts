@@ -27,6 +27,6 @@ export interface CompetitionEvent {
   prizeGroups: Array<{ key: string; prizes: CompetitionPrize[] }>;
   results: Array<{ key: string; contestId: number; usernames: string[] }>;
   sources: Array<{ key: string; url: string }>;
-  nominations?: Array<{ key: string; amount: number; quantity?: number; winner?: string }>;
+  nominations?: Array<{ key: string; amount?: number; winner?: string }>;
   finalDay?: Array<{ time: string; key: string }>;
 }

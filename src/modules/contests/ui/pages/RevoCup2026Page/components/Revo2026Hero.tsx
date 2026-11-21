@@ -33,13 +33,23 @@ export const Revo2026Hero = ({ model }: { model: CompetitionEventModel }) => {
           <Stack direction="row" gap={1.5} className="event-actions" sx={{ mt: 3 }} flexWrap="wrap">
             <Button
               component="a"
-              href="#schedule"
+              href="https://revolution.uz/uz/revo-cup-2026"
+              target="_blank"
+              rel="noopener noreferrer"
               variant="contained"
+              endIcon={<IconifyIcon icon="mdi:arrow-top-right" />}
+            >
+              {copy('register')}
+            </Button>
+            <Button
+              component="a"
+              href="#schedule"
+              variant="outlined"
               endIcon={<IconifyIcon icon="mdi:arrow-right" />}
             >
               {common('viewSchedule')}
             </Button>
-            <Button component="a" href="#rules" variant="outlined">
+            <Button component="a" href="#rules" variant="text">
               {common('readRules')}
             </Button>
           </Stack>

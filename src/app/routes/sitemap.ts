@@ -85,6 +85,14 @@ export const clientMenu: MenuItem[] = [
     active: true,
     items: [
       {
+        name: 'Revo Cup 2026',
+        key: 'menu.revoCup2026',
+        path: resources.RevoCup2026,
+        pathName: 'competitions-revo-cup-2026',
+        icon: 'mdi:trophy-award',
+        active: true,
+      },
+      {
         name: 'Contests',
         key: 'menu.contests',
         path: resources.Contests,

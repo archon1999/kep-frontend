@@ -14,6 +14,7 @@
     "online": "Onlayn",
     "offline": "Oflayn",
     "rounds": "Bosqichlar",
+    "specialGift": "Maxsus sovg‘a",
     "scoring": "Sport dasturlash formati",
     "each": "har bir g‘olib",
     "place": "{{rank}}-o‘rin",
@@ -168,16 +169,20 @@
       "revo2026": {
         "title": "REVO CUP 2026",
         "context": "GDG Urgench DevFest 2026",
-        "summary": "Ikki onlayn saralash va 12-dekabrda Urganchdagi final. Mukofotlar va nominatsiyalar uchun 100 000 000 So'm.",
+        "summary": "Sport dasturlash musobaqasi. 28–29-noyabrda onlayn saralash, 12-dekabrda Urganchda final.",
+        "register": "Ro‘yxatdan o‘tish",
+        "sections": {
+          "nominations": "Maxsus sovg‘alar"
+        },
         "venue": "Urganch · Oflayn final 12-dekabr",
         "fundLabel": "Umumiy mukofot jamg‘armasi",
         "finalistsLabel": "Oflayn final ishtirokchilari",
-        "fundNote": "84 000 000 So'm Top-20 uchun, 16 000 000 So'm qo‘shimcha nominatsiyalar uchun.",
+        "fundNote": "Top-20 uchun 84 000 000 so‘m.",
         "eligibility": "Individual musobaqa ACM (ICPC) formatida o‘tkaziladi. Top-120 finalchi 12-dekabrda Urganchdagi oflayn finalda shaxsan qatnashadi.",
         "nominations": {
           "firstBlood": {
             "title": "First Blood",
-            "body": "Finaldagi 12 masalaning har biri uchun 500 000 So'm. Top-20’dan tashqarida birinchi AC olgan ishtirokchi yutadi."
+            "body": "Finaldagi har bir masala bo‘yicha Top-20’dan tashqarida birinchi AC olgan ishtirokchiga beriladi."
           },
           "female": {
             "title": "Best Female Coder",
@@ -230,8 +235,8 @@
             "body": "13:00–13:30 dagi brifingda pasport yoki ID-karta taqdim etiladi. Profil ma’lumotlari hujjatga mos kelishi shart."
           },
           "payment": {
-            "title": "Mukofotlar 5 bank ish kunida",
-            "body": "Natijalar tasdiqlangach, mukofotlar g‘olibning bank kartasi yoki hisob raqamiga 5 bank ish kuni ichida o‘tkaziladi. Qonunda belgilangan soliqlar ushlab qolinadi."
+            "title": "Pul mukofotlari 5 bank ish kunida",
+            "body": "Natijalar tasdiqlangach, pul mukofotlari g‘olibning bank kartasi yoki hisob raqamiga 5 bank ish kuni ichida o‘tkaziladi. Qonunda belgilangan soliqlar ushlab qolinadi."
           },
           "appeal": {
             "title": "Savol va apellyatsiyalar",
