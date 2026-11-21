@@ -2,6 +2,7 @@ import { MouseEventHandler, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { Link } from 'react-router';
 import { Button, Drawer, IconButton, styled } from '@mui/material';
+import { revoCup2026MenuItem } from 'app/routes/sitemap';
 import IconifyIcon from 'shared/components/base/IconifyIcon';
 import Logo from 'shared/components/common/Logo';
 import { ScrambleText } from 'shared/components/motion/InteractionEffects';
@@ -30,18 +31,43 @@ const LandingHeader = () => {
       .querySelector('#main-content .simplebar-content-wrapper')
       ?.scrollTo({ top: 0, behavior: 'instant' });
   };
-  const links = (mobile = false) =>
-    sections.map(({ id, key }) => (
-      <a key={id} href={`#${id}`} onClick={() => setOpen(false)} className="kep-landing-nav-link">
-        <span className="kep-pixel-cross" aria-hidden="true" />
-        <ScrambleText>{t(`homePage.landingHeader.${key}`)}</ScrambleText>
-        {mobile && (
-          <span className="kep-landing-menu-arrow" aria-hidden="true">
-            ↗
-          </span>
-        )}
-      </a>
-    ));
+  const links = (mobile = false) => {
+    const arrow = mobile && (
+      <span className="kep-landing-menu-arrow" aria-hidden="true">
+        ↗
+      </span>
+    );
+
+    return (
+      <>
+        {sections.map(({ id, key }) => (
+          <a
+            key={id}
+            href={`#${id}`}
+            onClick={() => setOpen(false)}
+            className="kep-landing-nav-link"
+          >
+            <span className="kep-pixel-cross" aria-hidden="true" />
+            <ScrambleText>{t(`homePage.landingHeader.${key}`)}</ScrambleText>
+            {arrow}
+          </a>
+        ))}
+        <Link
+          to={revoCup2026MenuItem.path}
+          onClick={() => setOpen(false)}
+          className="kep-landing-nav-link"
+        >
+          <IconifyIcon
+            icon={revoCup2026MenuItem.icon}
+            aria-hidden="true"
+            sx={{ fontSize: 16, flexShrink: 0 }}
+          />
+          <ScrambleText>{t(revoCup2026MenuItem.key)}</ScrambleText>
+          {arrow}
+        </Link>
+      </>
+    );
+  };
   return (
     <>
       <header className="kep-landing-header">

@@ -1,5 +1,5 @@
 import { useTranslation } from 'react-i18next';
-import { Box, Divider, Stack, paperClasses, useMediaQuery } from '@mui/material';
+import { Box, Divider, Stack, paperClasses } from '@mui/material';
 import MuiAppBar from '@mui/material/AppBar';
 import IconButton from '@mui/material/IconButton';
 import Toolbar from '@mui/material/Toolbar';
@@ -9,6 +9,7 @@ import { topnavVibrantStyle } from 'app/theme/styles/vibrantNav';
 import IconifyIcon from 'shared/components/base/IconifyIcon';
 import Logo from 'shared/components/common/Logo';
 import VibrantBackground from 'shared/components/common/VibrantBackground';
+import { defaultTopnavMinWidth } from 'shared/lib/constants';
 import AppbarActionItems from '../common/AppbarActionItems';
 import NavLogoLabel from '../common/NavLogoLabel';
 import { SearchBoxButton } from '../common/search-box/SearchBox';
@@ -24,9 +25,7 @@ const Topnav = () => {
   const { up } = useBreakpoints();
   const upSm = up('sm');
   const upMd = up('md');
-  const upLg = up('lg');
-  const wideDesktopNav = useMediaQuery('(min-width: 1280px)');
-  const showDesktopNav = upLg && wideDesktopNav;
+  const showDesktopNav = up(defaultTopnavMinWidth);
 
   return (
     <MuiAppBar

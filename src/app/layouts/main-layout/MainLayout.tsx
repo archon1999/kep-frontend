@@ -15,7 +15,7 @@ import { sidenavVibrantStyle } from 'app/theme/styles/vibrantNav';
 import clsx from 'clsx';
 import SimpleBar from 'shared/components/base/SimpleBar';
 import VibrantBackground from 'shared/components/common/VibrantBackground';
-import { mainDrawerWidth } from 'shared/lib/constants';
+import { defaultTopnavMinWidth, mainDrawerWidth } from 'shared/lib/constants';
 import { MainLayoutRoot } from './MainLayout.styles';
 import NavProvider from './NavProvider';
 import Footer from './footer';
@@ -52,6 +52,9 @@ const MainLayout = ({
     },
     setConfig,
   } = useSettingsContext();
+
+  const topnavBreakpoint = topnavType === 'default' ? defaultTopnavMinWidth : 'lg';
+  const drawerHideBreakpoint = navigationMenuType === 'topnav' ? topnavBreakpoint : 'md';
 
   const toggleNavbarDrawer = () => {
     setConfig({
@@ -147,17 +150,15 @@ const MainLayout = ({
                 keepMounted: true,
               }}
               sx={[
-                {
-                  display: { xs: 'block', md: 'none' },
+                (theme) => ({
+                  display: 'block',
+                  [theme.breakpoints.up(drawerHideBreakpoint)]: { display: 'none' },
                   [`& .${drawerClasses.paper}`]: {
                     pt: 3,
                     boxSizing: 'border-box',
                     width: { xs: 'min(300px, calc(100vw - 24px))', sm: mainDrawerWidth.full },
                   },
-                },
-                navigationMenuType === 'topnav' && {
-                  display: { md: 'block', lg: 'none' },
-                },
+                }),
                 navColor === 'vibrant' && sidenavVibrantStyle,
               ]}
             >

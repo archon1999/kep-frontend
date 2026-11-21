@@ -1,4 +1,7 @@
 import type { CSSObject } from '@mui/material/styles';
+import { defaultTopnavMinWidth } from 'shared/lib/constants';
+
+const landingMenuMedia = `@media (width < ${defaultTopnavMinWidth}px)`;
 
 /** Component-scoped layout and decoration; shared controls use the MUI theme. */
 export const landingHeaderStyles: CSSObject[] = [
@@ -54,7 +57,7 @@ export const landingHeaderStyles: CSSObject[] = [
       whiteSpace: 'nowrap',
       position: 'relative',
       transition: 'color 0.2s ease',
-      padding: '0 22px',
+      padding: '0 12px',
     },
   },
   {
@@ -71,7 +74,7 @@ export const landingHeaderStyles: CSSObject[] = [
       },
   },
   {
-    '&.kep-landing-nav-link > span:first-of-type, & .kep-landing-nav-link > span:first-of-type': {
+    '&.kep-landing-nav-link > .kep-pixel-cross, & .kep-landing-nav-link > .kep-pixel-cross': {
       color: 'var(--kep-logo-ice)',
       transition: 'transform 0.4s ease',
       fontSize: '13px',
@@ -84,7 +87,7 @@ export const landingHeaderStyles: CSSObject[] = [
       },
   },
   {
-    '&.kep-landing-nav-link:hover > span:first-of-type, & .kep-landing-nav-link:hover > span:first-of-type':
+    '&.kep-landing-nav-link:hover > .kep-pixel-cross, & .kep-landing-nav-link:hover > .kep-pixel-cross':
       {
         transform: 'rotate(90deg)',
       },
@@ -223,14 +226,14 @@ export const landingHeaderStyles: CSSObject[] = [
     },
   },
   {
-    '@media (max-width: 1150px)': {
+    [landingMenuMedia]: {
       '&.kep-landing-nav, & .kep-landing-nav': {
         display: 'none',
       },
     },
   },
   {
-    '@media (max-width: 1150px)': {
+    [landingMenuMedia]: {
       '&.kep-landing-header-actions .kep-landing-menu-toggle, & .kep-landing-header-actions .kep-landing-menu-toggle':
         {
           display: 'inline-flex',
@@ -238,7 +241,7 @@ export const landingHeaderStyles: CSSObject[] = [
     },
   },
   {
-    '@media (max-width: 1150px)': {
+    [landingMenuMedia]: {
       '&.kep-landing-header-inner, & .kep-landing-header-inner': {
         gap: '12px',
       },
@@ -301,7 +304,7 @@ export const landingHeaderStyles: CSSObject[] = [
   },
   {
     '@media (prefers-reduced-motion: reduce)': {
-      '&.kep-landing-nav-link, & .kep-landing-nav-link, &.kep-landing-nav-link > span:first-of-type, & .kep-landing-nav-link > span:first-of-type':
+      '&.kep-landing-nav-link, & .kep-landing-nav-link, &.kep-landing-nav-link > .kep-pixel-cross, & .kep-landing-nav-link > .kep-pixel-cross':
         {
           transition: 'none',
         },
@@ -309,7 +312,7 @@ export const landingHeaderStyles: CSSObject[] = [
   },
   {
     '@media (prefers-reduced-motion: reduce)': {
-      '&.kep-landing-nav-link:hover > span:first-of-type, & .kep-landing-nav-link:hover > span:first-of-type':
+      '&.kep-landing-nav-link:hover > .kep-pixel-cross, & .kep-landing-nav-link:hover > .kep-pixel-cross':
         {
           transform: 'none',
         },

@@ -70,9 +70,6 @@ export const Revo2026Hero = ({ model }: { model: CompetitionEventModel }) => {
           <Typography component="p" variant="h6" sx={{ mt: 1 }}>
             {common('currency')}
           </Typography>
-          <Typography variant="body2" color="text.secondary" sx={{ mt: 2 }}>
-            {copy('fundNote')}
-          </Typography>
           <Box sx={{ borderTop: 1, borderColor: 'divider', mt: 3, pt: 3 }}>
             {currentStage ? (
               <>

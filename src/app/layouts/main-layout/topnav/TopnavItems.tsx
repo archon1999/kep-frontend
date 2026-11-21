@@ -4,6 +4,7 @@ import { NavLink, useLocation } from 'react-router';
 import { Button, Stack } from '@mui/material';
 import { MenuItem } from 'app/routes/sitemap';
 import clsx from 'clsx';
+import IconifyIcon from 'shared/components/base/IconifyIcon';
 import { ScrambleText } from 'shared/components/motion/InteractionEffects';
 import { useNavContext } from '../NavProvider';
 import NavMenu from './NavMenu';
@@ -53,6 +54,7 @@ const TopnavItems = ({ type = 'default' }: TopnavItemsProps) => {
       {menuItems.map((menu) => {
         const isCompetitions = menu.pathName === 'competitions';
         const label = t(menu.key || menu.name);
+        const icon = menu.items ? undefined : menu.icon;
         const buttonLinkProps =
           !menu.items && menu.path ? ({ component: NavLink, to: menu.path } as const) : {};
 
@@ -81,8 +83,20 @@ const TopnavItems = ({ type = 'default' }: TopnavItemsProps) => {
               selectedMenu === menu && anchorEl ? `navigation-menu-${menu.pathName}` : undefined
             }
             disableRipple
-            sx={{ px: 1.25, fontSize: 13, minHeight: 44 }}
+            sx={{
+              px: 1.25,
+              fontSize: 13,
+              minHeight: 44,
+              ...(icon && { '&.kep-nav-item::before': { content: 'none' }, whiteSpace: 'nowrap' }),
+            }}
           >
+            {icon && (
+              <IconifyIcon
+                icon={icon}
+                aria-hidden="true"
+                sx={{ fontSize: 16, flexShrink: 0, mr: 1 }}
+              />
+            )}
             <ScrambleText>{label}</ScrambleText>
             {isCompetitions && (
               <Suspense fallback={null}>
