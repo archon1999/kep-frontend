@@ -38,7 +38,7 @@ const HomeDashboardSkeleton = () => {
             <h1>
               <Skeleton width="80%" height="1.2em" />
             </h1>
-            <Skeleton width="95%" height={24} />
+            <Skeleton width="95%" height="1.6875rem" />
           </div>
           <div className="kep-dashboard-actions">
             <Skeleton variant="rounded" width={148} height={46} />
@@ -70,11 +70,11 @@ const HomeDashboardSkeleton = () => {
                 </span>
                 <span className="kep-dashboard-shortcut-copy">
                   <strong>
-                    <Skeleton width="75%" height={24} />
+                    <Skeleton width="75%" height="1.5em" />
                   </strong>
                   <small>
-                    <Skeleton width="100%" height={19} />
-                    <Skeleton width="70%" height={19} />
+                    <Skeleton width="100%" height="1.5em" />
+                    <Skeleton width="70%" height="1.5em" />
                   </small>
                 </span>
                 <span>

@@ -3,6 +3,7 @@ import { Link } from 'react-router';
 import { Alert, Button, Skeleton, Tooltip } from '@mui/material';
 import { getResourceByUsername, resources } from 'app/routes/resources';
 import { useUserRatings } from 'modules/home/application/queries';
+import IconifyIcon from 'shared/components/base/IconifyIcon';
 import { PointerSpotlight } from 'shared/components/motion/InteractionEffects';
 import ChallengesRatingChip from 'shared/components/rating/ChallengesRatingChip';
 import ContestsRatingChip from 'shared/components/rating/ContestsRatingChip';
@@ -37,7 +38,8 @@ const DashboardRatings = ({ username }: { username: string }) => {
                 <DashboardPattern kind={pattern} />
                 <div className="kep-dashboard-rating-label">
                   <Link to={getResourceByUsername(resources.UserProfileRatings, username)}>
-                    {t(`homePage.ranks.labels.${label}`)} <span aria-hidden="true">↗</span>
+                    <span>{t(`homePage.ranks.labels.${label}`)}</span>
+                    <IconifyIcon icon="mdi:arrow-top-right" aria-hidden="true" />
                   </Link>
                   {!isLoading &&
                     rating?.title &&

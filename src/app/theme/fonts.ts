@@ -25,6 +25,13 @@ export const fontFaces = [
     fontDisplay: 'swap',
   },
   {
+    fontFamily: 'Inter',
+    src: 'url("/assets/theme/inter-ui-variable.woff2") format("woff2")',
+    fontWeight: '400 600',
+    fontStyle: 'normal',
+    fontDisplay: 'swap',
+  },
+  {
     fontFamily: 'Alpha Lyrae',
     src: 'url("/assets/theme/alpha-lyrae.woff2") format("woff2")',
     fontWeight: 500,

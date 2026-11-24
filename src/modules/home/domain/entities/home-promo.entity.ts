@@ -5,6 +5,7 @@ export type HomePromoAccent = 'warning' | 'info' | 'success';
 export interface HomePromoMetric {
   label: string;
   value: string;
+  dateTime?: string;
 }
 
 export interface HomePromoTopEntry {

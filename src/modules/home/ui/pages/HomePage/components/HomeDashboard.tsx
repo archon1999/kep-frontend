@@ -9,7 +9,7 @@ import KepIcon from 'shared/components/base/KepIcon';
 import MixedText from 'shared/components/common/MixedText';
 import PatternArtwork from 'shared/components/common/PatternArtwork';
 import DeferredContent from 'shared/components/loading/DeferredContent';
-import { PointerSpotlight, ScrambleText } from 'shared/components/motion/InteractionEffects';
+import { PointerSpotlight } from 'shared/components/motion/InteractionEffects';
 import FramedPage from 'shared/components/sections/common/FramedPage';
 import { formatDateTime } from 'shared/lib/dateTime';
 import BirthdaysSection from './BirthdaysSection';
@@ -82,9 +82,7 @@ const HomeDashboard = ({ user }: { user: AuthUser }) => {
                   <KepIcon name={icon} fontSize={24} />
                 </span>
                 <span className="kep-dashboard-shortcut-copy">
-                  <strong>
-                    <ScrambleText>{t(`homePage.dashboard.shortcutsTitle.${key}`)}</ScrambleText>
-                  </strong>
+                  <strong>{t(`homePage.dashboard.shortcutsTitle.${key}`)}</strong>
                   <small>{t(`homePage.dashboard.shortcutsDescription.${key}`)}</small>
                 </span>
                 <span aria-hidden="true">↗</span>
