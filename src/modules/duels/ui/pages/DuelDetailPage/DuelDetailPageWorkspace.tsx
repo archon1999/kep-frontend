@@ -857,7 +857,7 @@ const DuelDetailPageWorkspace = ({
             sx={{
               px: { xs: 2, md: 3 },
               py: 2,
-              fontFamily: 'var(--kep-display-font)',
+              fontFamily: 'var(--kep-reading-font)',
               fontWeight: 500,
               fontSize: 18,
             }}

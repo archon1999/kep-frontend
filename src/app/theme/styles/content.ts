@@ -1,4 +1,5 @@
 import type { SxProps, Theme } from '@mui/material';
+import { uiTypography } from '../typography';
 import { contentEntranceStyles, motion } from './transitions';
 
 /** Flat list rows with the same feedback as the reference catalog. */
@@ -32,10 +33,9 @@ export const contentInsetSx = {
 } satisfies SxProps<Theme>;
 
 export const contentHeadingSx = {
-  fontFamily: 'var(--kep-display-font)',
-  fontSize: { xs: 20, md: 24 },
-  fontWeight: 500,
+  ...uiTypography.cardTitle,
+  fontSize: { xs: uiTypography.cardTitle.fontSize, md: '1.5rem' },
   lineHeight: 1.3,
-  letterSpacing: '-.02em',
+  letterSpacing: '-.015em',
   overflowWrap: 'anywhere',
 } satisfies SxProps<Theme>;

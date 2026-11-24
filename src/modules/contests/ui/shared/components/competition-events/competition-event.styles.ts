@@ -108,7 +108,7 @@ export const EventRoot = styled('div')(({ theme }) => [
       gap: 16,
       '& h2': {
         margin: 0,
-        fontFamily: 'var(--kep-display-font)',
+        fontFamily: 'var(--kep-reading-font)',
         fontSize: 'clamp(26px, 3vw, 36px)',
         fontWeight: 500,
         letterSpacing: '-.025em',

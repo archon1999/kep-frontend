@@ -174,7 +174,7 @@ const ProblemConsole = ({
                         <Box
                           component="pre"
                           sx={{
-                            fontFamily: 'monospace',
+                            fontFamily: 'var(--kep-code-font)',
                             fontSize: 13,
                             whiteSpace: 'pre-wrap',
                             overflowWrap: 'anywhere',

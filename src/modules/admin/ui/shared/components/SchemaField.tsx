@@ -359,7 +359,7 @@ export default function SchemaField(props: Props) {
           sx:
             /^(input|output|source_code|code_template|json)$/.test(field.name) ||
             field.kind === 'json'
-              ? { fontFamily: 'monospace', fontSize: 13 }
+              ? { fontFamily: 'var(--kep-code-font)', fontSize: 13 }
               : undefined,
         },
         htmlInput: {

@@ -98,11 +98,11 @@ export const pageHeaderStyles: CSSObject[] = [
   {
     '&.kep-page-hero h1, & .kep-page-hero h1': {
       margin: '12px 0 14px',
-      fontFamily: 'var(--kep-display-font)',
-      fontSize: 'clamp(40px, 4.5vw, 64px)',
+      fontFamily: 'var(--kep-reading-font)',
+      fontSize: 'clamp(2.5rem, 4.5vw, 4rem)',
       fontWeight: '500',
       lineHeight: '1.1',
-      letterSpacing: '-0.035em',
+      letterSpacing: '-.03em',
       fontVariantLigatures: 'normal',
       overflowWrap: 'anywhere',
     },
@@ -112,7 +112,7 @@ export const pageHeaderStyles: CSSObject[] = [
       fontFamily: 'var(--kep-reading-font)',
       maxWidth: '650px',
       margin: '0 auto',
-      fontSize: '16px',
+      fontSize: '1rem',
       lineHeight: '1.5',
       color: 'var(--kep-muted)',
       textWrap: 'balance',

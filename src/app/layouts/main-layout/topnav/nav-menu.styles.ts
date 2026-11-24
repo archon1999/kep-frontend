@@ -1,4 +1,5 @@
 import type { CSSObject } from '@mui/material/styles';
+import { uiTypography } from 'app/theme/typography';
 
 /** Component-scoped layout and decoration; shared controls use the MUI theme. */
 export const navMenuStyles: CSSObject[] = [
@@ -31,11 +32,11 @@ export const navMenuStyles: CSSObject[] = [
       gap: '9px',
       padding: '18px 20px',
       color: 'var(--kep-muted)',
-      font: '500 10px/1.4 var(--kep-font-family)',
-      letterSpacing: '0.1em',
+      fontSize: '.75rem',
+      lineHeight: 1.4,
+      fontWeight: 500,
+      letterSpacing: '.04em',
       textTransform: 'uppercase',
-      fontFeatureSettings: "'ss01' 1",
-      fontFamily: 'var(--kep-display-font)',
     },
   },
   {
@@ -51,7 +52,8 @@ export const navMenuStyles: CSSObject[] = [
       borderTop: '1px solid var(--kep-line)',
       borderRadius: '0',
       color: 'var(--kep-text)',
-      font: '500 15px/1.4 var(--kep-font-family)',
+      ...uiTypography.body,
+      fontWeight: 500,
       background: 'transparent',
     },
   },
@@ -94,10 +96,10 @@ export const navMenuStyles: CSSObject[] = [
     '&.kep-nav-menu-intro p, & .kep-nav-menu-intro p': {
       margin: '14px 0 0',
       maxWidth: '220px',
-      font: '500 20px/1.25 var(--kep-font-family)',
-      fontFeatureSettings: 'normal',
+      ...uiTypography.cardTitle,
+      lineHeight: 1.3,
       color: 'var(--kep-text)',
-      letterSpacing: '-0.025em',
+      letterSpacing: 'normal',
       textTransform: 'none',
     },
   },
@@ -149,9 +151,7 @@ export const navMenuStyles: CSSObject[] = [
   {
     '&.kep-nav-menu-description, & .kep-nav-menu-description': {
       color: 'var(--kep-muted)',
-      fontSize: '12px',
-      lineHeight: '1.5',
-      fontFeatureSettings: 'normal',
+      ...uiTypography.smallText,
     },
   },
   {

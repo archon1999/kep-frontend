@@ -52,7 +52,7 @@ const DuelWaitingRoomCard = ({
       <Typography
         component="h3"
         sx={{
-          fontFamily: 'var(--kep-display-font)',
+          fontFamily: 'var(--kep-reading-font)',
           fontSize: 20,
           fontWeight: 500,
           lineHeight: 1.35,

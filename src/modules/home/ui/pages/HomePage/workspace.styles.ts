@@ -65,7 +65,7 @@ export const workspaceStyles: CSSObject = {
     overflow: 'auto',
     margin: 0,
     paddingBlock: 20,
-    font: '0.875rem/1.7 Consolas, monospace',
+    font: '0.875rem/1.7 var(--kep-code-font)',
     tabSize: 4,
   },
   '& .kep-code-line': { display: 'flex', whiteSpace: 'pre', minHeight: 24 },
@@ -87,7 +87,7 @@ export const workspaceStyles: CSSObject = {
   '& .kep-sample-output code': {
     display: 'block',
     marginTop: 4,
-    font: '0.875rem/1.6 Consolas, monospace',
+    font: '0.875rem/1.6 var(--kep-code-font)',
   },
   '& .kep-inline-workspace > section[hidden]': { display: 'none' },
   '& .kep-workspace-scroll': {

@@ -35,7 +35,7 @@ const HackathonProjectSidebar = ({
         sx={{ p: { xs: 2.5, md: 3 }, minHeight: 0, overflowY: 'auto' }}
       >
         <PatternArtwork kind="hackathon" sx={{ width: 200, alignSelf: 'center' }} />
-        <Typography variant="h6" sx={{ fontFamily: 'var(--kep-display-font)' }}>
+        <Typography variant="h6" sx={{ fontFamily: 'var(--kep-reading-font)' }}>
           <MixedText>
             {t(
               hasFinished

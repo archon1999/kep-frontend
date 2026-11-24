@@ -96,7 +96,7 @@ const UpdatePreviewRow = ({
             sx={{
               flex: 1,
               minWidth: 0,
-              fontFamily: 'var(--kep-display-font)',
+              fontFamily: 'var(--kep-reading-font)',
               fontWeight: 500,
               fontSize: compact ? 13 : 16,
               lineHeight: 1.4,

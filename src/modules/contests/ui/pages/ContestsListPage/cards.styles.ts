@@ -122,7 +122,7 @@ export const cardStyles: CSSObject[] = [
   {
     '&.contest-editorial-card h2, & .contest-editorial-card h2': {
       margin: '14px 0 0',
-      font: '500 clamp(26px, 2.6vw, 38px)/1.2 var(--kep-display-font)',
+      font: '500 clamp(1.625rem, 2.6vw, 2.375rem)/1.2 var(--kep-reading-font)',
       letterSpacing: '-0.025em',
     },
   },
@@ -134,7 +134,6 @@ export const cardStyles: CSSObject[] = [
       gap: '16px',
       color: 'inherit',
       textDecoration: 'none',
-      fontFamily: 'var(--kep-display-font)',
     },
   },
   {
@@ -144,7 +143,6 @@ export const cardStyles: CSSObject[] = [
         'linear-gradient( 105deg, var(--kep-logo-sand), var(--kep-logo-mid) 40%, var(--kep-logo-ice) )',
       backgroundClip: 'text',
       fontFeatureSettings: 'normal',
-      fontFamily: 'var(--kep-display-font)',
     },
   },
   {
@@ -153,7 +151,6 @@ export const cardStyles: CSSObject[] = [
       minWidth: '0',
       overflowWrap: 'anywhere',
       fontFeatureSettings: 'normal',
-      fontFamily: 'var(--kep-display-font)',
     },
   },
   {
@@ -173,14 +170,12 @@ export const cardStyles: CSSObject[] = [
       fontSize: '23px',
       color: 'var(--kep-muted)',
       transition: 'transform 0.25s ease, color 0.25s ease',
-      fontFamily: 'var(--kep-display-font)',
     },
   },
   {
     '&.contest-editorial-card:hover h2 svg, & .contest-editorial-card:hover h2 svg': {
       transform: 'translate(2px, -2px)',
       color: 'var(--kep-logo-ice)',
-      fontFamily: 'var(--kep-display-font)',
     },
   },
   {
@@ -460,12 +455,10 @@ export const cardStyles: CSSObject[] = [
   },
   {
     '&.contest-format-value, & .contest-format-value': {
-      fontSize: '19px',
-      fontWeight: '700',
-      fontFeatureSettings: "'ss01' 1",
-      lineHeight: '1.3',
+      fontSize: '1rem',
+      fontWeight: 500,
+      lineHeight: 1.5,
       color: 'var(--kep-text)',
-      fontFamily: 'var(--kep-display-font)',
     },
   },
   {
@@ -625,10 +618,8 @@ export const cardStyles: CSSObject[] = [
   {
     '&.contest-leaderboard h2, & .contest-leaderboard h2': {
       margin: '14px 0 0',
-      font: '500 38px/1.15 var(--kep-display-font)',
-      letterSpacing: '-0.04em',
-      fontFeatureSettings: 'normal',
-      fontFamily: 'var(--kep-display-font)',
+      font: '500 2.375rem/1.15 var(--kep-reading-font)',
+      letterSpacing: '-.025em',
     },
   },
   {
@@ -1093,7 +1084,6 @@ export const cardStyles: CSSObject[] = [
       '&.contest-editorial-card:hover h2 svg, & .contest-editorial-card:hover h2 svg, &.contest-open-link:hover svg, & .contest-open-link:hover svg':
         {
           transform: 'none',
-          fontFamily: 'var(--kep-display-font)',
         },
     },
   },

@@ -32,7 +32,7 @@ const Page403 = () => {
         <Typography
           component="h1"
           variant="h3"
-          sx={{ fontFamily: 'var(--kep-display-font)', fontWeight: 500 }}
+          sx={{ fontFamily: 'var(--kep-reading-font)', fontWeight: 500 }}
         >
           <MixedText>{title}</MixedText>
         </Typography>

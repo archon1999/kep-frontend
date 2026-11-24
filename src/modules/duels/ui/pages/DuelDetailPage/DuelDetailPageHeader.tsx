@@ -183,7 +183,7 @@ const DuelDetailPageHeader = ({
         </Tooltip>
         <Typography
           sx={{
-            fontFamily: 'var(--kep-display-font)',
+            fontFamily: 'var(--kep-reading-font)',
             fontSize: { xs: 16, md: 19 },
             fontWeight: 500,
             flex: 1,

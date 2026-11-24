@@ -13,7 +13,7 @@ const ContestAnnouncement = ({ contest }: { contest: ContestDetail }) => {
       label: t('contests.typeLabel'),
       icon: 'mdi:code-braces',
       value: (
-        <Typography variant="pixel" sx={{ fontSize: 21 }}>
+        <Typography variant="subtitle1">
           {getContestTypeTitle(contest.type, contest.typeInfo)}
         </Typography>
       ),

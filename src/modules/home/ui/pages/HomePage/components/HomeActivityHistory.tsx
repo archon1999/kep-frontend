@@ -342,7 +342,7 @@ const ActivitySummary = ({
         variant="body2"
         sx={{
           mt: 0.75,
-          fontFamily: 'var(--kep-display-font)',
+          fontFamily: 'var(--kep-reading-font)',
           fontWeight: 500,
           color: 'primary.main',
         }}
@@ -361,7 +361,7 @@ const ActivitySummary = ({
     return description ? (
       <Typography
         variant="body2"
-        sx={{ mt: 0.75, fontFamily: 'var(--kep-display-font)', color: 'primary.main' }}
+        sx={{ mt: 0.75, fontFamily: 'var(--kep-reading-font)', color: 'primary.main' }}
       >
         {description}
       </Typography>

@@ -73,7 +73,7 @@ const CodeInputQuestion = ({ question, value, onChange }: CodeInputQuestionProps
               sx: {
                 px: 2,
                 py: 1.5,
-                fontFamily: 'Consolas, "SFMono-Regular", monospace',
+                fontFamily: 'var(--kep-code-font)',
                 fontSize: { xs: 16, md: 14 },
                 lineHeight: 1.75,
                 borderRadius: 0,

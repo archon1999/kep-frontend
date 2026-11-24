@@ -34,7 +34,7 @@ const Dialog: Components<Omit<Theme, 'components'>>['MuiDialog'] = {
             '& .MuiDialogTitle-root': {
               padding: '20px 24px',
               borderBottom: `1px solid ${theme.vars.palette.divider}`,
-              fontFamily: 'var(--kep-display-font)',
+              fontFamily: 'var(--kep-reading-font)',
               fontSize: '1.5rem',
               fontWeight: 500,
               lineHeight: 1.3,

@@ -103,7 +103,7 @@ const EditorialField = ({
           '& input, & textarea': {
             p: 0,
             fontWeight: multiline ? 400 : 500,
-            fontFamily: multiline ? 'inherit' : 'var(--kep-display-font)',
+            fontFamily: multiline ? 'inherit' : 'var(--kep-reading-font)',
             fontSize: multiline ? { xs: 17, md: 19 } : { xs: 28, md: 36 },
             lineHeight: multiline ? 1.35 : 1.05,
             letterSpacing: multiline ? '-0.01em' : '-0.03em',

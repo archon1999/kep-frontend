@@ -114,7 +114,7 @@ const ProblemTabsCard = ({
           '& .MuiTab-root': {
             minWidth: 0,
             px: 1.25,
-            fontFamily: 'var(--kep-display-font)',
+            fontFamily: 'var(--kep-reading-font)',
             fontWeight: 500,
             fontSize: 13,
             borderRadius: 0,
@@ -149,7 +149,7 @@ const ProblemTabsCard = ({
           sx={{
             minHeight: 24,
             mb: 1.5,
-            fontFamily: 'var(--kep-display-font)',
+            fontFamily: 'var(--kep-reading-font)',
             fontSize: 17,
             overflow: 'hidden',
             whiteSpace: 'nowrap',

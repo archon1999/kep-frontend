@@ -46,7 +46,7 @@ const AppErrorPage = ({ kind }: AppErrorPageProps) => {
             component="h1"
             variant="h3"
             sx={{
-              fontFamily: 'var(--kep-display-font)',
+              fontFamily: 'var(--kep-reading-font)',
               fontWeight: 500,
               fontSize: { xs: '2rem', sm: '2.5rem' },
             }}

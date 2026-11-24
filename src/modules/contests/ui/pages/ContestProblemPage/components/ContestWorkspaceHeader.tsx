@@ -78,7 +78,7 @@ const ContestWorkspaceHeader = ({
               whiteSpace: 'nowrap',
               color: 'text.primary',
               textDecoration: 'none',
-              fontFamily: 'var(--kep-display-font)',
+              fontFamily: 'var(--kep-reading-font)',
               fontSize: 18,
               lineHeight: 1.3,
               '&:hover': { color: 'primary.main' },

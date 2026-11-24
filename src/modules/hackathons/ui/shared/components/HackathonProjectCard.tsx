@@ -60,7 +60,7 @@ const HackathonProjectCard = ({
             <Typography
               component="h3"
               sx={{
-                fontFamily: 'var(--kep-display-font)',
+                fontFamily: 'var(--kep-reading-font)',
                 fontSize: { xs: 21, md: 25 },
                 lineHeight: 1.35,
                 overflowWrap: 'anywhere',

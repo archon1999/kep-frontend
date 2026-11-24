@@ -75,7 +75,7 @@ const TopicCard = ({
         <Typography
           component="h2"
           sx={{
-            fontFamily: 'var(--kep-display-font)',
+            fontFamily: 'var(--kep-reading-font)',
             fontSize: 18,
             lineHeight: 1.4,
             fontWeight: 500,

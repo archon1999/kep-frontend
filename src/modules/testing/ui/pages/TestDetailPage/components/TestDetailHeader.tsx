@@ -54,7 +54,7 @@ const TestDetailHeader = ({ test, questionsCount }: { test: Test; questionsCount
         <Typography
           component="h2"
           sx={{
-            fontFamily: 'var(--kep-display-font)',
+            fontFamily: 'var(--kep-reading-font)',
             fontWeight: 500,
             fontSize: 20,
             flex: 1,

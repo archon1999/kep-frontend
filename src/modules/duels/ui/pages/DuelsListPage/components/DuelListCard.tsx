@@ -150,7 +150,7 @@ const DuelListCard = ({ duel, onView, loading = false }: Props) => {
             <Typography
               component="h3"
               sx={{
-                fontFamily: 'var(--kep-display-font)',
+                fontFamily: 'var(--kep-reading-font)',
                 fontSize: 18,
                 lineHeight: 1.35,
                 fontWeight: 500,
