@@ -9,7 +9,6 @@ import IconifyIcon from 'shared/components/base/IconifyIcon';
 import EmptyState from 'shared/components/common/EmptyState';
 import MixedText from 'shared/components/common/MixedText';
 import { PointerSpotlight, ScrollReveal } from 'shared/components/motion/InteractionEffects';
-import { formatDateTime } from 'shared/lib/dateTime';
 import { createSafeHtml } from 'shared/lib/safeHtml';
 import BirthdaysSection from './BirthdaysSection';
 import { DashboardPanel, DashboardPattern } from './DashboardPattern';
@@ -78,25 +77,26 @@ export const EventsSection = ({
         ) : data?.length ? (
           data.map((promo) => (
             <PointerSpotlight className="kep-event-card" key={promo.id}>
-              <span className="kep-eyebrow">
+              <span className="kep-event-category">
                 <span className="kep-live-dot" aria-hidden="true" />
                 {promo.typeLabel}
               </span>
               <h3>{promo.title}</h3>
               <p>{promo.subtitle}</p>
-              {promo.startTime && (
-                <time dateTime={promo.startTime}>
-                  {formatDateTime(promo.startTime, 'compactDateTime')}
-                </time>
-              )}
-              <div className="kep-event-metrics">
-                {promo.metrics.slice(0, 3).map((metric) => (
-                  <span key={metric.label}>
-                    <strong>{metric.value}</strong>
-                    <small>{metric.label}</small>
-                  </span>
+              <dl className="kep-event-metrics">
+                {promo.metrics.map((metric) => (
+                  <div key={metric.label}>
+                    <dt>{metric.label}</dt>
+                    <dd>
+                      {metric.dateTime ? (
+                        <time dateTime={metric.dateTime}>{metric.value}</time>
+                      ) : (
+                        metric.value
+                      )}
+                    </dd>
+                  </div>
                 ))}
-              </div>
+              </dl>
               <SectionAction to={promo.href}>{promo.ctaLabel}</SectionAction>
             </PointerSpotlight>
           ))

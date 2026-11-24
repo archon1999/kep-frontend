@@ -15,4 +15,6 @@ so the interface does not depend on Framer at runtime.
 Alpha Lyrae supplies display/pixel typography. Plus Jakarta Sans is the default reading and interface font; its variable font comes from https://github.com/google/fonts/tree/main/ofl/plusjakartasans and is distributed with PlusJakartaSans-OFL.txt. Open Sans remains a selectable reading font and a fallback for unsupported glyphs; its variable regular/italic files come from https://github.com/googlefonts/opensans/tree/main/fonts/variable and are distributed with OpenSans-OFL.txt.
 This provenance record does not change the original assets' license terms.
 
+`inter-ui-variable.woff2` uses [Inter 4.1](https://github.com/rsms/inter/releases/tag/v4.1) at its text optical size, with weights 400–600 and Latin and Cyrillic glyphs. It is used in the home dashboard and event cards and is distributed with `Inter-OFL.txt`.
+
 `footer-dot-pattern.png` is the unmodified gold halftone PNG attached by the user on 2026-10-21. The footer uses it as a luminance mask for the cyan/sand strip. `pixel-cross.svg` is a small code-authored vector matching the supplied menu-marker reference.

@@ -1,4 +1,5 @@
 import type { CSSObject } from '@mui/material/styles';
+import { homeTypography } from './typography';
 
 /** Page composition; typography and controls are supplied by the shared theme. */
 export const homeStyles: CSSObject[] = [
@@ -281,53 +282,59 @@ export const homeStyles: CSSObject[] = [
       display: 'flex',
       flexDirection: 'column',
       alignItems: 'flex-start',
+      fontFamily: 'var(--kep-home-ui-font)',
+      minWidth: 0,
     },
   },
   {
     '&.kep-event-card h3, & .kep-event-card h3': {
-      fontSize: '27px',
-      lineHeight: '1.2',
-      margin: '20px 0 14px',
-      fontFamily: 'var(--kep-display-font)',
+      ...homeTypography.cardTitle,
+      margin: '12px 0 6px',
+      overflowWrap: 'anywhere',
+      textWrap: 'balance',
+    },
+  },
+  {
+    '& .kep-event-category': {
+      display: 'inline-flex',
+      alignItems: 'center',
+      gap: 8,
+      color: 'var(--kep-muted)',
+      ...homeTypography.metadata,
+      '& .kep-live-dot': { width: 5, height: 5, flexShrink: 0 },
     },
   },
   {
     '&.kep-event-card > p, & .kep-event-card > p': {
-      fontSize: '14px',
-      marginBottom: '20px',
-    },
-  },
-  {
-    '&.kep-event-card time, & .kep-event-card time': {
-      font: '12px var(--kep-font-family)',
-      color: 'var(--aurora-palette-primary-main)',
-      marginBottom: '20px',
+      ...homeTypography.body,
+      maxInlineSize: '60ch',
+      color: 'var(--kep-muted)',
+      textWrap: 'pretty',
     },
   },
   {
     '&.kep-event-metrics, & .kep-event-metrics': {
-      display: 'flex',
-      gap: '25px',
-      padding: '20px 0',
+      display: 'grid',
+      gridTemplateColumns: 'minmax(0, 1.25fr) repeat(2, minmax(0, 1fr))',
+      gap: '12px 16px',
+      paddingBlockStart: 16,
       borderTop: '1px solid var(--kep-line)',
       width: '100%',
-      marginTop: 'auto',
-      marginBottom: '20px',
-      flexWrap: 'wrap',
-    },
-  },
-  {
-    '&.kep-event-metrics strong, & .kep-event-metrics strong': {
-      fontSize: '16px',
-      fontWeight: '500',
-      display: 'block',
-    },
-  },
-  {
-    '&.kep-event-metrics small, & .kep-event-metrics small': {
-      fontSize: '11px',
-      color: 'var(--kep-muted)',
-      display: 'block',
+      margin: '16px 0',
+      '& > div': { minWidth: 0, overflowWrap: 'anywhere' },
+      '& dt': {
+        ...homeTypography.metadata,
+        color: 'var(--kep-muted)',
+      },
+      '& dd': {
+        ...homeTypography.cardTitle,
+        margin: '3px 0 0',
+        fontVariantNumeric: 'tabular-nums',
+      },
+      '@media (max-width: 540px)': {
+        gridTemplateColumns: 'repeat(2, minmax(0, 1fr))',
+        '& > :first-child': { gridColumn: '1 / -1' },
+      },
     },
   },
   {
@@ -725,14 +732,6 @@ export const homeStyles: CSSObject[] = [
     '@media (max-width: 540px)': {
       '&.kep-event-card, & .kep-event-card': {
         padding: '25px',
-      },
-    },
-  },
-  {
-    '@media (max-width: 540px)': {
-      '&.kep-event-card h3, & .kep-event-card h3': {
-        fontSize: '24px',
-        fontFamily: 'var(--kep-display-font)',
       },
     },
   },

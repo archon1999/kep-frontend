@@ -128,6 +128,7 @@
       },
       "types": {
         "kepCover": "KEP Cover",
+        "competitiveProgramming": "Sport dasturlash",
         "contest": "Kontest",
         "arena": "Arena",
         "blogCreate": "Hamjamiyat blogi"
@@ -135,8 +136,7 @@
       "metrics": {
         "participants": "Ishtirokchilar",
         "voteLimit": "Ovoz limiti",
-        "schedule": "Jadval",
-        "registrants": "Ro'yhatdan o'tganlar",
+        "registrants": "Ro‘yxatdan o‘tganlar",
         "problems": "Masalalar",
         "questions": "Savollar",
         "roundTime": "Raund vaqti"
@@ -144,9 +144,7 @@
       "statuses": {
         "active": "Hozir davom etmoqda",
         "upcoming": "Yaqinda"
-      },
-      "startsAt": "{{date}} da boshlanadi",
-      "endsAt": "{{date}} da tugaydi"
+      }
     },
     "news": {
       "title": "Soʻnggi yangiliklar",

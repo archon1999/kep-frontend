@@ -46,8 +46,6 @@ const useHomeSWR = <T>(key: readonly unknown[] | null, fetcher: () => Promise<T>
 
 const mapListParams = (pageSize?: number): HomeListParams => ({ pageSize });
 
-const formatDate = (value: string | null | undefined) => formatDateTime(value, 'compactDateTime');
-
 export const useHomeNews = (pageSize = 3) =>
   useHomeSWR<HomeNewsList>(homeKeys.detail(`news-${pageSize}`), () =>
     repository.getNews(mapListParams(pageSize)),
@@ -200,18 +198,27 @@ export const useHomePromos = (refreshInterval = 0) => {
 
   const fetchPromos = async () => {
     const promos = await repository.getPromos();
+    const numberFormat = new Intl.NumberFormat(i18n.resolvedLanguage ?? i18n.language);
 
     const mappedPromos: HomePromoSlide[] = promos.map((promo): HomePromoSlide => {
+      const active = promo.status === 'active';
+      const dateTime = active ? promo.endTime : promo.startTime;
+      const dateLabel = formatDateTime(dateTime, 'compactDateTime', '');
+      const schedule = {
+        label: t(active ? 'contests.card.ends' : 'contests.card.starts'),
+        value: dateLabel || '—',
+        dateTime: dateLabel ? (dateTime ?? undefined) : undefined,
+      };
+
       if (promo.type === 'kepCover') {
         return {
           id: `kep-cover-${promo.id}-${promo.status}`,
           type: 'kepCover',
           status: promo.status,
           title: promo.title,
-          subtitle:
-            promo.status === 'active'
-              ? t('homePage.promos.kepCover.activeSubtitle')
-              : t('homePage.promos.kepCover.upcomingSubtitle'),
+          subtitle: active
+            ? t('homePage.promos.kepCover.activeSubtitle')
+            : t('homePage.promos.kepCover.upcomingSubtitle'),
           href: resources.KepCover,
           ctaLabel: t('homePage.promos.actions.openKepCover'),
           accent: 'warning',
@@ -225,6 +232,7 @@ export const useHomePromos = (refreshInterval = 0) => {
           maxVoteCount: promo.maxVoteCount ?? 0,
           remainingVotes: promo.remainingVotes ?? 0,
           metrics: [
+            schedule,
             {
               label: t('homePage.promos.metrics.participants'),
               value: t('kepCover.hero.entries', { count: promo.totalEntries ?? 0 }),
@@ -232,13 +240,6 @@ export const useHomePromos = (refreshInterval = 0) => {
             {
               label: t('homePage.promos.metrics.voteLimit'),
               value: t('homePage.promos.kepCover.voteLimit', { count: promo.maxVoteCount ?? 0 }),
-            },
-            {
-              label: t('homePage.promos.metrics.schedule'),
-              value:
-                promo.status === 'active'
-                  ? t('homePage.promos.endsAt', { date: formatDate(promo.endTime) })
-                  : t('homePage.promos.startsAt', { date: formatDate(promo.startTime) }),
             },
           ],
         };
@@ -251,15 +252,17 @@ export const useHomePromos = (refreshInterval = 0) => {
           type: 'contest',
           status: promo.status,
           title: promo.title,
-          subtitle:
-            promo.status === 'active'
-              ? t('homePage.promos.contest.activeSubtitle')
-              : t('homePage.promos.contest.upcomingSubtitle'),
+          subtitle: active
+            ? t('homePage.promos.contest.activeSubtitle')
+            : t('homePage.promos.contest.upcomingSubtitle'),
           href: getResourceById(resources.Contest, promo.id),
           ctaLabel: t('homePage.promos.actions.openContest'),
           accent: 'info',
           icon: 'mdi:trophy-outline',
-          typeLabel: promo.categoryTitle || t('homePage.promos.types.contest'),
+          typeLabel:
+            promo.categoryTitle === 'CompetitiveProgramming'
+              ? t('homePage.promos.types.competitiveProgramming')
+              : promo.categoryTitle || t('homePage.promos.types.contest'),
           description: promo.description,
           logo: promo.logo,
           startTime: promo.startTime,
@@ -269,20 +272,14 @@ export const useHomePromos = (refreshInterval = 0) => {
           registrantsCount: promo.registrantsCount ?? 0,
           problemsCount: promo.problemsCount ?? 0,
           metrics: [
-            {
-              label: t('homePage.promos.metrics.schedule'),
-              value:
-                promo.status === 'active'
-                  ? t('homePage.promos.endsAt', { date: formatDate(promo.endTime) })
-                  : t('homePage.promos.startsAt', { date: formatDate(promo.startTime) }),
-            },
+            schedule,
             {
               label: t('homePage.promos.metrics.registrants'),
-              value: t('contests.registrantsLabel', { count: promo.registrantsCount ?? 0 }),
+              value: numberFormat.format(promo.registrantsCount ?? 0),
             },
             {
               label: t('homePage.promos.metrics.problems'),
-              value: t('contests.problems', { count: promo.problemsCount ?? 0 }),
+              value: numberFormat.format(promo.problemsCount ?? 0),
             },
           ],
         };
@@ -293,10 +290,9 @@ export const useHomePromos = (refreshInterval = 0) => {
         type: 'arena',
         status: promo.status,
         title: promo.title,
-        subtitle:
-          promo.status === 'active'
-            ? t('homePage.promos.arena.activeSubtitle')
-            : t('homePage.promos.arena.upcomingSubtitle'),
+        subtitle: active
+          ? t('homePage.promos.arena.activeSubtitle')
+          : t('homePage.promos.arena.upcomingSubtitle'),
         href: getResourceById(resources.ArenaTournament, promo.id),
         ctaLabel: t('homePage.promos.actions.openArena'),
         accent: 'success',
@@ -309,13 +305,7 @@ export const useHomePromos = (refreshInterval = 0) => {
         chaptersCount: promo.chaptersCount ?? 0,
         chapterTitles: promo.chapterTitles ?? [],
         metrics: [
-          {
-            label: t('homePage.promos.metrics.schedule'),
-            value:
-              promo.status === 'active'
-                ? t('homePage.promos.endsAt', { date: formatDate(promo.endTime) })
-                : t('homePage.promos.startsAt', { date: formatDate(promo.startTime) }),
-          },
+          schedule,
           {
             label: t('homePage.promos.metrics.questions'),
             value: `${promo.questionsCount ?? 0} ${t('arena.questions')}`,
@@ -331,11 +321,10 @@ export const useHomePromos = (refreshInterval = 0) => {
     return mappedPromos;
   };
 
-  return useSWR<HomePromoSlide[]>(
-    homeKeys.detail(`promos-${i18n.language}`),
-    fetchPromos,
-    { suspense: false, refreshInterval },
-  );
+  return useSWR<HomePromoSlide[]>(homeKeys.detail(`promos-${i18n.language}`), fetchPromos, {
+    suspense: false,
+    refreshInterval,
+  });
 };
 
 export const homeQueries = {
