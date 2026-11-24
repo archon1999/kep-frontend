@@ -138,7 +138,7 @@ const EventListCard = ({
             fontSize: 'clamp(26px, 2.4vw, 36px)',
             lineHeight: 1.2,
             minHeight: titleMinLines ? { lg: `${titleMinLines * 1.2}em` } : undefined,
-            fontFamily: 'var(--kep-display-font)',
+            fontFamily: 'var(--kep-reading-font)',
             fontFeatureSettings: 'normal',
             overflowWrap: 'anywhere',
           }}

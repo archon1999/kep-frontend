@@ -214,7 +214,7 @@ const ChapterTestsList = ({ tests, completion }: ChapterTestsListProps) => {
                     fontWeight={600}
                     data-test-title
                     sx={{
-                      fontFamily: 'var(--kep-display-font)',
+                      fontFamily: 'var(--kep-reading-font)',
                       fontWeight: 500,
                       fontSize: 20,
                       lineHeight: 1.4,

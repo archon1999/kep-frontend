@@ -48,7 +48,7 @@ const AccountTabPanel = ({
           <Typography
             component="h1"
             variant="h4"
-            sx={{ fontFamily: 'var(--kep-display-font)', fontWeight: 500 }}
+            sx={{ fontFamily: 'var(--kep-reading-font)', fontWeight: 500 }}
           >
             <MixedText>{title}</MixedText>
           </Typography>

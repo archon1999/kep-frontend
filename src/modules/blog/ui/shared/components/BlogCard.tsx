@@ -128,7 +128,7 @@ const BlogCard = ({ post, featured = false, variant = 'default', emphasis, sx }:
         <Typography
           component="h2"
           sx={{
-            fontFamily: 'var(--kep-display-font)',
+            fontFamily: 'var(--kep-reading-font)',
             fontSize: isFeatured ? { xs: 27, md: 36 } : 23,
             fontWeight: 500,
             lineHeight: 1.25,

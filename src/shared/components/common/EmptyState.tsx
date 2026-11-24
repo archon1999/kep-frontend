@@ -34,7 +34,7 @@ const EmptyState = ({
     <Typography
       component="h2"
       variant="h5"
-      sx={{ fontFamily: 'var(--kep-display-font)', fontWeight: 500 }}
+      sx={{ fontFamily: 'var(--kep-reading-font)', fontWeight: 500 }}
     >
       <MixedText>{title}</MixedText>
     </Typography>

@@ -7,6 +7,7 @@ const html = readFileSync(new URL('../../../index.html', import.meta.url), 'utf8
 const bootstrap = html.match(/<script id="kep-theme-bootstrap">([\s\S]*?)<\/script>/)?.[1];
 assert.ok(bootstrap, 'The appearance migration must run in the initial document.');
 const marker = 'kep-default-theme-applied-v1';
+const fontMarker = 'kep-inter-default-applied-v1';
 
 const runBootstrap = (storage: Pick<Storage, 'getItem' | 'setItem'>) => {
   const attributes = new Map<string, string>();
@@ -47,7 +48,7 @@ test('existing preferences migrate to the reference appearance before the first 
   assert.equal(storage.getItem('themePreset'), 'default');
   assert.equal(storage.getItem('kep-mode'), 'dark');
   assert.equal(storage.getItem('navColor'), 'default');
-  assert.equal(storage.getItem('fontFamily'), 'Plus Jakarta Sans');
+  assert.equal(storage.getItem('fontFamily'), 'Inter');
   assert.equal(JSON.parse(storage.getItem('primaryColor')!), null);
   assert.equal(JSON.parse(storage.getItem(marker)!), true);
   assert.equal(storage.getItem('locale'), 'uz-UZ');
@@ -61,13 +62,27 @@ test('subsequent visits preserve the user’s new appearance choices', () => {
     themePreset: 'luxury',
     'kep-mode': 'light',
     navColor: 'vibrant',
-    fontFamily: 'Manrope',
+    fontFamily: 'Plus Jakarta Sans',
     primaryColor: '#c4a15a',
   }))
     storage.setItem(key, value);
   const saved = [...storage.entries];
   assert.equal(runBootstrap(storage).get('data-kep-color-scheme'), 'light');
   assert.deepEqual([...storage.entries], saved);
+});
+
+test('returning browsers get Inter when using the old default and keep other selections', () => {
+  const defaultStorage = makeStorage({
+    [marker]: 'true',
+    'kep-mode': 'light',
+    fontFamily: 'Plus Jakarta Sans',
+  });
+  const customStorage = makeStorage({ [marker]: 'true', fontFamily: 'Manrope' });
+  assert.equal(runBootstrap(defaultStorage).get('data-kep-color-scheme'), 'light');
+  assert.equal(defaultStorage.getItem('fontFamily'), 'Inter');
+  assert.equal(defaultStorage.getItem(fontMarker), 'true');
+  runBootstrap(customStorage);
+  assert.equal(customStorage.getItem('fontFamily'), 'Manrope');
 });
 
 test('an incomplete migration is retried instead of marking preferences as migrated', () => {
@@ -81,7 +96,7 @@ test('an incomplete migration is retried instead of marking preferences as migra
   });
   assert.equal(storage.getItem(marker), null);
   runBootstrap(storage);
-  assert.equal(storage.getItem('fontFamily'), 'Plus Jakarta Sans');
+  assert.equal(storage.getItem('fontFamily'), 'Inter');
   assert.equal(storage.getItem('kep-mode'), 'dark');
   assert.equal(JSON.parse(storage.getItem(marker)!), true);
 });

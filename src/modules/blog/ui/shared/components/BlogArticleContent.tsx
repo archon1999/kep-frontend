@@ -26,7 +26,7 @@ const BlogArticleContent = ({ html, emptyMessage, sx }: BlogArticleContentProps)
           overflowWrap: 'anywhere',
           '& h1, & h2, & h3': {
             scrollMarginTop: 112,
-            fontFamily: 'var(--kep-display-font)',
+            fontFamily: 'var(--kep-reading-font)',
             fontWeight: 600,
             lineHeight: 1.2,
             letterSpacing: '-0.02em',
@@ -74,10 +74,10 @@ const BlogArticleContent = ({ html, emptyMessage, sx }: BlogArticleContentProps)
           },
           '& pre code': {
             color: 'text.primary',
-            fontFamily: 'monospace',
+            fontFamily: 'var(--kep-code-font)',
           },
           '& code': {
-            fontFamily: 'monospace',
+            fontFamily: 'var(--kep-code-font)',
             fontSize: '0.925em',
           },
           '& a': {

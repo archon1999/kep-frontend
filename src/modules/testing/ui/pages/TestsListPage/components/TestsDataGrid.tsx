@@ -155,7 +155,7 @@ const TestsDataGrid = ({
                 variant="body1"
                 data-test-title
                 sx={{
-                  fontFamily: 'var(--kep-display-font)',
+                  fontFamily: 'var(--kep-reading-font)',
                   fontWeight: 500,
                   fontSize: 17,
                   lineHeight: 1.5,

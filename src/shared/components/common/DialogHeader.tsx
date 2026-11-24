@@ -37,7 +37,7 @@ const DialogHeader = ({
               variant="h5"
               id={id}
               sx={{
-                fontFamily: 'var(--kep-display-font)',
+                fontFamily: 'var(--kep-reading-font)',
                 fontWeight: 500,
                 overflowWrap: 'anywhere',
               }}

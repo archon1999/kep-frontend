@@ -308,7 +308,7 @@ export const ProblemHeader = ({
         </Tooltip>
         <Typography
           noWrap
-          sx={{ flex: 1, minWidth: 0, fontFamily: 'var(--kep-display-font)', fontSize: 18 }}
+          sx={{ flex: 1, minWidth: 0, fontFamily: 'var(--kep-reading-font)', fontSize: 18 }}
         >
           <MixedText>{problem?.title ?? t('problems.title')}</MixedText>
         </Typography>

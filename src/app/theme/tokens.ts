@@ -1,6 +1,6 @@
 import type { Theme } from '@mui/material/styles';
 import { medalColors } from './colors/medals';
-import { displayFontFamily, readingFontFamily } from './fonts';
+import { codeFontFamily, displayFontFamily } from './fonts';
 import type { ThemePreset } from './presets';
 
 declare module '@mui/material/styles' {
@@ -15,7 +15,6 @@ declare module '@mui/material/styles' {
 export const designTokens = {
   accent: { cool: '#93d7e2', warm: '#eacc9c', middle: '#c8d5c1', ink: '#10252b' },
   medal: medalColors,
-  font: { display: displayFontFamily, reading: readingFontFamily },
   layout: { maxWidth: '1500px', gutter: '60px', inset: '32px', headerHeight: '96px' },
   gradient: 'linear-gradient(110deg, var(--kep-sand), var(--kep-ice))',
   pixelFontFeature: '"ss01" 1',
@@ -43,7 +42,8 @@ export const themeCssVariables = (theme: Theme) => ({
   '--kep-bronze': designTokens.medal.dark.bronze,
   '--kep-font-family': theme.typography.fontFamily,
   '--kep-reading-font': theme.typography.fontFamily,
-  '--kep-display-font': designTokens.font.display,
+  '--kep-display-font': displayFontFamily,
+  '--kep-code-font': codeFontFamily,
   '--kep-page-width': designTokens.layout.maxWidth,
   '--kep-page-gutter': designTokens.layout.gutter,
   '--kep-content-inset': designTokens.layout.inset,

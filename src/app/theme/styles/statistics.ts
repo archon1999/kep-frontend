@@ -1,4 +1,5 @@
 import type { SxProps, Theme } from '@mui/material/styles';
+import { uiTypography } from '../typography';
 
 export const statisticsInset = { xs: 2, sm: 2.5 };
 export const statisticsChartHeight = 232;
@@ -7,7 +8,7 @@ export const statisticsMetricMinHeight = 120;
 export const statisticsTableSx = {
   fontVariantNumeric: 'tabular-nums',
   '& th': {
-    fontSize: 11,
+    fontSize: '.75rem',
     fontWeight: 600,
     color: 'text.secondary',
     lineHeight: 1.4,
@@ -15,7 +16,7 @@ export const statisticsTableSx = {
     px: 1,
     whiteSpace: 'normal',
   },
-  '& td': { fontSize: 13, lineHeight: 1.5, py: 1, px: 1, borderColor: 'divider' },
+  '& td': { ...uiTypography.smallText, py: 1, px: 1, borderColor: 'divider' },
   '& tbody tr:last-child td': { borderBottom: 0 },
 } satisfies SxProps<Theme>;
 
@@ -33,10 +34,6 @@ export const statisticsPanelSx = {
 } satisfies SxProps<Theme>;
 
 export const statisticsHeadingSx = {
-  fontFamily: 'var(--kep-display-font)',
-  fontSize: { xs: 17, md: 18 },
-  fontWeight: 500,
-  lineHeight: 1.3,
-  letterSpacing: '-0.02em',
+  ...uiTypography.cardTitle,
   overflowWrap: 'anywhere',
 } satisfies SxProps<Theme>;

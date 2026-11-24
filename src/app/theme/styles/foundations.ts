@@ -270,7 +270,6 @@ export const foundationStyles: CSSObject[] = [
       fontSize: '14px',
       fontWeight: '500',
       margin: '0 0 6px',
-      fontFamily: 'var(--kep-display-font)',
     },
   },
   {
@@ -293,7 +292,7 @@ export const foundationStyles: CSSObject[] = [
   {
     '.kep-footer-wordmark': {
       fontVariant: 'normal',
-      fontFamily: "'Alpha Lyrae', 'Open Sans', sans-serif",
+      fontFamily: 'var(--kep-display-font)',
       fontSize: 'clamp(100px, 24vw, 380px)',
       lineHeight: '1',
       letterSpacing: '-0.07em',

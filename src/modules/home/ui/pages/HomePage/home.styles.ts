@@ -1,5 +1,5 @@
 import type { CSSObject } from '@mui/material/styles';
-import { homeTypography } from './typography';
+import { uiTypography } from 'app/theme/typography';
 
 /** Page composition; typography and controls are supplied by the shared theme. */
 export const homeStyles: CSSObject[] = [
@@ -10,6 +10,17 @@ export const homeStyles: CSSObject[] = [
       overflow: 'clip',
       fontFamily: 'var(--kep-font-family)',
       '--kep-home-width': 'var(--kep-page-width)',
+      '& :where(h1, h2, h3, p):where(:not(.MuiTypography-root))': { margin: 0 },
+      '& :where(h1, h2):where(:not(.MuiTypography-root))': {
+        fontWeight: 500,
+        textWrap: 'balance',
+      },
+      '& :where(h3):where(:not(.MuiTypography-root))': uiTypography.cardTitle,
+      '& :where(p):where(:not(.MuiTypography-root))': {
+        ...uiTypography.body,
+        color: 'var(--kep-muted)',
+        textWrap: 'pretty',
+      },
     },
   },
   {
@@ -19,42 +30,6 @@ export const homeStyles: CSSObject[] = [
       maxWidth: '1440px',
       margin: '0 auto',
       padding: '40px 24px',
-    },
-  },
-  {
-    '&.kep-home h1:not(.MuiTypography-root), & .kep-home h1:not(.MuiTypography-root), &.kep-home h2:not(.MuiTypography-root), & .kep-home h2:not(.MuiTypography-root), &.kep-home h3:not(.MuiTypography-root), & .kep-home h3:not(.MuiTypography-root), &.kep-home p:not(.MuiTypography-root), & .kep-home p:not(.MuiTypography-root)':
-      {
-        margin: '0',
-        fontFamily: 'var(--kep-display-font)',
-      },
-  },
-  {
-    '&.kep-home h1:not(.MuiTypography-root), & .kep-home h1:not(.MuiTypography-root), &.kep-home h2:not(.MuiTypography-root), & .kep-home h2:not(.MuiTypography-root)':
-      {
-        fontFamily: 'var(--kep-display-font)',
-        fontWeight: '500',
-        fontVariant: 'normal',
-        fontVariantLigatures: 'normal',
-        letterSpacing: 'normal',
-        textWrap: 'balance',
-      },
-  },
-  {
-    '&.kep-home h3:not(.MuiTypography-root), & .kep-home h3:not(.MuiTypography-root)': {
-      fontSize: '20px',
-      fontWeight: '500',
-      lineHeight: '1.5',
-      letterSpacing: '-0.02em',
-      fontFamily: 'var(--kep-display-font)',
-    },
-  },
-  {
-    '&.kep-home p:not(.MuiTypography-root), & .kep-home p:not(.MuiTypography-root)': {
-      fontFamily: 'var(--kep-reading-font)',
-      fontSize: '16px',
-      lineHeight: '1.65',
-      color: 'var(--kep-muted)',
-      textWrap: 'pretty',
     },
   },
   {
@@ -282,13 +257,12 @@ export const homeStyles: CSSObject[] = [
       display: 'flex',
       flexDirection: 'column',
       alignItems: 'flex-start',
-      fontFamily: 'var(--kep-home-ui-font)',
       minWidth: 0,
     },
   },
   {
     '&.kep-event-card h3, & .kep-event-card h3': {
-      ...homeTypography.cardTitle,
+      ...uiTypography.cardTitle,
       margin: '12px 0 6px',
       overflowWrap: 'anywhere',
       textWrap: 'balance',
@@ -300,13 +274,13 @@ export const homeStyles: CSSObject[] = [
       alignItems: 'center',
       gap: 8,
       color: 'var(--kep-muted)',
-      ...homeTypography.metadata,
+      ...uiTypography.smallText,
       '& .kep-live-dot': { width: 5, height: 5, flexShrink: 0 },
     },
   },
   {
     '&.kep-event-card > p, & .kep-event-card > p': {
-      ...homeTypography.body,
+      ...uiTypography.body,
       maxInlineSize: '60ch',
       color: 'var(--kep-muted)',
       textWrap: 'pretty',
@@ -323,11 +297,11 @@ export const homeStyles: CSSObject[] = [
       margin: '16px 0',
       '& > div': { minWidth: 0, overflowWrap: 'anywhere' },
       '& dt': {
-        ...homeTypography.metadata,
+        ...uiTypography.smallText,
         color: 'var(--kep-muted)',
       },
       '& dd': {
-        ...homeTypography.cardTitle,
+        ...uiTypography.cardTitle,
         margin: '3px 0 0',
         fontVariantNumeric: 'tabular-nums',
       },
@@ -339,7 +313,7 @@ export const homeStyles: CSSObject[] = [
   },
   {
     '&.kep-event-card .MuiButton-root, & .kep-event-card .MuiButton-root': {
-      fontSize: '13px',
+      fontSize: uiTypography.smallText.fontSize,
     },
   },
   {
@@ -393,10 +367,10 @@ export const homeStyles: CSSObject[] = [
   },
   {
     '&.kep-leader-identity, & .kep-leader-identity': {
-      fontSize: '17px',
+      ...uiTypography.body,
+      fontWeight: 500,
       margin: '18px 0 12px',
       overflowWrap: 'anywhere',
-      fontFamily: 'var(--kep-display-font)',
     },
   },
   {
@@ -471,10 +445,8 @@ export const homeStyles: CSSObject[] = [
   },
   {
     '&.kep-story h3, & .kep-story h3': {
-      fontSize: '30px',
-      lineHeight: '1.4',
+      ...uiTypography.cardTitle,
       marginBottom: '20px',
-      fontFamily: 'var(--kep-display-font)',
     },
   },
   {
@@ -655,7 +627,6 @@ export const homeStyles: CSSObject[] = [
       '&.kep-leader-identity, & .kep-leader-identity': {
         margin: '0',
         flex: '1',
-        fontFamily: 'var(--kep-display-font)',
       },
     },
   },
@@ -759,14 +730,6 @@ export const homeStyles: CSSObject[] = [
   },
   {
     '@media (max-width: 540px)': {
-      '&.kep-story h3, & .kep-story h3': {
-        fontSize: '23px',
-        fontFamily: 'var(--kep-display-font)',
-      },
-    },
-  },
-  {
-    '@media (max-width: 540px)': {
       '&.kep-story-meta, & .kep-story-meta': {
         flexWrap: 'wrap',
       },
@@ -790,8 +753,7 @@ export const homeStyles: CSSObject[] = [
   {
     '@media (max-width: 540px)': {
       '&.kep-leader-card h3, & .kep-leader-card h3': {
-        fontSize: '14px',
-        fontFamily: 'var(--kep-display-font)',
+        fontSize: uiTypography.smallText.fontSize,
       },
     },
   },
@@ -993,6 +955,7 @@ export const homeStyles: CSSObject[] = [
   },
   {
     '& .kep-hero h1.MuiTypography-root': {
+      fontFamily: 'var(--kep-display-font)',
       margin: '20px 0 0',
       maxWidth: '960px',
       fontSize: 'clamp(36px, 5.8vw, 80px)',

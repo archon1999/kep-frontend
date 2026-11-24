@@ -92,7 +92,7 @@ const ProfileHeader = ({
               <Typography
                 component="h1"
                 sx={{
-                  fontFamily: 'var(--kep-display-font)',
+                  fontFamily: 'var(--kep-reading-font)',
                   fontSize: { xs: 30, md: 44 },
                   minWidth: 0,
                   fontWeight: 500,

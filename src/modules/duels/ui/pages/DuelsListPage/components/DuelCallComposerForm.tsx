@@ -105,7 +105,7 @@ const DuelCallComposerForm = ({
               <Typography
                 component="h3"
                 sx={{
-                  fontFamily: 'var(--kep-display-font)',
+                  fontFamily: 'var(--kep-reading-font)',
                   fontSize: 22,
                   fontWeight: 500,
                   overflowWrap: 'anywhere',

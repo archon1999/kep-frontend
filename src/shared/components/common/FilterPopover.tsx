@@ -65,7 +65,7 @@ const FilterPopover = ({
             display: 'flex',
             alignItems: 'center',
             gap: 1.25,
-            fontFamily: 'var(--kep-display-font)',
+            fontFamily: 'var(--kep-reading-font)',
             fontWeight: 500,
             minWidth: 0,
             overflowWrap: 'anywhere',

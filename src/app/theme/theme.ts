@@ -142,7 +142,7 @@ export const createTheme = ({
           shadows: ['none', ...Array(shadows.length).fill(darkShadows[0])],
         },
       },
-      typography: typography ?? createTypography(fontFamily, fontSize, preset),
+      typography: typography ?? createTypography(fontFamily, fontSize),
       direction,
       unstable_sxConfig: sxConfig,
       mixins,

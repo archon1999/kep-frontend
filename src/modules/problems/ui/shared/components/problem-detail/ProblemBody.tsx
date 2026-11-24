@@ -98,7 +98,7 @@ export const ProblemBody = ({ problem }: ProblemBodyProps) => {
             margin: 0,
             overflowX: 'auto',
             background: 'transparent',
-            fontFamily: 'Consolas, "Courier New", monospace',
+            fontFamily: 'var(--kep-code-font)',
             fontSize: 14,
             lineHeight: 1.7,
           },

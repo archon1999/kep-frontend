@@ -1,6 +1,7 @@
 import { useRef } from 'react';
 import Editor, { type EditorProps } from '@monaco-editor/react';
 import { useMediaQuery } from '@mui/material';
+import { codeFontFamily } from 'app/theme/fonts';
 import { useMonacoTheme } from 'shared/hooks/useMonacoTheme';
 import { configureRuntimeTypes } from './runtime-types';
 
@@ -56,7 +57,7 @@ export const CodeEditor = ({
       }}
       options={{
         minimap: { enabled: false },
-        fontFamily: '"JetBrains Mono", Consolas, monospace',
+        fontFamily: codeFontFamily,
         fontSize: compact ? 13 : 14,
         lineHeight: 24,
         fontLigatures: false,

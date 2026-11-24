@@ -165,7 +165,7 @@ const BirthdaysSection = () => {
                         <Typography
                           variant="caption"
                           color="text.secondary"
-                          sx={{ fontFamily: 'var(--kep-display-font)', fontSize: 12 }}
+                          sx={{ fontFamily: 'var(--kep-reading-font)', fontSize: 12 }}
                         >
                           {turningAge !== undefined
                             ? t('homePage.birthdays.turns', { count: turningAge })

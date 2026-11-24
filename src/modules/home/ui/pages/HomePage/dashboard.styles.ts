@@ -1,6 +1,6 @@
 import type { CSSObject } from '@mui/material/styles';
 import { motion } from 'app/theme/styles/transitions';
-import { homeTypography } from './typography';
+import { uiTypography } from 'app/theme/typography';
 
 /** Dashboard composition uses the same typography, dividers and surfaces as list pages. */
 export const dashboardStyles: CSSObject = {
@@ -77,26 +77,27 @@ export const dashboardStyles: CSSObject = {
       '& p': { margin: 0 },
     },
     '& .kep-dashboard-contest dt.MuiTypography-label': {
-      ...homeTypography.metadata,
+      ...uiTypography.smallText,
       textTransform: 'none',
       '& svg': { flexShrink: 0 },
     },
     '& :is(h1, h2, h3, p):not(.MuiTypography-root)': { margin: 0 },
     '& :is(h1, h2, h3):not(.MuiTypography-root)': {
-      fontFamily: 'var(--kep-display-font)',
       fontWeight: 500,
     },
-    '& h2:not(.MuiTypography-root)': { fontSize: 22, lineHeight: 1.35, letterSpacing: '-0.02em' },
+    '& h2:not(.MuiTypography-root)': {
+      fontSize: '1.5rem',
+      lineHeight: 1.35,
+      letterSpacing: '-.015em',
+    },
     '& p:not(.MuiTypography-root)': {
-      fontFamily: 'var(--kep-reading-font)',
-      fontSize: 14,
-      lineHeight: 1.7,
+      ...uiTypography.smallText,
       color: 'var(--kep-muted)',
     },
     '& a:not(.MuiButton-root)': { color: 'inherit', textDecoration: 'none' },
     '& a:not(.MuiButton-root):hover': { color: 'var(--kep-logo-ice)' },
     '& a:focus-visible': { outline: '2px solid var(--kep-logo-ice)', outlineOffset: 4 },
-    '& .kep-text-link': { color: 'var(--kep-logo-ice)', fontSize: 13, margin: 0 },
+    '& .kep-text-link': { ...uiTypography.smallText, color: 'var(--kep-logo-ice)', margin: 0 },
     '& .MuiButton-containedPrimary': { color: 'var(--kep-accent-ink)' },
     '& .kep-dashboard-header': {
       display: 'flex',
@@ -107,7 +108,7 @@ export const dashboardStyles: CSSObject = {
       borderBottom: '1px solid var(--kep-line)',
       '& .kep-dashboard-welcome': { minWidth: 0, marginRight: 'auto' },
       '& .kep-dashboard-welcome > p': {
-        ...homeTypography.body,
+        ...uiTypography.body,
         fontSize: 'clamp(1rem, .875rem + .3vw, 1.125rem)',
         maxInlineSize: '64ch',
         textWrap: 'pretty',
@@ -161,7 +162,7 @@ export const dashboardStyles: CSSObject = {
         flexWrap: 'wrap',
         gap: '4px 8px',
         color: 'var(--kep-muted)',
-        ...homeTypography.body,
+        ...uiTypography.body,
         fontSize: '.9375rem',
         fontWeight: 500,
         lineHeight: 1.4,
@@ -192,7 +193,7 @@ export const dashboardStyles: CSSObject = {
         fontVariantNumeric: 'tabular-nums',
         overflowWrap: 'anywhere',
       },
-      '& small': { ...homeTypography.metadata, color: 'var(--kep-muted)' },
+      '& small': { ...uiTypography.smallText, color: 'var(--kep-muted)' },
     },
     '& .kep-dashboard-rating-bar': {
       height: 2,
@@ -233,11 +234,11 @@ export const dashboardStyles: CSSObject = {
       '& a > span:last-child': { color: 'var(--kep-logo-ice)', marginTop: 3 },
       '& strong': {
         display: 'block',
-        ...homeTypography.cardTitle,
+        ...uiTypography.cardTitle,
       },
       '& small': {
         display: 'block',
-        ...homeTypography.body,
+        ...uiTypography.body,
         marginTop: 4,
         textWrap: 'pretty',
         color: 'var(--kep-muted)',
@@ -304,15 +305,14 @@ export const dashboardStyles: CSSObject = {
       border: 0,
       background: 'transparent',
       '& + .kep-event-card': { paddingTop: 20, borderTop: '1px solid var(--kep-line)' },
-      '& h3': { ...homeTypography.cardTitle, margin: '10px 0 6px' },
-      '& > p': homeTypography.body,
+      '& h3': { ...uiTypography.cardTitle, margin: '10px 0 6px' },
+      '& > p': uiTypography.body,
     },
     '& .kep-dashboard-events .kep-event-metrics': {
       marginBlock: '18px 20px',
     },
     '& .kep-dashboard-events .kep-cta': {
-      fontFamily: 'var(--kep-home-ui-font)',
-      fontSize: '.875rem',
+      fontSize: uiTypography.smallText.fontSize,
       minHeight: 40,
     },
     '& .kep-dashboard-history': { height: '100%' },
@@ -334,7 +334,6 @@ export const dashboardStyles: CSSObject = {
       '& .MuiTab-root': {
         borderRadius: 0,
         padding: '10px 8px',
-        fontFamily: 'var(--kep-display-font)',
         fontSize: 14,
         fontWeight: 500,
         minHeight: 42,

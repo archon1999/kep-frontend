@@ -37,7 +37,7 @@ const TestResults = ({
         sx={{
           borderBottom: '1px solid var(--kep-line)',
           px: 'var(--kep-content-inset)',
-          '& .MuiTab-root': { fontFamily: 'var(--kep-display-font)', fontWeight: 500 },
+          '& .MuiTab-root': { fontFamily: 'var(--kep-reading-font)', fontWeight: 500 },
         }}
       >
         <Tab

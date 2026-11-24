@@ -122,7 +122,6 @@ export const landingFooterStyles: CSSObject[] = [
     '&.kep-footer-home nav h2, & .kep-footer-home nav h2': {
       fontSize: '17px',
       marginBottom: '16px',
-      fontFamily: 'var(--kep-display-font)',
     },
   },
   {
@@ -160,7 +159,7 @@ export const landingFooterStyles: CSSObject[] = [
       width: '100%',
       height: 'auto',
       overflow: 'hidden',
-      fontFamily: "'Alpha Lyrae', 'Open Sans', sans-serif",
+      fontFamily: 'var(--kep-display-font)',
       fontWeight: '500',
       fontSize: '340px',
       letterSpacing: '0',
@@ -290,7 +289,6 @@ export const landingFooterStyles: CSSObject[] = [
       '&.kep-footer-home nav h2, & .kep-footer-home nav h2': {
         fontSize: '13px',
         marginBottom: '10px',
-        fontFamily: 'var(--kep-display-font)',
       },
     },
   },

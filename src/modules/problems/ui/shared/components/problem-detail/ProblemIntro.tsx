@@ -27,7 +27,7 @@ const ProblemIntro = ({
         <Typography
           component="h1"
           sx={{
-            fontFamily: 'var(--kep-display-font)',
+            fontFamily: 'var(--kep-reading-font)',
             fontSize: { xs: 22, md: 26 },
             lineHeight: 1.3,
             fontWeight: 500,

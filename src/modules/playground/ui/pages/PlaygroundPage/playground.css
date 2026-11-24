@@ -1,5 +1,5 @@
 .runner-page {
-  --playground-mono: 'JetBrains Mono', Consolas, monospace;
+  --playground-mono: var(--kep-code-font);
 }
 .runner-header {
   display: flex;
@@ -12,8 +12,7 @@
   border-bottom: 1px solid var(--kep-line);
 }
 .runner-header .runner-title {
-  font: 500 18px/1.4 var(--kep-display-font);
-  letter-spacing: -0.025em;
+  font: 500 1.25rem/1.5 var(--kep-reading-font);
   white-space: nowrap;
 }
 .runner-header .runner-problems-link {

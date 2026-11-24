@@ -41,7 +41,7 @@ export const ConsoleTextArea = ({
       pr: 6,
       background: 'transparent',
       color: 'text.primary',
-      fontFamily: '"JetBrains Mono", Consolas, monospace',
+      fontFamily: 'var(--kep-code-font)',
       fontSize: 13,
       lineHeight: 1.8,
       '&::placeholder': { color: 'text.disabled', opacity: 1 },

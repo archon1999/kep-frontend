@@ -337,7 +337,7 @@ const Logo = ({
                 'linear-gradient(115deg, var(--kep-logo-sand) 0%, var(--kep-logo-mid) 48%, var(--kep-logo-ice) 100%)',
               WebkitBackgroundClip: 'text',
               WebkitTextFillColor: 'transparent',
-              fontFamily: "'Alpha Lyrae', 'Open Sans', sans-serif",
+              fontFamily: 'var(--kep-display-font)',
               fontWeight: 500,
               fontVariantLigatures: 'normal',
               fontFeatureSettings: 'normal',
