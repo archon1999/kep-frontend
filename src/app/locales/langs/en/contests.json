@@ -240,6 +240,7 @@
       "comparisonContestant": "Comparison"
     },
     "contestantStatus": {
+      "disqualified": "Disqualified",
       "official": "Official",
       "virtual": "Virtual",
       "virtualContestant": "Virtual contestant",

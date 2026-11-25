@@ -9,6 +9,7 @@ import {
   ContestantTeamMember,
 } from 'modules/contests/domain/entities/contestant.entity';
 import UserPopover from 'modules/users/ui/shared/components/UserPopover';
+import IconifyIcon from 'shared/components/base/IconifyIcon';
 import KepIcon from 'shared/components/base/KepIcon';
 import CountryFlagIcon from 'shared/components/common/CountryFlagIcon';
 import ContestsRatingChip from 'shared/components/rating/ContestsRatingChip';
@@ -93,12 +94,22 @@ const ContestantView = ({
   const resolvedUnrated = Boolean(isUnrated ?? baseContestant?.isUnrated);
   const resolvedVirtual = Boolean(isVirtual ?? baseContestant?.isVirtual);
 
-  const nameColorSx = textColor ? { color: textColor } : undefined;
-  const teamColorSx = teamNameColor ? { color: teamNameColor } : undefined;
+  const excluded = baseContestant?.isDisqualified;
+  const nameColorSx = { color: textColor, textDecoration: excluded ? 'line-through' : undefined };
+  const teamColorSx = { color: teamNameColor, textDecoration: nameColorSx.textDecoration };
 
   const renderStatusIcons = () => {
     const icons = [];
 
+    if (excluded) {
+      return (
+        <Tooltip title={t('contests.contestantStatus.disqualified')}>
+          <span role="img" aria-label={t('contests.contestantStatus.disqualified')}>
+            <IconifyIcon icon="mdi:cancel" fontSize={15} color="error.main" />
+          </span>
+        </Tooltip>
+      );
+    }
     if (resolvedUnrated && !resolvedVirtual) {
       icons.push(
         <Tooltip key="unrated" title={t('contests.contestantStatus.unrated')}>

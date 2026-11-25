@@ -6,6 +6,7 @@ import NavProvider from 'app/layouts/main-layout/NavProvider';
 import LanguageMenu from 'app/layouts/main-layout/common/LanguageMenu';
 import ProfileMenu from 'app/layouts/main-layout/common/ProfileMenu';
 import ThemeToggler from 'app/layouts/main-layout/common/ThemeToggler';
+import { useAuth } from 'app/providers/AuthProvider';
 import { resources } from 'app/routes/resources';
 import { adminMenu } from 'app/routes/sitemap';
 import { useAdminRegistry } from 'modules/admin/application';
@@ -31,6 +32,7 @@ const headerHeight = { xs: 64, sm: 64, md: 64, lg: 64, xl: 64 };
 export default function AdminLayout({ children }: PropsWithChildren) {
   const { t } = useTranslation();
   const { pathname } = useLocation();
+  const { currentUser } = useAuth();
   const { data = [] } = useAdminRegistry();
   const [mobileOpen, setMobileOpen] = useState(false);
   const activePath = (path: string) => pathname === path || pathname.startsWith(path + '/');
@@ -56,6 +58,15 @@ export default function AdminLayout({ children }: PropsWithChildren) {
           name: t('admin.console.catalog'),
           icon: 'mdi:view-grid-outline',
         },
+        ...(currentUser?.isSuperuser
+          ? [
+              {
+                path: resources.AdminIntegrity,
+                name: t('admin.integrity.title'),
+                icon: 'mdi:file-compare',
+              },
+            ]
+          : []),
       ].map((item) => (
         <Button
           key={item.path}
@@ -168,7 +179,11 @@ export default function AdminLayout({ children }: PropsWithChildren) {
   );
   return (
     <NavProvider
-      menuItems={adminMenu}
+      menuItems={
+        currentUser?.isSuperuser
+          ? adminMenu
+          : adminMenu.filter((item) => item.path !== resources.AdminIntegrity)
+      }
       navLabel={t('admin.title')}
       topbarHeightOverride={headerHeight}
     >

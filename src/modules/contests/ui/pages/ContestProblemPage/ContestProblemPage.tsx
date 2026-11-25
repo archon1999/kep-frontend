@@ -1,4 +1,5 @@
-import { useMediaQuery, useTheme } from '@mui/material';
+import { useTranslation } from 'react-i18next';
+import { Alert, useMediaQuery, useTheme } from '@mui/material';
 import { useContestProblemPage } from 'modules/contests/application/hooks/useContestProblemPage';
 import { Page404 } from 'modules/errors/ui/pages';
 import { ProblemWorkspaceEditor } from 'modules/problems/ui/shared/components/problem-detail/ProblemWorkspaceEditor';
@@ -11,6 +12,7 @@ import ContestWorkspaceHeader from './components/ContestWorkspaceHeader';
 
 const ContestProblemPage = () => {
   const model = useContestProblemPage();
+  const { t } = useTranslation();
   const {
     hasCode,
     handleRun,
@@ -41,7 +43,7 @@ const ContestProblemPage = () => {
     },
     submit: {
       enabled: Boolean(
-        model.currentUser && model.hasCode && !model.isSubmitting && !model.isContestLocked,
+        model.currentUser && model.hasCode && !model.isSubmitting && !model.isSubmissionLocked,
       ),
       onTrigger: model.handleSubmit,
     },
@@ -67,7 +69,11 @@ const ContestProblemPage = () => {
         isRunning={isRunning}
         isSubmitting={isSubmitting}
         isLocked={isContestLocked}
+        isSubmissionLocked={model.isSubmissionLocked}
       />
+      {model.contestant?.isDisqualified && (
+        <Alert severity="warning">{t('contests.contestantStatus.disqualified')}</Alert>
+      )}
       <ProblemWorkspaceLayout
         isMobile={isMobile}
         showEditor={model.activeTab === 'code'}

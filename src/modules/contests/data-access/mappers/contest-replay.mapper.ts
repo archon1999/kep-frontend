@@ -63,6 +63,7 @@ export function mapContestReplay(dto: ContestReplayDto): ContestReplay {
               country: profile?.country ?? undefined,
               isOfficial: profile?.isOfficial ?? undefined,
               isUnrated: profile?.isUnrated,
+              isDisqualified: profile?.isDisqualified,
               team: profile?.team,
             },
             rank: frame.ranks[index],

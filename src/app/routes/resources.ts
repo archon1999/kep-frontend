@@ -8,6 +8,7 @@ export const resources = {
 
   Admin: '/admin',
   AdminCatalog: '/admin/catalog',
+  AdminIntegrity: '/admin/contest-integrity',
   AdminManage: '/admin/manage',
   AdminResource: '/admin/:resourceSlug',
   AdminResourceCreate: '/admin/:resourceSlug/new',

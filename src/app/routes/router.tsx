@@ -34,6 +34,7 @@ import {
   AdminCatalogPage,
   AdminDashboardPage,
   AdminImportOrderPage,
+  AdminIntegrityPage,
   AdminLegacyResourceRedirect,
   AdminResourceFormPage,
   AdminResourceListPage,
@@ -165,6 +166,11 @@ export const routes: RouteObject[] = [
             index: true,
             element: <AdminDashboardPage />,
             handle: { titleKey: 'pageTitles.adminDashboard' },
+          },
+          {
+            path: resources.AdminIntegrity,
+            element: <AdminIntegrityPage />,
+            handle: { titleKey: 'admin.integrity.title' },
           },
           {
             path: 'catalog',

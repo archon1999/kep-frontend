@@ -2,7 +2,14 @@ import type { ContestantEntity } from './contestant.entity';
 
 export type ReplayParticipant = Pick<
   ContestantEntity,
-  'username' | 'userFullName' | 'ratingTitle' | 'country' | 'isOfficial' | 'isUnrated' | 'team'
+  | 'username'
+  | 'userFullName'
+  | 'ratingTitle'
+  | 'country'
+  | 'isOfficial'
+  | 'isUnrated'
+  | 'isDisqualified'
+  | 'team'
 >;
 
 export interface ReplayProblem {

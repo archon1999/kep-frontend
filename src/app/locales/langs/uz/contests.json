@@ -258,6 +258,7 @@
       "comparisonContestant": "Solishtirilayotgan"
     },
     "contestantStatus": {
+      "disqualified": "Musobaqadan chetlashtirilgan",
       "official": "Rasmiy",
       "virtual": "Virtual",
       "virtualContestant": "Virtual contestant",

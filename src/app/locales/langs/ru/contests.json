@@ -264,6 +264,7 @@
       "comparisonContestant": "Сравнение"
     },
     "contestantStatus": {
+      "disqualified": "Дисквалифицирован",
       "official": "Официально",
       "virtual": "Виртуально",
       "virtualContestant": "Virtual contestant",

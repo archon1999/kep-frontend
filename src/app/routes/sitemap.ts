@@ -199,6 +199,14 @@ export const clientMenu: MenuItem[] = [
 
 export const adminMenu: MenuItem[] = [
   {
+    name: 'Contest integrity',
+    key: 'admin.integrity.title',
+    path: resources.AdminIntegrity,
+    pathName: 'admin-integrity',
+    icon: 'mdi:file-compare',
+    active: true,
+  },
+  {
     name: 'Dashboard',
     key: 'admin.console.dashboard',
     path: resources.Admin,

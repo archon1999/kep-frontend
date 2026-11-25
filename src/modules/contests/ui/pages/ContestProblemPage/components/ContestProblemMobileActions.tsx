@@ -15,6 +15,7 @@ type Props = {
     | 'activeTab'
     | 'handleTabChange'
     | 'isContestLocked'
+    | 'isSubmissionLocked'
   >;
 };
 export const ContestProblemMobileActions = ({ model }: Props) => {
@@ -70,7 +71,7 @@ export const ContestProblemMobileActions = ({ model }: Props) => {
             variant="contained"
             color="primary"
             onClick={handleSubmit}
-            disabled={!hasCode || isSubmitting || isContestLocked}
+            disabled={!hasCode || isSubmitting || model.isSubmissionLocked}
             sx={{ flex: 1, minWidth: 0, minHeight: 44 }}
           >
             {t('problems.detail.submit')}

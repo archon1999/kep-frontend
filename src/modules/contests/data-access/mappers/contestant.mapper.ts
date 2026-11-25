@@ -29,9 +29,7 @@ const mapTeam = (payload: any): ContestantTeam => ({
   members: (payload?.members ?? payload?.team_members ?? []).map(mapTeamMember),
 });
 
-export const mapContestant = (
-  payload: any,
-): ContestantEntity => {
+export const mapContestant = (payload: any): ContestantEntity => {
   return {
     id: payload?.id !== undefined ? toNumber(payload.id) : undefined,
     rowType: payload?.rowType ?? payload?.row_type ?? 'official',
@@ -73,6 +71,7 @@ export const mapContestant = (
     saveRatingPurchased: Boolean(
       payload?.saveRatingPurchased ?? payload?.save_rating_purchased ?? false,
     ),
+    isDisqualified: Boolean(payload?.isDisqualified ?? payload?.is_disqualified),
     isVirtual: payload?.isVirtual ?? payload?.virtual ?? false,
     isUnrated: payload?.isUnrated ?? payload?.unrated ?? false,
     isOfficial:
@@ -117,9 +116,7 @@ export const mapContestantTimeline = (payload: any): ContestantTimeline => ({
   points: (payload?.points ?? []).map(mapContestantProgressPoint),
 });
 
-export const mapContestRegistrant = (
-  payload: any,
-): ContestRegistrant => {
+export const mapContestRegistrant = (payload: any): ContestRegistrant => {
   return {
     username: payload?.username ?? '',
     rating: payload?.rating !== undefined ? toNumber(payload.rating) : undefined,

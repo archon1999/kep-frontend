@@ -1,5 +1,6 @@
 import { lazy } from 'react';
 
+export const AdminIntegrityPage = lazy(() => import('./AdminIntegrityPage/AdminIntegrityPage'));
 export const AdminDashboardPage = lazy(() => import('./AdminDashboardPage/AdminDashboardPage'));
 export const AdminCatalogPage = lazy(() => import('./AdminCatalogPage/AdminCatalogPage'));
 export const AdminResourceListPage = lazy(

@@ -28,6 +28,7 @@ interface ContestWorkspaceHeaderProps {
   isSubmitting: boolean;
   hasCode: boolean;
   isLocked: boolean;
+  isSubmissionLocked: boolean;
 }
 
 const ContestWorkspaceHeader = ({
@@ -47,6 +48,7 @@ const ContestWorkspaceHeader = ({
   isSubmitting,
   hasCode,
   isLocked,
+  isSubmissionLocked,
 }: ContestWorkspaceHeaderProps) => {
   const { t } = useTranslation();
   const problemsHref = getResourceByParams(resources.ContestProblems, { id: contestId ?? '' });
@@ -106,7 +108,7 @@ const ContestWorkspaceHeader = ({
               <Button
                 variant="contained"
                 onClick={onSubmit}
-                disabled={isSubmitting || !hasCode || isLocked}
+                disabled={isSubmitting || !hasCode || isSubmissionLocked}
                 loading={isSubmitting}
                 endIcon={<IconifyIcon icon="mdi:arrow-top-right" />}
               >

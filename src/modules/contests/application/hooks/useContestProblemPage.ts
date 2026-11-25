@@ -65,6 +65,7 @@ export const useContestProblemPage = () => {
   });
   const problem = contestProblem?.symbol === problemSymbol ? contestProblem?.problem : undefined;
   const isContestLocked = !contest || contest.statusCode === ContestStatus.NotStarted;
+  const isSubmissionLocked = isContestLocked || Boolean(contestant?.isDisqualified);
   const scope = `contest:${id}:${problemSymbol}:${currentUser?.username ?? ''}:${isContestLocked}`;
   const workspace = useProblemWorkspace({
     problem,
@@ -121,7 +122,7 @@ export const useContestProblemPage = () => {
       !problemSymbol ||
       !workspace.selectedLang ||
       !workspace.codeRef.current ||
-      isContestLocked
+      isSubmissionLocked
     )
       return;
     return submission.run(
@@ -166,6 +167,7 @@ export const useContestProblemPage = () => {
     handleSubmit,
     isSubmitting: submission.isPending,
     isContestLocked,
+    isSubmissionLocked,
     timeLeft,
     upsolveHref,
     canOpenOriginalProblem,
