@@ -1,8 +1,9 @@
 import { useTranslation } from 'react-i18next';
 import { Link } from 'react-router';
-import { Box, Stack, Typography } from '@mui/material';
+import { Box, Chip, Stack, Typography, chipClasses } from '@mui/material';
 import { getEventHighlightStyles } from 'app/theme/styles/listPage';
 import IconifyIcon from 'shared/components/base/IconifyIcon';
+import { ScrambleText } from 'shared/components/motion/InteractionEffects';
 import { formatDateTime } from 'shared/lib/dateTime';
 
 interface UpcomingContestLinkProps {
@@ -24,7 +25,7 @@ const UpcomingContestLink = ({ title, startTime, href }: UpcomingContestLinkProp
         border: '1px solid var(--kep-line)',
         display: 'grid',
         gridTemplateColumns: { xs: 'minmax(0, 1fr) auto', md: 'minmax(0, 1fr) auto auto' },
-        gridTemplateAreas: { xs: '"identity arrow" "time arrow"', md: '"identity time arrow"' },
+        gridTemplateAreas: { xs: '"identity arrow" "time time"', md: '"identity time arrow"' },
         alignItems: 'center',
         columnGap: { xs: 1.5, md: 2 },
         rowGap: 0.75,
@@ -45,7 +46,14 @@ const UpcomingContestLink = ({ title, startTime, href }: UpcomingContestLinkProp
         <Typography
           component="span"
           variant="label"
-          sx={{ display: 'flex', alignItems: 'center', gap: 0.75, color: 'text.secondary' }}
+          sx={(theme) => ({
+            display: 'flex',
+            alignItems: 'center',
+            gap: 0.75,
+            color: 'text.primary',
+            letterSpacing: '0.02em',
+            ...theme.applyStyles('dark', { color: theme.vars.palette.common.white }),
+          })}
         >
           <IconifyIcon icon="mdi:clock-outline" fontSize={16} color="warning.main" aria-hidden />
           {t('contests.nextContest')}
@@ -54,29 +62,31 @@ const UpcomingContestLink = ({ title, startTime, href }: UpcomingContestLinkProp
           component="span"
           variant="h5"
           sx={{
-            fontWeight: 650,
-            lineHeight: 1.25,
+            fontFamily: 'var(--kep-reading-font)',
+            fontWeight: 500,
+            lineHeight: 1.2,
             letterSpacing: '-0.025em',
             overflowWrap: 'anywhere',
           }}
         >
-          {title}
+          <ScrambleText className="contest-title-text" mixed>
+            {title}
+          </ScrambleText>
         </Typography>
       </Stack>
-      <Typography
+      <Chip
         component="time"
-        variant="body2"
         dateTime={startTime}
-        color="text.secondary"
+        variant="category"
+        icon={<IconifyIcon icon="mdi:calendar-outline" aria-hidden />}
+        label={t('contests.startsLabel', { date: formatDateTime(startTime, 'compactDateTime') })}
         sx={{
           gridArea: 'time',
+          justifySelf: 'start',
           fontVariantNumeric: 'tabular-nums',
-          borderInlineStart: { md: '1px solid var(--kep-line)' },
-          paddingInlineStart: { md: '16px' },
+          [`& .${chipClasses.label}`]: { whiteSpace: 'normal' },
         }}
-      >
-        {t('contests.startsLabel', { date: formatDateTime(startTime, 'compactDateTime') })}
-      </Typography>
+      />
       <Box
         component="span"
         className="contests-upcoming-arrow"
