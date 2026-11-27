@@ -13,9 +13,9 @@
       "registrations": "Ro‘yxatdan o‘tganlar",
       "contestants": "Ishtirokchilar"
     },
-    "heroBadge": "BELLASHING VA O‘SING",
     "title": "Kontestlar",
     "subtitle": "Yaqinlashayotgan musobaqalar, arxiv masalalari va natijalar.",
+    "nextContest": "Keyingi musobaqa",
     "searchLabel": "Kontestlarni qidirish",
     "searchPlaceholder": "Sarlavha yoki muallif boʻyicha qidirish",
     "typeLabel": "Turi",

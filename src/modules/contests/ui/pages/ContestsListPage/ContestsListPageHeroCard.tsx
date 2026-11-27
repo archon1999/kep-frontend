@@ -1,12 +1,15 @@
 import { MouseEventHandler } from 'react';
 import { useTranslation } from 'react-i18next';
 import { Link as RouterLink } from 'react-router';
-import { Button } from '@mui/material';
+import { Button, Skeleton } from '@mui/material';
 import { resources } from 'app/routes/resources';
+import { useFeaturedContestPromo } from 'modules/home/application/hooks/useFeaturedContestPromo';
 import IconifyIcon from 'shared/components/base/IconifyIcon';
 import FilterButton from 'shared/components/common/FilterButton';
 import { ScrambleText } from 'shared/components/motion/InteractionEffects';
 import PageHeader from 'shared/components/sections/common/PageHeader';
+import UpcomingContestLink from './components/UpcomingContestLink';
+import { contestsHeroSx } from './hero.styles';
 
 interface ContestsListPageHeroCardProps {
   canViewMyStats: boolean;
@@ -24,16 +27,30 @@ const ContestsListPageHeroCard = ({
   onToggleFilters,
 }: ContestsListPageHeroCardProps) => {
   const { t } = useTranslation();
-  const title = t('contests.title');
+  const { nextContest, isLoading } = useFeaturedContestPromo({ revalidateOnUpcomingStart: true });
+  const upcomingAction = nextContest?.startTime ? (
+    <UpcomingContestLink
+      title={nextContest.title}
+      startTime={nextContest.startTime}
+      href={nextContest.href}
+    />
+  ) : isLoading ? (
+    <Skeleton
+      variant="rectangular"
+      sx={{ height: { xs: 145, sm: 115, md: 90 } }}
+      aria-hidden="true"
+    />
+  ) : undefined;
 
   return (
     <>
       <PageHeader
         variant="hero"
-        title={title}
+        title={t('contests.title')}
         titleId="contests-list-title"
-        badge={t('contests.heroBadge')}
         subtitle={t('contests.subtitle')}
+        actionComponent={upcomingAction}
+        sx={contestsHeroSx}
       />
       <div className="contests-list-toolbar">
         <div className="contests-filter-controls">

@@ -1,5 +1,18 @@
-import type { CSSObject } from '@mui/material/styles';
+import type { CSSObject, SxProps, Theme } from '@mui/material/styles';
 import { listContentStyles, listFrameStyles } from 'app/theme/styles/listPage';
+
+export const contestsHeroSx: SxProps<Theme> = {
+  '&&.kep-page-hero': {
+    display: 'flex',
+    flexDirection: 'column',
+    alignItems: 'center',
+    gap: { xs: 2.5, md: 3 },
+    px: 'var(--kep-content-inset)',
+    py: { xs: 3, md: 4 },
+  },
+  '& .kep-page-hero-copy': { '& > h1': { margin: '0 0 10px' } },
+  '& .kep-page-header-actions': { width: '100%', maxWidth: 640, minWidth: 0 },
+};
 
 export const heroStyles: CSSObject[] = [
   {

@@ -13,9 +13,9 @@
       "registrations": "Registrations",
       "contestants": "Contestants"
     },
-    "heroBadge": "COMPETE & GROW",
     "title": "Contests",
     "subtitle": "Browse upcoming contests, solve past problems, and review the standings.",
+    "nextContest": "Next contest",
     "searchLabel": "Search contests",
     "searchPlaceholder": "Search by title or author",
     "typeLabel": "Type",
