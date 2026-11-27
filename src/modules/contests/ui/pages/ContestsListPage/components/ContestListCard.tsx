@@ -149,13 +149,9 @@ const ContestListCard = ({ contest }: { contest: ContestListItem }) => {
                           fullName={leader.fullName}
                           countryCode={leader.country}
                         >
-                          <button
-                            className="contest-user-button"
-                            type="button"
-                            title={leader.username}
-                          >
+                          <span className="contest-user-button" title={leader.username}>
                             <span className="contest-user-name">{leader.username}</span>
-                          </button>
+                          </span>
                         </UserPopover>
                       )}
                     </li>

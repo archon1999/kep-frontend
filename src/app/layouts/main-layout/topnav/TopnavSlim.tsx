@@ -1,3 +1,4 @@
+import { useTranslation } from 'react-i18next';
 import { Box, Divider, Stack, SxProps, paperClasses } from '@mui/material';
 import MuiAppBar from '@mui/material/AppBar';
 import IconButton from '@mui/material/IconButton';
@@ -18,12 +19,14 @@ interface TopnavSlimProps {
 }
 
 const TopnavSlim = ({ sx }: TopnavSlimProps) => {
+  const { t } = useTranslation();
   const {
     config: { navColor },
     handleDrawerToggle,
   } = useSettingsContext();
 
   const { up } = useBreakpoints();
+  const upSm = up('sm');
   const upLg = up('lg');
 
   return (
@@ -41,19 +44,20 @@ const TopnavSlim = ({ sx }: TopnavSlimProps) => {
       ]}
     >
       {navColor === 'vibrant' && <VibrantBackground position="top" />}
-      <Toolbar variant="appbarSlim" sx={{ px: { xs: 3, md: 5 }, maxHeight: 38 }}>
+      <Toolbar variant="appbarSlim" sx={{ px: { xs: 0.75, sm: 3, md: 5 }, maxHeight: 38 }}>
         <Box
           sx={{
             display: { xs: 'flex' },
             alignItems: 'center',
-            gap: 1,
-            mr: 3,
+            gap: { xs: 0.5, sm: 1 },
+            mr: { xs: 0, sm: 3 },
           }}
         >
           <IconButton
             color="inherit"
-            aria-label="open drawer"
-            edge="start"
+            aria-label={t('homePage.landing.footer.menu')}
+            edge={upSm ? 'start' : false}
+            size={upSm ? 'medium' : 'small'}
             onClick={handleDrawerToggle}
             sx={[
               { display: { xs: 'flex', lg: 'none' } },

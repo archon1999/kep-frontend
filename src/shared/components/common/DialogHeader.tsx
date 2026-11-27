@@ -1,7 +1,7 @@
 import { ReactNode } from 'react';
 import { useTranslation } from 'react-i18next';
 import { Box, DialogTitle, IconButton, Stack, Typography } from '@mui/material';
-import IconifyIcon from 'shared/components/base/IconifyIcon';
+import CloseIcon from 'shared/components/icons/CloseIcon';
 import MixedText from './MixedText';
 
 interface DialogHeaderProps {
@@ -71,13 +71,14 @@ const DialogHeader = ({
         )}
         {onClose && (
           <IconButton
+            type="button"
             aria-label={t('common.close')}
             onClick={onClose}
             disabled={closeDisabled}
             size="small"
             sx={{ flexShrink: 0 }}
           >
-            <IconifyIcon icon="mdi:close" />
+            <CloseIcon />
           </IconButton>
         )}
       </Stack>

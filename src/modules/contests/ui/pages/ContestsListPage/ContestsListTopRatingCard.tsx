@@ -117,8 +117,7 @@ const ContestsListTopRatingCard = () => {
                   </td>
                   <td>
                     <UserPopover username={row.username}>
-                      <button
-                        type="button"
+                      <span
                         className="contest-user-button"
                         title={row.username}
                         style={{ '--contest-user-color': level?.color } as CSSProperties}
@@ -129,7 +128,7 @@ const ContestsListTopRatingCard = () => {
                           icon="mdi:arrow-top-right"
                           aria-hidden="true"
                         />
-                      </button>
+                      </span>
                     </UserPopover>
                   </td>
                   <td>

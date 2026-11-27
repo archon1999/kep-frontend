@@ -1,4 +1,4 @@
-import { useEffect, useMemo, useState } from 'react';
+import { type MouseEvent, useEffect, useMemo, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { Link as RouterLink } from 'react-router';
 import {
@@ -30,6 +30,7 @@ import PageLoader from 'shared/components/loading/PageLoader';
 import FramedPage from 'shared/components/sections/common/FramedPage';
 import PageHeader from 'shared/components/sections/common/PageHeader';
 import SectionHeader from 'shared/components/sections/common/SectionHeader';
+import { copyText } from 'shared/lib/clipboard';
 import { toast } from 'sonner';
 
 const useActiveHeading = (headings: BlogArticleHeading[]) => {
@@ -105,24 +106,25 @@ const BlogPostPage = () => {
   const articleHeadings = article.headings;
   const activeHeadingId = useActiveHeading(articleHeadings);
 
-  const handleShare = async () => {
-    try {
-      if (navigator.share) {
+  const handleShare = async ({ currentTarget }: MouseEvent<HTMLButtonElement>) => {
+    const url = window.location.href;
+    if (navigator.share) {
+      try {
         await navigator.share({
           title: post?.title,
           text: articlePreview,
-          url: window.location.href,
+          url,
         });
-      } else if (navigator.clipboard) {
-        await navigator.clipboard.writeText(window.location.href);
+        return;
+      } catch (error) {
+        if (error instanceof DOMException && error.name === 'AbortError') return;
       }
+    }
 
+    if (await copyText(url, currentTarget)) {
       toast.success(t('blog.messages.linkCopied'));
-    } catch {
-      if (navigator.clipboard) {
-        await navigator.clipboard.writeText(window.location.href);
-        toast.success(t('blog.messages.linkCopied'));
-      }
+    } else {
+      toast.error(t('common.copyFailed'));
     }
   };
 

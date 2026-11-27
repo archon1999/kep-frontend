@@ -1,11 +1,11 @@
-import { MouseEvent, useState } from 'react';
+import { useState } from 'react';
+import { useTranslation } from 'react-i18next';
 import { Box, Button, SxProps } from '@mui/material';
 import { ButtonOwnProps } from '@mui/material';
 import { useBreakpoints } from 'app/providers/BreakpointsProvider';
 import IconifyIcon from 'shared/components/base/IconifyIcon';
 import SearchDialog from './SearchDialog';
 import SearchPopover from './SearchPopover';
-import SearchTextField from './SearchTextField';
 
 interface SearchBoxButtonProps extends ButtonOwnProps {
   type?: 'default' | 'slim';
@@ -16,11 +16,8 @@ interface SearchBoxProps {
 }
 
 const SearchBox = ({ sx }: SearchBoxProps) => {
-  const [anchorEl, setAnchorEl] = useState<HTMLDivElement | HTMLButtonElement | null>(null);
-
-  const handleClick = (event: MouseEvent<HTMLDivElement | HTMLButtonElement>) => {
-    setAnchorEl(event.currentTarget);
-  };
+  const { t } = useTranslation();
+  const [anchorEl, setAnchorEl] = useState<HTMLButtonElement | null>(null);
 
   const handleClose = () => {
     setAnchorEl(null);
@@ -28,38 +25,45 @@ const SearchBox = ({ sx }: SearchBoxProps) => {
 
   return (
     <>
-      <SearchTextField
-        sx={sx}
-        focused={false}
-        disabled={Boolean(anchorEl)}
-        slotProps={{
-          input: {
-            onClick: handleClick,
-            sx: {
-              borderRadius: 5,
-              border: 1,
-              borderStyle: 'solid',
-              borderColor: 'transparent',
-            },
+      <Button
+        className="search-box-input"
+        color="neutral"
+        variant="outlined"
+        aria-haspopup="dialog"
+        aria-expanded={Boolean(anchorEl)}
+        onClick={(event) => setAnchorEl(event.currentTarget)}
+        startIcon={<IconifyIcon icon="mdi:magnify" sx={{ fontSize: 20 }} />}
+        sx={[
+          {
+            minWidth: 0,
+            minHeight: 42,
+            px: 1.75,
+            justifyContent: 'flex-start',
+            bgcolor: 'background.default',
+            color: 'text.secondary',
+            textTransform: 'none',
+            fontWeight: 400,
+            '&.Mui-focusVisible': { outline: '2px solid', outlineColor: 'primary.main' },
           },
-        }}
-      />
+          ...(Array.isArray(sx) ? sx : [sx]),
+        ]}
+      >
+        {t('common.searchPlaceholder')}
+      </Button>
       <SearchPopover anchorEl={anchorEl} handleClose={handleClose} />
     </>
   );
 };
 
 export const SearchBoxButton = ({ type = 'default', sx, ...rest }: SearchBoxButtonProps) => {
-  const [anchorEl, setAnchorEl] = useState<HTMLDivElement | HTMLButtonElement | null>(null);
+  const { t } = useTranslation();
+  const [open, setOpen] = useState(false);
   const { up } = useBreakpoints();
   const upSm = up('sm');
-
-  const handleClick = (event: MouseEvent<HTMLDivElement | HTMLButtonElement>) => {
-    setAnchorEl(event.currentTarget);
-  };
+  const label = t('common.searchPlaceholder');
 
   const handleClose = () => {
-    setAnchorEl(null);
+    setOpen(false);
   };
 
   return (
@@ -67,30 +71,33 @@ export const SearchBoxButton = ({ type = 'default', sx, ...rest }: SearchBoxButt
       {type === 'slim' && upSm ? (
         <Button
           className="search-box-button"
-          aria-label="Search"
-          title="Search"
+          aria-haspopup="dialog"
+          aria-expanded={open}
+          title={label}
           color="neutral"
           size="small"
           variant="soft"
-          onClick={handleClick}
+          onClick={() => setOpen(true)}
           startIcon={<IconifyIcon icon="material-symbols:search-rounded" sx={{ fontSize: 20 }} />}
           sx={{ borderRadius: 11, py: '5px', ...sx }}
           {...rest}
         >
           <Box sx={{ mb: 0.25 }} component="span">
-            Search
+            {label}
           </Box>
         </Button>
       ) : (
         <Button
           className="search-box-button"
-          aria-label="Search"
-          title="Search"
+          aria-label={label}
+          aria-haspopup="dialog"
+          aria-expanded={open}
+          title={label}
           color="neutral"
           shape="circle"
           variant="soft"
           size={type === 'slim' ? 'small' : 'medium'}
-          onClick={handleClick}
+          onClick={() => setOpen(true)}
           sx={sx}
           {...rest}
         >
@@ -100,7 +107,7 @@ export const SearchBoxButton = ({ type = 'default', sx, ...rest }: SearchBoxButt
           />
         </Button>
       )}
-      <SearchDialog anchorEl={anchorEl} handleClose={handleClose} />
+      <SearchDialog open={open} handleClose={handleClose} />
     </>
   );
 };

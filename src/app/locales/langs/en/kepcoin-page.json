@@ -1,5 +1,6 @@
 {
   "kepcoinSpend": {
+    "refreshFailed": "Could not refresh the details after the purchase.",
     "insufficientBalance": "Not enough Kepcoin",
     "confirmTitle": "Want to buy?",
     "confirmDescription": "The displayed Kepcoin amount will be deducted when you confirm.",

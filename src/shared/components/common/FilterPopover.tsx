@@ -3,6 +3,7 @@ import { useTranslation } from 'react-i18next';
 import { Box, Button, IconButton, Popover, Stack, Typography } from '@mui/material';
 import { filterPopoverStyles } from 'app/theme/styles/overlays';
 import IconifyIcon from 'shared/components/base/IconifyIcon';
+import CloseIcon from 'shared/components/icons/CloseIcon';
 import MixedText from './MixedText';
 
 interface FilterPopoverProps {
@@ -45,6 +46,7 @@ const FilterPopover = ({
         paper: {
           variant: 'framed',
           role: 'dialog',
+          'aria-modal': true,
           'aria-labelledby': `${id}-title`,
           sx: [filterPopoverStyles, ...(maxHeight ? [{ maxHeight }] : [])],
         },
@@ -82,7 +84,7 @@ const FilterPopover = ({
           size="small"
           sx={{ flexShrink: 0 }}
         >
-          <IconifyIcon icon="mdi:close" />
+          <CloseIcon />
         </IconButton>
       </Stack>
       <Box

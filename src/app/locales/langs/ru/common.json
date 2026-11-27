@@ -28,8 +28,13 @@
     "draws": "Ничьи",
     "losses": "Поражения",
     "close": "Закрыть",
+    "copyFailed": "Не удалось скопировать",
     "minutesShort": "мин",
     "searchPlaceholder": "Поиск",
+    "themeMode": {
+      "switchToLight": "Переключиться на светлую тему",
+      "switchToDark": "Переключиться на тёмную тему"
+    },
     "dataGrid": {
       "emptyState": {
         "filteredTitle": "Ничего не найдено",
@@ -55,8 +60,11 @@
       }
     },
     "pagination": {
+      "label": "Навигация по страницам",
       "previous": "Назад",
-      "next": "Далее"
+      "next": "Далее",
+      "goToPage": "Перейти на страницу {{page}}",
+      "currentPage": "Страница {{page}}"
     },
     "dailyTasks": {
       "title": "Ежедневные задачи",

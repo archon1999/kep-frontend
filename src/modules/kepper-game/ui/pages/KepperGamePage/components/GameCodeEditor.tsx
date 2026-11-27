@@ -1,7 +1,7 @@
-import { type KeyboardEvent, useEffect, useRef, useState } from 'react';
+import { type KeyboardEvent, useRef } from 'react';
 import { useTranslation } from 'react-i18next';
-import { Box, IconButton, Tooltip } from '@mui/material';
-import IconifyIcon from 'shared/components/base/IconifyIcon';
+import { Box } from '@mui/material';
+import ClipboardButton from 'shared/components/common/ClipboardButton';
 
 type GameCodeEditorProps = {
   value: string;
@@ -26,19 +26,11 @@ const GameCodeEditor = ({ value, disabled, onChange }: GameCodeEditorProps) => {
   const textareaRef = useRef<HTMLTextAreaElement>(null);
   const highlightedRef = useRef<HTMLPreElement>(null);
   const numbersRef = useRef<HTMLDivElement>(null);
-  const copyTimer = useRef<number | null>(null);
-  const [copied, setCopied] = useState(false);
   const lineCount = value.split('\n').length;
   const editorHeight = {
     xs: Math.min(360, Math.max(230, lineCount * 22 + 30)),
     lg: Math.min(460, Math.max(370, lineCount * 22 + 30)),
   };
-
-  useEffect(() => {
-    return () => {
-      if (copyTimer.current !== null) window.clearTimeout(copyTimer.current);
-    };
-  }, []);
 
   const syncScroll = () => {
     const textarea = textareaRef.current;
@@ -59,17 +51,6 @@ const GameCodeEditor = ({ value, disabled, onChange }: GameCodeEditorProps) => {
     const end = textarea.selectionEnd;
     onChange(`${value.slice(0, start)}  ${value.slice(end)}`);
     requestAnimationFrame(() => textareaRef.current?.setSelectionRange(start + 2, start + 2));
-  };
-
-  const copyCode = async () => {
-    try {
-      await navigator.clipboard.writeText(value);
-      setCopied(true);
-      if (copyTimer.current !== null) window.clearTimeout(copyTimer.current);
-      copyTimer.current = window.setTimeout(() => setCopied(false), 1800);
-    } catch {
-      setCopied(false);
-    }
   };
 
   return (
@@ -174,23 +155,18 @@ const GameCodeEditor = ({ value, disabled, onChange }: GameCodeEditorProps) => {
           '&:disabled': { cursor: 'default' },
         }}
       />
-      <Tooltip title={t(copied ? 'game.copiedCode' : 'game.copyCode')}>
-        <IconButton
-          size="small"
-          onClick={copyCode}
-          aria-label={t(copied ? 'game.copiedCode' : 'game.copyCode')}
-          sx={{
-            position: 'absolute',
-            right: 8,
-            top: 8,
-            zIndex: 2,
-            bgcolor: 'background.paper',
-            color: copied ? 'success.main' : 'text.secondary',
-          }}
-        >
-          <IconifyIcon icon={copied ? 'mdi:check' : 'mdi:content-copy'} width={18} />
-        </IconButton>
-      </Tooltip>
+      <ClipboardButton
+        text={value}
+        iconOnly
+        labels={{ idle: t('game.copyCode'), copied: t('game.copiedCode') }}
+        sx={{
+          position: 'absolute',
+          right: 8,
+          top: 8,
+          zIndex: 2,
+          bgcolor: 'background.paper',
+        }}
+      />
     </Box>
   );
 };

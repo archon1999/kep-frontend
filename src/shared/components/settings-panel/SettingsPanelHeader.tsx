@@ -1,8 +1,8 @@
 import { useTranslation } from 'react-i18next';
 import { IconButton, Stack, Tab, Tabs, Typography } from '@mui/material';
-import IconifyIcon from 'shared/components/base/IconifyIcon';
 import MixedText from 'shared/components/common/MixedText';
 import PatternArtwork from 'shared/components/common/PatternArtwork';
+import CloseIcon from 'shared/components/icons/CloseIcon';
 
 export type SettingsPanelTab = 'theme' | 'font' | 'layout';
 
@@ -23,7 +23,7 @@ export const SettingsPanelHeader = ({ onClose }: { onClose: () => void }) => {
         sx={{ width: 88, '& .kep-pattern-signal': { animation: 'none' } }}
       />
       <IconButton aria-label={t('common.close')} onClick={onClose} size="small">
-        <IconifyIcon icon="material-symbols:close-rounded" />
+        <CloseIcon />
       </IconButton>
     </Stack>
   );

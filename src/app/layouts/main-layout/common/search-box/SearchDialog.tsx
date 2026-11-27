@@ -6,18 +6,17 @@ import ContentLoading from 'shared/components/loading/ContentLoading';
 const SearchResult = lazy(() => import('./SearchResult'));
 
 interface SearchDialogProps {
-  anchorEl: HTMLDivElement | HTMLButtonElement | null;
+  open: boolean;
   handleClose: () => void;
 }
 
-const SearchDialog = ({ anchorEl, handleClose }: SearchDialogProps) => {
-  const open = Boolean(anchorEl);
+const SearchDialog = ({ open, handleClose }: SearchDialogProps) => {
   const { t } = useTranslation();
   return (
     <Dialog
       open={open}
       onClose={handleClose}
-      aria-label={t('common.searchPlaceholder')}
+      slotProps={{ paper: { 'aria-label': t('common.searchPlaceholder') } }}
       maxWidth="sm"
       sx={{
         [`& .${dialogClasses.paper}`]: {

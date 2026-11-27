@@ -52,6 +52,7 @@ export const ListPagination = ({
   disabled?: boolean;
   pageHref?: (page: number) => string;
 }) => {
+  const { t } = useTranslation();
   const containerRef = useRef<HTMLDivElement>(null);
   const [width, setWidth] = useState(0);
   const visible = count > 1;
@@ -72,6 +73,7 @@ export const ListPagination = ({
       sx={{ width: '100%', minWidth: 0, px: 1, py: 3 }}
     >
       <Pagination
+        aria-label={t('common.pagination.label')}
         count={count}
         page={page}
         disabled={disabled}
@@ -79,6 +81,15 @@ export const ListPagination = ({
         siblingCount={width < 460 ? 0 : 1}
         boundaryCount={width < 320 ? 0 : 1}
         color="primary"
+        getItemAriaLabel={(type, page, selected) => {
+          if (type === 'page') {
+            return t(selected ? 'common.pagination.currentPage' : 'common.pagination.goToPage', {
+              page,
+            });
+          }
+          if (type === 'previous' || type === 'next') return t(`common.pagination.${type}`);
+          return '';
+        }}
         renderItem={(item) => {
           if (!pageHref || item.disabled || item.page === null || item.type.endsWith('ellipsis'))
             return <PaginationItem {...item} />;

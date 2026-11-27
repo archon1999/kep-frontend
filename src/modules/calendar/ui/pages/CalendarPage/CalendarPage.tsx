@@ -1,9 +1,12 @@
 import { useMemo, useRef, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { DatesSetArg, EventInput } from '@fullcalendar/core/index.js';
+import ruLocale from '@fullcalendar/core/locales/ru';
+import uzLocale from '@fullcalendar/core/locales/uz';
 import ReactFullCalendar from '@fullcalendar/react';
 import { Alert, Box, Button, Stack, Typography } from '@mui/material';
 import { alpha, useTheme } from '@mui/material/styles';
+import { normalizeSupportedLocale } from 'app/locales/locale';
 import { contentGridSx, contentInsetSx } from 'app/theme/styles/content';
 import {
   initialCalendarDate,
@@ -19,13 +22,19 @@ import SectionHeader from 'shared/components/sections/common/SectionHeader';
 import { formatDateRange, formatDateTime, formatDateTimePattern } from 'shared/lib/dateTime';
 import CalendarToolbar, { CalendarView } from './components/CalendarToolbar';
 
+const calendarLocales = {
+  'en-US': 'en',
+  'ru-RU': ruLocale,
+  'uz-UZ': uzLocale,
+};
+
 const formatRangeLabel = (start: Date, end: Date, view: CalendarView) => {
   if (view === 'timeGridDay') {
     return formatDateTime(start, 'fullDate');
   }
 
   if (view === 'timeGridWeek') {
-    return formatDateRange(start, new Date(end.getTime() - 1));
+    return formatDateRange(start, end);
   }
 
   return formatDateTime(start, 'monthYear');
@@ -48,13 +57,14 @@ const mapToEventInput = (
 });
 
 const CalendarPage = () => {
-  const { events, isLoading, error, mutate, periodEvents, setRange, rangeLabel, setRangeLabel } =
-    useCalendarPage();
+  const { events, isLoading, error, mutate, periodEvents, range, setRange } = useCalendarPage();
 
-  const { t } = useTranslation();
+  const { t, i18n } = useTranslation();
   const calendarRef = useRef<ReactFullCalendar | null>(null);
   const [view, setView] = useState<CalendarView>('dayGridMonth');
   const theme = useTheme();
+  const calendarLocale = calendarLocales[normalizeSupportedLocale(i18n.resolvedLanguage)];
+  const rangeLabel = formatRangeLabel(range.start, range.end, view);
 
   const eventColors = useMemo<Record<number, string>>(
     () => ({
@@ -88,43 +98,24 @@ const CalendarPage = () => {
   }, [eventColors, events, t, theme.palette.primary.main, theme.vars.palette.text.primary]);
 
   const handleDatesSet = (info: DatesSetArg) => {
-    const currentView = info.view.type as CalendarView;
-
-    setView(currentView);
+    setView(info.view.type as CalendarView);
     setRange({ start: info.view.currentStart, end: info.view.currentEnd });
-    setRangeLabel(formatRangeLabel(info.view.currentStart, info.view.currentEnd, currentView));
   };
 
   const handleViewChange = (nextView: CalendarView) => {
-    const api = calendarRef.current?.getApi();
-    if (api) {
-      api.changeView(nextView);
-      setRangeLabel(formatRangeLabel(api.view.currentStart, api.view.currentEnd, nextView));
-    }
+    calendarRef.current?.getApi().changeView(nextView);
   };
 
   const handleToday = () => {
-    const api = calendarRef.current?.getApi();
-    api?.today();
-    if (api) {
-      setRangeLabel(formatRangeLabel(api.view.currentStart, api.view.currentEnd, view));
-    }
+    calendarRef.current?.getApi().today();
   };
 
   const handlePrev = () => {
-    const api = calendarRef.current?.getApi();
-    api?.prev();
-    if (api) {
-      setRangeLabel(formatRangeLabel(api.view.currentStart, api.view.currentEnd, view));
-    }
+    calendarRef.current?.getApi().prev();
   };
 
   const handleNext = () => {
-    const api = calendarRef.current?.getApi();
-    api?.next();
-    if (api) {
-      setRangeLabel(formatRangeLabel(api.view.currentStart, api.view.currentEnd, view));
-    }
+    calendarRef.current?.getApi().next();
   };
 
   return (
@@ -159,6 +150,7 @@ const CalendarPage = () => {
             >
               <FullCalendar
                 ref={calendarRef}
+                locale={calendarLocale}
                 events={calendarEvents}
                 initialDate={initialCalendarDate}
                 initialView={view}

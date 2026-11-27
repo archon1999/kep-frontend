@@ -1,3 +1,4 @@
+import { useTranslation } from 'react-i18next';
 import { Box, Divider, IconButton, paperClasses } from '@mui/material';
 import MuiAppBar from '@mui/material/AppBar';
 import Toolbar from '@mui/material/Toolbar';
@@ -13,6 +14,7 @@ import SearchBox from '../common/search-box/SearchBox';
 import TopnavItems from './TopnavItems';
 
 const TopNavStacked = () => {
+  const { t } = useTranslation();
   const {
     config: { navColor },
     handleDrawerToggle,
@@ -40,19 +42,27 @@ const TopNavStacked = () => {
         ]}
       >
         {navColor === 'vibrant' && <VibrantBackground position="top" />}
-        <Toolbar sx={{ height: 64, gap: 5, justifyContent: 'space-between', px: { xs: 3, md: 5 } }}>
+        <Toolbar
+          sx={{
+            height: 64,
+            gap: { xs: 0.5, sm: 1.5, md: 3, lg: 5 },
+            justifyContent: 'space-between',
+            px: { xs: 0.75, sm: 2, md: 5 },
+          }}
+        >
           <Box
             sx={{
               display: { xs: 'flex' },
               alignItems: 'center',
-              gap: 1,
-              mr: 5,
+              gap: { xs: 0.5, sm: 1 },
+              mr: { lg: 5 },
             }}
           >
             <IconButton
               color="inherit"
-              aria-label="open drawer"
-              edge="start"
+              aria-label={t('homePage.landing.footer.menu')}
+              edge={upSm ? 'start' : false}
+              size={upSm ? 'medium' : 'small'}
               onClick={handleDrawerToggle}
               sx={{
                 display: { xs: 'flex', md: 'none' },

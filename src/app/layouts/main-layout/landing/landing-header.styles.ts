@@ -303,6 +303,13 @@ export const landingHeaderStyles: CSSObject[] = [
     },
   },
   {
+    '@media (max-width: 380px)': {
+      '&.kep-landing-brand .MuiTypography-body1, & .kep-landing-brand .MuiTypography-body1': {
+        display: 'none',
+      },
+    },
+  },
+  {
     '@media (prefers-reduced-motion: reduce)': {
       '&.kep-landing-nav-link, & .kep-landing-nav-link, &.kep-landing-nav-link > .kep-pixel-cross, & .kep-landing-nav-link > .kep-pixel-cross':
         {

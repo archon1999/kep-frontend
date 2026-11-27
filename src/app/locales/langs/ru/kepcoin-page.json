@@ -1,5 +1,6 @@
 {
   "kepcoinSpend": {
+    "refreshFailed": "Не удалось обновить данные после покупки.",
     "insufficientBalance": "Не хватает Kepcoin",
     "confirmTitle": "Хотите купить?",
     "confirmDescription": "После подтверждения с баланса будет списана указанная сумма Kepcoin.",

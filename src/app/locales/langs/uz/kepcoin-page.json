@@ -1,5 +1,6 @@
 {
   "kepcoinSpend": {
+    "refreshFailed": "Xariddan keyingi ma’lumotlarni yangilab bo‘lmadi.",
     "insufficientBalance": "Kepcoin yetmaydi",
     "confirmTitle": "Sotib olasizmi?",
     "confirmDescription": "Tasdiqlasangiz ko‘rsatilgan miqdordagi Kepcoin balansdan yechiladi.",

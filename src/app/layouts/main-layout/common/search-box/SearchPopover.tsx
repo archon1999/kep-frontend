@@ -15,7 +15,7 @@ interface TransitionComponentProps extends TransitionProps {
 const Transition = ({ ref, ...props }: TransitionComponentProps) => <Fade ref={ref} {...props} />;
 
 interface SearchPopoverProps {
-  anchorEl: HTMLDivElement | HTMLButtonElement | null;
+  anchorEl: HTMLButtonElement | null;
   handleClose: () => void;
 }
 

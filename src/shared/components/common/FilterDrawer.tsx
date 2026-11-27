@@ -20,7 +20,7 @@ import {
 import { useNavContext } from 'app/layouts/main-layout/NavProvider';
 import { useBreakpoints } from 'app/providers/BreakpointsProvider.tsx';
 import { overlayFormStyles } from 'app/theme/styles/overlays';
-import IconifyIcon from 'shared/components/base/IconifyIcon.tsx';
+import CloseIcon from 'shared/components/icons/CloseIcon';
 import FramedPage from 'shared/components/sections/common/FramedPage';
 import FilterPopover from './FilterPopover';
 import MixedText from './MixedText';
@@ -195,7 +195,7 @@ const FilterDrawer = ({
             </Button>
           ) : null}
           <Button shape="circle" color="neutral" onClick={onClose} aria-label={t('common.close')}>
-            <IconifyIcon icon="material-symbols:close-rounded" sx={{ fontSize: 20 }} />
+            <CloseIcon />
           </Button>
         </Stack>
       </Stack>

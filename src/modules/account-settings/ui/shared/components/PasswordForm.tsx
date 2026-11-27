@@ -1,9 +1,11 @@
-import { useMemo, useState } from 'react';
+import { type FormEvent, useState } from 'react';
 import { useTranslation } from 'react-i18next';
-import { Button, Grid, IconButton, InputAdornment, TextField } from '@mui/material';
+import { Alert, Box, Button, Grid } from '@mui/material';
 import { useAuth } from 'app/providers/AuthProvider.tsx';
 import { useChangePassword } from 'modules/account-settings/application';
-import IconifyIcon from 'shared/components/base/IconifyIcon.tsx';
+import PasswordTextField from 'shared/components/common/PasswordTextField';
+import { useScopedAsyncTask } from 'shared/hooks/useScopedAsyncTask';
+import { getApiErrorMessage } from 'shared/lib/apiError';
 import { toast } from 'sonner';
 import SettingsSection from './SettingsSection';
 
@@ -12,109 +14,100 @@ const PasswordForm = () => {
   const { currentUser } = useAuth();
   const username = currentUser?.username;
 
-  const { trigger, isMutating } = useChangePassword();
+  const { trigger } = useChangePassword();
+  const { isPending: isSaving, run } = useScopedAsyncTask(username ?? '');
 
   const [oldPassword, setOldPassword] = useState('');
   const [newPassword, setNewPassword] = useState('');
   const [confirmPassword, setConfirmPassword] = useState('');
   const [submitted, setSubmitted] = useState(false);
-  const [showFields, setShowFields] = useState({ old: false, neu: false, confirm: false });
+  const [saveError, setSaveError] = useState('');
 
-  const passwordsMismatch = useMemo(
-    () => newPassword !== confirmPassword,
-    [newPassword, confirmPassword],
-  );
+  const passwordsMismatch = newPassword !== confirmPassword;
+  const requiredError = (value: string) =>
+    submitted && !value ? t('auth.requiredField') : undefined;
+  const confirmationError =
+    submitted && newPassword && confirmPassword && passwordsMismatch
+      ? t('settings.confirmNewPasswordIncorrect')
+      : requiredError(confirmPassword);
 
-  const handleSave = async () => {
+  const handleSave = (event: FormEvent<HTMLFormElement>) => {
+    event.preventDefault();
+    if (isSaving) return;
     setSubmitted(true);
-    if (!username) return;
-    if (!oldPassword || !newPassword || !confirmPassword) {
-      return;
-    }
+    setSaveError('');
+    if (!username || !oldPassword || !newPassword || !confirmPassword || passwordsMismatch) return;
 
-    if (passwordsMismatch) {
-      toast.error(t('settings.confirmNewPasswordIncorrect'));
-      return;
-    }
-
-    try {
-      await trigger({ username, payload: { oldPassword, newPassword } });
-      toast.success(t('settings.saved'));
-      setOldPassword('');
-      setNewPassword('');
-      setConfirmPassword('');
-      setSubmitted(false);
-    } catch {
-      toast.error(t('settings.wrongPassword'));
-    }
-  };
-
-  const renderPasswordField = (
-    label: string,
-    value: string,
-    onChange: (value: string) => void,
-    visibleKey: keyof typeof showFields,
-  ) => {
-    const hasError = submitted && !value;
-
-    return (
-      <TextField
-        fullWidth
-        label={label}
-        type={showFields[visibleKey] ? 'text' : 'password'}
-        value={value}
-        onChange={(event) => onChange(event.target.value)}
-        error={hasError}
-        helperText={hasError ? t('auth.requiredField') : undefined}
-        InputProps={{
-          endAdornment: (
-            <InputAdornment position="end">
-              <IconButton
-                onClick={() =>
-                  setShowFields((prev) => ({ ...prev, [visibleKey]: !prev[visibleKey] }))
-                }
-              >
-                <IconifyIcon
-                  icon={
-                    showFields[visibleKey]
-                      ? 'material-symbols:visibility-off'
-                      : 'material-symbols:visibility'
-                  }
-                />
-              </IconButton>
-            </InputAdornment>
-          ),
-        }}
-      />
-    );
+    void run(() => trigger({ username, payload: { oldPassword, newPassword } }), {
+      onSuccess: () => {
+        toast.success(t('settings.saved'));
+        setOldPassword('');
+        setNewPassword('');
+        setConfirmPassword('');
+        setSubmitted(false);
+      },
+      onError: (error) => {
+        setSaveError(getApiErrorMessage(error, t('settings.changePasswordFailed')));
+      },
+    });
   };
 
   return (
     <SettingsSection title={t('settings.changePassword')}>
-      <Grid container spacing={2}>
-        <Grid size={{ xs: 12, md: 6 }}>
-          {renderPasswordField(t('settings.oldPassword'), oldPassword, setOldPassword, 'old')}
+      <Box component="form" onSubmit={handleSave} aria-busy={isSaving}>
+        {saveError && (
+          <Alert severity="error" sx={{ mb: 2 }}>
+            {saveError}
+          </Alert>
+        )}
+        <Grid container spacing={2}>
+          <Grid size={{ xs: 12, md: 6 }}>
+            <PasswordTextField
+              id="settings-old-password"
+              fullWidth
+              label={t('settings.oldPassword')}
+              autoComplete="current-password"
+              value={oldPassword}
+              onChange={(event) => setOldPassword(event.target.value)}
+              error={Boolean(requiredError(oldPassword))}
+              helperText={requiredError(oldPassword)}
+            />
+          </Grid>
+          <Grid size={{ xs: 12, md: 6 }}>
+            <PasswordTextField
+              id="settings-new-password"
+              fullWidth
+              label={t('settings.newPassword')}
+              autoComplete="new-password"
+              value={newPassword}
+              onChange={(event) => setNewPassword(event.target.value)}
+              error={Boolean(requiredError(newPassword))}
+              helperText={requiredError(newPassword)}
+            />
+          </Grid>
+          <Grid size={{ xs: 12, md: 6 }}>
+            <PasswordTextField
+              id="settings-confirm-password"
+              fullWidth
+              label={t('settings.retypeNewPassword')}
+              autoComplete="new-password"
+              value={confirmPassword}
+              onChange={(event) => setConfirmPassword(event.target.value)}
+              error={Boolean(confirmationError)}
+              helperText={confirmationError}
+            />
+          </Grid>
         </Grid>
-        <Grid size={{ xs: 12, md: 6 }}>
-          {renderPasswordField(t('settings.newPassword'), newPassword, setNewPassword, 'neu')}
-        </Grid>
-        <Grid size={{ xs: 12, md: 6 }}>
-          {renderPasswordField(
-            t('settings.retypeNewPassword'),
-            confirmPassword,
-            setConfirmPassword,
-            'confirm',
-          )}
-        </Grid>
-      </Grid>
-      <Button
-        sx={{ mt: 3 }}
-        variant="contained"
-        onClick={handleSave}
-        disabled={!username || isMutating}
-      >
-        {t('settings.change')}
-      </Button>
+        <Button
+          type="submit"
+          sx={{ mt: 3, '&[aria-disabled="true"]': { opacity: 0.65 } }}
+          variant="contained"
+          disabled={!username}
+          aria-disabled={isSaving}
+        >
+          {t('settings.change')}
+        </Button>
+      </Box>
     </SettingsSection>
   );
 };

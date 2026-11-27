@@ -62,7 +62,7 @@ const LoginForm = ({
     {
       provider: 'github',
       icon: 'mdi:github',
-      label: t('auth.loginWith', { title: 'Github' }),
+      label: t('auth.loginWith', { title: 'GitHub' }),
     },
   ];
 

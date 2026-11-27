@@ -1,4 +1,5 @@
 import { useCallback, useRef } from 'react';
+import { useTranslation } from 'react-i18next';
 import { Button } from '@mui/material';
 import IconifyIcon from 'shared/components/base/IconifyIcon';
 import { useThemeMode } from 'shared/hooks/useThemeMode';
@@ -8,12 +9,14 @@ interface ThemeTogglerProps {
 }
 
 const ThemeToggler = ({ type = 'default' }: ThemeTogglerProps) => {
+  const { t } = useTranslation();
   const { isDark, setThemeMode } = useThemeMode();
   const lastClickTimeRef = useRef(0);
 
   const icon = isDark
     ? `material-symbols${type === 'slim' ? '' : '-light'}:light-off-outline-rounded`
     : `material-symbols${type === 'slim' ? '' : '-light'}:lightbulb-outline-rounded`;
+  const label = t(isDark ? 'common.themeMode.switchToLight' : 'common.themeMode.switchToDark');
 
   const handleClick = useCallback(() => {
     const now = Date.now();
@@ -25,8 +28,8 @@ const ThemeToggler = ({ type = 'default' }: ThemeTogglerProps) => {
 
   return (
     <Button
-      aria-label={isDark ? 'Switch to light mode' : 'Switch to dark mode'}
-      title={isDark ? 'Switch to light mode' : 'Switch to dark mode'}
+      aria-label={label}
+      title={label}
       color="neutral"
       variant={type === 'default' ? 'soft' : 'text'}
       shape="circle"

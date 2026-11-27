@@ -1,7 +1,7 @@
 import { useCallback, useEffect, useMemo, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { Link as RouterLink } from 'react-router-dom';
-import Editor, { DiffEditor } from '@monaco-editor/react';
+import Editor from '@monaco-editor/react';
 import {
   Alert,
   Box,
@@ -9,7 +9,6 @@ import {
   Dialog,
   DialogContent,
   Divider,
-  IconButton,
   LinearProgress,
   Stack,
   TextField,
@@ -27,15 +26,17 @@ import {
 } from 'modules/problems/domain/entities/problem.entity';
 import UserPopover from 'modules/users/ui/shared/components/UserPopover';
 import IconifyIcon from 'shared/components/base/IconifyIcon';
+import ClipboardButton from 'shared/components/common/ClipboardButton';
 import DialogHeader from 'shared/components/common/DialogHeader';
 import KepcoinSpendConfirm from 'shared/components/common/KepcoinSpendConfirm';
 import KepcoinValue from 'shared/components/common/KepcoinValue';
-import ResponsiveTabs from 'shared/components/common/ResponsiveTabs';
 import AttemptLanguage from 'shared/components/problems/AttemptLanguage';
 import AttemptVerdict from 'shared/components/problems/AttemptVerdict';
 import { VerdictKey } from 'shared/components/problems/attemptVerdict.utils';
 import { useMonacoTheme } from 'shared/hooks/useMonacoTheme';
+import { useScopedAsyncTask } from 'shared/hooks/useScopedAsyncTask';
 import { toast } from 'sonner';
+import AttemptDiffEditor from './AttemptDiffEditor';
 
 const mapEditorLanguage = (lang?: string) => {
   switch (lang) {
@@ -83,7 +84,6 @@ const AttemptCompareDialog = ({
   onClose,
 }: AttemptCompareDialogProps) => {
   const { t } = useTranslation();
-  const codeTheme = useMonacoTheme();
   const { up } = useBreakpoints();
   const upMd = up('md');
   const [previousAttemptId, setPreviousAttemptId] = useState('');
@@ -91,7 +91,9 @@ const AttemptCompareDialog = ({
   const [previousSourceCode, setPreviousSourceCode] = useState('');
   const [currentSourceCode, setCurrentSourceCode] = useState('');
   const [editorLanguage, setEditorLanguage] = useState(mapEditorLanguage(baseAttempt?.lang));
-  const [isLoading, setIsLoading] = useState(false);
+  const { isPending: isLoading, run: runComparison } = useScopedAsyncTask(
+    open ? `compare:${baseAttempt?.id}` : 'closed',
+  );
 
   const parseAttemptId = useCallback(
     (value: string) => {
@@ -120,7 +122,7 @@ const AttemptCompareDialog = ({
   );
 
   const loadComparison = useCallback(
-    async (previousValue: string, currentValue: string) => {
+    (previousValue: string, currentValue: string) => {
       let previousId: number | null = null;
       let currentId: number | null = null;
 
@@ -132,37 +134,34 @@ const AttemptCompareDialog = ({
         return;
       }
 
-      setIsLoading(true);
-      try {
-        const [previousAttempt, currentAttempt] = await Promise.all([
-          previousId ? fetchAttemptDetail(previousId) : Promise.resolve(null),
-          currentId ? fetchAttemptDetail(currentId) : Promise.resolve(null),
-        ]);
-
-        setPreviousSourceCode(previousAttempt?.sourceCode ?? '');
-        setCurrentSourceCode(currentAttempt?.sourceCode ?? '');
-        setEditorLanguage(
-          mapEditorLanguage(currentAttempt?.lang ?? previousAttempt?.lang ?? baseAttempt?.lang),
-        );
-      } catch (error: any) {
-        const fallbackMessage = t('problems.attempts.modal.loadError');
-        const message = error?.response?.data?.message ?? error?.message ?? fallbackMessage;
-        toast.error(message);
-      } finally {
-        setIsLoading(false);
-      }
+      void runComparison(
+        () =>
+          Promise.all([
+            previousId ? fetchAttemptDetail(previousId) : Promise.resolve(null),
+            currentId ? fetchAttemptDetail(currentId) : Promise.resolve(null),
+          ]),
+        {
+          onSuccess: ([previousAttempt, currentAttempt]) => {
+            setPreviousSourceCode(previousAttempt?.sourceCode ?? '');
+            setCurrentSourceCode(currentAttempt?.sourceCode ?? '');
+            setEditorLanguage(
+              mapEditorLanguage(
+                currentAttempt?.lang ?? previousAttempt?.lang ?? baseAttempt?.lang,
+              ),
+            );
+          },
+          onError: (error: any) => {
+            const fallbackMessage = t('problems.attempts.modal.loadError');
+            toast.error(error?.data?.message ?? error?.message ?? fallbackMessage);
+          },
+        },
+      );
     },
-    [baseAttempt?.lang, fetchAttemptDetail, parseAttemptId, t],
+    [baseAttempt?.lang, fetchAttemptDetail, parseAttemptId, runComparison, t],
   );
 
   useEffect(() => {
-    if (!open) {
-      setPreviousAttemptId('');
-      setCurrentAttemptId('');
-      setPreviousSourceCode('');
-      setCurrentSourceCode('');
-      return;
-    }
+    if (!open) return;
 
     const nextPreviousId = currentDetail?.previousAttemptId
       ? String(currentDetail.previousAttemptId)
@@ -171,11 +170,13 @@ const AttemptCompareDialog = ({
 
     setPreviousAttemptId(nextPreviousId);
     setCurrentAttemptId(nextCurrentId);
+    setPreviousSourceCode('');
+    setCurrentSourceCode('');
     loadComparison(nextPreviousId, nextCurrentId);
   }, [baseAttempt?.id, currentDetail?.previousAttemptId, loadComparison, open]);
 
   const handleCompare = () => {
-    loadComparison(previousAttemptId, currentAttemptId);
+    if (!isLoading) loadComparison(previousAttemptId, currentAttemptId);
   };
 
   return (
@@ -218,9 +219,9 @@ const AttemptCompareDialog = ({
             <Button
               variant="contained"
               onClick={handleCompare}
-              disabled={isLoading}
+              aria-disabled={isLoading}
               startIcon={<IconifyIcon icon="material-symbols:compare-rounded" />}
-              sx={{ minWidth: 140 }}
+              sx={{ minWidth: 140, '&[aria-disabled="true"]': { opacity: 0.65 } }}
             >
               {t('problems.attempts.modal.compare')}
             </Button>
@@ -230,21 +231,11 @@ const AttemptCompareDialog = ({
         {isLoading ? <LinearProgress /> : null}
 
         <Box sx={{ height: { xs: '60vh', md: '68vh' }, minHeight: 420 }}>
-          <DiffEditor
+          <AttemptDiffEditor
             original={previousSourceCode}
             modified={currentSourceCode}
             language={editorLanguage}
-            theme={codeTheme.theme}
-            beforeMount={codeTheme.beforeMount}
-            options={{
-              readOnly: true,
-              minimap: { enabled: false },
-              fontSize: 14,
-              scrollBeyondLastLine: false,
-              wordWrap: 'off',
-              automaticLayout: true,
-              renderSideBySide: upMd,
-            }}
+            sideBySide={upMd}
           />
         </Box>
       </DialogContent>
@@ -261,10 +252,14 @@ const AttemptDetailDialog = ({
   const { t } = useTranslation();
   const codeTheme = useMonacoTheme();
   const { currentUser } = useAuth();
-  const [detail, setDetail] = useState<AttemptDetail | null>(null);
-  const [isLoading, setIsLoading] = useState(false);
+  const [loadedDetail, setDetail] = useState<AttemptDetail | null>(null);
   const [isCompareOpen, setIsCompareOpen] = useState(false);
 
+  const detailId = open && attempt?.canView ? attempt.id : undefined;
+  const { isPending: isLoading, run: runDetail } = useScopedAsyncTask(
+    detailId ? `attempt:${detailId}` : 'closed',
+  );
+  const detail = loadedDetail?.id === detailId ? loadedDetail : null;
   const baseAttempt = detail ?? attempt;
   const canViewAttempt = Boolean(baseAttempt?.canView);
   const canViewTest = Boolean(baseAttempt?.canTestView);
@@ -314,55 +309,32 @@ const AttemptDetailDialog = ({
       ? `/api/attempts/${baseAttempt.id}/failed-test/?number=${baseAttempt.testCaseNumber}`
       : null;
 
-  const fetchDetail = useCallback(async () => {
-    if (!attempt?.id || !attempt.canView) {
+  useEffect(() => {
+    if (!detailId) {
       setDetail(null);
+      setIsCompareOpen(false);
       return;
     }
 
-    setIsLoading(true);
-    try {
-      const data = await getAttemptDetails(attempt.id);
-      setDetail(data);
-    } catch (error: any) {
-      const fallbackMessage = t('problems.attempts.modal.loadError');
-      const message = error?.response?.data?.message ?? error?.message ?? fallbackMessage;
-      toast.error(message);
-    } finally {
-      setIsLoading(false);
-    }
-  }, [attempt?.canView, attempt?.id, t]);
+    void runDetail(() => getAttemptDetails(detailId), {
+      onSuccess: setDetail,
+      onError: (error: any) => {
+        const fallbackMessage = t('problems.attempts.modal.loadError');
+        toast.error(error?.data?.message ?? error?.message ?? fallbackMessage);
+      },
+    });
+  }, [detailId, runDetail, t]);
 
-  useEffect(() => {
-    if (open) {
-      fetchDetail();
-    } else {
-      setDetail(null);
-      setIsCompareOpen(false);
-    }
-  }, [fetchDetail, open]);
-
-  const handleAttemptPurchaseSuccess = async () => {
+  const handleAttemptPurchaseSuccess = () => {
     if (!attempt) return;
     onAttemptUpdated?.(attempt.id, { canView: true });
-    await fetchDetail();
   };
 
   const handleTestPurchaseSuccess = () => {
     if (!baseAttempt?.id) return;
     onAttemptUpdated?.(baseAttempt.id, { canTestView: true });
-    setDetail((prev) => (prev ? { ...prev, canTestView: true } : prev));
+    setDetail((prev) => (prev?.id === baseAttempt.id ? { ...prev, canTestView: true } : prev));
   };
-
-  const handleCopyCode = useCallback(async () => {
-    if (!detail?.sourceCode) return;
-    try {
-      await navigator.clipboard.writeText(detail.sourceCode);
-      toast.success(t('problems.detail.copied'));
-    } catch {
-      toast.error(t('problems.attempts.modal.loadError'));
-    }
-  }, [detail?.sourceCode, t]);
 
   if (!attempt) {
     return null;
@@ -523,29 +495,15 @@ const AttemptDetailDialog = ({
                 direction="row"
                 alignItems="center"
                 justifyContent="space-between"
-                sx={{ px: 2, pt: 1 }}
+                flexWrap="wrap"
+                gap={1}
+                sx={{ px: 2, py: 0.75, minHeight: 48 }}
               >
-                <ResponsiveTabs
-                  value="code"
-                  onChange={() => undefined}
-                  items={[
-                    {
-                      value: 'code',
-                      label: t('problems.detail.codeTab'),
-                      tabProps: { sx: { minHeight: 36 } },
-                    },
-                  ]}
-                  ariaLabel="attempt detail tabs"
-                  tabsProps={{
-                    textColor: 'primary',
-                    indicatorColor: 'primary',
-                    sx: { minHeight: 36 },
-                  }}
-                />
+                <Typography component="h3" variant="subtitle2">
+                  {t('problems.detail.codeTab')}
+                </Typography>
                 {canViewAttempt && detail?.sourceCode ? (
-                  <IconButton size="small" onClick={handleCopyCode}>
-                    <IconifyIcon icon="mdi:content-copy" width={18} height={18} />
-                  </IconButton>
+                  <ClipboardButton key={detail.id} text={detail.sourceCode} />
                 ) : null}
               </Stack>
 
@@ -557,6 +515,7 @@ const AttemptDetailDialog = ({
                     value={detail.sourceCode ?? ''}
                     language={mapEditorLanguage(detail.lang)}
                     height="420px"
+                    loading={t('common.loading')}
                     theme={codeTheme.theme}
                     beforeMount={codeTheme.beforeMount}
                     options={{
@@ -650,7 +609,7 @@ const AttemptDetailDialog = ({
         </DialogContent>
       </Dialog>
       <AttemptCompareDialog
-        open={isCompareOpen}
+        open={open && isCompareOpen}
         baseAttempt={baseAttempt}
         currentDetail={detail}
         onClose={() => setIsCompareOpen(false)}

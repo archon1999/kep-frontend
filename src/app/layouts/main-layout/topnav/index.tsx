@@ -79,7 +79,7 @@ const Topnav = () => {
           {
             <Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
               <Logo
-                showName={upSm}
+                showName={upMd}
                 sx={{ '@media (max-width: 380px)': { width: 26, height: 26 } }}
               />
               {upMd && <NavLogoLabel />}

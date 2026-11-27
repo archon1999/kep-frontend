@@ -26,8 +26,13 @@
     "draws": "Draws",
     "losses": "Losses",
     "close": "Close",
+    "copyFailed": "Copy failed",
     "minutesShort": "min",
     "searchPlaceholder": "Search",
+    "themeMode": {
+      "switchToLight": "Switch to light mode",
+      "switchToDark": "Switch to dark mode"
+    },
     "dataGrid": {
       "emptyState": {
         "filteredTitle": "No matching results",
@@ -53,8 +58,11 @@
       }
     },
     "pagination": {
+      "label": "Pagination",
       "previous": "Previous",
-      "next": "Next"
+      "next": "Next",
+      "goToPage": "Go to page {{page}}",
+      "currentPage": "Page {{page}}"
     },
     "dailyTasks": {
       "title": "Daily tasks",

@@ -1,10 +1,10 @@
-import { useCallback, useEffect, useState } from 'react';
+import { useCallback, useEffect, useRef, useState } from 'react';
 import { useTranslation } from 'react-i18next';
-import { Alert, Dialog, DialogContent, LinearProgress } from '@mui/material';
+import { Alert, Button, Dialog, DialogContent, LinearProgress } from '@mui/material';
 import { getAttemptDetails } from 'modules/problems/application/queries';
 import { AttemptDetail, AttemptListItem } from 'modules/problems/domain/entities/problem.entity';
 import DialogHeader from 'shared/components/common/DialogHeader';
-import { toast } from 'sonner';
+import { useScopedAsyncTask } from 'shared/hooks/useScopedAsyncTask';
 import AttemptJudgeSummaryCard from './AttemptJudgeSummaryCard';
 
 interface AttemptProtocolDialogProps {
@@ -15,38 +15,34 @@ interface AttemptProtocolDialogProps {
 
 const AttemptProtocolDialog = ({ open, attempt, onClose }: AttemptProtocolDialogProps) => {
   const { t } = useTranslation();
-  const [detail, setDetail] = useState<AttemptDetail | null>(null);
-  const [isLoading, setIsLoading] = useState(false);
-
+  const contentRef = useRef<HTMLDivElement>(null);
+  const [loadedDetail, setDetail] = useState<AttemptDetail | null>(null);
+  const [failedAttemptId, setFailedAttemptId] = useState<number | null>(null);
+  const attemptId = open && attempt?.canView && !attempt.judgeSummary ? attempt.id : undefined;
+  const { run } = useScopedAsyncTask(attemptId ? `protocol:${attemptId}` : 'closed');
+  const detail = loadedDetail?.id === attemptId ? loadedDetail : null;
   const baseAttempt = detail ?? attempt;
+  const loadFailed = failedAttemptId === attemptId;
+  const isLoading = Boolean(attemptId && !detail && !loadFailed);
 
-  const fetchDetail = useCallback(async () => {
-    if (!attempt?.id || attempt?.judgeSummary || !attempt.canView) {
-      setDetail(null);
-      return;
-    }
-
-    setIsLoading(true);
-    try {
-      const data = await getAttemptDetails(attempt.id);
-      setDetail(data);
-    } catch (error: any) {
-      const fallbackMessage = t('problems.attempts.modal.loadError');
-      const message = error?.response?.data?.message ?? error?.message ?? fallbackMessage;
-      toast.error(message);
-    } finally {
-      setIsLoading(false);
-    }
-  }, [attempt, t]);
+  const fetchDetail = useCallback(() => {
+    setFailedAttemptId(null);
+    if (!attemptId) return;
+    void run(() => getAttemptDetails(attemptId), {
+      onSuccess: setDetail,
+      onError: () => setFailedAttemptId(attemptId),
+    });
+  }, [attemptId, run]);
 
   useEffect(() => {
-    if (open) {
-      fetchDetail();
-    } else {
-      setDetail(null);
-      setIsLoading(false);
-    }
-  }, [fetchDetail, open]);
+    setDetail(null);
+    fetchDetail();
+  }, [fetchDetail]);
+
+  const handleRetry = () => {
+    contentRef.current?.focus({ preventScroll: true });
+    fetchDetail();
+  };
 
   if (!attempt) return null;
 
@@ -61,15 +57,20 @@ const AttemptProtocolDialog = ({ open, attempt, onClose }: AttemptProtocolDialog
       <DialogHeader
         id="attempt-protocol-title"
         title={t('problems.attempts.modal.testingProtocol')}
-        subtitle={`#${baseAttempt?.id} ${baseAttempt?.problemTitle ?? ''}`}
+        subtitle={`#${attempt.id} ${attempt.problemTitle ?? ''}`}
         onClose={onClose}
       />
-      <DialogContent dividers>
-        {isLoading ? <LinearProgress sx={{ mb: 2 }} /> : null}
-        {baseAttempt?.judgeSummary ? (
+      <DialogContent dividers ref={contentRef} tabIndex={-1} aria-busy={isLoading}>
+        {isLoading ? (
+          <LinearProgress aria-label={t('common.loading')} />
+        ) : loadFailed ? (
+          <Alert severity="error" action={<Button onClick={handleRetry}>{t('common.retry')}</Button>}>
+            {t('problems.attempts.modal.loadError')}
+          </Alert>
+        ) : baseAttempt?.judgeSummary ? (
           <AttemptJudgeSummaryCard summary={baseAttempt.judgeSummary} balls={baseAttempt.balls} />
         ) : (
-          !isLoading && <Alert severity="info">{t('problems.attempts.modal.noJudgeSummary')}</Alert>
+          <Alert severity="info">{t('problems.attempts.modal.noJudgeSummary')}</Alert>
         )}
       </DialogContent>
     </Dialog>

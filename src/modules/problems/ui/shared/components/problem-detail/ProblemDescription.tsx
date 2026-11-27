@@ -120,6 +120,7 @@ export const ProblemDescription = ({
   const { currentUser } = useAuth();
   const [solutionExpanded, setSolutionExpanded] = useState(false);
   const [selectedSolutionLang, setSelectedSolutionLang] = useState('');
+  const editorLang = selectedLanguage?.lang;
   const { data: solution, isLoading: isSolutionLoading } = useProblemSolution(
     problem.id,
     solutionExpanded,
@@ -154,32 +155,14 @@ export const ProblemDescription = ({
       ),
     [problem.availableLanguages],
   );
-  const activeSolutionCode = useMemo(
-    () =>
-      orderedSolutionCodes.find((code) => code.lang === selectedSolutionLang) ??
-      orderedSolutionCodes[0],
-    [orderedSolutionCodes, selectedSolutionLang],
-  );
+  const activeSolutionCode =
+    orderedSolutionCodes.find((code) => code.lang === selectedSolutionLang) ??
+    orderedSolutionCodes.find((code) => code.lang === editorLang) ??
+    orderedSolutionCodes[0];
 
   useEffect(() => {
-    if (!orderedSolutionCodes.length) {
-      if (selectedSolutionLang) {
-        setSelectedSolutionLang('');
-      }
-      return;
-    }
-
-    const fallbackLang = orderedSolutionCodes[0].lang;
-    const nextLang =
-      selectedLanguage?.lang &&
-      orderedSolutionCodes.some((code) => code.lang === selectedLanguage.lang)
-        ? selectedLanguage.lang
-        : fallbackLang;
-
-    if (nextLang !== selectedSolutionLang) {
-      setSelectedSolutionLang(nextLang);
-    }
-  }, [orderedSolutionCodes, selectedLanguage?.lang, selectedSolutionLang]);
+    setSelectedSolutionLang('');
+  }, [problem.id, editorLang]);
 
   return (
     <WorkspacePane>

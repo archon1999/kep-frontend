@@ -105,8 +105,8 @@ const formatWithPattern = (
   const parsed = toDateTime(value);
   if (!parsed) return fallback;
 
-  configureDateTimeLocale();
-  return parsed.format(pattern);
+  const locale = configureDateTimeLocale();
+  return parsed.locale(DAYJS_LOCALE_BY_LOCALE[locale]).format(pattern);
 };
 
 export const formatDateTime = (
@@ -294,30 +294,25 @@ export const subtractDateTime = (value: DateTimeInput, amount: number, unit: Man
 
 export const formatDateRange = (
   start: DateTimeInput,
-  end: DateTimeInput,
+  endExclusive: DateTimeInput,
   fallback: DateTimeFallback = DEFAULT_EMPTY_VALUE,
 ) => {
   const startDate = toDateTime(start);
-  const endDate = toDateTime(end);
+  const endDate = toDateTime(endExclusive);
 
   if (!startDate) return fallback;
   if (!endDate) return formatDateTime(startDate, 'monthYear', fallback);
 
   const adjustedEnd = endDate.subtract(1, 'day');
 
-  if (startDate.isSame(adjustedEnd, 'day')) {
+  if (!adjustedEnd.isAfter(startDate, 'day')) {
     return formatDateTime(startDate, 'fullDate', fallback);
   }
 
-  if (!startDate.isSame(adjustedEnd, 'month')) {
-    return `${formatDateTime(startDate, 'monthDay', fallback)} - ${formatDateTime(
-      adjustedEnd,
-      'fullDate',
-      fallback,
-    )}`;
-  }
-
-  return formatDateTime(startDate, 'monthYear', fallback);
+  const startFormat = startDate.isSame(adjustedEnd, 'year') ? 'dayMonth' : 'compactDateNoComma';
+  const startLabel = formatDateTime(startDate, startFormat, fallback);
+  const endLabel = formatDateTime(adjustedEnd, 'compactDateNoComma', fallback);
+  return `${startLabel} – ${endLabel}`;
 };
 
 export const isToday = (value: DateTimeInput) => {

@@ -1,7 +1,9 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import {
+  Alert,
   Avatar,
+  Button,
   Dialog,
   DialogContent,
   List,
@@ -29,32 +31,47 @@ type UserFollowersDialogProps = {
 const UserFollowersDialog = ({ open, onClose, username }: UserFollowersDialogProps) => {
   const { t } = useTranslation();
   const [page, setPage] = useState(1);
+  const contentRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
     setPage(1);
   }, [open, username]);
 
-  const { data, isLoading, isValidating } = useUserFollowers(open ? username : null, {
+  const { data, error, isLoading, isValidating, mutate } = useUserFollowers(open ? username : null, {
     page,
     pageSize: DIALOG_PAGE_SIZE,
   });
 
   const followers = data?.data ?? [];
-  const total = data?.total ?? 0;
   const pagesCount = data?.pagesCount ?? 1;
   const isInitialLoading = (isLoading || isValidating) && !followers.length;
   const showPagination = pagesCount > 1;
+  const handleRetry = () => {
+    contentRef.current?.focus({ preventScroll: true });
+    void mutate();
+  };
 
   return (
     <Dialog aria-labelledby="followers-title" open={open} onClose={onClose} maxWidth="sm" fullWidth>
       <DialogHeader
         id="followers-title"
         title={t('users.profile.followers.title')}
-        subtitle={total}
+        subtitle={error ? undefined : data?.total}
         onClose={onClose}
       />
-      <DialogContent sx={{ pt: 2.5, pb: 3 }}>
-        {isInitialLoading ? (
+      <DialogContent ref={contentRef} tabIndex={-1} aria-busy={isValidating} sx={{ pt: 2.5, pb: 3 }}>
+        {error ? (
+          <Alert
+            severity="error"
+            action={
+              <Button size="small" disabled={isValidating} onClick={handleRetry}>
+                {t('common.retry')}
+              </Button>
+            }
+          >
+            {t('common.loadFailed')}
+          </Alert>
+        ) : isInitialLoading ? (
           <List disablePadding>
             {Array.from({ length: SKELETON_ROWS }).map((_, index) => (
               <ListItem key={index} disableGutters sx={{ py: 1 }}>
@@ -102,11 +119,11 @@ const UserFollowersDialog = ({ open, onClose, username }: UserFollowersDialogPro
           </List>
         ) : (
           <Typography variant="body2" color="text.secondary">
-            {t('users.profile.followers.empty', { defaultValue: 'No followers yet.' })}
+            {t('users.profile.followers.empty')}
           </Typography>
         )}
 
-        {showPagination ? (
+        {!error && showPagination ? (
           <Stack alignItems="center" sx={{ pt: 2.5 }}>
             <ListPagination
               count={pagesCount}

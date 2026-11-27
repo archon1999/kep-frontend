@@ -85,6 +85,7 @@
       },
       "followers": {
         "title": "Followers",
+        "empty": "No followers yet.",
         "viewAll": "View all"
       },
       "about": "About",

@@ -9,17 +9,21 @@ import {
 } from 'react';
 import { useTranslation } from 'react-i18next';
 import {
+  Alert,
   Button,
   ButtonBase,
   Dialog,
   DialogActions,
   DialogContent,
   DialogContentText,
+  LinearProgress,
   Stack,
   Typography,
 } from '@mui/material';
 import { useAuth } from 'app/providers/AuthProvider';
 import DialogHeader from 'shared/components/common/DialogHeader';
+import { useScopedAsyncTask } from 'shared/hooks/useScopedAsyncTask';
+import { getApiErrorMessage } from 'shared/lib/apiError';
 import { useLoginRedirect } from 'shared/lib/authRedirect';
 import { formatInteger } from 'shared/lib/numberFormat';
 import axiosFetcher from 'shared/services/axios/axiosFetcher';
@@ -56,13 +60,16 @@ const KepcoinSpendConfirm = ({
   const redirectToLogin = useLoginRedirect();
 
   const [open, setOpen] = useState(false);
+  const [purchaseError, setPurchaseError] = useState('');
 
-  const { trigger, isMutating } = useSWRMutation([purchaseUrl, { method: 'post' }], axiosFetcher);
+  const { trigger } = useSWRMutation([purchaseUrl, { method: 'post' }], axiosFetcher);
+  const { isPending: isSubmitting, run } = useScopedAsyncTask(purchaseUrl);
 
   const formattedValue = useMemo(() => formatInteger(value), [value]);
   const userBalance = useMemo(() => currentUser?.kepcoin ?? 0, [currentUser?.kepcoin]);
 
   const handleTriggerClick = () => {
+    if (isSubmitting) return;
     if (!currentUser) {
       redirectToLogin();
       return;
@@ -75,10 +82,11 @@ const KepcoinSpendConfirm = ({
       return;
     }
 
+    setPurchaseError('');
     setOpen(true);
   };
 
-  const triggerDisabled = disabled && Boolean(currentUser);
+  const triggerDisabled = isSubmitting || (disabled && Boolean(currentUser));
 
   const renderTrigger = () => {
     if (isValidElement<TriggerElementProps>(children)) {
@@ -121,36 +129,45 @@ const KepcoinSpendConfirm = ({
   };
 
   const handleClose = () => {
-    if (!isMutating) {
+    if (!isSubmitting) {
       setOpen(false);
+      setPurchaseError('');
     }
   };
 
-  const handleConfirm = async () => {
-    try {
-      const response = await trigger(requestBody);
-      if (
-        response &&
-        typeof response === 'object' &&
-        'success' in response &&
-        response.success === false
-      ) {
-        throw new Error(String(response.message ?? response.error ?? t('kepcoinSpend.error')));
-      }
+  const handleConfirm = () => {
+    if (isSubmitting) return;
+    setPurchaseError('');
+    const fallbackMessage = t('kepcoinSpend.error');
 
-      toast.success(t('kepcoinSpend.success'));
-      await onSuccess?.(response);
-      await refreshCurrentUser();
-      setOpen(false);
-    } catch (error: any) {
-      const fallbackMessage = t('kepcoinSpend.error');
-      const message =
-        error?.response?.data?.message ??
-        error?.response?.data?.error ??
-        error?.message ??
-        fallbackMessage;
-      toast.error(message);
-    }
+    void run(
+      async () => {
+        const response = await trigger(requestBody);
+        if (response && typeof response === 'object' && response.success === false) {
+          throw new Error(getApiErrorMessage({ data: response }, fallbackMessage));
+        }
+        return response;
+      },
+      {
+        onSuccess: async (response) => {
+          toast.success(t('kepcoinSpend.success'));
+          let refreshFailed = false;
+          try {
+            await onSuccess?.(response);
+          } catch {
+            refreshFailed = true;
+          }
+          try {
+            await refreshCurrentUser();
+          } catch {
+            refreshFailed = true;
+          }
+          setOpen(false);
+          if (refreshFailed) toast.warning(t('kepcoinSpend.refreshFailed'));
+        },
+        onError: (error) => setPurchaseError(getApiErrorMessage(error, fallbackMessage)),
+      },
+    );
   };
 
   return (
@@ -168,11 +185,13 @@ const KepcoinSpendConfirm = ({
           id="kepcoin-spend-title"
           title={t('kepcoinSpend.confirmTitle')}
           onClose={handleClose}
-          closeDisabled={isMutating}
+          closeDisabled={isSubmitting}
         />
-        <DialogContent>
+        <DialogContent aria-busy={isSubmitting}>
           <Stack direction="column" spacing={2}>
             <DialogContentText>{t('kepcoinSpend.confirmDescription')}</DialogContentText>
+            {purchaseError ? <Alert severity="error">{purchaseError}</Alert> : null}
+            {isSubmitting ? <LinearProgress aria-label={t('common.loading')} /> : null}
 
             <Stack direction="row" alignItems="center" justifyContent="space-between">
               <Typography variant="body2" color="text.secondary">
@@ -200,10 +219,15 @@ const KepcoinSpendConfirm = ({
           </Stack>
         </DialogContent>
         <DialogActions sx={{ px: 3, pb: 2 }}>
-          <Button onClick={handleClose} color="inherit" disabled={isMutating}>
+          <Button onClick={handleClose} color="inherit" disabled={isSubmitting}>
             {t('kepcoinSpend.cancelAction')}
           </Button>
-          <Button onClick={handleConfirm} variant="contained" disabled={isMutating}>
+          <Button
+            onClick={handleConfirm}
+            variant="contained"
+            aria-disabled={isSubmitting}
+            sx={{ '&[aria-disabled="true"]': { opacity: 0.65 } }}
+          >
             {t('kepcoinSpend.confirmAction')}
           </Button>
         </DialogActions>
