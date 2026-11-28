@@ -16,7 +16,6 @@ import type {
   ApiUserActivityHistoryReadParams,
   ApiUsersChartStatParams,
   ApiUsersNextBirthdaysParams,
-  ApiUsersOnlineParams,
   ApiUsersTopRatingParams,
 } from 'shared/api/orval/generated/endpoints/index.schemas';
 import type {
@@ -36,8 +35,7 @@ export const homeApiClient = {
   nextBirthdays: (params?: ApiUsersNextBirthdaysParams) =>
     apiClient.apiUsersNextBirthdays(params) as Promise<ApiUsersNextBirthdaysResult>,
   birthdayProfile: (username: string): Promise<unknown> => apiClient.apiUsersInfoRead(username),
-  onlineUsers: (params?: ApiUsersOnlineParams) =>
-    apiClient.apiUsersOnline(params) as Promise<ApiUsersOnlineResult>,
+  onlineUsers: () => apiClient.apiUsersOnline() as Promise<ApiUsersOnlineResult>,
   usersChart: (params?: ApiUsersChartStatParams) =>
     apiClient.apiUsersChartStat(params) as Promise<ApiUsersChartStatResult>,
   userRatings: (username: string) =>

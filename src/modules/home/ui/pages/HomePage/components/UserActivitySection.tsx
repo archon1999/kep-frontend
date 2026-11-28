@@ -31,8 +31,8 @@ const UserActivitySection = () => {
     data: onlineUsersData,
     isLoading: isOnlineLoading,
     error: onlineError,
-  } = useOnlineUsers(8);
-  const onlineUsers = onlineUsersData?.data.slice(0, 8) ?? [];
+  } = useOnlineUsers();
+  const onlineUsers = onlineUsersData?.data ?? [];
   const periodLength = Math.max(
     data?.newUsers.series.length ?? 0,
     data?.activeUsers.series.length ?? 0,
@@ -169,6 +169,11 @@ const UserActivitySection = () => {
           <Typography variant="body2" color="text.secondary">
             {t('homePage.userActivity.onlineNow')}
           </Typography>
+          {onlineUsersData && !onlineError && (
+            <Typography variant="body2" fontWeight={700}>
+              {formatter.format(onlineUsers.length)}
+            </Typography>
+          )}
         </Stack>
         {isOnlineLoading ? (
           <Stack direction="row" sx={{ '& > * + *': { ml: -1 } }} aria-hidden="true">
@@ -189,11 +194,13 @@ const UserActivitySection = () => {
         ) : onlineUsers.length ? (
           <Stack
             direction="row"
+            flexWrap="wrap"
+            gap={1}
             role="group"
             aria-label={t('homePage.userActivity.onlineNow')}
-            sx={{ '& > * + *': { ml: -1 } }}
+            sx={{ maxWidth: '100%' }}
           >
-            {onlineUsers.map((user, index) => (
+            {onlineUsers.map((user) => (
               <UserPopover
                 key={user.username}
                 username={user.username}
@@ -201,12 +208,7 @@ const UserActivitySection = () => {
                   [user.firstName, user.lastName].filter(Boolean).join(' ') || user.username
                 }
                 avatar={user.avatar}
-                sx={{
-                  position: 'relative',
-                  zIndex: onlineUsers.length - index,
-                  borderRadius: '50%',
-                  '&:hover, &:focus-visible': { zIndex: onlineUsers.length + 1 },
-                }}
+                sx={{ flexShrink: 0, borderRadius: '50%' }}
               >
                 <Avatar
                   alt={user.username}

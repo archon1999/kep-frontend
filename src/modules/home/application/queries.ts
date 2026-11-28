@@ -119,9 +119,9 @@ export const useNextBirthdays = (pageSize = 5) =>
     repository.getNextBirthdays(mapListParams(pageSize)),
   );
 
-export const useOnlineUsers = (pageSize = 8) =>
-  useHomeSWR<HomeOnlineUsers>(homeKeys.detail(`online-${pageSize}`), () =>
-    repository.getOnlineUsers(mapListParams(pageSize)),
+export const useOnlineUsers = () =>
+  useHomeSWR<HomeOnlineUsers>(homeKeys.detail('online-users'), () =>
+    repository.getOnlineUsers(),
   );
 
 export const useUsersChart = () =>

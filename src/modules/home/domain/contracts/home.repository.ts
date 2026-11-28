@@ -20,7 +20,7 @@ export interface HomeRepository {
   getPosts: (params?: HomeListParams) => Promise<HomePostsList>;
   getTopUsers: (params?: HomeListParams) => Promise<HomeTopUsers>;
   getNextBirthdays: (params?: HomeListParams) => Promise<HomeNextBirthdays>;
-  getOnlineUsers: (params?: HomeListParams) => Promise<HomeOnlineUsers>;
+  getOnlineUsers: () => Promise<HomeOnlineUsers>;
   getUsersChart: () => Promise<HomeUsersChart>;
   getUserRatings: (username: string) => Promise<HomeUserRatings>;
   getUserActivityStatistics: () => Promise<HomeUserActivityStatistics>;

@@ -59,8 +59,8 @@ export class HttpHomeRepository implements HomeRepository {
     return { data };
   }
 
-  getOnlineUsers(params?: HomeListParams): Promise<HomeOnlineUsers> {
-    return homeApiClient.onlineUsers({ pageSize: params?.pageSize }).then(mapOnlineUsers);
+  getOnlineUsers(): Promise<HomeOnlineUsers> {
+    return homeApiClient.onlineUsers().then(mapOnlineUsers);
   }
 
   getUsersChart(): Promise<HomeUsersChart> {
