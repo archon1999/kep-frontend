@@ -17,6 +17,7 @@ import {
 } from 'modules/contests/ui/shared/utils/contestType';
 import IconifyIcon from 'shared/components/base/IconifyIcon';
 import ContestsRatingChip from 'shared/components/rating/ContestsRatingChip.tsx';
+import ContestantActions from './ContestantActions';
 
 const getPerformanceLabel = (row: ContestantEntity) =>
   row.rank === 1 ? '∞' : (row.performance ?? '—');
@@ -26,18 +27,27 @@ const getContestantProblemInfo = (row: ContestantEntity, problemSymbol: string) 
 
 type Options = Pick<ContestStandingsPageModel, 'contest' | 'contestId' | 'contestProblems'> & {
   isCompactLayout: boolean;
+  canModerate: boolean;
+  canSelectFinalists: boolean;
+  onModerate: (contestant: ContestantEntity) => void;
 };
 export const useContestStandingsColumns = ({
   contest,
   contestId,
   contestProblems,
   isCompactLayout,
+  canModerate,
+  canSelectFinalists,
+  onModerate,
 }: Options) => {
   const { t } = useTranslation();
   const problemMap = useMemo(
     () => new Map(contestProblems.map((problem) => [problem.symbol, problem])),
     [contestProblems],
   );
+
+  const finalistsEnabled = Boolean(contest?.finalistsEnabled);
+  const showActions = canModerate || (canSelectFinalists && finalistsEnabled);
 
   const columns: GridColDef<ContestantEntity>[] = useMemo(() => {
     const base: GridColDef<ContestantEntity>[] = [
@@ -65,11 +75,11 @@ export const useContestStandingsColumns = ({
       {
         field: 'username',
         headerName: t('contests.standings.contestant'),
-        minWidth: isCompactLayout ? 128 : 200,
+        minWidth: (isCompactLayout ? 128 : 200) + (showActions ? 56 : 0),
         flex: isCompactLayout ? 1 : 1.2,
         sortable: false,
-        renderCell: ({ row }) => (
-          <Stack direction="row" spacing={1} alignItems="center" minWidth={0}>
+        renderCell: ({ row, hasFocus }) => (
+          <Stack direction="row" spacing={0.5} alignItems="center" width="100%" minWidth={0}>
             <ContestantView
               contestant={row}
               imgSize={isCompactLayout ? 22 : 28}
@@ -79,7 +89,19 @@ export const useContestStandingsColumns = ({
               showCountry
               showFullName={!isCompactLayout}
               disablePopover
+              sx={{ flex: 1, minWidth: 0 }}
             />
+            {contestId && (
+              <ContestantActions
+                contestId={contestId}
+                contestant={row}
+                finalistsEnabled={finalistsEnabled}
+                canModerate={canModerate}
+                canSelectFinalists={canSelectFinalists}
+                tabIndex={hasFocus ? 0 : -1}
+                onModerate={onModerate}
+              />
+            )}
           </Stack>
         ),
       },
@@ -276,14 +298,19 @@ export const useContestStandingsColumns = ({
 
     return [...base, ...problemColumns];
   }, [
+    canModerate,
+    canSelectFinalists,
     contest?.id,
     contest?.isRated,
     contest?.type,
     contest?.typeInfo,
     contestId,
     contestProblems,
+    finalistsEnabled,
     isCompactLayout,
+    onModerate,
     problemMap,
+    showActions,
     t,
   ]);
 

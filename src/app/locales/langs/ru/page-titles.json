@@ -35,6 +35,7 @@
     "contestProblems": "Задачи - {{ contestTitle }} - Контест",
     "contestAttempts": "Попытки - {{ contestTitle }} - Контест",
     "contestStatistics": "Статистика - {{ contestTitle }} - Контест",
+    "contestFinalists": "Финалисты - {{ contestTitle }}",
     "contestStandings": "Результаты - {{ contestTitle }} - Контест",
     "contestRegistrants": "Зарегистрированные - {{ contestTitle }} - Контест",
     "contestRatingChanges": "Изменения рейтинга - {{ contestTitle }} - Контест",

@@ -9,7 +9,9 @@ const mapContestUserInfo = (payload: any): ContestUserInfo => ({
   doubleRatingPurchased: Boolean(
     payload?.doubleRatingPurchased ?? payload?.double_rating_purchased ?? false,
   ),
-  saveRatingPurchased: Boolean(payload?.saveRatingPurchased ?? payload?.save_rating_purchased ?? false),
+  saveRatingPurchased: Boolean(
+    payload?.saveRatingPurchased ?? payload?.save_rating_purchased ?? false,
+  ),
   virtualContestPurchased: Boolean(
     payload?.virtualContestPurchased ?? payload?.virtual_contest_purchased ?? false,
   ),
@@ -27,6 +29,7 @@ export const mapContestDetail = (payload: Contest | any): ContestDetail => {
   return {
     ...base,
     statusCode: parseContestStatus(payload?.status),
+    finalistsEnabled: Boolean(payload?.finalistsEnabled ?? payload?.finalists_enabled),
     startTime: payload?.startTime ?? (payload as any)?.start_time ?? base.startTime,
     finishTime: payload?.finishTime ?? (payload as any)?.finish_time ?? base.finishTime,
     participationType:

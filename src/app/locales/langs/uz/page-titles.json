@@ -35,6 +35,7 @@
     "contestProblems": "Masalalar - {{ contestTitle }} - Kontest",
     "contestAttempts": "Urinishlar - {{ contestTitle }} - Kontest",
     "contestStatistics": "Statistika - {{ contestTitle }} - Kontest",
+    "contestFinalists": "Finalchilar - {{ contestTitle }}",
     "contestStandings": "Natijalar - {{ contestTitle }} - Kontest",
     "contestRegistrants": "Roʻyhatdan oʻtganlar - {{ contestTitle }} - Kontest",
     "contestRatingChanges": "Reyting oʻzgarishlari - {{ contestTitle }} - Kontest",

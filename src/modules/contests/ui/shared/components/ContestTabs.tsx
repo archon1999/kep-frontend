@@ -11,9 +11,10 @@ interface ContestTabsProps {
   contestId: number | string;
   status?: ContestStatus;
   isRated?: boolean;
+  finalistsEnabled?: boolean;
 }
 
-const ContestTabs = ({ contestId, status, isRated }: ContestTabsProps) => {
+const ContestTabs = ({ contestId, status, isRated, finalistsEnabled }: ContestTabsProps) => {
   const { t } = useTranslation();
   const location = useLocation();
   const navigate = useNavigate();
@@ -56,6 +57,13 @@ const ContestTabs = ({ contestId, status, isRated }: ContestTabsProps) => {
         visible: status !== ContestStatus.NotStarted,
       },
       {
+        key: 'finalists',
+        label: t('contests.tabs.finalists'),
+        icon: 'ranking',
+        to: getResourceById(resources.ContestFinalists, contestId),
+        visible: Boolean(finalistsEnabled),
+      },
+      {
         key: 'rating-changes',
         label: t('contests.tabs.ratingChanges'),
         icon: 'rating-changes',
@@ -77,7 +85,7 @@ const ContestTabs = ({ contestId, status, isRated }: ContestTabsProps) => {
         visible: status !== ContestStatus.NotStarted,
       },
     ],
-    [contestId, isRated, status, t],
+    [contestId, finalistsEnabled, isRated, status, t],
   );
 
   const visibleTabs = tabs.filter((tab) => tab.visible !== false);

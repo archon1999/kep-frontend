@@ -34,6 +34,8 @@ export const useContestStandingsPage = () => {
   const { id, username: participantParam } = useParams<{ id: string; username?: string }>();
   const contestId = id ? Number(id) : undefined;
   const { currentUser } = useAuth();
+  const canSelectFinalists = Boolean(currentUser?.isSuperuser);
+  const canModerate = canSelectFinalists && Boolean(currentUser?.isStaff);
   const [searchParams] = useSearchParams();
   const participantUsername = useMemo(() => decodeRouteParam(participantParam), [participantParam]);
   const normalizedParticipantUsername = normalizeUsername(participantUsername);
@@ -123,6 +125,7 @@ export const useContestStandingsPage = () => {
       pinCurrentUser: Boolean(currentUser?.username),
     },
     refreshInterval,
+    canModerate,
   );
 
   const contestants = useMemo(
@@ -187,6 +190,8 @@ export const useContestStandingsPage = () => {
     paginationModel,
     onPaginationModelChange,
     currentUsername: currentUser?.username,
+    canModerate,
+    canSelectFinalists,
     onFiltersChange,
     onClearFilters,
   };

@@ -57,6 +57,7 @@ import {
 } from 'modules/challenges/ui/pages';
 import {
   ContestAttemptsPage,
+  ContestFinalistsPage,
   ContestPage,
   ContestProblemPage,
   ContestProblemsPage,
@@ -632,6 +633,14 @@ export const routes: RouteObject[] = [
             handle: {
               titleKey: 'pageTitles.contestStandings',
               fallbackTitleKey: 'pageTitles.contests',
+            },
+          },
+          {
+            path: resources.ContestFinalists,
+            element: <ContestFinalistsPage />,
+            handle: {
+              titleKey: 'pageTitles.contestFinalists',
+              fallbackTitleKey: 'contests.tabs.finalists',
             },
           },
           {

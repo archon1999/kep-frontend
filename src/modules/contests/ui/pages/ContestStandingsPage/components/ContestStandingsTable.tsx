@@ -29,7 +29,12 @@ type Props = Pick<
   | 'participantUsername'
   | 'standingsPage'
   | 'activeFiltersCount'
-> & { onContestantClick: (contestant: ContestantEntity) => void };
+  | 'canModerate'
+  | 'canSelectFinalists'
+> & {
+  onContestantClick: (contestant: ContestantEntity) => void;
+  onModerate: (contestant: ContestantEntity) => void;
+};
 const ContestStandingsTable = ({
   contest,
   contestId,
@@ -44,7 +49,10 @@ const ContestStandingsTable = ({
   participantUsername,
   standingsPage,
   activeFiltersCount,
+  canModerate,
+  canSelectFinalists,
   onContestantClick,
+  onModerate,
 }: Props) => {
   const { t } = useTranslation();
   const dataGridApiRef = useGridApiRef();
@@ -55,6 +63,9 @@ const ContestStandingsTable = ({
     contestId,
     contestProblems,
     isCompactLayout,
+    canModerate,
+    canSelectFinalists,
+    onModerate,
   });
   const acmScoreGroupRowClasses = useMemo(() => {
     const rowClasses = new Map<string, string>();

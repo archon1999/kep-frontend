@@ -40,6 +40,7 @@ const ContestPageHeader = ({
           contestId={contest?.id ?? contestId ?? 0}
           status={contest?.statusCode ?? ContestStatus.Already}
           isRated={contest?.isRated ?? isRated}
+          finalistsEnabled={contest?.finalistsEnabled}
         />
       ))
     }

@@ -164,6 +164,7 @@
       "empty": "No contestants have a rating yet."
     },
     "tabs": {
+      "finalists": "Finalists",
       "overview": "Overview",
       "problems": "Problems",
       "attempts": "Attempts",
@@ -214,7 +215,19 @@
       "ball": "Ball",
       "stats": "Stats"
     },
+    "finalists": {
+      "empty": "No finalists have been selected yet.",
+      "qualified": "Qualified for the final",
+      "add": "Add to finalists",
+      "remove": "Remove from finalists",
+      "added": "Contestant added to the finalists list.",
+      "removed": "Contestant removed from the finalists list.",
+      "saveError": "Could not update the finalists list."
+    },
     "standings": {
+      "entrantExcluded": "Contestant disqualified.",
+      "entrantReinstated": "Contest disqualification lifted.",
+      "moderationError": "Could not update the contest disqualification.",
       "place": "#",
       "contestant": "Contestant",
       "points": "Points",

@@ -1,4 +1,4 @@
-import { Suspense, lazy, useState } from 'react';
+import { Suspense, lazy, useCallback, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useContestStandingsPage } from 'modules/contests/application/hooks/useContestStandingsPage';
 import { ContestStatus } from 'modules/contests/domain/entities/contest-status';
@@ -13,6 +13,7 @@ import {
 import DialogLoading from 'shared/components/loading/DialogLoading';
 import ContestStandingsControls from './components/ContestStandingsControls';
 import ContestStandingsTable from './components/ContestStandingsTable';
+import ContestExclusionDialog from './dialogs/ContestExclusionDialog';
 
 const ContestantResultsDialog = lazy(() => import('./ContestantResultsDialog'));
 const ContestReplayDialog = lazy(() => import('./dialogs/ContestReplayDialog'));
@@ -39,10 +40,23 @@ const ContestStandingsPage = () => {
     paginationModel,
     onPaginationModelChange,
     currentUsername,
+    canModerate,
+    canSelectFinalists,
     onFiltersChange,
     onClearFilters,
   } = useContestStandingsPage();
   const [selectedContestant, setSelectedContestant] = useState<ContestantEntity | null>(null);
+  const [moderation, setModeration] = useState<{
+    contestId: number;
+    contestant: ContestantEntity;
+  } | null>(null);
+  const moderationTarget = moderation?.contestId === contestId ? moderation?.contestant : null;
+  const openModeration = useCallback(
+    (contestant: ContestantEntity) => {
+      if (contestId) setModeration({ contestId, contestant });
+    },
+    [contestId],
+  );
   const [replayOpen, setReplayOpen] = useState(false);
   const [resultsRequested, setResultsRequested] = useState(false);
   const selectedContestantId =
@@ -105,11 +119,24 @@ const ContestStandingsPage = () => {
         participantUsername={participantUsername}
         standingsPage={standingsPage}
         activeFiltersCount={activeFiltersCount}
+        canModerate={canModerate}
+        canSelectFinalists={canSelectFinalists}
+        onModerate={openModeration}
         onContestantClick={(contestant) => {
           setResultsRequested(true);
           setSelectedContestant(contestant);
         }}
       />
+
+      {canModerate && contestId && moderationTarget?.id && (
+        <ContestExclusionDialog
+          key={moderationTarget.id}
+          contestId={contestId}
+          contestant={moderationTarget}
+          contestantId={moderationTarget.id}
+          onClose={() => setModeration(null)}
+        />
+      )}
 
       {resultsRequested && (
         <Suspense

@@ -63,6 +63,14 @@ export class HttpContestsRepository implements ContestsRepository {
     return mapContestDetail(result);
   }
 
+  async finalists(contestId: number | string): Promise<ContestantEntity[]> {
+    return mapContestantList(await contestsApiClient.getFinalists(contestId));
+  }
+
+  selectFinalist(contestId: number | string, contestantId: number, selected: boolean) {
+    return contestsApiClient.selectFinalist(contestId, contestantId, selected);
+  }
+
   async getContestant(contestId: number | string): Promise<ContestantEntity | null> {
     const result = await contestsApiClient.getMe(contestId);
     if (!result) return null;

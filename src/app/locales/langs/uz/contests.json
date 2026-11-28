@@ -182,6 +182,7 @@
       "Exam": "Imtihon"
     },
     "tabs": {
+      "finalists": "Finalchilar",
       "overview": "Umumiy",
       "problems": "Masalalar",
       "attempts": "Urinishlar",
@@ -232,7 +233,19 @@
       "ball": "Ball",
       "stats": "Statistika"
     },
+    "finalists": {
+      "empty": "Hali finalchilar tanlanmagan.",
+      "qualified": "Finalga o‘tgan",
+      "add": "Finalga qo‘shish",
+      "remove": "Finalchilar ro‘yxatidan chiqarish",
+      "added": "Ishtirokchi finalchilar ro‘yxatiga qo‘shildi.",
+      "removed": "Ishtirokchi finalchilar ro‘yxatidan chiqarildi.",
+      "saveError": "Finalchilar ro‘yxatini yangilab bo‘lmadi."
+    },
     "standings": {
+      "entrantExcluded": "Ishtirokchi musobaqadan chetlashtirildi.",
+      "entrantReinstated": "Musobaqa bo‘yicha cheklov bekor qilindi.",
+      "moderationError": "Chetlashtirish holatini yangilab bo‘lmadi.",
       "place": "#",
       "contestant": "Ishtirokchi",
       "points": "Ball",

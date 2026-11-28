@@ -34,6 +34,12 @@ export type ContestsRatingParams = ApiContestsRatingListParams & {
 
 export interface ContestsRepository {
   replay: (contestId: number | string) => Promise<ContestReplay>;
+  finalists: (contestId: number | string) => Promise<ContestantEntity[]>;
+  selectFinalist: (
+    contestId: number | string,
+    contestantId: number,
+    selected: boolean,
+  ) => Promise<void>;
   list: (params?: ApiContestsListParams) => Promise<PageResult<ContestListItem>>;
   categories: () => Promise<ContestCategoryEntity[]>;
   getById: (contestId: number | string) => Promise<ContestDetail>;

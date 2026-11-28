@@ -35,6 +35,7 @@
     "contestProblems": "Problems - {{ contestTitle }} - Contest",
     "contestAttempts": "Attempts - {{ contestTitle }} - Contest",
     "contestStatistics": "Statistics - {{ contestTitle }} - Contest",
+    "contestFinalists": "Finalists - {{ contestTitle }}",
     "contestStandings": "Standings - {{ contestTitle }} - Contest",
     "contestRegistrants": "Registrants - {{ contestTitle }} - Contest",
     "contestRatingChanges": "Rating changes - {{ contestTitle }} - Contest",

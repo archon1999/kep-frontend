@@ -17,6 +17,7 @@ export interface ContestDetail extends ContestListItem {
   startTime?: string;
   finishTime?: string;
   type: ContestType;
+  finalistsEnabled?: boolean;
   participationType: ContestParticipationType;
   userInfo?: ContestUserInfo | null;
 }

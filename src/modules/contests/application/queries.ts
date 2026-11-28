@@ -125,6 +125,7 @@ export const useContestStandings = (
   contestId?: number | string,
   params?: ContestStandingsParams,
   refreshInterval?: number,
+  canModerate = false,
 ) =>
   useSWR<PageResult<ContestantEntity>>(
     contestId
@@ -138,10 +139,16 @@ export const useContestStandings = (
           params?.official,
           params?.participant,
           params?.pinCurrentUser,
+          canModerate,
         ]
       : null,
     () => contestsRepository.standings(contestId!, params),
     refreshInterval ? { refreshInterval } : undefined,
+  );
+
+export const useContestFinalists = (contestId?: number | string) =>
+  useSWR<ContestantEntity[]>(contestId ? ['contest-finalists', contestId] : null, () =>
+    contestsRepository.finalists(contestId!),
   );
 
 export const useContestContestantTimeline = (

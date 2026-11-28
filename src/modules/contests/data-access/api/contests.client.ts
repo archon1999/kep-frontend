@@ -10,8 +10,8 @@ import {
   ContestsCategory,
   ContestsRatingDetail,
 } from 'shared/api/orval/generated/endpoints/index.schemas';
-import { cancelContestRegistrationRequest } from './contests.requests.ts';
 import type { ContestReplayDto } from '../mappers/contest-replay.mapper';
+import { cancelContestRegistrationRequest } from './contests.requests.ts';
 
 export const contestsApiClient = {
   getReplay: (id: number | string) =>
@@ -27,6 +27,14 @@ export const contestsApiClient = {
     apiClient.apiContestsRatingStatistics(username) as Promise<any>,
   top3Contestants: (contestId: number | string) =>
     apiClient.apiContestsTop3Contestants(String(contestId)) as Promise<any>,
+  getFinalists: (id: number | string) =>
+    axiosMutator<unknown[]>({ url: `/api/contests/${id}/finalists/`, method: 'GET' }),
+  selectFinalist: (id: number | string, contestantId: number, selected: boolean) =>
+    axiosMutator<void>({
+      url: `/api/contests/${id}/finalists/${contestantId}/`,
+      method: 'PUT',
+      data: { isFinalist: selected },
+    }),
   getById: (id: number | string) => apiClient.apiContestsRead(String(id)) as Promise<any>,
   getMe: (id: number | string) => apiClient.apiContestsMe(String(id)) as Promise<any>,
   getProblems: (id: number | string) => apiClient.apiContestsProblems(String(id)) as Promise<any>,

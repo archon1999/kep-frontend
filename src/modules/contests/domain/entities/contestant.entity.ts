@@ -40,6 +40,8 @@ export interface ContestantEntity {
   saveRatingPurchased?: boolean;
   isVirtual?: boolean;
   isDisqualified?: boolean;
+  isFinalist?: boolean;
+  hasContestExclusion?: boolean;
   isUnrated?: boolean;
   isOfficial?: boolean;
   virtualTime?: string;

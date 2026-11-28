@@ -70,6 +70,7 @@ export const resources = {
   ContestsRating: '/contests/rating',
   Contest: '/contests/:id',
   ContestStandings: '/contests/:id/standings',
+  ContestFinalists: '/contests/:id/finalists',
   ContestStandingsParticipant: '/contests/:id/standings/participant/:username',
   ContestProblems: '/contests/:id/problems',
   ContestAttempts: '/contests/:id/attempts',

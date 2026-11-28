@@ -72,6 +72,8 @@ export const mapContestant = (payload: any): ContestantEntity => {
       payload?.saveRatingPurchased ?? payload?.save_rating_purchased ?? false,
     ),
     isDisqualified: Boolean(payload?.isDisqualified ?? payload?.is_disqualified),
+    isFinalist: Boolean(payload?.isFinalist ?? payload?.is_finalist),
+    hasContestExclusion: Boolean(payload?.hasContestExclusion ?? payload?.has_contest_exclusion),
     isVirtual: payload?.isVirtual ?? payload?.virtual ?? false,
     isUnrated: payload?.isUnrated ?? payload?.unrated ?? false,
     isOfficial:
